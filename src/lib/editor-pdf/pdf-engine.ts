@@ -540,6 +540,14 @@ function rgbToHex(r: number, g: number, b: number) {
   return `#${to(r)}${to(g)}${to(b)}`;
 }
 
+function cmykToRgb(c: number, m: number, y: number, k: number) {
+  return {
+    r: (1 - c) * (1 - k),
+    g: (1 - m) * (1 - k),
+    b: (1 - y) * (1 - k)
+  };
+}
+
 /**
  * Extrai imagens e linhas/retângulos finos da página (operator list do pdf.js)
  * para seleção e movimentação no editor.
@@ -590,43 +598,31 @@ export async function extractPageGraphicOverlays(
 
   const pushThinShape = (ux: number, uy: number, uw: number, uh: number, color: string) => {
     // Linhas de tabela no PDF costumam ser rect finos com fill (não só stroke).
-    const absW = Math.abs(uw) < 0.05 ? Math.max(lineWidth, 0.4) : uw;
-    const absH = Math.abs(uh) < 0.05 ? Math.max(lineWidth, 0.4) : uh;
+    const absW = Math.abs(uw) < 0.05 ? Math.max(lineWidth, 0.35) : uw;
+    const absH = Math.abs(uh) < 0.05 ? Math.max(lineWidth, 0.35) : uh;
     const box = boxFromUserQuad(viewport, pdfjs, ctm, ux, uy, ux + absW, uy + absH);
     const minSide = Math.min(box.w, box.h);
     const maxSide = Math.max(box.w, box.h);
-    if (maxSide < 8) return;
-    const isLine = minSide <= 2.2 && maxSide >= 8 && minSide / maxSide < 0.085;
+    // Contas/boletos têm traços curtos e regras um pouco mais grossas — limiares mais permissivos.
+    if (maxSide < 3.5) return;
+    const isLine = minSide <= 3.8 && maxSide >= 3.5 && minSide / maxSide < 0.16;
     if (!isLine) return;
     // Evita duplicar o mesmo separador.
     if (
       overlays.some(
         (o) =>
           o.kind === 'line' &&
-          Math.abs((o.coverY ?? o.y) - box.y) < 0.5 &&
-          Math.abs((o.coverX ?? o.x) - box.x) < 1.2 &&
-          Math.abs((o.coverW ?? o.w) - box.w) < 3
+          Math.abs((o.coverY ?? o.y) - box.y) < 0.4 &&
+          Math.abs((o.coverX ?? o.x) - box.x) < 1.0 &&
+          Math.abs((o.coverW ?? o.w) - box.w) < 2.5 &&
+          Math.abs((o.coverH ?? o.h) - box.h) < 2.5
       )
     ) {
       return;
     }
-    // Área de clique maior que o traço visual (difícil acertar 1px).
-    const hitPad = 1.25;
-    const hitBox =
-      box.w >= box.h
-        ? {
-            x: box.x,
-            y: box.y - (hitPad - box.h) / 2,
-            w: box.w,
-            h: Math.max(box.h, hitPad)
-          }
-        : {
-            x: box.x - (hitPad - box.w) / 2,
-            y: box.y,
-            w: Math.max(box.w, hitPad),
-            h: box.h
-          };
-    const normalized = normalizeOverlayBox(hitBox.x, hitBox.y, hitBox.w, hitBox.h);
+    // Guarda a geometria real (fina). A área de clique é expandida só no preview.
+    const normalized = normalizeOverlayBox(box.x, box.y, box.w, box.h);
+    const strokeWidth = Math.max(0.05, Math.min(minSide, 2.5));
     overlays.push({
       id: nextId('ln'),
       kind: 'line',
@@ -634,7 +630,7 @@ export async function extractPageGraphicOverlays(
       ...coverFromBox(box),
       stroke: color,
       fill: color,
-      strokeWidth: Math.max(0.12, minSide),
+      strokeWidth,
       fromPdf: true,
       coverBackground: true,
       opacity: 1
@@ -680,6 +676,24 @@ export async function extractPageGraphicOverlays(
     if (fn === OPS.setFillGray && typeof args?.[0] === 'number') {
       const g = args[0] as number;
       fillRgb = { r: g, g, b: g };
+      continue;
+    }
+    if (fn === OPS.setStrokeCMYKColor && args?.length >= 4) {
+      strokeRgb = cmykToRgb(
+        args[0] as number,
+        args[1] as number,
+        args[2] as number,
+        args[3] as number
+      );
+      continue;
+    }
+    if (fn === OPS.setFillCMYKColor && args?.length >= 4) {
+      fillRgb = cmykToRgb(
+        args[0] as number,
+        args[1] as number,
+        args[2] as number,
+        args[3] as number
+      );
       continue;
     }
     if (fn === OPS.rectangle && args?.length >= 4) {
@@ -730,9 +744,9 @@ export async function extractPageGraphicOverlays(
           const dx = Math.abs(a.x - b.x);
           const dy = Math.abs(a.y - b.y);
           if (dx < 0.01 && dy < 0.01) continue;
-          if (dy <= dx * 0.08) {
+          if (dy <= dx * 0.15) {
             pushThinShape(minX, minY - lineWidth / 2, Math.max(dx, 0.5), lineWidth, color);
-          } else if (dx <= dy * 0.08) {
+          } else if (dx <= dy * 0.15) {
             pushThinShape(minX - lineWidth / 2, minY, lineWidth, Math.max(dy, 0.5), color);
           }
         }
@@ -756,9 +770,9 @@ export async function extractPageGraphicOverlays(
           const dx = Math.abs(a.x - b.x);
           const dy = Math.abs(a.y - b.y);
           if (dx < 0.01 && dy < 0.01) continue;
-          if (dy <= dx * 0.08) {
+          if (dy <= dx * 0.15) {
             pushThinShape(minX, minY - lineWidth / 2, Math.max(dx, 0.5), lineWidth, color);
-          } else if (dx <= dy * 0.08) {
+          } else if (dx <= dy * 0.15) {
             pushThinShape(minX - lineWidth / 2, minY, lineWidth, Math.max(dy, 0.5), color);
           }
         }
@@ -960,11 +974,21 @@ async function drawOverlays(
 
     if (overlay.kind === 'line') {
       const stroke = hexToRgb(overlay.stroke || overlay.fill || '#0f172a');
+      const horizontal = overlay.w >= overlay.h;
+      const thinPct = Math.max(
+        0.05,
+        overlay.strokeWidth ?? Math.min(overlay.w, overlay.h)
+      );
+      const thin = Math.max(0.4, (thinPct / 100) * (horizontal ? height : width));
+      const drawW = horizontal ? w : thin;
+      const drawH = horizontal ? thin : h;
+      const drawX = horizontal ? x : x + (w - thin) / 2;
+      const drawY = horizontal ? y + (h - thin) / 2 : y;
       page.drawRectangle({
-        x,
-        y,
-        width: w,
-        height: h,
+        x: drawX,
+        y: drawY,
+        width: Math.max(0.4, drawW),
+        height: Math.max(0.4, drawH),
         color: rgb(stroke.r, stroke.g, stroke.b),
         opacity
       });

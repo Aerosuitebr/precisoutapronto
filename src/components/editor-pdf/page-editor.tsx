@@ -11,9 +11,11 @@ import {
   Minus,
   MousePointer2,
   Plus,
+  Redo2,
   Square,
   Trash2,
   Type,
+  Undo2,
   X
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -48,6 +50,13 @@ const ZOOM_MIN = 50;
 const ZOOM_MAX = 400;
 const ZOOM_STEP = 25;
 const ZOOM_BASE_WIDTH = 720;
+/** Espessura visual padrão de linha (% da página) — fina o bastante para contas/tabelas. */
+const LINE_THICKNESS_DEFAULT = 0.12;
+const LINE_THICKNESS_MIN = 0.05;
+const LINE_THICKNESS_MAX = 1.2;
+/** Área de clique extra (%), sem engrossar o traço desenhado. */
+const LINE_HIT_PAD = 0.9;
+const HISTORY_LIMIT = 60;
 
 type Tool = 'select' | 'text' | 'image' | 'rect' | 'line' | 'highlight' | 'erase';
 
@@ -92,6 +101,9 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   const editRef = useRef<HTMLTextAreaElement | HTMLInputElement | null>(null);
   const movedDuringDrag = useRef(false);
   const replaceImageIdRef = useRef<string | null>(null);
+  const draftRef = useRef(draft);
+  const pastRef = useRef<PageOverlay[][]>([]);
+  const futureRef = useRef<PageOverlay[][]>([]);
   const [imageSlot, setImageSlot] = useState<{
     x: number;
     y: number;
@@ -103,6 +115,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     coverH?: number;
     coverFill?: string;
   } | null>(null);
+
+  draftRef.current = draft;
 
   const size = resolvePageSize(draft);
   const aspect = size.width / Math.max(size.height, 1);
@@ -164,6 +178,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
               textLayerReady: true
             };
           });
+          pastRef.current = [];
+          futureRef.current = [];
           const names = Array.from(
             new Set(textsWithFill.map((t) => t.fontLabel || t.pdfFontName).filter(Boolean))
           ).slice(0, 3);
@@ -205,15 +221,34 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   }, [editingId]);
 
   useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (!selectedId) return;
+    function isTypingTarget(target: EventTarget | null) {
+      if (!(target instanceof HTMLElement)) return false;
+      return (
+        target.tagName === 'TEXTAREA' ||
+        target.tagName === 'INPUT' ||
+        target.tagName === 'SELECT' ||
+        target.isContentEditable
+      );
+    }
 
-      const target = e.target as HTMLElement | null;
-      const typing =
-        !!target &&
-        (target.tagName === 'TEXTAREA' ||
-          target.tagName === 'INPUT' ||
-          target.isContentEditable);
+    function onKeyDown(e: KeyboardEvent) {
+      const typing = isTypingTarget(e.target);
+      const mod = e.ctrlKey || e.metaKey;
+
+      if (mod && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+        if (typing) return;
+        e.preventDefault();
+        undo();
+        return;
+      }
+      if (mod && (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey))) {
+        if (typing) return;
+        e.preventDefault();
+        redo();
+        return;
+      }
+
+      if (!selectedId) return;
 
       if ((e.key === 'Delete' || e.key === 'Backspace') && !typing) {
         e.preventDefault();
@@ -236,6 +271,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
       if (e.key === 'ArrowUp') dy = -step;
       if (e.key === 'ArrowDown') dy = step;
 
+      pushHistory();
       setDraft((prev) => {
         const ov = prev.overlays.find((o) => o.id === selectedId);
         if (!ov) return prev;
@@ -255,6 +291,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- handlers usam refs + selectedId
   }, [selectedId]);
 
   const presetOptions = useMemo(
@@ -269,6 +306,34 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     []
   );
 
+  function cloneOverlays(list: PageOverlay[]) {
+    return list.map((o) => ({ ...o }));
+  }
+
+  function pushHistory() {
+    pastRef.current.push(cloneOverlays(draftRef.current.overlays));
+    if (pastRef.current.length > HISTORY_LIMIT) pastRef.current.shift();
+    futureRef.current = [];
+  }
+
+  function undo() {
+    const prev = pastRef.current.pop();
+    if (!prev) return;
+    futureRef.current.push(cloneOverlays(draftRef.current.overlays));
+    setDraft((d) => ({ ...d, overlays: prev }));
+    setSelectedId(null);
+    setEditingId(null);
+  }
+
+  function redo() {
+    const next = futureRef.current.pop();
+    if (!next) return;
+    pastRef.current.push(cloneOverlays(draftRef.current.overlays));
+    setDraft((d) => ({ ...d, overlays: next }));
+    setSelectedId(null);
+    setEditingId(null);
+  }
+
   function updateOverlay(id: string, patch: Partial<PageOverlay>) {
     setDraft((prev) => ({
       ...prev,
@@ -276,6 +341,11 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
         o.id === id ? { ...o, ...patch, ...(o.fromPdf ? { dirty: true } : {}) } : o
       )
     }));
+  }
+
+  function updateOverlayTracked(id: string, patch: Partial<PageOverlay>) {
+    pushHistory();
+    updateOverlay(id, patch);
   }
 
   function removeOverlay(id: string) {
@@ -294,6 +364,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
       });
     }
 
+    pushHistory();
     setDraft((prev) => {
       const target = prev.overlays.find((o) => o.id === id);
       let next = prev.overlays.filter((o) => o.id !== id);
@@ -450,6 +521,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   }
 
   function beginEditText(id: string) {
+    if (editingId !== id) pushHistory();
     setTool('select');
     setSelectedId(id);
     setEditingId(id);
@@ -483,6 +555,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
         bold: false,
         coverBackground: true
       };
+      pushHistory();
       setDraft((prev) => ({ ...prev, overlays: [...prev.overlays, overlay] }));
       beginEditText(id);
       return;
@@ -501,12 +574,13 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
         x: pt.x,
         y: pt.y,
         w: 1,
-        h: 0.45,
+        h: LINE_THICKNESS_DEFAULT,
         stroke: '#0f172a',
         fill: '#0f172a',
-        strokeWidth: 0.45,
+        strokeWidth: LINE_THICKNESS_DEFAULT,
         opacity: 1
       };
+      pushHistory();
       setDraft((prev) => ({ ...prev, overlays: [...prev.overlays, overlay] }));
       setSelectedId(id);
       setDrag({ mode: 'create', id, startX: pt.x, startY: pt.y, orig: overlay });
@@ -526,6 +600,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
       fill: kind === 'erase' ? '#ffffff' : kind === 'highlight' ? '#facc15' : '#0ea5e9',
       opacity: kind === 'highlight' ? 0.35 : 1
     };
+    pushHistory();
     setDraft((prev) => ({ ...prev, overlays: [...prev.overlays, overlay] }));
     setSelectedId(id);
     setDrag({ mode: 'create', id, startX: pt.x, startY: pt.y, orig: overlay });
@@ -540,6 +615,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
       const dist = Math.abs(pt.x - drag.startX) + Math.abs(pt.y - drag.startY);
       if (dist < 0.9) return;
       movedDuringDrag.current = true;
+      pushHistory();
       setDrag({ ...drag, mode: 'move' });
       const dx = pt.x - drag.startX;
       const dy = pt.y - drag.startY;
@@ -557,19 +633,25 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
         const dx = Math.abs(pt.x - drag.startX);
         const dy = Math.abs(pt.y - drag.startY);
         const horizontal = dx >= dy;
+        const thick = Math.max(
+          LINE_THICKNESS_MIN,
+          drag.orig.strokeWidth || drag.orig.h || LINE_THICKNESS_DEFAULT
+        );
         if (horizontal) {
           updateOverlay(drag.id, {
             x,
-            y: drag.startY,
+            y: drag.startY - thick / 2,
             w: Math.max(1, dx),
-            h: Math.max(0.35, drag.orig.h || 0.45)
+            h: thick,
+            strokeWidth: thick
           });
         } else {
           updateOverlay(drag.id, {
-            x: drag.startX,
+            x: drag.startX - thick / 2,
             y,
-            w: Math.max(0.35, drag.orig.w || 0.45),
-            h: Math.max(1, dy)
+            w: thick,
+            h: Math.max(1, dy),
+            strokeWidth: thick
           });
         }
         return;
@@ -592,6 +674,37 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     }
 
     if (drag.mode === 'resize' && drag.id && drag.orig) {
+      if (drag.orig.kind === 'line') {
+        const horizontal = drag.orig.w >= drag.orig.h;
+        if (horizontal) {
+          const w = Math.max(2, Math.min(100 - drag.orig.x, pt.x - drag.orig.x));
+          const rawThick = Math.abs(pt.y - (drag.orig.y + drag.orig.h / 2)) * 2;
+          const thick = Math.min(
+            LINE_THICKNESS_MAX,
+            Math.max(LINE_THICKNESS_MIN, rawThick || drag.orig.strokeWidth || LINE_THICKNESS_DEFAULT)
+          );
+          updateOverlay(drag.id, {
+            w,
+            h: thick,
+            y: drag.orig.y + drag.orig.h / 2 - thick / 2,
+            strokeWidth: thick
+          });
+        } else {
+          const h = Math.max(2, Math.min(100 - drag.orig.y, pt.y - drag.orig.y));
+          const rawThick = Math.abs(pt.x - (drag.orig.x + drag.orig.w / 2)) * 2;
+          const thick = Math.min(
+            LINE_THICKNESS_MAX,
+            Math.max(LINE_THICKNESS_MIN, rawThick || drag.orig.strokeWidth || LINE_THICKNESS_DEFAULT)
+          );
+          updateOverlay(drag.id, {
+            h,
+            w: thick,
+            x: drag.orig.x + drag.orig.w / 2 - thick / 2,
+            strokeWidth: thick
+          });
+        }
+        return;
+      }
       const w = Math.max(2, Math.min(100 - drag.orig.x, pt.x - drag.orig.x));
       const h = Math.max(2, Math.min(100 - drag.orig.y, pt.y - drag.orig.y));
       updateOverlay(drag.id, { w, h });
@@ -612,9 +725,9 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     if (tool !== 'select') return;
     movedDuringDrag.current = false;
     const pt = relativePoint(e.clientX, e.clientY);
-    // Texto: clique edita; só vira arraste depois de mover de verdade.
+    // Só grava histórico quando o arraste começa de verdade (pending → move).
     setDrag({
-      mode: overlay.kind === 'text' ? 'pending' : 'move',
+      mode: 'pending',
       id: overlay.id,
       startX: pt.x,
       startY: pt.y,
@@ -627,6 +740,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     e.stopPropagation();
     setSelectedId(overlay.id);
     const pt = relativePoint(e.clientX, e.clientY);
+    pushHistory();
     setDrag({ mode: 'resize', id: overlay.id, startX: pt.x, startY: pt.y, orig: overlay });
     boardRef.current?.setPointerCapture(e.pointerId);
   }
@@ -693,7 +807,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     if (!selectedId) return;
     const opt = getFontOptionById(fontId);
     ensureFontCssLoaded(opt);
-    updateOverlay(selectedId, {
+    updateOverlayTracked(selectedId, {
       fontId: opt.id,
       fontLabel: opt.family
     });
@@ -773,6 +887,26 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
 
         <div className="grid min-h-0 min-w-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[7.5rem_minmax(0,1fr)_19rem]">
           <aside className="flex shrink-0 flex-row gap-1.5 overflow-x-auto border-b border-slate-200 bg-white p-3 lg:flex-col lg:overflow-x-visible lg:overflow-y-auto lg:border-b-0 lg:border-r">
+            <div className="flex min-w-[5.5rem] shrink-0 gap-1 lg:mb-1 lg:w-full lg:min-w-0">
+              <button
+                type="button"
+                title="Desfazer (Ctrl+Z)"
+                onClick={undo}
+                className="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-2.5 text-[0.68rem] font-bold text-slate-600 transition hover:bg-slate-100"
+              >
+                <Undo2 className="h-4 w-4 shrink-0" aria-hidden />
+                <span>Desfazer</span>
+              </button>
+              <button
+                type="button"
+                title="Refazer (Ctrl+Y)"
+                onClick={redo}
+                className="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1.5 py-2.5 text-[0.68rem] font-bold text-slate-600 transition hover:bg-slate-100"
+              >
+                <Redo2 className="h-4 w-4 shrink-0" aria-hidden />
+                <span>Refazer</span>
+              </button>
+            </div>
             {TOOLS.map((item) => {
               const Icon = item.icon;
               return (
@@ -868,10 +1002,38 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                   overlay.fromPdf &&
                   overlay.text !== overlay.originalText;
                 const showPaintedContent = !pristine || isEditing;
+                const lineHorizontal = overlay.kind === 'line' ? overlay.w >= overlay.h : false;
+                const lineThick =
+                  overlay.kind === 'line'
+                    ? Math.max(
+                        LINE_THICKNESS_MIN,
+                        overlay.strokeWidth ?? Math.min(overlay.w, overlay.h)
+                      )
+                    : 0;
                 const boxW =
-                  overlay.kind === 'text' ? textBoxWidthPct(overlay, isEditing) : overlay.w;
+                  overlay.kind === 'text'
+                    ? textBoxWidthPct(overlay, isEditing)
+                    : overlay.kind === 'line'
+                      ? lineHorizontal
+                        ? overlay.w
+                        : Math.max(overlay.w, LINE_HIT_PAD)
+                      : overlay.w;
                 const boxH =
-                  overlay.kind === 'text' ? textBoxHeightPct(overlay, isEditing) : overlay.h;
+                  overlay.kind === 'text'
+                    ? textBoxHeightPct(overlay, isEditing)
+                    : overlay.kind === 'line'
+                      ? lineHorizontal
+                        ? Math.max(overlay.h, LINE_HIT_PAD)
+                        : overlay.h
+                      : overlay.h;
+                const boxX =
+                  overlay.kind === 'line' && !lineHorizontal
+                    ? overlay.x + overlay.w / 2 - boxW / 2
+                    : overlay.x;
+                const boxY =
+                  overlay.kind === 'line' && lineHorizontal
+                    ? overlay.y + overlay.h / 2 - boxH / 2
+                    : overlay.y;
                 const typePx = overlay.kind === 'text' ? fontPx(overlay) : 0;
 
                 return (
@@ -905,7 +1067,9 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                       overlay.kind === 'text' && !isEditing && 'cursor-text hover:ring-1 hover:ring-sky-400/70',
                       overlay.kind === 'line' &&
                         tool === 'select' &&
-                        'cursor-ns-resize hover:bg-sky-400/25 hover:ring-1 hover:ring-sky-500/80',
+                        (lineHorizontal
+                          ? 'cursor-ns-resize hover:ring-1 hover:ring-sky-500/80'
+                          : 'cursor-ew-resize hover:ring-1 hover:ring-sky-500/80'),
                       overlay.kind !== 'text' &&
                         overlay.kind !== 'line' &&
                         tool === 'select' &&
@@ -915,24 +1079,20 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                       changed && 'ring-emerald-400',
                       !pristine && overlay.kind === 'erase' && 'bg-white',
                       !pristine && overlay.kind === 'rect' && 'border border-sky-700/40',
-                      !pristine && overlay.kind === 'highlight' && 'mix-blend-multiply',
-                      !pristine && overlay.kind === 'line' && 'rounded-[1px]'
+                      !pristine && overlay.kind === 'highlight' && 'mix-blend-multiply'
                     )}
                     style={{
-                      left: `${overlay.x}%`,
-                      top: `${overlay.y}%`,
+                      left: `${boxX}%`,
+                      top: `${boxY}%`,
                       width: `${boxW}%`,
                       height: `${boxH}%`,
                       backgroundColor: !showPaintedContent
                         ? 'transparent'
                         : overlay.kind === 'rect' ||
                             overlay.kind === 'highlight' ||
-                            overlay.kind === 'erase' ||
-                            overlay.kind === 'line'
+                            overlay.kind === 'erase'
                           ? overlay.fill || overlay.stroke || '#0f172a'
-                          : overlay.kind === 'text'
-                            ? overlay.coverFill || '#ffffff'
-                            : undefined,
+                          : undefined,
                       opacity: !showPaintedContent
                         ? 1
                         : overlay.kind === 'highlight'
@@ -940,6 +1100,32 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                           : overlay.opacity ?? 1
                     }}
                   >
+                    {overlay.kind === 'line' && showPaintedContent ? (
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute rounded-[1px]"
+                        style={{
+                          left: lineHorizontal ? 0 : `calc(50% - ${((lineThick / boxW) * 100) / 2}%)`,
+                          top: lineHorizontal ? `calc(50% - ${((lineThick / boxH) * 100) / 2}%)` : 0,
+                          width: lineHorizontal ? '100%' : `${(lineThick / boxW) * 100}%`,
+                          height: lineHorizontal ? `${(lineThick / boxH) * 100}%` : '100%',
+                          backgroundColor: overlay.fill || overlay.stroke || '#0f172a'
+                        }}
+                      />
+                    ) : null}
+                    {overlay.kind === 'line' && !showPaintedContent && isSelected ? (
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute rounded-[1px] bg-sky-500/35"
+                        style={{
+                          left: lineHorizontal ? 0 : `calc(50% - ${((lineThick / boxW) * 100) / 2}%)`,
+                          top: lineHorizontal ? `calc(50% - ${((lineThick / boxH) * 100) / 2}%)` : 0,
+                          width: lineHorizontal ? '100%' : `${(lineThick / boxW) * 100}%`,
+                          height: lineHorizontal ? `${(lineThick / boxH) * 100}%` : '100%'
+                        }}
+                      />
+                    ) : null}
+
                     {overlay.kind === 'text' && showPaintedContent ? (
                       isEditing ? (
                         <textarea
@@ -968,7 +1154,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                             letterSpacing: 'normal',
                             textAlign: overlay.align || 'left',
                             lineHeight: `${Math.ceil(typePx * 1.15)}px`,
-                            caretColor: overlay.color || '#0f172a'
+                            caretColor: overlay.color || '#0f172a',
+                            backgroundColor: overlay.coverFill || '#ffffff'
                           }}
                           aria-label="Editar texto"
                         />
@@ -983,19 +1170,13 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                             fontSynthesis: 'none',
                             letterSpacing: 'normal',
                             textAlign: overlay.align || 'left',
-                            lineHeight: `${Math.ceil(typePx * 1.1)}px`
+                            lineHeight: `${Math.ceil(typePx * 1.1)}px`,
+                            backgroundColor: overlay.coverFill || '#ffffff'
                           }}
                         >
                           {overlay.text}
                         </div>
                       )
-                    ) : null}
-
-                    {overlay.kind === 'line' && isSelected ? (
-                      <div
-                        aria-hidden
-                        className="pointer-events-none absolute inset-x-1 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-sky-500 shadow-sm"
-                      />
                     ) : null}
 
                     {overlay.kind === 'image' && showPaintedContent && overlay.imageDataUrl ? (
@@ -1121,10 +1302,11 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
               </h3>
               {!selected ? (
                 <p className="text-xs leading-5 text-slate-500">
-                  Clique em texto, imagem ou linha. Setas movem com precisão; Delete remove.
-                  {imageSlot
-                    ? ' Espaço de imagem guardado — use “Imagem” na barra para inserir outra no mesmo tamanho.'
-                    : ''}
+                  Clique em texto, imagem ou linha. Ctrl+Z desfaz · Ctrl+Y refaz. Setas movem;
+              Delete remove.
+              {imageSlot
+                ? ' Espaço de imagem guardado — use “Imagem” na barra para inserir outra no mesmo tamanho.'
+                : ''}
                 </p>
               ) : selected.kind !== 'text' ? (
                 <div className="space-y-2">
@@ -1150,7 +1332,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                         type="color"
                         value={selected.fill || selected.stroke || '#0f172a'}
                         onChange={(e) =>
-                          updateOverlay(selected.id, {
+                          updateOverlayTracked(selected.id, {
                             fill: e.target.value,
                             stroke: e.target.value
                           })
@@ -1159,6 +1341,51 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                       />
                     </FormField>
                   )}
+                  {selected.kind === 'line' ? (
+                    <FormField label="Espessura" htmlFor="ov-line-thick">
+                      <div className="space-y-1.5">
+                        <input
+                          id="ov-line-thick"
+                          type="range"
+                          min={LINE_THICKNESS_MIN}
+                          max={LINE_THICKNESS_MAX}
+                          step={0.02}
+                          value={Math.min(
+                            LINE_THICKNESS_MAX,
+                            Math.max(
+                              LINE_THICKNESS_MIN,
+                              selected.strokeWidth ?? Math.min(selected.w, selected.h)
+                            )
+                          )}
+                          onPointerDown={() => pushHistory()}
+                          onChange={(e) => {
+                            const thick = Number(e.target.value);
+                            const horizontal = selected.w >= selected.h;
+                            if (horizontal) {
+                              updateOverlay(selected.id, {
+                                strokeWidth: thick,
+                                h: thick,
+                                y: selected.y + selected.h / 2 - thick / 2
+                              });
+                            } else {
+                              updateOverlay(selected.id, {
+                                strokeWidth: thick,
+                                w: thick,
+                                x: selected.x + selected.w / 2 - thick / 2
+                              });
+                            }
+                          }}
+                          className="h-2 w-full cursor-pointer accent-sky-600"
+                        />
+                        <p className="text-[11px] text-slate-500">
+                          {(
+                            selected.strokeWidth ?? Math.min(selected.w, selected.h)
+                          ).toFixed(2)}
+                          % da página · use o canto azul para alongar
+                        </p>
+                      </div>
+                    </FormField>
+                  ) : null}
                   {selected.kind === 'image' ? (
                     <Button
                       variant="outline"
