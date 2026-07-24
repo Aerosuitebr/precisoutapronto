@@ -74,8 +74,10 @@ export function RemoverFundoApp() {
             setProgressPct(pct);
             setProgressLabel(
               label.startsWith("fetch")
-                ? "Baixando modelo de IA (só na primeira vez)…"
-                : "Removendo o fundo…",
+                ? "Baixando modelo de alta qualidade (só na primeira vez)…"
+                : label.includes("refine")
+                  ? "Refinando bordas e cores…"
+                  : "Removendo o fundo…",
             );
           },
         );
@@ -299,8 +301,9 @@ export function RemoverFundoApp() {
                     Aguarde o processamento.
                   </p>
                   <p className="mt-1 text-sm leading-6 text-slate-500">
-                    Na primeira vez o modelo de IA é baixado (leva alguns
-                    segundos); depois fica em cache e roda instantaneamente.
+                    Na primeira vez o modelo de alta qualidade é baixado (um
+                    pouco maior); depois fica em cache. Bordas e cores são
+                    refinadas automaticamente.
                   </p>
                 </div>
               ) : (

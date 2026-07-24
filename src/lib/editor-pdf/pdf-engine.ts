@@ -73,8 +73,8 @@ function loadImageElement(url: string) {
 }
 
 /**
- * Amostra a cor de fundo sob cada texto do PDF
- * para cobrir o glyph sem mancha branca em headers coloridos.
+ * Amostra fundo e cor do texto sob cada overlay do PDF
+ * (fundo limpo para cobrir o glyph; tinta escura para fidelidade na edição).
  */
 export async function sampleCoverFillsFromPreview(
   previewUrl: string,
@@ -93,7 +93,12 @@ export async function sampleCoverFillsFromPreview(
     return overlays.map((overlay) => {
       if (overlay.kind !== 'text' || !overlay.fromPdf) return overlay;
       const fill = sampleOverlayBackground(ctx, canvas.width, canvas.height, overlay);
-      return fill ? { ...overlay, coverFill: fill } : overlay;
+      const ink = sampleOverlayTextInk(ctx, canvas.width, canvas.height, overlay, fill);
+      return {
+        ...overlay,
+        ...(fill ? { coverFill: fill } : {}),
+        ...(ink ? { color: ink } : {})
+      };
     });
   } catch {
     return overlays;
@@ -175,6 +180,59 @@ function sampleOverlayBackground(
       .toString(16)
       .padStart(2, '0');
   return `#${toHex(best.r / best.count)}${toHex(best.g / best.count)}${toHex(best.b / best.count)}`;
+}
+
+/** Amostra a tinta do texto no miolo da caixa (pixels contrastantes com o fundo). */
+function sampleOverlayTextInk(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  overlay: PageOverlay,
+  coverFill?: string
+) {
+  const cx = overlay.coverX ?? overlay.x;
+  const cy = overlay.coverY ?? overlay.y;
+  const cw = Math.max(0.5, overlay.coverW ?? overlay.w);
+  const ch = Math.max(0.3, overlay.coverH ?? overlay.h);
+
+  let bgR = 255;
+  let bgG = 255;
+  let bgB = 255;
+  if (coverFill && /^#[0-9a-fA-F]{6}$/.test(coverFill)) {
+    bgR = parseInt(coverFill.slice(1, 3), 16);
+    bgG = parseInt(coverFill.slice(3, 5), 16);
+    bgB = parseInt(coverFill.slice(5, 7), 16);
+  }
+
+  type Ink = { r: number; g: number; b: number; contrast: number };
+  const inks: Ink[] = [];
+  for (let iy = 2; iy <= 8; iy += 1) {
+    for (let ix = 1; ix <= 9; ix += 1) {
+      const px = cx + (cw * ix) / 10;
+      const py = cy + (ch * iy) / 10;
+      const x = Math.min(width - 1, Math.max(0, Math.round((px / 100) * width)));
+      const y = Math.min(height - 1, Math.max(0, Math.round((py / 100) * height)));
+      const data = ctx.getImageData(x, y, 1, 1).data;
+      const r = data[0];
+      const g = data[1];
+      const b = data[2];
+      const contrast =
+        Math.abs(r - bgR) * 0.3 + Math.abs(g - bgG) * 0.59 + Math.abs(b - bgB) * 0.11;
+      if (contrast < 28) continue;
+      inks.push({ r, g, b, contrast });
+    }
+  }
+  if (inks.length < 3) return null;
+  inks.sort((a, b) => b.contrast - a.contrast);
+  const top = inks.slice(0, Math.min(12, inks.length));
+  const r = top.reduce((s, p) => s + p.r, 0) / top.length;
+  const g = top.reduce((s, p) => s + p.g, 0) / top.length;
+  const b = top.reduce((s, p) => s + p.b, 0) / top.length;
+  const toHex = (v: number) =>
+    Math.round(v)
+      .toString(16)
+      .padStart(2, '0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
 function measureTextWidthPx(text: string, fontSizePx: number, bold: boolean, fontFamily?: string) {
@@ -275,7 +333,33 @@ export async function extractPageTextOverlays(
   const doc = await pdfjs.getDocument({ data: source.bytes.slice(0) }).promise;
   const page = await doc.getPage(pageIndex + 1);
   const viewport = page.getViewport({ scale: 1, rotation });
+  // Carrega objetos de fonte (nome original / Bold) antes do textContent.
+  try {
+    await page.getOperatorList();
+  } catch {
+    // segue sem commonObjs
+  }
   const textContent = await page.getTextContent();
+  const styles = (textContent.styles || {}) as Record<
+    string,
+    { fontFamily?: string; ascent?: number; descent?: number }
+  >;
+
+  const originalFontNames = new Map<string, string>();
+  for (const fontKey of Object.keys(styles)) {
+    try {
+      const objs = page.commonObjs as {
+        has?: (id: string) => boolean;
+        get: (id: string) => unknown;
+      };
+      if (typeof objs.has === 'function' && !objs.has(fontKey)) continue;
+      const obj = objs.get(fontKey) as { name?: string } | undefined;
+      if (obj?.name) originalFontNames.set(fontKey, obj.name);
+    } catch {
+      // ignore
+    }
+  }
+
   const overlays: PageOverlay[] = [];
 
   for (const raw of textContent.items) {
@@ -292,38 +376,65 @@ export async function extractPageTextOverlays(
     const visible = str.replace(/\s+$/g, '');
 
     const tx = pdfjs.Util.transform(viewport.transform, item.transform);
-    const fontHeight = Math.hypot(tx[2], tx[3]) || Math.hypot(tx[0], tx[1]) || 12;
-    // item.width já vem em unidades de usuário do PDF (não multiplicar pelo fontSize).
+    // Tamanho em pts: vetor vertical do transform (mais fiel que item.height).
+    const fontFromTransform = Math.hypot(tx[2], tx[3]) || Math.hypot(tx[0], tx[1]) || 0;
+    const fontFromItem = item.height && item.height > 0 ? item.height : 0;
+    let fontHeight = fontFromTransform || fontFromItem || 12;
+    // Se ambos existem e divergem pouco, prefere a média (mais estável em receipts).
+    if (fontFromTransform > 0 && fontFromItem > 0) {
+      const ratio = fontFromTransform / fontFromItem;
+      if (ratio > 0.72 && ratio < 1.35) {
+        fontHeight = fontFromTransform * 0.72 + fontFromItem * 0.28;
+      }
+    }
+
+    const style = item.fontName ? styles[item.fontName] : undefined;
+    const ascent = typeof style?.ascent === 'number' && style.ascent > 0 ? style.ascent : 0.8;
+    const descentAbs =
+      typeof style?.descent === 'number' ? Math.abs(style.descent) : 0.2;
+    const emBox = Math.min(1.35, Math.max(0.9, ascent + descentAbs));
+
+    const pdfNameHints = [
+      originalFontNames.get(item.fontName || '') || '',
+      style?.fontFamily || '',
+      item.fontName || ''
+    ].filter(Boolean);
+    const pdfFontName = pdfNameHints[0] || item.fontName || '';
+    const bold = pdfNameHints.some((name) => isBoldPdfFont(name));
+    const resolved = resolveFontFromPdfName(pdfFontName || style?.fontFamily);
+    const measureFamily = `"${resolved.option.family}", Arial, Helvetica, sans-serif`;
+
     const viewportScaleX = Math.hypot(viewport.transform[0], viewport.transform[1]) || 1;
     const reportedWidth = Math.max(0, (item.width || 0) * viewportScaleX);
-    const bold = isBoldPdfFont(item.fontName);
-    const measuredWidth = measureTextWidthPx(visible, fontHeight, bold);
+    const measuredWidth = measureTextWidthPx(visible, fontHeight, bold, measureFamily);
     let width = reportedWidth > 0 ? reportedWidth : measuredWidth;
     if (reportedWidth > 0 && measuredWidth > 0) {
-      // Caixas largas demais: prefere a medição do conteúdo.
-      if (reportedWidth > measuredWidth * 1.12) width = measuredWidth * 1.03;
+      if (reportedWidth > measuredWidth * 1.12) width = measuredWidth * 1.04;
       else if (reportedWidth < measuredWidth * 0.75) width = measuredWidth;
       else width = Math.min(reportedWidth, measuredWidth * 1.06);
     }
-    // Baseline → topo da caixa (viewport já tem Y para baixo).
-    const height = fontHeight * 0.86;
-    const xPdf = tx[4];
-    const yPdf = tx[5] - fontHeight * 0.76;
 
-    const padX = Math.max(0.1, fontHeight * 0.02);
-    const padY = Math.max(0.04, fontHeight * 0.015);
+    const fontSize = Math.max(6, fontHeight);
+    // Caixa precisa caber o fontSize CSS (antes era 0.86 e cortava a digitação).
+    const height = fontSize * Math.max(1.05, emBox * 0.98);
+    const xPdf = tx[4];
+    const yPdf = tx[5] - fontSize * Math.min(0.92, Math.max(0.72, ascent));
+
+    const padX = Math.max(0.15, fontSize * 0.03);
+    const padY = Math.max(0.08, fontSize * 0.04);
     const x = ((xPdf - padX) / viewport.width) * 100;
     const y = ((yPdf - padY) / viewport.height) * 100;
     let w = ((width + padX * 2) / viewport.width) * 100;
     let h = ((height + padY * 2) / viewport.height) * 100;
-    h = Math.max(h, 0.65);
+    // Garante h% >= fontSize em % da página.
+    const minH = (fontSize / viewport.height) * 100 * 1.08;
+    h = Math.max(h, minH, 0.7);
     w = Math.max(w, 0.7);
 
     if (w <= 0.05 || h <= 0.05) continue;
     if (w > 55 && visible.trim().length <= 20) continue;
     if (w > 80) continue;
 
-    const resolved = resolveFontFromPdfName(item.fontName);
     const box = normalizeOverlayBox(x, y, w, h);
 
     overlays.push({
@@ -333,10 +444,10 @@ export async function extractPageTextOverlays(
       ...coverFromBox(box),
       text: str,
       originalText: str,
-      fontSize: Math.max(6, fontHeight),
+      fontSize,
       color: '#0f172a',
       bold,
-      pdfFontName: item.fontName || '',
+      pdfFontName,
       fontLabel: resolved.displayName,
       fontId: resolved.option.id,
       fromPdf: true,

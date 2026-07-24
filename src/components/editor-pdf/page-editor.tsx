@@ -45,8 +45,9 @@ import {
 import { cn } from '@/lib/utils';
 
 const ZOOM_MIN = 50;
-const ZOOM_MAX = 200;
-const ZOOM_STEP = 10;
+const ZOOM_MAX = 400;
+const ZOOM_STEP = 25;
+const ZOOM_BASE_WIDTH = 720;
 
 type Tool = 'select' | 'text' | 'image' | 'rect' | 'line' | 'highlight' | 'erase';
 
@@ -632,9 +633,23 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
 
   function fontPx(overlay: PageOverlay) {
     if (overlay.fontSize && boardHeight > 0 && size.height > 0) {
-      return Math.max(5, (overlay.fontSize / size.height) * boardHeight);
+      return Math.max(6, (overlay.fontSize / size.height) * boardHeight);
     }
-    return Math.max(5, (overlay.h / 100) * boardHeight * 0.88);
+    return Math.max(6, (overlay.h / 100) * boardHeight * 0.92);
+  }
+
+  /** Altura mínima da caixa em % para o fontSize caber sem cortar a digitação. */
+  function textBoxHeightPct(overlay: PageOverlay, editing: boolean) {
+    const px = fontPx(overlay);
+    if (boardHeight <= 0) return overlay.h;
+    const needed = (px / boardHeight) * 100 * (editing ? 1.28 : 1.12);
+    return Math.max(overlay.h, needed);
+  }
+
+  function textBoxWidthPct(overlay: PageOverlay, editing: boolean) {
+    if (!editing) return overlay.w;
+    const fitted = fitOverlayWidthToText(overlay, overlay.text || ' ');
+    return Math.max(overlay.w, fitted);
   }
 
   function cssFontFamily(overlay: PageOverlay) {
@@ -656,7 +671,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     }
     const boardWidth = boardHeight * aspect;
     if (boardWidth <= 0) return overlay.w;
-    const nextW = (measured / boardWidth) * 100 + 0.5;
+    const nextW = (measured / boardWidth) * 100 + 0.8;
     return Math.max(0.8, Math.min(100 - overlay.x, nextW));
   }
 
@@ -666,9 +681,11 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
       updateOverlay(id, { text });
       return;
     }
+    const next = { ...ov, text };
     updateOverlay(id, {
       text,
-      w: fitOverlayWidthToText({ ...ov, text }, text)
+      w: fitOverlayWidthToText(next, text),
+      h: textBoxHeightPct(next, true)
     });
   }
 
@@ -714,7 +731,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             >
               <Minus className="h-4 w-4" />
             </button>
-            <span className="min-w-[3.25rem] text-center text-xs font-bold text-slate-800">{zoom}%</span>
+            <span className="min-w-[3.5rem] text-center text-xs font-bold text-slate-800">{zoom}%</span>
             <button
               type="button"
               className="grid h-8 w-8 place-items-center rounded-lg text-slate-700 hover:bg-white"
@@ -729,6 +746,13 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
               onClick={() => setZoom(100)}
             >
               100%
+            </button>
+            <button
+              type="button"
+              className="rounded-lg px-2 py-1 text-[0.65rem] font-bold text-sky-700 hover:bg-white"
+              onClick={() => setZoom(200)}
+            >
+              200%
             </button>
           </div>
           <Button variant="outline" size="sm" onClick={onClose} icon={X}>
@@ -773,8 +797,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             <div
               className="mx-auto origin-top"
               style={{
-                width: `min(100%, ${680 * (zoom / 100)}px)`,
-                maxWidth: '100%'
+                width: `min(100%, ${ZOOM_BASE_WIDTH * (zoom / 100)}px)`,
+                maxWidth: 'none'
               }}
             >
             <div
@@ -844,6 +868,11 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                   overlay.fromPdf &&
                   overlay.text !== overlay.originalText;
                 const showPaintedContent = !pristine || isEditing;
+                const boxW =
+                  overlay.kind === 'text' ? textBoxWidthPct(overlay, isEditing) : overlay.w;
+                const boxH =
+                  overlay.kind === 'text' ? textBoxHeightPct(overlay, isEditing) : overlay.h;
+                const typePx = overlay.kind === 'text' ? fontPx(overlay) : 0;
 
                 return (
                   <div
@@ -882,6 +911,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                         tool === 'select' &&
                         'cursor-move hover:ring-1 hover:ring-sky-400/70',
                       (isSelected || isEditing) && 'ring-2 ring-sky-500',
+                      isEditing && 'z-40 shadow-md',
                       changed && 'ring-emerald-400',
                       !pristine && overlay.kind === 'erase' && 'bg-white',
                       !pristine && overlay.kind === 'rect' && 'border border-sky-700/40',
@@ -891,8 +921,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                     style={{
                       left: `${overlay.x}%`,
                       top: `${overlay.y}%`,
-                      width: `${overlay.w}%`,
-                      height: `${overlay.h}%`,
+                      width: `${boxW}%`,
+                      height: `${boxH}%`,
                       backgroundColor: !showPaintedContent
                         ? 'transparent'
                         : overlay.kind === 'rect' ||
@@ -926,32 +956,34 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                             }
                           }}
                           onPointerDown={(e) => e.stopPropagation()}
-                          className="h-full w-full resize-none border-0 px-0.5 py-0 outline-none"
+                          rows={1}
+                          spellCheck={false}
+                          className="block h-full w-full resize-none overflow-hidden border-0 bg-transparent px-0.5 py-0 outline-none"
                           style={{
-                            backgroundColor: overlay.coverFill || '#ffffff',
                             color: overlay.color || '#0f172a',
-                            fontSize: `${fontPx(overlay)}px`,
+                            fontSize: `${typePx}px`,
                             fontFamily: cssFontFamily(overlay),
                             fontWeight: overlay.bold ? 700 : 400,
                             fontSynthesis: 'none',
                             letterSpacing: 'normal',
                             textAlign: overlay.align || 'left',
-                            lineHeight: 1
+                            lineHeight: `${Math.ceil(typePx * 1.15)}px`,
+                            caretColor: overlay.color || '#0f172a'
                           }}
                           aria-label="Editar texto"
                         />
                       ) : (
                         <div
-                          className="h-full w-full overflow-hidden whitespace-pre px-0.5 py-0"
+                          className="flex h-full w-full items-center overflow-hidden whitespace-pre px-0.5 py-0"
                           style={{
                             color: overlay.color || '#0f172a',
-                            fontSize: `${fontPx(overlay)}px`,
+                            fontSize: `${typePx}px`,
                             fontFamily: cssFontFamily(overlay),
                             fontWeight: overlay.bold ? 700 : 400,
                             fontSynthesis: 'none',
                             letterSpacing: 'normal',
                             textAlign: overlay.align || 'left',
-                            lineHeight: 1
+                            lineHeight: `${Math.ceil(typePx * 1.1)}px`
                           }}
                         >
                           {overlay.text}

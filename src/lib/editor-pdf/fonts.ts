@@ -184,6 +184,19 @@ function scoreMatch(query: string, option: EditorFontOption): number {
   return hit;
 }
 
+/** Extrai o nome “de família” sem sufixos de peso/estilo (melhor matching). */
+export function pdfFontFamilyBase(pdfFontName?: string | null): string {
+  const cleaned = normalizePdfFontName(pdfFontName);
+  if (!cleaned) return '';
+  return cleaned
+    .replace(
+      /\b(Bold|Italic|Oblique|Regular|Medium|Light|Thin|Black|Heavy|SemiBold|ExtraBold|DemiBold|BoldMT|Roman|MT|PS)\b/gi,
+      ' '
+    )
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export function resolveFontFromPdfName(pdfFontName?: string | null): {
   option: EditorFontOption;
   displayName: string;
@@ -191,11 +204,12 @@ export function resolveFontFromPdfName(pdfFontName?: string | null): {
   confidence: number;
 } {
   const cleaned = normalizePdfFontName(pdfFontName);
+  const familyBase = pdfFontFamilyBase(pdfFontName) || cleaned;
   const displayName = cleaned || 'Helvetica / Arial';
   let best = EDITOR_FONTS[0];
   let bestScore = 0;
   for (const opt of EDITOR_FONTS) {
-    const s = scoreMatch(cleaned || 'helvetica', opt);
+    const s = Math.max(scoreMatch(cleaned || 'helvetica', opt), scoreMatch(familyBase || 'helvetica', opt));
     if (s > bestScore) {
       bestScore = s;
       best = opt;
@@ -256,5 +270,18 @@ export async function fetchFontTtf(
 }
 
 export function isBoldPdfFont(pdfFontName?: string | null) {
-  return /bold|black|heavy|semibold/i.test(pdfFontName || '');
+  const n = (pdfFontName || '').toLowerCase().replace(/[_-]+/g, ' ');
+  if (!n) return false;
+  // Light/Thin sem marcador de peso alto → regular.
+  if (/(?:^| )(light|thin|ultralight|extralight|book)(?: |$)/.test(n) && !/(bold|black|heavy|demi)/.test(n)) {
+    return false;
+  }
+  return (
+    /bold|black|heavy|semibold|semi bold|demibold|demi bold|extrabold|extra bold|ultrabold|fett|boldmt|psbold|strong/.test(
+      n
+    ) ||
+    /(?:^|[^a-z])(bd|blk|hv)(?:[^a-z]|$)/.test(n) ||
+    /(?:^|[^0-9])(7\d{2}|8\d{2}|9\d{2})(?:[^0-9]|$)/.test(n) ||
+    /(?:^|[^a-z])w[789](?:[^a-z]|$)/.test(n)
+  );
 }
