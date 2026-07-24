@@ -21,6 +21,7 @@ import { buildResolvaJatoDownloadName } from "@/lib/download-filename";
 import { cn } from "@/lib/utils";
 import {
   downloadBlob,
+  isSupportedImageFile,
   removeImageBackground,
 } from "@/lib/remover-fundo/process";
 
@@ -50,12 +51,14 @@ export function RemoverFundoApp() {
 
   const handleFile = useCallback(
     async (file: File) => {
-      if (!file.type.startsWith("image/")) {
-        toast("Selecione um arquivo de imagem (JPG, PNG ou WEBP).");
+      if (!isSupportedImageFile(file)) {
+        toast("Selecione uma imagem (JPG, JFIF, PNG ou WEBP).", {
+          variant: "error",
+        });
         return;
       }
       if (file.size > MAX_FILE_MB * 1024 * 1024) {
-        toast(`A imagem excede ${MAX_FILE_MB}MB.`);
+        toast(`A imagem excede ${MAX_FILE_MB}MB.`, { variant: "error" });
         return;
       }
       setOriginalUrl(URL.createObjectURL(file));
@@ -64,7 +67,7 @@ export function RemoverFundoApp() {
       setCompositeUrl(null);
       setBgColor("transparent");
       setProcessing(true);
-      setProgressLabel("Preparando modelo…");
+      setProgressLabel("Preparando imagem…");
       setProgressPct(0);
       try {
         const { blob, url } = await removeImageBackground(
@@ -75,9 +78,11 @@ export function RemoverFundoApp() {
             setProgressLabel(
               label.startsWith("fetch")
                 ? "Baixando modelo de alta qualidade (só na primeira vez)…"
-                : label.includes("refine")
-                  ? "Refinando bordas e cores…"
-                  : "Removendo o fundo…",
+                : label.startsWith("prepare")
+                  ? "Preparando imagem…"
+                  : label.includes("refine")
+                    ? "Refinando bordas e cores…"
+                    : "Removendo o fundo…",
             );
           },
         );
@@ -86,9 +91,11 @@ export function RemoverFundoApp() {
         toast("Fundo removido com sucesso!");
       } catch (err) {
         console.error(err);
-        toast(
-          "Não foi possível remover o fundo dessa imagem. Tente outro arquivo.",
-        );
+        const detail =
+          err instanceof Error && err.message
+            ? err.message
+            : "Não foi possível remover o fundo dessa imagem. Tente outro arquivo.";
+        toast(detail, { variant: "error" });
       } finally {
         setProcessing(false);
       }
@@ -201,7 +208,7 @@ export function RemoverFundoApp() {
             <input
               ref={inputRef}
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/jpg,image/png,image/webp,image/jfif,.jpg,.jpeg,.jfif,.png,.webp"
               className="hidden"
               onChange={(e) =>
                 e.target.files?.[0] && void handleFile(e.target.files[0])
@@ -212,7 +219,7 @@ export function RemoverFundoApp() {
               Arraste uma imagem aqui ou clique para selecionar
             </p>
             <p className="max-w-md text-sm leading-6 text-slate-500">
-              JPG, PNG ou WEBP · até {MAX_FILE_MB}MB.
+              JPG, JPEG, JFIF, PNG ou WEBP · até {MAX_FILE_MB}MB.
             </p>
             <Button variant="outline" size="sm" icon={Upload}>
               Selecionar imagem

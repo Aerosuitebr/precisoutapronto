@@ -6,44 +6,93 @@ export interface RemoveBackgroundResult {
 /** Limite alto o bastante para preservar detalhes finos (capa, cabelo, joias). */
 const MAX_DIMENSION = 3600;
 
-type ImglyModule = typeof import("@imgly/background-removal");
+const ACCEPTED_MIME = new Set([
+  'image/jpeg',
+  'image/jpg',
+  'image/pjpeg',
+  'image/jfif',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/bmp',
+  'image/x-png'
+]);
 
-/** Redimensiona só se a imagem for enorme (evita OOM no WASM). */
-async function normalizeImage(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file);
-  if (bitmap.width <= MAX_DIMENSION && bitmap.height <= MAX_DIMENSION) {
-    bitmap.close();
-    return file;
-  }
-  const scale = MAX_DIMENSION / Math.max(bitmap.width, bitmap.height);
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(bitmap.width * scale);
-  canvas.height = Math.round(bitmap.height * scale);
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    bitmap.close();
-    throw new Error("Canvas indisponível");
-  }
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  bitmap.close();
-  return new Promise((resolve, reject) => {
-    canvas.toBlob(
-      (b) => (b ? resolve(b) : reject(new Error("Falha ao processar imagem"))),
-      "image/png",
-    );
-  });
-}
+const ACCEPTED_EXT = /\.(jpe?g|jfif|png|webp|gif|bmp)$/i;
+
+type ImglyModule = typeof import('@imgly/background-removal');
+
+let imglyPromise: Promise<ImglyModule> | null = null;
 
 function loadImgly(): Promise<ImglyModule> {
-  const dynamicImport = new Function(
-    "specifier",
-    "return import(specifier)",
-  ) as <T>(specifier: string) => Promise<T>;
-  return dynamicImport<ImglyModule>(
-    "https://esm.sh/@imgly/background-removal@1.7.0",
-  );
+  if (!imglyPromise) {
+    // Pacote local (npm) — evita esm.sh, que o CSP bloqueia.
+    imglyPromise = import('@imgly/background-removal');
+  }
+  return imglyPromise;
+}
+
+/** Aceita JPEG/JFIF/PNG/WEBP mesmo quando o navegador manda MIME vazio ou estranho. */
+export function isSupportedImageFile(file: File): boolean {
+  const type = (file.type || '').toLowerCase().trim();
+  if (type.startsWith('image/')) {
+    if (ACCEPTED_MIME.has(type) || type === 'image/jpeg' || type === 'image/jpg') return true;
+    // image/* genérico (alguns Windows reportam image/jfif ou vazios raros)
+    if (type === 'image/jfif' || type.includes('jpeg') || type.includes('jpg')) return true;
+  }
+  if (!type && ACCEPTED_EXT.test(file.name || '')) return true;
+  if (ACCEPTED_EXT.test(file.name || '')) return true;
+  return false;
+}
+
+/**
+ * Normaliza qualquer imagem aceita (inclui .jfif / MIME vazio) para PNG via canvas.
+ * Garante que createImageBitmap e o modelo ONNX recebam bytes previsíveis.
+ */
+async function toProcessableBlob(file: File): Promise<Blob> {
+  let bitmap: ImageBitmap;
+  try {
+    bitmap = await createImageBitmap(file);
+  } catch {
+    // Fallback: data URL → Image → canvas (ajuda JFIF com MIME errado).
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error('Não foi possível ler o arquivo.'));
+      reader.readAsDataURL(file);
+    });
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const el = new Image();
+      el.onload = () => resolve(el);
+      el.onerror = () => reject(new Error('Formato de imagem não suportado neste navegador.'));
+      el.src = dataUrl;
+    });
+    bitmap = await createImageBitmap(img);
+  }
+
+  const scale =
+    bitmap.width > MAX_DIMENSION || bitmap.height > MAX_DIMENSION
+      ? MAX_DIMENSION / Math.max(bitmap.width, bitmap.height)
+      : 1;
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+  const ctx = canvas.getContext('2d');
+  if (!ctx) {
+    bitmap.close();
+    throw new Error('Canvas indisponível');
+  }
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error('Falha ao processar imagem'))),
+      'image/png'
+    );
+  });
 }
 
 function blobToImageData(blob: Blob): Promise<{
@@ -52,13 +101,13 @@ function blobToImageData(blob: Blob): Promise<{
   ctx: CanvasRenderingContext2D;
 }> {
   return createImageBitmap(blob).then((bitmap) => {
-    const canvas = document.createElement("canvas");
+    const canvas = document.createElement('canvas');
     canvas.width = bitmap.width;
     canvas.height = bitmap.height;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) {
       bitmap.close();
-      throw new Error("Canvas indisponível");
+      throw new Error('Canvas indisponível');
     }
     ctx.drawImage(bitmap, 0, 0);
     bitmap.close();
@@ -66,12 +115,16 @@ function blobToImageData(blob: Blob): Promise<{
   });
 }
 
-function imageDataToPngBlob(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, data: ImageData) {
+function imageDataToPngBlob(
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  data: ImageData
+) {
   ctx.putImageData(data, 0, 0);
   return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(
-      (b) => (b ? resolve(b) : reject(new Error("Falha ao gerar PNG"))),
-      "image/png",
+      (b) => (b ? resolve(b) : reject(new Error('Falha ao gerar PNG'))),
+      'image/png'
     );
   });
 }
@@ -127,7 +180,6 @@ async function refineCutout(blob: Blob): Promise<Blob> {
   const alpha = new Uint8ClampedArray(n);
   for (let i = 0; i < n; i++) alpha[i] = data[i * 4 + 3];
 
-  // Estima cor do fundo a partir da franja semitransparente.
   let bgR = 0;
   let bgG = 0;
   let bgB = 0;
@@ -148,7 +200,6 @@ async function refineCutout(blob: Blob): Promise<Blob> {
     bgG /= bgW;
     bgB /= bgW;
   } else {
-    // Cantos costumam ser fundo em fotos de produto / ilustrações.
     const corners = [0, w - 1, (h - 1) * w, (h - 1) * w + (w - 1)];
     for (const i of corners) {
       const o = i * 4;
@@ -161,7 +212,6 @@ async function refineCutout(blob: Blob): Promise<Blob> {
     bgB /= 4;
   }
 
-  // Núcleo sólido do sujeito → dilata para recuperar capa/tecidos cortados.
   const core = new Uint8Array(n);
   for (let i = 0; i < n; i++) {
     core[i] = alpha[i] >= 208 ? 1 : 0;
@@ -178,7 +228,6 @@ async function refineCutout(blob: Blob): Promise<Blob> {
     const pg = data[o + 1];
     const pb = data[o + 2];
 
-    // Média local do núcleo (amostra em cruz — barato e suficiente).
     const x = i % w;
     const y = (i - x) / w;
     let nearR = 0;
@@ -195,7 +244,7 @@ async function refineCutout(blob: Blob): Promise<Blob> {
         [x + d, y + d],
         [x - d, y - d],
         [x + d, y - d],
-        [x - d, y + d],
+        [x - d, y + d]
       ];
       for (const [sx, sy] of samples) {
         if (sx < 0 || sy < 0 || sx >= w || sy >= h) continue;
@@ -219,11 +268,8 @@ async function refineCutout(blob: Blob): Promise<Blob> {
       (pg - nearG) * (pg - nearG) +
       (pb - nearB) * (pb - nearB);
     const dBg =
-      (pr - bgR) * (pr - bgR) +
-      (pg - bgG) * (pg - bgG) +
-      (pb - bgB) * (pb - bgB);
+      (pr - bgR) * (pr - bgR) + (pg - bgG) * (pg - bgG) + (pb - bgB) * (pb - bgB);
 
-    // Só restaura se a cor parecer mais sujeito do que fundo.
     if (dSub <= dBg * 0.9 && dSub < 85 * 85) {
       const similarity = 1 - Math.sqrt(dSub) / 95;
       const boost = Math.round(140 + 115 * Math.max(0, similarity));
@@ -231,10 +277,8 @@ async function refineCutout(blob: Blob): Promise<Blob> {
     }
   }
 
-  // Descontaminação de cor + contraste de alpha (remove halo branco/lavado).
   for (let i = 0; i < n; i++) {
     let a = recovered[i] / 255;
-    // Curva suave: empurra semi-transparências para 0 ou 1.
     const t = Math.max(0, Math.min(1, (a - 0.06) / 0.88));
     a = t * t * (3 - 2 * t);
     a = a * a * (3 - 2 * a);
@@ -254,14 +298,8 @@ async function refineCutout(blob: Blob): Promise<Blob> {
 
     const inv = 1 - a;
     data[o] = Math.max(0, Math.min(255, Math.round((data[o] - bgR * inv) / a)));
-    data[o + 1] = Math.max(
-      0,
-      Math.min(255, Math.round((data[o + 1] - bgG * inv) / a)),
-    );
-    data[o + 2] = Math.max(
-      0,
-      Math.min(255, Math.round((data[o + 2] - bgB * inv) / a)),
-    );
+    data[o + 1] = Math.max(0, Math.min(255, Math.round((data[o + 1] - bgG * inv) / a)));
+    data[o + 2] = Math.max(0, Math.min(255, Math.round((data[o + 2] - bgB * inv) / a)));
     data[o + 3] = Math.round(a * 255);
   }
 
@@ -269,46 +307,50 @@ async function refineCutout(blob: Blob): Promise<Blob> {
 }
 
 async function runRemoval(
-  removeBackground: ImglyModule["removeBackground"],
+  removeBackground: ImglyModule['removeBackground'],
   image: Blob,
-  device: "gpu" | "cpu",
-  onProgress?: (label: string, current: number, total: number) => void,
+  device: 'gpu' | 'cpu',
+  onProgress?: (label: string, current: number, total: number) => void
 ) {
   return removeBackground(image, {
-    model: "isnet",
+    model: 'isnet',
     device,
-    output: { format: "image/png", quality: 1 },
+    output: { format: 'image/png', quality: 1 },
     progress: (key, current, total) => {
       onProgress?.(key, current, total);
-    },
+    }
   });
 }
 
 /** Remove o fundo no navegador (IS-Net large + pós-processamento de borda). */
 export async function removeImageBackground(
   file: File,
-  onProgress?: (label: string, current: number, total: number) => void,
+  onProgress?: (label: string, current: number, total: number) => void
 ): Promise<RemoveBackgroundResult> {
+  onProgress?.('prepare:decode', 0, 1);
+  const normalized = await toProcessableBlob(file);
+  onProgress?.('prepare:decode', 1, 1);
+
+  onProgress?.('fetch:model', 0, 1);
   const { removeBackground } = await loadImgly();
-  const normalized = await normalizeImage(file);
 
   let raw: Blob;
   try {
-    raw = await runRemoval(removeBackground, normalized, "gpu", onProgress);
+    raw = await runRemoval(removeBackground, normalized, 'gpu', onProgress);
   } catch {
-    raw = await runRemoval(removeBackground, normalized, "cpu", onProgress);
+    raw = await runRemoval(removeBackground, normalized, 'cpu', onProgress);
   }
 
-  onProgress?.("compute:refine", 0, 1);
+  onProgress?.('compute:refine', 0, 1);
   const blob = await refineCutout(raw);
-  onProgress?.("compute:refine", 1, 1);
+  onProgress?.('compute:refine', 1, 1);
 
   return { blob, url: URL.createObjectURL(blob) };
 }
 
 export function downloadBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
+  const a = document.createElement('a');
   a.href = url;
   a.download = filename;
   document.body.appendChild(a);
