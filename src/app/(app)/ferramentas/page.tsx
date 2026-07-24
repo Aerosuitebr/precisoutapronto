@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
 import { PageHero } from '@/components/shared/page-hero';
+import { SuggestToolModal } from '@/components/tools/suggest-tool-modal';
 import {
   ToolsEngagementStrip,
   ToolsIntentWizard,
@@ -48,7 +49,7 @@ import {
 import { cn } from '@/lib/utils';
 
 export default function FerramentasPage() {
-  const { usage } = useAuth();
+  const { usage, session } = useAuth();
   const { toast } = useToast();
   const [query, setQuery] = useState('');
   const [spyCategory, setSpyCategory] = useState<ToolCategoryId | 'todas'>('todas');
@@ -58,6 +59,7 @@ export default function FerramentasPage() {
   const [pinnedCategory, setPinnedCategory] = useState<ToolCategoryId | null>(null);
   const [collapsed, setCollapsed] = useState<ToolCategoryId[]>([]);
   const [showWizard, setShowWizard] = useState(false);
+  const [showSuggestModal, setShowSuggestModal] = useState(false);
   const [engagement, setEngagement] = useState(() => getToolsEngagement());
   const [prefsReady, setPrefsReady] = useState(false);
   const sectionRefs = useRef<Partial<Record<ToolCategoryId, HTMLElement | null>>>({});
@@ -418,14 +420,23 @@ export default function FerramentasPage() {
           <p className="mt-1 text-sm font-medium text-slate-600">
             Sugira uma ferramenta e ajudamos a priorizar o próximo módulo.
           </p>
-          <Button asChild variant="outline" className="mt-4 min-h-11">
-            <a href="mailto:contato@resolvajato.com.br?subject=Sugest%C3%A3o%20de%20ferramenta">
-              <MessageSquarePlus className="h-4 w-4" aria-hidden />
-              Sugerir uma ferramenta
-            </a>
+          <Button
+            type="button"
+            variant="outline"
+            className="mt-4 min-h-11"
+            onClick={() => setShowSuggestModal(true)}
+          >
+            <MessageSquarePlus className="h-4 w-4" aria-hidden />
+            Sugerir uma ferramenta
           </Button>
         </footer>
       </div>
+
+      <SuggestToolModal
+        open={showSuggestModal}
+        onClose={() => setShowSuggestModal(false)}
+        user={session?.user}
+      />
     </AuthGate>
   );
 }

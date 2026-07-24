@@ -43,5 +43,6 @@ export async function consumeRateLimit(input: {
 export const RATE_LIMITS = {
   register: { limit: 3, windowMs: 24 * 60 * 60 * 1000 },
   login: { limit: 10, windowMs: 15 * 60 * 1000 },
-  resendVerification: { limit: 5, windowMs: 60 * 60 * 1000 }
+  resendVerification: { limit: 5, windowMs: 60 * 60 * 1000 },
+  toolSuggestion: { limit: 5, windowMs: 60 * 60 * 1000 }
 } as const;
