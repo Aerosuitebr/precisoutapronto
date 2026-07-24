@@ -155,8 +155,22 @@ export interface MercadoPagoPayment {
   external_reference?: string | null;
   transaction_amount?: number;
   payment_method_id?: string;
+  payment_type_id?: string;
   date_approved?: string | null;
+  date_of_expiration?: string | null;
+  point_of_interaction?: {
+    transaction_data?: {
+      ticket_url?: string;
+      qr_code?: string;
+      qr_code_base64?: string;
+    };
+  };
+  transaction_details?: {
+    external_resource_url?: string | null;
+    barcode?: { content?: string } | null;
+  };
 }
+
 
 export async function getMercadoPagoPayment(paymentId: string) {
   return mpFetch<MercadoPagoPayment>(`/v1/payments/${paymentId}`);

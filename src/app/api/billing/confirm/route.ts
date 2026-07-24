@@ -39,7 +39,13 @@ async function approveAndGrant(payment: MercadoPagoPayment, expectedEmail: strin
       paymentId: payment.id,
       email: paidEmail || expectedEmail,
       paymentMethod: payment.payment_method_id,
-      amount: payment.transaction_amount
+      paymentType: payment.payment_type_id,
+      amount: payment.transaction_amount,
+      expiresForPayment: payment.date_of_expiration,
+      boletoUrl:
+        payment.transaction_details?.external_resource_url ||
+        payment.point_of_interaction?.transaction_data?.ticket_url ||
+        undefined
     });
   }
 
@@ -63,6 +69,7 @@ async function approveAndGrant(payment: MercadoPagoPayment, expectedEmail: strin
     paymentId: payment.id,
     email: paidEmail || expectedEmail,
     paymentMethod: payment.payment_method_id,
+    paymentType: payment.payment_type_id,
     amount: payment.transaction_amount,
     expiresAt: sub.expiresAt.toISOString()
   });
