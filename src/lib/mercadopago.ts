@@ -5,6 +5,7 @@ import {
   isBillingProductId,
   type BillingProductId
 } from '@/lib/billing-products';
+import { PLANS } from '@/lib/plans';
 
 const MP_API = 'https://api.mercadopago.com';
 
@@ -34,6 +35,29 @@ export function isMercadoPagoSandbox() {
 
 export function isMercadoPagoConfigured() {
   return Boolean(getMercadoPagoAccessToken());
+}
+
+/** Conta vendedora precisa poder receber (KYC / dados bancários no MP). */
+export async function assertMercadoPagoCanReceivePayments() {
+  const me = await mpFetch<{
+    id?: number;
+    status?: { site_status?: string; billing?: { allow?: boolean } };
+  }>('/users/me');
+
+  const siteStatus = me.status?.site_status;
+  const billingAllow = me.status?.billing?.allow;
+
+  if (siteStatus && siteStatus !== 'active') {
+    throw new Error(
+      `Conta Mercado Pago com status "${siteStatus}". Ative a conta no painel do Mercado Pago para receber pagamentos.`
+    );
+  }
+
+  if (billingAllow === false) {
+    throw new Error(
+      'Sua conta Mercado Pago ainda não está liberada para receber pagamentos (billing bloqueado). No painel do Mercado Pago, complete a verificação da conta e o cadastro para recebimentos; depois tente de novo.'
+    );
+  }
 }
 
 export function getMercadoPagoWebhookSecret() {
@@ -240,6 +264,59 @@ export interface MercadoPagoPayment {
 
 export async function getMercadoPagoPayment(paymentId: string) {
   return mpFetch<MercadoPagoPayment>(`/v1/payments/${paymentId}`);
+}
+
+export interface CreateCardPaymentInput {
+  token: string;
+  paymentMethodId: string;
+  issuerId?: string | number;
+  installments: number;
+  payerEmail: string;
+  identificationType?: string;
+  identificationNumber?: string;
+}
+
+/**
+ * Cria um pagamento com cartão diretamente via API de Pagamentos (Card Payment Brick),
+ * sem redirecionar para o Checkout Pro. Usado apenas pelo fluxo "cartão" — Pix/boleto
+ * continuam pela preferência de checkout (createPremiumCheckoutPreference).
+ */
+export async function createCardPayment(input: CreateCardPaymentInput) {
+  const appUrl = getAppPublicUrl();
+  const amount = PLANS.premium.price;
+  const idempotencyKey = `premium-card-${input.payerEmail.toLowerCase()}-${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 8)}`;
+
+  const payment = await mpFetch<MercadoPagoPayment>('/v1/payments', {
+    method: 'POST',
+    headers: { 'X-Idempotency-Key': idempotencyKey },
+    body: JSON.stringify({
+      transaction_amount: amount,
+      token: input.token,
+      description: 'Resolva Jato Premium — 30 dias',
+      installments: input.installments || 1,
+      payment_method_id: input.paymentMethodId,
+      issuer_id: input.issuerId,
+      statement_descriptor: 'RESOLVAJATO',
+      external_reference: input.payerEmail.toLowerCase(),
+      notification_url: `${appUrl}/api/webhooks/mercadopago`,
+      metadata: {
+        product: 'premium',
+        days: 30,
+        source: 'card_brick'
+      },
+      payer: {
+        email: input.payerEmail,
+        identification:
+          input.identificationType && input.identificationNumber
+            ? { type: input.identificationType, number: input.identificationNumber }
+            : undefined
+      }
+    })
+  });
+
+  return payment;
 }
 
 export async function getMerchantOrder(orderId: string) {

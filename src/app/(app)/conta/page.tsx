@@ -6,16 +6,19 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
+  CreditCard,
   Crown,
   Gauge,
   Loader2,
   Mail,
+  QrCode,
   Search,
   ShieldCheck,
   Sparkles,
   UserRound
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
+import { CardPaymentBrick } from '@/components/billing/card-payment-brick';
 import { EnablePushButton } from '@/components/push/enable-push-button';
 import { ReferralPanel } from '@/components/referral/referral-panel';
 import { WhatsAppEphemeralInfoCard } from '@/components/whatsapp/whatsapp-ephemeral-info-card';
@@ -106,6 +109,7 @@ function ContaContent() {
   const [nupayLoading, setNupayLoading] = useState(false);
   const [cpf, setCpf] = useState('');
   const [cardholderName, setCardholderName] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'redirect' | 'card'>('redirect');
   const [billingMessage, setBillingMessage] = useState<{
     type: 'success' | 'pending' | 'error';
     text: string;
@@ -404,6 +408,68 @@ function ContaContent() {
     }
   }
 
+  function pollCardPayment(paymentId: string) {
+    const startedAt = Date.now();
+    const tick = async () => {
+      try {
+        const result = await confirmPayment({ paymentId, silent: true });
+        if (result.approved) {
+          toast('Premium ativado — documentos limpos, sem marca.');
+          return;
+        }
+        setBillingMessage({
+          type: 'pending',
+          text: 'Aguardando aprovação do pagamento. Verificamos de novo em instantes…'
+        });
+      } catch (error) {
+        setBillingMessage({
+          type: 'error',
+          text: error instanceof Error ? error.message : 'Falha ao confirmar pagamento.'
+        });
+        return;
+      }
+
+      if (Date.now() - startedAt >= POLL_MAX_MS) {
+        setBillingMessage({
+          type: 'pending',
+          text: 'Ainda não encontramos a aprovação. Atualize esta página em alguns minutos — o Premium libera automaticamente quando o pagamento for confirmado.'
+        });
+        return;
+      }
+      window.setTimeout(() => {
+        void tick();
+      }, POLL_INTERVAL_MS);
+    };
+    void tick();
+  }
+
+  function handleCardPaymentCreated(result: { paymentId: string; status: string; statusDetail?: string }) {
+    savePendingPayment(result.paymentId, '');
+    if (result.status === 'approved') {
+      clearPendingPayment();
+      void refresh();
+      setBillingMessage({
+        type: 'success',
+        text: 'Pagamento aprovado! Premium ativo por 30 dias: documentos sem marca Resolva Jato.'
+      });
+      toast('Premium ativado — documentos limpos, sem marca.');
+      return;
+    }
+    if (result.status === 'rejected') {
+      clearPendingPayment();
+      setBillingMessage({
+        type: 'error',
+        text: 'Pagamento recusado pela operadora do cartão. Tente outro cartão ou use Pix/boleto.'
+      });
+      return;
+    }
+    setBillingMessage({
+      type: 'pending',
+      text: 'Confirmando seu pagamento por cartão. Isso pode levar alguns segundos…'
+    });
+    pollCardPayment(result.paymentId);
+  }
+
   function handleDowngrade() {
     cancelPremium();
     void refresh();
@@ -574,65 +640,106 @@ function ContaContent() {
                 Encerrar Premium neste aparelho
               </Button>
             ) : (
-              <div className="mt-7 space-y-3">
-                <div className="rounded-2xl border border-white/15 bg-white/5 p-3">
-                  <label className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                    Nome do titular do cartão
-                  </label>
-                  <Input
-                    value={cardholderName}
-                    onChange={(e) => setCardholderName(e.target.value)}
-                    placeholder="Como está impresso no cartão"
-                    autoComplete="cc-name"
-                    className="mt-2 border-white/20 bg-slate-950/40 text-white placeholder:text-slate-500"
-                  />
-                  <p className="mt-2 text-[11px] leading-4 text-slate-400">
-                    Se for cartão de outra pessoa, use o nome dela — evita recusa por antifraude.
-                  </p>
-                </div>
-                <Button
-                  className="w-full bg-white text-slate-950 hover:bg-sky-50"
-                  onClick={handleUpgrade}
-                  disabled={checkoutLoading || nupayLoading}
-                >
-                  {checkoutLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <ArrowRight className="h-4 w-4" />
-                  )}
-                  {checkoutLoading
-                    ? 'Abrindo pagamento…'
-                    : `Assinar Premium por ${PLANS.premium.priceLabel}`}
-                </Button>
-                <div className="rounded-2xl border border-white/15 bg-white/5 p-3">
-                  <label className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                    CPF para NuPay (Nubank)
-                  </label>
-                  <Input
-                    value={cpf}
-                    onChange={(e) => setCpf(formatCpf(e.target.value))}
-                    placeholder="000.000.000-00"
-                    inputMode="numeric"
-                    autoComplete="off"
-                    className="mt-2 border-white/20 bg-slate-950/40 text-white placeholder:text-slate-500"
-                  />
-                  <Button
+              <div className="mt-7 space-y-4">
+                <div className="inline-flex w-full rounded-full border border-white/15 bg-white/5 p-1">
+                  <button
                     type="button"
-                    variant="outline"
-                    className="mt-3 w-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
-                    onClick={handleNuPayUpgrade}
-                    disabled={checkoutLoading || nupayLoading}
+                    onClick={() => setPaymentMethod('card')}
+                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold transition ${
+                      paymentMethod === 'card'
+                        ? 'bg-white text-slate-950'
+                        : 'text-slate-300 hover:text-white'
+                    }`}
                   >
-                    {nupayLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-                    {nupayLoading ? 'Abrindo NuPay…' : 'Pagar com NuPay'}
-                  </Button>
+                    <CreditCard className="h-3.5 w-3.5" />
+                    Cartão
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('redirect')}
+                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold transition ${
+                      paymentMethod === 'redirect'
+                        ? 'bg-white text-slate-950'
+                        : 'text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    <QrCode className="h-3.5 w-3.5" />
+                    Pix, boleto e NuPay
+                  </button>
                 </div>
+
+                {paymentMethod === 'card' ? (
+                  session?.user.email ? (
+                    <CardPaymentBrick
+                      payerEmail={session.user.email}
+                      onPaymentCreated={handleCardPaymentCreated}
+                      onError={(message) => setBillingMessage({ type: 'error', text: message })}
+                    />
+                  ) : null
+                ) : (
+                  <div className="space-y-3">
+                    <div className="rounded-2xl border border-white/15 bg-white/5 p-3">
+                      <label className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                        Nome do titular do cartão
+                      </label>
+                      <Input
+                        value={cardholderName}
+                        onChange={(e) => setCardholderName(e.target.value)}
+                        placeholder="Como está impresso no cartão"
+                        autoComplete="cc-name"
+                        className="mt-2 border-white/20 bg-slate-950/40 text-white placeholder:text-slate-500"
+                      />
+                      <p className="mt-2 text-[11px] leading-4 text-slate-400">
+                        Se for cartão de outra pessoa, use o nome dela — evita recusa por antifraude.
+                      </p>
+                    </div>
+                    <Button
+                      className="w-full bg-white text-slate-950 hover:bg-sky-50"
+                      onClick={handleUpgrade}
+                      disabled={checkoutLoading || nupayLoading}
+                    >
+                      {checkoutLoading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <ArrowRight className="h-4 w-4" />
+                      )}
+                      {checkoutLoading
+                        ? 'Abrindo pagamento…'
+                        : `Assinar Premium por ${PLANS.premium.priceLabel}`}
+                    </Button>
+                    <div className="rounded-2xl border border-white/15 bg-white/5 p-3">
+                      <label className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                        CPF para NuPay (Nubank)
+                      </label>
+                      <Input
+                        value={cpf}
+                        onChange={(e) => setCpf(formatCpf(e.target.value))}
+                        placeholder="000.000.000-00"
+                        inputMode="numeric"
+                        autoComplete="off"
+                        className="mt-2 border-white/20 bg-slate-950/40 text-white placeholder:text-slate-500"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="mt-3 w-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                        onClick={handleNuPayUpgrade}
+                        disabled={checkoutLoading || nupayLoading}
+                      >
+                        {nupayLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                        {nupayLoading ? 'Abrindo NuPay…' : 'Pagar com NuPay'}
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             <p className="mt-4 text-xs leading-5 text-slate-400">
               {plan.id === 'premium'
                 ? 'Após o vencimento, a conta volta ao plano grátis.'
-                : 'Pagamento seguro (cartão, Pix, NuPay e outros). Assim que for aprovado — por qualquer meio — o Premium libera automaticamente por 30 dias.'}
+                : paymentMethod === 'card'
+                  ? 'Pagamento por cartão processado com segurança pelo Mercado Pago, sem sair do site. Aprovado, o Premium libera automaticamente por 30 dias.'
+                  : 'Pagamento seguro (Pix, boleto, NuPay e outros). Assim que for aprovado — por qualquer meio — o Premium libera automaticamente por 30 dias.'}
             </p>
           </aside>
         </section>
