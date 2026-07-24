@@ -1,3 +1,4 @@
+import { createHmac, timingSafeEqual } from 'crypto';
 import {
   BILLING_PRODUCTS,
   getBillingProduct,
@@ -33,6 +34,65 @@ export function isMercadoPagoSandbox() {
 
 export function isMercadoPagoConfigured() {
   return Boolean(getMercadoPagoAccessToken());
+}
+
+export function getMercadoPagoWebhookSecret() {
+  return process.env.MERCADOPAGO_WEBHOOK_SECRET?.trim() || '';
+}
+
+/**
+ * Valida origem do webhook (docs MP: x-signature HMAC-SHA256).
+ * Manifest: `id:{data.id};request-id:{x-request-id};ts:{ts};`
+ * Pares sem valor na request são omitidos.
+ */
+export function verifyMercadoPagoWebhookSignature(input: {
+  xSignature: string | null;
+  xRequestId: string | null;
+  dataId: string | null;
+  secret?: string;
+}): { ok: true } | { ok: false; reason: string } {
+  const secret = (input.secret ?? getMercadoPagoWebhookSecret()).trim();
+  if (!secret) {
+    return { ok: false, reason: 'secret_missing' };
+  }
+
+  const xSignature = input.xSignature?.trim() || '';
+  if (!xSignature) {
+    return { ok: false, reason: 'signature_missing' };
+  }
+
+  let ts = '';
+  let hash = '';
+  for (const part of xSignature.split(',')) {
+    const eq = part.indexOf('=');
+    if (eq === -1) continue;
+    const key = part.slice(0, eq).trim();
+    const val = part.slice(eq + 1).trim();
+    if (key === 'ts') ts = val;
+    if (key === 'v1') hash = val;
+  }
+
+  if (!ts || !hash) {
+    return { ok: false, reason: 'signature_malformed' };
+  }
+
+  const dataId = (input.dataId || '').trim().toLowerCase();
+  const xRequestId = (input.xRequestId || '').trim();
+
+  const parts: string[] = [];
+  if (dataId) parts.push(`id:${dataId}`);
+  if (xRequestId) parts.push(`request-id:${xRequestId}`);
+  parts.push(`ts:${ts}`);
+  const manifest = `${parts.join(';')};`;
+
+  const computed = createHmac('sha256', secret).update(manifest).digest('hex');
+  const computedBuf = Buffer.from(computed, 'utf8');
+  const hashBuf = Buffer.from(hash, 'utf8');
+  if (computedBuf.length !== hashBuf.length || !timingSafeEqual(computedBuf, hashBuf)) {
+    return { ok: false, reason: 'signature_mismatch' };
+  }
+
+  return { ok: true };
 }
 
 async function mpFetch<T>(path: string, init?: RequestInit): Promise<T> {

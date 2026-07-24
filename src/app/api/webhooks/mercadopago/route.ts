@@ -3,13 +3,15 @@ import { activatePremiumFromMercadoPagoPayment } from '@/lib/billing-server';
 import { isDatabaseConfigured } from '@/lib/db';
 import {
   getMercadoPagoPayment,
+  getMercadoPagoWebhookSecret,
   getMerchantOrder,
-  isMercadoPagoConfigured
+  isMercadoPagoConfigured,
+  verifyMercadoPagoWebhookSignature
 } from '@/lib/mercadopago';
 
 /**
  * Webhook Mercado Pago (Pix, cartão e demais meios).
- * Ao receber payment/merchant_order aprovado, libera Premium no servidor.
+ * Valida x-signature (HMAC) e, em payment/merchant_order aprovado, libera Premium.
  */
 export async function POST(request: Request) {
   try {
@@ -17,9 +19,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false }, { status: 503 });
     }
 
+    const { searchParams } = new URL(request.url);
     const contentType = request.headers.get('content-type') || '';
-    let topic = '';
-    let id = '';
+
+    let topic = searchParams.get('topic') || searchParams.get('type') || '';
+    let id = searchParams.get('id') || searchParams.get('data.id') || '';
 
     if (contentType.includes('application/json')) {
       const body = (await request.json().catch(() => ({}))) as {
@@ -29,16 +33,35 @@ export async function POST(request: Request) {
         data?: { id?: string };
         resource?: string;
       };
-      topic = body.type || body.topic || body.action || '';
-      id = String(body.data?.id || '');
+      topic = body.type || body.topic || body.action || topic;
+      if (!id) {
+        id = String(body.data?.id || '');
+      }
       if (!id && body.resource) {
         const parts = body.resource.split('/');
         id = parts[parts.length - 1] || '';
       }
+    }
+
+    // data.id do query (docs MP) tem prioridade na assinatura; fallback no id do body.
+    const signatureDataId = searchParams.get('data.id') || id;
+    const webhookSecret = getMercadoPagoWebhookSecret();
+
+    if (webhookSecret) {
+      const check = verifyMercadoPagoWebhookSignature({
+        xSignature: request.headers.get('x-signature'),
+        xRequestId: request.headers.get('x-request-id'),
+        dataId: signatureDataId,
+        secret: webhookSecret
+      });
+      if (!check.ok) {
+        console.warn('[mp-webhook] signature rejected', { reason: check.reason });
+        return NextResponse.json({ ok: false, error: 'invalid_signature' }, { status: 401 });
+      }
     } else {
-      const { searchParams } = new URL(request.url);
-      topic = searchParams.get('topic') || searchParams.get('type') || '';
-      id = searchParams.get('id') || searchParams.get('data.id') || '';
+      console.warn(
+        '[mp-webhook] MERCADOPAGO_WEBHOOK_SECRET ausente — validação de assinatura desativada'
+      );
     }
 
     const paymentIds: string[] = [];
