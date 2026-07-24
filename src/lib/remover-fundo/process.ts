@@ -275,7 +275,7 @@ async function runRemoval(
   onProgress?: (label: string, current: number, total: number) => void,
 ) {
   return removeBackground(image, {
-    model: "large",
+    model: "isnet",
     device,
     output: { format: "image/png", quality: 1 },
     progress: (key, current, total) => {
