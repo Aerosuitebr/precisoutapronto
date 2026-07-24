@@ -9,12 +9,13 @@ import {
   useState,
   type ReactNode
 } from 'react';
-import { CheckCircle2, X } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ToastItem {
   id: string;
   message: string;
+  variant: 'success' | 'error';
   undoLabel?: string;
   onUndo?: () => void;
 }
@@ -23,6 +24,7 @@ interface ToastOptions {
   undoLabel?: string;
   onUndo?: () => void;
   durationMs?: number;
+  variant?: 'success' | 'error';
 }
 
 interface ToastContextValue {
@@ -46,6 +48,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {
           id,
           message,
+          variant: options?.variant ?? 'success',
           undoLabel: options?.undoLabel,
           onUndo: options?.onUndo
         }
@@ -75,41 +78,66 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         aria-relevant="additions"
       >
         <div className="flex w-full max-w-md flex-col gap-2 sm:w-[min(100vw-2rem,24rem)]">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className={cn(
-                'pointer-events-auto flex items-start gap-3 rounded-2xl border border-emerald-300 bg-emerald-50 px-4 py-3.5',
-                'shadow-[0_18px_40px_rgba(15,23,42,0.18)] rj-toast-in'
-              )}
-              role="status"
-            >
-              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" aria-hidden />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold leading-5 text-emerald-950">{item.message}</p>
-                {item.onUndo ? (
-                  <button
-                    type="button"
-                    className="mt-2 text-xs font-bold uppercase tracking-wide text-emerald-800 underline-offset-2 hover:underline"
-                    onClick={() => {
-                      item.onUndo?.();
-                      dismiss(item.id);
-                    }}
-                  >
-                    {item.undoLabel || 'Desfazer'}
-                  </button>
-                ) : null}
-              </div>
-              <button
-                type="button"
-                className="rounded-lg p-1.5 text-emerald-700/70 hover:bg-emerald-100 hover:text-emerald-950"
-                onClick={() => dismiss(item.id)}
-                aria-label="Fechar confirmação"
+              {items.map((item) => {
+            const isError = item.variant === 'error';
+            const Icon = isError ? AlertTriangle : CheckCircle2;
+            return (
+              <div
+                key={item.id}
+                className={cn(
+                  'pointer-events-auto flex items-start gap-3 rounded-2xl border px-4 py-3.5',
+                  'shadow-[0_18px_40px_rgba(15,23,42,0.18)] rj-toast-in',
+                  isError
+                    ? 'border-rose-300 bg-rose-50'
+                    : 'border-emerald-300 bg-emerald-50'
+                )}
+                role="status"
               >
-                <X className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          ))}
+                <Icon
+                  className={cn(
+                    'mt-0.5 h-5 w-5 shrink-0',
+                    isError ? 'text-rose-700' : 'text-emerald-700'
+                  )}
+                  aria-hidden
+                />
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={cn(
+                      'text-sm font-semibold leading-5',
+                      isError ? 'text-rose-950' : 'text-emerald-950'
+                    )}
+                  >
+                    {item.message}
+                  </p>
+                  {item.onUndo ? (
+                    <button
+                      type="button"
+                      className="mt-2 text-xs font-bold uppercase tracking-wide text-emerald-800 underline-offset-2 hover:underline"
+                      onClick={() => {
+                        item.onUndo?.();
+                        dismiss(item.id);
+                      }}
+                    >
+                      {item.undoLabel || 'Desfazer'}
+                    </button>
+                  ) : null}
+                </div>
+                <button
+                  type="button"
+                  className={cn(
+                    'rounded-lg p-1.5',
+                    isError
+                      ? 'text-rose-700/70 hover:bg-rose-100 hover:text-rose-950'
+                      : 'text-emerald-700/70 hover:bg-emerald-100 hover:text-emerald-950'
+                  )}
+                  onClick={() => dismiss(item.id)}
+                  aria-label="Fechar confirmação"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </ToastContext.Provider>

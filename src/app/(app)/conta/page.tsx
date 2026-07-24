@@ -340,39 +340,54 @@ function ContaContent() {
 
   async function handleUpgrade() {
     if (!session?.user.email) {
-      toast('Faça login para assinar o Premium.');
+      const message = 'Faça login para assinar o Premium.';
+      setBillingMessage({ type: 'error', text: message });
+      toast(message, { variant: 'error' });
       return;
     }
     setCheckoutLoading(true);
     setBillingMessage(null);
     try {
-      const deviceSessionId = await getMpDeviceSessionId();
+      // Device ID é opcional (antifraude). Não bloqueia o checkout se o script atrasar.
+      const deviceSessionId = await getMpDeviceSessionId(800);
       const response = await fetch('/api/billing/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           email: session.user.email,
           deviceSessionId
         })
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Não foi possível iniciar o checkout.');
-      window.location.href = data.checkoutUrl as string;
+      const data = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        checkoutUrl?: string;
+      };
+      if (!response.ok) {
+        throw new Error(data.error || 'Não foi possível iniciar o checkout.');
+      }
+      if (!data.checkoutUrl) {
+        throw new Error('Checkout criado, mas sem URL de pagamento.');
+      }
+      window.location.assign(data.checkoutUrl);
     } catch (error) {
       setCheckoutLoading(false);
       const message = error instanceof Error ? error.message : 'Falha ao abrir o pagamento.';
       setBillingMessage({ type: 'error', text: message });
-      toast(message);
+      toast(message, { variant: 'error' });
     }
   }
 
   async function handleNuPayUpgrade() {
     if (!session?.user.email) {
-      toast('Faça login para assinar com NuPay.');
+      const message = 'Faça login para assinar com NuPay.';
+      setBillingMessage({ type: 'error', text: message });
+      toast(message, { variant: 'error' });
       return;
     }
     if (!isValidCpf(cpf)) {
-      toast('Informe um CPF válido para pagar com NuPay.');
+      const message = 'Informe um CPF válido para pagar com NuPay.';
+      toast(message, { variant: 'error' });
       setBillingMessage({ type: 'error', text: 'CPF inválido. O NuPay exige CPF de conta Nubank elegível.' });
       return;
     }
@@ -385,15 +400,21 @@ function ContaContent() {
         credentials: 'include',
         body: JSON.stringify({ cpf })
       });
-      const data = await response.json();
+      const data = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        sessionId?: string;
+        reference?: string;
+        checkoutUrl?: string;
+      };
       if (!response.ok) throw new Error(data.error || 'Não foi possível iniciar o NuPay.');
+      if (!data.checkoutUrl) throw new Error('NuPay criado, mas sem URL de pagamento.');
       if (data.sessionId) savePendingNuPay(data.sessionId, data.reference || '');
-      window.location.href = data.checkoutUrl as string;
+      window.location.assign(data.checkoutUrl);
     } catch (error) {
       setNupayLoading(false);
       const message = error instanceof Error ? error.message : 'Falha ao abrir o NuPay.';
       setBillingMessage({ type: 'error', text: message });
-      toast(message);
+      toast(message, { variant: 'error' });
     }
   }
 
@@ -675,18 +696,22 @@ function ContaContent() {
                   <div className="space-y-3">
                     <Button
                       className="w-full bg-white text-slate-950 hover:bg-sky-50"
-                      onClick={handleUpgrade}
+                      onClick={() => {
+                        void handleUpgrade();
+                      }}
                       disabled={checkoutLoading || nupayLoading}
+                      loading={checkoutLoading}
+                      icon={ArrowRight}
                     >
-                      {checkoutLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <ArrowRight className="h-4 w-4" />
-                      )}
                       {checkoutLoading
                         ? 'Abrindo pagamento…'
                         : `Assinar com Pix/boleto · ${PLANS.premium.priceLabel}`}
                     </Button>
+                    {billingMessage?.type === 'error' ? (
+                      <p className="rounded-xl border border-rose-300/40 bg-rose-500/15 px-3 py-2 text-xs leading-5 text-rose-100">
+                        {billingMessage.text}
+                      </p>
+                    ) : null}
                     <p className="text-[11px] leading-4 text-slate-400">
                       Abre o checkout do Mercado Pago para Pix, boleto e outros meios (sem cartão
                       embutido).
