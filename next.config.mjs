@@ -12,12 +12,12 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
-      "style-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://sdk.mercadopago.com https://http2.mlstatic.com",
+      "style-src 'self' 'unsafe-inline' https://http2.mlstatic.com",
       "img-src 'self' data: blob: https:",
-      "font-src 'self' data:",
-      "connect-src 'self' https://challenges.cloudflare.com",
-      "frame-src https://challenges.cloudflare.com",
+      "font-src 'self' data: https://http2.mlstatic.com",
+      "connect-src 'self' https://challenges.cloudflare.com https://api.mercadopago.com https://sdk.mercadopago.com https://events.mercadopago.com https://http2.mlstatic.com https://api-static.mercadopago.com https://secure-fields.mercadopago.com",
+      "frame-src https://challenges.cloudflare.com https://www.mercadopago.com https://www.mercadolibre.com https://secure-fields.mercadopago.com https://api-static.mercadopago.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'"

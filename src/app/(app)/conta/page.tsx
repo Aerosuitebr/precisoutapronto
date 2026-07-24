@@ -6,16 +6,19 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
+  CreditCard,
   Crown,
   Gauge,
   Loader2,
   Mail,
+  QrCode,
   Search,
   ShieldCheck,
   Sparkles,
   UserRound
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
+import { CardPaymentBrick } from '@/components/billing/card-payment-brick';
 import { PaymentStatusModal, type PendingPaymentInfo } from '@/components/billing/payment-status-modal';
 import { EnablePushButton } from '@/components/push/enable-push-button';
 import { WhatsAppEphemeralInfoCard } from '@/components/whatsapp/whatsapp-ephemeral-info-card';
@@ -46,6 +49,7 @@ function ContaContent() {
     text: string;
   } | null>(null);
   const [activePayment, setActivePayment] = useState<PendingPaymentInfo | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<'redirect' | 'card'>('redirect');
   const paymentInitialized = useRef(false);
 
   useEffect(() => {
@@ -110,6 +114,17 @@ function ContaContent() {
       setBillingMessage({ type: 'error', text: message });
       toast(message);
     }
+  }
+
+  function handleCardPaymentCreated(result: { paymentId: string; status: string }) {
+    if (!session?.user.email) return;
+    setActivePayment({
+      status: 'pending',
+      paymentId: result.paymentId,
+      merchantOrderId: '',
+      mpStatus: result.status,
+      email: session.user.email
+    });
   }
 
   function handleDowngrade() {
@@ -313,23 +328,63 @@ function ContaContent() {
                     Encerrar Premium neste aparelho
                   </Button>
                 ) : (
-                  <Button
-                    className="mt-7 w-full bg-white text-slate-950 hover:bg-sky-50"
-                    onClick={handleUpgrade}
-                    disabled={checkoutLoading}
-                  >
-                    {checkoutLoading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                  <div className="mt-7 space-y-4">
+                    <div className="grid grid-cols-2 gap-2 rounded-full bg-white/10 p-1">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('redirect')}
+                        className={`flex items-center justify-center gap-1.5 rounded-full py-2 text-xs font-bold transition ${
+                          paymentMethod === 'redirect'
+                            ? 'bg-white text-slate-950'
+                            : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        <QrCode className="h-3.5 w-3.5" />
+                        Pix / boleto
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('card')}
+                        className={`flex items-center justify-center gap-1.5 rounded-full py-2 text-xs font-bold transition ${
+                          paymentMethod === 'card'
+                            ? 'bg-white text-slate-950'
+                            : 'text-slate-300 hover:text-white'
+                        }`}
+                      >
+                        <CreditCard className="h-3.5 w-3.5" />
+                        Cartão
+                      </button>
+                    </div>
+
+                    {paymentMethod === 'card' ? (
+                      session?.user.email ? (
+                        <CardPaymentBrick
+                          payerEmail={session.user.email}
+                          onPaymentCreated={handleCardPaymentCreated}
+                        />
+                      ) : null
                     ) : (
-                      <ArrowRight className="h-4 w-4" />
+                      <Button
+                        className="w-full bg-white text-slate-950 hover:bg-sky-50"
+                        onClick={handleUpgrade}
+                        disabled={checkoutLoading}
+                      >
+                        {checkoutLoading ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <ArrowRight className="h-4 w-4" />
+                        )}
+                        {checkoutLoading ? 'Abrindo Mercado Pago…' : 'Liberar uso ilimitado por 30 dias'}
+                      </Button>
                     )}
-                    {checkoutLoading ? 'Abrindo Mercado Pago…' : 'Liberar uso ilimitado por 30 dias'}
-                  </Button>
+                  </div>
                 )}
                 <p className="mt-4 text-xs leading-5 text-slate-400">
                   {plan.id === 'premium'
                     ? 'Após o vencimento, a conta volta ao plano grátis.'
-                    : 'Pagamento via Mercado Pago (cartão, Pix e outros). Após a aprovação, o Premium libera automaticamente.'}
+                    : paymentMethod === 'card'
+                      ? 'Preencha os dados do cartão acima. Após a aprovação, o Premium libera automaticamente.'
+                      : 'Pagamento via Mercado Pago (Pix ou boleto). Após a aprovação, o Premium libera automaticamente.'}
                 </p>
               </>
             ) : (
