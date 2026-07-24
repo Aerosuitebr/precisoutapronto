@@ -24,10 +24,23 @@ type ImglyModule = typeof import('@imgly/background-removal');
 
 let imglyPromise: Promise<ImglyModule> | null = null;
 
+/**
+ * Carrega via CDN em runtime (não passa pelo webpack/Terser).
+ * O pacote npm quebra o `next build` por causa de `import.meta` no ONNX Runtime.
+ */
 function loadImgly(): Promise<ImglyModule> {
   if (!imglyPromise) {
-    // Pacote local (npm) — evita esm.sh, que o CSP bloqueia.
-    imglyPromise = import('@imgly/background-removal');
+    const dynamicImport = new Function(
+      'specifier',
+      'return import(specifier)'
+    ) as <T>(specifier: string) => Promise<T>;
+    imglyPromise = dynamicImport<ImglyModule>(
+      'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm'
+    ).catch(() =>
+      dynamicImport<ImglyModule>(
+        'https://esm.sh/@imgly/background-removal@1.7.0'
+      )
+    );
   }
   return imglyPromise;
 }
@@ -332,7 +345,13 @@ export async function removeImageBackground(
   onProgress?.('prepare:decode', 1, 1);
 
   onProgress?.('fetch:model', 0, 1);
-  const { removeBackground } = await loadImgly();
+  const imgly = await loadImgly();
+  const removeBackground =
+    imgly.removeBackground ??
+    (imgly as { default?: ImglyModule['removeBackground'] }).default;
+  if (typeof removeBackground !== 'function') {
+    throw new Error('Biblioteca de remoção de fundo indisponível. Recarregue a página.');
+  }
 
   let raw: Blob;
   try {

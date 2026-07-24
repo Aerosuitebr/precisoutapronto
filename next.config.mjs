@@ -13,12 +13,12 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // wasm-unsafe-eval: ONNX Runtime do removedor de fundo (WebAssembly).
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://challenges.cloudflare.com https://sdk.mercadopago.com https://http2.mlstatic.com",
-      "style-src 'self' 'unsafe-inline' https://http2.mlstatic.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://challenges.cloudflare.com https://sdk.mercadopago.com https://http2.mlstatic.com https://cdn.jsdelivr.net https://esm.sh",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://http2.mlstatic.com",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://http2.mlstatic.com",
-      // staticimgly.com: modelos ONNX/WASM do @imgly/background-removal.
-      "connect-src 'self' https://challenges.cloudflare.com https://api.mercadopago.com https://sdk.mercadopago.com https://events.mercadopago.com https://http2.mlstatic.com https://api-static.mercadopago.com https://secure-fields.mercadopago.com https://staticimgly.com https://*.staticimgly.com",
+      // jsdelivr/esm.sh: lib do removedor; staticimgly.com: modelos ONNX/WASM.
+      "connect-src 'self' blob: data: https://challenges.cloudflare.com https://api.mercadopago.com https://sdk.mercadopago.com https://events.mercadopago.com https://http2.mlstatic.com https://api-static.mercadopago.com https://secure-fields.mercadopago.com https://cdn.jsdelivr.net https://esm.sh https://staticimgly.com https://*.staticimgly.com",
       "worker-src 'self' blob:",
       "child-src 'self' blob:",
       "frame-src https://challenges.cloudflare.com https://www.mercadopago.com https://www.mercadolibre.com https://secure-fields.mercadopago.com https://api-static.mercadopago.com",
@@ -33,7 +33,6 @@ const nextConfig = {
   reactStrictMode: true,
   // API routes + /orcamento/[id] precisam de server runtime (Supabase/Prisma).
   // Export estático impede rotas dinâmicas e route handlers.
-  transpilePackages: ['@imgly/background-removal', 'onnxruntime-web'],
   images: {
     unoptimized: true
   },
@@ -42,10 +41,7 @@ const nextConfig = {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       canvas: false,
-      encoding: false,
-      fs: false,
-      path: false,
-      crypto: false
+      encoding: false
     };
     return config;
   },
