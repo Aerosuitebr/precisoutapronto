@@ -13,7 +13,10 @@ export async function POST(request: Request) {
 
     const body = (await request.json().catch(() => ({}))) as {
       email?: string;
+      /** @deprecated Nome da conta — ignorado (causa divergência antifraude). */
       name?: string;
+      /** Nome do titular do cartão, como impresso. */
+      cardholderName?: string;
       product?: string;
       deviceSessionId?: string;
     };
@@ -25,10 +28,12 @@ export async function POST(request: Request) {
 
     const product = body.product && isBillingProductId(body.product) ? body.product : 'premium';
     const deviceSessionId = body.deviceSessionId?.trim() || undefined;
+    // Só aceita titular do cartão — nunca o nome do perfil da conta.
+    const cardholderName = body.cardholderName?.trim() || undefined;
 
     const result = await createBillingCheckoutPreference({
       payerEmail: email,
-      payerName: body.name?.trim(),
+      cardholderName,
       product,
       deviceSessionId
     });

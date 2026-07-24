@@ -137,7 +137,11 @@ function splitPayerName(fullName?: string) {
 
 export async function createBillingCheckoutPreference(input: {
   payerEmail: string;
-  payerName?: string;
+  /**
+   * Nome do titular do cartão (como impresso).
+   * Não usar o nome da conta: cartão de terceiro gera divergência antifraude no MP.
+   */
+  cardholderName?: string;
   product?: BillingProductId | string | null;
   /** Device ID do security.js — header X-meli-session-id (antifraude MP). */
   deviceSessionId?: string;
@@ -145,8 +149,17 @@ export async function createBillingCheckoutPreference(input: {
   const appUrl = getAppPublicUrl();
   const product = getBillingProduct(input.product);
   const sandbox = isMercadoPagoSandbox();
-  const { name, surname } = splitPayerName(input.payerName);
+  const { name, surname } = splitPayerName(input.cardholderName);
   const deviceSessionId = input.deviceSessionId?.trim() || '';
+
+  const payer: { email: string; name?: string; surname?: string } = {
+    email: input.payerEmail
+  };
+  // Só envia nome se for o do titular — omite evita pré-preencher com nome da conta.
+  if (name) {
+    payer.name = name;
+    if (surname) payer.surname = surname;
+  }
 
   const preference = await mpFetch<CheckoutPreferenceResult>('/checkout/preferences', {
     method: 'POST',
@@ -163,11 +176,7 @@ export async function createBillingCheckoutPreference(input: {
           unit_price: product.price
         }
       ],
-      payer: {
-        email: input.payerEmail,
-        name: name || undefined,
-        surname: surname || undefined
-      },
+      payer,
       external_reference: input.payerEmail.toLowerCase(),
       statement_descriptor: 'RESOLVA JATO',
       additional_info: `digital_service;product=${product.id};days=${product.days}`,
@@ -211,7 +220,7 @@ export async function createBillingCheckoutPreference(input: {
 /** @deprecated Use createBillingCheckoutPreference({ product: 'premium' }) */
 export async function createPremiumCheckoutPreference(input: {
   payerEmail: string;
-  payerName?: string;
+  cardholderName?: string;
 }) {
   return createBillingCheckoutPreference({ ...input, product: BILLING_PRODUCTS.premium.id });
 }

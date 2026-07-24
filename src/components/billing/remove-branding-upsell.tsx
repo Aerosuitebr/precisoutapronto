@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ArrowRight, Crown, ShieldCheck, Sparkles, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/use-auth';
 import { formatDate } from '@/lib/billing';
 import { BILLING_PRODUCTS } from '@/lib/billing-products';
@@ -75,11 +76,20 @@ export function RemoveBrandingUpsell({
   const especial = BILLING_PRODUCTS['acesso-especial'];
   const [especialLoading, setEspecialLoading] = useState(false);
   const [especialError, setEspecialError] = useState('');
+  const [cardholderName, setCardholderName] = useState('');
 
   async function handleAcessoEspecial() {
     setEspecialError('');
     if (!isAuthenticated || !session?.user.email) {
       router.push('/login?next=' + encodeURIComponent('/ferramentas'));
+      return;
+    }
+
+    const titular = cardholderName.trim();
+    if (titular.length < 3 || !titular.includes(' ')) {
+      setEspecialError(
+        'Informe o nome completo do titular do cartão (como impresso), mesmo se for cartão de terceiro.'
+      );
       return;
     }
 
@@ -91,7 +101,7 @@ export function RemoveBrandingUpsell({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: session.user.email,
-          name: session.user.name,
+          cardholderName: titular,
           product: 'acesso-especial',
           deviceSessionId
         })
@@ -106,6 +116,21 @@ export function RemoveBrandingUpsell({
       setEspecialLoading(false);
     }
   }
+
+  const cardholderField = (
+    <div className="space-y-1.5">
+      <label className="block text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
+        Nome do titular do cartão
+      </label>
+      <Input
+        value={cardholderName}
+        onChange={(e) => setCardholderName(e.target.value)}
+        placeholder="Como está impresso no cartão"
+        autoComplete="cc-name"
+        className="border-white/20 bg-slate-950/50 text-white placeholder:text-slate-500"
+      />
+    </div>
+  );
 
   if (!ready) return null;
 
@@ -155,6 +180,7 @@ export function RemoveBrandingUpsell({
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+            {cardholderField}
             <Button asChild size="sm" className="bg-white font-bold text-slate-950 hover:bg-sky-50">
               <Link href="/conta?upgrade=premium">
                 Assinar Premium
@@ -215,6 +241,7 @@ export function RemoveBrandingUpsell({
         </div>
 
         <div className="w-full shrink-0 space-y-3 lg:max-w-xs">
+          {cardholderField}
           <Button
             asChild
             className="h-12 w-full bg-white text-base font-bold text-slate-950 hover:bg-sky-50"
@@ -234,8 +261,7 @@ export function RemoveBrandingUpsell({
             Acesso especial · {especial.priceLabel}
           </Button>
           <p className="text-center text-[11px] leading-5 text-slate-400 lg:text-left">
-            Acesso especial: 1 ano sem marca Resolva Jato. Pagamento seguro no Checkout Pro (cartão, Pix e
-            outros).
+            No cartão, use o nome do titular impresso (mesmo de terceiro). Acesso especial: 1 ano sem marca.
           </p>
           {especialError ? (
             <p className="text-center text-xs font-medium text-rose-300 lg:text-left">{especialError}</p>

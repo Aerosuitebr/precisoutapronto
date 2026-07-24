@@ -105,6 +105,7 @@ function ContaContent() {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [nupayLoading, setNupayLoading] = useState(false);
   const [cpf, setCpf] = useState('');
+  const [cardholderName, setCardholderName] = useState('');
   const [billingMessage, setBillingMessage] = useState<{
     type: 'success' | 'pending' | 'error';
     text: string;
@@ -339,6 +340,15 @@ function ContaContent() {
       toast('Faça login para assinar o Premium.');
       return;
     }
+    const titular = cardholderName.trim();
+    if (titular.length < 3 || !titular.includes(' ')) {
+      toast('Informe o nome completo do titular do cartão (como impresso).');
+      setBillingMessage({
+        type: 'error',
+        text: 'Para cartão, use o nome do titular impresso no cartão — não o nome da sua conta, se for cartão de terceiro.'
+      });
+      return;
+    }
     setCheckoutLoading(true);
     setBillingMessage(null);
     try {
@@ -348,7 +358,7 @@ function ContaContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: session.user.email,
-          name: session.user.name,
+          cardholderName: titular,
           deviceSessionId
         })
       });
@@ -565,6 +575,21 @@ function ContaContent() {
               </Button>
             ) : (
               <div className="mt-7 space-y-3">
+                <div className="rounded-2xl border border-white/15 bg-white/5 p-3">
+                  <label className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                    Nome do titular do cartão
+                  </label>
+                  <Input
+                    value={cardholderName}
+                    onChange={(e) => setCardholderName(e.target.value)}
+                    placeholder="Como está impresso no cartão"
+                    autoComplete="cc-name"
+                    className="mt-2 border-white/20 bg-slate-950/40 text-white placeholder:text-slate-500"
+                  />
+                  <p className="mt-2 text-[11px] leading-4 text-slate-400">
+                    Se for cartão de outra pessoa, use o nome dela — evita recusa por antifraude.
+                  </p>
+                </div>
                 <Button
                   className="w-full bg-white text-slate-950 hover:bg-sky-50"
                   onClick={handleUpgrade}
