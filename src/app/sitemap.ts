@@ -2,6 +2,20 @@ import type { MetadataRoute } from 'next';
 import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
+/** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
+const PUBLIC_TOOL_LANDINGS = [
+  '/gerador-de-curriculo',
+  '/gerador-de-contrato',
+  '/documentos-juridicos-online',
+  '/documentos-contabeis-online',
+  '/gerador-de-proposta-comercial',
+  '/gerador-de-recibo',
+  '/contato',
+  '/sobre',
+  '/privacidade',
+  '/termos'
+] as const;
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getViralBaseUrl();
   const now = new Date();
@@ -21,5 +35,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
   }));
 
-  return [...staticRoutes, ...seoRoutes];
+  const toolLandingRoutes: MetadataRoute.Sitemap = PUBLIC_TOOL_LANDINGS.map((path) => ({
+    url: `${base}${path}`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: path.startsWith('/gerador-') || path.startsWith('/documentos-') ? 0.9 : 0.4
+  }));
+
+  const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
+  for (const entry of [...staticRoutes, ...seoRoutes, ...toolLandingRoutes]) {
+    byUrl.set(entry.url, entry);
+  }
+  return [...byUrl.values()];
 }
