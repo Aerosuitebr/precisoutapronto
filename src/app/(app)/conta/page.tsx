@@ -16,6 +16,7 @@ import {
   UserRound
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
+import { PaymentStatusModal, type PendingPaymentInfo } from '@/components/billing/payment-status-modal';
 import { EnablePushButton } from '@/components/push/enable-push-button';
 import { WhatsAppEphemeralInfoCard } from '@/components/whatsapp/whatsapp-ephemeral-info-card';
 import { PageHero } from '@/components/shared/page-hero';
@@ -39,83 +40,50 @@ function ContaContent() {
   const { toast } = useToast();
   const { session, plan, usage, refresh, logout } = useAuth();
   const wantsUpgrade = searchParams.get('upgrade') === 'premium';
-  const billingStatus = searchParams.get('billing');
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [billingMessage, setBillingMessage] = useState<{
     type: 'success' | 'pending' | 'error';
     text: string;
   } | null>(null);
-  const confirmTried = useRef(false);
+  const [activePayment, setActivePayment] = useState<PendingPaymentInfo | null>(null);
+  const paymentInitialized = useRef(false);
 
   useEffect(() => {
-    if (!session?.user.email || confirmTried.current) return;
+    if (!session?.user.email || paymentInitialized.current) return;
+    const billingStatus = searchParams.get('billing');
     if (billingStatus !== 'success' && billingStatus !== 'pending' && billingStatus !== 'failure') {
       return;
     }
 
-    confirmTried.current = true;
+    paymentInitialized.current = true;
 
     // MP frequentemente envia payment_id=null; o id real vem em collection_id / merchant_order_id
     const paymentId = firstValidParam(searchParams, ['payment_id', 'collection_id']);
     const merchantOrderId = firstValidParam(searchParams, ['merchant_order_id']);
     const mpStatus = firstValidParam(searchParams, ['collection_status', 'status']).toLowerCase();
 
-    if (billingStatus === 'failure') {
-      setBillingMessage({ type: 'error', text: 'Pagamento não concluído. Você pode tentar de novo.' });
-      router.replace('/conta');
-      return;
+    // Limpa a URL na hora, mas mantém o estado local para conduzir o modal de acompanhamento.
+    router.replace('/conta');
+
+    setActivePayment({
+      status: billingStatus,
+      paymentId,
+      merchantOrderId,
+      mpStatus,
+      email: session.user.email
+    });
+  }, [router, searchParams, session?.user.email]);
+
+  function handlePaymentResolved(result: { approved: boolean; message: string }) {
+    setActivePayment(null);
+    if (result.approved) {
+      void refresh();
+      setBillingMessage({ type: 'success', text: result.message });
+      toast('Premium ativado — uso ilimitado liberado.');
+    } else {
+      setBillingMessage({ type: 'error', text: result.message });
     }
-
-    if (billingStatus === 'pending' || mpStatus === 'pending' || mpStatus === 'in_process') {
-      setBillingMessage({
-        type: 'pending',
-        text: 'Pagamento pendente (ex.: Pix aguardando). Assim que for aprovado, volte nesta página — o Premium libera automaticamente.'
-      });
-      router.replace('/conta');
-      return;
-    }
-
-    if (!paymentId && !merchantOrderId) {
-      setBillingMessage({
-        type: 'pending',
-        text: 'Retorno do Mercado Pago recebido, mas sem id de pagamento. Atualize a página em alguns segundos ou entre em contato se o valor já tiver sido cobrado.'
-      });
-      router.replace('/conta');
-      return;
-    }
-
-    const qs = new URLSearchParams({ email: session.user.email });
-    if (paymentId) qs.set('payment_id', paymentId);
-    if (merchantOrderId) qs.set('merchant_order_id', merchantOrderId);
-
-    fetch(`/api/billing/confirm?${qs.toString()}`, { credentials: 'include' })
-      .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Não foi possível confirmar o pagamento.');
-        if (data.approved) {
-          await refresh();
-          setBillingMessage({
-            type: 'success',
-            text: 'Pagamento aprovado! Premium liberado por 30 dias com uso ilimitado.'
-          });
-          toast('Premium ativado — uso ilimitado liberado.');
-          router.replace('/conta');
-        } else {
-          setBillingMessage({
-            type: 'pending',
-            text: `Pagamento com status “${data.status || 'pendente'}”. Aguarde a confirmação e atualize a página.`
-          });
-          router.replace('/conta');
-        }
-      })
-      .catch((error) => {
-        setBillingMessage({
-          type: 'error',
-          text: error instanceof Error ? error.message : 'Falha ao confirmar pagamento.'
-        });
-        router.replace('/conta');
-      });
-  }, [billingStatus, refresh, router, searchParams, session?.user.email, toast]);
+  }
 
   async function handleUpgrade() {
     if (!session?.user.email) {
@@ -157,6 +125,14 @@ function ContaContent() {
       enforceUsageLimit={false}
       requireEmailVerified={false}
     >
+      {activePayment ? (
+        <PaymentStatusModal
+          payment={activePayment}
+          onResolved={handlePaymentResolved}
+          onClose={() => setActivePayment(null)}
+        />
+      ) : null}
+
       <div className="space-y-5">
         <PageHero
           title="Minha conta"

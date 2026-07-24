@@ -390,3 +390,127 @@ a {
   font-style: italic;
   font-weight: 500;
 }
+
+/* Pagamento Pix — feedback premium */
+@keyframes rj-pix-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.55;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes rj-pix-core-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes rj-pix-check-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rj-pix-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes rj-pix-step-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes rj-pix-confetti {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(64px) rotate(220deg);
+    opacity: 0;
+  }
+}
+
+.rj-pix-ring {
+  animation: rj-pix-ring 2.2s cubic-bezier(0.2, 0.65, 0.4, 1) infinite;
+}
+
+.rj-pix-ring-delay {
+  animation-delay: 0.7s;
+}
+
+.rj-pix-ring-delay-2 {
+  animation-delay: 1.4s;
+}
+
+.rj-pix-core-pulse {
+  animation: rj-pix-core-pulse 1.8s ease-in-out infinite;
+}
+
+.rj-pix-check-pop {
+  animation: rj-pix-check-pop 0.55s cubic-bezier(0.22, 1.3, 0.4, 1) both;
+}
+
+.rj-pix-shake {
+  animation: rj-pix-shake 0.5s ease-in-out both;
+}
+
+.rj-pix-step-in {
+  animation: rj-pix-step-in 0.4s ease-out both;
+}
+
+.rj-pix-confetti {
+  animation: rj-pix-confetti 1.1s ease-in both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rj-pix-ring,
+  .rj-pix-core-pulse,
+  .rj-pix-check-pop,
+  .rj-pix-shake,
+  .rj-pix-step-in,
+  .rj-pix-confetti {
+    animation: none;
+  }
+}
