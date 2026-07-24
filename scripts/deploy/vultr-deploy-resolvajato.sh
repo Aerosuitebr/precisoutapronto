@@ -15,6 +15,17 @@ fi
 
 echo "==> Extrair codigo em ${INSTALL_DIR}"
 mkdir -p "${INSTALL_DIR}"
+
+# Limpa código antigo antes de extrair para evitar que arquivos removidos/renomeados
+# no repo (ex.: features abandonadas) fiquem "fantasmas" no diretório e quebrem o
+# build do Docker. Preserva .env.production e diretórios de dados/estado persistentes.
+find "${INSTALL_DIR}" -mindepth 1 -maxdepth 1 \
+  ! -name '.env.production' \
+  ! -name 'data' \
+  ! -name 'volumes' \
+  ! -name '.git' \
+  -exec rm -rf {} +
+
 tar -xzf "${TARBALL}" -C "${INSTALL_DIR}"
 
 cd "${INSTALL_DIR}"
