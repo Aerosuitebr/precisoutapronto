@@ -28,8 +28,13 @@ const TESTIMONIALS = [
 
 export function TestimonialsSection({ className }: { className?: string }) {
   return (
-    <section className={cn('border-y border-slate-200 bg-slate-50', className)}>
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+    <section
+      className={cn(
+        'border-y border-sky-100 bg-[linear-gradient(180deg,#eff6ff_0%,#f8fafc_60%,#f1f5f9_100%)]',
+        className
+      )}
+    >
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
         <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">Quem já usa</p>
         <h2 className="rj-display mt-3 max-w-xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
           Prova de quem resolve no dia a dia.

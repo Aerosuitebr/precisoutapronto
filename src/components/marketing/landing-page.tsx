@@ -23,7 +23,7 @@ import { cn } from '@/lib/utils';
 import { toolIntentOptions } from '@/lib/tools-catalog';
 
 const primaryCtaClass =
-  'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 hover:bg-amber-300';
+  'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
 
 const OTHER_TOOLS = [
   {
@@ -144,12 +144,12 @@ export function LandingPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
                 Ou vá direto ao ponto
               </p>
-              <ul className="mt-3 flex flex-wrap gap-2">
+              <ul className="mt-3 flex flex-wrap gap-2.5">
                 {toolIntentOptions.map((option) => (
                   <li key={option.id}>
                     <AuthAwareLink
                       href={`/ferramentas/${option.toolId}`}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 text-sm font-medium text-slate-100 transition hover:border-amber-300/50 hover:bg-white/10 hover:text-amber-200"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
                     >
                       {option.label}
                     </AuthAwareLink>
