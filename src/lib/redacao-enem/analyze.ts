@@ -13,6 +13,8 @@ export interface RedacaoAnaliseResult {
   competencias: CompetenciaScore[];
   alertas: string[];
   pontosFortes: string[];
+  textoInvalido: boolean;
+  avisoCritico?: string;
 }
 
 const CONECTIVOS = [
@@ -60,6 +62,23 @@ const PROPOSTA_MARCADORES = [
 
 const GIRIAS = ['tipo assim', 'ai que', 'né', 'daí', 'coisa', 'trem', 'meu deus', 'pra caramba', 'muito louco'];
 
+// Palavras funcionais (artigos, preposições, conjunções, pronomes) de altíssima frequência
+// em qualquer texto real em português. Um texto coerente de 15+ palavras praticamente sempre
+// contém várias delas. Sua ausência é um forte indício de "salada de letras" (teclado batido
+// aleatoriamente) em vez de linguagem natural.
+const PALAVRAS_FUNCIONAIS = new Set([
+  'de', 'a', 'o', 'que', 'e', 'do', 'da', 'em', 'um', 'uma', 'para', 'com', 'não', 'os', 'as',
+  'no', 'na', 'nos', 'nas', 'se', 'por', 'mais', 'dos', 'das', 'como', 'mas', 'ao', 'aos', 'às',
+  'ele', 'ela', 'eles', 'elas', 'seu', 'sua', 'seus', 'suas', 'ou', 'quando', 'muito', 'já', 'eu',
+  'também', 'só', 'pelo', 'pela', 'pelos', 'pelas', 'até', 'isso', 'entre', 'depois', 'sem',
+  'mesmo', 'ter', 'quem', 'me', 'esse', 'essa', 'esses', 'essas', 'este', 'esta', 'estes', 'estas',
+  'você', 'nós', 'lhe', 'lhes', 'tu', 'te', 'vocês', 'nosso', 'nossa', 'nossos', 'nossas', 'dele',
+  'dela', 'deles', 'delas', 'isto', 'aquilo', 'é', 'são', 'foi', 'foram', 'ser', 'estar', 'está',
+  'estão', 'há', 'sobre', 'assim', 'todo', 'toda', 'todos', 'todas', 'outro', 'outra', 'outros',
+  'outras', 'qual', 'quais', 'porque', 'pois', 'então', 'bem', 'sim', 'ainda', 'hoje', 'sociedade',
+  'brasil', 'brasileiro', 'brasileira', 'país', 'governo', 'pessoas', 'vida', 'forma'
+]);
+
 function normalize(text: string) {
   return text
     .toLowerCase()
@@ -72,6 +91,77 @@ function countOccurrences(haystack: string, needle: string) {
   return haystack.split(needle).length - 1;
 }
 
+const VOGAIS = new Set(['a', 'e', 'i', 'o', 'u']);
+
+/**
+ * Heurística leve (sem dicionário completo) para avaliar se uma "palavra" tem formato
+ * plausível em português: precisa ter vogais, não pode ter sequências enormes de
+ * consoantes/vogais iguais ou repetidas, típicas de "asdkfjaskdjf" batido no teclado.
+ */
+function palavraTemFormatoPlausivel(palavraNormalizada: string): boolean {
+  const w = palavraNormalizada.replace(/[^a-z]/g, '');
+  if (w.length < 2) return true; // muito curta pra avaliar, não penaliza
+
+  const vogaisCount = [...w].filter((c) => VOGAIS.has(c)).length;
+  if (vogaisCount === 0 && w.length > 2) return false; // sem nenhuma vogal = improvável
+
+  const proporcaoVogais = vogaisCount / w.length;
+  if (proporcaoVogais < 0.15 || proporcaoVogais > 0.9) return false;
+
+  // sequência de consoantes maior que 4 é rarissima em português
+  let maiorSequenciaConsoantes = 0;
+  let atual = 0;
+  for (const c of w) {
+    if (!VOGAIS.has(c)) {
+      atual += 1;
+      maiorSequenciaConsoantes = Math.max(maiorSequenciaConsoantes, atual);
+    } else {
+      atual = 0;
+    }
+  }
+  if (maiorSequenciaConsoantes > 4) return false;
+
+  // letra repetida 4+ vezes seguidas (ex: "ffff", "dddd")
+  if (/([a-z])\1{3,}/.test(w)) return false;
+
+  return true;
+}
+
+export interface DeteccaoTextoInvalido {
+  invalido: boolean;
+  motivo?: string;
+}
+
+/**
+ * Detecta texto sem sentido (letras aleatórias / teclado batido) antes de aplicar
+ * qualquer heurística de nota, para não gerar elogios falsos (ex.: "boa variedade
+ * de vocabulário") sobre um texto que não tem palavras reais.
+ */
+function detectarTextoInvalido(normalized: string, totalPalavras: number): DeteccaoTextoInvalido {
+  if (totalPalavras < 15) return { invalido: false };
+
+  const tokens = normalized.match(/[a-zà-ú]+/g) || [];
+  if (tokens.length === 0) return { invalido: false };
+
+  const funcionaisEncontradas = tokens.filter((t) => PALAVRAS_FUNCIONAIS.has(t)).length;
+  const proporcaoFuncionais = funcionaisEncontradas / tokens.length;
+
+  const plausiveis = tokens.filter((t) => palavraTemFormatoPlausivel(t)).length;
+  const proporcaoPlausiveis = plausiveis / tokens.length;
+
+  // Texto real em português quase sempre tem >8% de palavras funcionais (de, a, que, para...)
+  // e a grande maioria das palavras com formato foneticamente plausível.
+  if (proporcaoFuncionais < 0.04 && proporcaoPlausiveis < 0.65) {
+    return {
+      invalido: true,
+      motivo:
+        'O texto enviado parece ser uma sequência aleatória de letras (sem palavras reais em português), não uma redação. Escreva frases e parágrafos com sentido para receber uma estimativa de nota confiável.'
+    };
+  }
+
+  return { invalido: false };
+}
+
 export function analisarRedacao(texto: string): RedacaoAnaliseResult {
   const trimmed = texto.trim();
   const normalized = normalize(trimmed);
@@ -81,6 +171,28 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
 
   const alertas: string[] = [];
   const pontosFortes: string[] = [];
+
+  const deteccaoInvalido = detectarTextoInvalido(normalized, palavras);
+  if (deteccaoInvalido.invalido) {
+    const competenciasInvalidas: CompetenciaScore[] = [
+      { id: 1, titulo: 'Domínio da norma culta', nota: 0, comentario: 'Ortografia, gramática e formalidade.' },
+      { id: 2, titulo: 'Compreensão do tema', nota: 0, comentario: 'Desenvolvimento e repertório sobre o tema proposto.' },
+      { id: 3, titulo: 'Argumentação', nota: 0, comentario: 'Organização das ideias e defesa de ponto de vista.' },
+      { id: 4, titulo: 'Coesão textual', nota: 0, comentario: 'Conectivos e articulação entre parágrafos.' },
+      { id: 5, titulo: 'Proposta de intervenção', nota: 0, comentario: 'Agente, ação, meio, finalidade e detalhamento.' }
+    ];
+    return {
+      palavras,
+      paragrafos,
+      frases,
+      notaTotalEstimada: 0,
+      competencias: competenciasInvalidas,
+      alertas: [deteccaoInvalido.motivo as string],
+      pontosFortes: [],
+      textoInvalido: true,
+      avisoCritico: deteccaoInvalido.motivo
+    };
+  }
 
   // Competência 1: norma culta (heurística: repetição excessiva de palavras, gírias, tamanho de frases)
   const girias = GIRIAS.reduce((acc, g) => acc + countOccurrences(normalized, g), 0);
@@ -173,6 +285,7 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
     notaTotalEstimada,
     competencias,
     alertas,
-    pontosFortes
+    pontosFortes,
+    textoInvalido: false
   };
 }

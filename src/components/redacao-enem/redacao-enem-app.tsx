@@ -31,6 +31,16 @@ export function RedacaoEnemApp() {
 
   function resumoTexto() {
     if (!resultado) return "";
+    if (resultado.textoInvalido) {
+      return [
+        "*Correção estimada de redação ENEM · Resolva Jato*",
+        tema ? `Tema: ${tema}` : "",
+        "",
+        "⚠️ Texto não reconhecido como uma redação (sem palavras reais em português). Reescreva com frases e parágrafos com sentido para receber uma estimativa de nota.",
+      ]
+        .filter(Boolean)
+        .join("\n");
+    }
     const linhas = resultado.competencias
       .map((c) => `C${c.id} - ${c.titulo}: ${c.nota}/200`)
       .join("\n");
@@ -137,6 +147,28 @@ export function RedacaoEnemApp() {
                 <p className="mt-1 text-sm leading-6 text-slate-500">
                   Quanto mais parecido com a redação final, melhor a leitura de
                   estrutura, coesão e intervenção.
+                </p>
+              </div>
+            ) : resultado.textoInvalido ? (
+              <div className="space-y-3">
+                <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-4">
+                  <AlertTriangle
+                    className="mt-0.5 h-5 w-5 shrink-0 text-red-600"
+                    aria-hidden
+                  />
+                  <div>
+                    <p className="text-sm font-bold text-red-800">
+                      Texto sem sentido detectado
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-red-700">
+                      {resultado.avisoCritico}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs leading-5 text-slate-500">
+                  Substitua o texto por parágrafos reais em português (com
+                  introdução, desenvolvimento e conclusão) para receber uma
+                  estimativa de nota por competência.
                 </p>
               </div>
             ) : (
