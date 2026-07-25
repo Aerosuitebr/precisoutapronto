@@ -88,7 +88,7 @@ export async function POST(request: Request) {
     }
 
     const subject = category
-      ? `Sugestão de ferramenta — ${category}`
+      ? `Sugestão de ferramenta · ${category}`
       : 'Sugestão de ferramenta';
 
     const html = `

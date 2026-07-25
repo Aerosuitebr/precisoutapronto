@@ -78,7 +78,7 @@ export function SuggestToolModal({ open, onClose, user }: SuggestToolModalProps)
       open={open}
       onClose={() => (status === 'sending' ? null : onClose())}
       title="Sugerir uma ferramenta"
-      description="Conte o que você precisa. Sua sugestão vai direto para o time de produto — sem precisar abrir e-mail."
+      description="Conte o que você precisa. Sua sugestão vai direto para o time de produto, sem precisar abrir e-mail."
       size="md"
       footer={
         <>
@@ -170,7 +170,7 @@ export function SuggestToolModal({ open, onClose, user }: SuggestToolModalProps)
           </div>
         </div>
 
-        {/* Honeypot anti-spam — invisível para pessoas reais */}
+        {/* Honeypot anti-spam: invisível para pessoas reais */}
         <div className="hidden" aria-hidden="true">
           <label htmlFor="suggest-website">Website</label>
           <input
@@ -191,7 +191,7 @@ export function SuggestToolModal({ open, onClose, user }: SuggestToolModalProps)
 
         <p className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
           <MessageSquarePlus className="h-3.5 w-3.5 shrink-0" aria-hidden />
-          Enviamos sua sugestão diretamente para o time — sem redirecionar para outro app.
+          Enviamos sua sugestão diretamente para o time, sem redirecionar para outro app.
         </p>
       </div>
     </Modal>
