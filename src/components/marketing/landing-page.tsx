@@ -13,7 +13,7 @@ import {
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Logo } from '@/components/brand/logo';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
-import { HeroOrcamentoDemo } from '@/components/marketing/hero-orcamento-demo';
+import { HeroToolsShowcase } from '@/components/marketing/hero-tools-showcase';
 import { PromoVideoPlayer } from '@/components/marketing/promo-video-section';
 import { TestimonialsSection } from '@/components/marketing/testimonials-section';
 import { TrustSeals } from '@/components/marketing/trust-seals';
@@ -102,14 +102,14 @@ export function LandingPage() {
               <Logo variant="hero" />
             </div>
             <p className="rj-animate-fade-up mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
-              Cobrança no WhatsApp
+              O escritório digital que resolve tudo
             </p>
             <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(1.9rem,4.2vw,3.35rem)] font-extrabold leading-[1.08] tracking-tight text-white">
-              Mande o orçamento. Cliente aprova. Pix na hora.
+              Orçamento, redação, PDF, currículo e contrato. Prontos em minutos.
             </h1>
             <p className="rj-animate-fade-up-delay-2 mt-4 max-w-lg text-base leading-7 text-slate-200 sm:text-lg">
-              Documentos profissionais gratuitos. O cliente abre o link no celular, aprova e você
-              cobra com QR Code pronto para o WhatsApp, sem app e sem cartão.
+              Mande o orçamento e receba o Pix aprovado no WhatsApp, corrija sua redação do ENEM,
+              edite um PDF ou monte currículo e contrato — tudo grátis, no mesmo lugar.
             </p>
             <ul className="rj-animate-fade-up-delay-2 mt-5 space-y-2 text-sm text-slate-200">
               {[
@@ -165,7 +165,7 @@ export function LandingPage() {
 
           <div className="relative rj-animate-fade-up-delay-2">
             <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-emerald-400/20 via-transparent to-amber-300/10 blur-2xl" />
-            <HeroOrcamentoDemo className="relative" />
+            <HeroToolsShowcase className="relative" />
           </div>
         </div>
       </section>
