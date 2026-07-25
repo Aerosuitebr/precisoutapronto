@@ -58,7 +58,7 @@ export function ViralPdfShareModal({
           >
             resolvajato.com.br
           </a>
-          . Remova a marca por R$ 5,00/mês na sua conta.
+          . Remova a marca por R$ 5,00 por 30 dias na sua conta.
         </span>
       </p>
     </Modal>

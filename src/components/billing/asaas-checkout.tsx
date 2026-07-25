@@ -102,19 +102,28 @@ export function AsaasCheckout({ onApproved }: AsaasCheckoutProps) {
     [onApproved, toast]
   );
 
+  function requireCpf() {
+    if (!cpf.trim()) {
+      setError('Informe o CPF para continuar com a Asaas.');
+      return false;
+    }
+    if (!isValidCpf(cpf)) {
+      setError('CPF inválido.');
+      return false;
+    }
+    return true;
+  }
+
   async function startPix() {
     setBusy(true);
     setError(null);
     try {
-      if (cpf && !isValidCpf(cpf)) {
-        setError('CPF inválido.');
-        return;
-      }
+      if (!requireCpf()) return;
       const res = await fetch('/api/billing/checkout-asaas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ method: 'pix', cpf: onlyDigits(cpf) || undefined })
+        body: JSON.stringify({ method: 'pix', cpf: onlyDigits(cpf) })
       });
       const data = (await res.json().catch(() => ({}))) as {
         paymentId?: string;
@@ -139,15 +148,12 @@ export function AsaasCheckout({ onApproved }: AsaasCheckoutProps) {
     setBusy(true);
     setError(null);
     try {
-      if (cpf && !isValidCpf(cpf)) {
-        setError('CPF inválido.');
-        return;
-      }
+      if (!requireCpf()) return;
       const res = await fetch('/api/billing/checkout-asaas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ method: 'card', cpf: onlyDigits(cpf) || undefined })
+        body: JSON.stringify({ method: 'card', cpf: onlyDigits(cpf) })
       });
       const data = (await res.json().catch(() => ({}))) as {
         paymentId?: string;
@@ -185,11 +191,16 @@ export function AsaasCheckout({ onApproved }: AsaasCheckoutProps) {
     <div className="mt-6 space-y-4">
       {mode === 'choose' ? (
         <div className="space-y-3">
+          <label className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+            CPF
+          </label>
           <Input
             value={cpf}
             onChange={(e) => setCpf(formatCpf(e.target.value))}
-            placeholder="CPF (opcional, mas ajuda na aprovação)"
+            placeholder="000.000.000-00"
             inputMode="numeric"
+            autoComplete="off"
+            required
             className={inputDark}
             disabled={busy}
           />
@@ -222,7 +233,8 @@ export function AsaasCheckout({ onApproved }: AsaasCheckoutProps) {
             </button>
           </div>
           <p className="text-[11px] leading-4 text-slate-500">
-            No cartão, o pagamento abre na página segura da Asaas. No Pix, o QR aparece aqui.
+            CPF obrigatório para a cobrança. No Pix, o QR aparece aqui. No cartão, o pagamento abre
+            na página segura da Asaas.
           </p>
         </div>
       ) : null}

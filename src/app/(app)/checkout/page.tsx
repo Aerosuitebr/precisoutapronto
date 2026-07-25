@@ -176,7 +176,10 @@ function CheckoutContent() {
       },
       {
         label: 'Checkout seguro',
-        detail: 'Redirecionamento ao provedor certificado (PCI).',
+        detail:
+          method === 'asaas'
+            ? 'Pix na tela ou cartão na página segura da Asaas.'
+            : 'Redirecionamento ao provedor certificado (PCI).',
         status: pay
       },
       {
@@ -560,7 +563,8 @@ function CheckoutContent() {
             </h1>
             <p className="mt-2 text-sm leading-6 text-slate-300">
               {PLANS.premium.priceLabel}
-              {PLANS.premium.period} · 30 dias sem marca nos PDFs, WhatsApp e e-mail.
+              {PLANS.premium.period}, avulso, sem renovação automática. Documentos sem marca nos
+              PDFs, WhatsApp e e-mail.
             </p>
 
             <div className="mt-8 flex items-center gap-4 rounded-2xl border border-white/10 bg-slate-950/40 p-4">

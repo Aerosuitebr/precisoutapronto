@@ -54,7 +54,7 @@ export const PLANS: Record<PlanId, Plan> = {
     tagline: 'Documentos limpos, sem marca',
     price: 5,
     priceLabel: 'R$ 5,00',
-    period: '/mês',
+    period: ' por 30 dias',
     highlight: true,
     toolUsesLimit: null,
     benefits: [

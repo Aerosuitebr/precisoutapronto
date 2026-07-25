@@ -57,7 +57,8 @@ export function PricingPage() {
             {[
               'PDF sem rodapé e sem logo',
               'WhatsApp e e-mail sem referências',
-              'Vigência clara na sua conta após o pagamento'
+              'Vigência clara na sua conta após o pagamento',
+              'Pagamento avulso, sem renovação automática'
             ].map((item) => (
               <li key={item} className="flex items-start gap-2.5">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />

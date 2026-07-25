@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { isBillingProductId } from '@/lib/billing-products';
 import { isDatabaseConfigured } from '@/lib/db';
+import { isValidCpf } from '@/lib/cpf';
 import {
   createAsaasCardPremiumCheckout,
   createAsaasPixPremium,
@@ -35,7 +36,14 @@ export async function POST(request: Request) {
 
     const product = body.product && isBillingProductId(body.product) ? body.product : 'premium';
     const method = body.method === 'card' ? 'card' : 'pix';
-    const cpf = (body.cpf || '').replace(/\D/g, '') || undefined;
+    const cpf = (body.cpf || '').replace(/\D/g, '');
+
+    if (!isValidCpf(cpf)) {
+      return NextResponse.json(
+        { error: 'Informe um CPF válido para pagar com a Asaas.' },
+        { status: 400 }
+      );
+    }
 
     if (method === 'card') {
       const { payment, checkoutUrl, mode } = await createAsaasCardPremiumCheckout({
