@@ -1,16 +1,17 @@
 export interface PrecificacaoInput {
   custoDireto: number; // material, insumos, custo do produto
+  frete?: number; // custo de envio/logística por unidade (útil para e-commerce)
   custosFixosMensais: number;
   vendasMensaisEstimadas: number;
   horasTrabalhadas: number; // horas gastas nesse produto/serviço, por unidade
   valorHora: number; // quanto a pessoa quer ganhar por hora
-  taxasCartaoPercentual: number; // %, ex: 4.99
-  impostoPercentual: number; // %, ex: 6 (simples)
+  taxasCartaoPercentual: number; // %, ex: 4.99 (cartão, marketplace, gateway)
+  impostoPercentual: number; // %, ex: 6 (simples/mei)
   margemLucroDesejadaPercentual: number; // %, ex: 20
 }
 
 export interface PrecificacaoCompositionSlice {
-  id: 'material' | 'maoDeObra' | 'custoFixo' | 'taxasImpostos' | 'lucro';
+  id: 'material' | 'frete' | 'maoDeObra' | 'custoFixo' | 'taxasImpostos' | 'lucro';
   label: string;
   value: number;
 }
@@ -31,6 +32,7 @@ export interface PrecificacaoResult {
 export function calcularPrecificacao(input: PrecificacaoInput): PrecificacaoResult {
   const {
     custoDireto,
+    frete = 0,
     custosFixosMensais,
     vendasMensaisEstimadas,
     horasTrabalhadas,
@@ -42,7 +44,7 @@ export function calcularPrecificacao(input: PrecificacaoInput): PrecificacaoResu
 
   const custoFixoRateado = vendasMensaisEstimadas > 0 ? custosFixosMensais / vendasMensaisEstimadas : 0;
   const custoMaoDeObra = horasTrabalhadas * valorHora;
-  const custoTotal = custoDireto + custoFixoRateado + custoMaoDeObra;
+  const custoTotal = custoDireto + Math.max(0, frete) + custoFixoRateado + custoMaoDeObra;
 
   const percentualDescontos = (taxasCartaoPercentual + impostoPercentual + margemLucroDesejadaPercentual) / 100;
   const divisor = 1 - percentualDescontos;
@@ -57,6 +59,7 @@ export function calcularPrecificacao(input: PrecificacaoInput): PrecificacaoResu
 
   const composition: PrecificacaoCompositionSlice[] = [
     { id: 'material', label: 'Materiais', value: Math.max(0, custoDireto) },
+    { id: 'frete', label: 'Frete', value: Math.max(0, frete) },
     { id: 'maoDeObra', label: 'Seu tempo', value: Math.max(0, custoMaoDeObra) },
     { id: 'custoFixo', label: 'Custos fixos', value: Math.max(0, custoFixoRateado) },
     { id: 'taxasImpostos', label: 'Taxas e impostos', value: Math.max(0, custosVariaveisSobrePreco) },

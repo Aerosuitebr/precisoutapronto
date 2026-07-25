@@ -42,6 +42,7 @@ const SLICE_STYLE: Record<
   { bar: string; dot: string; text: string }
 > = {
   material: { bar: 'bg-sky-500', dot: 'bg-sky-500', text: 'text-sky-800' },
+  frete: { bar: 'bg-indigo-500', dot: 'bg-indigo-500', text: 'text-indigo-800' },
   maoDeObra: { bar: 'bg-teal-500', dot: 'bg-teal-500', text: 'text-teal-800' },
   custoFixo: { bar: 'bg-amber-500', dot: 'bg-amber-500', text: 'text-amber-900' },
   taxasImpostos: { bar: 'bg-slate-500', dot: 'bg-slate-500', text: 'text-slate-800' },
@@ -52,6 +53,7 @@ export function PrecificacaoApp() {
   const { toast } = useToast();
   const [step, setStep] = useState<StepId>('custos');
   const [custoDiretoInput, setCustoDiretoInput] = useState('');
+  const [freteInput, setFreteInput] = useState('');
   const [custosFixosInput, setCustosFixosInput] = useState('');
   const [vendasMensais, setVendasMensais] = useState(30);
   const [horas, setHoras] = useState(1);
@@ -61,6 +63,7 @@ export function PrecificacaoApp() {
   const [margem, setMargem] = useState(20);
 
   const custoDireto = parseCurrency(custoDiretoInput);
+  const frete = parseCurrency(freteInput);
   const custosFixos = parseCurrency(custosFixosInput);
   const valorHora = parseCurrency(valorHoraInput);
 
@@ -73,6 +76,7 @@ export function PrecificacaoApp() {
     if (!temBase) return null;
     return calcularPrecificacao({
       custoDireto,
+      frete,
       custosFixosMensais: custosFixos,
       vendasMensaisEstimadas: vendasMensais,
       horasTrabalhadas: horas,
@@ -81,7 +85,7 @@ export function PrecificacaoApp() {
       impostoPercentual: imposto,
       margemLucroDesejadaPercentual: margem
     });
-  }, [custoDireto, custosFixos, vendasMensais, horas, valorHora, taxaCartao, imposto, margem]);
+  }, [custoDireto, frete, custosFixos, vendasMensais, horas, valorHora, taxaCartao, imposto, margem]);
 
   const partialHint = useMemo(() => {
     if (!resultado) {
@@ -181,21 +185,36 @@ export function PrecificacaoApp() {
                   title="Quanto você gasta em materiais?"
                   subtitle="Insumos, embalagem, deslocamento: o que sai do bolso por unidade."
                 />
-                <FormField
-                  label="Materiais e insumos"
-                  htmlFor="custo-direto"
-                  required
-                  hint="Pode ser aproximado. O importante é não esquecer nada."
-                >
-                  <Input
-                    id="custo-direto"
-                    inputMode="numeric"
-                    placeholder="R$ 0,00"
-                    value={custoDiretoInput}
-                    onChange={(e) => setCustoDiretoInput(formatCurrencyInput(e.target.value))}
-                    aria-required="true"
-                  />
-                </FormField>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField
+                    label="Materiais e insumos"
+                    htmlFor="custo-direto"
+                    required
+                    hint="Pode ser aproximado. O importante é não esquecer nada."
+                  >
+                    <Input
+                      id="custo-direto"
+                      inputMode="numeric"
+                      placeholder="R$ 0,00"
+                      value={custoDiretoInput}
+                      onChange={(e) => setCustoDiretoInput(formatCurrencyInput(e.target.value))}
+                      aria-required="true"
+                    />
+                  </FormField>
+                  <FormField
+                    label="Frete / envio"
+                    htmlFor="frete"
+                    hint="Se vende online, informe o custo médio de envio por unidade. Deixe zero se não vender pela internet."
+                  >
+                    <Input
+                      id="frete"
+                      inputMode="numeric"
+                      placeholder="R$ 0,00"
+                      value={freteInput}
+                      onChange={(e) => setFreteInput(formatCurrencyInput(e.target.value))}
+                    />
+                  </FormField>
+                </div>
               </>
             ) : null}
 
@@ -280,15 +299,15 @@ export function PrecificacaoApp() {
                 <div className="grid gap-4 sm:grid-cols-3">
                   <SliderField
                     id="taxa-cartao"
-                    label="Taxa do cartão"
+                    label="Taxa do cartão / marketplace"
                     value={taxaCartao}
                     onChange={setTaxaCartao}
-                    max={15}
+                    max={25}
                     step={0.1}
                   />
                   <SliderField
                     id="imposto"
-                    label="Impostos"
+                    label="Impostos (MEI/Simples)"
                     value={imposto}
                     onChange={setImposto}
                     max={30}
