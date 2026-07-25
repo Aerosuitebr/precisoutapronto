@@ -49,10 +49,25 @@ function normalizeMethod(raw: string | null): PaymentMethodId {
 }
 
 function MethodMark({ method }: { method: PaymentMethodId }) {
-  if (method === 'stripe') return <StripeLogo className="h-9" />;
-  if (method === 'nupay') return <NuPayLogo className="h-9" />;
-  if (method === 'pix') return <PixLogo className="h-10 w-10" />;
-  return <MercadoPagoLogo className="h-9" />;
+  if (method === 'stripe') {
+    return (
+      <span className="relative block h-12 w-[8.25rem] shrink-0 overflow-hidden rounded-xl shadow-sm">
+        <StripeLogo fill />
+      </span>
+    );
+  }
+
+  return (
+    <span className="flex h-12 w-[8.25rem] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white px-2 shadow-sm">
+      {method === 'nupay' ? (
+        <NuPayLogo className="h-7 max-w-[7rem]" />
+      ) : method === 'pix' ? (
+        <PixLogo className="h-8 max-w-[7.5rem]" />
+      ) : (
+        <MercadoPagoLogo className="h-8 max-w-[7.5rem]" />
+      )}
+    </span>
+  );
 }
 
 function StepRow({
@@ -274,10 +289,13 @@ function CheckoutContent() {
     if (!session?.user.email || returnHandledRef.current || !billing) return;
     returnHandledRef.current = true;
 
+    const nupayState = (firstValidParam(searchParams, ['state']) || '').toLowerCase();
     if (
       billing === 'failure' ||
       billing === 'stripe-cancel' ||
-      billing === 'nupay-cancel'
+      billing === 'nupay-cancel' ||
+      nupayState === 'canceled' ||
+      nupayState === 'cancelled'
     ) {
       setPhase('failure');
       setMessage('Pagamento cancelado ou não concluído. Escolha outro método se preferir.');
@@ -301,13 +319,13 @@ function CheckoutContent() {
         JSON.stringify({ paymentId, merchantOrderId, savedAt: Date.now() })
       );
     }
-    if (stripeSessionId) {
+    if (stripeSessionId && method === 'stripe') {
       sessionStorage.setItem(
         PENDING_STRIPE_KEY,
         JSON.stringify({ sessionId: stripeSessionId, savedAt: Date.now() })
       );
     }
-    if (nupaySessionId || nupayReference) {
+    if ((nupaySessionId || nupayReference) && method === 'nupay') {
       sessionStorage.setItem(
         PENDING_NUPAY_KEY,
         JSON.stringify({
@@ -365,11 +383,22 @@ function CheckoutContent() {
           const ref = nupayReference || stored.reference || '';
           if (sid) qs.set('sessionId', sid);
           if (ref) qs.set('reference', ref);
+          if (nupayState) qs.set('state', nupayState);
           const res = await fetch(`/api/billing/confirm-nupay?${qs.toString()}`, {
             credentials: 'include'
           });
-          const data = await res.json().catch(() => ({}));
+          const data = (await res.json().catch(() => ({}))) as {
+            error?: string;
+            approved?: boolean;
+            expiresAt?: string;
+            paymentUrl?: string;
+            status?: string;
+          };
           if (!res.ok) throw new Error(data.error || 'Falha ao confirmar NuPay.');
+          if (data.paymentUrl && typeof data.paymentUrl === 'string') {
+            window.location.assign(data.paymentUrl);
+            return;
+          }
           approved = Boolean(data.approved);
           nextExpires = data.expiresAt;
         } else {
@@ -534,9 +563,9 @@ function CheckoutContent() {
                   type="button"
                   aria-label="Continuar com NuPay"
                   onClick={() => void beginCheckout()}
-                  className="group flex h-14 w-full items-center justify-center rounded-2xl border border-white/15 bg-white/[0.06] transition hover:border-fuchsia-300/40 hover:bg-fuchsia-500/10"
+                  className="group flex h-14 w-full items-center justify-center rounded-2xl border border-white/15 bg-white px-4 transition hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-16px_rgba(130,10,209,0.55)]"
                 >
-                  <NuPayLogo className="h-9 transition group-hover:scale-105" />
+                  <NuPayLogo className="h-8 max-w-[8rem] transition group-hover:scale-105" />
                 </button>
               </div>
             ) : null}
@@ -545,12 +574,12 @@ function CheckoutContent() {
               <div className="mt-6 grid grid-cols-2 gap-2.5">
                 {(
                   [
-                    ['mercadopago', MercadoPagoLogo],
-                    ['pix', PixLogo],
-                    ['stripe', StripeLogo],
-                    ['nupay', NuPayLogo]
+                    ['mercadopago', MercadoPagoLogo, false],
+                    ['pix', PixLogo, false],
+                    ['stripe', StripeLogo, true],
+                    ['nupay', NuPayLogo, false]
                   ] as const
-                ).map(([id, Logo]) => (
+                ).map(([id, Logo, cover]) => (
                   <Link
                     key={id}
                     href={`/checkout?method=${id}`}
@@ -561,9 +590,18 @@ function CheckoutContent() {
                       setPhase('ready');
                       setMessage(null);
                     }}
-                    className="flex h-14 items-center justify-center rounded-2xl border border-white/12 bg-white/[0.04] transition hover:border-white/30 hover:bg-white/[0.08]"
+                    className={cn(
+                      'relative flex h-14 items-center justify-center overflow-hidden rounded-2xl border transition hover:-translate-y-0.5',
+                      cover
+                        ? 'border-transparent'
+                        : 'border-white/15 bg-white'
+                    )}
                   >
-                    <Logo className={id === 'pix' ? 'h-8 w-8' : 'h-8'} />
+                    {cover ? (
+                      <Logo fill />
+                    ) : (
+                      <Logo className="h-8 max-w-[7.5rem]" />
+                    )}
                   </Link>
                 ))}
               </div>

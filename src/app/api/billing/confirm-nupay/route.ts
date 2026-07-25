@@ -83,9 +83,37 @@ export async function GET(request: Request) {
       });
     }
 
-    // approved → criar pagamento; completed → já capturado
+    // Sessão completed: pagamento já foi criado (webhook ou tentativa anterior).
+    if (session.status === 'completed') {
+      const existing = await getPrisma().subscription.findUnique({
+        where: { userId },
+        select: { providerRef: true, expiresAt: true }
+      });
+      if (existing?.providerRef?.startsWith('nupay:') && existing.expiresAt.getTime() > Date.now()) {
+        return NextResponse.json({
+          approved: true,
+          activated: true,
+          alreadyActive: true,
+          status: 'COMPLETED',
+          expiresAt: existing.expiresAt.toISOString(),
+          sessionId: session.id,
+          reference: session.reference,
+          provider: 'nupay'
+        });
+      }
+      return NextResponse.json({
+        approved: false,
+        status: 'pending',
+        statusDetail: 'aguardando_webhook_nupay',
+        sessionId: session.id,
+        reference: session.reference
+      });
+    }
+
+    // approved → criar pagamento com approvalCode + selectedPaymentOption
     let pspReferenceId = '';
     let paymentStatus = '';
+    let paymentUrl: string | undefined;
 
     if (session.status === 'approved' && session.approvalCode) {
       const user = await getPrisma().user.findUnique({
@@ -100,30 +128,12 @@ export async function GET(request: Request) {
       });
       pspReferenceId = payment.pspReferenceId;
       paymentStatus = payment.status;
+      paymentUrl = payment.paymentUrl;
 
       if (!isNuPayPaymentPaid(paymentStatus) && pspReferenceId) {
         const polled = await getNuPayPaymentStatus(pspReferenceId);
         paymentStatus = polled.status;
-        if (typeof polled.amount?.value === 'number') {
-          // keep for activation
-        }
       }
-    } else if (session.status === 'completed') {
-      // Sessão já teve pagamento criado; tenta achar via reference-pay
-      const tryId = `${session.reference}-pay`;
-      try {
-        // Alguns ambientes não consultam por referenceId; webhook/polling com psp id é o caminho principal.
-        void tryId;
-      } catch {
-        /* ignore */
-      }
-      return NextResponse.json({
-        approved: false,
-        status: 'pending',
-        statusDetail: 'aguardando_webhook_nupay',
-        sessionId: session.id,
-        reference: session.reference
-      });
     }
 
     if (!pspReferenceId || !isNuPayPaymentPaid(paymentStatus)) {
@@ -133,7 +143,8 @@ export async function GET(request: Request) {
         status: paymentStatus || session.status,
         sessionId: session.id,
         reference: session.reference,
-        pspReferenceId: pspReferenceId || undefined
+        pspReferenceId: pspReferenceId || undefined,
+        paymentUrl: paymentUrl || undefined
       });
     }
 
