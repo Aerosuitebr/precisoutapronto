@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
+import { SESSION_COOKIE, clearSessionCookie } from '@/lib/auth/session-cookie';
 import {
   getServerPlanId,
   getServerUsageProgress,
@@ -18,14 +20,24 @@ export async function GET() {
     // Mantém cookie de dispositivo vivo em visitas autenticadas
     await ensureDeviceCookie({ userAgent: getClientUserAgent() }).catch(() => undefined);
 
-    const session = readSessionFromCookies();
+    const hadCookie = Boolean(cookies().get(SESSION_COOKIE)?.value);
+    const session = await getValidSessionFromCookies();
     if (!session) {
-      return NextResponse.json({ authenticated: false });
+      return NextResponse.json(
+        hadCookie
+          ? {
+              authenticated: false,
+              reason: 'session_replaced',
+              message: 'Sua conta foi acessada em outro dispositivo. Entre novamente.'
+            }
+          : { authenticated: false }
+      );
     }
 
     const prisma = getPrisma();
     const user = await prisma.user.findUnique({ where: { id: session.sub } });
     if (!user) {
+      clearSessionCookie();
       return NextResponse.json({ authenticated: false });
     }
 

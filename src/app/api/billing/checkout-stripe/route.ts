@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { isBillingProductId } from '@/lib/billing-products';
 import { createStripePremiumCheckout, isStripeConfigured } from '@/lib/stripe';
 
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json({ error: 'Faça login para assinar com a Stripe.' }, { status: 401 });
     }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import {
   assertMercadoPagoCanReceivePayments,
   createCardPayment,
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
     }

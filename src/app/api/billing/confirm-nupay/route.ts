@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { activatePremiumFromNuPayPayment } from '@/lib/billing-server';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { onlyDigits } from '@/lib/cpf';
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Banco de dados não configurado.' }, { status: 503 });
     }
 
-    const auth = readSessionFromCookies();
+    const auth = await getValidSessionFromCookies();
     if (!auth) {
       return NextResponse.json({ approved: false, error: 'Faça login para confirmar.' }, { status: 401 });
     }

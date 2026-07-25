@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { activatePremiumFromMercadoPagoPayment } from '@/lib/billing-server';
 import { isDatabaseConfigured } from '@/lib/db';
 import {
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Banco de dados não configurado.' }, { status: 503 });
     }
 
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     const { searchParams } = new URL(request.url);
     const queryEmail = (searchParams.get('email') || '').trim().toLowerCase();
     const sessionEmail = (session?.email || '').trim().toLowerCase();

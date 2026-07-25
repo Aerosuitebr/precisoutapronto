@@ -82,10 +82,29 @@ model User {
   deviceLinks        DeviceCookieLink[]
   auditLogs          AuditLog[]
   toolsPreference    ToolsPreference?
+  activeSession      UserSession?
 
   @@index([createdAt])
   @@index([referredByUserId])
   @@map("users")
+}
+
+/// Uma sessão ativa por usuário: login novo substitui e invalida as anteriores.
+model UserSession {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  tokenHash      String   @unique
+  deviceCookieId String?
+  userAgent      String?
+  ip             String?
+  createdAt      DateTime @default(now())
+  lastSeenAt     DateTime @default(now())
+  expiresAt      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@map("user_sessions")
 }
 
 model ToolsPreference {

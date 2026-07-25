@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { verifyPassword } from '@/lib/auth/password-hash';
-import {
-  createSessionToken,
-  setSessionCookie
-} from '@/lib/auth/session-cookie';
+import { issueUserSession } from '@/lib/auth/user-session';
 import { consumeRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { ensureDeviceCookie, linkDeviceToUser } from '@/lib/security/device-cookie';
 import { writeAuditLog } from '@/lib/security/audit';
@@ -21,9 +18,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Banco de dados não configurado.' }, { status: 503 });
     }
 
-    const body = (await request.json()) as { email?: string; password?: string };
+    const body = (await request.json()) as {
+      email?: string;
+      password?: string;
+      forceTakeover?: boolean;
+    };
     const email = (body.email || '').trim().toLowerCase();
     const password = (body.password || '').trim();
+    const forceTakeover = Boolean(body.forceTakeover);
 
     if (!email || !password) {
       return NextResponse.json({ error: 'Informe e-mail e senha.' }, { status: 400 });
@@ -54,36 +56,63 @@ export async function POST(request: Request) {
     const deviceId = await ensureDeviceCookie({ userAgent });
     await linkDeviceToUser(deviceId, user.id);
 
+    const emailVerified = Boolean(user.emailVerifiedAt);
+    const issued = await issueUserSession({
+      userId: user.id,
+      email: user.email,
+      name: user.name,
+      emailVerified,
+      deviceCookieId: deviceId,
+      userAgent,
+      ip,
+      forceTakeover
+    });
+
+    if (issued.conflict) {
+      await writeAuditLog({
+        event: 'login_session_conflict',
+        userId: user.id,
+        email,
+        ip,
+        userAgent,
+        deviceId,
+        meta: { activeSince: issued.activeSince, lastSeenAt: issued.lastSeenAt }
+      });
+      return NextResponse.json(
+        {
+          ok: false,
+          code: issued.code,
+          error: issued.message,
+          message: issued.message,
+          activeSince: issued.activeSince,
+          lastSeenAt: issued.lastSeenAt
+        },
+        { status: 409 }
+      );
+    }
+
     await prisma.user.update({
       where: { id: user.id },
       data: { lastLoginAt: new Date(), lastLoginIp: ip }
     });
 
-    const emailVerified = Boolean(user.emailVerifiedAt);
-    const token = createSessionToken({
-      userId: user.id,
-      email: user.email,
-      name: user.name,
-      emailVerified
-    });
-    setSessionCookie(token);
-
     const planId = await getServerPlanId(user.id);
     const usage = await getServerUsageProgress(user.id);
 
     await writeAuditLog({
-      event: 'login',
+      event: forceTakeover || issued.replaced ? 'login_takeover' : 'login',
       userId: user.id,
       email,
       ip,
       userAgent,
       deviceId,
-      meta: { emailVerified }
+      meta: { emailVerified, replaced: issued.replaced, sessionId: issued.sessionId }
     });
 
     return NextResponse.json({
       ok: true,
       emailVerified,
+      replaced: issued.replaced,
       session: {
         token: 'cookie',
         user: {

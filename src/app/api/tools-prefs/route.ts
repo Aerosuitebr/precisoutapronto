@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { Prisma } from '@prisma/client';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 
 interface ToolsPrefsPayload {
   favoriteToolIds: string[];
@@ -52,7 +52,7 @@ export async function GET() {
     if (!isDatabaseConfigured()) {
       return NextResponse.json({ authenticated: false, prefs: DEFAULTS });
     }
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json({ authenticated: false, prefs: DEFAULTS });
     }
@@ -70,7 +70,7 @@ export async function PATCH(request: Request) {
     if (!isDatabaseConfigured()) {
       return NextResponse.json({ error: 'Banco não configurado.' }, { status: 503 });
     }
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
     }

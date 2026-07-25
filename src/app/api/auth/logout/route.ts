@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
-import { clearSessionCookie } from '@/lib/auth/session-cookie';
+import { revokeSessionFromCookies } from '@/lib/auth/user-session';
 import { writeAuditLog } from '@/lib/security/audit';
 import { getClientIp } from '@/lib/security/request-meta';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
 
 export async function POST() {
-  const session = readSessionFromCookies();
-  clearSessionCookie();
+  const session = await revokeSessionFromCookies();
   if (session) {
     await writeAuditLog({
       event: 'logout',

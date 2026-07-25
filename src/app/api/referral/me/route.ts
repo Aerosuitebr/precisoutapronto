@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { isDatabaseConfigured } from '@/lib/db';
 import { getReferralDashboard } from '@/lib/referral';
 
@@ -9,7 +9,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Banco de dados não configurado.' }, { status: 503 });
     }
 
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
     }

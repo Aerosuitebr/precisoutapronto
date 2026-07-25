@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { isValidCpf, onlyDigits } from '@/lib/cpf';
 import { createNuPayPremiumSession, isNuPayConfigured } from '@/lib/nupay';
 
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json({ error: 'Faça login para assinar com NuPay.' }, { status: 401 });
     }

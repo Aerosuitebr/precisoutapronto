@@ -68,15 +68,24 @@ export function useAuth() {
     function handleChange() {
       syncFromCache();
     }
+    function handleVisibility() {
+      if (document.visibilityState === 'visible') {
+        void refresh();
+      }
+    }
     void (async () => {
       await refresh();
       setReady(true);
     })();
     window.addEventListener('storage', handleChange);
     window.addEventListener('resolva-jato-auth-change', handleChange);
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleVisibility);
     return () => {
       window.removeEventListener('storage', handleChange);
       window.removeEventListener('resolva-jato-auth-change', handleChange);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleVisibility);
     };
   }, [refresh, syncFromCache]);
 

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readSessionFromCookies } from '@/lib/auth/session-cookie';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { activatePremiumFromStripeSession } from '@/lib/billing-server';
 import { isDatabaseConfigured } from '@/lib/db';
 import { getStripe, isStripeConfigured } from '@/lib/stripe';
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Stripe não configurado no servidor.' }, { status: 503 });
     }
 
-    const session = readSessionFromCookies();
+    const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json({ error: 'Faça login para confirmar o pagamento.' }, { status: 401 });
     }

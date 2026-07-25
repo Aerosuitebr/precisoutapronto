@@ -85,7 +85,11 @@ export async function registerUser(input: {
   };
 }
 
-export async function loginUser(input: { email: string; password: string }) {
+export async function loginUser(input: {
+  email: string;
+  password: string;
+  forceTakeover?: boolean;
+}) {
   const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -93,6 +97,18 @@ export async function loginUser(input: { email: string; password: string }) {
     body: JSON.stringify(input)
   });
   const data = await response.json().catch(() => ({}));
+
+  if (response.status === 409 && data.code === 'SESSION_ACTIVE') {
+    return {
+      ok: false as const,
+      code: 'SESSION_ACTIVE' as const,
+      error: (data.error || data.message || 'Há outro dispositivo conectado.') as string,
+      message: (data.message || data.error || 'Há outro dispositivo conectado.') as string,
+      activeSince: data.activeSince as string | undefined,
+      lastSeenAt: data.lastSeenAt as string | undefined
+    };
+  }
+
   if (!response.ok) {
     throw new Error(data.error || 'Não foi possível entrar.');
   }
@@ -100,7 +116,15 @@ export async function loginUser(input: { email: string; password: string }) {
     saveSession(data.session);
     notifyAuthChange();
   }
-  return data;
+  return data as {
+    ok: true;
+    emailVerified: boolean;
+    replaced?: boolean;
+    session: AuthSession;
+    plan?: unknown;
+    planId?: string;
+    usage?: unknown;
+  };
 }
 
 export async function logoutUser() {
@@ -116,9 +140,21 @@ export async function fetchMe() {
     saveSession(data.session);
   } else {
     clearSession();
+    if (data.reason === 'session_replaced' && typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem(
+          'rj-session-replaced',
+          data.message || 'Sua conta foi acessada em outro dispositivo. Entre novamente.'
+        );
+      } catch {
+        // ignore
+      }
+    }
   }
   return data as {
     authenticated: boolean;
+    reason?: string;
+    message?: string;
     session?: AuthSession;
     plan?: unknown;
     planId?: string;

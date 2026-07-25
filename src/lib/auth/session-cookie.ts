@@ -9,6 +9,10 @@ export interface SessionPayload {
   email: string;
   name: string;
   emailVerified: boolean;
+  /** ID da linha UserSession (única ativa por usuário). */
+  sid?: string;
+  /** Token opaco bruto (só no cookie); o banco guarda o hash. */
+  jti?: string;
   iat: number;
   exp: number;
 }
@@ -38,6 +42,8 @@ export function createSessionToken(input: {
   email: string;
   name: string;
   emailVerified: boolean;
+  sid?: string;
+  token?: string;
   maxAgeSec?: number;
 }): string {
   const now = Math.floor(Date.now() / 1000);
@@ -47,6 +53,8 @@ export function createSessionToken(input: {
     email: input.email,
     name: input.name,
     emailVerified: input.emailVerified,
+    sid: input.sid,
+    jti: input.token,
     iat: now,
     exp: now + maxAge
   };
