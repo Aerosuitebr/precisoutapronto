@@ -203,9 +203,26 @@ export async function createBillingCheckoutPreference(input: {
       payer,
       external_reference: input.payerEmail.toLowerCase(),
       statement_descriptor: 'RESOLVA JATO',
-      additional_info: `digital_service;product=${product.id};days=${product.days}`,
+      // Objeto (não string): melhora score antifraude do Checkout Pro.
+      additional_info: {
+        items: [
+          {
+            id: product.itemId,
+            title: product.title,
+            description: product.description,
+            category_id: 'services',
+            quantity: 1,
+            unit_price: product.price
+          }
+        ],
+        payer: {
+          first_name: name || undefined,
+          last_name: surname || undefined
+        }
+      },
       payment_methods: {
         installments: 1
+        // Não exclui credit_card / debit_card — cartão fica disponível no Checkout Pro.
       },
       back_urls: {
         success: `${appUrl}/checkout?method=mercadopago&billing=success`,

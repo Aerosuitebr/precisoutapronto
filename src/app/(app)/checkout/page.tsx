@@ -185,7 +185,11 @@ function CheckoutContent() {
 
   async function startMercadoPago() {
     if (!session?.user.email) throw new Error('Faça login para continuar.');
-    const deviceSessionId = await getMpDeviceSessionId(800);
+    // Device ID é crítico: sem ele o MP marca cartão como cc_rejected_high_risk.
+    const deviceSessionId = await getMpDeviceSessionId(5000);
+    if (!deviceSessionId) {
+      console.warn('[checkout/mp] MP_DEVICE_SESSION_ID ausente — antifraude sem fingerprint');
+    }
     const response = await fetch('/api/billing/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
