@@ -85,7 +85,7 @@ async function zoopFetch<T>(path: string, init?: RequestInit): Promise<T> {
   return data;
 }
 
-/** Zoop trabalha o valor da transação em centavos (inteiro). R$ 4,99 = 499. */
+/** Zoop trabalha o valor da transação em centavos (inteiro). R$ 5,00 = 500. */
 export function toZoopAmount(reais: number) {
   return Math.round(reais * 100);
 }

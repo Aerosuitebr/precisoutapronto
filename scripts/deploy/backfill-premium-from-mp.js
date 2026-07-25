@@ -14,7 +14,8 @@ async function mpFetch(path) {
 
 function amountOk(amount) {
   if (typeof amount !== 'number') return true;
-  return Math.abs(amount - 4.99) < 0.05;
+  // Aceita preço atual (5,00) e legado (4,99).
+  return Math.abs(amount - 5) < 0.05 || Math.abs(amount - 4.99) < 0.05;
 }
 
 (async () => {
