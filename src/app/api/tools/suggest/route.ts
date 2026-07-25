@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { isDatabaseConfigured } from '@/lib/db';
-import { isSmtpConfigured, sendMail } from '@/lib/mail/send-mail';
+import { isMailConfigured, sendEmail } from '@/lib/mail/send-email';
 import { consumeRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { getClientIp, getClientUserAgent } from '@/lib/security/request-meta';
 
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       }
     }
 
-    if (!isSmtpConfigured() && !process.env.RESEND_API_KEY) {
+    if (!isMailConfigured()) {
       // Sem provedor de e-mail configurado: registra no log do servidor para não perder a sugestão.
       console.warn('[tool-suggestion] envio de e-mail não configurado. Sugestão recebida:', {
         message,
@@ -122,7 +122,7 @@ export async function POST(request: Request) {
       .filter(Boolean)
       .join('\n');
 
-    const result = await sendMail({ to: SUGGESTION_TO, subject, html, text });
+    const result = await sendEmail({ to: SUGGESTION_TO, subject, html, text });
 
     if (!result.sent) {
       console.error('[tool-suggestion] falha ao enviar e-mail:', result.error);
