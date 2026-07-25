@@ -380,7 +380,7 @@ export function HeroToolsShowcase({ className }: { className?: string }) {
 
   return (
     <div
-      className={cn('grid gap-4', className)}
+      className={cn('flex flex-col gap-4', className)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -413,25 +413,29 @@ export function HeroToolsShowcase({ className }: { className?: string }) {
         <p className="mt-1.5 max-w-md text-sm leading-6 text-slate-300">{active.subtext}</p>
       </div>
 
-      {active.mockup}
+      <div aria-hidden className="hidden flex-1 lg:block" />
 
-      <AuthAwareLink
-        href={active.href}
-        className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100"
-      >
-        {active.ctaLabel} →
-      </AuthAwareLink>
+      <div className="flex flex-col gap-4">
+        {active.mockup}
 
-      <div className="flex items-center gap-1.5">
-        {SHOWCASE_ITEMS.map((item, index) => (
-          <span
-            key={item.id}
-            className={cn(
-              'h-1 flex-1 rounded-full transition-colors',
-              index === activeIndex ? 'bg-amber-300' : 'bg-white/15'
-            )}
-          />
-        ))}
+        <AuthAwareLink
+          href={active.href}
+          className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100"
+        >
+          {active.ctaLabel} →
+        </AuthAwareLink>
+
+        <div className="flex items-center gap-1.5">
+          {SHOWCASE_ITEMS.map((item, index) => (
+            <span
+              key={item.id}
+              className={cn(
+                'h-1 flex-1 rounded-full transition-colors',
+                index === activeIndex ? 'bg-amber-300' : 'bg-white/15'
+              )}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

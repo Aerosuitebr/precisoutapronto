@@ -96,8 +96,8 @@ export function LandingPage() {
           <ToolsWatermark className="opacity-70" />
         </div>
 
-        <div className="relative mx-auto grid max-w-6xl items-start gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-12 lg:py-16">
-          <div className="max-w-xl">
+        <div className="relative mx-auto grid max-w-6xl items-stretch gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-12 lg:py-16">
+          <div className="flex h-full max-w-xl flex-col">
             <div className="rj-animate-fade-up">
               <Logo variant="hero" />
             </div>
@@ -163,9 +163,9 @@ export function LandingPage() {
             </p>
           </div>
 
-          <div className="relative rj-animate-fade-up-delay-2">
+          <div className="relative flex h-full flex-col rj-animate-fade-up-delay-2">
             <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-emerald-400/20 via-transparent to-amber-300/10 blur-2xl" />
-            <HeroToolsShowcase className="relative" />
+            <HeroToolsShowcase className="relative h-full" />
           </div>
         </div>
       </section>
