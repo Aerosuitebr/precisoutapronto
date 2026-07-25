@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Logo } from '@/components/brand/logo';
+import { CategoryExplorer } from '@/components/marketing/category-explorer';
 import { HeroOrcamentoDemo } from '@/components/marketing/hero-orcamento-demo';
 import { PromoVideoPlayer } from '@/components/marketing/promo-video-section';
 import { TestimonialsSection } from '@/components/marketing/testimonials-section';
@@ -19,7 +20,7 @@ import { TrustSeals } from '@/components/marketing/trust-seals';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { getToolsByCategory, toolCategories } from '@/lib/tools-catalog';
+import { toolIntentOptions } from '@/lib/tools-catalog';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 hover:bg-amber-300';
@@ -62,11 +63,6 @@ const OTHER_TOOLS = [
     icon: ClipboardList
   }
 ] as const;
-
-const CATEGORY_OVERVIEW = toolCategories.map((category) => ({
-  ...category,
-  tools: getToolsByCategory(category.id)
-}));
 
 function FeatureChecks({
   items,
@@ -128,7 +124,7 @@ export function LandingPage() {
               ))}
             </ul>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              <Button asChild size="lg" className={primaryCtaClass}>
+              <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
                 <AuthAwareLink href="/ferramentas/orcamentos">
                   Montar orçamento e gerar Pix
                   <ArrowRight className="h-4 w-4" />
@@ -138,14 +134,32 @@ export function LandingPage() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10"
+                className="h-12 w-full border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10 sm:w-auto"
               >
                 <Link href="#demo-60s">Ver o fluxo em 60s</Link>
               </Button>
             </div>
+
+            <div className="rj-animate-fade-up-delay-2 mt-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                Ou vá direto ao ponto
+              </p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {toolIntentOptions.map((option) => (
+                  <li key={option.id}>
+                    <AuthAwareLink
+                      href={`/ferramentas/${option.toolId}`}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 text-sm font-medium text-slate-100 transition hover:border-amber-300/50 hover:bg-white/10 hover:text-amber-200"
+                    >
+                      {option.label}
+                    </AuthAwareLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <p className="mt-4 text-xs text-slate-400">
-              E se não for isso: currículo, contrato, proposta, recibo, capa ABNT, editor de PDF
-              e mais de 15 ferramentas grátis, tudo no mesmo lugar.
+              E se não for isso: editor de PDF, remoção de fundo e mais de 15 ferramentas grátis,
+              tudo no mesmo lugar.
             </p>
           </div>
 
@@ -157,7 +171,7 @@ export function LandingPage() {
       </section>
 
       <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">
@@ -167,8 +181,7 @@ export function LandingPage() {
                 Ache a ferramenta certa em segundos, não em abas.
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-                Organizamos tudo por área. Cobrança, documentos, contratos, currículo, estudos e
-                mais: escolha o seu perfil e comece.
+                Filtre pela sua área e veja o arsenal completo abrir na hora, sem sair da página.
               </p>
             </div>
             <Button asChild size="lg" variant="outline" className="h-12 shrink-0 self-start sm:self-auto">
@@ -179,61 +192,13 @@ export function LandingPage() {
             </Button>
           </div>
 
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {CATEGORY_OVERVIEW.map((category) => {
-              const CategoryIcon = category.icon;
-              const preview = category.tools.slice(0, 3);
-              const extra = category.tools.length - preview.length;
-              return (
-                <li key={category.id} className="relative">
-                  <AuthAwareLink
-                    href={`/ferramentas#cat-${category.id}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/80 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-white hover:shadow-md"
-                  >
-                    <span className={cn('absolute inset-x-0 top-0 h-1', category.accentBar)} aria-hidden />
-                    <span
-                      className={cn(
-                        'grid h-11 w-11 shrink-0 place-items-center rounded-xl',
-                        category.iconClass
-                      )}
-                    >
-                      <CategoryIcon className="h-5 w-5" />
-                    </span>
-                    <p className="mt-4 text-base font-bold text-slate-900 group-hover:text-emerald-800">
-                      {category.shortLabel}
-                    </p>
-                    <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      {category.tools.length} ferramentas
-                    </p>
-                    <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
-                      {category.description}
-                    </p>
-                    <ul className="mt-4 flex flex-wrap gap-1.5">
-                      {preview.map((tool) => (
-                        <li
-                          key={tool.id}
-                          className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 ring-1 ring-slate-200"
-                        >
-                          {tool.name}
-                        </li>
-                      ))}
-                      {extra > 0 && (
-                        <li className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-400 ring-1 ring-slate-200">
-                          +{extra}
-                        </li>
-                      )}
-                    </ul>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-emerald-700">
-                      Explorar
-                      <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
-                    </span>
-                  </AuthAwareLink>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="mt-10">
+            <CategoryExplorer />
+          </div>
         </div>
       </section>
+
+      <TestimonialsSection />
 
       <section id="demo-60s" className="scroll-mt-20 border-b border-slate-200 bg-slate-950 text-white">
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 lg:py-16">
@@ -315,10 +280,8 @@ export function LandingPage() {
         </div>
       </section>
 
-      <TestimonialsSection />
-
       <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
             Para quem é
           </p>
@@ -379,7 +342,7 @@ export function LandingPage() {
       </section>
 
       <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
             Também resolve
           </p>
@@ -390,12 +353,12 @@ export function LandingPage() {
             Currículo, proposta, contrato e capa ABNT com a mesma qualidade. Documentos
             profissionais, totalmente grátis.
           </p>
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-10 flex snap-x gap-4 overflow-x-auto pb-2 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
             {OTHER_TOOLS.map((tool) => (
-              <li key={tool.href}>
+              <li key={tool.href} className="w-[240px] shrink-0 snap-start sm:w-auto">
                 <AuthAwareLink
                   href={tool.href}
-                  className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50/80 p-5 transition hover:border-sky-300 hover:bg-white hover:shadow-sm"
+                  className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50/80 p-5 transition hover:-translate-y-0.5 hover:border-sky-300 hover:bg-white hover:shadow-md"
                 >
                   <tool.icon className="h-5 w-5 text-sky-700" />
                   <p className="mt-3 text-base font-bold text-slate-900 group-hover:text-sky-800">
