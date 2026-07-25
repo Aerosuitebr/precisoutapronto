@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type React from 'react';
 import {
+  AsaasLogo,
   MercadoPagoLogo,
   NuPayLogo,
   PAYMENT_METHODS,
@@ -19,7 +20,8 @@ const LOGO: Record<
   mercadopago: MercadoPagoLogo,
   stripe: StripeLogo,
   nupay: NuPayLogo,
-  pix: PixLogo
+  pix: PixLogo,
+  asaas: AsaasLogo
 };
 
 type Props = {

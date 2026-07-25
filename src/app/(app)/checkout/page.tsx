@@ -12,12 +12,14 @@ import {
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
 import {
+  AsaasLogo,
   MercadoPagoLogo,
   NuPayLogo,
   PixLogo,
   StripeLogo,
   type PaymentMethodId
 } from '@/components/billing/payment-provider-logos';
+import { AsaasCheckout, PENDING_ASAAS_KEY } from '@/components/billing/asaas-checkout';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
@@ -44,7 +46,15 @@ function firstValidParam(searchParams: URLSearchParams, keys: string[]) {
 }
 
 function normalizeMethod(raw: string | null): PaymentMethodId {
-  if (raw === 'stripe' || raw === 'nupay' || raw === 'pix' || raw === 'mercadopago') return raw;
+  if (
+    raw === 'stripe' ||
+    raw === 'nupay' ||
+    raw === 'pix' ||
+    raw === 'mercadopago' ||
+    raw === 'asaas'
+  ) {
+    return raw;
+  }
   return 'mercadopago';
 }
 
@@ -63,6 +73,8 @@ function MethodMark({ method }: { method: PaymentMethodId }) {
         <NuPayLogo className="h-7 max-w-[7rem]" />
       ) : method === 'pix' ? (
         <PixLogo className="h-8 max-w-[7.5rem]" />
+      ) : method === 'asaas' ? (
+        <AsaasLogo className="text-xl" />
       ) : (
         <MercadoPagoLogo className="h-8 max-w-[7.5rem]" />
       )}
@@ -157,7 +169,9 @@ function CheckoutContent() {
               ? 'NuPay · conta Nubank'
               : method === 'pix'
                 ? 'Pix via Mercado Pago'
-                : 'Mercado Pago · Pix, boleto e cartão',
+                : method === 'asaas'
+                  ? 'Asaas · Pix e cartão'
+                  : 'Mercado Pago · Pix, boleto e cartão',
         status: pick
       },
       {
@@ -282,7 +296,8 @@ function CheckoutContent() {
   useEffect(() => {
     if (!session?.user.email || startedRef.current || billing) return;
     if (plan.id === 'premium') return;
-    if (method === 'nupay') return;
+    // NuPay pede CPF e Asaas é inline/hospedada: não auto-iniciam.
+    if (method === 'nupay' || method === 'asaas') return;
     startedRef.current = true;
     void beginCheckout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -298,6 +313,7 @@ function CheckoutContent() {
       billing === 'failure' ||
       billing === 'stripe-cancel' ||
       billing === 'nupay-cancel' ||
+      billing === 'asaas-cancel' ||
       nupayState === 'canceled' ||
       nupayState === 'cancelled'
     ) {
@@ -371,6 +387,26 @@ function CheckoutContent() {
           if (!res.ok) throw new Error(data.error || 'Falha ao confirmar Stripe.');
           approved = Boolean(data.approved);
           nextExpires = data.expiresAt;
+        } else if (billing.startsWith('asaas') || method === 'asaas') {
+          const stored = (() => {
+            try {
+              return JSON.parse(sessionStorage.getItem(PENDING_ASAAS_KEY) || '{}') as {
+                paymentId?: string;
+              };
+            } catch {
+              return {};
+            }
+          })();
+          const pid = stored.paymentId || '';
+          if (!pid) throw new Error('Cobrança Asaas não encontrada.');
+          const res = await fetch(
+            `/api/billing/confirm-asaas?paymentId=${encodeURIComponent(pid)}`,
+            { credentials: 'include' }
+          );
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || 'Falha ao confirmar Asaas.');
+          approved = Boolean(data.approved);
+          nextExpires = data.expiresAt;
         } else if (billing.startsWith('nupay') || method === 'nupay') {
           const stored = (() => {
             try {
@@ -435,6 +471,7 @@ function CheckoutContent() {
           sessionStorage.removeItem(PENDING_MP_KEY);
           sessionStorage.removeItem(PENDING_NUPAY_KEY);
           sessionStorage.removeItem(PENDING_STRIPE_KEY);
+          sessionStorage.removeItem(PENDING_ASAAS_KEY);
           if (nextExpires) setExpiresAt(nextExpires);
           await refresh();
           setPhase('success');
@@ -539,7 +576,9 @@ function CheckoutContent() {
                       ? 'NuPay'
                       : method === 'pix'
                         ? 'Pix'
-                        : 'Mercado Pago'}
+                        : method === 'asaas'
+                          ? 'Asaas'
+                          : 'Mercado Pago'}
                 </p>
               </div>
             </div>
@@ -574,12 +613,25 @@ function CheckoutContent() {
               </div>
             ) : null}
 
+            {method === 'asaas' && phase !== 'success' && phase !== 'failure' ? (
+              <AsaasCheckout
+                onApproved={(expires) => {
+                  if (expires) setExpiresAt(expires);
+                  void refresh();
+                  setPhase('success');
+                  setMessage('Pagamento aprovado. Premium ativo por 30 dias.');
+                  toast('Premium ativado: documentos limpos, sem marca.');
+                }}
+              />
+            ) : null}
+
             {phase === 'failure' ? (
               <div className="mt-6 grid grid-cols-2 gap-2.5">
                 {(
                   [
                     ['mercadopago', MercadoPagoLogo, false],
                     ['pix', PixLogo, false],
+                    ['asaas', AsaasLogo, false],
                     ['stripe', StripeLogo, true],
                     ['nupay', NuPayLogo, false]
                   ] as const

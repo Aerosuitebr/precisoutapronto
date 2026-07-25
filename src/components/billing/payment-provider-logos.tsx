@@ -99,7 +99,39 @@ export function PixLogo({ className, title = 'Pix', fill }: LogoProps) {
   );
 }
 
-export type PaymentMethodId = 'mercadopago' | 'stripe' | 'nupay' | 'pix';
+/** Marca Zoop (wordmark, sem asset de imagem no projeto). */
+export function ZoopLogo({ className, title = 'Zoop' }: LogoProps) {
+  return (
+    <span
+      role="img"
+      aria-label={title}
+      className={cn(
+        'select-none text-2xl font-extrabold leading-none tracking-tight text-[#ff3b30]',
+        className
+      )}
+    >
+      zoop
+    </span>
+  );
+}
+
+/** Marca Asaas (wordmark). */
+export function AsaasLogo({ className, title = 'Asaas' }: LogoProps) {
+  return (
+    <span
+      role="img"
+      aria-label={title}
+      className={cn(
+        'select-none text-xl font-extrabold leading-none tracking-tight text-[#0042ff]',
+        className
+      )}
+    >
+      asaas
+    </span>
+  );
+}
+
+export type PaymentMethodId = 'mercadopago' | 'stripe' | 'nupay' | 'pix' | 'asaas';
 
 export const PAYMENT_METHODS: Array<{
   id: PaymentMethodId;
@@ -122,6 +154,13 @@ export const PAYMENT_METHODS: Array<{
     label: 'Pix',
     href: '/checkout?method=pix',
     description: 'Pagamento instantâneo',
+    surface: 'white'
+  },
+  {
+    id: 'asaas',
+    label: 'Asaas',
+    href: '/checkout?method=asaas',
+    description: 'Pix e cartão',
     surface: 'white'
   },
   {

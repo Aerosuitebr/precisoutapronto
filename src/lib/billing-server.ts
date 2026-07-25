@@ -413,6 +413,102 @@ export async function activatePremiumFromStripeSession(input: {
   };
 }
 
+/**
+ * Libera Premium a partir de uma cobrança Asaas (RECEIVED / CONFIRMED).
+ * Idempotente pelo id da cobrança (providerRef `asaas:<id>`).
+ */
+export async function activatePremiumFromAsaasPayment(input: {
+  userId: string;
+  paymentId: string;
+  status: string;
+}): Promise<PremiumActivationResult> {
+  const { userId, paymentId, status } = input;
+  if (status !== 'RECEIVED' && status !== 'CONFIRMED' && status !== 'RECEIVED_IN_CASH') {
+    return { activated: false, reason: 'not_approved', status };
+  }
+
+  const prisma = getPrisma();
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true }
+  });
+  if (!user) {
+    return { activated: false, reason: 'user_not_found', status };
+  }
+
+  const providerRef = `asaas:${paymentId}`;
+  const existing = await prisma.subscription.findUnique({ where: { userId: user.id } });
+  if (existing?.providerRef === providerRef) {
+    return {
+      activated: true,
+      alreadyActive: true,
+      userId: user.id,
+      email: user.email,
+      paymentId: 0,
+      expiresAt: existing.expiresAt.toISOString(),
+      status
+    };
+  }
+
+  const sub = await grantPremiumMonthServer(user.id, providerRef);
+  return {
+    activated: true,
+    userId: user.id,
+    email: user.email,
+    paymentId: 0,
+    expiresAt: sub.expiresAt.toISOString(),
+    status
+  };
+}
+
+/**
+ * Libera Premium a partir de uma transação aprovada da Zoop (status succeeded).
+ * Idempotente pelo id da transação (providerRef `zoop:<id>`).
+ */
+export async function activatePremiumFromZoopTransaction(input: {
+  userId: string;
+  transactionId: string;
+  status: string;
+}): Promise<PremiumActivationResult> {
+  const { userId, transactionId, status } = input;
+  if (status !== 'succeeded') {
+    return { activated: false, reason: 'not_approved', status };
+  }
+
+  const prisma = getPrisma();
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true }
+  });
+  if (!user) {
+    return { activated: false, reason: 'user_not_found', status };
+  }
+
+  const providerRef = `zoop:${transactionId}`;
+  const existing = await prisma.subscription.findUnique({ where: { userId: user.id } });
+  if (existing?.providerRef === providerRef) {
+    return {
+      activated: true,
+      alreadyActive: true,
+      userId: user.id,
+      email: user.email,
+      paymentId: 0,
+      expiresAt: existing.expiresAt.toISOString(),
+      status
+    };
+  }
+
+  const sub = await grantPremiumMonthServer(user.id, providerRef);
+  return {
+    activated: true,
+    userId: user.id,
+    email: user.email,
+    paymentId: 0,
+    expiresAt: sub.expiresAt.toISOString(),
+    status
+  };
+}
+
 export async function cancelPremiumServer(userId: string) {
   const prisma = getPrisma();
   await prisma.subscription.deleteMany({ where: { userId } });

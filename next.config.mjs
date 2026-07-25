@@ -19,7 +19,7 @@ const securityHeaders = [
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://http2.mlstatic.com",
       // jsdelivr/esm.sh: lib do removedor; staticimgly.com: modelos ONNX/WASM.
-      "connect-src 'self' blob: data: https://challenges.cloudflare.com https://www.mercadopago.com https://api.mercadopago.com https://sdk.mercadopago.com https://events.mercadopago.com https://http2.mlstatic.com https://api-static.mercadopago.com https://secure-fields.mercadopago.com https://cdn.jsdelivr.net https://esm.sh https://staticimgly.com https://*.staticimgly.com",
+      "connect-src 'self' blob: data: https://challenges.cloudflare.com https://www.mercadopago.com https://api.mercadopago.com https://sdk.mercadopago.com https://events.mercadopago.com https://http2.mlstatic.com https://api-static.mercadopago.com https://secure-fields.mercadopago.com https://cdn.jsdelivr.net https://esm.sh https://staticimgly.com https://*.staticimgly.com https://api.zoop.ws",
       "worker-src 'self' blob:",
       "child-src 'self' blob:",
       "frame-src https://challenges.cloudflare.com https://www.mercadopago.com https://www.mercadolibre.com https://secure-fields.mercadopago.com https://api-static.mercadopago.com",
