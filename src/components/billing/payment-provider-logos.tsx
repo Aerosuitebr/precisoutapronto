@@ -143,39 +143,10 @@ export const PAYMENT_METHODS: Array<{
   surface: 'white' | 'brand';
 }> = [
   {
-    id: 'mercadopago',
-    label: 'Mercado Pago',
-    href: '/checkout?method=mercadopago',
-    description: 'Pix, boleto e cartão',
-    surface: 'white'
-  },
-  {
-    id: 'pix',
-    label: 'Pix',
-    href: '/checkout?method=pix',
-    description: 'Pagamento instantâneo',
-    surface: 'white'
-  },
-  {
     id: 'asaas',
     label: 'Asaas',
     href: '/checkout?method=asaas',
-    description: 'Pix e cartão',
-    surface: 'white'
-  },
-  {
-    id: 'stripe',
-    label: 'Stripe',
-    href: '/checkout?method=stripe',
-    description: 'Cartão internacional',
-    cover: true,
-    surface: 'brand'
-  },
-  {
-    id: 'nupay',
-    label: 'NuPay',
-    href: '/checkout?method=nupay',
-    description: 'Conta Nubank',
+    description: 'Pix e cartão (crédito ou débito)',
     surface: 'white'
   }
 ];

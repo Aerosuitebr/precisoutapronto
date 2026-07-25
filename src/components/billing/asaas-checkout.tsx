@@ -229,12 +229,13 @@ export function AsaasCheckout({ onApproved }: AsaasCheckoutProps) {
               ) : (
                 <CreditCard className="h-6 w-6 text-sky-300" />
               )}
-              <span className="text-sm font-semibold">Cartão de crédito</span>
+              <span className="text-sm font-semibold">Cartão</span>
+              <span className="text-[11px] font-medium text-slate-400">Crédito ou débito</span>
             </button>
           </div>
           <p className="text-[11px] leading-4 text-slate-500">
             CPF obrigatório para a cobrança. No Pix, o QR aparece aqui. No cartão, o pagamento abre
-            na página segura da Asaas.
+            na página segura da Asaas (crédito ou débito).
           </p>
         </div>
       ) : null}

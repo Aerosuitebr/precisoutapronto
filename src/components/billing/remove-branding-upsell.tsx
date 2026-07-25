@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ArrowRight, Crown, ShieldCheck, Sparkles, Tag } from 'lucide-react';
+import { PremiumHireArt } from '@/components/billing/premium-hire-art';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/use-auth';
@@ -12,6 +13,8 @@ import { BILLING_PRODUCTS } from '@/lib/billing-products';
 import { getMpDeviceSessionId } from '@/lib/mp-device-session';
 import { PLANS } from '@/lib/plans';
 import { cn } from '@/lib/utils';
+
+const ASAAS_CHECKOUT = '/checkout?method=asaas';
 
 const BENEFITS = [
   'PDF sem rodapé e sem logo Resolva Jato',
@@ -180,9 +183,12 @@ export function RemoveBrandingUpsell({
             </p>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+            <div className="w-full max-w-[220px] overflow-hidden rounded-xl border border-white/10">
+              <PremiumHireArt />
+            </div>
             {cardholderField}
             <Button asChild size="sm" className="bg-white font-bold text-slate-950 hover:bg-sky-50">
-              <Link href="/conta?upgrade=premium">
+              <Link href={ASAAS_CHECKOUT}>
                 Assinar Premium
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -230,6 +236,9 @@ export function RemoveBrandingUpsell({
           <div className="mt-5">
             <BrandComparison />
           </div>
+          <div className="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-2">
+            <PremiumHireArt />
+          </div>
           <ul className="mt-6 grid gap-3 sm:grid-cols-3">
             {BENEFITS.map((benefit) => (
               <li key={benefit} className="flex items-start gap-3 text-sm text-slate-100">
@@ -246,7 +255,7 @@ export function RemoveBrandingUpsell({
             asChild
             className="h-12 w-full bg-white text-base font-bold text-slate-950 hover:bg-sky-50"
           >
-            <Link href="/conta?upgrade=premium">
+            <Link href={ASAAS_CHECKOUT}>
               <ArrowRight className="h-4 w-4" />
               Assinar Premium por {premium.priceLabel}
             </Link>
@@ -261,7 +270,7 @@ export function RemoveBrandingUpsell({
             Acesso especial · {especial.priceLabel}
           </Button>
           <p className="text-center text-[11px] leading-5 text-slate-400 lg:text-left">
-            No cartão, use o nome do titular impresso (mesmo de terceiro). Acesso especial: 1 ano sem marca.
+            Premium: Pix ou cartão na Asaas. Acesso especial (1 ano): informe o titular do cartão.
           </p>
           {especialError ? (
             <p className="text-center text-xs font-medium text-rose-300 lg:text-left">{especialError}</p>

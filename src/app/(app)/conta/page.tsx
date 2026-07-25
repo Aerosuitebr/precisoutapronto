@@ -14,7 +14,7 @@ import {
   UserRound
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { PaymentMethodsGrid } from '@/components/billing/payment-methods-grid';
+import { PremiumHireArt } from '@/components/billing/premium-hire-art';
 import { EnablePushButton } from '@/components/push/enable-push-button';
 import { ReferralPanel } from '@/components/referral/referral-panel';
 import { WhatsAppEphemeralInfoCard } from '@/components/whatsapp/whatsapp-ephemeral-info-card';
@@ -24,6 +24,8 @@ import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
 import { formatDate, formatDateTime, cancelPremium } from '@/lib/billing';
 import { PLANS } from '@/lib/plans';
+
+const ASAAS_CHECKOUT = '/checkout?method=asaas';
 
 function ContaContent() {
   const router = useRouter();
@@ -36,14 +38,11 @@ function ContaContent() {
     text: string;
   } | null>(null);
 
-  // Retornos antigos de pagamento → página segura de checkout com acompanhamento
+  // Retornos de pagamento → checkout Asaas com acompanhamento
   useEffect(() => {
     if (!billingStatus) return;
     const qs = new URLSearchParams(searchParams.toString());
-    let method = 'mercadopago';
-    if (billingStatus.startsWith('stripe')) method = 'stripe';
-    else if (billingStatus.startsWith('nupay')) method = 'nupay';
-    qs.set('method', method);
+    qs.set('method', 'asaas');
     router.replace(`/checkout?${qs.toString()}`);
   }, [billingStatus, router, searchParams]);
 
@@ -221,14 +220,19 @@ function ContaContent() {
                 Encerrar Premium neste aparelho
               </Button>
             ) : (
-              <div className="mt-7">
-                <PaymentMethodsGrid tone="dark" />
+              <div className="mt-7 space-y-4">
+                <PremiumHireArt />
+                <Button asChild className="w-full bg-white font-bold text-slate-950 hover:bg-sky-50">
+                  <Link href={ASAAS_CHECKOUT}>
+                    Assinar Premium por {PLANS.premium.priceLabel}
+                  </Link>
+                </Button>
               </div>
             )}
             <p className="mt-4 text-xs leading-5 text-slate-400">
               {plan.id === 'premium'
                 ? 'Após o vencimento, a conta volta ao plano grátis.'
-                : 'Toque no logo do provedor para abrir o checkout seguro e acompanhar o pagamento.'}
+                : 'Pix ou cartão (crédito ou débito) no checkout seguro da Asaas.'}
             </p>
           </aside>
         </section>

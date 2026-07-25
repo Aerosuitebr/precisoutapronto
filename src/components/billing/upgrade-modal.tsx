@@ -4,11 +4,14 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Crown } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
+import { PremiumHireArt } from '@/components/billing/premium-hire-art';
 import { PlanBenefitsList } from '@/components/marketing/plan-benefits-list';
 import { TrustSeals } from '@/components/marketing/trust-seals';
 import { Button } from '@/components/ui/button';
 import { PLANS } from '@/lib/plans';
 import { cn } from '@/lib/utils';
+
+const ASAAS_CHECKOUT = '/checkout?method=asaas';
 
 interface UpgradeModalProps {
   open: boolean;
@@ -67,7 +70,10 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
             <p className="mt-8 text-xs font-bold uppercase tracking-[0.22em] text-sky-300">
               Remova a marca Resolva Jato
             </p>
-            <h2 id="upgrade-modal-title" className="rj-display mt-3 max-w-xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+            <h2
+              id="upgrade-modal-title"
+              className="rj-display mt-3 max-w-xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl"
+            >
               Documentos limpos por apenas{' '}
               <span className="bg-gradient-to-r from-amber-200 via-amber-100 to-sky-200 bg-clip-text text-transparent">
                 {premium.priceLabel}
@@ -78,9 +84,15 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
               <li>· WhatsApp e e-mail sem referências</li>
             </ul>
 
+            <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-3">
+              <PremiumHireArt />
+            </div>
+
             <div className="mt-8 flex flex-wrap items-end gap-3">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">Premium · 30 dias</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                  Premium · 30 dias
+                </p>
                 <p className="rj-display mt-1 text-5xl font-black tracking-tight text-white sm:text-6xl">
                   {premium.priceLabel}
                   <span className="ml-1 text-lg font-semibold text-slate-400">{premium.period}</span>
@@ -101,12 +113,13 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button
-                type="button"
-                onClick={onUnlock}
+                asChild
                 className="h-14 flex-1 bg-gradient-to-r from-amber-300 via-amber-200 to-sky-200 text-base font-black text-slate-950 shadow-[0_18px_40px_rgba(251,191,36,0.25)] hover:from-amber-200 hover:via-white hover:to-sky-100"
               >
-                Assinar Premium por {premium.priceLabel}
-                <ArrowRight className="h-5 w-5" />
+                <Link href={ASAAS_CHECKOUT} onClick={onUnlock}>
+                  Assinar Premium por {premium.priceLabel}
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
               </Button>
               {onLeave ? (
                 <Button
@@ -118,14 +131,19 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
                   Continuar na busca gratuita
                 </Button>
               ) : (
-                <Button asChild variant="outline" className="h-14 border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-14 border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                >
                   <Link href="/busca">Continuar na busca gratuita</Link>
                 </Button>
               )}
             </div>
 
             <p className="mt-5 text-center text-[11px] leading-5 text-slate-500 sm:text-left">
-              Pagamento seguro via Mercado Pago. A busca de recursos continua gratuita para todos.
+              Pagamento seguro via Asaas (Pix ou cartão). A busca de recursos continua gratuita para
+              todos.
             </p>
           </div>
         </div>

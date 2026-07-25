@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
+import { PremiumHireArt } from '@/components/billing/premium-hire-art';
 import { TrustSeals } from '@/components/marketing/trust-seals';
 import { Button } from '@/components/ui/button';
 import { PLANS } from '@/lib/plans';
+
+const ASAAS_CHECKOUT = '/checkout?method=asaas';
 
 export function PricingPage() {
   const premium = PLANS.premium;
@@ -46,32 +49,38 @@ export function PricingPage() {
           </Button>
         </article>
 
-        <article className="rounded-[28px] border border-slate-800 bg-[linear-gradient(135deg,#0f172a_0%,#064e3b_55%,#047857_100%)] p-8 text-white shadow-sm">
-          <h2 className="text-2xl font-bold">Premium</h2>
-          <p className="mt-1 text-sm text-emerald-100">Documentos sem referências ao Resolva Jato</p>
-          <div className="mt-6 flex items-end gap-2">
-            <span className="rj-display text-4xl font-extrabold">{premium.priceLabel}</span>
-            <span className="pb-1 text-sm text-slate-300">{premium.period}</span>
+        <article className="overflow-hidden rounded-[28px] border border-slate-800 bg-[linear-gradient(135deg,#0f172a_0%,#064e3b_55%,#047857_100%)] text-white shadow-sm">
+          <div className="border-b border-white/10 bg-slate-950/40 p-4 sm:p-5">
+            <PremiumHireArt priority />
           </div>
-          <ul className="mt-6 space-y-2.5 text-sm text-slate-100">
-            {[
-              'PDF sem rodapé e sem logo',
-              'WhatsApp e e-mail sem referências',
-              'Vigência clara na sua conta após o pagamento',
-              'Pagamento avulso, sem renovação automática'
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-2.5">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <Button asChild className="mt-8 w-full bg-white font-bold text-slate-950 hover:bg-emerald-50">
-            <AuthAwareLink href="/conta?upgrade=premium">
-              Remover marca por {premium.priceLabel}
-              <ArrowRight className="h-4 w-4" />
-            </AuthAwareLink>
-          </Button>
+          <div className="p-8">
+            <h2 className="text-2xl font-bold">Premium</h2>
+            <p className="mt-1 text-sm text-emerald-100">Documentos sem referências ao Resolva Jato</p>
+            <div className="mt-6 flex items-end gap-2">
+              <span className="rj-display text-4xl font-extrabold">{premium.priceLabel}</span>
+              <span className="pb-1 text-sm text-slate-300">{premium.period}</span>
+            </div>
+            <ul className="mt-6 space-y-2.5 text-sm text-slate-100">
+              {[
+                'PDF sem rodapé e sem logo',
+                'WhatsApp e e-mail sem referências',
+                'Vigência clara na sua conta após o pagamento',
+                'Pagamento avulso, sem renovação automática',
+                'Pix ou cartão (crédito ou débito) via Asaas'
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2.5">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Button asChild className="mt-8 w-full bg-white font-bold text-slate-950 hover:bg-emerald-50">
+              <AuthAwareLink href={ASAAS_CHECKOUT}>
+                Assinar Premium por {premium.priceLabel}
+                <ArrowRight className="h-4 w-4" />
+              </AuthAwareLink>
+            </Button>
+          </div>
         </article>
       </div>
 

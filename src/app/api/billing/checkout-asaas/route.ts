@@ -6,6 +6,7 @@ import { isValidCpf } from '@/lib/cpf';
 import {
   createAsaasCardPremiumCheckout,
   createAsaasPixPremium,
+  describeAsaasCheckoutError,
   isAsaasConfigured
 } from '@/lib/asaas';
 
@@ -15,6 +16,7 @@ import {
  * - card: invoiceUrl hospedada pela Asaas
  */
 export async function POST(request: Request) {
+  let method: 'pix' | 'card' = 'pix';
   try {
     if (!isAsaasConfigured() || !isDatabaseConfigured()) {
       return NextResponse.json(
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
     };
 
     const product = body.product && isBillingProductId(body.product) ? body.product : 'premium';
-    const method = body.method === 'card' ? 'card' : 'pix';
+    method = body.method === 'card' ? 'card' : 'pix';
     const cpf = (body.cpf || '').replace(/\D/g, '');
 
     if (!isValidCpf(cpf)) {
@@ -82,7 +84,10 @@ export async function POST(request: Request) {
       mode
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Falha ao iniciar o pagamento Asaas.';
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error('[checkout-asaas]', { method, error });
+    return NextResponse.json(
+      { error: describeAsaasCheckoutError(error, method) },
+      { status: 500 }
+    );
   }
 }

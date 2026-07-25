@@ -574,7 +574,7 @@ export function BuscaClient() {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button asChild size="lg" className="bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
-                  <Link href="/conta?upgrade=premium">
+                  <Link href="/checkout?method=asaas">
                     Remover marca Resolva Jato
                     <ArrowRight className="h-4 w-4" />
                   </Link>

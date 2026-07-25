@@ -146,6 +146,32 @@ export function isAsaasPaymentFailed(status: string | undefined) {
   );
 }
 
+/**
+ * Falhas de configuração da conta Asaas (site ausente, cartão não habilitado,
+ * cadastro em análise) não dizem nada para quem está comprando.
+ */
+const ASAAS_ACCOUNT_SETUP_PATTERNS = [
+  /dom[íi]nio/i,
+  /cadastre um site/i,
+  /minha conta/i,
+  /em an[áa]lise/i,
+  /n[ãa]o (est[áa]|foi) habilitad/i,
+  /aguardando aprova/i,
+  /documenta[çc][ãa]o/i
+];
+
+export function isAsaasAccountSetupError(message: string) {
+  return ASAAS_ACCOUNT_SETUP_PATTERNS.some((pattern) => pattern.test(message));
+}
+
+export function describeAsaasCheckoutError(error: unknown, method: 'pix' | 'card') {
+  const raw = error instanceof Error ? error.message.trim() : '';
+  if (raw && !isAsaasAccountSetupError(raw)) return raw;
+  return method === 'card'
+    ? 'O pagamento com cartão está indisponível agora. Pague com Pix: o QR aparece aqui e o Premium libera na hora.'
+    : 'O Pix está indisponível agora. Tente novamente em alguns minutos.';
+}
+
 function dueDatePlusDays(days: number) {
   const d = new Date();
   d.setDate(d.getDate() + days);
