@@ -22,6 +22,12 @@ import {
 import { cn } from '@/lib/utils';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 
+type ShowcaseStat = {
+  icon: typeof ClipboardList;
+  value: string;
+  label: string;
+};
+
 type ShowcaseItem = {
   id: string;
   href: string;
@@ -31,6 +37,7 @@ type ShowcaseItem = {
   headline: string;
   subtext: string;
   ctaLabel: string;
+  stats: ShowcaseStat[];
   mockup: ReactNode;
 };
 
@@ -303,6 +310,11 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     headline: 'Mande o orçamento. Cliente aprova. Pix na hora.',
     subtext: 'O cliente abre o link no celular, aprova ou pede ajuste, e você já manda o Pix.',
     ctaLabel: 'Montar orçamento',
+    stats: [
+      { icon: MousePointerClick, value: '1 toque', label: 'Cliente aprova no celular' },
+      { icon: QrCode, value: 'Pix automático', label: 'QR Code gerado na hora' },
+      { icon: Sparkles, value: 'Grátis', label: 'Sem taxa por orçamento' }
+    ],
     mockup: <OrcamentoMockup />
   },
   {
@@ -314,6 +326,11 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     headline: 'Sua nota do ENEM, estimada em segundos.',
     subtext: 'Nota por competência, pontos fortes e alertas antes de entregar a redação.',
     ctaLabel: 'Corrigir redação',
+    stats: [
+      { icon: PenLine, value: '5', label: 'Competências avaliadas' },
+      { icon: Sparkles, value: 'Segundos', label: 'Correção instantânea' },
+      { icon: CheckCircle2, value: 'Grátis', label: 'Sem limite de envios' }
+    ],
     mockup: <RedacaoMockup />
   },
   {
@@ -325,6 +342,11 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     headline: 'Edite qualquer PDF sem instalar nada.',
     subtext: 'Texto, imagem, juntar, girar e extrair páginas, tudo no navegador.',
     ctaLabel: 'Editar PDF',
+    stats: [
+      { icon: FileStack, value: '5+', label: 'Ferramentas de edição' },
+      { icon: Wand2, value: 'Navegador', label: 'Sem instalar nada' },
+      { icon: CheckCircle2, value: 'Grátis', label: 'Sem marca d\u2019água' }
+    ],
     mockup: <EditorPdfMockup />
   },
   {
@@ -336,6 +358,11 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     headline: 'Currículo profissional pronto em minutos.',
     subtext: 'Layout universitário ou de mercado, com PDF elegante para enviar agora.',
     ctaLabel: 'Montar currículo',
+    stats: [
+      { icon: GraduationCap, value: 'Minutos', label: 'Currículo pronto' },
+      { icon: Sparkles, value: '2 modelos', label: 'Universitário ou profissional' },
+      { icon: CheckCircle2, value: 'PDF', label: 'Download imediato' }
+    ],
     mockup: <CurriculoMockup />
   },
   {
@@ -347,6 +374,11 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     headline: 'Capa no padrão ABNT, sem consultar manual.',
     subtext: 'Escolar ou universitária, com margens e fonte já certas para imprimir.',
     ctaLabel: 'Gerar capa',
+    stats: [
+      { icon: BookOpen, value: '100%', label: 'Padrão ABNT' },
+      { icon: Sparkles, value: 'Automático', label: 'Margens e fonte certas' },
+      { icon: CheckCircle2, value: 'Grátis', label: 'Pronto pra imprimir' }
+    ],
     mockup: <CapaAbntMockup />
   },
   {
@@ -358,6 +390,11 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     headline: 'Contrato e petição sem juridiquês.',
     subtext: 'Modelos editáveis para aluguel, serviços, procuração e mais, prontos em PDF.',
     ctaLabel: 'Criar documento',
+    stats: [
+      { icon: Scale, value: '6+', label: 'Modelos jurídicos' },
+      { icon: Signature, value: 'Assinável', label: 'Pronto pra assinar' },
+      { icon: CheckCircle2, value: 'PDF', label: 'Sem juridiquês' }
+    ],
     mockup: <ContratoMockup />
   }
 ];
@@ -413,7 +450,18 @@ export function HeroToolsShowcase({ className }: { className?: string }) {
         <p className="mt-1.5 max-w-md text-sm leading-6 text-slate-300">{active.subtext}</p>
       </div>
 
-      <div aria-hidden className="hidden flex-1 lg:block" />
+      <div className="grid flex-1 grid-cols-3 items-start gap-2.5 lg:content-center">
+        {active.stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="flex flex-col gap-1.5 rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm"
+          >
+            <stat.icon className="h-4 w-4 text-amber-300" />
+            <p className="text-sm font-extrabold leading-tight text-white">{stat.value}</p>
+            <p className="text-[11px] leading-4 text-slate-300">{stat.label}</p>
+          </div>
+        ))}
+      </div>
 
       <div className="flex flex-col gap-4">
         {active.mockup}
