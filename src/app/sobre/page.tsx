@@ -12,7 +12,7 @@ export default function SobrePage() {
     <LegalPage title="Sobre o Resolva Jato" subtitle="Ferramentas práticas, sem burocracia">
       <p>
         O <strong>Resolva Jato</strong> (resolvajato.com.br) reúne ferramentas para autônomos,
-        estudantes e pequenos negócios: currículos, recibos, contratos, propostas e mais — com uso
+        estudantes e pequenos negócios: currículos, recibos, contratos, propostas e mais, com uso
         gratuito e confirmação de e-mail.
       </p>
       <p>

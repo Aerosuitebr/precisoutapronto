@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 interface UpgradeModalProps {
   open: boolean;
-  /** @deprecated Cota de usos removida — ignorado. */
+  /** @deprecated Cota de usos removida: ignorado. */
   nextReleaseAtLabel?: string | null;
   onUnlock: () => void;
   onLeave?: () => void;

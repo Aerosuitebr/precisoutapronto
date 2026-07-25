@@ -198,7 +198,7 @@ export function ContratosApp() {
     const saved = saveContrato(withClauses);
     setContrato(saved);
     setItems(listContratos());
-    toast('Exemplo carregado — revise os dados.');
+    toast('Exemplo carregado. Revise os dados.');
   }
 
   function handleClearForm() {
@@ -234,7 +234,7 @@ export function ContratosApp() {
       setClauseHint(
         'Cláusulas padrão de prestação de serviços já foram aplicadas (objeto, prazo, preço, obrigações, rescisão e foro). Você pode editar na etapa Cláusulas.'
       );
-      toast('Modelo de prestação de serviços — cláusulas pré-preenchidas.');
+      toast('Modelo de prestação de serviços com cláusulas pré-preenchidas.');
     } else {
       setClauseHint(`Cláusulas sugeridas para “${name}” aplicadas. Ajuste o texto se precisar.`);
       toast(`Modelo “${name}” selecionado.`);
@@ -329,7 +329,7 @@ export function ContratosApp() {
                     Contratos sob medida
                   </h1>
                   <p className="mt-1 max-w-2xl text-sm font-medium leading-6 text-slate-300">
-                    Monte contratos de aluguel, serviços, trabalho, compra e venda e comodato — com
+                    Monte contratos de aluguel, serviços, trabalho, compra e venda e comodato, com
                     prévia em tempo real e PDF para assinar.
                   </p>
                 </div>

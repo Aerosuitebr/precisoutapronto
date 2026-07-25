@@ -70,7 +70,7 @@ export async function notifyProfissional(input: NotifyOrcamentoInput): Promise<N
       : `Ajuste solicitado por ${input.clienteNome}`;
     const brandFooter = branded
       ? `<p style="color:#64748b;font-size:12px;margin-top:24px">
-           Aviso automático do Resolva Jato — cobranças e documentos profissionais gratuitos.<br/>
+           Aviso automático do Resolva Jato. Cobranças e documentos profissionais gratuitos.<br/>
            <a href="${viralHomeUrl('email_notify')}">${VIRAL_SITE_HOST}</a>
          </p>`
       : `<p style="color:#64748b;font-size:12px;margin-top:24px">Aviso automático</p>`;

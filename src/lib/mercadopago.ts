@@ -167,7 +167,7 @@ export async function createBillingCheckoutPreference(input: {
    */
   cardholderName?: string;
   product?: BillingProductId | string | null;
-  /** Device ID do security.js — header X-meli-session-id (antifraude MP). */
+  /** Device ID do security.js: header X-meli-session-id (antifraude MP). */
   deviceSessionId?: string;
 }) {
   const appUrl = getAppPublicUrl();
@@ -179,7 +179,7 @@ export async function createBillingCheckoutPreference(input: {
   const payer: { email: string; name?: string; surname?: string } = {
     email: input.payerEmail
   };
-  // Só envia nome se for o do titular — omite evita pré-preencher com nome da conta.
+  // Só envia nome se for o do titular: omite evita pré-preencher com nome da conta.
   if (name) {
     payer.name = name;
     if (surname) payer.surname = surname;
@@ -222,7 +222,7 @@ export async function createBillingCheckoutPreference(input: {
       },
       payment_methods: {
         installments: 1
-        // Não exclui credit_card / debit_card — cartão fica disponível no Checkout Pro.
+        // Não exclui credit_card / debit_card: cartão fica disponível no Checkout Pro.
       },
       back_urls: {
         success: `${appUrl}/checkout?method=mercadopago&billing=success`,
@@ -295,7 +295,7 @@ export interface CreateCardPaymentInput {
 
 /**
  * Cria um pagamento com cartão diretamente via API de Pagamentos (Card Payment Brick),
- * sem redirecionar para o Checkout Pro. Usado apenas pelo fluxo "cartão" — Pix/boleto
+ * sem redirecionar para o Checkout Pro. Usado apenas pelo fluxo "cartão": Pix/boleto
  * continuam pela preferência de checkout (createPremiumCheckoutPreference).
  */
 export async function createCardPayment(input: CreateCardPaymentInput) {
@@ -311,7 +311,7 @@ export async function createCardPayment(input: CreateCardPaymentInput) {
     body: JSON.stringify({
       transaction_amount: amount,
       token: input.token,
-      description: 'Resolva Jato Premium — 30 dias',
+      description: 'Resolva Jato Premium · 30 dias',
       installments: input.installments || 1,
       payment_method_id: input.paymentMethodId,
       issuer_id: input.issuerId,

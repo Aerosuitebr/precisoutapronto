@@ -60,7 +60,7 @@ export const LEGAL_TEMPLATES: LegalTemplateMeta[] = [
     previewClass: 'from-emerald-900 to-teal-800',
     labels: {
       partyA: 'Declarante',
-      partyB: '—',
+      partyB: '-',
       showPartyB: false,
       objectLabel: 'Processo / ação (opcional)',
       valueLabel: 'Renda declarada (opcional)'
@@ -144,10 +144,10 @@ export const LEGAL_TEMPLATES: LegalTemplateMeta[] = [
     previewClass: 'from-orange-900 to-stone-800',
     labels: {
       partyA: 'Declarante',
-      partyB: '—',
+      partyB: '-',
       showPartyB: false,
       objectLabel: 'Finalidade da declaração',
-      valueLabel: '—'
+      valueLabel: '-'
     }
   },
   {
@@ -158,10 +158,10 @@ export const LEGAL_TEMPLATES: LegalTemplateMeta[] = [
     previewClass: 'from-sky-900 to-indigo-900',
     labels: {
       partyA: 'Estudante / autor do fichamento',
-      partyB: '—',
+      partyB: '-',
       showPartyB: false,
       objectLabel: 'Identificação do julgado e tema',
-      valueLabel: '—'
+      valueLabel: '-'
     }
   },
   {
@@ -172,10 +172,10 @@ export const LEGAL_TEMPLATES: LegalTemplateMeta[] = [
     previewClass: 'from-purple-900 to-fuchsia-900',
     labels: {
       partyA: 'Estudante / autor',
-      partyB: '—',
+      partyB: '-',
       showPartyB: false,
       objectLabel: 'Tema e problema jurídico',
-      valueLabel: '—'
+      valueLabel: '-'
     }
   },
   {
@@ -189,7 +189,7 @@ export const LEGAL_TEMPLATES: LegalTemplateMeta[] = [
       partyB: 'Interessado(a) (opcional)',
       showPartyB: true,
       objectLabel: 'Consulta / questão jurídica',
-      valueLabel: '—'
+      valueLabel: '-'
     }
   },
   {
@@ -200,10 +200,10 @@ export const LEGAL_TEMPLATES: LegalTemplateMeta[] = [
     previewClass: 'from-amber-800 to-orange-900',
     labels: {
       partyA: 'Estudante / observador(a)',
-      partyB: '—',
+      partyB: '-',
       showPartyB: false,
       objectLabel: 'Tipo e objeto da audiência',
-      valueLabel: '—'
+      valueLabel: '-'
     }
   },
   {
@@ -214,10 +214,10 @@ export const LEGAL_TEMPLATES: LegalTemplateMeta[] = [
     previewClass: 'from-rose-900 to-violet-900',
     labels: {
       partyA: 'Estudante / autor',
-      partyB: '—',
+      partyB: '-',
       showPartyB: false,
       objectLabel: 'Peça e situação-problema',
-      valueLabel: '—'
+      valueLabel: '-'
     }
   }
 ];

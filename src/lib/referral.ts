@@ -36,7 +36,7 @@ export async function ensureUserReferralCode(userId: string) {
       });
       return updated.referralCode!;
     } catch {
-      // unique collision — retry
+      // unique collision: retry
     }
   }
   throw new Error('Não foi possível gerar código de indicação.');

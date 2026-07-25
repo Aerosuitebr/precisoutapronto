@@ -25,7 +25,7 @@ export const contratosSeoContent: SeoPageContent = {
     {
       icon: FileCheck2,
       title: 'Cláusulas prontas e editáveis',
-      description: 'Cada modelo já vem com as cláusulas essenciais para o tipo de contrato — você só ajusta o que for específico do seu caso.'
+      description: 'Cada modelo já vem com as cláusulas essenciais para o tipo de contrato. Você só ajusta o que for específico do seu caso.'
     },
     {
       icon: ShieldCheck,
@@ -35,7 +35,7 @@ export const contratosSeoContent: SeoPageContent = {
     {
       icon: Sparkles,
       title: 'Atualize quando quiser',
-      description: 'Seus contratos ficam salvos na conta — reaproveite um modelo anterior e ajuste valores e datas em segundos.'
+      description: 'Seus contratos ficam salvos na conta: reaproveite um modelo anterior e ajuste valores e datas em segundos.'
     }
   ],
   steps: [
@@ -98,7 +98,7 @@ export const contratosSeoContent: SeoPageContent = {
   article: {
     title: 'Como fazer um contrato sem dor de cabeça',
     html: `
-      <p>Formalizar um acordo por escrito é a melhor forma de evitar mal-entendidos entre as partes — seja um aluguel, uma prestação de serviço ou uma venda. Mesmo em relações de confiança, um contrato claro protege os dois lados e serve de referência caso algo precise ser esclarecido depois.</p>
+      <p>Formalizar um acordo por escrito é a melhor forma de evitar mal-entendidos entre as partes, seja um aluguel, uma prestação de serviço ou uma venda. Mesmo em relações de confiança, um contrato claro protege os dois lados e serve de referência caso algo precise ser esclarecido depois.</p>
 
       <h2>O que todo contrato precisa ter</h2>
       <p>Independente do tipo, um contrato particular costuma reunir: qualificação completa das partes (nome, documento, endereço e contato), descrição clara do objeto (o que está sendo contratado, alugado ou vendido), valor e forma de pagamento, prazos e, quando aplicável, testemunhas e local de assinatura.</p>
@@ -112,7 +112,7 @@ export const contratosSeoContent: SeoPageContent = {
       <h2>Revise antes de assinar</h2>
       <p>Confira nomes, documentos e endereços das partes, datas de início e fim, e se todas as cláusulas fazem sentido para o seu caso. Para contratos de maior valor ou complexidade, vale a revisão de um advogado antes da assinatura final.</p>
 
-      <p>Com o gerador de contrato do Resolva Jato, você preenche os dados uma vez, escolhe o modelo certo e baixa um PDF organizado e pronto para assinar — sem precisar montar o documento do zero.</p>
+      <p>Com o gerador de contrato do Resolva Jato, você preenche os dados uma vez, escolhe o modelo certo e baixa um PDF organizado e pronto para assinar, sem precisar montar o documento do zero.</p>
     `
   },
   relatedTools: [

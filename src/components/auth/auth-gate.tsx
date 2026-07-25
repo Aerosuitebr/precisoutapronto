@@ -11,7 +11,7 @@ interface AuthGateProps {
   description: string;
   children: ReactNode;
   /**
-   * @deprecated Cota de utilizações removida — plano grátis não bloqueia por uso.
+   * @deprecated Cota de utilizações removida: plano grátis não bloqueia por uso.
    * Mantido só por compatibilidade de props.
    */
   enforceUsageLimit?: boolean;

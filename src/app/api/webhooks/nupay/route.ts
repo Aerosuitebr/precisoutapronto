@@ -13,7 +13,7 @@ import {
 
 /**
  * Webhook NuPay (sessão e/ou pagamento).
- * Notificação de sessão traz só sessionId + reference — reconsulta status na API.
+ * Notificação de sessão traz só sessionId + reference: reconsulta status na API.
  */
 export async function POST(request: Request) {
   try {

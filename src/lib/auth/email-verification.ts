@@ -44,13 +44,13 @@ export async function sendVerificationEmail(input: {
 
   const result = await sendEmail({
     to: input.to,
-    subject: 'Confirme seu e-mail — Resolva Jato',
+    subject: 'Confirme seu e-mail · Resolva Jato',
     html,
     text: `Confirme seu e-mail no Resolva Jato: ${input.verifyUrl}`
   });
 
   if (!result.sent && process.env.NODE_ENV !== 'production') {
-    console.info('[auth] e-mail não enviado — link de verificação:', input.verifyUrl, result.error);
+    console.info('[auth] e-mail não enviado, link de verificação:', input.verifyUrl, result.error);
   }
 
   return { sent: result.sent, error: result.error };

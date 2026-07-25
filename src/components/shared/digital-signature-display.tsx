@@ -38,7 +38,7 @@ export function DigitalSignatureDisplay({
   }
 
   const template = getSignatureTemplate(signature.styleId);
-  // Nunca usar subtitle (cidade/data) como traço da assinatura — isso travava a fonte do documento
+  // Nunca usar subtitle (cidade/data) como traço da assinatura: isso travava a fonte do documento
   const label = signature.text.trim() || 'Assinatura';
 
   return (

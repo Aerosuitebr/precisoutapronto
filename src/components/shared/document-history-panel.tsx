@@ -27,7 +27,7 @@ interface DocumentHistoryPanelProps {
 
 function formatUpdatedAt(value: string) {
   const time = Date.parse(value);
-  if (!Number.isFinite(time)) return '—';
+  if (!Number.isFinite(time)) return '-';
   return new Intl.DateTimeFormat('pt-BR', {
     dateStyle: 'short',
     timeStyle: 'short'

@@ -11,7 +11,7 @@ export interface ResumeExperience {
   endDate: string;
   current: boolean;
   description: string;
-  /** @deprecated legado — preferir startDate/endDate */
+  /** @deprecated legado: preferir startDate/endDate */
   period?: string;
 }
 
@@ -23,7 +23,7 @@ export interface ResumeEducation {
   startDate: string;
   endDate: string;
   details: string;
-  /** @deprecated legado — preferir startDate/endDate */
+  /** @deprecated legado: preferir startDate/endDate */
   period?: string;
 }
 
@@ -89,8 +89,8 @@ export function formatResumePeriod(params: {
 }) {
   const start = (params.startDate || '').trim();
   const end = params.current ? 'Atual' : (params.endDate || '').trim();
-  if (start && end) return `${start} – ${end}`;
-  if (start) return params.current ? `${start} – Atual` : start;
+  if (start && end) return `${start} a ${end}`;
+  if (start) return params.current ? `${start} a Atual` : start;
   if (end) return end;
   return (params.period || '').trim();
 }

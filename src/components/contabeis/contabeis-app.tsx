@@ -309,7 +309,7 @@ export function ContabeisApp() {
                   </h1>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
                     Contratos contábeis, procurações, entrega de documentos, e-CAC, residência e
-                    carta de responsabilidade — preencha e baixe o PDF.
+                    carta de responsabilidade. Preencha e baixe o PDF.
                   </p>
                 </div>
               </div>

@@ -213,8 +213,8 @@ function CorporativaLayout({ data, metrics, ink }: LayoutProps) {
         <div className="shrink-0 text-right">
           <p className={`text-[10px] font-bold uppercase tracking-[0.22em] ${accentText}`}>Proposta comercial</p>
           <p className="mt-1 text-base font-bold text-slate-900">{data.number || '-'}</p>
-          <p>Emissão: {data.issueDate ? formatDate(data.issueDate) : '—'}</p>
-          <p>Válida até: {metrics.validUntil ? formatDate(metrics.validUntil) : '—'}</p>
+          <p>Emissão: {data.issueDate ? formatDate(data.issueDate) : '-'}</p>
+          <p>Válida até: {metrics.validUntil ? formatDate(metrics.validUntil) : '-'}</p>
         </div>
       </header>
 
@@ -289,8 +289,8 @@ function ExecutivaLayout({ data, metrics, ink }: LayoutProps) {
           <div className="shrink-0 text-right">
             <p className={`text-[10px] font-bold uppercase tracking-[0.22em] ${headerFaint}`}>Proposta executiva</p>
             <p className="mt-1 text-lg font-bold">{data.number || '-'}</p>
-            <p className={headerMuted}>Emissão: {data.issueDate ? formatDate(data.issueDate) : '—'}</p>
-            <p className={headerMuted}>Válida até: {metrics.validUntil ? formatDate(metrics.validUntil) : '—'}</p>
+            <p className={headerMuted}>Emissão: {data.issueDate ? formatDate(data.issueDate) : '-'}</p>
+            <p className={headerMuted}>Válida até: {metrics.validUntil ? formatDate(metrics.validUntil) : '-'}</p>
           </div>
         </div>
         <div className={`mt-6 border-t pt-5 ${headerDivider}`}>
@@ -392,7 +392,7 @@ function CriativaLayout({ data, metrics, ink }: LayoutProps) {
           <p className={`text-[10px] font-bold uppercase tracking-[0.16em] ${sidebarFaint}`}>Proposta</p>
           <p className={`mt-1 font-bold ${sidebarStrong}`}>{data.number || '-'}</p>
           <p className={`mt-2 text-[10px] ${sidebarMuted}`}>
-            {data.issueDate ? formatDate(data.issueDate) : '—'}
+            {data.issueDate ? formatDate(data.issueDate) : '-'}
             {metrics.validUntil ? ` → ${formatDate(metrics.validUntil)}` : ''}
           </p>
         </div>

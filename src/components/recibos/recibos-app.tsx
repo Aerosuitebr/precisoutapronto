@@ -781,7 +781,7 @@ export function RecibosApp() {
                       </div>
                     ) : (
                       <p className="mt-3 text-xs text-slate-500">
-                        Assinatura desativada — o recibo usará só o nome do recebedor.
+                        Assinatura desativada. O recibo usará só o nome do recebedor.
                       </p>
                     )}
                   </div>
@@ -955,7 +955,7 @@ export function RecibosApp() {
               </div>
             ) : (
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-900">
-                Recibo completo — pronto para baixar o PDF.
+                Recibo completo. Pronto para baixar o PDF.
               </div>
             )}
 

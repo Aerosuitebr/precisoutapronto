@@ -130,7 +130,7 @@ function ContaContent() {
                 <div className="mt-6">
                   <p className="text-sm leading-6 text-slate-600">
                     Crie e baixe currículos, contratos, recibos e outros documentos com qualidade profissional.
-                    No plano gratuito o PDF inclui a marca Resolva Jato — remova por {PLANS.premium.priceLabel}
+                    No plano gratuito o PDF inclui a marca Resolva Jato. Remova por {PLANS.premium.priceLabel}
                     {PLANS.premium.period}.
                   </p>
                 </div>
@@ -141,7 +141,7 @@ function ContaContent() {
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
                       <div>
                         <p className="text-sm font-bold text-emerald-950">
-                          Premium ativo — documentos sem marca Resolva Jato
+                          Premium ativo: documentos sem marca Resolva Jato
                         </p>
                         <p className="mt-1 text-sm text-emerald-900">
                           PDFs limpos (sem rodapé e sem logo) ate{' '}

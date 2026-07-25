@@ -39,9 +39,9 @@ export interface SeoPageContent {
   slug: string;
   /** Nome curto da ferramenta, ex: "Currículo" */
   toolName: string;
-  /** H1 — deve conter a palavra-chave principal */
+  /** H1: deve conter a palavra-chave principal */
   h1: string;
-  /** Subtítulo do hero — benefício principal em 1 frase */
+  /** Subtítulo do hero: benefício principal em 1 frase */
   subtitle: string;
   ctaPrimary: string;
   ctaSecondary: string;

@@ -89,7 +89,7 @@ export function getSubscriptionState(): SubscriptionState | null {
   };
 }
 
-/** @deprecated Liberação manual removida — use /api/billing/confirm após pagamento. */
+/** @deprecated Liberação manual removida: use /api/billing/confirm após pagamento. */
 export async function grantPremiumMonth(): Promise<SubscriptionState | null> {
   throw new Error(
     'Liberação manual de Premium desativada. Conclua o pagamento no Mercado Pago.'

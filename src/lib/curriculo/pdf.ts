@@ -27,7 +27,7 @@ function normalizeCloneTextForPdf(root: HTMLElement) {
     if (!(el instanceof HTMLElement)) return;
     const cls = typeof el.className === 'string' ? el.className : '';
 
-    // Só sobrescreve alinhamento quando a classe pede — senão herda (ex.: assinatura centralizada).
+    // Só sobrescreve alinhamento quando a classe pede: senão herda (ex.: assinatura centralizada).
     if (/\btext-center\b/.test(cls)) el.style.textAlign = 'center';
     else if (/\btext-right\b/.test(cls)) el.style.textAlign = 'right';
     else if (/\btext-justify\b/.test(cls) || /\btext-left\b/.test(cls)) el.style.textAlign = 'left';
@@ -41,7 +41,7 @@ function normalizeCloneTextForPdf(root: HTMLElement) {
   });
 }
 
-/** Margem inferior do carimbo do rodapé (mm) — overlay, não reduz a área útil da página. */
+/** Margem inferior do carimbo do rodapé (mm): overlay, não reduz a área útil da página. */
 const PRINT_FOOTER_MARGIN_MM = 18;
 /** Última página com conteúdo real abaixo disso = órfão (assinaturas sozinhas). */
 const ORPHAN_LAST_PAGE_MM = 78;
@@ -129,7 +129,7 @@ function stampViralFooter(pdf: JsPdf, pageWidth: number, pageHeight: number) {
 async function stampWatermark(pdf: JsPdf, pageWidth: number, pageHeight: number) {
   const mark = await getWatermarkDataUrl();
   if (!mark) return;
-  // ~48% da largura da página — destaque sem cobrir o texto
+  // ~48% da largura da página: destaque sem cobrir o texto
   const markW = pageWidth * 0.48;
   const markH = markW * mark.aspect;
   const x = (pageWidth - markW) / 2;
@@ -144,7 +144,7 @@ async function stampPageBrand(pdf: JsPdf, pageWidth: number, pageHeight: number)
 
 function setBrandNodesVisibility(element: HTMLElement, visible: boolean) {
   element.querySelectorAll<HTMLElement>('[data-rj-brand]').forEach((node) => {
-    // display:none remove o espaço do rodapé no canvas — o carimbo do PDF cuida disso
+    // display:none remove o espaço do rodapé no canvas: o carimbo do PDF cuida disso
     node.style.display = visible ? '' : 'none';
   });
 }
@@ -195,7 +195,7 @@ function planPageStarts(
   pageHeightMm: number,
   keepRanges: KeepRangeMm[]
 ): { pageStarts: number[]; scale: number } {
-  // Cabe em uma página A4 (docs usam min-h 297mm — não reservar rodapé aqui)
+  // Cabe em uma página A4 (docs usam min-h 297mm: não reservar rodapé aqui)
   if (contentHeightMm <= pageHeightMm + 0.75) {
     return { pageStarts: [0], scale: 1 };
   }

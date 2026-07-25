@@ -18,8 +18,8 @@ export function PricingPage() {
           Gere grátis. Remova a marca quando quiser.
         </h1>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          No gratuito, o PDF leva o logo discreto e o rodapé do Resolva Jato — assim você avalia a
-          qualidade. Com o Premium, documentos limpos — sem rodapé nem logo — por 30 dias.
+          No gratuito, o PDF leva o logo discreto e o rodapé do Resolva Jato, assim você avalia a
+          qualidade. Com o Premium, documentos limpos, sem rodapé nem logo, por 30 dias.
         </p>
       </div>
 

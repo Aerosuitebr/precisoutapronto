@@ -74,7 +74,7 @@ export const CONTABIL_TEMPLATES: ContabilTemplateMeta[] = [
     previewClass: 'from-teal-900 to-slate-800',
     labels: {
       partyA: 'Declarante',
-      partyB: '—',
+      partyB: '-',
       showPartyB: false,
       objectLabel: 'Endereço declarado',
       valueLabel: 'Desde quando reside'

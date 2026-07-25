@@ -9,7 +9,7 @@ export interface SearchCategory {
   label: string;
   description: string;
   icon: LucideIcon;
-  /** Se true, o chip não filtra o catálogo — leva ao hub de ferramentas (exige login). */
+  /** Se true, o chip não filtra o catálogo: leva ao hub de ferramentas (exige login). */
   requiresAuth?: boolean;
   href?: string;
 }
@@ -114,7 +114,7 @@ function normalizeSearchText(value: string) {
     .toLowerCase();
 }
 
-/** Sinônimos para temas do dia a dia — evita zero resultado por termo literal. */
+/** Sinônimos para temas do dia a dia: evita zero resultado por termo literal. */
 const SEARCH_ALIASES: Record<string, string[]> = {
   emprego: ['emprego', 'vaga', 'vagas', 'carreira', 'curriculo', 'trabalho', 'linkedin'],
   curriculo: ['curriculo', 'emprego', 'carreira', 'linkedin', 'vaga'],

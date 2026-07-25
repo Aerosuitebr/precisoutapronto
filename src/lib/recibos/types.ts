@@ -27,7 +27,7 @@ export interface ReceiptData {
   templateId: ReceiptTemplateId;
   /** Fonte tipográfica do PDF (Arial, Calibri, Verdana). */
   fontId?: string;
-  /** Sem preenchimentos coloridos — só contornos pretos, para poupar tinta na impressão. */
+  /** Sem preenchimentos coloridos: só contornos pretos, para poupar tinta na impressão. */
   inkSaver: boolean;
   signature: DigitalSignature;
   updatedAt: string;

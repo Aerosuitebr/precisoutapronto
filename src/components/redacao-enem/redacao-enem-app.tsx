@@ -35,14 +35,14 @@ export function RedacaoEnemApp() {
       .map((c) => `C${c.id} - ${c.titulo}: ${c.nota}/200`)
       .join("\n");
     return [
-      "*Correção estimada de redação ENEM — Resolva Jato*",
+      "*Correção estimada de redação ENEM · Resolva Jato*",
       tema ? `Tema: ${tema}` : "",
       "",
       linhas,
       "",
       `*Nota estimada total: ${resultado.notaTotalEstimada}/1000*`,
       "",
-      "Estimativa automática baseada em heurísticas de estrutura, coesão e proposta de intervenção — não substitui a correção de um professor ou corretor humano do ENEM.",
+      "Estimativa automática baseada em heurísticas de estrutura, coesão e proposta de intervenção. Não substitui a correção de um professor ou corretor humano do ENEM.",
     ]
       .filter(Boolean)
       .join("\n");
@@ -220,7 +220,7 @@ export function RedacaoEnemApp() {
                 <p className="text-xs leading-5 text-slate-500">
                   Estimativa automática baseada em heurísticas de estrutura,
                   coesão e proposta de intervenção. Não substitui a correção
-                  humana — use como um primeiro raio-x antes de pedir revisão de
+                  humana. Use como um primeiro raio-x antes de pedir revisão de
                   um professor.
                 </p>
 

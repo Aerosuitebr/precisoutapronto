@@ -79,10 +79,10 @@ export function MeiVsCltApp() {
   function resumoTexto() {
     if (!resultadoClt || !resultadoMei) return "";
     return [
-      "*MEI vs CLT — Resolva Jato*",
+      "*MEI vs CLT · Resolva Jato*",
       "",
-      `CLT — líquido mensal médio (com 13º e férias diluídos): ${formatCurrency(resultadoClt.liquidoMensalEquivalente)}`,
-      `MEI — lucro líquido mensal estimado: ${formatCurrency(resultadoMei.lucroLiquido)}`,
+      `CLT · líquido mensal médio (com 13º e férias diluídos): ${formatCurrency(resultadoClt.liquidoMensalEquivalente)}`,
+      `MEI · lucro líquido mensal estimado: ${formatCurrency(resultadoMei.lucroLiquido)}`,
       "",
       diferenca !== null
         ? diferenca >= 0

@@ -259,7 +259,7 @@ export function buildDefaultClauses(data: LegalDocumentData): LegalClause[] {
 
     case 'relatorio-audiencia':
       return [
-        clause('c1', 'IDENTIFICAÇÃO DA AUDIÊNCIA', `${object}${data.caseNumber ? ` — processo nº ${caseNumber}` : ''}${data.court ? `, realizada perante ${court}` : ''}.`),
+        clause('c1', 'IDENTIFICAÇÃO DA AUDIÊNCIA', `${object}${data.caseNumber ? `, processo nº ${caseNumber}` : ''}${data.court ? `, realizada perante ${court}` : ''}.`),
         clause('c2', 'PARTICIPANTES E CONTEXTO', facts),
         clause('c3', 'ATOS REALIZADOS', request || '[descreva tentativas de conciliação, depoimentos, requerimentos e decisões]'),
         clause('c4', 'RESULTADO', '[registre o resultado, os encaminhamentos e os prazos fixados]'),

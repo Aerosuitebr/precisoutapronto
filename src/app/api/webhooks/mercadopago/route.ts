@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       }
     } else {
       console.warn(
-        '[mp-webhook] MERCADOPAGO_WEBHOOK_SECRET ausente — validação de assinatura desativada'
+        '[mp-webhook] MERCADOPAGO_WEBHOOK_SECRET ausente: validação de assinatura desativada'
       );
     }
 

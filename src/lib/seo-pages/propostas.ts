@@ -20,7 +20,7 @@ export const propostasSeoContent: SeoPageContent = {
     {
       icon: FileText,
       title: '3 modelos de proposta',
-      description: 'Corporativa, executiva ou criativa — escolha o estilo certo para o seu cliente.'
+      description: 'Corporativa, executiva ou criativa: escolha o estilo certo para o seu cliente.'
     },
     {
       icon: Palette,
@@ -30,7 +30,7 @@ export const propostasSeoContent: SeoPageContent = {
     {
       icon: TrendingUp,
       title: 'Itens e valores organizados',
-      description: 'Liste serviços ou produtos com quantidade e valor — o total é calculado automaticamente.'
+      description: 'Liste serviços ou produtos com quantidade e valor, e o total é calculado automaticamente.'
     },
     {
       icon: Sparkles,
@@ -45,7 +45,7 @@ export const propostasSeoContent: SeoPageContent = {
     },
     {
       title: 'Adicione os itens da proposta',
-      description: 'Serviços ou produtos, quantidade e valor — o total é somado automaticamente.'
+      description: 'Serviços ou produtos, quantidade e valor, e o total é somado automaticamente.'
     },
     {
       title: 'Baixe em PDF',
@@ -83,7 +83,7 @@ export const propostasSeoContent: SeoPageContent = {
     },
     {
       question: 'O valor total é calculado automaticamente?',
-      answer: 'Sim, basta adicionar os itens com quantidade e valor unitário — o total é somado automaticamente.'
+      answer: 'Sim, basta adicionar os itens com quantidade e valor unitário, e o total é somado automaticamente.'
     },
     {
       question: 'Qual modelo devo escolher?',
@@ -97,13 +97,13 @@ export const propostasSeoContent: SeoPageContent = {
   article: {
     title: 'Como fazer uma proposta comercial que converte',
     html: `
-      <p>Uma boa proposta comercial não é apenas uma lista de preços — é um documento que apresenta a solução, organiza expectativas e facilita a decisão do cliente. Propostas bem estruturadas aumentam a taxa de fechamento de negócios.</p>
+      <p>Uma boa proposta comercial não é apenas uma lista de preços: é um documento que apresenta a solução, organiza expectativas e facilita a decisão do cliente. Propostas bem estruturadas aumentam a taxa de fechamento de negócios.</p>
 
       <h2>Comece pelo problema do cliente</h2>
       <p>Antes de listar itens e valores, contextualize brevemente o que o cliente precisa resolver. Isso mostra que a proposta foi pensada especificamente para ele, e não é um modelo genérico reaproveitado.</p>
 
       <h2>Detalhe os itens com clareza</h2>
-      <p>Cada item da proposta deve ter nome, descrição objetiva, quantidade e valor. Evite agrupar tudo em uma única linha vaga — detalhar o que está incluso reduz dúvidas e retrabalho na negociação.</p>
+      <p>Cada item da proposta deve ter nome, descrição objetiva, quantidade e valor. Evite agrupar tudo em uma única linha vaga: detalhar o que está incluso reduz dúvidas e retrabalho na negociação.</p>
 
       <h2>Escolha o tom certo para o cliente</h2>
       <p>Uma proposta para uma grande empresa costuma pedir um tom mais formal e corporativo. Já para consultorias e escopos de trabalho específicos, um formato mais executivo e direto tende a funcionar melhor. Agências e freelancers criativos podem se beneficiar de um visual com mais identidade.</p>

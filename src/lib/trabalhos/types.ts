@@ -4,7 +4,7 @@ export interface TrabalhoData {
   id: string;
   title: string;
   templateId: TrabalhoTemplateId;
-  /** Fonte tipográfica do PDF (Times ou Arial — ABNT). */
+  /** Fonte tipográfica do PDF (Times ou Arial: ABNT). */
   fontId?: string;
   institution: string;
   courseOrGrade: string;

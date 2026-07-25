@@ -90,7 +90,7 @@ export interface NuPayPaymentStatus {
   timestamp?: string;
 }
 
-/** reference: rjprem_{userId}_{random} — único por tentativa. */
+/** reference: rjprem_{userId}_{random}: único por tentativa. */
 export function buildNuPayReference(userId: string) {
   const rand = Math.random().toString(36).slice(2, 10);
   return `rjprem_${userId}_${Date.now().toString(36)}_${rand}`;
@@ -127,7 +127,7 @@ export async function createNuPayPremiumSession(input: {
       lineItems: [
         {
           id: 'premium-30-dias',
-          description: 'Resolva Jato Premium — documentos sem marca · 30 dias',
+          description: 'Resolva Jato Premium: documentos sem marca · 30 dias',
           quantity: 1,
           price: amount
         }
@@ -207,7 +207,7 @@ export async function createNuPayPaymentFromSession(input: {
     items: [
       {
         id: 'premium-30-dias',
-        description: 'Resolva Jato Premium — 30 dias',
+        description: 'Resolva Jato Premium · 30 dias',
         value: amount,
         quantity: 1,
         discount: 0,

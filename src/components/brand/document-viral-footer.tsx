@@ -3,7 +3,7 @@ import rjEscuro from '@/assets/RJ_escuro.png';
 import { cn } from '@/lib/utils';
 import { viralPdfFooterLabel } from '@/lib/viral-loop';
 
-/** Marca d’água central com o logo Resolva Jato — destaque moderado. */
+/** Marca d’água central com o logo Resolva Jato: destaque moderado. */
 export function DocumentBrandWatermark({ className }: { className?: string }) {
   return (
     <div
@@ -19,7 +19,7 @@ export function DocumentBrandWatermark({ className }: { className?: string }) {
 }
 
 /**
- * Rodapé viral — posição da antiga linha de aviso (área imprimível).
+ * Rodapé viral: posição da antiga linha de aviso (área imprimível).
  * Alinhado ao carimbo do PDF em `exportElementToPdf`.
  */
 export function DocumentViralFooter({ className }: { className?: string }) {

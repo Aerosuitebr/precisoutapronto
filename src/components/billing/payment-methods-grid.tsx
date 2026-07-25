@@ -30,7 +30,7 @@ type Props = {
 
 /**
  * Grade de logos clicáveis com assets oficiais das marcas.
- * Sem botões de texto — só a marca leva ao checkout seguro.
+ * Sem botões de texto: só a marca leva ao checkout seguro.
  */
 export function PaymentMethodsGrid({ className, tone = 'dark' }: Props) {
   const isDark = tone === 'dark';

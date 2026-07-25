@@ -87,7 +87,7 @@ export function CronogramaEstudosApp() {
       })
       .join("\n");
     return [
-      "*Cronograma de Estudos — Resolva Jato*",
+      "*Cronograma de Estudos · Resolva Jato*",
       `${semanas} semana(s) · ${horasPorDia}h/dia · ${materias.length} matéria(s)`,
       "",
       "Semana 1 (modelo, se repete nas demais):",

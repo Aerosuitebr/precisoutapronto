@@ -82,7 +82,7 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
   const alertas: string[] = [];
   const pontosFortes: string[] = [];
 
-  // Competência 1 — norma culta (heurística: repetição excessiva de palavras, gírias, tamanho de frases)
+  // Competência 1: norma culta (heurística: repetição excessiva de palavras, gírias, tamanho de frases)
   const girias = GIRIAS.reduce((acc, g) => acc + countOccurrences(normalized, g), 0);
   const frasesMuitoLongas = trimmed
     .split(/[.!?]+/)
@@ -91,15 +91,15 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
   let nota1 = 160;
   if (girias > 0) {
     nota1 -= girias * 30;
-    alertas.push('Evite gírias e linguagem informal — a Competência 1 exige norma culta.');
+    alertas.push('Evite gírias e linguagem informal: a Competência 1 exige norma culta.');
   }
   if (frasesMuitoLongas > 1) {
     nota1 -= 20;
-    alertas.push('Algumas frases estão muito longas — pode indicar problema de pontuação/coesão.');
+    alertas.push('Algumas frases estão muito longas, o que pode indicar problema de pontuação/coesão.');
   }
   nota1 = Math.max(0, Math.min(200, nota1));
 
-  // Competência 2 — compreensão do tema e uso de repertório (proxy: tamanho do texto e diversidade lexical)
+  // Competência 2: compreensão do tema e uso de repertório (proxy: tamanho do texto e diversidade lexical)
   const palavrasUnicas = new Set(normalized.match(/[a-zà-ú]+/g) || []).size;
   const diversidadeLexical = palavras > 0 ? palavrasUnicas / palavras : 0;
   let nota2 = 120;
@@ -107,13 +107,13 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
   if (palavras >= 350) nota2 += 20;
   if (diversidadeLexical > 0.55) nota2 += 20;
   if (palavras < 150) {
-    alertas.push('Texto curto (menos de 150 palavras) — dificulta desenvolver bem o tema.');
+    alertas.push('Texto curto (menos de 150 palavras) dificulta desenvolver bem o tema.');
     nota2 -= 40;
   }
   nota2 = Math.max(0, Math.min(200, nota2));
   if (diversidadeLexical > 0.55) pontosFortes.push('Boa variedade de vocabulário.');
 
-  // Competência 3 — argumentação (proxy: presença de dados/repertório e nº de parágrafos)
+  // Competência 3: argumentação (proxy: presença de dados/repertório e nº de parágrafos)
   let nota3 = 120;
   if (paragrafos >= 4) nota3 += 30;
   else {
@@ -126,7 +126,7 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
   }
   nota3 = Math.max(0, Math.min(200, nota3));
 
-  // Competência 4 — coesão (proxy: conectivos)
+  // Competência 4: coesão (proxy: conectivos)
   const conectivosEncontrados = CONECTIVOS.filter((c) => normalized.includes(c));
   let nota4 = 100;
   nota4 += Math.min(conectivosEncontrados.length * 15, 90);
@@ -137,7 +137,7 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
   }
   nota4 = Math.max(0, Math.min(200, nota4));
 
-  // Competência 5 — proposta de intervenção (proxy: presença de marcadores de proposta no último parágrafo)
+  // Competência 5: proposta de intervenção (proxy: presença de marcadores de proposta no último parágrafo)
   const ultimoParagrafo = normalize(trimmed.split(/\n{1,}/).filter(Boolean).slice(-1)[0] || '');
   const marcadoresProposta = PROPOSTA_MARCADORES.filter((m) => ultimoParagrafo.includes(m));
   let nota5 = 80;
@@ -146,7 +146,7 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
     pontosFortes.push('Proposta de intervenção com agente e ação identificáveis.');
   } else if (marcadoresProposta.length === 1) {
     nota5 = 130;
-    alertas.push('Proposta de intervenção incompleta — detalhe agente, ação, meio e finalidade.');
+    alertas.push('Proposta de intervenção incompleta: detalhe agente, ação, meio e finalidade.');
   } else {
     alertas.push(
       'Não identificamos uma proposta de intervenção clara no último parágrafo (agente + ação + meio + finalidade).'

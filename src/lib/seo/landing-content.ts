@@ -31,7 +31,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     eyebrow: 'Orçamento digital + Pix',
     title: 'Gerador de orçamento com aprovação e Pix no WhatsApp',
     description:
-      'Monte o orçamento, envie o link, o cliente aprova no celular e você cobra com QR Code Pix — grátis para testar.',
+      'Monte o orçamento, envie o link, o cliente aprova no celular e você cobra com QR Code Pix. Grátis para testar.',
     heroBullets: [
       'Cliente aprova sem instalar app',
       'QR Pix e Copia e Cola prontos',
@@ -51,7 +51,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
       },
       {
         title: 'Feito para quem fecha no zap',
-        body: 'MEIs, freelancers e prestadores que vivem de orçamento rápido — sem ERP e sem mensalidade cara.'
+        body: 'MEIs, freelancers e prestadores que vivem de orçamento rápido, sem ERP e sem mensalidade cara.'
       }
     ],
     faqs: [
@@ -61,11 +61,11 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
       },
       {
         q: 'É grátis?',
-        a: 'Sim — documentos profissionais gratuitos. A busca de recursos também é grátis.'
+        a: 'Sim, documentos profissionais gratuitos. A busca de recursos também é grátis.'
       },
       {
         q: 'Serve para qualquer serviço?',
-        a: 'Sim — elétrica, design, reforma, aulas, consultoria. Basta listar itens e valores.'
+        a: 'Sim: elétrica, design, reforma, aulas, consultoria. Basta listar itens e valores.'
       }
     ],
     related: [
@@ -81,7 +81,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     eyebrow: 'Para MEI',
     title: 'Ferramentas grátis para MEI cobrar e profissionalizar',
     description:
-      'Orçamento com Pix, recibo, contrato e proposta — tudo pensado para quem atende pelo WhatsApp.',
+      'Orçamento com Pix, recibo, contrato e proposta. Tudo pensado para quem atende pelo WhatsApp.',
     heroBullets: [
       'Orçamento que o cliente aprova no celular',
       'Recibo e contrato sem papelaria',
@@ -92,7 +92,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     sections: [
       {
         title: 'Seu cliente já está no WhatsApp',
-        body: 'Mande o link do orçamento, receba a aprovação e cobre com Pix na hora — sem planilha.'
+        body: 'Mande o link do orçamento, receba a aprovação e cobre com Pix na hora, sem planilha.'
       },
       {
         title: 'Documentos com cara de empresa',
@@ -121,7 +121,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     path: '/para/freelancers',
     toolHref: '/ferramentas/propostas',
     eyebrow: 'Para freelancers',
-    title: 'Proposta, contrato e Pix — sem parecer amador',
+    title: 'Proposta, contrato e Pix sem parecer amador',
     description:
       'Feche trabalhos com proposta comercial, contrato e orçamento com Pix. Layouts com cara de agência.',
     heroBullets: [
@@ -134,11 +134,11 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     sections: [
       {
         title: 'Do briefing ao pagamento',
-        body: 'Envie a proposta, alinhe o contrato e cobre com link de orçamento + Pix — tudo no Resolva Jato.'
+        body: 'Envie a proposta, alinhe o contrato e cobre com link de orçamento + Pix, tudo no Resolva Jato.'
       },
       {
         title: 'Menos Word, mais fechamento',
-        body: 'Modelos prontos e PDF em um clique — com cara profissional, de graça.'
+        body: 'Modelos prontos e PDF em um clique, com cara profissional, de graça.'
       }
     ],
     faqs: [
@@ -168,7 +168,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     eyebrow: 'Para estudantes',
     title: 'Capa ABNT e currículo prontos antes do prazo',
     description:
-      'Gere capa de trabalho (escolar e universitária) e currículo profissional em minutos — grátis para testar.',
+      'Gere capa de trabalho (escolar e universitária) e currículo profissional em minutos. Grátis para testar.',
     heroBullets: [
       'Capa e folha de rosto no padrão ABNT',
       'Currículo com preview ao vivo',
@@ -209,7 +209,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     eyebrow: 'Currículo online',
     title: 'Gerador de currículo grátis em PDF',
     description:
-      'Monte um currículo profissional com preview ao vivo e baixe em PDF — layouts prontos, sem Word.',
+      'Monte um currículo profissional com preview ao vivo e baixe em PDF, com layouts prontos, sem Word.',
     heroBullets: [
       'Preview em tempo real',
       'Layouts com tipografia limpa',
@@ -240,13 +240,13 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
     eyebrow: 'Contratos',
     title: 'Gerador de contrato online grátis',
     description:
-      'Contratos de serviços, aluguel, trabalho e mais — editáveis, com assinaturas no PDF.',
+      'Contratos de serviços, aluguel, trabalho e mais: editáveis, com assinaturas no PDF.',
     heroBullets: ['Vários tipos prontos', 'Cláusulas com seus dados', 'PDF para assinar'],
     primaryCta: 'Criar contrato',
     sections: [
       {
         title: 'Sem fila na papelaria',
-        body: 'Preencha as partes, ajuste cláusulas e baixe. Modelo orientativo — revise antes de assinar.'
+        body: 'Preencha as partes, ajuste cláusulas e baixe. Modelo orientativo: revise antes de assinar.'
       }
     ],
     faqs: [

@@ -57,7 +57,7 @@ export default function DesignSystemPage() {
 
   const cpfError = useMemo(() => {
     if (!cpf.trim()) return undefined;
-    return isCpfShape(cpf) ? undefined : 'CPF inválido — use 11 dígitos.';
+    return isCpfShape(cpf) ? undefined : 'CPF inválido. Use 11 dígitos.';
   }, [cpf]);
 
   async function simulateSave() {
@@ -176,7 +176,7 @@ export default function DesignSystemPage() {
           <FormField label="E-mail" htmlFor="ds-email" hint="Usado só para contato do documento.">
             <Input id="ds-email" type="email" inputMode="email" placeholder="voce@email.com" />
           </FormField>
-          <FormField label="Observações" htmlFor="ds-obs" className="sm:col-span-2" hint="Opcional — aparece no rodapé do PDF.">
+          <FormField label="Observações" htmlFor="ds-obs" className="sm:col-span-2" hint="Opcional. Aparece no rodapé do PDF.">
             <Textarea id="ds-obs" placeholder="Ex.: pagamento em até 7 dias úteis…" rows={4} />
           </FormField>
         </div>

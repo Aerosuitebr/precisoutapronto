@@ -197,10 +197,10 @@ export function OrcamentosApp() {
       hints.push('Informe o WhatsApp do cliente para enviar o link.');
     }
     if (clienteWhatsapp.trim() && !isValidPhone(clienteWhatsapp)) {
-      hints.push('WhatsApp do cliente inválido — use DDD + número.');
+      hints.push('WhatsApp do cliente inválido. Use DDD + número.');
     }
     if (profissionalWhatsapp.trim() && !isValidPhone(profissionalWhatsapp)) {
-      hints.push('Seu WhatsApp parece incompleto — confira o DDD.');
+      hints.push('Seu WhatsApp parece incompleto. Confira o DDD.');
     }
     if (clienteEmail.trim() && !isValidEmail(clienteEmail)) {
       hints.push('E-mail do cliente inválido.');
@@ -849,7 +849,7 @@ export function OrcamentosApp() {
                       ? 'E-mail inválido.'
                       : undefined
                   }
-                  hint="Opcional — útil para histórico e recontato."
+                  hint="Opcional. Útil para histórico e recontato."
                 >
                   <Input
                     id="orc-cliente-email"
@@ -1107,7 +1107,7 @@ export function OrcamentosApp() {
                 </div>
                 <div className="mt-3 rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">
                   {usage.unlimited
-                    ? 'Premium — documentos sem marca Resolva Jato'
+                    ? 'Premium: documentos sem marca Resolva Jato'
                     : 'Ferramentas profissionais liberadas na sua conta'}
                 </div>
 
@@ -1139,7 +1139,7 @@ export function OrcamentosApp() {
                             {item.label}
                           </span>
                           <span className="mt-0.5 block text-xs leading-4 text-slate-600">
-                            {item.done ? 'Concluído — clique para revisar' : item.hint}
+                            {item.done ? 'Concluído. Clique para revisar' : item.hint}
                           </span>
                         </span>
                       </button>
@@ -1174,7 +1174,7 @@ export function OrcamentosApp() {
                   <p className="mt-2 text-xs font-medium leading-5 text-amber-800">{blockedHint}</p>
                 ) : (
                   <p className="mt-2 text-xs font-medium leading-5 text-emerald-800">
-                    Tudo certo — pronto para gerar o link de aprovação.
+                    Tudo certo. Pronto para gerar o link de aprovação.
                   </p>
                 )}
               </div>

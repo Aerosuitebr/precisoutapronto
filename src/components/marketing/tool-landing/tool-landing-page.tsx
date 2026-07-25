@@ -20,7 +20,7 @@ interface ToolLandingPageProps {
   content: SeoPageContent;
   /** Mockup estático/leve exibido no hero. */
   heroMockup: ReactNode;
-  /** Área "Ferramenta" — preview interativo real, específico de cada ferramenta. */
+  /** Área "Ferramenta": preview interativo real, específico de cada ferramenta. */
   toolPreview: ReactNode;
   /** Miniaturas reais dos modelos (ex: ResumePreview em escala). */
   examples: ToolLandingExampleItem[];

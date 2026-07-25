@@ -123,7 +123,7 @@ export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult>
   }
 
   if (process.env.NODE_ENV !== 'production') {
-    console.info('[mail] nenhum provedor — e-mail simulado', {
+    console.info('[mail] nenhum provedor, e-mail simulado', {
       to: input.to,
       subject: input.subject
     });

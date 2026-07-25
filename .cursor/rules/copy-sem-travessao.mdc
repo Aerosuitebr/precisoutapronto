@@ -1,0 +1,26 @@
+---
+description: Padrão de escrita dos textos do Resolva Jato (proibido travessão)
+alwaysApply: true
+---
+
+# Textos sem travessão
+
+Nunca use travessão (`—`) nem meia-risca (`–`) em nenhum texto do produto: copy de
+landing e SEO, títulos e metadados, labels e hints de formulário, toasts, e-mails,
+mensagens de WhatsApp/SMS, templates de documento e comentários de código.
+
+Use no lugar:
+
+- `,` quando o trecho depois do dash for aposto ou complemento da mesma frase.
+- `.` quando forem duas ideias independentes (a segunda começa com maiúscula).
+- `:` quando o trecho depois do dash explicar, detalhar ou listar o anterior.
+- `( )` quando for informação acessória.
+- `·` apenas para separar rótulo e valor em títulos curtos, ex.: `Premium · 30 dias`.
+- `a` em intervalos, ex.: `de 10 a 12 pt`, `2022 a 2024`.
+
+Exceções permitidas (não são texto, são parsing):
+
+- Expressões regulares que precisam reconhecer travessão vindo de entrada do usuário,
+  como `src/lib/copy.ts` e `src/lib/curriculo/defaults.ts`.
+
+Para higienizar texto dinâmico em runtime, use `withoutDashes()` de `src/lib/copy.ts`.

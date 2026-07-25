@@ -1,4 +1,4 @@
-/** Fontes padrão de sistema — compatíveis com PDF/impressão e ATS. */
+/** Fontes padrão de sistema: compatíveis com PDF/impressão e ATS. */
 
 export type DocumentFontId =
   | 'calibri'
@@ -32,14 +32,14 @@ export const DOCUMENT_FONTS: Record<DocumentFontId, DocumentFontMeta> = {
     name: 'Calibri',
     stack: 'Calibri, Candara, Segoe UI, Optima, sans-serif',
     category: 'sans',
-    blurb: 'Moderna e legível em tela — comum em currículos ATS.'
+    blurb: 'Moderna e legível em tela, comum em currículos ATS.'
   },
   arial: {
     id: 'arial',
     name: 'Arial',
     stack: 'Arial, Helvetica, "Helvetica Neue", sans-serif',
     category: 'sans',
-    blurb: 'Clara e universal — ótima para recibos e textos curtos.'
+    blurb: 'Clara e universal, ótima para recibos e textos curtos.'
   },
   helvetica: {
     id: 'helvetica',
@@ -67,7 +67,7 @@ export const DOCUMENT_FONTS: Record<DocumentFontId, DocumentFontMeta> = {
     name: 'Garamond',
     stack: 'Garamond, "Palatino Linotype", Palatino, "Book Antiqua", serif',
     category: 'serif',
-    blurb: 'Elegante e formal — ótima para textos longos impressos.'
+    blurb: 'Elegante e formal, ótima para textos longos impressos.'
   },
   georgia: {
     id: 'georgia',
@@ -88,7 +88,7 @@ interface KindFontConfig {
 export const DOCUMENT_FONT_PRESETS: Record<DocumentFontKind, KindFontConfig> = {
   curriculo: {
     label: 'Fonte do currículo',
-    hint: 'Sans-serif favorece ATS e leitura em tela. Corpo 10–12 pt; títulos 14–16 pt.',
+    hint: 'Sans-serif favorece ATS e leitura em tela. Corpo de 10 a 12 pt; títulos de 14 a 16 pt.',
     defaultId: 'calibri',
     options: ['calibri', 'arial', 'helvetica', 'garamond', 'verdana']
   },
@@ -106,7 +106,7 @@ export const DOCUMENT_FONT_PRESETS: Record<DocumentFontKind, KindFontConfig> = {
   },
   peticao: {
     label: 'Fonte do documento',
-    hint: 'Tradicionais do meio jurídico — seriedade e autoridade.',
+    hint: 'Tradicionais do meio jurídico: seriedade e autoridade.',
     defaultId: 'times',
     options: ['times', 'garamond']
   },

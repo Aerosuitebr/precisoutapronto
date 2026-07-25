@@ -113,7 +113,7 @@ export function PropostaLivePreview() {
 
         <div>
           <span className="mb-2 block text-sm font-semibold text-slate-800">
-            Modelo <span className="font-normal text-slate-500">— veja a mudança em tempo real</span>
+            Modelo <span className="font-normal text-slate-500">(veja a mudança em tempo real)</span>
           </span>
           <div className="flex flex-wrap gap-2">
             {TEMPLATES.map((template) => (

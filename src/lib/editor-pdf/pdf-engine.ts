@@ -577,9 +577,9 @@ export async function extractPageGraphicOverlays(
   const pushImageSlot = () => {
     // Imagem PDF: quadrado unitário transformado pelo CTM.
     const box = boxFromUserQuad(viewport, pdfjs, ctm, 0, 0, 1, 1);
-    const areaPct = (box.w * box.h) / 100; // % da área da página (0–100)
+    const areaPct = (box.w * box.h) / 100; // % da área da página (0-100)
     // Fundos rasterizados (ex.: DANFE/comprovante em página inteira) não podem
-    // virar overlay — cobrem 100% e roubam o clique do texto.
+    // virar overlay: cobrem 100% e roubam o clique do texto.
     if (areaPct > 35 || (box.w > 85 && box.h > 85)) return;
     if (areaPct < 0.2 || box.w < 0.5 || box.h < 0.5) return;
     if (overlays.some((o) => o.kind === 'image' && Math.abs(o.x - box.x) < 0.35 && Math.abs(o.y - box.y) < 0.35)) {
@@ -603,7 +603,7 @@ export async function extractPageGraphicOverlays(
     const box = boxFromUserQuad(viewport, pdfjs, ctm, ux, uy, ux + absW, uy + absH);
     const minSide = Math.min(box.w, box.h);
     const maxSide = Math.max(box.w, box.h);
-    // Contas/boletos têm traços curtos e regras um pouco mais grossas — limiares mais permissivos.
+    // Contas/boletos têm traços curtos e regras um pouco mais grossas: limiares mais permissivos.
     if (maxSide < 3.5) return;
     const isLine = minSide <= 3.8 && maxSide >= 3.5 && minSide / maxSide < 0.16;
     if (!isLine) return;

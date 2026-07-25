@@ -106,7 +106,7 @@ export const PAYMENT_METHODS: Array<{
   label: string;
   href: string;
   description: string;
-  /** Stripe já vem como arte completa — preenche o botão. */
+  /** Stripe já vem como arte completa: preenche o botão. */
   cover?: boolean;
   surface: 'white' | 'brand';
 }> = [

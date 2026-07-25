@@ -83,12 +83,12 @@ export function DivisorContaApp() {
       .map((p) => `• ${p.nome}: ${formatCurrency(p.total)}`)
       .join("\n");
     return [
-      "*Divisão da conta — Resolva Jato*",
+      "*Divisão da conta · Resolva Jato*",
       `Valor total (com taxa de serviço): ${formatCurrency(resultado.totalComTaxa)}`,
       "",
       linhas,
       "",
-      "Divisão automática — confira antes de pagar.",
+      "Divisão automática. Confira antes de pagar.",
     ].join("\n");
   }
 

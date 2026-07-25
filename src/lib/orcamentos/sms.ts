@@ -1,4 +1,4 @@
-/** SMS via Twilio — chega em qualquer iPhone/Android sem instalar o site. */
+/** SMS via Twilio: chega em qualquer iPhone/Android sem instalar o site. */
 
 export interface SendSmsResult {
   sent: boolean;

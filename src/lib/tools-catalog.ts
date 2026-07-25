@@ -224,7 +224,7 @@ export const toolsCatalog: ToolDefinition[] = [
     name: "Lattes Inteligente",
     description:
       "Trajetória acadêmica organizada, com revisão e PDF para editais.",
-    tip: "Não envia dados à Plataforma Lattes oficial — organiza o seu currículo acadêmico.",
+    tip: "Não envia dados à Plataforma Lattes oficial. Apenas organiza o seu currículo acadêmico.",
     href: "/ferramentas/curriculo-lattes",
     icon: GraduationCap,
     categoryId: "carreira",
@@ -332,7 +332,7 @@ export const toolsCatalog: ToolDefinition[] = [
     name: "Corretor de Redação ENEM",
     description:
       "Estimativa de nota por competência, com pontos fortes e alertas.",
-    tip: "Estimativa automática por heurísticas — não substitui a correção humana.",
+    tip: "Estimativa automática por heurísticas. Não substitui a correção humana.",
     href: "/ferramentas/redacao-enem",
     icon: PenLine,
     categoryId: "carreira",
@@ -391,7 +391,7 @@ export const toolsCatalog: ToolDefinition[] = [
     name: "Editor de PDF",
     description:
       "Edite texto e imagens, redimensione páginas, junte, gire e extraia PDFs.",
-    tip: "Tudo roda no seu navegador — o arquivo nunca é enviado para um servidor.",
+    tip: "Tudo roda no seu navegador. O arquivo nunca é enviado para um servidor.",
     href: "/ferramentas/editor-pdf",
     icon: FileStack,
     categoryId: "organizacao",

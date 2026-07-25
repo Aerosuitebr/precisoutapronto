@@ -111,14 +111,14 @@ export function CurriculoLivePreview() {
             className="w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus-visible:border-sky-500 focus-visible:ring-2 focus-visible:ring-sky-200"
           />
           <p id="cv-experiencia-dica" className="mt-1 text-xs font-medium text-slate-500">
-            Dica: descreva resultados alcançados (números, %) em vez de apenas listar tarefas — isso pesa mais para o
+            Dica: descreva resultados alcançados (números, %) em vez de apenas listar tarefas. Isso pesa mais para o
             recrutador e para os sistemas de triagem (ATS).
           </p>
         </div>
 
         <div>
           <span className="mb-2 block text-sm font-semibold text-slate-800">
-            Modelo <span className="font-normal text-slate-500">— veja a mudança em tempo real</span>
+            Modelo <span className="font-normal text-slate-500">(veja a mudança em tempo real)</span>
           </span>
           <div className="flex flex-wrap gap-2">
             {RESUME_TEMPLATES.map((template) => (

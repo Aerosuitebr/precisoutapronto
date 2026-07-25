@@ -30,7 +30,7 @@ export const juridicosSeoContent: SeoPageContent = {
     {
       icon: ShieldCheck,
       title: 'Campos guiados por tipo de peça',
-      description: 'Cada modelo pede exatamente os dados necessários — poderes, número do processo, prazo, entre outros.'
+      description: 'Cada modelo pede exatamente os dados necessários: poderes, número do processo, prazo, entre outros.'
     },
     {
       icon: Sparkles,
@@ -61,7 +61,7 @@ export const juridicosSeoContent: SeoPageContent = {
     },
     {
       title: 'Contrato de honorários',
-      description: 'Formaliza o mandato e a forma de remuneração — fixo, êxito ou misto.',
+      description: 'Formaliza o mandato e a forma de remuneração: fixo, êxito ou misto.',
       image: '',
       href: '/cadastro?next=/ferramentas/juridicos'
     },
@@ -105,13 +105,13 @@ export const juridicosSeoContent: SeoPageContent = {
       <p>A procuração ad judicia outorga poderes ao advogado para representar o cliente em juízo. É importante especificar corretamente os poderes conferidos (propor ações, contestar, recorrer, transigir, substabelecer) e, quando necessário, prever poderes especiais.</p>
 
       <h2>Contrato de honorários: formalize a remuneração</h2>
-      <p>Definir por escrito o objeto da atuação e a forma de remuneração — fixa, por êxito ou mista — protege tanto o advogado quanto o cliente e evita disputas futuras sobre valores devidos.</p>
+      <p>Definir por escrito o objeto da atuação e a forma de remuneração (fixa, por êxito ou mista) protege tanto o advogado quanto o cliente e evita disputas futuras sobre valores devidos.</p>
 
       <h2>Notificação extrajudicial: antes de judicializar</h2>
       <p>Muitas questões podem ser resolvidas com uma notificação formal, que comunica a outra parte sobre uma pendência e estabelece um prazo para regularização antes de qualquer medida judicial.</p>
 
       <h2>Documentos acadêmicos de Direito</h2>
-      <p>Estudantes e pesquisadores também usam modelos estruturados para fichamento de jurisprudência, estudo de caso e pareceres acadêmicos — documentos que seguem uma lógica de organização parecida com as peças profissionais, mas voltados para produção acadêmica.</p>
+      <p>Estudantes e pesquisadores também usam modelos estruturados para fichamento de jurisprudência, estudo de caso e pareceres acadêmicos, documentos que seguem uma lógica de organização parecida com as peças profissionais, mas voltados para produção acadêmica.</p>
 
       <p>Com o gerador de documentos jurídicos do Resolva Jato, você escolhe o tipo de peça, preenche os dados guiados e baixa um PDF organizado, pronto para revisão e assinatura.</p>
     `

@@ -50,7 +50,7 @@ const ZOOM_MIN = 50;
 const ZOOM_MAX = 400;
 const ZOOM_STEP = 25;
 const ZOOM_BASE_WIDTH = 720;
-/** Espessura visual padrão de linha (% da página) — fina o bastante para contas/tabelas. */
+/** Espessura visual padrão de linha (% da página): fina o bastante para contas/tabelas. */
 const LINE_THICKNESS_DEFAULT = 0.12;
 const LINE_THICKNESS_MIN = 0.05;
 const LINE_THICKNESS_MAX = 1.2;
@@ -1305,7 +1305,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                   Clique em texto, imagem ou linha. Ctrl+Z desfaz · Ctrl+Y refaz. Setas movem;
               Delete remove.
               {imageSlot
-                ? ' Espaço de imagem guardado — use “Imagem” na barra para inserir outra no mesmo tamanho.'
+                ? ' Espaço de imagem guardado. Use “Imagem” na barra para inserir outra no mesmo tamanho.'
                 : ''}
                 </p>
               ) : selected.kind !== 'text' ? (

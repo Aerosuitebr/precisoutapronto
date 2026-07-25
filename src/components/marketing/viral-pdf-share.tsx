@@ -23,7 +23,7 @@ export function ViralPdfShareModal({
     <Modal
       open={open}
       onClose={onClose}
-      title="PDF pronto — espalhe o link"
+      title="PDF pronto. Espalhe o link"
       description={`Seu ${docLabel} já baixou. Um toque no WhatsApp ajuda o Resolva Jato a crescer.`}
       size="md"
       footer={

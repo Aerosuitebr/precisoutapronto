@@ -39,9 +39,9 @@ export interface PageOverlay {
   /** Espessura do traço em % da menor aresta da página. */
   strokeWidth?: number;
   opacity?: number;
-  /** Veio do conteúdo do PDF — edição in-place. */
+  /** Veio do conteúdo do PDF: edição in-place. */
   fromPdf?: boolean;
-  /** Usuário alterou posição/conteúdo — precisa redesenhar no export. */
+  /** Usuário alterou posição/conteúdo: precisa redesenhar no export. */
   dirty?: boolean;
   /** Desenha fundo branco atrás (cobre o pixel original no export). */
   coverBackground?: boolean;
@@ -120,7 +120,7 @@ export function resolvePageSize(
   };
 }
 
-/** Overlay do PDF ainda não alterado — deve só servir de hit-target. */
+/** Overlay do PDF ainda não alterado: deve só servir de hit-target. */
 export function isFromPdfPristine(overlay: PageOverlay): boolean {
   return Boolean(overlay.fromPdf) && !overlay.dirty;
 }

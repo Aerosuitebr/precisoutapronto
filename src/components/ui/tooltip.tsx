@@ -10,7 +10,7 @@ export interface TooltipProps {
   className?: string;
 }
 
-/** Tooltip escuro de alto contraste — aparece no hover/foco. */
+/** Tooltip escuro de alto contraste: aparece no hover/foco. */
 export function Tooltip({ label, children, side = 'top', className }: TooltipProps) {
   const id = useId();
   const [open, setOpen] = useState(false);

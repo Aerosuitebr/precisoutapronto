@@ -330,7 +330,7 @@ export function EditorPdfApp() {
               {loading ? 'Carregando páginas…' : 'Arraste seus PDFs aqui ou clique para selecionar'}
             </p>
             <p className="max-w-md text-sm leading-6 text-slate-500">
-              Envie um ou vários arquivos — depois clique em <strong>Editar</strong> em cada página para
+              Envie um ou vários arquivos. Depois clique em <strong>Editar</strong> em cada página para
               alterar o conteúdo. Máx. {MAX_FILE_MB}MB por arquivo.
             </p>
             <Button variant="outline" size="sm" icon={FileUp} disabled={loading}>

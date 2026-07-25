@@ -25,7 +25,7 @@ export function ToolLandingShare({ toolName, className }: { toolName: string; cl
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // silencioso — clipboard pode ser bloqueado
+      // silencioso: clipboard pode ser bloqueado
     }
   }
 

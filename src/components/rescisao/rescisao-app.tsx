@@ -87,7 +87,7 @@ export function RescisaoApp() {
       )
       .join("\n");
     return [
-      `*Cálculo de Rescisão — Resolva Jato*`,
+      `*Cálculo de Rescisão · Resolva Jato*`,
       `Modalidade: ${TIPO_RESCISAO_LABEL[tipo]}`,
       "",
       linhas,
@@ -326,7 +326,7 @@ export function RescisaoApp() {
                   <p className="text-xs leading-5 text-slate-500">
                     Valores brutos, sem descontos de INSS/IRRF, e não incluem
                     eventuais horas extras, comissões ou verbas variáveis.
-                    Estimativa educativa — confirme com contador ou advogado
+                    Estimativa educativa. Confirme com contador ou advogado
                     trabalhista.
                   </p>
 

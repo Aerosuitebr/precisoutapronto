@@ -47,7 +47,7 @@ function loadMercadoPagoSdk(): Promise<void> {
 }
 
 /**
- * Formulário de cartão embutido (Card Payment Brick) — coleta nome do titular,
+ * Formulário de cartão embutido (Card Payment Brick): coleta nome do titular,
  * número, validade, CVV e CPF em um único formulário no nosso próprio visual,
  * sem redirecionar para o Checkout Pro. Usado apenas no fluxo "cartão"; Pix e
  * boleto continuam pela preferência de checkout (Checkout Pro).

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 interface ProgressBannerProps {
   label?: string;
-  /** 0–100; omitido = indeterminado */
+  /** 0 a 100; omitido = indeterminado */
   value?: number;
   className?: string;
 }

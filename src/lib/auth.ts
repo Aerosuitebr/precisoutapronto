@@ -18,7 +18,7 @@ function isBrowser() {
   return typeof window !== 'undefined';
 }
 
-/** Cache local só para namespace de storage de documentos — a sessão real é o cookie httpOnly. */
+/** Cache local só para namespace de storage de documentos: a sessão real é o cookie httpOnly. */
 export function getSession(): AuthSession | null {
   if (!isBrowser()) return null;
   try {

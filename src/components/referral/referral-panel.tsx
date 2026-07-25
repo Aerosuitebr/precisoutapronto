@@ -76,7 +76,7 @@ export function ReferralPanel({ className }: { className?: string }) {
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
             Seu amigo precisa confirmar o e-mail e usar uma ferramenta (salvar ou baixar PDF). Aí
-            conta como ativo. A cada 3, você ganha 30 dias de Premium — empilha com o que já tiver.
+            conta como ativo. A cada 3, você ganha 30 dias de Premium, que empilha com o que já tiver.
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={() => void load()} disabled={loading}>

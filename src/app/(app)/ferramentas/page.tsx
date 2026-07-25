@@ -79,7 +79,7 @@ export default function FerramentasPage() {
     let localCollapsed = loadCollapsedCategoryIds();
 
     // Primeira visita (sem nenhuma personalização ainda): recolhe as categorias
-    // por padrão, deixando só a primeira aberta — reduz sobrecarga cognitiva.
+    // por padrão, deixando só a primeira aberta: reduz sobrecarga cognitiva.
     if (
       !hasCustomizedSections() &&
       localCollapsed.length === 0 &&

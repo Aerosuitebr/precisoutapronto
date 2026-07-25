@@ -85,7 +85,7 @@ export function PrecificacaoApp() {
 
   const partialHint = useMemo(() => {
     if (!resultado) {
-      if (custoDireto > 0) return `Materiais: ${formatCurrency(custoDireto)} — continue para cobrir seu tempo.`;
+      if (custoDireto > 0) return `Materiais: ${formatCurrency(custoDireto)}. Continue para cobrir seu tempo.`;
       return 'Preencha o primeiro valor e o preço sugerido aparece na hora.';
     }
     if (step === 'custos') {
@@ -113,7 +113,7 @@ export function PrecificacaoApp() {
   function resumoTexto() {
     if (!resultado) return '';
     return [
-      '*Precificação — Resolva Jato*',
+      '*Precificação · Resolva Jato*',
       `Custo total (material + mão de obra + rateio fixo): ${formatCurrency(resultado.custoTotal)}`,
       `Preço de venda sugerido: ${formatCurrency(resultado.precoFinal)}`,
       `Lucro líquido estimado por venda: ${formatCurrency(resultado.lucroLiquidoPorVenda)} (${resultado.margemLiquidaReal.toFixed(1)}%)`,
@@ -179,7 +179,7 @@ export function PrecificacaoApp() {
                   icon={Package}
                   tone="sky"
                   title="Quanto você gasta em materiais?"
-                  subtitle="Insumos, embalagem, deslocamento — o que sai do bolso por unidade."
+                  subtitle="Insumos, embalagem, deslocamento: o que sai do bolso por unidade."
                 />
                 <FormField
                   label="Materiais e insumos"
@@ -239,7 +239,7 @@ export function PrecificacaoApp() {
                   icon={Wallet}
                   tone="amber"
                   title="E os custos que vêm todo mês?"
-                  subtitle="Aluguel, internet, ferramentas — rateamos pelas vendas do mês."
+                  subtitle="Aluguel, internet, ferramentas: rateamos pelas vendas do mês."
                 />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <FormField label="Custos fixos mensais" htmlFor="custos-fixos" hint="Se não tiver, deixe zero.">
@@ -315,7 +315,7 @@ export function PrecificacaoApp() {
                   Continuar
                 </Button>
               ) : (
-                <p className="text-xs font-semibold text-emerald-800">Pronto — confira o preço ao lado.</p>
+                <p className="text-xs font-semibold text-emerald-800">Pronto. Confira o preço ao lado.</p>
               )}
             </div>
           </section>
@@ -374,7 +374,7 @@ export function PrecificacaoApp() {
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">Markup</p>
                     <p className="rj-display mt-1 text-lg font-bold text-slate-900">
-                      {resultado.markup > 0 ? `${resultado.markup.toFixed(2)}x` : '—'}
+                      {resultado.markup > 0 ? `${resultado.markup.toFixed(2)}x` : '-'}
                     </p>
                   </div>
                 </div>

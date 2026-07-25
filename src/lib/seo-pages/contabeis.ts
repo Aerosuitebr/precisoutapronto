@@ -6,7 +6,7 @@ export const contabeisSeoContent: SeoPageContent = {
   toolName: 'Documento Contábil',
   h1: 'Gerador de Documentos Contábeis e de Despacho Gratuito',
   subtitle:
-    'Contrato de serviços contábeis, procuração para contador, autorização e-CAC/gov.br, termo de entrega de documentos e mais — prontos em minutos e em PDF.',
+    'Contrato de serviços contábeis, procuração para contador, autorização e-CAC/gov.br, termo de entrega de documentos e mais, prontos em minutos e em PDF.',
   ctaPrimary: 'Criar documento grátis',
   ctaSecondary: 'Ver modelos disponíveis',
   ctaHref: '/cadastro?next=/ferramentas/contabeis',
@@ -35,7 +35,7 @@ export const contabeisSeoContent: SeoPageContent = {
     {
       icon: Sparkles,
       title: 'Atualize quando quiser',
-      description: 'Seus documentos ficam salvos na conta — edite valores e vigência sem recomeçar do zero.'
+      description: 'Seus documentos ficam salvos na conta: edite valores e vigência sem recomeçar do zero.'
     }
   ],
   steps: [
@@ -97,16 +97,16 @@ export const contabeisSeoContent: SeoPageContent = {
   article: {
     title: 'Documentos que organizam a rotina de contadores e despachantes',
     html: `
-      <p>Escritórios de contabilidade e despachantes lidam com um volume alto de documentos recorrentes — contratos de serviço, procurações e autorizações que se repetem para cada novo cliente. Ter modelos padronizados reduz retrabalho e evita esquecer alguma cláusula importante.</p>
+      <p>Escritórios de contabilidade e despachantes lidam com um volume alto de documentos recorrentes: contratos de serviço, procurações e autorizações que se repetem para cada novo cliente. Ter modelos padronizados reduz retrabalho e evita esquecer alguma cláusula importante.</p>
 
       <h2>Contrato de serviços contábeis</h2>
-      <p>Define claramente o escopo do serviço (escrituração, apuração de impostos, obrigações acessórias como SPED e DCTF), o valor mensal e a forma de pagamento — essencial para evitar divergências sobre o que está incluso no contrato.</p>
+      <p>Define claramente o escopo do serviço (escrituração, apuração de impostos, obrigações acessórias como SPED e DCTF), o valor mensal e a forma de pagamento, essencial para evitar divergências sobre o que está incluso no contrato.</p>
 
       <h2>Procuração profissional</h2>
       <p>Outorga poderes específicos para o contador ou despachante representar o cliente perante órgãos públicos, sem depender da presença do cliente em cada trâmite.</p>
 
       <h2>Autorização e-CAC / gov.br</h2>
-      <p>Formaliza, no papel, a autorização que o cliente concede ao profissional para acessar serviços digitais em seu nome — um passo complementar ao vínculo feito diretamente nos portais oficiais.</p>
+      <p>Formaliza, no papel, a autorização que o cliente concede ao profissional para acessar serviços digitais em seu nome, um passo complementar ao vínculo feito diretamente nos portais oficiais.</p>
 
       <h2>Termo de entrega de documentos</h2>
       <p>Registra quais documentos foram entregues pelo cliente e em qual data, protegendo o escritório em caso de dúvidas futuras sobre o que foi ou não recebido.</p>

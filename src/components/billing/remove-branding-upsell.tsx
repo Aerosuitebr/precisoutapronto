@@ -60,7 +60,7 @@ function BrandComparison() {
 }
 
 /**
- * Banner Premium nas ferramentas — mesmo padrão visual da conta.
+ * Banner Premium nas ferramentas: mesmo padrão visual da conta.
  * Com Premium ativo, mostra a vigência sem marca.
  */
 export function RemoveBrandingUpsell({

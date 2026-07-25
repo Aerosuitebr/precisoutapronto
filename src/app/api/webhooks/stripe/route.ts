@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       }
     } else {
       console.warn(
-        '[stripe-webhook] STRIPE_WEBHOOK_SECRET ausente — validação de assinatura desativada'
+        '[stripe-webhook] STRIPE_WEBHOOK_SECRET ausente: validação de assinatura desativada'
       );
       event = JSON.parse(payload) as Stripe.Event;
     }

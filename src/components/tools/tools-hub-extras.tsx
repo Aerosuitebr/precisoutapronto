@@ -25,7 +25,7 @@ export function ToolsIntentWizard({
             O que você precisa agora?
           </h2>
           <p className="mt-1 text-sm font-medium leading-5 text-slate-600">
-            Escolha o tipo de documento — abrimos a ferramenta certa.
+            Escolha o tipo de documento. Abrimos a ferramenta certa.
           </p>
         </div>
         <button

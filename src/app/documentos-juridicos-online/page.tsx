@@ -44,7 +44,7 @@ const examples = [
   },
   {
     title: 'Contrato de honorários',
-    description: 'Formaliza o mandato e a forma de remuneração — fixo, êxito ou misto.',
+    description: 'Formaliza o mandato e a forma de remuneração: fixo, êxito ou misto.',
     href: juridicosSeoContent.ctaHref,
     thumbnail: <JuridicoPreview data={withTemplate('honorarios')} />
   },

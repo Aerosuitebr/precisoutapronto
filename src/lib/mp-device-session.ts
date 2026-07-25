@@ -49,7 +49,7 @@ function ensureMpSecurityScript(): Promise<void> {
 
 /**
  * Aguarda o Device ID do security.js. Retorna undefined se o script falhar
- * (ex.: CSP) — o checkout ainda segue, mas com risco maior de high_risk.
+ * (ex.: CSP): o checkout ainda segue, mas com risco maior de high_risk.
  */
 export async function getMpDeviceSessionId(timeoutMs = 4000): Promise<string | undefined> {
   if (typeof window === 'undefined') return undefined;

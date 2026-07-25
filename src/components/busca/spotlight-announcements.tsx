@@ -151,7 +151,7 @@ export const SPOTLIGHT_SLIDES: SpotlightToolSlide[] = [
   {
     label: 'Agenda para a sua rotina',
     tabLabel: 'Agenda',
-    hint: 'Organize compromissos e lembretes no calendário — feriados, alertas e visão mensal.',
+    hint: 'Organize compromissos e lembretes no calendário: feriados, alertas e visão mensal.',
     icon: CalendarDays,
     href: '/ferramentas/agenda',
     learnHref: '/ferramentas',
@@ -231,8 +231,8 @@ export function SpotlightAnnouncements() {
           Resolva tarefas profissionais em poucos cliques
         </h2>
         <p className="mt-2 max-w-2xl text-[15px] leading-6 text-slate-700 sm:text-base sm:leading-7">
-          Ferramentas criadas pelo Resolva Jato para gerar documentos profissionais — orçamento,
-          recibo, contrato, currículo e mais — totalmente grátis.
+          Ferramentas criadas pelo Resolva Jato para gerar documentos profissionais: orçamento,
+          recibo, contrato, currículo e mais, totalmente grátis.
         </p>
       </div>
 
@@ -378,7 +378,7 @@ function DocumentMiniPreview({ type }: { type: SpotlightToolSlide['preview'] }) 
           <div className="h-1.5 w-[75%] rounded bg-slate-100" />
           <p className="pt-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">Experiência</p>
           <div className="rounded-lg bg-slate-50 p-2">
-            <p className="text-[11px] font-bold text-slate-800">Agência Norte · 2022–Atual</p>
+            <p className="text-[11px] font-bold text-slate-800">Agência Norte · 2022 a Atual</p>
             <div className="mt-1.5 h-1 w-full rounded bg-slate-200" />
             <div className="mt-1 h-1 w-[85%] rounded bg-slate-200" />
           </div>

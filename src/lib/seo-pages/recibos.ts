@@ -25,7 +25,7 @@ export const recibosSeoContent: SeoPageContent = {
     {
       icon: Palette,
       title: '3 modelos visuais',
-      description: 'Profissional, moderno ou compacto — escolha o estilo que combina com o seu negócio.'
+      description: 'Profissional, moderno ou compacto: escolha o estilo que combina com o seu negócio.'
     },
     {
       icon: FileCheck2,
@@ -35,7 +35,7 @@ export const recibosSeoContent: SeoPageContent = {
     {
       icon: Sparkles,
       title: 'Histórico de recibos emitidos',
-      description: 'Seus recibos ficam salvos na conta — consulte ou reemita quando precisar.'
+      description: 'Seus recibos ficam salvos na conta: consulte ou reemita quando precisar.'
     }
   ],
   steps: [
@@ -97,7 +97,7 @@ export const recibosSeoContent: SeoPageContent = {
   article: {
     title: 'Como emitir um recibo de pagamento correto',
     html: `
-      <p>Emitir um recibo é a forma mais simples de comprovar que um pagamento foi realizado — seja para um serviço prestado, aluguel, venda ou qualquer outra transação. Um recibo bem feito protege tanto quem paga quanto quem recebe.</p>
+      <p>Emitir um recibo é a forma mais simples de comprovar que um pagamento foi realizado, seja para um serviço prestado, aluguel, venda ou qualquer outra transação. Um recibo bem feito protege tanto quem paga quanto quem recebe.</p>
 
       <h2>O que não pode faltar no recibo</h2>
       <p>Um recibo completo deve conter: nome e documento de quem paga e de quem recebe, valor em número e por extenso, data e local do pagamento, forma de pagamento (Pix, dinheiro, transferência, cartão) e a que se refere o valor recebido.</p>
@@ -106,12 +106,12 @@ export const recibosSeoContent: SeoPageContent = {
       <p>Escrever o valor por extenso além do número é uma prática tradicional que reduz a chance de erro ou fraude no documento, já que qualquer alteração no número precisaria também alterar o texto por extenso, tornando a tentativa mais evidente.</p>
 
       <h2>Assinatura: física ou digital</h2>
-      <p>O recibo pode ser assinado à mão após a impressão ou receber uma assinatura digital diretamente no documento — ambas as formas são aceitas na maioria das situações do dia a dia.</p>
+      <p>O recibo pode ser assinado à mão após a impressão ou receber uma assinatura digital diretamente no documento, e ambas as formas são aceitas na maioria das situações do dia a dia.</p>
 
       <h2>Guarde uma cópia</h2>
       <p>Tanto quem emite quanto quem recebe o recibo devem guardar uma cópia. Isso facilita eventuais consultas futuras, seja para controle financeiro pessoal, comprovação para terceiros ou questões fiscais.</p>
 
-      <p>Com o gerador de recibo do Resolva Jato, você preenche os dados, escolhe o modelo visual e baixa um PDF organizado — com valor por extenso automático e opção de assinatura digital.</p>
+      <p>Com o gerador de recibo do Resolva Jato, você preenche os dados, escolhe o modelo visual e baixa um PDF organizado, com valor por extenso automático e opção de assinatura digital.</p>
     `
   },
   relatedTools: [

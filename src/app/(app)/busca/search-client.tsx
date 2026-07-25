@@ -329,7 +329,7 @@ export function BuscaClient() {
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
             Mais de {publicSearchResources.length} recursos gratuitos para consultar. Use também
-            nossas ferramentas para gerar documentos profissionais — totalmente grátis.
+            nossas ferramentas para gerar documentos profissionais, totalmente grátis.
           </p>
 
           <form
@@ -353,7 +353,7 @@ export function BuscaClient() {
               </Button>
             </div>
             <p className="mt-2 px-1 text-xs text-slate-500">
-              A busca de links é gratuita. As ferramentas geram documentos profissionais em PDF —
+              A busca de links é gratuita. As ferramentas geram documentos profissionais em PDF,
               também de graça.
             </p>
           </form>
@@ -374,7 +374,7 @@ export function BuscaClient() {
               Recursos gratuitos na internet
             </h2>
             <p className="mt-1 text-sm text-slate-600">
-              Links selecionados e verificados para você encontrar serviços gratuitos — abrem em nova aba.
+              Links selecionados e verificados para você encontrar serviços gratuitos. Abrem em nova aba.
             </p>
           </div>
 
@@ -524,7 +524,7 @@ export function BuscaClient() {
               Ferramentas Resolva Jato
             </h2>
             <p className="mt-1 text-sm text-slate-600">
-              Soluções criadas na plataforma para gerar documentos profissionais — totalmente grátis.
+              Soluções criadas na plataforma para gerar documentos profissionais, totalmente grátis.
             </p>
           </div>
           <div className="grid gap-5 lg:grid-cols-3">

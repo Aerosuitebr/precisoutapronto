@@ -66,7 +66,7 @@ export async function computeRegistrationRisk(signals: RiskSignals): Promise<Ris
   }
 
   if (signals.language) {
-    // sinal fraco — não consulta JSON path (evita queries frágeis)
+    // sinal fraco: não consulta JSON path (evita queries frágeis)
     score += 0;
   }
 

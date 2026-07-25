@@ -150,7 +150,7 @@ export function CurriculoApp() {
     const sample = saveResume({ ...SAMPLE_RESUME, id: resume.id, title: 'Currículo de exemplo' });
     setResume(sample);
     setResumes(listResumes());
-    toast('Exemplo carregado — revise os dados.');
+    toast('Exemplo carregado. Revise os dados.');
   }
 
   function handleClearForm() {
@@ -517,7 +517,7 @@ export function CurriculoApp() {
                       ? 'Informe um link válido (ex.: linkedin.com/in/seu-perfil).'
                       : undefined
                   }
-                  hint={!resume.personal.website ? 'Opcional — use linkedin.com/in/…' : undefined}
+                  hint={!resume.personal.website ? 'Opcional. Use linkedin.com/in/…' : undefined}
                 >
                   <Input
                     value={resume.personal.website}

@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'Resolva Jato — Orçamento com Pix no WhatsApp';
+export const alt = 'Resolva Jato: orçamento com Pix no WhatsApp';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -38,7 +38,7 @@ export default function OpenGraphImage() {
             Mande o orçamento. Cliente aprova. Pix na hora.
           </div>
           <div style={{ fontSize: 28, color: '#cbd5e1', maxWidth: 900 }}>
-            Sem app, sem cartão — cobrança profissional no WhatsApp.
+            Sem app, sem cartão. Cobrança profissional no WhatsApp.
           </div>
         </div>
         <div style={{ display: 'flex', fontSize: 24, color: '#86efac' }}>resolvajato.com.br</div>

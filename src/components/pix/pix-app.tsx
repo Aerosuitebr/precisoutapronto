@@ -213,7 +213,7 @@ export function PixApp() {
                     Cobrança Pix com QR Code
                   </h1>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
-                    Gere QR e Pix Copia e Cola no navegador — sem API bancária. No plano gratuito, o envio
+                    Gere QR e Pix Copia e Cola no navegador, sem API bancária. No plano gratuito, o envio
                     pode incluir referência ao Resolva Jato.
                   </p>
                 </div>
@@ -434,7 +434,7 @@ export function PixApp() {
               <p className="mt-3 text-sm font-medium leading-6 text-slate-700">
                 {brCode
                   ? 'Pronto para pagar: escaneie o QR ou copie o código.'
-                  : 'Preencha chave válida, nome e cidade — o QR aparece aqui.'}
+                  : 'Preencha chave válida, nome e cidade. O QR aparece aqui.'}
               </p>
 
               <ul className="mt-4 space-y-1.5">
@@ -474,7 +474,7 @@ export function PixApp() {
                       ))}
                     </div>
                     <p className="max-w-[16rem] text-sm font-medium text-slate-600">
-                      Miniatura de exemplo — o QR real aparece após validar a chave.
+                      Miniatura de exemplo. O QR real aparece após validar a chave.
                     </p>
                   </div>
                 )}
@@ -513,7 +513,7 @@ export function PixApp() {
                 Chave normalizada
               </p>
               <p className="mt-1 break-all text-sm font-medium text-slate-800">
-                {key && !keyError ? normalizePixKey(key, keyType) : '—'}
+                {key && !keyError ? normalizePixKey(key, keyType) : '-'}
               </p>
             </aside>
           </div>

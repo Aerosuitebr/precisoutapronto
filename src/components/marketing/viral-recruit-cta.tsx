@@ -10,7 +10,7 @@ import {
 } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
 
-/** CTA para quem recebeu o orçamento — recruta o próximo profissional. */
+/** CTA para quem recebeu o orçamento: recruta o próximo profissional. */
 export function ViralRecruitCard({ className }: { className?: string }) {
   return (
     <section

@@ -107,7 +107,7 @@ export function ContratoLivePreview() {
 
         <div>
           <span className="mb-2 block text-sm font-semibold text-slate-800">
-            Tipo de contrato <span className="font-normal text-slate-500">— veja a mudança em tempo real</span>
+            Tipo de contrato <span className="font-normal text-slate-500">(veja a mudança em tempo real)</span>
           </span>
           <div className="flex flex-wrap gap-2">
             {CONTRACT_TEMPLATES.map((template) => (

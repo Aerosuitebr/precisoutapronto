@@ -15,7 +15,7 @@ export default function TermosPage() {
       </p>
       <p>
         As ferramentas gratuitas têm cotas. Documentos gerados são de sua responsabilidade jurídica e
-        profissional — o Resolva Jato oferece modelos e produtividade, não aconselhamento legal.
+        profissional. O Resolva Jato oferece modelos e produtividade, não aconselhamento legal.
       </p>
       <p>
         Podemos suspender contas que violem estes termos ou coloquem outros usuários em risco. O

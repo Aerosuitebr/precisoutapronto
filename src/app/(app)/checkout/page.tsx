@@ -152,12 +152,12 @@ function CheckoutContent() {
         label: 'Método selecionado',
         detail:
           method === 'stripe'
-            ? 'Stripe — cartão internacional'
+            ? 'Stripe · cartão internacional'
             : method === 'nupay'
-              ? 'NuPay — conta Nubank'
+              ? 'NuPay · conta Nubank'
               : method === 'pix'
                 ? 'Pix via Mercado Pago'
-                : 'Mercado Pago — Pix, boleto e cartão',
+                : 'Mercado Pago · Pix, boleto e cartão',
         status: pick
       },
       {
@@ -188,7 +188,7 @@ function CheckoutContent() {
     // Device ID é crítico: sem ele o MP marca cartão como cc_rejected_high_risk.
     const deviceSessionId = await getMpDeviceSessionId(5000);
     if (!deviceSessionId) {
-      console.warn('[checkout/mp] MP_DEVICE_SESSION_ID ausente — antifraude sem fingerprint');
+      console.warn('[checkout/mp] MP_DEVICE_SESSION_ID ausente: antifraude sem fingerprint');
     }
     const response = await fetch('/api/billing/checkout', {
       method: 'POST',
@@ -439,7 +439,7 @@ function CheckoutContent() {
           await refresh();
           setPhase('success');
           setMessage('Pagamento aprovado. Premium ativo por 30 dias.');
-          toast('Premium ativado — documentos limpos, sem marca.');
+          toast('Premium ativado: documentos limpos, sem marca.');
           return;
         }
 
@@ -456,7 +456,7 @@ function CheckoutContent() {
       if (Date.now() - startedAt >= POLL_MAX_MS) {
         setPhase('awaiting');
         setMessage(
-          'Ainda não encontramos a aprovação. O Premium libera automaticamente quando o pagamento for confirmado — atualize em alguns minutos.'
+          'Ainda não encontramos a aprovação. O Premium libera automaticamente quando o pagamento for confirmado. Atualize em alguns minutos.'
         );
         return;
       }
@@ -661,7 +661,7 @@ function CheckoutContent() {
             ) : null}
 
             <p className="mt-8 text-[11px] leading-5 text-slate-500">
-              Conexão criptografada. O Resolva Jato não armazena dados do cartão — o provedor
+              Conexão criptografada. O Resolva Jato não armazena dados do cartão. O provedor
               processa o pagamento e notifica a liberação do Premium.
             </p>
             <Link

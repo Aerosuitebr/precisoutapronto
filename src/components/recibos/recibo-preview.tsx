@@ -79,7 +79,7 @@ function BodyStatement({
 }
 
 // ---------------------------------------------------------------------------
-// Profissional — faixa escura, blocos de partes, assinatura centralizada
+// Profissional: faixa escura, blocos de partes, assinatura centralizada
 // ---------------------------------------------------------------------------
 function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, cityDate, inkSaver }: LayoutContext) {
   return (
@@ -161,7 +161,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, 
 }
 
 // ---------------------------------------------------------------------------
-// Moderno — barra lateral colorida, valor em card, partes em colunas
+// Moderno: barra lateral colorida, valor em card, partes em colunas
 // ---------------------------------------------------------------------------
 function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDate, inkSaver }: LayoutContext) {
   return (
@@ -301,7 +301,7 @@ function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDa
 }
 
 // ---------------------------------------------------------------------------
-// Compacto — filete no topo, cabeçalho em linha, densidade alta
+// Compacto: filete no topo, cabeçalho em linha, densidade alta
 // ---------------------------------------------------------------------------
 function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityDate, inkSaver }: LayoutContext) {
   return (

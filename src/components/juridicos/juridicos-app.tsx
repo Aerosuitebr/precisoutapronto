@@ -292,7 +292,7 @@ export function JuridicosApp() {
                   </h1>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-stone-300">
                     Instrumentos, declarações e peças processuais para a prática jurídica e os
-                    estudos — preencha, ajuste as cláusulas e baixe o PDF.
+                    estudos. Preencha, ajuste as cláusulas e baixe o PDF.
                   </p>
                 </div>
               </div>

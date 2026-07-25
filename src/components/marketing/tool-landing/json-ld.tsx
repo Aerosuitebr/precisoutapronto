@@ -33,7 +33,7 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
   const softwareApplication = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: `Resolva Jato — ${content.toolName}`,
+    name: `Resolva Jato: ${content.toolName}`,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: pageUrl,

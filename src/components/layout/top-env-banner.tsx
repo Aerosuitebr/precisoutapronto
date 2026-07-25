@@ -4,7 +4,7 @@ interface TopEnvBannerProps {
   visible?: boolean;
 }
 
-/** Faixa curta: documentos e busca gratuitos — sem plano, preço ou contagem. */
+/** Faixa curta: documentos e busca gratuitos: sem plano, preço ou contagem. */
 export function TopEnvBanner({ visible = true }: TopEnvBannerProps) {
   if (!visible) return null;
 
