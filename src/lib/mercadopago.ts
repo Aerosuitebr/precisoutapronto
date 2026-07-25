@@ -208,9 +208,9 @@ export async function createBillingCheckoutPreference(input: {
         installments: 1
       },
       back_urls: {
-        success: `${appUrl}/conta?billing=success`,
-        failure: `${appUrl}/conta?billing=failure`,
-        pending: `${appUrl}/conta?billing=pending`
+        success: `${appUrl}/checkout?method=mercadopago&billing=success`,
+        failure: `${appUrl}/checkout?method=mercadopago&billing=failure`,
+        pending: `${appUrl}/checkout?method=mercadopago&billing=pending`
       },
       auto_return: 'approved',
       notification_url: `${appUrl}/api/webhooks/mercadopago`,

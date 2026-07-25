@@ -338,6 +338,81 @@ export async function activatePremiumFromNuPayPayment(input: {
   };
 }
 
+/**
+ * Libera Premium a partir de uma Checkout Session paga da Stripe.
+ * Idempotente pelo session id (providerRef `stripe:<id>`).
+ */
+export async function activatePremiumFromStripeSession(input: {
+  sessionId: string;
+  paymentStatus: string;
+  userId?: string | null;
+  email?: string | null;
+  /** Total em centavos (amount_total da sessão). */
+  amountTotal?: number | null;
+  days?: number | null;
+}): Promise<PremiumActivationResult> {
+  const status = input.paymentStatus;
+  const email = (input.email || '').trim().toLowerCase();
+
+  if (status !== 'paid' && status !== 'no_payment_required') {
+    return { activated: false, reason: 'not_paid', status, email };
+  }
+
+  const amount =
+    typeof input.amountTotal === 'number' && Number.isFinite(input.amountTotal)
+      ? input.amountTotal / 100
+      : undefined;
+  if (!premiumAmountMatches(amount)) {
+    return { activated: false, reason: 'amount_mismatch', status, email };
+  }
+
+  const prisma = getPrisma();
+  const user = input.userId
+    ? await prisma.user.findUnique({
+        where: { id: input.userId },
+        select: { id: true, email: true }
+      })
+    : email
+      ? await prisma.user.findUnique({
+          where: { email },
+          select: { id: true, email: true }
+        })
+      : null;
+  if (!user) {
+    return { activated: false, reason: 'user_not_found', status, email };
+  }
+
+  const providerRef = `stripe:${input.sessionId}`;
+  const existing = await prisma.subscription.findUnique({ where: { userId: user.id } });
+  if (existing?.providerRef === providerRef) {
+    return {
+      activated: true,
+      alreadyActive: true,
+      userId: user.id,
+      email: user.email,
+      paymentId: 0,
+      expiresAt: existing.expiresAt.toISOString(),
+      status
+    };
+  }
+
+  const days =
+    (typeof input.days === 'number' && Number.isFinite(input.days) && input.days > 0
+      ? Math.round(input.days)
+      : null) ??
+    premiumDaysFromAmount(amount) ??
+    ACCESS_DAYS;
+  const sub = await grantPremiumDaysServer(user.id, days, providerRef);
+  return {
+    activated: true,
+    userId: user.id,
+    email: user.email,
+    paymentId: 0,
+    expiresAt: sub.expiresAt.toISOString(),
+    status
+  };
+}
+
 export async function cancelPremiumServer(userId: string) {
   const prisma = getPrisma();
   await prisma.subscription.deleteMany({ where: { userId } });

@@ -133,7 +133,7 @@ export async function createNuPayPremiumSession(input: {
         }
       ],
       expiresInMinutes: 30,
-      returnUrl: `${appUrl}/conta?billing=nupay`,
+      returnUrl: `${appUrl}/checkout?method=nupay&billing=nupay`,
       callbackUrl: `${appUrl}/api/webhooks/nupay`
     })
   });
@@ -192,8 +192,8 @@ export async function createNuPayPaymentFromSession(input: {
       authorizationType: 'manually_authorized'
     },
     paymentFlow: {
-      returnUrl: `${appUrl}/conta?billing=nupay-success`,
-      cancelUrl: `${appUrl}/conta?billing=nupay-cancel`
+      returnUrl: `${appUrl}/checkout?method=nupay&billing=nupay-success`,
+      cancelUrl: `${appUrl}/checkout?method=nupay&billing=nupay-cancel`
     },
     shopper: {
       reference: session.reference,
