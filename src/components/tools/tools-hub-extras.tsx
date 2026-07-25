@@ -91,17 +91,24 @@ export function ToolsEngagementStrip({ engagement }: { engagement: ToolsEngageme
         </div>
       </div>
       {unlocked.length > 0 ? (
-        <ul className="flex flex-wrap gap-2" aria-label="Conquistas">
-          {unlocked.map((badge) => (
-            <li
-              key={badge.id}
-              className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3 py-1.5 text-[11px] font-bold text-white"
-            >
-              <Award className="h-3.5 w-3.5 text-amber-300" aria-hidden />
-              {badge.label}
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col gap-1.5 sm:items-end">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+            Conquistas desbloqueadas
+          </p>
+          <ul className="flex flex-wrap gap-2 sm:justify-end" aria-label="Conquistas desbloqueadas">
+            {unlocked.map((badge) => (
+              <li
+                key={badge.id}
+                title={badge.how}
+                className="inline-flex cursor-default select-none items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-bold text-amber-900"
+              >
+                <Award className="h-3.5 w-3.5 text-amber-600" aria-hidden />
+                {badge.label}
+                <span className="sr-only">. {badge.how}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : null}
     </section>
   );
