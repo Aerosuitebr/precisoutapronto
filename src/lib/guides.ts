@@ -323,6 +323,202 @@ export const guides: Guide[] = [
       { question: 'Todo profissional pode ser MEI?', answer: 'Não. A atividade precisa estar entre as ocupações permitidas e respeitar os requisitos vigentes.' },
       { question: 'A comparação substitui um contador?', answer: 'Não. Ela organiza cenários; decisões tributárias e contratuais exigem análise específica.' }
     ]
+  },
+  {
+    slug: 'aviso-previo-proporcional-como-calcular',
+    title: 'Aviso-prévio proporcional: como calcular pelo tempo de casa',
+    description:
+      'Entenda a base de 30 dias e o acréscimo por ano trabalhado antes de estimar o aviso na rescisão.',
+    answer:
+      'O aviso-prévio proporcional costuma partir de 30 dias e soma três dias por ano completo de contrato, até o limite legal. A forma de cumprimento (trabalhado ou indenizado) e a modalidade de desligamento mudam o impacto no cálculo.',
+    category: 'Trabalho',
+    readTime: '7 min',
+    toolHref: '/calculadora-de-rescisao',
+    toolLabel: 'Calcular rescisão',
+    sections: [
+      {
+        title: 'Base de 30 dias e acréscimo anual',
+        paragraphs: [
+          'Em muitos casos CLT, o aviso começa em 30 dias. A cada ano completo de vínculo, entram três dias adicionais, respeitando o teto previsto na legislação.',
+          'Anos incompletos normalmente não geram o acréscimo integral. Por isso a data de admissão e a data de desligamento precisam estar corretas.'
+        ],
+        bullets: ['Confirme anos completos de casa', 'Separe aviso trabalhado de indenizado', 'Revise a modalidade de desligamento']
+      },
+      {
+        title: 'Trabalhado versus indenizado',
+        paragraphs: [
+          'No aviso trabalhado, a pessoa permanece na função durante o período. No indenizado, o empregador paga o equivalente sem exigir a prestação do serviço.',
+          'Essa escolha altera o fluxo de caixa e a data efetiva de saída. A calculadora usa a hipótese que você informar.'
+        ]
+      },
+      {
+        title: 'O que a estimativa não resolve sozinha',
+        paragraphs: [
+          'Acordos coletivos, médias de variáveis e regras específicas da categoria podem mudar o resultado. Use a simulação para organizar números e valide com um profissional antes da homologação.'
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: 'Todo desligamento gera aviso-prévio?',
+        answer: 'Não. A modalidade (pedido, sem justa causa, acordo e afins) define se há aviso e como ele é pago ou cumprido.'
+      },
+      {
+        question: 'Os três dias por ano têm limite?',
+        answer: 'Sim. A legislação estabelece um teto para o acréscimo proporcional. Confirme o limite vigente na sua situação.'
+      },
+      {
+        question: 'Posso estimar isso sem TRCT?',
+        answer: 'Sim, como referência. O documento oficial e a conferência profissional continuam necessários.'
+      }
+    ]
+  },
+  {
+    slug: 'quanto-cobrar-por-hora-freelancer',
+    title: 'Quanto cobrar por hora como freelancer: método prático',
+    description:
+      'Calcule a hora mínima considerando custos fixos, horas vendáveis, impostos e margem antes de precificar um projeto.',
+    answer:
+      'A hora mínima do freelancer deve cobrir custos fixos e variáveis, impostos, tempo não faturável e margem. Dividir a meta mensal por todas as horas do calendário costuma gerar preço abaixo do custo real.',
+    category: 'Financeiro',
+    readTime: '8 min',
+    toolHref: '/calculadora-de-preco-freelancer',
+    toolLabel: 'Calcular preço',
+    sections: [
+      {
+        title: 'Some o custo mensal real',
+        paragraphs: [
+          'Inclua ferramentas, internet, equipamentos, espaço, impostos estimados, formação e uma reserva para imprevistos.',
+          'Se você trabalha de casa, rateie parte da energia, internet e depreciação do computador.'
+        ]
+      },
+      {
+        title: 'Separe horas disponíveis de horas vendáveis',
+        paragraphs: [
+          'Prospecção, reuniões, administração e revisões consomem tempo. Uma base comum é vender bem menos do que a carga total da semana.',
+          'Use a hora como referência interna. Para o cliente, um valor por projeto costuma comunicar melhor o resultado.'
+        ],
+        bullets: ['Meta de renda líquida', 'Horas realmente vendáveis', 'Margem para risco de escopo']
+      },
+      {
+        title: 'Teste o preço em propostas reais',
+        paragraphs: [
+          'Depois de calcular a hora, monte o preço do projeto e compare com entregas anteriores. Se o histórico mostra estouro de horas, o preço atual está baixo ou o escopo está frouxo.'
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: 'Devo publicar minha hora nas redes?',
+        answer: 'Não é obrigatório. Muitos profissionais usam a hora só para gestão e vendem pacotes fechados.'
+      },
+      {
+        question: 'E se o cliente pedir desconto?',
+        answer: 'Reduza escopo, prazo ou entregáveis antes de cortar margem abaixo do custo.'
+      },
+      {
+        question: 'Hora técnica e hora comercial são iguais?',
+        answer: 'Não. A hora comercial precisa absorver tempo não faturável e risco. A hora técnica isolada quase sempre fica curta.'
+      }
+    ]
+  },
+  {
+    slug: 'custos-fixos-do-freelancer-como-ratear',
+    title: 'Custos fixos do freelancer: como ratear no preço',
+    description:
+      'Aprenda a distribuir aluguel, internet, softwares e outros custos fixos no preço de cada serviço ou produto.',
+    answer:
+      'Ratear custos fixos significa dividir despesas recorrentes pelas unidades ou horas que você realmente vende. Sem esse passo, o preço cobre só o custo direto e deixa a operação no prejuízo.',
+    category: 'Financeiro',
+    readTime: '7 min',
+    toolHref: '/calculadora-de-preco-freelancer',
+    toolLabel: 'Simular rateio',
+    sections: [
+      {
+        title: 'Liste o que se repete todo mês',
+        paragraphs: [
+          'Softwares, internet, celular, coworking, contador, marketing e assinaturas entram nessa conta.',
+          'Anote o valor médio dos últimos três meses para evitar distorções de um mês atípico.'
+        ]
+      },
+      {
+        title: 'Escolha a base de rateio',
+        paragraphs: [
+          'Você pode dividir pelo número de projetos, pelas horas vendáveis ou pelas unidades produzidas.',
+          'O importante é usar uma base realista. Se você vende oito projetos no mês, ratear por vinte cria uma falsa sensação de preço baixo.'
+        ],
+        bullets: ['Projetos por mês', 'Horas vendáveis', 'Unidades entregues']
+      },
+      {
+        title: 'Revise quando a rotina mudar',
+        paragraphs: [
+          'Novas ferramentas, aumento de aluguel ou queda de demanda alteram o rateio. Atualize a calculadora sempre que o custo fixo ou o volume de vendas mudar de patamar.'
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: 'Custo fixo entra no preço por hora?',
+        answer: 'Sim. Se não entrar, você financia a operação com a margem e pode trabalhar no prejuízo.'
+      },
+      {
+        question: 'E custos variáveis?',
+        answer: 'Materiais, frete e comissões devem ir no custo direto do projeto, separados do rateio fixo.'
+      },
+      {
+        question: 'Posso ratear só uma vez por ano?',
+        answer: 'Pode começar assim, mas o ideal é revisar quando houver mudança relevante de custo ou volume.'
+      }
+    ]
+  },
+  {
+    slug: 'quando-o-mei-compensa-mais-que-a-clt',
+    title: 'Quando o MEI compensa mais que a CLT',
+    description:
+      'Veja sinais práticos para comparar MEI e CLT além do valor mensal: benefícios, risco, custos e autonomia.',
+    answer:
+      'O MEI tende a compensar quando o líquido anual, após tributos e custos, supera o pacote CLT equivalente e a atividade se enquadra nas regras. Benefícios, estabilidade e risco comercial ainda precisam entrar na conta.',
+    category: 'Trabalho',
+    readTime: '8 min',
+    toolHref: '/mei-ou-clt',
+    toolLabel: 'Comparar MEI e CLT',
+    sections: [
+      {
+        title: 'Compare em base anual',
+        paragraphs: [
+          'No CLT, some salários, 13º, férias e benefícios. No MEI, some faturamento, DAS, custos mensais e uma reserva para períodos sem demanda.',
+          'Um valor mensal isolado quase sempre favorece o lado errado da decisão.'
+        ]
+      },
+      {
+        title: 'Olhe proteção e autonomia',
+        paragraphs: [
+          'CLT oferece estrutura de direitos típicos da relação de emprego. MEI exige organização do próprio negócio, emissão de documentos e gestão de clientes.',
+          'Se o trabalho é subordinado na prática, a forma contratual precisa ser analisada com cuidado profissional.'
+        ],
+        bullets: ['Limite de faturamento', 'Ocupação permitida', 'Custo de ferramentas e deslocamento']
+      },
+      {
+        title: 'Use a simulação como ponto de partida',
+        paragraphs: [
+          'A calculadora organiza hipóteses de líquido. A decisão final deve considerar carreira, tolerância a risco e orientação contábil.'
+        ]
+      }
+    ],
+    faq: [
+      {
+        question: 'Existe um percentual mágico que justifica o MEI?',
+        answer: 'Não. O percentual muda com benefícios, impostos, custos e a regularidade do faturamento.'
+      },
+      {
+        question: 'Posso ser MEI em qualquer atividade?',
+        answer: 'Não. É preciso respeitar a lista de ocupações e os requisitos vigentes.'
+      },
+      {
+        question: 'A calculadora decide por mim?',
+        answer: 'Não. Ela organiza números. A escolha final depende do seu contexto e de aconselhamento profissional.'
+      }
+    ]
   }
 ];
 

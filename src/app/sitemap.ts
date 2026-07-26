@@ -4,8 +4,8 @@ import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-const CORE_UPDATED_AT = new Date('2026-07-26T00:00:00.000Z');
-const GUIDES_UPDATED_AT = new Date('2026-07-26T00:00:00.000Z');
+const CORE_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
+const GUIDES_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
 
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
 const PUBLIC_TOOL_LANDINGS = [

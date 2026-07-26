@@ -40,6 +40,10 @@ Language: pt-BR
 - https://resolvajato.com.br/guias/proposta-comercial-para-mei
 - https://resolvajato.com.br/guias/como-precificar-servico-freelancer
 - https://resolvajato.com.br/guias/mei-ou-clt-como-comparar
+- https://resolvajato.com.br/guias/aviso-previo-proporcional-como-calcular
+- https://resolvajato.com.br/guias/quanto-cobrar-por-hora-freelancer
+- https://resolvajato.com.br/guias/custos-fixos-do-freelancer-como-ratear
+- https://resolvajato.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
 
 ## Product notes
 - Public pages explain each tool before registration.
