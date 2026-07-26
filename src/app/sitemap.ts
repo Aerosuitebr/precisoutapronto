@@ -51,12 +51,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
   }));
 
-  const toolLandingRoutes: MetadataRoute.Sitemap = PUBLIC_TOOL_LANDINGS.map((path) => ({
-    url: `${base}${path}`,
-    lastModified: CORE_UPDATED_AT,
-    changeFrequency: 'weekly' as const,
-    priority: path.startsWith('/gerador-') || path.startsWith('/documentos-') ? 0.9 : 0.4
-  }));
+  const toolLandingRoutes: MetadataRoute.Sitemap = PUBLIC_TOOL_LANDINGS.map((path) => {
+    let priority = 0.4;
+    if (path.startsWith('/gerador-') || path.startsWith('/documentos-')) priority = 0.9;
+    else if (
+      path === '/calculadora-de-rescisao' ||
+      path === '/calculadora-de-preco-freelancer' ||
+      path === '/mei-ou-clt'
+    ) {
+      priority = 0.9;
+    } else if (
+      path === '/contrato-de-aluguel' ||
+      path === '/recibo-de-pagamento' ||
+      path === '/proposta-comercial-mei'
+    ) {
+      priority = 0.8;
+    }
+    return {
+      url: `${base}${path}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'weekly' as const,
+      priority
+    };
+  });
 
   const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
   for (const entry of [...staticRoutes, ...seoRoutes, ...toolLandingRoutes, ...guideRoutes]) {

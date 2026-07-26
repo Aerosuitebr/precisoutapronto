@@ -30,6 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 import { viralToolShareFooter } from "@/lib/viral-loop";
 import { ResultShareCard } from "@/components/shared/result-share-card";
+import { trackEvent } from "@/lib/analytics";
 
 const FAIXAS: FaixaMei[] = [
   "comercio-industria",
@@ -103,10 +104,20 @@ export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean }
 
   function handleCopy() {
     navigator.clipboard.writeText(resumoTexto());
+    trackEvent("share_result", {
+      method: "copy",
+      tool_path: "/mei-ou-clt",
+      campaign: "mei_clt_whatsapp",
+    });
     toast("Comparativo copiado!");
   }
 
   function handleWhatsApp() {
+    trackEvent("share_result", {
+      method: "whatsapp",
+      tool_path: "/mei-ou-clt",
+      campaign: "mei_clt_whatsapp",
+    });
     window.open(
       `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`,
       "_blank",

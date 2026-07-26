@@ -12,7 +12,8 @@ import { useAuth } from '@/hooks/use-auth';
 
 const links = [
   { href: '/guias', label: 'Guias', auth: false },
-  { href: '/busca', label: 'Busca grátis', auth: false },
+  { href: '/calculadora-de-rescisao', label: 'Rescisão', auth: false },
+  { href: '/mei-ou-clt', label: 'MEI ou CLT', auth: false },
   { href: '/recursos', label: 'Ferramentas', auth: false }
 ] as const;
 

@@ -5,7 +5,6 @@ import { ChevronDown } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { useAuth } from '@/hooks/use-auth';
-import { toolsCatalog } from '@/lib/tools-catalog';
 
 const YEAR = new Date().getFullYear();
 
@@ -19,6 +18,9 @@ const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
 ];
 
 const SEO_LINKS = [
+  { href: '/calculadora-de-rescisao', label: 'Calculadora de rescisão' },
+  { href: '/calculadora-de-preco-freelancer', label: 'Preço para freelancer' },
+  { href: '/mei-ou-clt', label: 'MEI ou CLT' },
   { href: '/guias', label: 'Todos os guias' },
   { href: '/contrato-de-aluguel', label: 'Contrato de aluguel' },
   { href: '/recibo-de-pagamento', label: 'Recibo de pagamento' },
@@ -29,6 +31,16 @@ const SEO_LINKS = [
   { href: '/para/estudantes', label: 'Para estudantes' },
   { href: '/gerador-de-curriculo', label: 'Currículo' },
   { href: '/gerador-de-recibo', label: 'Recibo' }
+] as const;
+
+/** Links públicos no bloco Ferramentas (evita empurrar só rotas autenticadas). */
+const PUBLIC_TOOL_LINKS = [
+  { href: '/calculadora-de-rescisao', label: 'Rescisão' },
+  { href: '/calculadora-de-preco-freelancer', label: 'Precificação' },
+  { href: '/mei-ou-clt', label: 'MEI ou CLT' },
+  { href: '/gerador-de-curriculo', label: 'Currículo' },
+  { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
+  { href: '/recursos', label: 'Ver catálogo completo' }
 ] as const;
 
 function FooterDisclosure({ title, children }: { title: string; children: React.ReactNode }) {
@@ -116,31 +128,27 @@ export function SiteFooter() {
 
         <FooterDisclosure title="Ferramentas">
           <ul className="flex flex-col gap-2.5">
-            {toolsCatalog.slice(0, 5).map((tool) => (
-              <li key={tool.id}>
-                <AuthAwareLink
+            {PUBLIC_TOOL_LINKS.map((tool) => (
+              <li key={tool.href}>
+                <Link
                   href={tool.href}
-                  className="text-[15px] font-medium text-slate-300 transition-colors hover:text-sky-300"
+                  className={
+                    tool.href === '/recursos'
+                      ? 'text-[15px] font-semibold text-sky-300 transition-colors hover:text-sky-200'
+                      : 'text-[15px] font-medium text-slate-300 transition-colors hover:text-sky-300'
+                  }
                 >
-                  {tool.name}
-                </AuthAwareLink>
+                  {tool.label}
+                </Link>
               </li>
             ))}
-            <li>
-              <AuthAwareLink
-                href="/ferramentas"
-                className="text-[15px] font-semibold text-sky-300 transition-colors hover:text-sky-200"
-              >
-                Ver todas
-              </AuthAwareLink>
-            </li>
           </ul>
         </FooterDisclosure>
       </div>
 
       <div className="border-t border-slate-800/80">
         <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-300/90">Guias</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-sky-300/90">Explore</p>
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
             {SEO_LINKS.map((item) => (
               <li key={item.href}>

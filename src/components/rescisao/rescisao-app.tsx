@@ -30,6 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 import { viralToolShareFooter } from "@/lib/viral-loop";
 import { ResultShareCard } from "@/components/shared/result-share-card";
+import { trackEvent } from "@/lib/analytics";
 
 const TIPOS: TipoRescisao[] = [
   "sem-justa-causa",
@@ -107,16 +108,26 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
     ].join("\n") + viralToolShareFooter("/calculadora-de-rescisao", "rescisao_whatsapp");
   }
 
+  function handleWhatsApp() {
+    if (!resultado) return;
+    trackEvent("share_result", {
+      method: "whatsapp",
+      tool_path: "/calculadora-de-rescisao",
+      campaign: "rescisao_whatsapp",
+    });
+    const url = `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   function handleCopy() {
     if (!resultado) return;
     navigator.clipboard.writeText(resumoTexto());
+    trackEvent("share_result", {
+      method: "copy",
+      tool_path: "/calculadora-de-rescisao",
+      campaign: "rescisao_whatsapp",
+    });
     toast("Resumo copiado!");
-  }
-
-  function handleWhatsApp() {
-    if (!resultado) return;
-    const url = `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`;
-    window.open(url, "_blank", "noopener,noreferrer");
   }
 
   return (

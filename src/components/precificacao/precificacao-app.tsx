@@ -29,6 +29,7 @@ import {
 import { cn } from '@/lib/utils';
 import { viralToolShareFooter } from '@/lib/viral-loop';
 import { ResultShareCard } from '@/components/shared/result-share-card';
+import { trackEvent } from '@/lib/analytics';
 
 const STEPS = [
   { id: 'custos', label: 'Materiais' },
@@ -132,11 +133,21 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
   function handleCopy() {
     if (!resultado) return;
     navigator.clipboard.writeText(resumoTexto());
+    trackEvent('share_result', {
+      method: 'copy',
+      tool_path: '/calculadora-de-preco-freelancer',
+      campaign: 'precificacao_whatsapp'
+    });
     toast('Resultado copiado!');
   }
 
   function handleWhatsApp() {
     if (!resultado) return;
+    trackEvent('share_result', {
+      method: 'whatsapp',
+      tool_path: '/calculadora-de-preco-freelancer',
+      campaign: 'precificacao_whatsapp'
+    });
     window.open(`https://wa.me/?text=${encodeURIComponent(resumoTexto())}`, '_blank', 'noopener,noreferrer');
   }
 

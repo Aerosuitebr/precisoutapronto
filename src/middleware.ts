@@ -30,8 +30,11 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
 const PUBLIC_CACHEABLE_PREFIXES = ['/guias/', '/para/'];
 
 function needsDeviceCookie(pathname: string) {
-  if (PUBLIC_CACHEABLE_PATHS.has(pathname)) return false;
-  return !PUBLIC_CACHEABLE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  const withoutOg = pathname.replace(/\/opengraph-image$/, '') || '/';
+  if (PUBLIC_CACHEABLE_PATHS.has(pathname) || PUBLIC_CACHEABLE_PATHS.has(withoutOg)) return false;
+  return !PUBLIC_CACHEABLE_PREFIXES.some(
+    (prefix) => pathname.startsWith(prefix) || withoutOg.startsWith(prefix)
+  );
 }
 
 function randomDeviceId() {

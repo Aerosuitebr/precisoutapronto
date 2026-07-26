@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { Download, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
+import { trackEvent } from '@/lib/analytics';
 import { viralToolShareUrl } from '@/lib/viral-loop';
 
 interface ResultShareCardLine {
@@ -33,9 +34,7 @@ interface ResultShareCardProps {
 /**
  * Gera uma imagem 1080x1350 (formato feed/Stories) com o resultado da
  * calculadora pronta pra compartilhar. Renderiza um card off-screen e
- * rasteriza com html2canvas — mesma técnica já usada em `simple-element-pdf.ts`.
- * Isso transforma cada uso de uma ferramenta gratuita em uma peça de mídia
- * que a pessoa posta no Stories/WhatsApp Status sem precisar de design.
+ * rasteriza com html2canvas.
  */
 export function ResultShareCard({
   eyebrow,
@@ -52,7 +51,7 @@ export function ResultShareCard({
   const { toast } = useToast();
 
   const shareUrl = viralToolShareUrl(toolPath, utmCampaign);
-  const shareHost = shareUrl.replace(/^https?:\/\//, '').split('?')[0];
+  const shareHost = shareUrl.replace(/^https?:\/\//, '');
 
   async function renderToBlob(): Promise<Blob | null> {
     if (!cardRef.current) return null;
@@ -78,6 +77,11 @@ export function ResultShareCard({
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+      trackEvent('share_result', {
+        method: 'download_image',
+        tool_path: toolPath,
+        campaign: utmCampaign
+      });
       toast('Imagem baixada! Pronta pra postar no Stories ou WhatsApp.');
     } catch {
       toast('Não foi possível gerar a imagem agora.');
@@ -92,12 +96,41 @@ export function ResultShareCard({
       const blob = await renderToBlob();
       if (!blob) throw new Error('sem blob');
       const file = new File([blob], `${fileNameHint}-resolvajato.png`, { type: 'image/png' });
+      const shareText = `${title} · Resolva Jato\nCalcule o seu grátis: ${shareUrl}`;
       const nav = navigator as Navigator & {
-        canShare?: (data: { files: File[] }) => boolean;
-        share?: (data: { files: File[]; title?: string; text?: string }) => Promise<void>;
+        canShare?: (data: { files?: File[]; text?: string }) => boolean;
+        share?: (data: {
+          files?: File[];
+          title?: string;
+          text?: string;
+          url?: string;
+        }) => Promise<void>;
       };
+
       if (nav.canShare?.({ files: [file] }) && nav.share) {
-        await nav.share({ files: [file], title, text: `${title} · Resolva Jato` });
+        try {
+          await nav.share({
+            files: [file],
+            title,
+            text: shareText,
+            url: shareUrl
+          });
+        } catch {
+          // Alguns browsers rejeitam files+url juntos; tenta só arquivos + texto.
+          await nav.share({ files: [file], title, text: shareText });
+        }
+        trackEvent('share_result', {
+          method: 'native_image',
+          tool_path: toolPath,
+          campaign: utmCampaign
+        });
+      } else if (nav.share) {
+        await nav.share({ title, text: shareText, url: shareUrl });
+        trackEvent('share_result', {
+          method: 'native_link',
+          tool_path: toolPath,
+          campaign: utmCampaign
+        });
       } else {
         await handleDownload();
       }
@@ -133,7 +166,6 @@ export function ResultShareCard({
         </Button>
       </div>
 
-      {/* Card off-screen usado só pra rasterização — não aparece na tela. */}
       <div className="pointer-events-none fixed left-0 top-0 -z-50 opacity-0" aria-hidden>
         <div
           ref={cardRef}
@@ -229,7 +261,17 @@ export function ResultShareCard({
 
           <div style={{ marginTop: 48, textAlign: 'center' }}>
             <div style={{ fontSize: 30, fontWeight: 700 }}>Calcule o seu grátis, sem cadastro</div>
-            <div style={{ fontSize: 28, color: '#7dd3fc', fontWeight: 700, marginTop: 8 }}>{shareHost}</div>
+            <div
+              style={{
+                fontSize: 24,
+                color: '#7dd3fc',
+                fontWeight: 700,
+                marginTop: 8,
+                wordBreak: 'break-all'
+              }}
+            >
+              {shareHost}
+            </div>
           </div>
         </div>
       </div>

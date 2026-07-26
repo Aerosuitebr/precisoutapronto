@@ -3,22 +3,32 @@ import Link from 'next/link';
 import { RescisaoApp } from '@/components/rescisao/rescisao-app';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
+import { CalculatorJsonLd, PUBLIC_CALCULATORS } from '@/lib/seo/public-calculators';
+
+const seo = PUBLIC_CALCULATORS.rescisao;
 
 export const metadata: Metadata = {
   title: 'Calculadora de rescisão trabalhista grátis',
-  description:
-    'Calcule uma estimativa de saldo de salário, férias, 13º, aviso-prévio e FGTS sem cadastro.',
-  alternates: { canonical: '/calculadora-de-rescisao' },
+  description: seo.description,
+  alternates: { canonical: seo.path },
   openGraph: {
     title: 'Calculadora de rescisão grátis | Resolva Jato',
     description: 'Faça uma estimativa educativa das principais verbas rescisórias.',
-    url: '/calculadora-de-rescisao'
+    url: seo.path,
+    images: [{ url: `${seo.path}/opengraph-image` }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculadora de rescisão grátis | Resolva Jato',
+    description: 'Faça uma estimativa educativa das principais verbas rescisórias.',
+    images: [`${seo.path}/opengraph-image`]
   }
 };
 
 export default function CalculadoraDeRescisaoPage() {
   return (
     <>
+      <CalculatorJsonLd calculator={seo} />
       <SiteHeader />
       <main className="bg-[image:var(--rj-page-bg)]">
         <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
@@ -37,6 +47,17 @@ export default function CalculadoraDeRescisaoPage() {
               </Link>
               .
             </p>
+          </section>
+          <section className="mx-auto mt-6 max-w-4xl rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
+            <h2 className="text-2xl font-bold text-slate-950">Perguntas frequentes</h2>
+            <div className="mt-5 divide-y divide-slate-200">
+              {seo.faq.map((item) => (
+                <div key={item.question} className="py-4">
+                  <h3 className="font-bold text-slate-900">{item.question}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p>
+                </div>
+              ))}
+            </div>
           </section>
         </div>
       </main>
