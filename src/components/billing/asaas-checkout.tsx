@@ -14,7 +14,8 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
-import saasPaymentsArt from '@/assets/saas_payments.png';
+import cardPaymentArt from '@/assets/checkout-card-financial-v2.png';
+import pixPaymentArt from '@/assets/checkout-pix-financial-v2.png';
 import { formatCpf, isValidCpf, onlyDigits } from '@/lib/cpf';
 import { PLANS } from '@/lib/plans';
 import { cn } from '@/lib/utils';
@@ -342,11 +343,11 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
               </span>
               <span className="min-w-0">
                 <span className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wide text-emerald-800">
-                  Site seguro
+                  Conexão protegida
                   <ShieldCheck className="h-3 w-3 text-emerald-600" aria-hidden />
                 </span>
                 <span className="block text-[10px] leading-tight text-emerald-700">
-                  Criptografia SSL 256 bits
+                  Navegação via HTTPS
                 </span>
               </span>
             </li>
@@ -356,7 +357,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
               </span>
               <span className="min-w-0">
                 <span className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wide text-sky-800">
-                  Ambiente PCI DSS
+                  Dados do cartão
                   <CheckCircle2 className="h-3 w-3 text-sky-600" aria-hidden />
                 </span>
                 <span className="block text-[10px] leading-tight text-sky-700">
@@ -371,129 +372,97 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
               id={methodsLegendId}
               className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500"
             >
-              Escolha Pix ou Cartão na arte
+              Escolha como pagar
             </p>
 
-            <div
-              className={cn(
-                'relative overflow-hidden rounded-2xl border-2 border-slate-200 bg-slate-50',
-                busy && 'opacity-80'
-              )}
-            >
-              <Image
-                src={saasPaymentsArt}
-                alt=""
-                aria-hidden
-                className="h-auto w-full select-none object-cover"
-                sizes="(max-width: 1024px) 100vw, 520px"
-                priority
-              />
-
-              <div
-                className="pointer-events-none absolute left-1/2 top-[46%] z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border transition-colors sm:h-10 sm:w-10"
-                aria-hidden
-                style={{
-                  borderColor:
-                    selectedMethod === 'pix'
-                      ? 'rgba(45,212,191,0.7)'
-                      : selectedMethod === 'card'
-                        ? 'rgba(167,139,250,0.7)'
-                        : 'rgba(252,211,77,0.5)',
-                  backgroundColor:
-                    selectedMethod === 'pix'
-                      ? 'rgba(20,184,166,0.25)'
-                      : selectedMethod === 'card'
-                        ? 'rgba(139,92,246,0.25)'
-                        : 'rgba(255,255,255,0.9)'
-                }}
-              >
-                {selectedMethod ? (
-                  <Check
-                    className={cn(
-                      'h-4 w-4',
-                      selectedMethod === 'pix' ? 'text-teal-600' : 'text-violet-600'
-                    )}
-                  />
-                ) : (
-                  <span className="text-[10px] font-bold uppercase tracking-wide text-amber-600">
-                    ou
-                  </span>
+            <div className={cn('grid gap-3 sm:grid-cols-2', busy && 'opacity-80')}>
+              <button
+                type="button"
+                onClick={() => void startPix()}
+                disabled={busy}
+                aria-pressed={selectedMethod === 'pix'}
+                aria-label="Pagar com Pix, aprovação instantânea"
+                className={cn(
+                  'group overflow-hidden rounded-2xl border bg-white text-left outline-none transition duration-200',
+                  'hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-lg',
+                  'focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2',
+                  selectedMethod === 'pix'
+                    ? 'border-emerald-500 ring-1 ring-emerald-500'
+                    : 'border-slate-200'
                 )}
-              </div>
-
-              <div className="absolute inset-0 grid grid-cols-2">
-                <button
-                  type="button"
-                  onClick={() => void startPix()}
-                  disabled={busy}
-                  aria-pressed={selectedMethod === 'pix'}
-                  aria-label="Pagar com Pix, aprovação instantânea"
-                  className={cn(
-                    'group relative border-r border-slate-200 outline-none transition',
-                    'focus-visible:bg-teal-500/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-500',
-                    'hover:bg-teal-500/5',
-                    selectedMethod === 'pix' && 'bg-teal-500/10 ring-2 ring-inset ring-teal-500',
-                    busyMethod === 'pix' && 'bg-teal-500/15'
-                  )}
-                >
-                  <span className="absolute inset-x-2 bottom-2 rounded-xl border border-slate-200 bg-white/90 px-2 py-2 text-center shadow-sm backdrop-blur-sm sm:inset-x-3 sm:bottom-3 sm:px-3">
-                    {busyMethod === 'pix' ? (
-                      <span className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-teal-700">
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                        Gerando Pix…
-                      </span>
-                    ) : (
-                      <>
-                        <span className="block text-base font-black uppercase tracking-wide text-teal-700 sm:text-lg">
-                          PIX
-                        </span>
-                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-600 sm:text-[11px]">
-                          {selectedMethod === 'pix' ? 'Selecionado ✓' : 'Aprovação instantânea'}
-                        </span>
-                      </>
-                    )}
+              >
+                <span className="relative block aspect-[16/10] overflow-hidden border-b border-slate-100 bg-emerald-50">
+                  <Image
+                    src={pixPaymentArt}
+                    alt=""
+                    aria-hidden
+                    fill
+                    sizes="(max-width: 640px) 100vw, 260px"
+                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                    priority
+                  />
+                </span>
+                <span className="flex min-h-[74px] items-center justify-between gap-3 p-4">
+                  <span>
+                    <strong className="block text-base font-bold text-slate-950">Pagar com Pix</strong>
+                    <span className="mt-1 block text-xs text-slate-500">QR Code · confirmação automática</span>
                   </span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => void startCard()}
-                  disabled={busy}
-                  aria-pressed={selectedMethod === 'card'}
-                  aria-label="Pagar com cartão, crédito ou débito"
-                  className={cn(
-                    'group relative outline-none transition',
-                    'focus-visible:bg-violet-500/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500',
-                    'hover:bg-violet-500/5',
-                    selectedMethod === 'card' && 'bg-violet-500/10 ring-2 ring-inset ring-violet-500',
-                    busyMethod === 'card' && 'bg-violet-500/15'
+                  {busyMethod === 'pix' ? (
+                    <Loader2 className="h-5 w-5 shrink-0 animate-spin text-emerald-600" aria-hidden />
+                  ) : selectedMethod === 'pix' ? (
+                    <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
+                  ) : (
+                    <span className="text-lg text-slate-400" aria-hidden>→</span>
                   )}
-                >
-                  <span className="absolute inset-x-2 bottom-2 rounded-xl border border-slate-200 bg-white/90 px-2 py-2 text-center shadow-sm backdrop-blur-sm sm:inset-x-3 sm:bottom-3 sm:px-3">
-                    {busyMethod === 'card' ? (
-                      <span className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-violet-700">
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                        Abrindo Asaas…
-                      </span>
-                    ) : (
-                      <>
-                        <span className="block text-base font-black uppercase tracking-wide text-violet-700 sm:text-lg">
-                          CARTÃO
-                        </span>
-                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-600 sm:text-[11px]">
-                          {selectedMethod === 'card' ? 'Selecionado ✓' : 'Crédito ou débito'}
-                        </span>
-                      </>
-                    )}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => void startCard()}
+                disabled={busy}
+                aria-pressed={selectedMethod === 'card'}
+                aria-label="Pagar com cartão, crédito ou débito"
+                className={cn(
+                  'group overflow-hidden rounded-2xl border bg-white text-left outline-none transition duration-200',
+                  'hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg',
+                  'focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
+                  selectedMethod === 'card'
+                    ? 'border-blue-500 ring-1 ring-blue-500'
+                    : 'border-slate-200'
+                )}
+              >
+                <span className="relative block aspect-[16/10] overflow-hidden border-b border-slate-100 bg-blue-50">
+                  <Image
+                    src={cardPaymentArt}
+                    alt=""
+                    aria-hidden
+                    fill
+                    sizes="(max-width: 640px) 100vw, 260px"
+                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                    priority
+                  />
+                </span>
+                <span className="flex min-h-[74px] items-center justify-between gap-3 p-4">
+                  <span>
+                    <strong className="block text-base font-bold text-slate-950">Pagar com cartão</strong>
+                    <span className="mt-1 block text-xs text-slate-500">Crédito ou débito · via Asaas</span>
                   </span>
-                </button>
-              </div>
+                  {busyMethod === 'card' ? (
+                    <Loader2 className="h-5 w-5 shrink-0 animate-spin text-blue-600" aria-hidden />
+                  ) : selectedMethod === 'card' ? (
+                    <CheckCircle2 className="h-5 w-5 shrink-0 text-blue-600" aria-hidden />
+                  ) : (
+                    <span className="text-lg text-slate-400" aria-hidden>→</span>
+                  )}
+                </span>
+              </button>
             </div>
 
             <div className="mt-3 space-y-2">
               <CardBrandMarks />
               <p className="text-center text-[11px] text-slate-500">
-                Cartão: Visa, Mastercard e Elo na página segura da Asaas.
+                O pagamento com cartão continua na página segura da Asaas.
               </p>
             </div>
           </div>

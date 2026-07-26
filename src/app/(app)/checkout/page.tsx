@@ -46,21 +46,20 @@ function StepRow({
     <li
       className={cn(
         'relative flex gap-3 rounded-2xl border px-3 py-3 transition',
-        status === 'active' &&
-          'border-sky-400/50 bg-sky-500/15 shadow-[0_0_0_1px_rgba(56,189,248,0.25)]',
-        status === 'done' && 'border-emerald-400/25 bg-emerald-500/10',
-        status === 'error' && 'border-rose-400/40 bg-rose-500/10',
-        status === 'idle' && 'border-white/5 bg-white/[0.02] opacity-55'
+        status === 'active' && 'border-sky-200 bg-sky-50 shadow-sm',
+        status === 'done' && 'border-emerald-200 bg-emerald-50',
+        status === 'error' && 'border-rose-200 bg-rose-50',
+        status === 'idle' && 'border-slate-200 bg-slate-50 opacity-70'
       )}
       aria-current={status === 'active' ? 'step' : undefined}
     >
       <span
         className={cn(
           'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-[11px] font-bold',
-          status === 'done' && 'border-emerald-400/60 bg-emerald-500 text-slate-950',
-          status === 'active' && 'border-sky-300 bg-sky-400 text-slate-950',
-          status === 'error' && 'border-rose-400/60 bg-rose-500/20 text-rose-100',
-          status === 'idle' && 'border-white/15 bg-white/5 text-slate-500'
+          status === 'done' && 'border-emerald-600 bg-emerald-600 text-white',
+          status === 'active' && 'border-sky-600 bg-sky-600 text-white',
+          status === 'error' && 'border-rose-300 bg-rose-100 text-rose-700',
+          status === 'idle' && 'border-slate-300 bg-white text-slate-500'
         )}
         aria-hidden
       >
@@ -78,10 +77,10 @@ function StepRow({
         <p
           className={cn(
             'text-sm font-semibold',
-            status === 'active' && 'text-sky-50',
-            status === 'done' && 'text-emerald-50',
-            status === 'error' && 'text-rose-50',
-            status === 'idle' && 'text-slate-400'
+            status === 'active' && 'text-sky-900',
+            status === 'done' && 'text-emerald-900',
+            status === 'error' && 'text-rose-900',
+            status === 'idle' && 'text-slate-500'
           )}
         >
           {label}
@@ -89,9 +88,9 @@ function StepRow({
         <p
           className={cn(
             'mt-0.5 text-xs leading-5',
-            status === 'active' && 'text-sky-100/90',
-            status === 'done' && 'text-emerald-100/80',
-            status === 'error' && 'text-rose-100/85',
+            status === 'active' && 'text-sky-700',
+            status === 'done' && 'text-emerald-700',
+            status === 'error' && 'text-rose-700',
             status === 'idle' && 'text-slate-500'
           )}
         >
@@ -117,7 +116,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'O cartão fica guardado aqui?',
-    a: 'Não. Dados do cartão ficam só no ambiente PCI da Asaas. O Resolva Jato não armazena o número.'
+    a: 'Não. O cartão é informado no checkout hospedado da Asaas. O Resolva Jato não armazena o número.'
   }
 ] as const;
 
@@ -346,28 +345,28 @@ function CheckoutContent() {
       enforceUsageLimit={false}
       requireEmailVerified={false}
     >
-      <div className="relative min-h-[calc(100vh-6rem)] overflow-hidden">
+      <div className="relative min-h-[calc(100vh-6rem)] overflow-hidden bg-[#f6f8fb]">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(14,165,233,0.18),_transparent_55%),linear-gradient(180deg,#020617_0%,#0f172a_45%,#020617_100%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] bg-[radial-gradient(ellipse_at_top,_rgba(59,130,246,0.12),_transparent_65%)]"
         />
-        <div className="relative mx-auto max-w-5xl px-4 py-8 lg:py-12">
+        <div className="relative mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:py-12">
           <div className="mb-6 flex items-center justify-between gap-3">
             <Link
               href="/conta"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               Voltar sem pagar
             </Link>
-            <p className="text-right text-xs text-slate-300">
+            <p className="text-right text-xs font-medium text-slate-500">
               {PLANS.premium.priceLabel}
               {PLANS.premium.period} · avulso
             </p>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-            <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] sm:p-8">
+          <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.88fr)]">
+            <section className="rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_24px_70px_-32px_rgba(15,23,42,0.24)] sm:p-8">
               <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-600">
                 <Lock className="h-3.5 w-3.5" aria-hidden />
                 Checkout seguro
@@ -446,9 +445,9 @@ function CheckoutContent() {
               ) : null}
             </section>
 
-            <aside className="flex flex-col rounded-[28px] border border-white/10 bg-slate-950/50 p-6 sm:p-8">
-              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">
-                <ShieldCheck className="h-3.5 w-3.5 text-sky-300" aria-hidden />
+            <aside className="flex flex-col rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-[0_24px_70px_-36px_rgba(15,23,42,0.18)] sm:p-7 lg:sticky lg:top-6">
+              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                <ShieldCheck className="h-3.5 w-3.5 text-sky-600" aria-hidden />
                 Acompanhamento
               </div>
               <ol className="mt-5 space-y-3">
@@ -458,43 +457,43 @@ function CheckoutContent() {
               </ol>
 
               {expiresAt ? (
-                <p className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-xs leading-5 text-emerald-100">
+                <p className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs leading-5 text-emerald-800">
                   Vigência Premium até {new Date(expiresAt).toLocaleDateString('pt-BR')}.
                 </p>
               ) : null}
 
-              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
                   Resumo
                 </p>
-                <p className="mt-1 text-sm font-semibold text-white">
+                <p className="mt-1 text-lg font-bold text-slate-900">
                   Total hoje: {PLANS.premium.priceLabel}
                 </p>
-                <p className="mt-0.5 text-xs text-slate-300">
+                <p className="mt-0.5 text-xs text-slate-500">
                   30 dias · avulso · sem renovação automática
                 </p>
               </div>
 
-              <p className="mt-6 text-[11px] leading-5 text-slate-400">
+              <p className="mt-6 text-xs leading-5 text-slate-500">
                 Conexão criptografada. O Resolva Jato não armazena dados do cartão. A Asaas processa
                 o pagamento e notifica a liberação do Premium.
               </p>
             </aside>
           </div>
 
-          <section className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">
-              <CircleHelp className="h-3.5 w-3.5 text-sky-300" aria-hidden />
+          <section className="mt-6 rounded-[28px] border border-slate-200/80 bg-white p-5 shadow-sm sm:p-8">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <CircleHelp className="h-3.5 w-3.5 text-sky-600" aria-hidden />
               Dúvidas rápidas
             </div>
             <dl className="mt-5 grid gap-4 sm:grid-cols-2">
               {FAQ_ITEMS.map((item) => (
                 <div
                   key={item.q}
-                  className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3"
+                  className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3"
                 >
-                  <dt className="text-sm font-semibold text-white">{item.q}</dt>
-                  <dd className="mt-1.5 text-xs leading-5 text-slate-300">{item.a}</dd>
+                  <dt className="text-sm font-semibold text-slate-900">{item.q}</dt>
+                  <dd className="mt-1.5 text-xs leading-5 text-slate-600">{item.a}</dd>
                 </div>
               ))}
             </dl>
@@ -502,16 +501,16 @@ function CheckoutContent() {
               className="mt-6 flex flex-wrap items-center gap-2"
               aria-label="Selos de confiança"
             >
-              <li className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-slate-200">
+              <li className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600">
                 SSL / HTTPS
               </li>
-              <li className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-slate-200">
-                PCI DSS · Asaas
+              <li className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600">
+                Processado pela Asaas
               </li>
-              <li className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-slate-200">
+              <li className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600">
                 Visa · Mastercard · Elo
               </li>
-              <li className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-slate-200">
+              <li className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600">
                 Pix instantâneo
               </li>
             </ul>
