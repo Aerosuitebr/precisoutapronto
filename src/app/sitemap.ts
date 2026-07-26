@@ -2,6 +2,9 @@ import type { MetadataRoute } from 'next';
 import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
+/** Revalida a cada hora para o Google ver lastmod atualizado sem max-age=0. */
+export const revalidate = 3600;
+
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
 const PUBLIC_TOOL_LANDINGS = [
   '/gerador-de-curriculo',
