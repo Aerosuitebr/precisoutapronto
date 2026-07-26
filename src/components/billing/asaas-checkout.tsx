@@ -323,6 +323,26 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
             </p>
           </div>
 
+          <ul
+            className="grid grid-cols-2 gap-2"
+            aria-label="Selos de segurança do pagamento"
+          >
+            <li className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5">
+              <Lock className="h-4 w-4 shrink-0 text-sky-300" aria-hidden />
+              <span className="min-w-0">
+                <span className="block text-[11px] font-bold text-white">SSL / HTTPS</span>
+                <span className="block text-[10px] text-slate-300">Conexão criptografada</span>
+              </span>
+            </li>
+            <li className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5">
+              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden />
+              <span className="min-w-0">
+                <span className="block text-[11px] font-bold text-white">PCI DSS</span>
+                <span className="block text-[10px] text-slate-300">Cartão na Asaas</span>
+              </span>
+            </li>
+          </ul>
+
           <div role="group" aria-labelledby={methodsLegendId}>
             <p
               id={methodsLegendId}
@@ -345,6 +365,38 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
                 sizes="(max-width: 1024px) 100vw, 520px"
                 priority
               />
+
+              <div
+                className="pointer-events-none absolute left-1/2 top-[46%] z-10 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border transition-colors sm:h-10 sm:w-10"
+                aria-hidden
+                style={{
+                  borderColor:
+                    selectedMethod === 'pix'
+                      ? 'rgba(45,212,191,0.7)'
+                      : selectedMethod === 'card'
+                        ? 'rgba(167,139,250,0.7)'
+                        : 'rgba(252,211,77,0.5)',
+                  backgroundColor:
+                    selectedMethod === 'pix'
+                      ? 'rgba(20,184,166,0.25)'
+                      : selectedMethod === 'card'
+                        ? 'rgba(139,92,246,0.25)'
+                        : 'rgba(2,6,23,0.75)'
+                }}
+              >
+                {selectedMethod ? (
+                  <Check
+                    className={cn(
+                      'h-4 w-4',
+                      selectedMethod === 'pix' ? 'text-teal-200' : 'text-violet-200'
+                    )}
+                  />
+                ) : (
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-amber-200">
+                    ou
+                  </span>
+                )}
+              </div>
 
               <div className="absolute inset-0 grid grid-cols-2">
                 <button
@@ -369,11 +421,11 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
                       </span>
                     ) : (
                       <>
-                        <span className="block text-xs font-black uppercase tracking-wide text-teal-200 sm:text-sm">
-                          {selectedMethod === 'pix' ? 'Pix selecionado' : 'Pagar com Pix'}
+                        <span className="block text-base font-black uppercase tracking-wide text-teal-200 sm:text-lg">
+                          PIX
                         </span>
-                        <span className="mt-0.5 block text-[10px] text-slate-200 sm:text-[11px]">
-                          Toque nesta metade
+                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-100 sm:text-[11px]">
+                          {selectedMethod === 'pix' ? 'Selecionado ✓' : 'Aprovação instantânea'}
                         </span>
                       </>
                     )}
@@ -402,11 +454,11 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
                       </span>
                     ) : (
                       <>
-                        <span className="block text-xs font-black uppercase tracking-wide text-violet-200 sm:text-sm">
-                          {selectedMethod === 'card' ? 'Cartão selecionado' : 'Pagar com cartão'}
+                        <span className="block text-base font-black uppercase tracking-wide text-violet-200 sm:text-lg">
+                          CARTÃO
                         </span>
-                        <span className="mt-0.5 block text-[10px] text-slate-200 sm:text-[11px]">
-                          Crédito ou débito
+                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-100 sm:text-[11px]">
+                          {selectedMethod === 'card' ? 'Selecionado ✓' : 'Crédito ou débito'}
                         </span>
                       </>
                     )}
@@ -441,23 +493,6 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
               </p>
             </div>
           </div>
-
-          <ul className="grid grid-cols-2 gap-2" aria-label="Selos de segurança do pagamento">
-            <li className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5">
-              <Lock className="h-4 w-4 shrink-0 text-sky-300" aria-hidden />
-              <span className="min-w-0">
-                <span className="block text-[11px] font-bold text-white">SSL / HTTPS</span>
-                <span className="block text-[10px] text-slate-300">Conexão criptografada</span>
-              </span>
-            </li>
-            <li className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5">
-              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden />
-              <span className="min-w-0">
-                <span className="block text-[11px] font-bold text-white">PCI DSS</span>
-                <span className="block text-[10px] text-slate-300">Cartão na Asaas</span>
-              </span>
-            </li>
-          </ul>
         </div>
       ) : null}
 

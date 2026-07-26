@@ -33,12 +33,14 @@ function StepRow({
   index,
   label,
   detail,
-  status
+  status,
+  spinning = false
 }: {
   index: number;
   label: string;
   detail: string;
   status: StepStatus;
+  spinning?: boolean;
 }) {
   return (
     <li
@@ -66,7 +68,7 @@ function StepRow({
           <CheckCircle2 className="h-4 w-4" />
         ) : status === 'error' ? (
           <XCircle className="h-4 w-4" />
-        ) : status === 'active' ? (
+        ) : status === 'active' && spinning ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
           index
@@ -187,7 +189,9 @@ function CheckoutContent() {
             : checkoutStage === 'card'
               ? 'Cartão via Asaas'
               : 'Toque em Pix ou Cartão na arte',
-        status: pick
+        status: pick,
+        // Aguardando o clique do usuário não é uma requisição em andamento.
+        spinning: false
       },
       {
         label: 'Checkout seguro',
@@ -197,12 +201,16 @@ function CheckoutContent() {
             : checkoutStage === 'card'
               ? 'Página segura da Asaas (crédito ou débito).'
               : 'Informe o CPF e escolha o método na arte.',
-        status: pay
+        status: pay,
+        // Só gira enquanto o Pix está sendo confirmado em segundo plano.
+        spinning: pay === 'active' && checkoutStage === 'pix'
       },
       {
         label: 'Confirmação',
         detail: 'Acompanhamos a aprovação em tempo real.',
-        status: confirm
+        status: confirm,
+        // Polling real de confirmação em segundo plano.
+        spinning: confirm === 'active'
       },
       {
         label: phase === 'failure' ? 'Não concluído' : 'Premium liberado',
