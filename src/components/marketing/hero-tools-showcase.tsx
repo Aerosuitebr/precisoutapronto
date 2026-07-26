@@ -345,7 +345,7 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     stats: [
       { icon: FileStack, value: '5+', label: 'Ferramentas de edição' },
       { icon: Wand2, value: 'Navegador', label: 'Sem instalar nada' },
-      { icon: CheckCircle2, value: 'Grátis', label: 'Sem marca d\u2019água' }
+      { icon: CheckCircle2, value: 'Grátis', label: 'Com marca Resolva Jato' }
     ],
     mockup: <EditorPdfMockup />
   },
