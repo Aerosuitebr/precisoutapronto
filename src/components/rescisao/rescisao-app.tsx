@@ -28,6 +28,8 @@ import {
   type TipoRescisao,
 } from "@/lib/rescisao/calc";
 import { cn } from "@/lib/utils";
+import { viralToolShareFooter } from "@/lib/viral-loop";
+import { ResultShareCard } from "@/components/shared/result-share-card";
 
 const TIPOS: TipoRescisao[] = [
   "sem-justa-causa",
@@ -102,7 +104,7 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
         : "✖ Sem saque do FGTS nesta modalidade.",
       "",
       "Valores estimados e brutos (sem descontos de INSS/IRRF). Confirme com um contador ou advogado trabalhista.",
-    ].join("\n");
+    ].join("\n") + viralToolShareFooter("/calculadora-de-rescisao", "rescisao_whatsapp");
   }
 
   function handleCopy() {
@@ -351,6 +353,20 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
                       Enviar no WhatsApp
                     </Button>
                   </div>
+
+                  <ResultShareCard
+                    eyebrow="Cálculo de Rescisão"
+                    title="Rescisão estimada"
+                    highlightLabel="Total bruto estimado"
+                    highlightValue={formatCurrency(resultado.totalBruto)}
+                    lines={resultado.resumoLinhas.map((l) => ({
+                      label: l.label,
+                      value: formatCurrency(l.value),
+                    }))}
+                    toolPath="/calculadora-de-rescisao"
+                    utmCampaign="rescisao_card"
+                    fileNameHint="calculo-rescisao"
+                  />
                 </div>
               )}
             </div>

@@ -28,6 +28,8 @@ import {
   type FaixaMei,
 } from "@/lib/mei-vs-clt/calc";
 import { cn } from "@/lib/utils";
+import { viralToolShareFooter } from "@/lib/viral-loop";
+import { ResultShareCard } from "@/components/shared/result-share-card";
 
 const FAIXAS: FaixaMei[] = [
   "comercio-industria",
@@ -96,7 +98,7 @@ export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean }
       "Simulação educativa, não considera FGTS, benefícios, estabilidade nem custos de formalização. Consulte um contador antes de decidir.",
     ]
       .filter(Boolean)
-      .join("\n");
+      .join("\n") + viralToolShareFooter("/mei-ou-clt", "mei_clt_whatsapp");
   }
 
   function handleCopy() {
@@ -378,6 +380,30 @@ export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean }
                 >
                   Enviar no WhatsApp
                 </Button>
+              </div>
+
+              <div className="mt-3">
+                <ResultShareCard
+                  eyebrow="MEI vs CLT"
+                  title="Qual compensa mais pra você"
+                  highlightLabel={
+                    diferenca !== null && diferenca >= 0
+                      ? "MEI ganha por mês"
+                      : "CLT ganha por mês"
+                  }
+                  highlightValue={
+                    diferenca !== null
+                      ? formatCurrency(Math.abs(diferenca))
+                      : "-"
+                  }
+                  lines={[
+                    { label: "CLT (líquido/mês)", value: formatCurrency(resultadoClt.liquidoMensalEquivalente) },
+                    { label: "MEI (lucro/mês)", value: formatCurrency(resultadoMei.lucroLiquido) },
+                  ]}
+                  toolPath="/mei-ou-clt"
+                  utmCampaign="mei_clt_card"
+                  fileNameHint="mei-vs-clt"
+                />
               </div>
             </>
           )}

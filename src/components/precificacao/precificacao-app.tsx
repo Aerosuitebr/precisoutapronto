@@ -27,6 +27,8 @@ import {
   type PrecificacaoCompositionSlice
 } from '@/lib/precificacao/calc';
 import { cn } from '@/lib/utils';
+import { viralToolShareFooter } from '@/lib/viral-loop';
+import { ResultShareCard } from '@/components/shared/result-share-card';
 
 const STEPS = [
   { id: 'custos', label: 'Materiais' },
@@ -124,7 +126,7 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
       `Markup sobre custo direto: ${resultado.markup.toFixed(2)}x`,
       '',
       'Estimativa educativa. Ajuste conforme concorrência e percepção de valor do seu público.'
-    ].join('\n');
+    ].join('\n') + viralToolShareFooter('/calculadora-de-preco-freelancer', 'precificacao_whatsapp');
   }
 
   function handleCopy() {
@@ -414,6 +416,22 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
                     Enviar no WhatsApp
                   </Button>
                 </div>
+
+                <ResultShareCard
+                  eyebrow="Precificação"
+                  title="Preço ideal calculado"
+                  highlightLabel="Preço de venda sugerido"
+                  highlightValue={formatCurrency(resultado.precoFinal)}
+                  lines={[
+                    { label: 'Custo total', value: formatCurrency(resultado.custoTotal) },
+                    { label: 'Lucro líquido por venda', value: formatCurrency(resultado.lucroLiquidoPorVenda) },
+                    { label: 'Margem líquida', value: `${resultado.margemLiquidaReal.toFixed(1)}%` },
+                    { label: 'Markup', value: `${resultado.markup.toFixed(2)}x` }
+                  ]}
+                  toolPath="/calculadora-de-preco-freelancer"
+                  utmCampaign="precificacao_card"
+                  fileNameHint="precificacao-freelancer"
+                />
               </div>
             )}
           </aside>

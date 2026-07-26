@@ -101,3 +101,23 @@ export function buildViralPdfShareWhatsAppText(docLabel: string) {
 export function buildViralPdfShareWhatsAppUrl(docLabel: string) {
   return `https://wa.me/?text=${encodeURIComponent(buildViralPdfShareWhatsAppText(docLabel))}`;
 }
+
+/**
+ * Link com UTM pra ferramentas públicas (calculadoras) usado no rodapé dos
+ * resumos compartilhados por WhatsApp e nos cards de imagem pra Stories.
+ * `toolPath` deve ser a URL pública da ferramenta (ex: /calculadora-de-rescisao).
+ */
+export function viralToolShareUrl(toolPath: string, utmCampaign: string) {
+  const base = getViralBaseUrl();
+  const params = new URLSearchParams({
+    utm_source: 'share',
+    utm_medium: 'ferramenta_gratis',
+    utm_campaign: utmCampaign
+  });
+  return `${base}${toolPath}?${params.toString()}`;
+}
+
+/** Rodapé padrão anexado aos resumos de calculadoras compartilhados. */
+export function viralToolShareFooter(toolPath: string, utmCampaign: string) {
+  return `\n\nCalcule o seu grátis, sem cadastro:\n${viralToolShareUrl(toolPath, utmCampaign)}`;
+}

@@ -29,6 +29,44 @@ interface CardPaymentBrickProps {
 
 let sdkLoadPromise: Promise<void> | null = null;
 
+/**
+ * Assim que o Brick termina de montar seus campos, move o foco automaticamente
+ * para o campo de CPF (identificationNumber) — é o único campo fora dos
+ * iframes de PCI do cartão, então dá pra acessá-lo direto pelo DOM. Usa um
+ * MutationObserver porque o Brick injeta os inputs de forma assíncrona, às
+ * vezes um pouco depois do onReady/resolve do create().
+ */
+function focusIdentificationField(root: HTMLElement | null) {
+  if (!root || typeof window === 'undefined') return;
+
+  const trySelectors = [
+    'input[id*="identificationNumber" i]',
+    'input[name*="identificationNumber" i]',
+    'input[id*="identification_number" i]'
+  ];
+
+  const findAndFocus = () => {
+    for (const selector of trySelectors) {
+      const input = root.querySelector<HTMLInputElement>(selector);
+      if (input && !input.disabled) {
+        input.focus();
+        return true;
+      }
+    }
+    return false;
+  };
+
+  if (findAndFocus()) return;
+
+  const observer = new MutationObserver(() => {
+    if (findAndFocus()) observer.disconnect();
+  });
+  observer.observe(root, { childList: true, subtree: true });
+
+  // Failsafe: para de observar depois de alguns segundos para não vazar.
+  window.setTimeout(() => observer.disconnect(), 5000);
+}
+
 function loadMercadoPagoSdk(): Promise<void> {
   if (typeof window === 'undefined') return Promise.resolve();
   if ((window as unknown as { MercadoPago?: unknown }).MercadoPago) return Promise.resolve();
@@ -103,7 +141,10 @@ export function CardPaymentBrick({ payerEmail, onPaymentCreated, onError }: Card
           },
           callbacks: {
             onReady: () => {
-              if (!cancelled) setStatus('ready');
+              if (!cancelled) {
+                setStatus('ready');
+                focusIdentificationField(containerRef.current);
+              }
             },
             onSubmit: (cardFormData: CardFormData) =>
               new Promise<void>((resolve, reject) => {
@@ -160,6 +201,7 @@ export function CardPaymentBrick({ payerEmail, onPaymentCreated, onError }: Card
         // renderização); não depender apenas do callback onReady, que em alguns
         // cenários não dispara, deixando o spinner preso indefinidamente.
         setStatus('ready');
+        focusIdentificationField(containerRef.current);
       } catch (error) {
         if (!cancelled) {
           setStatus('error');
