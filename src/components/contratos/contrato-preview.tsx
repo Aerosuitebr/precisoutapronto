@@ -30,9 +30,9 @@ export function ContratoPreview({ data }: ContratoPreviewProps) {
       ) : null}
 
       <header className="text-center">
-        <h1 className="text-xl font-bold leading-snug tracking-wide text-slate-950 sm:text-2xl">
+        <p className="text-xl font-bold leading-snug tracking-wide text-slate-950 sm:text-2xl">
           {title}
-        </h1>
+        </p>
       </header>
 
       <p className="mt-8 text-justify text-[13px] leading-7 text-slate-800">

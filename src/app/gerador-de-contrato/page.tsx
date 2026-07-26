@@ -21,12 +21,14 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/${contratosSeoContent.slug}`,
     siteName: 'Resolva Jato',
     locale: 'pt_BR',
-    type: 'website'
+    type: 'website',
+    images: [{ url: `/${contratosSeoContent.slug}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
     title: contratosSeoContent.seo.metaTitle,
-    description: contratosSeoContent.seo.metaDescription
+    description: contratosSeoContent.seo.metaDescription,
+    images: [`/${contratosSeoContent.slug}/opengraph-image`]
   }
 };
 

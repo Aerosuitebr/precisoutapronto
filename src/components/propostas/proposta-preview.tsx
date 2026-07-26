@@ -401,9 +401,9 @@ function CriativaLayout({ data, metrics, ink }: LayoutProps) {
       <div className="flex min-w-0 flex-1 flex-col pl-[8mm] pr-1 pt-1">
         <header>
           <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${eyebrow}`}>Proposta criativa</p>
-          <h1 className="mt-2 text-2xl font-bold leading-tight text-slate-900">
+          <p className="mt-2 text-2xl font-bold leading-tight text-slate-900">
             {data.title || 'Nova proposta comercial'}
-          </h1>
+          </p>
           <p className="mt-3 text-sm text-slate-700">
             Para <strong className="text-slate-900">{data.client.name || 'Nome do cliente'}</strong>
             {data.client.contact ? ` · A/C ${data.client.contact}` : ''}

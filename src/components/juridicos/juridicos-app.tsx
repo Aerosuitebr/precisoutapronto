@@ -287,9 +287,9 @@ export function JuridicosApp() {
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-200/80">
                     Para advogados e escritórios
                   </p>
-                  <h1 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                  <h2 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
                     Documentos jurídicos
-                  </h1>
+                  </h2>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-stone-300">
                     Instrumentos, declarações e peças processuais para a prática jurídica e os
                     estudos. Preencha, ajuste as cláusulas e baixe o PDF.

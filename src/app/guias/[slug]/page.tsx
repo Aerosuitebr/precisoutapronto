@@ -7,14 +7,16 @@ import { SiteHeader } from '@/components/marketing/site-header';
 import { getGuide, guides } from '@/lib/guides';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
+const PUBLISHED_AT = '2026-07-26';
 
 export function generateStaticParams() {
   return guides.map(({ slug }) => ({ slug }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const guide = getGuide(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const guide = getGuide(slug);
   if (!guide) return {};
   return {
     title: guide.title,
@@ -36,8 +38,9 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function GuidePage({ params }: Props) {
-  const guide = getGuide(params.slug);
+export default async function GuidePage({ params }: Props) {
+  const { slug } = await params;
+  const guide = getGuide(slug);
   if (!guide) notFound();
   const base = getViralBaseUrl().replace(/\/$/, '');
   const jsonLd = {
@@ -48,9 +51,29 @@ export default function GuidePage({ params }: Props) {
         headline: guide.title,
         description: guide.description,
         inLanguage: 'pt-BR',
+        datePublished: PUBLISHED_AT,
+        dateModified: PUBLISHED_AT,
         mainEntityOfPage: `${base}/guias/${guide.slug}`,
         author: { '@type': 'Organization', name: 'Resolva Jato', url: base },
-        publisher: { '@type': 'Organization', name: 'Resolva Jato', url: base }
+        publisher: {
+          '@type': 'Organization',
+          name: 'Resolva Jato',
+          url: base,
+          logo: { '@type': 'ImageObject', url: `${base}/icon-512.png` }
+        }
+      },
+      {
+        '@type': 'HowTo',
+        name: guide.title,
+        description: guide.description,
+        inLanguage: 'pt-BR',
+        totalTime: `PT${Number.parseInt(guide.readTime, 10) || 6}M`,
+        step: guide.sections.map((section, index) => ({
+          '@type': 'HowToStep',
+          position: index + 1,
+          name: section.title,
+          text: [section.paragraphs.join(' '), ...(section.bullets ?? [])].filter(Boolean).join(' ')
+        }))
       },
       {
         '@type': 'BreadcrumbList',
@@ -87,6 +110,9 @@ export default function GuidePage({ params }: Props) {
               <div className="mt-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.12em] text-sky-700">
                 {guide.category}<span className="h-1 w-1 rounded-full bg-slate-300" /><Clock className="h-3.5 w-3.5" />{guide.readTime}
               </div>
+              <p className="mt-3 text-sm text-slate-500">
+                Publicado e revisado pela equipe Resolva Jato em 26 de julho de 2026.
+              </p>
               <h1 className="rj-display mt-4 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">{guide.title}</h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">{guide.description}</p>
               <div className="mt-8 rounded-3xl border border-sky-200 bg-sky-50 p-6">

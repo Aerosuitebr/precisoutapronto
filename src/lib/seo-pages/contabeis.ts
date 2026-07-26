@@ -137,7 +137,7 @@ export const contabeisSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Documentos Contábeis Online Gratuito | Resolva Jato',
+    metaTitle: 'Gerador de Documentos Contábeis Online Gratuito',
     metaDescription:
       'Crie contrato de serviços contábeis, procuração para contador, autorização e-CAC/gov.br e mais, grátis, online, em PDF.',
     keywords: [

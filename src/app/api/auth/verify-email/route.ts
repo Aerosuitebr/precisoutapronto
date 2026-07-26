@@ -6,6 +6,8 @@ import { getClientIp, getClientUserAgent } from '@/lib/security/request-meta';
 import { isDatabaseConfigured } from '@/lib/db';
 import { ensureDeviceCookie, linkDeviceToUser } from '@/lib/security/device-cookie';
 
+export const dynamic = 'force-dynamic';
+
 function appUrl() {
   return (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
 }
@@ -30,8 +32,8 @@ export async function GET(request: Request) {
     }
 
     const user = result.user;
-    const userAgent = getClientUserAgent();
-    const ip = getClientIp();
+    const userAgent = await getClientUserAgent();
+    const ip = await getClientIp();
     const deviceId = await ensureDeviceCookie({ userAgent });
     await linkDeviceToUser(deviceId, user.id);
 

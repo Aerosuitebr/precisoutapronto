@@ -138,7 +138,7 @@ export const contratosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Contrato Online Gratuito | Resolva Jato',
+    metaTitle: 'Gerador de Contrato Online Gratuito',
     metaDescription:
       'Crie contratos de aluguel, prestação de serviços, trabalho, compra e venda ou comodato grátis, online. Preencha os dados e baixe em PDF em minutos.',
     keywords: [

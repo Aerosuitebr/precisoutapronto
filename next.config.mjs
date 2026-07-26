@@ -32,10 +32,10 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
-  // API routes + /orcamento/[id] precisam de server runtime (Supabase/Prisma).
-  // Export estático impede rotas dinâmicas e route handlers.
+  // API routes + /orcamento/[id] precisam de server runtime (Prisma).
+  // Otimização de imagens ativa (requer sharp no container).
   images: {
-    unoptimized: true
+    formats: ['image/avif', 'image/webp']
   },
   webpack: (config) => {
     // pdfjs-dist referencia "canvas"/"encoding" (uso Node-only) que não existem neste app.

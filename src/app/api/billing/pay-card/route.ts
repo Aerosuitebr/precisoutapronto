@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
     }
 
-    const ip = getClientIp();
+    const ip = await getClientIp();
     const rate = await consumeRateLimit({
       key: `pay-card:${session.sub}`,
       ...RATE_LIMITS.cardPayment

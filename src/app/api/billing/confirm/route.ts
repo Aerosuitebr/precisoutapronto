@@ -10,6 +10,8 @@ import {
   type MercadoPagoPayment
 } from '@/lib/mercadopago';
 
+export const dynamic = 'force-dynamic';
+
 function isValidId(value: string | null | undefined) {
   return Boolean(value && value !== 'null' && value !== 'undefined');
 }

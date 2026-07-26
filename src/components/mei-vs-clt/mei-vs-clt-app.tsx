@@ -35,7 +35,7 @@ const FAIXAS: FaixaMei[] = [
   "comercio-e-servicos",
 ];
 
-export function MeiVsCltApp() {
+export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean } = {}) {
   const { toast } = useToast();
   const [salarioCltInput, setSalarioCltInput] = useState("");
   const [dependentes, setDependentes] = useState(0);
@@ -116,10 +116,11 @@ export function MeiVsCltApp() {
     <AuthGate
       title="Simulador MEI vs CLT"
       description="Cadastre-se gratuitamente para comparar os dois cenários."
+      publicAccess={publicAccess}
     >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
-          <ToolsBackButton />
+          <ToolsBackButton href={publicAccess ? "/recursos" : "/ferramentas"} />
         </div>
 
         <PageHero

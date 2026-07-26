@@ -4,7 +4,7 @@ import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { buildClienteOrcamentoWhatsAppText } from '@/lib/orcamentos/whatsapp-links';
 import { sendWithOwnerSession } from '@/lib/whatsapp/ephemeral-session';
 
-type RouteContext = { params: { id: string } };
+type RouteContext = { params: Promise<{ id: string }> };
 
 function appBaseUrl(request: Request) {
   const envUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '');
@@ -37,8 +37,9 @@ export async function POST(request: Request, context: RouteContext) {
       return NextResponse.json({ error: 'Informe ownerEmail.' }, { status: 400 });
     }
 
+    const { id } = await context.params;
     const prisma = getPrisma();
-    const row = await prisma.orcamento.findUnique({ where: { id: context.params.id } });
+    const row = await prisma.orcamento.findUnique({ where: { id } });
     if (!row) {
       return NextResponse.json({ error: 'Orçamento não encontrado.' }, { status: 404 });
     }

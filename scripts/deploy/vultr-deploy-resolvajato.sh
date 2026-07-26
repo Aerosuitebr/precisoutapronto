@@ -68,5 +68,15 @@ fi
 curl -sfI http://127.0.0.1:3000/ | head -1
 "${COMPOSE[@]}" ps
 echo "==> Notificar mecanismos de busca via IndexNow"
-node scripts/seo/submit-indexnow.mjs || echo "AVISO: IndexNow não respondeu; o deploy permanece ativo."
-echo "OK — Resolva Jato em ${INSTALL_DIR} (localhost:3000)"
+# Host nao tem node no PATH; usa a imagem do app (Node embutido) com o script montado.
+if docker run --rm \
+  -v "${INSTALL_DIR}/scripts/seo/submit-indexnow.mjs:/tmp/submit-indexnow.mjs:ro" \
+  --entrypoint node \
+  resolva-jato-app:latest \
+  /tmp/submit-indexnow.mjs
+then
+  echo "IndexNow: lote enviado."
+else
+  echo "AVISO: IndexNow nao respondeu; o deploy permanece ativo."
+fi
+echo "OK - Resolva Jato em ${INSTALL_DIR} (localhost:3000)"

@@ -94,14 +94,17 @@ export function sessionCookieOptions(maxAgeSec = SESSION_MAX_AGE_SEC) {
   };
 }
 
-export function readSessionFromCookies(): SessionPayload | null {
-  return parseSessionToken(cookies().get(SESSION_COOKIE)?.value);
+export async function readSessionFromCookies(): Promise<SessionPayload | null> {
+  const jar = await cookies();
+  return parseSessionToken(jar.get(SESSION_COOKIE)?.value);
 }
 
-export function setSessionCookie(token: string) {
-  cookies().set(SESSION_COOKIE, token, sessionCookieOptions());
+export async function setSessionCookie(token: string) {
+  const jar = await cookies();
+  jar.set(SESSION_COOKIE, token, sessionCookieOptions());
 }
 
-export function clearSessionCookie() {
-  cookies().set(SESSION_COOKIE, '', { ...sessionCookieOptions(0), maxAge: 0 });
+export async function clearSessionCookie() {
+  const jar = await cookies();
+  jar.set(SESSION_COOKIE, '', { ...sessionCookieOptions(0), maxAge: 0 });
 }

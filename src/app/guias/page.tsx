@@ -13,7 +13,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Guias práticos | Resolva Jato',
     description: 'Respostas claras e ferramentas gratuitas para resolver tarefas do dia a dia.',
-    url: '/guias'
+    url: '/guias',
+    images: [{ url: '/guias/opengraph-image' }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Guias práticos | Resolva Jato',
+    description: 'Respostas claras e ferramentas gratuitas para resolver tarefas do dia a dia.',
+    images: ['/guias/opengraph-image']
   }
 };
 

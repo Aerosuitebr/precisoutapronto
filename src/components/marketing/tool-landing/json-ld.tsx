@@ -1,10 +1,10 @@
 import type { SeoPageContent } from '@/lib/seo-pages/types';
-
-const SITE_URL = 'https://resolvajato.com.br';
-const ORG_LOGO = `${SITE_URL}/favicon.svg`;
+import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
-  const pageUrl = `${SITE_URL}/${content.slug}`;
+  const siteUrl = getViralBaseUrl().replace(/\/$/, '');
+  const pageUrl = `${siteUrl}/${content.slug}`;
+  const orgLogo = `${siteUrl}/icon-512.png`;
 
   const webPage = {
     '@context': 'https://schema.org',
@@ -16,7 +16,7 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
     isPartOf: {
       '@type': 'WebSite',
       name: 'Resolva Jato',
-      url: SITE_URL
+      url: siteUrl
     }
   };
 
@@ -24,8 +24,8 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Ferramentas', item: `${SITE_URL}/ferramentas` },
+      { '@type': 'ListItem', position: 1, name: 'Início', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${siteUrl}/recursos` },
       { '@type': 'ListItem', position: 3, name: content.seo.breadcrumbLabel, item: pageUrl }
     ]
   };
@@ -48,8 +48,8 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Resolva Jato',
-    url: SITE_URL,
-    logo: ORG_LOGO
+    url: siteUrl,
+    logo: orgLogo
   };
 
   const faqPage =

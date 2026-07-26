@@ -170,7 +170,7 @@ export const curriculoSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Currículo Online Gratuito | Resolva Jato',
+    metaTitle: 'Gerador de Currículo Online Gratuito',
     metaDescription:
       'Crie seu currículo profissional grátis, online, sem instalar nada. Escolha um modelo, preencha seus dados e baixe em PDF em minutos.',
     keywords: [

@@ -3,6 +3,8 @@ import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { isDatabaseConfigured } from '@/lib/db';
 import { getReferralDashboard } from '@/lib/referral';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     if (!isDatabaseConfigured()) {

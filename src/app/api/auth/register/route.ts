@@ -60,8 +60,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const ip = getClientIp();
-    const userAgent = getClientUserAgent();
+    const ip = await getClientIp();
+    const userAgent = await getClientUserAgent();
     const turnstile = await verifyTurnstileToken(body.turnstileToken, ip);
     if (!turnstile.ok) {
       return NextResponse.json({ error: turnstile.error }, { status: 400 });

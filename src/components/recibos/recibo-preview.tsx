@@ -102,7 +102,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, 
             >
               Recibo de pagamento
             </p>
-            <h1 className="mt-1 text-3xl font-bold">{amountLabel}</h1>
+            <p className="mt-1 text-3xl font-bold">{amountLabel}</p>
           </div>
           <div className="text-right text-sm">
             <p className="font-semibold">Nº {data.number || '-'}</p>

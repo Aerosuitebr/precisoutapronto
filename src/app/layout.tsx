@@ -40,9 +40,6 @@ export const metadata: Metadata = {
     title: 'Resolva Jato | Orçamento com Pix no WhatsApp',
     description: 'Cliente aprova no celular. Você recebe no Pix.'
   },
-  alternates: {
-    canonical: '/'
-  },
   keywords: [
     'orçamento com pix',
     'orçamento online grátis',

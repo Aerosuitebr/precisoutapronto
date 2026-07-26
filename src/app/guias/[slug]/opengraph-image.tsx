@@ -5,8 +5,13 @@ export const runtime = 'edge';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default function GuideOpenGraphImage({ params }: { params: { slug: string } }) {
-  const guide = getGuide(params.slug);
+export default async function GuideOpenGraphImage({
+  params
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const guide = getGuide(slug);
   return new ImageResponse(
     (
       <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 70, color: '#f8fafc', background: 'linear-gradient(135deg,#020617,#0f3d4c)' }}>

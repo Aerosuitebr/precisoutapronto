@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 async function loadOrcamento(id: string): Promise<OrcamentoPublic | null> {
@@ -41,7 +41,8 @@ async function loadOrcamento(id: string): Promise<OrcamentoPublic | null> {
 }
 
 export default async function OrcamentoPublicPage({ params }: PageProps) {
-  const orcamento = await loadOrcamento(params.id);
+  const { id } = await params;
+  const orcamento = await loadOrcamento(id);
 
   if (!orcamento) {
     return (

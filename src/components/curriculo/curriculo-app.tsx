@@ -277,7 +277,7 @@ export function CurriculoApp() {
                 <GraduationCap className="h-6 w-6" />
               </span>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">Editor de Currículos</h1>
+                <h2 className="text-2xl font-bold text-slate-900">Editor de Currículos</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-700">
                   Experiência, formação, cursos e idiomas. Preview A4 com margens de impressão e PDF.
                 </p>

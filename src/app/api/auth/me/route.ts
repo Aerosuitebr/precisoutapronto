@@ -11,6 +11,8 @@ import {
 import { ensureDeviceCookie } from '@/lib/security/device-cookie';
 import { getClientUserAgent } from '@/lib/security/request-meta';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     if (!isDatabaseConfigured()) {
@@ -18,9 +20,10 @@ export async function GET() {
     }
 
     // Mantém cookie de dispositivo vivo em visitas autenticadas
-    await ensureDeviceCookie({ userAgent: getClientUserAgent() }).catch(() => undefined);
+    await ensureDeviceCookie({ userAgent: await getClientUserAgent() }).catch(() => undefined);
 
-    const hadCookie = Boolean(cookies().get(SESSION_COOKIE)?.value);
+    const jar = await cookies();
+    const hadCookie = Boolean(jar.get(SESSION_COOKIE)?.value);
     const session = await getValidSessionFromCookies();
     if (!session) {
       return NextResponse.json(
@@ -37,7 +40,7 @@ export async function GET() {
     const prisma = getPrisma();
     const user = await prisma.user.findUnique({ where: { id: session.sub } });
     if (!user) {
-      clearSessionCookie();
+      await clearSessionCookie();
       return NextResponse.json({ authenticated: false });
     }
 

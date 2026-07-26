@@ -304,9 +304,9 @@ export function ContabeisApp() {
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan-200/80">
                     Contadores, despachantes e prepostos
                   </p>
-                  <h1 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                  <h2 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
                     Documentos dinâmicos
-                  </h1>
+                  </h2>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
                     Contratos contábeis, procurações, entrega de documentos, e-CAC, residência e
                     carta de responsabilidade. Preencha e baixe o PDF.

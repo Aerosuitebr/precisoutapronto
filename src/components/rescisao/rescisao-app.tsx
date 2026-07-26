@@ -37,7 +37,7 @@ const TIPOS: TipoRescisao[] = [
   "termino-contrato",
 ];
 
-export function RescisaoApp() {
+export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean } = {}) {
   const { toast } = useToast();
   const [salarioInput, setSalarioInput] = useState("");
   const [fgtsInput, setFgtsInput] = useState("");
@@ -121,10 +121,11 @@ export function RescisaoApp() {
     <AuthGate
       title="Calculadora de Rescisão Trabalhista"
       description="Cadastre-se gratuitamente para calcular sua rescisão."
+      publicAccess={publicAccess}
     >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
-          <ToolsBackButton />
+          <ToolsBackButton href={publicAccess ? "/recursos" : "/ferramentas"} />
         </div>
 
         <PageHero

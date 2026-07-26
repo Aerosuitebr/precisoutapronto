@@ -59,8 +59,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'E-mail inválido.' }, { status: 400 });
     }
 
-    const ip = getClientIp();
-    const userAgent = getClientUserAgent();
+    const ip = await getClientIp();
+    const userAgent = await getClientUserAgent();
 
     if (isDatabaseConfigured()) {
       const rate = await consumeRateLimit({

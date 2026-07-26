@@ -3,8 +3,14 @@ import Link from 'next/link';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Sobre | Resolva Jato',
-  description: 'O que é o Resolva Jato e quem opera a plataforma.'
+  title: 'Sobre',
+  description: 'O que é o Resolva Jato e quem opera a plataforma.',
+  alternates: { canonical: '/sobre' },
+  openGraph: {
+    title: 'Sobre | Resolva Jato',
+    description: 'O que é o Resolva Jato e quem opera a plataforma.',
+    url: '/sobre'
+  }
 };
 
 export default function SobrePage() {
@@ -19,6 +25,19 @@ export default function SobrePage() {
         A plataforma é desenvolvida e operada pela <strong>Aerosuite</strong>. Não pedimos cartão
         para começar.
       </p>
+      <section className="mt-10 rounded-3xl border border-sky-100 bg-sky-50 p-6">
+        <h2 className="text-xl font-bold text-slate-950">Como produzimos nossos conteúdos</h2>
+        <p className="mt-3">
+          Os guias são escritos para responder primeiro à dúvida prática do leitor e revisados pela
+          equipe Resolva Jato antes da publicação. Em temas jurídicos, trabalhistas, tributários ou
+          contábeis, indicamos os limites da ferramenta e recomendamos validação com um profissional
+          habilitado quando a situação exigir análise individual.
+        </p>
+        <p className="mt-3">
+          Corrigimos conteúdos quando regras, fontes ou funcionalidades mudam. Sugestões e pedidos de
+          correção podem ser enviados pela página de contato.
+        </p>
+      </section>
       <section className="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-6">
         <h2 className="text-xl font-bold text-slate-950">Press kit</h2>
         <p className="mt-3">

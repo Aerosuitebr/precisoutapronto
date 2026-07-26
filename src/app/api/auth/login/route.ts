@@ -31,8 +31,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Informe e-mail e senha.' }, { status: 400 });
     }
 
-    const ip = getClientIp();
-    const userAgent = getClientUserAgent();
+    const ip = await getClientIp();
+    const userAgent = await getClientUserAgent();
 
     const rate = await consumeRateLimit({
       key: `login:ip:${ip}`,

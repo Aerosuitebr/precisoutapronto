@@ -7,13 +7,14 @@ import { cn } from '@/lib/utils';
 interface ToolsBackButtonProps {
   className?: string;
   size?: 'default' | 'sm' | 'lg';
+  href?: string;
 }
 
 /** Volta para a grade de ferramentas (/ferramentas). */
-export function ToolsBackButton({ className, size = 'sm' }: ToolsBackButtonProps) {
+export function ToolsBackButton({ className, size = 'sm', href = '/ferramentas' }: ToolsBackButtonProps) {
   return (
     <Link
-      href="/ferramentas"
+      href={href}
       aria-label="Voltar para ferramentas"
       className={cn(
         'rj-press inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white font-semibold text-slate-700 shadow-sm transition-all duration-150',

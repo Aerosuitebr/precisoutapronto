@@ -101,7 +101,7 @@ export const guides: Guide[] = [
       'O cálculo de rescisão depende do motivo e da data do desligamento. Em geral, são avaliados saldo de salário, 13º proporcional, férias vencidas e proporcionais com 1/3, aviso-prévio e verbas ligadas ao FGTS.',
     category: 'Trabalho',
     readTime: '9 min',
-    toolHref: '/ferramentas/rescisao',
+    toolHref: '/calculadora-de-rescisao',
     toolLabel: 'Simular rescisão',
     sections: [
       {
@@ -257,7 +257,7 @@ export const guides: Guide[] = [
       'O preço freelancer deve cobrir custos fixos e variáveis, impostos, tempo não faturável, risco e margem. Dividir uma meta mensal por todas as horas do mês costuma subestimar o valor, porque nem toda hora disponível é vendida.',
     category: 'Financeiro',
     readTime: '8 min',
-    toolHref: '/ferramentas/precificacao',
+    toolHref: '/calculadora-de-preco-freelancer',
     toolLabel: 'Calcular preço',
     sections: [
       {
@@ -296,7 +296,7 @@ export const guides: Guide[] = [
       'Comparar MEI e CLT exige colocar na mesma base salário líquido, férias, 13º, FGTS, benefícios, impostos, custos operacionais e períodos sem faturamento. O maior valor mensal isolado não representa necessariamente a melhor proposta.',
     category: 'Trabalho',
     readTime: '9 min',
-    toolHref: '/ferramentas/mei-vs-clt',
+    toolHref: '/mei-ou-clt',
     toolLabel: 'Comparar cenários',
     sections: [
       {

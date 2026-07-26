@@ -306,7 +306,7 @@ export function PropostasApp() {
                 <Building2 className="h-6 w-6" />
               </span>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">Propostas Comerciais</h1>
+                <h2 className="text-2xl font-bold text-slate-900">Propostas Comerciais</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-700">
                   Editor inspirado no fluxo do Aero Suite, adaptado para logo opcional e produtos cadastrados manualmente.
                 </p>

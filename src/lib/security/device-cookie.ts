@@ -20,7 +20,7 @@ export async function ensureDeviceCookie(meta?: {
   language?: string | null;
   timezone?: string | null;
 }): Promise<string> {
-  const jar = cookies();
+  const jar = await cookies();
   const existing = jar.get(DEVICE_COOKIE)?.value;
   const prisma = getPrisma();
 

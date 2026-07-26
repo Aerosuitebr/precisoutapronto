@@ -149,9 +149,9 @@ export function ProfessionalTemplate({ data }: ResumeTemplateProps) {
   return (
     <div className={cn(DOC_PAGE, DOC_MARGIN)}>
       <header className="border-b-2 border-slate-900 pb-4">
-        <h1 className="text-[26px] font-bold leading-tight tracking-tight">
+        <p className="text-[26px] font-bold leading-tight tracking-tight">
           {personal.fullName || 'Seu nome'}
-        </h1>
+        </p>
         <p className="mt-1 text-[15px] font-medium text-slate-600">
           {personal.headline || 'Cargo ou área de atuação'}
         </p>
@@ -245,7 +245,7 @@ export function ModernTemplate({ data }: ResumeTemplateProps) {
     <div className={cn(DOC_PAGE, DOC_MARGIN)}>
       <div className="grid min-h-[calc(297mm-30mm)] grid-cols-[32%_1fr] overflow-hidden rounded-sm">
         <aside className="bg-slate-900 px-4 py-5 text-white">
-          <h1 className="text-[22px] font-bold leading-tight">{personal.fullName || 'Seu nome'}</h1>
+          <p className="text-[22px] font-bold leading-tight">{personal.fullName || 'Seu nome'}</p>
           <p className="mt-2 text-[12px] font-medium text-sky-200">
             {personal.headline || 'Cargo ou área'}
           </p>
@@ -341,9 +341,9 @@ export function AcademicTemplate({ data }: ResumeTemplateProps) {
         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-700">
           Currículo acadêmico
         </p>
-        <h1 className="mt-1.5 text-[24px] font-bold tracking-tight">
+        <p className="mt-1.5 text-[24px] font-bold tracking-tight">
           {personal.fullName || 'Seu nome'}
-        </h1>
+        </p>
         <p className="mt-1 text-[14px] font-medium text-indigo-700">
           {personal.headline || 'Estudante / área de interesse'}
         </p>

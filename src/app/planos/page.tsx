@@ -15,7 +15,15 @@ export const metadata: Metadata = {
       'Comece grátis: orçamento com Pix, recibo, contrato e proposta. Com o Premium, documentos sem marca por 30 dias.',
     type: 'website',
     locale: 'pt_BR',
-    url: '/planos'
+    url: '/planos',
+    images: [{ url: '/planos/opengraph-image' }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Planos e preços | Resolva Jato',
+    description:
+      'Comece grátis: orçamento com Pix, recibo, contrato e proposta. Com o Premium, documentos sem marca por 30 dias.',
+    images: ['/planos/opengraph-image']
   }
 };
 

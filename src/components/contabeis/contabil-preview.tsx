@@ -35,9 +35,9 @@ export function ContabilPreview({ data }: ContabilPreviewProps) {
       ) : null}
 
       <header className="text-center">
-        <h1 className="text-xl font-bold leading-snug tracking-wide text-slate-950 sm:text-2xl">
+        <p className="text-xl font-bold leading-snug tracking-wide text-slate-950 sm:text-2xl">
           {title}
-        </h1>
+        </p>
       </header>
 
       <IntroParagraph data={data} parties={parties} />

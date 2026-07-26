@@ -32,7 +32,10 @@ let pdfjsLibPromise: Promise<typeof import('pdfjs-dist')> | null = null;
 async function getPdfjs() {
   if (!pdfjsLibPromise) {
     pdfjsLibPromise = import('pdfjs-dist').then((mod) => {
-      mod.GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.js';
+      mod.GlobalWorkerOptions.workerSrc = new URL(
+        'pdfjs-dist/build/pdf.worker.min.mjs',
+        import.meta.url
+      ).toString();
       return mod;
     });
   }

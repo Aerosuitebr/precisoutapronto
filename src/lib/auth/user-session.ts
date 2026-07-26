@@ -109,36 +109,37 @@ export async function issueUserSession(input: {
     sid: row.id,
     token: rawToken
   });
-  setSessionCookie(cookieToken);
+  await setSessionCookie(cookieToken);
 
   return { conflict: false, sessionId: row.id, replaced };
 }
 
 /** Valida assinatura + presença da sessão no banco (revoga cookie morto). */
 export async function getValidSessionFromCookies(): Promise<SessionPayload | null> {
-  const rawCookie = cookies().get(SESSION_COOKIE)?.value;
+  const jar = await cookies();
+  const rawCookie = jar.get(SESSION_COOKIE)?.value;
   const payload = parseSessionToken(rawCookie);
   if (!payload?.sid || !payload.jti) {
-    if (rawCookie) clearSessionCookie();
+    if (rawCookie) await clearSessionCookie();
     return null;
   }
 
   const prisma = getPrisma();
   const row = await prisma.userSession.findUnique({ where: { id: payload.sid } });
   if (!row || row.userId !== payload.sub) {
-    clearSessionCookie();
+    await clearSessionCookie();
     return null;
   }
 
   if (row.expiresAt.getTime() <= Date.now()) {
     await prisma.userSession.delete({ where: { id: row.id } }).catch(() => undefined);
-    clearSessionCookie();
+    await clearSessionCookie();
     return null;
   }
 
   const expectedHash = hashToken(payload.jti);
   if (row.tokenHash !== expectedHash) {
-    clearSessionCookie();
+    await clearSessionCookie();
     return null;
   }
 
@@ -156,9 +157,10 @@ export async function getValidSessionFromCookies(): Promise<SessionPayload | nul
 }
 
 export async function revokeSessionFromCookies() {
-  const rawCookie = cookies().get(SESSION_COOKIE)?.value;
+  const jar = await cookies();
+  const rawCookie = jar.get(SESSION_COOKIE)?.value;
   const payload = parseSessionToken(rawCookie);
-  clearSessionCookie();
+  await clearSessionCookie();
   if (!payload?.sid) return payload;
 
   const prisma = getPrisma();

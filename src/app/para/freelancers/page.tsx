@@ -12,7 +12,14 @@ export const metadata: Metadata = {
     title: content.title,
     description: content.description,
     type: 'website',
-    locale: 'pt_BR'
+    locale: 'pt_BR',
+    images: [{ url: `${content.path}/opengraph-image` }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: content.title,
+    description: content.description,
+    images: [`${content.path}/opengraph-image`]
   }
 };
 

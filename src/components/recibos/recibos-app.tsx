@@ -343,7 +343,7 @@ export function RecibosApp() {
                 <Receipt className="h-6 w-6" />
               </span>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">Gerador de Recibos</h1>
+                <h2 className="text-2xl font-bold text-slate-900">Gerador de Recibos</h2>
                 <p className="mt-1 text-sm leading-6 text-slate-700">
                   Escolha o modelo, preencha os dados e veja o recibo pronto à direita. Salva sozinho e exporta em PDF.
                 </p>

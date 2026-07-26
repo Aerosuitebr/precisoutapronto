@@ -252,7 +252,8 @@ export function BuscaClient() {
   const searchParams = useSearchParams();
   const { requireAuth } = useAuthRequired();
   const initialCategory = searchParams.get('categoria') ?? undefined;
-  const [query, setQuery] = useState('');
+  const initialQuery = searchParams.get('q') ?? '';
+  const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState<SearchCategoryId>(resolveInitialCategory(initialCategory));
   const [savedKeys, setSavedKeys] = useState<string[]>([]);
 

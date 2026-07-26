@@ -31,9 +31,9 @@ export function JuridicoPreview({ data }: JuridicoPreviewProps) {
       ) : null}
 
       <header className="text-center">
-        <h1 className="text-xl font-bold leading-snug tracking-wide text-slate-950 sm:text-2xl">
+        <p className="text-xl font-bold leading-snug tracking-wide text-slate-950 sm:text-2xl">
           {title}
-        </h1>
+        </p>
         {data.templateId === 'substabelecimento' ? (
           <p className="mt-2 text-xs font-bold uppercase tracking-wide text-amber-800">
             {data.reservePowers ? 'Com reserva de poderes' : 'Sem reserva de poderes'}

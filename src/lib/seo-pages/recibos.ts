@@ -137,7 +137,7 @@ export const recibosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Recibo Online Gratuito | Resolva Jato',
+    metaTitle: 'Gerador de Recibo Online Gratuito',
     metaDescription:
       'Crie recibos de pagamento grátis, online, com valor por extenso automático e assinatura digital. Baixe em PDF em minutos.',
     keywords: [

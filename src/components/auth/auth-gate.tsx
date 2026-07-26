@@ -15,13 +15,15 @@ interface AuthGateProps {
    * Mantido só por compatibilidade de props.
    */
   enforceUsageLimit?: boolean;
-  /** Quando true (padrão), exige e-mail confirmado. */
   requireEmailVerified?: boolean;
+  /** Libera apenas ferramentas explicitamente publicadas como demonstração sem conta. */
+  publicAccess?: boolean;
 }
 
 export function AuthGate({
   children,
-  requireEmailVerified = true
+  requireEmailVerified = true,
+  publicAccess = false
 }: AuthGateProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -29,11 +31,14 @@ export function AuthGate({
   const needsEmail = requireEmailVerified && isAuthenticated && !emailVerified;
 
   useEffect(() => {
+    if (publicAccess) return;
     if (!ready) return;
     if (!isAuthenticated) {
       router.replace(`/login?next=${encodeURIComponent(pathname || '/ferramentas')}`);
     }
-  }, [isAuthenticated, pathname, ready, router]);
+  }, [isAuthenticated, pathname, publicAccess, ready, router]);
+
+  if (publicAccess) return <>{children}</>;
 
   if (!ready) {
     return <div className="rounded-2xl border border-slate-200 bg-white p-8 text-sm text-slate-600">Carregando sua conta...</div>;

@@ -10,7 +10,7 @@ export async function POST() {
       event: 'logout',
       userId: session.sub,
       email: session.email,
-      ip: getClientIp()
+      ip: await getClientIp()
     });
   }
   return NextResponse.json({ ok: true });

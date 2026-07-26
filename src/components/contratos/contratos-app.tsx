@@ -325,9 +325,9 @@ export function ContratosApp() {
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300">
                     Ferramenta premium
                   </p>
-                  <h1 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                  <h2 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
                     Contratos sob medida
-                  </h1>
+                  </h2>
                   <p className="mt-1 max-w-2xl text-sm font-medium leading-6 text-slate-300">
                     Monte contratos de aluguel, serviços, trabalho, compra e venda e comodato, com
                     prévia em tempo real e PDF para assinar.

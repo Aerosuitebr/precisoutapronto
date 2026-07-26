@@ -3,8 +3,9 @@ import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
 
-/** Revalida a cada hora para o Google ver lastmod atualizado sem max-age=0. */
-export const revalidate = 3600;
+/** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
+const CORE_UPDATED_AT = new Date('2026-07-26T00:00:00.000Z');
+const GUIDES_UPDATED_AT = new Date('2026-07-26T00:00:00.000Z');
 
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
 const PUBLIC_TOOL_LANDINGS = [
@@ -14,6 +15,9 @@ const PUBLIC_TOOL_LANDINGS = [
   '/documentos-contabeis-online',
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
+  '/calculadora-de-rescisao',
+  '/calculadora-de-preco-freelancer',
+  '/mei-ou-clt',
   '/contato',
   '/sobre',
   '/privacidade',
@@ -25,33 +29,31 @@ const PUBLIC_TOOL_LANDINGS = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = getViralBaseUrl();
-  const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${base}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
-    { url: `${base}/busca`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${base}/planos`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 }
-    ,{ url: `${base}/recursos`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 }
-    ,{ url: `${base}/guias`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 }
+    { url: `${base}/`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 1 },
+    { url: `${base}/planos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/recursos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/guias`, lastModified: GUIDES_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 }
   ];
 
   const guideRoutes: MetadataRoute.Sitemap = guides.map((guide) => ({
     url: `${base}/guias/${guide.slug}`,
-    lastModified: now,
+    lastModified: GUIDES_UPDATED_AT,
     changeFrequency: 'monthly',
     priority: 0.75
   }));
 
   const seoRoutes = listSeoLandings().map((page) => ({
     url: `${base}${page.path}`,
-    lastModified: now,
+    lastModified: CORE_UPDATED_AT,
     changeFrequency: 'weekly' as const,
     priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
   }));
 
   const toolLandingRoutes: MetadataRoute.Sitemap = PUBLIC_TOOL_LANDINGS.map((path) => ({
     url: `${base}${path}`,
-    lastModified: now,
+    lastModified: CORE_UPDATED_AT,
     changeFrequency: 'weekly' as const,
     priority: path.startsWith('/gerador-') || path.startsWith('/documentos-') ? 0.9 : 0.4
   }));

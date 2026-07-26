@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { MpSecurityScript } from '@/components/billing/mp-security-script';
 
 export const metadata: Metadata = {
   title: 'Checkout',
@@ -7,5 +8,10 @@ export const metadata: Metadata = {
 };
 
 export default function CheckoutLayout({ children }: { children: ReactNode }) {
-  return children;
+  return (
+    <>
+      <MpSecurityScript view="checkout" />
+      {children}
+    </>
+  );
 }

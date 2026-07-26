@@ -20,12 +20,14 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/${curriculoSeoContent.slug}`,
     siteName: 'Resolva Jato',
     locale: 'pt_BR',
-    type: 'website'
+    type: 'website',
+    images: [{ url: `/${curriculoSeoContent.slug}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
     title: curriculoSeoContent.seo.metaTitle,
-    description: curriculoSeoContent.seo.metaDescription
+    description: curriculoSeoContent.seo.metaDescription,
+    images: [`/${curriculoSeoContent.slug}/opengraph-image`]
   }
 };
 

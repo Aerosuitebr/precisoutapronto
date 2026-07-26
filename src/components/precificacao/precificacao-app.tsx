@@ -49,7 +49,7 @@ const SLICE_STYLE: Record<
   lucro: { bar: 'bg-emerald-500', dot: 'bg-emerald-500', text: 'text-emerald-800' }
 };
 
-export function PrecificacaoApp() {
+export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boolean } = {}) {
   const { toast } = useToast();
   const [step, setStep] = useState<StepId>('custos');
   const [custoDiretoInput, setCustoDiretoInput] = useState('');
@@ -139,10 +139,14 @@ export function PrecificacaoApp() {
   }
 
   return (
-    <AuthGate title="Calculadora de Precificação" description="Cadastre-se gratuitamente para calcular seu preço ideal.">
+    <AuthGate
+      title="Calculadora de Precificação"
+      description="Cadastre-se gratuitamente para calcular seu preço ideal."
+      publicAccess={publicAccess}
+    >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
-          <ToolsBackButton />
+          <ToolsBackButton href={publicAccess ? '/recursos' : '/ferramentas'} />
         </div>
 
         <PageHero

@@ -3,8 +3,14 @@ import Link from 'next/link';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Contato | Resolva Jato',
-  description: 'Fale com a equipe do Resolva Jato.'
+  title: 'Contato',
+  description: 'Fale com a equipe do Resolva Jato.',
+  alternates: { canonical: '/contato' },
+  openGraph: {
+    title: 'Contato | Resolva Jato',
+    description: 'Fale com a equipe do Resolva Jato.',
+    url: '/contato'
+  }
 };
 
 export default function ContatoPage() {

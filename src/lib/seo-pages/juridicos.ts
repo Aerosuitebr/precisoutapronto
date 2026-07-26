@@ -139,7 +139,7 @@ export const juridicosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Documentos Jurídicos Online Gratuito | Resolva Jato',
+    metaTitle: 'Gerador de Documentos Jurídicos Online Gratuito',
     metaDescription:
       'Crie procuração, contrato de honorários, substabelecimento, notificação extrajudicial e outras peças jurídicas grátis, online, em PDF.',
     keywords: [

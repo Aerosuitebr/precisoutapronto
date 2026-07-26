@@ -80,7 +80,7 @@ async function main() {
   if (![200, 202, 204].includes(res.status)) {
     process.exit(1);
   }
-  console.log('OK — IndexNow aceitou o lote (Bing e parceiros).');
+  console.log('OK - IndexNow aceitou o lote (Bing e parceiros).');
 }
 
 main().catch((err) => {

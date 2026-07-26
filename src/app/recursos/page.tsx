@@ -13,7 +13,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Ferramentas online grátis | Resolva Jato',
     description: 'Documentos, cálculos e recursos práticos organizados em um só lugar.',
-    url: '/recursos'
+    url: '/recursos',
+    images: [{ url: '/recursos/opengraph-image' }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ferramentas online grátis | Resolva Jato',
+    description: 'Documentos, cálculos e recursos práticos organizados em um só lugar.',
+    images: ['/recursos/opengraph-image']
   }
 };
 
@@ -24,7 +31,10 @@ const publicLandings: Record<string, string> = {
   propostas: '/gerador-de-proposta-comercial',
   orcamentos: '/orcamento-com-pix',
   juridicos: '/documentos-juridicos-online',
-  contabeis: '/documentos-contabeis-online'
+  contabeis: '/documentos-contabeis-online',
+  rescisao: '/calculadora-de-rescisao',
+  precificacao: '/calculadora-de-preco-freelancer',
+  'mei-vs-clt': '/mei-ou-clt'
 };
 
 export default function RecursosPage() {

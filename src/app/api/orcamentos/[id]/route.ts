@@ -18,7 +18,7 @@ function appBaseUrl(request: Request) {
   return 'http://localhost:3000';
 }
 
-type RouteContext = { params: { id: string } };
+type RouteContext = { params: Promise<{ id: string }> };
 
 function toPublic(row: {
   id: string;
@@ -60,8 +60,9 @@ export async function GET(_request: Request, context: RouteContext) {
       return NextResponse.json({ error: 'Banco não configurado.' }, { status: 503 });
     }
 
+    const { id } = await context.params;
     const prisma = getPrisma();
-    const row = await prisma.orcamento.findUnique({ where: { id: context.params.id } });
+    const row = await prisma.orcamento.findUnique({ where: { id } });
     if (!row) {
       return NextResponse.json({ error: 'Orçamento não encontrado.' }, { status: 404 });
     }
@@ -85,8 +86,9 @@ export async function PUT(request: Request, context: RouteContext) {
       return NextResponse.json({ error: validated.error || 'Dados inválidos.' }, { status: 400 });
     }
 
+    const { id } = await context.params;
     const prisma = getPrisma();
-    const existing = await prisma.orcamento.findUnique({ where: { id: context.params.id } });
+    const existing = await prisma.orcamento.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json({ error: 'Orçamento não encontrado.' }, { status: 404 });
     }
@@ -103,7 +105,7 @@ export async function PUT(request: Request, context: RouteContext) {
     }
 
     const updated = await prisma.orcamento.update({
-      where: { id: context.params.id },
+      where: { id },
       data: {
         profissionalNome: validated.data.profissionalNome,
         profissionalWhatsapp: validated.data.profissionalWhatsapp,
@@ -143,8 +145,9 @@ export async function PATCH(request: Request, context: RouteContext) {
       return NextResponse.json({ error: validated.error || 'Dados inválidos.' }, { status: 400 });
     }
 
+    const { id } = await context.params;
     const prisma = getPrisma();
-    const existing = await prisma.orcamento.findUnique({ where: { id: context.params.id } });
+    const existing = await prisma.orcamento.findUnique({ where: { id } });
     if (!existing) {
       return NextResponse.json({ error: 'Orçamento não encontrado.' }, { status: 404 });
     }
@@ -156,7 +159,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
 
     const updated = await prisma.orcamento.update({
-      where: { id: context.params.id },
+      where: { id },
       data: {
         status: validated.status,
         feedbackCliente: validated.feedbackCliente ?? null

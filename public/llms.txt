@@ -9,19 +9,37 @@ Language: pt-BR
 - https://resolvajato.com.br/
 - https://resolvajato.com.br/recursos
 - https://resolvajato.com.br/guias
+- https://resolvajato.com.br/planos
 - https://resolvajato.com.br/orcamento-com-pix
 - https://resolvajato.com.br/gerador-de-curriculo
 - https://resolvajato.com.br/gerador-de-contrato
 - https://resolvajato.com.br/gerador-de-recibo
 - https://resolvajato.com.br/gerador-de-proposta-comercial
+- https://resolvajato.com.br/documentos-juridicos-online
+- https://resolvajato.com.br/documentos-contabeis-online
+- https://resolvajato.com.br/calculadora-de-rescisao
+- https://resolvajato.com.br/calculadora-de-preco-freelancer
+- https://resolvajato.com.br/mei-ou-clt
 
 ## Audience pages
 - https://resolvajato.com.br/para/mei
 - https://resolvajato.com.br/para/freelancers
 - https://resolvajato.com.br/para/estudantes
 
-## Editorial content
-- https://resolvajato.com.br/guias
+## Long-tail landings
+- https://resolvajato.com.br/contrato-de-aluguel
+- https://resolvajato.com.br/recibo-de-pagamento
+- https://resolvajato.com.br/proposta-comercial-mei
+
+## Guides
+- https://resolvajato.com.br/guias/modelo-de-recibo-mei
+- https://resolvajato.com.br/guias/contrato-de-prestacao-de-servicos-gratis
+- https://resolvajato.com.br/guias/como-calcular-rescisao
+- https://resolvajato.com.br/guias/curriculo-pronto-para-baixar
+- https://resolvajato.com.br/guias/como-fazer-orcamento-com-pix
+- https://resolvajato.com.br/guias/proposta-comercial-para-mei
+- https://resolvajato.com.br/guias/como-precificar-servico-freelancer
+- https://resolvajato.com.br/guias/mei-ou-clt-como-comparar
 
 ## Product notes
 - Public pages explain each tool before registration.

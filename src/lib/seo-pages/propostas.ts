@@ -137,7 +137,7 @@ export const propostasSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Proposta Comercial Online Gratuito | Resolva Jato',
+    metaTitle: 'Gerador de Proposta Comercial Online Gratuito',
     metaDescription:
       'Crie propostas comerciais grátis, online, com sua logo, itens e valores organizados. Baixe em PDF profissional em minutos.',
     keywords: [
