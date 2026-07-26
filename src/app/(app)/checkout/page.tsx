@@ -367,15 +367,15 @@ function CheckoutContent() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-            <section className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6 shadow-[0_30px_80px_-40px_rgba(14,165,233,0.55)] backdrop-blur-sm sm:p-8">
-              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300">
+            <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_30px_80px_-40px_rgba(15,23,42,0.35)] sm:p-8">
+              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-600">
                 <Lock className="h-3.5 w-3.5" aria-hidden />
                 Checkout seguro
               </div>
-              <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
                 Resolva Jato Premium
               </h1>
-              <p className="mt-2 text-sm leading-6 text-slate-200">
+              <p className="mt-2 text-sm leading-6 text-slate-600">
                 {PLANS.premium.priceLabel}
                 {PLANS.premium.period}, avulso, sem renovação automática. Documentos sem marca nos
                 PDFs, WhatsApp e e-mail.
@@ -405,7 +405,7 @@ function CheckoutContent() {
                       setMessage(null);
                       router.replace('/checkout?method=asaas');
                     }}
-                    className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-50"
+                    className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                   >
                     Tentar novamente
                   </button>
@@ -417,10 +417,10 @@ function CheckoutContent() {
                   className={cn(
                     'mt-6 rounded-2xl border px-4 py-3 text-sm leading-6',
                     phase === 'success' &&
-                      'border-emerald-400/30 bg-emerald-500/10 text-emerald-100',
-                    phase === 'failure' && 'border-rose-400/30 bg-rose-500/10 text-rose-100',
+                      'border-emerald-300 bg-emerald-50 text-emerald-800',
+                    phase === 'failure' && 'border-rose-300 bg-rose-50 text-rose-800',
                     (phase === 'awaiting' || phase === 'ready') &&
-                      'border-sky-400/25 bg-sky-500/10 text-sky-100'
+                      'border-sky-300 bg-sky-50 text-sky-800'
                   )}
                   role="status"
                 >
@@ -432,13 +432,13 @@ function CheckoutContent() {
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <Link
                     href="/conta"
-                    className="inline-flex flex-1 items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-50"
+                    className="inline-flex flex-1 items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                   >
                     Ir para a conta
                   </Link>
                   <Link
                     href="/ferramentas"
-                    className="inline-flex flex-1 items-center justify-center rounded-2xl border border-white/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                    className="inline-flex flex-1 items-center justify-center rounded-2xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
                   >
                     Abrir ferramentas
                   </Link>

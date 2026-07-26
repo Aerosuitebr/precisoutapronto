@@ -41,7 +41,7 @@ function CardBrandMarks({ className }: { className?: string }) {
       {['Visa', 'Mastercard', 'Elo'].map((brand) => (
         <li
           key={brand}
-          className="rounded-md border border-white/20 bg-white/95 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-slate-800"
+          className="rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-slate-700 shadow-sm"
         >
           {brand}
         </li>
@@ -200,6 +200,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
     setBusy(true);
     setBusyMethod('card');
     setError(null);
+    let redirecting = false;
     try {
       if (!requireCpf()) return;
       const res = await fetch('/api/billing/checkout-asaas', {
@@ -220,13 +221,21 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
         PENDING_ASAAS_KEY,
         JSON.stringify({ paymentId: data.paymentId, savedAt: Date.now() })
       );
+      redirecting = true;
       window.location.assign(data.checkoutUrl);
     } catch (err) {
       const text = err instanceof Error ? err.message : 'Falha ao abrir o cartão.';
       setError(text);
       toast(text, { variant: 'error' });
-      setBusy(false);
-      setBusyMethod(null);
+    } finally {
+      // Mantém o botão "carregando" apenas enquanto o navegador de fato
+      // redireciona para a Asaas; em qualquer outro caso (erro ou CPF
+      // faltando) o busy precisa voltar, senão o campo de CPF fica
+      // travado como desabilitado para sempre.
+      if (!redirecting) {
+        setBusy(false);
+        setBusyMethod(null);
+      }
     }
   }
 
@@ -251,12 +260,12 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
             ? 'incomplete'
             : null;
 
-  const inputDark = cn(
-    'border-white/25 bg-slate-950/60 text-white placeholder:text-slate-400',
-    'focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
-    cpfStatus === 'valid' && 'border-emerald-400/70 pr-11',
-    cpfStatus === 'invalid' && 'border-rose-400/70 pr-11',
-    cpfStatus === 'incomplete' && 'border-amber-400/60'
+  const inputLight = cn(
+    'border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 shadow-sm',
+    'focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white',
+    cpfStatus === 'valid' && 'border-emerald-500 pr-11',
+    cpfStatus === 'invalid' && 'border-rose-500 pr-11',
+    cpfStatus === 'incomplete' && 'border-amber-500'
   );
 
   return (
@@ -266,7 +275,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
           <div>
             <label
               htmlFor={cpfFieldId}
-              className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-300"
+              className="block text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500"
             >
               CPF
             </label>
@@ -286,18 +295,18 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
                 maxLength={14}
                 aria-invalid={cpfStatus === 'invalid' || cpfStatus === 'incomplete'}
                 aria-describedby={cpfHintId}
-                className={inputDark}
+                className={inputLight}
                 disabled={busy}
               />
               {cpfStatus === 'valid' ? (
                 <CheckCircle2
-                  className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-emerald-400"
+                  className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-emerald-500"
                   aria-hidden
                 />
               ) : null}
               {cpfStatus === 'invalid' ? (
                 <AlertCircle
-                  className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-rose-400"
+                  className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-rose-500"
                   aria-hidden
                 />
               ) : null}
@@ -306,10 +315,10 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
               id={cpfHintId}
               className={cn(
                 'mt-1.5 text-[11px] leading-4',
-                cpfStatus === 'valid' && 'text-emerald-300',
-                cpfStatus === 'invalid' && 'text-rose-300',
-                cpfStatus === 'incomplete' && 'text-amber-200',
-                !cpfStatus && 'text-slate-400'
+                cpfStatus === 'valid' && 'text-emerald-600',
+                cpfStatus === 'invalid' && 'text-rose-600',
+                cpfStatus === 'incomplete' && 'text-amber-600',
+                !cpfStatus && 'text-slate-500'
               )}
               role="status"
             >
@@ -324,21 +333,35 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
           </div>
 
           <ul
-            className="grid grid-cols-2 gap-2"
+            className="grid grid-cols-2 gap-2.5"
             aria-label="Selos de segurança do pagamento"
           >
-            <li className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5">
-              <Lock className="h-4 w-4 shrink-0 text-sky-300" aria-hidden />
+            <li className="relative flex items-center gap-2.5 overflow-hidden rounded-xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white px-3 py-3 shadow-sm">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-600 shadow-[0_2px_10px_-2px_rgba(5,150,105,0.6)]">
+                <Lock className="h-4.5 w-4.5 text-white" aria-hidden />
+              </span>
               <span className="min-w-0">
-                <span className="block text-[11px] font-bold text-white">SSL / HTTPS</span>
-                <span className="block text-[10px] text-slate-300">Conexão criptografada</span>
+                <span className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wide text-emerald-800">
+                  Site seguro
+                  <ShieldCheck className="h-3 w-3 text-emerald-600" aria-hidden />
+                </span>
+                <span className="block text-[10px] leading-tight text-emerald-700">
+                  Criptografia SSL 256 bits
+                </span>
               </span>
             </li>
-            <li className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2.5">
-              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden />
+            <li className="relative flex items-center gap-2.5 overflow-hidden rounded-xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white px-3 py-3 shadow-sm">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-600 shadow-[0_2px_10px_-2px_rgba(2,132,199,0.6)]">
+                <ShieldCheck className="h-4.5 w-4.5 text-white" aria-hidden />
+              </span>
               <span className="min-w-0">
-                <span className="block text-[11px] font-bold text-white">PCI DSS</span>
-                <span className="block text-[10px] text-slate-300">Cartão na Asaas</span>
+                <span className="flex items-center gap-1 text-[11px] font-black uppercase tracking-wide text-sky-800">
+                  Ambiente PCI DSS
+                  <CheckCircle2 className="h-3 w-3 text-sky-600" aria-hidden />
+                </span>
+                <span className="block text-[10px] leading-tight text-sky-700">
+                  Cartão processado pela Asaas
+                </span>
               </span>
             </li>
           </ul>
@@ -346,14 +369,14 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
           <div role="group" aria-labelledby={methodsLegendId}>
             <p
               id={methodsLegendId}
-              className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-300"
+              className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500"
             >
               Escolha Pix ou Cartão na arte
             </p>
 
             <div
               className={cn(
-                'relative overflow-hidden rounded-2xl border-2 border-white/15 bg-slate-950',
+                'relative overflow-hidden rounded-2xl border-2 border-slate-200 bg-slate-50',
                 busy && 'opacity-80'
               )}
             >
@@ -381,18 +404,18 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
                       ? 'rgba(20,184,166,0.25)'
                       : selectedMethod === 'card'
                         ? 'rgba(139,92,246,0.25)'
-                        : 'rgba(2,6,23,0.75)'
+                        : 'rgba(255,255,255,0.9)'
                 }}
               >
                 {selectedMethod ? (
                   <Check
                     className={cn(
                       'h-4 w-4',
-                      selectedMethod === 'pix' ? 'text-teal-200' : 'text-violet-200'
+                      selectedMethod === 'pix' ? 'text-teal-600' : 'text-violet-600'
                     )}
                   />
                 ) : (
-                  <span className="text-[10px] font-bold uppercase tracking-wide text-amber-200">
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-amber-600">
                     ou
                   </span>
                 )}
@@ -406,25 +429,25 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
                   aria-pressed={selectedMethod === 'pix'}
                   aria-label="Pagar com Pix, aprovação instantânea"
                   className={cn(
-                    'group relative border-r border-amber-300/30 outline-none transition',
-                    'focus-visible:bg-teal-400/15 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-300',
-                    'hover:bg-teal-400/10',
-                    selectedMethod === 'pix' && 'bg-teal-400/15 ring-2 ring-inset ring-teal-300',
-                    busyMethod === 'pix' && 'bg-teal-400/20'
+                    'group relative border-r border-slate-200 outline-none transition',
+                    'focus-visible:bg-teal-500/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-500',
+                    'hover:bg-teal-500/5',
+                    selectedMethod === 'pix' && 'bg-teal-500/10 ring-2 ring-inset ring-teal-500',
+                    busyMethod === 'pix' && 'bg-teal-500/15'
                   )}
                 >
-                  <span className="absolute inset-x-2 bottom-2 rounded-xl bg-slate-950/75 px-2 py-2 text-center backdrop-blur-sm sm:inset-x-3 sm:bottom-3 sm:px-3">
+                  <span className="absolute inset-x-2 bottom-2 rounded-xl border border-slate-200 bg-white/90 px-2 py-2 text-center shadow-sm backdrop-blur-sm sm:inset-x-3 sm:bottom-3 sm:px-3">
                     {busyMethod === 'pix' ? (
-                      <span className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-teal-100">
+                      <span className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-teal-700">
                         <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
                         Gerando Pix…
                       </span>
                     ) : (
                       <>
-                        <span className="block text-base font-black uppercase tracking-wide text-teal-200 sm:text-lg">
+                        <span className="block text-base font-black uppercase tracking-wide text-teal-700 sm:text-lg">
                           PIX
                         </span>
-                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-100 sm:text-[11px]">
+                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-600 sm:text-[11px]">
                           {selectedMethod === 'pix' ? 'Selecionado ✓' : 'Aprovação instantânea'}
                         </span>
                       </>
@@ -440,24 +463,24 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
                   aria-label="Pagar com cartão, crédito ou débito"
                   className={cn(
                     'group relative outline-none transition',
-                    'focus-visible:bg-violet-400/15 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-300',
-                    'hover:bg-violet-400/10',
-                    selectedMethod === 'card' && 'bg-violet-400/15 ring-2 ring-inset ring-violet-300',
-                    busyMethod === 'card' && 'bg-violet-400/20'
+                    'focus-visible:bg-violet-500/10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500',
+                    'hover:bg-violet-500/5',
+                    selectedMethod === 'card' && 'bg-violet-500/10 ring-2 ring-inset ring-violet-500',
+                    busyMethod === 'card' && 'bg-violet-500/15'
                   )}
                 >
-                  <span className="absolute inset-x-2 bottom-2 rounded-xl bg-slate-950/75 px-2 py-2 text-center backdrop-blur-sm sm:inset-x-3 sm:bottom-3 sm:px-3">
+                  <span className="absolute inset-x-2 bottom-2 rounded-xl border border-slate-200 bg-white/90 px-2 py-2 text-center shadow-sm backdrop-blur-sm sm:inset-x-3 sm:bottom-3 sm:px-3">
                     {busyMethod === 'card' ? (
-                      <span className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-violet-100">
+                      <span className="inline-flex items-center justify-center gap-2 text-xs font-semibold text-violet-700">
                         <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
                         Abrindo Asaas…
                       </span>
                     ) : (
                       <>
-                        <span className="block text-base font-black uppercase tracking-wide text-violet-200 sm:text-lg">
+                        <span className="block text-base font-black uppercase tracking-wide text-violet-700 sm:text-lg">
                           CARTÃO
                         </span>
-                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-100 sm:text-[11px]">
+                        <span className="mt-0.5 block text-[10px] font-semibold text-slate-600 sm:text-[11px]">
                           {selectedMethod === 'card' ? 'Selecionado ✓' : 'Crédito ou débito'}
                         </span>
                       </>
@@ -469,26 +492,26 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
 
             <div className="mt-3 space-y-2">
               <CardBrandMarks />
-              <p className="text-center text-[11px] text-slate-400">
+              <p className="text-center text-[11px] text-slate-500">
                 Cartão: Visa, Mastercard e Elo na página segura da Asaas.
               </p>
             </div>
           </div>
 
-          <div className="sticky bottom-3 z-10 rounded-2xl border border-amber-300/30 bg-slate-950/95 px-4 py-3 shadow-[0_12px_40px_-12px_rgba(2,8,23,0.9)] backdrop-blur-md">
+          <div className="sticky bottom-3 z-10 rounded-2xl border border-amber-300 bg-white px-4 py-3 shadow-[0_12px_30px_-12px_rgba(15,23,42,0.25)] backdrop-blur-md">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-amber-200">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-amber-600">
                   Total hoje
                 </p>
-                <p className="text-lg font-black text-white">
+                <p className="text-lg font-black text-slate-900">
                   {PLANS.premium.priceLabel}
-                  <span className="ml-1 text-xs font-semibold text-slate-300">
+                  <span className="ml-1 text-xs font-semibold text-slate-500">
                     · 30 dias, avulso
                   </span>
                 </p>
               </div>
-              <p className="text-[11px] leading-4 text-slate-300">
+              <p className="text-[11px] leading-4 text-slate-500">
                 Sem renovação automática.
               </p>
             </div>
@@ -497,20 +520,20 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
       ) : null}
 
       {mode === 'pix' ? (
-        <div className="rounded-2xl border border-teal-400/25 bg-teal-500/5 p-5 text-center">
-          <div className="mx-auto w-fit rounded-2xl bg-white p-3">
+        <div className="rounded-2xl border border-teal-200 bg-teal-50/60 p-5 text-center">
+          <div className="mx-auto w-fit rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
             <QRCodeSVG value={qrPayload} size={200} level="M" includeMargin />
           </div>
-          <p className="mt-4 text-sm text-slate-200">
+          <p className="mt-4 text-sm text-slate-600">
             Abra o app do seu banco, escolha Pix e escaneie o QR Code, ou use o copia e cola.
           </p>
           <button
             type="button"
             onClick={() => void copyPix()}
-            className="mt-3 inline-flex items-center gap-2 rounded-xl border border-teal-300/40 bg-teal-500/15 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+            className="mt-3 inline-flex items-center gap-2 rounded-xl border border-teal-300 bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
             {copied ? (
-              <Check className="h-4 w-4 text-emerald-400" aria-hidden />
+              <Check className="h-4 w-4 text-white" aria-hidden />
             ) : (
               <Copy className="h-4 w-4" aria-hidden />
             )}
@@ -518,7 +541,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
           </button>
           {awaiting ? (
             <p
-              className="mt-4 flex items-center justify-center gap-2 text-xs text-teal-100"
+              className="mt-4 flex items-center justify-center gap-2 text-xs text-teal-700"
               role="status"
             >
               <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
@@ -530,7 +553,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
 
       {error ? (
         <p
-          className="rounded-2xl border border-rose-400/40 bg-rose-500/15 px-4 py-3 text-sm text-rose-50"
+          className="rounded-2xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-800"
           role="alert"
         >
           {error}
@@ -546,7 +569,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
             setQrPayload('');
             setSelectedMethod(null);
           }}
-          className="rounded text-xs font-medium text-slate-200 underline-offset-4 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+          className="rounded text-xs font-medium text-slate-500 underline-offset-4 hover:text-slate-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           Escolher outra forma de pagamento
         </button>
