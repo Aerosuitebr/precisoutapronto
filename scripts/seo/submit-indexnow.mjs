@@ -15,10 +15,22 @@ const ENDPOINT = 'https://api.indexnow.org/indexnow';
 
 const SEO_LANDINGS = [
   '/',
-  '/busca',
   '/planos',
   '/recursos',
   '/guias',
+  '/orcamento-com-pix',
+  '/para/mei',
+  '/para/freelancers',
+  '/para/estudantes',
+  '/gerador-de-curriculo',
+  '/gerador-de-contrato',
+  '/gerador-de-proposta-comercial',
+  '/gerador-de-recibo',
+  '/documentos-juridicos-online',
+  '/documentos-contabeis-online',
+  '/calculadora-de-rescisao',
+  '/calculadora-de-preco-freelancer',
+  '/mei-ou-clt',
   '/contrato-de-aluguel',
   '/recibo-de-pagamento',
   '/proposta-comercial-mei',
@@ -30,18 +42,10 @@ const SEO_LANDINGS = [
   '/guias/proposta-comercial-para-mei',
   '/guias/como-precificar-servico-freelancer',
   '/guias/mei-ou-clt-como-comparar',
-  '/orcamento-com-pix',
-  '/para/mei',
-  '/para/freelancers',
-  '/para/estudantes',
-  '/gerador-de-curriculo',
-  '/gerador-de-contrato',
-  '/gerador-de-proposta-comercial',
-  '/gerador-de-recibo',
-  '/documentos-juridicos-online',
-  '/documentos-contabeis-online',
   '/contato',
-  '/sobre'
+  '/sobre',
+  '/privacidade',
+  '/termos'
 ];
 
 function parseArgs(argv) {
