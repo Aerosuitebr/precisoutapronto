@@ -53,15 +53,10 @@ const nextConfig = {
         headers: securityHeaders
       },
       {
+        // Só X-Robots-Tag: o Cache-Control do Next (via revalidate) já cobre o sitemap.
+        // Dois Cache-Control quebram o parse de alguns crawlers (erro HTTP geral no GSC).
         source: '/sitemap.xml',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=3600, s-maxage=3600' },
-          { key: 'X-Robots-Tag', value: 'noindex' }
-        ]
-      },
-      {
-        source: '/robots.txt',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=3600, s-maxage=3600' }]
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }]
       }
     ];
   }
