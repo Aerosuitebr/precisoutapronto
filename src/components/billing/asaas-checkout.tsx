@@ -14,8 +14,8 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
-import cardPaymentArt from '@/assets/checkout-card-financial-v2.png';
-import pixPaymentArt from '@/assets/checkout-pix-financial-v2.png';
+import cardPaymentArt from '@/assets/checkout-card-financial-v2.webp';
+import pixPaymentArt from '@/assets/checkout-pix-financial-v2.webp';
 import { formatCpf, isValidCpf, onlyDigits } from '@/lib/cpf';
 import { PLANS } from '@/lib/plans';
 import { cn } from '@/lib/utils';
