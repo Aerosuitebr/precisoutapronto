@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
+import { SeoLandingJsonLd } from '@/components/marketing/seo-landing-json-ld';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { TopEnvBanner } from '@/components/layout/top-env-banner';
@@ -14,6 +15,7 @@ const primaryCtaClass =
 export function SeoLandingPage({ content }: { content: SeoLandingContent }) {
   return (
     <>
+      <SeoLandingJsonLd content={content} />
       <TopEnvBanner />
       <div className="pt-8">
         <SiteHeader />

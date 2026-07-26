@@ -5,6 +5,10 @@ import './globals.css';
 
 const siteUrl = getViralBaseUrl();
 
+const googleVerification =
+  process.env.GOOGLE_SITE_VERIFICATION || 'DK13pDrQ06EP4nkGF8Dyqp_pby4oOT14LvkL0bBOSSk';
+const bingVerification = process.env.BING_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -37,7 +41,24 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: '/'
-  }
+  },
+  keywords: [
+    'orçamento com pix',
+    'orçamento online grátis',
+    'gerador de recibo',
+    'gerador de contrato',
+    'gerador de currículo',
+    'proposta comercial',
+    'ferramentas grátis para MEI'
+  ],
+  ...(googleVerification || bingVerification
+    ? {
+        verification: {
+          ...(googleVerification ? { google: googleVerification } : {}),
+          ...(bingVerification ? { other: { 'msvalidate.01': bingVerification } } : {})
+        }
+      }
+    : {})
 };
 
 export const viewport: Viewport = {

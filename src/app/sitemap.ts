@@ -23,9 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
     { url: `${base}/busca`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${base}/planos`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/cadastro`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${base}/login`, lastModified: now, changeFrequency: 'monthly', priority: 0.4 }
+    { url: `${base}/planos`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 }
   ];
 
   const seoRoutes = listSeoLandings().map((page) => ({
