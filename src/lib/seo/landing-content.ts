@@ -6,7 +6,10 @@ export type SeoLandingId =
   | 'gerador-de-curriculo'
   | 'gerador-de-contrato'
   | 'gerador-de-proposta'
-  | 'gerador-de-recibo';
+  | 'gerador-de-recibo'
+  | 'contrato-de-aluguel'
+  | 'recibo-de-pagamento'
+  | 'proposta-comercial-mei';
 
 export interface SeoLandingContent {
   id: SeoLandingId;
@@ -23,7 +26,7 @@ export interface SeoLandingContent {
   related: Array<{ href: string; label: string; blurb: string }>;
 }
 
-export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
+export const SEO_LANDINGS = {
   'orcamento-com-pix': {
     id: 'orcamento-com-pix',
     path: '/orcamento-com-pix',
@@ -314,7 +317,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
       { href: '/orcamento-com-pix', label: 'Orçamento + Pix', blurb: 'Antes do recibo' }
     ]
   }
-};
+} satisfies Record<string, SeoLandingContent>;
 
 export function listSeoLandings() {
   return Object.values(SEO_LANDINGS);

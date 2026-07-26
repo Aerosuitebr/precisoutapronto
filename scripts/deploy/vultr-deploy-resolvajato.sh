@@ -67,4 +67,6 @@ fi
 
 curl -sfI http://127.0.0.1:3000/ | head -1
 "${COMPOSE[@]}" ps
+echo "==> Notificar mecanismos de busca via IndexNow"
+node scripts/seo/submit-indexnow.mjs || echo "AVISO: IndexNow não respondeu; o deploy permanece ativo."
 echo "OK — Resolva Jato em ${INSTALL_DIR} (localhost:3000)"

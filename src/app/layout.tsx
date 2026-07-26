@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { AnalyticsScripts } from '@/components/analytics/analytics-scripts';
 import { AppProviders } from '@/components/providers/app-providers';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import './globals.css';
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="pt-BR">
       <body>
         <AppProviders>{children}</AppProviders>
+        <AnalyticsScripts />
       </body>
     </html>
   );

@@ -1,8 +1,13 @@
+import type { Metadata } from 'next';
 import { OrcamentoPublicView } from '@/components/orcamentos/orcamento-public-view';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import type { OrcamentoItem, OrcamentoPublic } from '@/lib/orcamentos/types';
 
 export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+  robots: { index: false, follow: false, nocache: true },
+  referrer: 'no-referrer'
+};
 
 interface PageProps {
   params: { id: string };

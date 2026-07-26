@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
+import { trackEvent } from '@/lib/analytics';
 import cardPaymentArt from '@/assets/checkout-card-financial-v2.webp';
 import pixPaymentArt from '@/assets/checkout-pix-financial-v2.webp';
 import { formatCpf, isValidCpf, onlyDigits } from '@/lib/cpf';
@@ -164,6 +165,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
   }
 
   async function startPix() {
+    trackEvent('begin_checkout', { payment_method: 'pix', provider: 'asaas' });
     setSelectedMethod('pix');
     setBusy(true);
     setBusyMethod('pix');
@@ -197,6 +199,7 @@ export function AsaasCheckout({ onApproved, onStageChange }: AsaasCheckoutProps)
   }
 
   async function startCard() {
+    trackEvent('begin_checkout', { payment_method: 'card', provider: 'asaas' });
     setSelectedMethod('card');
     setBusy(true);
     setBusyMethod('card');

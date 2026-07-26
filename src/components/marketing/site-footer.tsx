@@ -12,11 +12,17 @@ const YEAR = new Date().getFullYear();
 const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/', label: 'Início' },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
+  { href: '/guias', label: 'Guias' },
+  { href: '/recursos', label: 'Catálogo público' },
   { href: '/busca', label: 'Busca grátis' },
   { href: '/ferramentas', label: 'Ferramentas', authAware: true }
 ];
 
 const SEO_LINKS = [
+  { href: '/guias', label: 'Todos os guias' },
+  { href: '/contrato-de-aluguel', label: 'Contrato de aluguel' },
+  { href: '/recibo-de-pagamento', label: 'Recibo de pagamento' },
+  { href: '/proposta-comercial-mei', label: 'Proposta para MEI' },
   { href: '/conta', label: 'Indique e ganhe' },
   { href: '/para/mei', label: 'Para MEI' },
   { href: '/para/freelancers', label: 'Para freelancers' },

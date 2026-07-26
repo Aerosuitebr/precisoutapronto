@@ -20,6 +20,7 @@ import {
 } from '@/components/billing/asaas-checkout';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
+import { trackEvent } from '@/lib/analytics';
 import { PLANS } from '@/lib/plans';
 import { cn } from '@/lib/utils';
 
@@ -272,6 +273,11 @@ function CheckoutContent() {
 
         if (cancelled) return;
         if (data.approved) {
+          trackEvent('purchase', {
+            currency: 'BRL',
+            payment_provider: 'asaas',
+            product: 'premium_30_days'
+          });
           sessionStorage.removeItem(PENDING_ASAAS_KEY);
           if (data.expiresAt) setExpiresAt(data.expiresAt);
           await refresh();
@@ -384,6 +390,11 @@ function CheckoutContent() {
                 <AsaasCheckout
                   onStageChange={handleStageChange}
                   onApproved={(expires) => {
+                    trackEvent('purchase', {
+                      currency: 'BRL',
+                      payment_provider: 'asaas',
+                      product: 'premium_30_days'
+                    });
                     if (expires) setExpiresAt(expires);
                     void refresh();
                     setPhase('success');

@@ -11,8 +11,9 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
 
 const links = [
+  { href: '/guias', label: 'Guias', auth: false },
   { href: '/busca', label: 'Busca grátis', auth: false },
-  { href: '/ferramentas', label: 'Ferramentas', auth: true }
+  { href: '/recursos', label: 'Ferramentas', auth: false }
 ] as const;
 
 export function SiteHeader() {

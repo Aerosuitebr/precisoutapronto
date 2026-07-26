@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, ChevronRight } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { SeoLandingJsonLd } from '@/components/marketing/seo-landing-json-ld';
 import { SiteFooter } from '@/components/marketing/site-footer';
@@ -20,6 +20,15 @@ export function SeoLandingPage({ content }: { content: SeoLandingContent }) {
       <div className="pt-8">
         <SiteHeader />
         <main>
+          <nav aria-label="Breadcrumb" className="border-b border-slate-200 bg-white">
+            <div className="mx-auto flex max-w-6xl items-center gap-1 px-4 py-3 text-xs text-slate-500 sm:px-6">
+              <Link href="/">Início</Link>
+              <ChevronRight className="h-3.5 w-3.5" aria-hidden />
+              <span>Ferramentas</span>
+              <ChevronRight className="h-3.5 w-3.5" aria-hidden />
+              <span aria-current="page" className="font-semibold text-slate-700">{content.eyebrow}</span>
+            </div>
+          </nav>
           <section className="relative overflow-hidden bg-[linear-gradient(145deg,#020617_0%,#0f172a_45%,#064e3b_100%)] text-white">
             <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-amber-300">

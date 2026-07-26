@@ -1,0 +1,36 @@
+# Resolva Jato
+
+> Ferramentas online e guias práticos para autônomos, MEIs, estudantes e pequenos negócios no Brasil.
+
+Canonical site: https://resolvajato.com.br
+Language: pt-BR
+
+## Main public pages
+- https://resolvajato.com.br/
+- https://resolvajato.com.br/recursos
+- https://resolvajato.com.br/guias
+- https://resolvajato.com.br/orcamento-com-pix
+- https://resolvajato.com.br/gerador-de-curriculo
+- https://resolvajato.com.br/gerador-de-contrato
+- https://resolvajato.com.br/gerador-de-recibo
+- https://resolvajato.com.br/gerador-de-proposta-comercial
+
+## Audience pages
+- https://resolvajato.com.br/para/mei
+- https://resolvajato.com.br/para/freelancers
+- https://resolvajato.com.br/para/estudantes
+
+## Editorial content
+- https://resolvajato.com.br/guias
+
+## Product notes
+- Public pages explain each tool before registration.
+- Some editors require a free account to save and export documents.
+- Premium access is optional and does not change the public educational content.
+- Legal, labor and accounting materials are educational and do not replace professional advice.
+
+## Policies and contact
+- https://resolvajato.com.br/sobre
+- https://resolvajato.com.br/privacidade
+- https://resolvajato.com.br/termos
+- https://resolvajato.com.br/contato

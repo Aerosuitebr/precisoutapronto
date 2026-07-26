@@ -18,6 +18,7 @@
     "docker:ps": "docker compose ps",
     "docker:vultr": "docker compose --env-file .env.production -f docker-compose.yml -f docker-compose.vultr.yml up -d --build",
     "deploy:vultr": "powershell -File scripts/deploy/setup-vultr-resolvajato.ps1",
+    "seo:indexnow": "node scripts/seo/submit-indexnow.mjs",
     "whatsapp:up": "docker compose -f docker-compose.whatsapp.yml up -d",
     "whatsapp:down": "docker compose -f docker-compose.whatsapp.yml down",
     "whatsapp:logs": "docker compose -f docker-compose.whatsapp.yml logs -f rj-evolution-api",
