@@ -24,5 +24,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|videos/|images/).*)']
+  // Sitemap, robots e arquivos de verificação do Google não precisam de cookie de device.
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap\\.xml|google[^/]*\\.html|videos/|images/).*)'
+  ]
 };
