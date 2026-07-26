@@ -24,8 +24,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Sitemap, robots e arquivos de verificação do Google não precisam de cookie de device.
+  // Sitemap, robots, verificação Google e chave IndexNow não precisam de cookie de device.
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap\\.xml|google[^/]*\\.html|videos/|images/).*)'
+    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap\\.xml|google[^/]*\\.html|[a-f0-9]{32}\\.txt|videos/|images/).*)'
   ]
 };

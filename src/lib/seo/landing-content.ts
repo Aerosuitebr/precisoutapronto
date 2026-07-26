@@ -283,7 +283,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
       }
     ],
     related: [
-      { href: '/para-freelancers', label: 'Para freelancers', blurb: 'Fluxo completo' },
+      { href: '/para/freelancers', label: 'Para freelancers', blurb: 'Fluxo completo' },
       { href: '/gerador-de-contrato', label: 'Contrato', blurb: 'Feche o combinado' }
     ]
   },
@@ -310,7 +310,7 @@ export const SEO_LANDINGS: Record<SeoLandingId, SeoLandingContent> = {
       }
     ],
     related: [
-      { href: '/para-mei', label: 'Para MEI', blurb: 'Rotina de cobrança' },
+      { href: '/para/mei', label: 'Para MEI', blurb: 'Rotina de cobrança' },
       { href: '/orcamento-com-pix', label: 'Orçamento + Pix', blurb: 'Antes do recibo' }
     ]
   }
