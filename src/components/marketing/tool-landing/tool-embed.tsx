@@ -1,6 +1,19 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-export function ToolLandingEmbed({ toolName, tool }: { toolName: string; tool: ReactNode }) {
+export function ToolLandingEmbed({
+  toolName,
+  tool,
+  ctaHref,
+  ctaLabel
+}: {
+  toolName: string;
+  tool: ReactNode;
+  ctaHref: string;
+  ctaLabel: string;
+}) {
   return (
     <section id="ferramenta" className="border-y border-slate-200 bg-white">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
@@ -9,9 +22,19 @@ export function ToolLandingEmbed({ toolName, tool }: { toolName: string; tool: R
           Monte seu {toolName.toLowerCase()} sem precisar sair da página.
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-          Preencha alguns dados abaixo e veja o resultado em tempo real. Depois é só continuar para salvar e baixar.
+          Preencha alguns dados abaixo e veja o resultado em tempo real. Para salvar e baixar o PDF, crie uma conta
+          gratuita.
         </p>
         <div className="mt-10">{tool}</div>
+        <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <Button asChild size="lg" className="h-12 bg-sky-600 px-6 font-bold hover:bg-sky-500">
+            <Link href={ctaHref}>
+              {ctaLabel}
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </Button>
+          <p className="text-sm font-medium text-slate-500">Conta grátis. Sem cartão.</p>
+        </div>
       </div>
     </section>
   );

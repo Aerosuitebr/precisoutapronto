@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -146,7 +146,7 @@ export function CurriculoLivePreview() {
           Continuar e baixar meu currículo
         </Link>
         <p className="text-center text-xs font-medium text-slate-500">
-          Grátis para começar. Sem cartão de crédito.
+          Crie uma conta grátis para baixar o PDF. Sem cartão.
         </p>
       </div>
 

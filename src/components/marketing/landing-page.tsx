@@ -432,7 +432,7 @@ export function LandingPage() {
                 href="/cadastro"
                 className="text-center text-sm font-semibold text-emerald-100 underline-offset-4 transition hover:text-white hover:underline"
               >
-                Criar conta grátis
+                Criar conta grátis para baixar e salvar PDFs
               </Link>
             </div>
           </div>
@@ -493,7 +493,7 @@ export function LandingPage() {
                 href="/cadastro"
                 className="text-center text-sm font-semibold text-slate-300 underline-offset-4 transition hover:text-white hover:underline sm:text-left"
               >
-                Criar conta grátis
+                Criar conta grátis para baixar e salvar PDFs
               </Link>
             </div>
             <TrustSeals tone="dark" className="mt-8" />

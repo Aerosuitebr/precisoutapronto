@@ -67,7 +67,7 @@ export function ToolLandingHero({
       <div className="relative border-t border-white/10 bg-black/20">
         <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-3 text-xs text-slate-400 sm:px-6">
           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" aria-hidden />
-          Sem instalar nada. Funciona no navegador do celular ou do computador.
+          Conta grátis para salvar e baixar o PDF. Sem cartão. Funciona no celular ou no computador.
         </div>
       </div>
     </section>

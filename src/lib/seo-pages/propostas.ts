@@ -7,7 +7,7 @@ export const propostasSeoContent: SeoPageContent = {
   h1: 'Gerador de Proposta Comercial Online Gratuito',
   subtitle:
     'Crie propostas comerciais com identidade visual profissional em minutos. Adicione itens, valores e condições, e envie um PDF que ajuda a fechar mais negócios.',
-  ctaPrimary: 'Criar minha proposta grátis',
+  ctaPrimary: 'Criar conta grátis e baixar proposta',
   ctaSecondary: 'Ver modelos de proposta',
   ctaHref: '/cadastro?next=/ferramentas/propostas',
   quickBadges: [

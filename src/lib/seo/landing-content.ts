@@ -40,7 +40,7 @@ export const SEO_LANDINGS = {
       'QR Pix e Copia e Cola prontos',
       'Link público para mandar no WhatsApp'
     ],
-    primaryCta: 'Criar orçamento grátis',
+    primaryCta: 'Criar conta grátis e montar orçamento',
     secondaryCta: { label: 'Só gerar Pix', href: '/ferramentas/pix' },
     sections: [
       {
@@ -218,7 +218,7 @@ export const SEO_LANDINGS = {
       'Layouts com tipografia limpa',
       'PDF com um clique'
     ],
-    primaryCta: 'Criar meu currículo',
+    primaryCta: 'Criar conta grátis e baixar currículo',
     sections: [
       {
         title: 'Parece emprego, não modelo genérico',
@@ -245,7 +245,7 @@ export const SEO_LANDINGS = {
     description:
       'Contratos de serviços, aluguel, trabalho e mais: editáveis, com assinaturas no PDF.',
     heroBullets: ['Vários tipos prontos', 'Cláusulas com seus dados', 'PDF para assinar'],
-    primaryCta: 'Criar contrato',
+    primaryCta: 'Criar conta grátis e baixar contrato',
     sections: [
       {
         title: 'Sem fila na papelaria',
@@ -272,7 +272,7 @@ export const SEO_LANDINGS = {
     description:
       'Propostas com cara de agência: itens, totais, validade e PDF pronto para enviar ao cliente.',
     heroBullets: ['3 estilos de layout', 'Totais organizados', 'Logo opcional'],
-    primaryCta: 'Montar proposta',
+    primaryCta: 'Criar conta grátis e montar proposta',
     sections: [
       {
         title: 'Pareça grande sem equipe de design',
@@ -299,7 +299,7 @@ export const SEO_LANDINGS = {
     description:
       'Emita recibo profissional com valor por extenso, modelos prontos e assinatura no PDF.',
     heroBullets: ['Valor por extenso automático', '3 modelos', 'PDF com assinatura'],
-    primaryCta: 'Emitir recibo',
+    primaryCta: 'Criar conta grátis e emitir recibo',
     sections: [
       {
         title: 'Recibo limpo em segundos',

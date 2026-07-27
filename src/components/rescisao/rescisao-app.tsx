@@ -31,6 +31,7 @@ import { cn } from "@/lib/utils";
 import { viralToolShareFooter } from "@/lib/viral-loop";
 import { ResultShareCard } from "@/components/shared/result-share-card";
 import { trackEvent } from "@/lib/analytics";
+import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 
 const TIPOS: TipoRescisao[] = [
   "sem-justa-causa",
@@ -49,6 +50,7 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
   const [tipo, setTipo] = useState<TipoRescisao>("sem-justa-causa");
   const [feriasVencidas, setFeriasVencidas] = useState(false);
   const [avisoIndenizado, setAvisoIndenizado] = useState(true);
+  const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
   const salario = parseCurrency(salarioInput);
   const saldoFgts = parseCurrency(fgtsInput);
@@ -90,12 +92,18 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
       )
       .join("\n");
     return [
-      `*Cálculo de Rescisão · Resolva Jato*`,
-      `Modalidade: ${TIPO_RESCISAO_LABEL[tipo]}`,
+      `*RESCISÃO TRABALHISTA | ESTIMATIVA*`,
+      `_Resumo organizado do cálculo_`,
+      "",
+      `*MODALIDADE*`,
+      `• ${TIPO_RESCISAO_LABEL[tipo]}`,
+      "",
+      `*VERBAS ESTIMADAS*`,
       "",
       linhas,
       "",
-      `*Total estimado: ${formatCurrency(resultado.totalBruto)}*`,
+      `*TOTAL BRUTO ESTIMADO*`,
+      `${formatCurrency(resultado.totalBruto)}`,
       "",
       resultado.temDireitoSeguroDesemprego
         ? "✔ Pode ter direito ao seguro-desemprego."
@@ -115,8 +123,7 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
       tool_path: "/calculadora-de-rescisao",
       campaign: "rescisao_whatsapp",
     });
-    const url = `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    setWhatsAppOpen(true);
   }
 
   function handleCopy() {
@@ -384,6 +391,12 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
           </div>
         </div>
       </div>
+      <WhatsAppSendModal
+        open={whatsAppOpen}
+        onClose={() => setWhatsAppOpen(false)}
+        message={resumoTexto()}
+        destinationHint="WhatsApp que receberá a estimativa"
+      />
     </AuthGate>
   );
 }

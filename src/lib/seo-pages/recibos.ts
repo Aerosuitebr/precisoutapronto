@@ -7,7 +7,7 @@ export const recibosSeoContent: SeoPageContent = {
   h1: 'Gerador de Recibo Online Gratuito',
   subtitle:
     'Crie um recibo de pagamento profissional em minutos. Preencha valor, quem pagou e quem recebeu, escolha um modelo e baixe em PDF pronto para enviar.',
-  ctaPrimary: 'Criar meu recibo grátis',
+  ctaPrimary: 'Criar conta grátis e baixar recibo',
   ctaSecondary: 'Ver modelos de recibo',
   ctaHref: '/cadastro?next=/ferramentas/recibos',
   quickBadges: [

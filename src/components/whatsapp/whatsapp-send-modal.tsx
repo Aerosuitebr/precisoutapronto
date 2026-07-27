@@ -10,7 +10,7 @@ import { formatPhone } from '@/lib/formatters';
 interface WhatsAppSendModalProps {
   open: boolean;
   onClose: () => void;
-  ownerEmail: string;
+  ownerEmail?: string;
   /** Telefone do destinatário (pode ser editado na modal). */
   toPhone?: string;
   message: string;
@@ -44,7 +44,7 @@ export function WhatsAppSendModal({
   message,
   destinationHint = 'Número do destinatário',
   onSent,
-  allowWaMeFallback = true,
+  allowWaMeFallback = false,
   brandLocked = false
 }: WhatsAppSendModalProps) {
   const { toast } = useToast();
@@ -54,15 +54,30 @@ export function WhatsAppSendModal({
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [anonymousKey, setAnonymousKey] = useState('');
+  const ownerKey = ownerEmail || anonymousKey;
 
   useEffect(() => {
     if (open) setPhone(toPhone);
   }, [open, toPhone]);
 
+  useEffect(() => {
+    if (ownerEmail || typeof window === 'undefined') return;
+    const storageKey = 'rj_whatsapp_ephemeral_owner';
+    const saved = window.sessionStorage.getItem(storageKey);
+    if (saved) {
+      setAnonymousKey(saved);
+      return;
+    }
+    const created = `guest_${window.crypto.randomUUID().replace(/-/g, '')}`;
+    window.sessionStorage.setItem(storageKey, created);
+    setAnonymousKey(created);
+  }, [ownerEmail]);
+
   const refresh = useCallback(async () => {
-    if (!ownerEmail) return;
+    if (!ownerKey) return;
     try {
-      const res = await fetch(`/api/whatsapp/session?ownerEmail=${encodeURIComponent(ownerEmail)}`, {
+      const res = await fetch(`/api/whatsapp/session?ownerEmail=${encodeURIComponent(ownerKey)}`, {
         cache: 'no-store'
       });
       const data = await res.json();
@@ -73,10 +88,10 @@ export function WhatsAppSendModal({
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Falha ao consultar WhatsApp.');
     }
-  }, [ownerEmail]);
+  }, [ownerKey]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || !ownerKey) return;
     let cancelled = false;
 
     async function start() {
@@ -86,7 +101,7 @@ export function WhatsAppSendModal({
         const res = await fetch('/api/whatsapp/session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ownerEmail })
+          body: JSON.stringify({ ownerEmail: ownerKey })
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Falha ao iniciar sessão.');
@@ -110,7 +125,7 @@ export function WhatsAppSendModal({
       cancelled = true;
       window.clearInterval(timer);
     };
-  }, [open, ownerEmail, refresh]);
+  }, [open, ownerKey, refresh]);
 
   async function handleSend() {
     const destination = digitsOnly(phone);
@@ -126,7 +141,7 @@ export function WhatsAppSendModal({
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ownerEmail,
+          ownerEmail: ownerKey,
           to: phone,
           text: message,
           disconnectAfter: true
@@ -153,7 +168,7 @@ export function WhatsAppSendModal({
       await fetch('/api/whatsapp/session', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ownerEmail })
+        body: JSON.stringify({ ownerEmail: ownerKey })
       });
     } catch {
       // ignore
@@ -179,13 +194,20 @@ export function WhatsAppSendModal({
 
   return (
     <div className="fixed inset-0 z-[80] flex items-end justify-center bg-slate-950/50 p-4 sm:items-center">
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[28px] border border-slate-200 bg-white shadow-2xl">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="whatsapp-send-title"
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[28px] border border-slate-200 bg-white shadow-2xl"
+      >
         <div className="flex items-start justify-between gap-3 border-b border-slate-100 px-5 py-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
               Envio com o seu WhatsApp
             </p>
-            <h2 className="mt-1 text-lg font-bold text-slate-900">Conecte, envie e desconecte</h2>
+            <h2 id="whatsapp-send-title" className="mt-1 text-lg font-bold text-slate-900">
+              Conecte, envie e desconecte
+            </h2>
             <p className="mt-1 text-sm leading-6 text-slate-600">
               Escaneie o QR com o WhatsApp que vai enviar. Depois do envio, o servidor desconecta.
             </p>
@@ -194,6 +216,7 @@ export function WhatsAppSendModal({
             type="button"
             className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"
             onClick={handleCancelDisconnect}
+            aria-label="Fechar e desconectar WhatsApp"
           >
             <X className="h-5 w-5" />
           </button>

@@ -23,6 +23,7 @@ import {
   type Materia,
 } from "@/lib/cronograma-estudos/gerar";
 import { cn } from "@/lib/utils";
+import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 
 const DIAS_LABEL = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
@@ -38,6 +39,7 @@ export function CronogramaEstudosApp() {
   const [horasPorDia, setHorasPorDia] = useState(2);
   const [semanas, setSemanas] = useState(4);
   const [incluirRevisao, setIncluirRevisao] = useState(true);
+  const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
   const cronograma = useMemo(() => {
     if (materias.length === 0 || diasSemana.length === 0) return [];
@@ -87,10 +89,10 @@ export function CronogramaEstudosApp() {
       })
       .join("\n");
     return [
-      "*Cronograma de Estudos · Resolva Jato*",
-      `${semanas} semana(s) · ${horasPorDia}h/dia · ${materias.length} matéria(s)`,
+      "*CRONOGRAMA DE ESTUDOS | PLANO SEMANAL*",
+      `_${semanas} semana(s) | ${horasPorDia}h por dia | ${materias.length} matéria(s)_`,
       "",
-      "Semana 1 (modelo, se repete nas demais):",
+      "*SEMANA 1*",
       linhas,
       "",
       "Gerado automaticamente com base no peso/dificuldade de cada matéria.",
@@ -103,11 +105,7 @@ export function CronogramaEstudosApp() {
   }
 
   function handleWhatsApp() {
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`,
-      "_blank",
-      "noopener,noreferrer",
-    );
+    setWhatsAppOpen(true);
   }
 
   const semana1 = cronograma.filter((d) => d.semana === 1);
@@ -319,6 +317,12 @@ export function CronogramaEstudosApp() {
           </div>
         </div>
       </div>
+      <WhatsAppSendModal
+        open={whatsAppOpen}
+        onClose={() => setWhatsAppOpen(false)}
+        message={resumoTexto()}
+        destinationHint="WhatsApp que receberá o cronograma"
+      />
     </AuthGate>
   );
 }

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -134,7 +134,7 @@ export function ContratoLivePreview() {
         >
           Continuar e baixar meu contrato
         </Link>
-        <p className="text-center text-xs font-medium text-slate-500">Grátis para começar. Sem cartão de crédito.</p>
+        <p className="text-center text-xs font-medium text-slate-500">Crie uma conta grátis para baixar o PDF. Sem cartão.</p>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-8">

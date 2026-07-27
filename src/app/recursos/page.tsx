@@ -80,8 +80,8 @@ export default function RecursosPage() {
                             Conhecer e experimentar <ArrowRight className="h-4 w-4" />
                           </Link>
                         ) : (
-                          <Link href={`/login?next=${encodeURIComponent(tool.href)}`} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-slate-700">
-                            <LockKeyhole className="h-4 w-4" /> Usar com conta grátis
+                          <Link href={`/cadastro?next=${encodeURIComponent(tool.href)}`} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-slate-700">
+                            <LockKeyhole className="h-4 w-4" /> Criar conta grátis para usar
                           </Link>
                         )}
                       </article>

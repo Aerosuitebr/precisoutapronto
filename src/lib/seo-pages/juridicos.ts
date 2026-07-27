@@ -7,7 +7,7 @@ export const juridicosSeoContent: SeoPageContent = {
   h1: 'Gerador de Documentos Jurídicos Online Gratuito',
   subtitle:
     'Procuração, contrato de honorários, substabelecimento, notificação extrajudicial e outras peças do dia a dia do escritório, prontas em minutos e em PDF.',
-  ctaPrimary: 'Criar documento grátis',
+  ctaPrimary: 'Criar conta grátis e baixar documento',
   ctaSecondary: 'Ver modelos disponíveis',
   ctaHref: '/cadastro?next=/ferramentas/juridicos',
   quickBadges: [

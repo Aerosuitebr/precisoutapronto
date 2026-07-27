@@ -135,12 +135,13 @@ Feedback sincero é bem-vindo, sobretudo de MEIs e freelancers.
 Marque ao concluir:
 
 - [ ] Product Hunt (lançamento)
-- [ ] AlternativeTo (categoria productivity / invoicing / resume)
+- [ ] AlternativeTo (criar conta, esperar 7 dias, depois Suggest new application)
 - [ ] Softonic / similar BR (se aceitar web app)
-- [ ] Indie Hackers (post “Show IH”)
+- [ ] Indie Hackers (post Show IH; rascunho pronto no clipboard)
 - [ ] BetaList (opcional)
-- [ ] Google Search Console: solicitar indexação das 4 URLs novas de guia + 3 calculadoras
+- [x] Google Search Console: solicitar indexação das 4 URLs novas de guia + 3 calculadoras
 - [ ] Bing Webmaster: inspecionar as mesmas URLs
+- [x] CTAs de cadastro reforçados nas landings (conta grátis para baixar/salvar PDF)
 
 Descrição padrão para diretórios:
 

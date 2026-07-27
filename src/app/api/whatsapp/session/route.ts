@@ -13,10 +13,14 @@ function asString(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function isValidOwnerKey(value: string) {
+  return isValidEmail(value) || /^guest_[a-f0-9]{32}$/i.test(value);
+}
+
 /** Status da sessão efêmera do profissional (QR + conexão). */
 export async function GET(request: Request) {
   const ownerEmail = new URL(request.url).searchParams.get('ownerEmail')?.trim().toLowerCase() || '';
-  if (!ownerEmail || !isValidEmail(ownerEmail)) {
+  if (!ownerEmail || !isValidOwnerKey(ownerEmail)) {
     return NextResponse.json({ error: 'Informe ownerEmail válido.' }, { status: 400 });
   }
 
@@ -51,7 +55,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const ownerEmail = asString(body.ownerEmail).toLowerCase();
-    if (!ownerEmail || !isValidEmail(ownerEmail)) {
+    if (!ownerEmail || !isValidOwnerKey(ownerEmail)) {
       return NextResponse.json({ error: 'Informe ownerEmail válido.' }, { status: 400 });
     }
 
@@ -85,10 +89,10 @@ export async function PUT(request: Request) {
     const text = asString(body.text);
     const disconnectAfter = body.disconnectAfter !== false;
 
-    if (!ownerEmail || !isValidEmail(ownerEmail)) {
+    if (!ownerEmail || !isValidOwnerKey(ownerEmail)) {
       return NextResponse.json({ error: 'Informe ownerEmail válido.' }, { status: 400 });
     }
-    if (!to || !text) {
+    if (!to || !text || text.length > 12000) {
       return NextResponse.json({ error: 'Informe destino e texto.' }, { status: 400 });
     }
 
@@ -138,7 +142,7 @@ export async function DELETE(request: Request) {
       asString(body.ownerEmail).toLowerCase() ||
       new URL(request.url).searchParams.get('ownerEmail')?.trim().toLowerCase() ||
       '';
-    if (!ownerEmail || !isValidEmail(ownerEmail)) {
+    if (!ownerEmail || !isValidOwnerKey(ownerEmail)) {
       return NextResponse.json({ error: 'Informe ownerEmail válido.' }, { status: 400 });
     }
     const ok = await disconnectOwnerSession(ownerEmail);

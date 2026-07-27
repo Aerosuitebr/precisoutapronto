@@ -23,6 +23,7 @@ import {
 } from "@/lib/formatters";
 import { calcularDivisao } from "@/lib/divisor-conta/calc";
 import { cn } from "@/lib/utils";
+import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 
 interface PessoaForm {
   nome: string;
@@ -38,6 +39,7 @@ export function DivisorContaApp() {
     { nome: "Pessoa 1", consumoExtraInput: "" },
     { nome: "Pessoa 2", consumoExtraInput: "" },
   ]);
+  const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
   const valorTotal = parseCurrency(valorTotalInput);
 
@@ -83,9 +85,13 @@ export function DivisorContaApp() {
       .map((p) => `• ${p.nome}: ${formatCurrency(p.total)}`)
       .join("\n");
     return [
-      "*Divisão da conta · Resolva Jato*",
-      `Valor total (com taxa de serviço): ${formatCurrency(resultado.totalComTaxa)}`,
+      "*DIVISÃO DA CONTA | RESUMO*",
+      "_Valores organizados por participante_",
       "",
+      "*TOTAL COM TAXA*",
+      formatCurrency(resultado.totalComTaxa),
+      "",
+      "*VALOR POR PESSOA*",
       linhas,
       "",
       "Divisão automática. Confira antes de pagar.",
@@ -98,11 +104,7 @@ export function DivisorContaApp() {
   }
 
   function handleWhatsApp() {
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`,
-      "_blank",
-      "noopener,noreferrer",
-    );
+    setWhatsAppOpen(true);
   }
 
   return (
@@ -296,6 +298,12 @@ export function DivisorContaApp() {
           </div>
         </div>
       </div>
+      <WhatsAppSendModal
+        open={whatsAppOpen}
+        onClose={() => setWhatsAppOpen(false)}
+        message={resumoTexto()}
+        destinationHint="WhatsApp que receberá a divisão"
+      />
     </AuthGate>
   );
 }

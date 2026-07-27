@@ -147,7 +147,11 @@ export async function sendWithOwnerSession(params: {
 
   const sendRes = await evoFetch(`/message/sendText/${encodeURIComponent(status.instance)}`, {
     method: 'POST',
-    body: JSON.stringify({ number: to, text: params.text })
+    body: JSON.stringify({
+      number: to,
+      text: params.text,
+      linkPreview: false
+    })
   });
 
   if (!sendRes.ok) {

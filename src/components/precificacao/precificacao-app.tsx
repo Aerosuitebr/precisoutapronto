@@ -30,6 +30,7 @@ import { cn } from '@/lib/utils';
 import { viralToolShareFooter } from '@/lib/viral-loop';
 import { ResultShareCard } from '@/components/shared/result-share-card';
 import { trackEvent } from '@/lib/analytics';
+import { WhatsAppSendModal } from '@/components/whatsapp/whatsapp-send-modal';
 
 const STEPS = [
   { id: 'custos', label: 'Materiais' },
@@ -64,6 +65,7 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
   const [taxaCartao, setTaxaCartao] = useState(4.99);
   const [imposto, setImposto] = useState(6);
   const [margem, setMargem] = useState(20);
+  const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
   const custoDireto = parseCurrency(custoDiretoInput);
   const frete = parseCurrency(freteInput);
@@ -120,11 +122,14 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
   function resumoTexto() {
     if (!resultado) return '';
     return [
-      '*Precificação · Resolva Jato*',
-      `Custo total (material + mão de obra + rateio fixo): ${formatCurrency(resultado.custoTotal)}`,
-      `Preço de venda sugerido: ${formatCurrency(resultado.precoFinal)}`,
-      `Lucro líquido estimado por venda: ${formatCurrency(resultado.lucroLiquidoPorVenda)} (${resultado.margemLiquidaReal.toFixed(1)}%)`,
-      `Markup sobre custo direto: ${resultado.markup.toFixed(2)}x`,
+      '*PRECIFICAÇÃO | RESUMO FINANCEIRO*',
+      '_Custos, preço e margem da simulação_',
+      '',
+      '*COMPOSIÇÃO*',
+      `• Custo total: ${formatCurrency(resultado.custoTotal)}`,
+      `• Preço de venda sugerido: ${formatCurrency(resultado.precoFinal)}`,
+      `• Lucro líquido por venda: ${formatCurrency(resultado.lucroLiquidoPorVenda)} (${resultado.margemLiquidaReal.toFixed(1)}%)`,
+      `• Markup sobre custo direto: ${resultado.markup.toFixed(2)}x`,
       '',
       'Estimativa educativa. Ajuste conforme concorrência e percepção de valor do seu público.'
     ].join('\n') + viralToolShareFooter('/calculadora-de-preco-freelancer', 'precificacao_whatsapp');
@@ -148,7 +153,7 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
       tool_path: '/calculadora-de-preco-freelancer',
       campaign: 'precificacao_whatsapp'
     });
-    window.open(`https://wa.me/?text=${encodeURIComponent(resumoTexto())}`, '_blank', 'noopener,noreferrer');
+    setWhatsAppOpen(true);
   }
 
   return (
@@ -448,6 +453,12 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
           </aside>
         </div>
       </div>
+      <WhatsAppSendModal
+        open={whatsAppOpen}
+        onClose={() => setWhatsAppOpen(false)}
+        message={resumoTexto()}
+        destinationHint="WhatsApp que receberá o resumo financeiro"
+      />
     </AuthGate>
   );
 }

@@ -119,5 +119,5 @@ export function viralToolShareUrl(toolPath: string, utmCampaign: string) {
 
 /** Rodapé padrão anexado aos resumos de calculadoras compartilhados. */
 export function viralToolShareFooter(toolPath: string, utmCampaign: string) {
-  return `\n\nCalcule o seu grátis, sem cadastro:\n${viralToolShareUrl(toolPath, utmCampaign)}`;
+  return `\n\n*CALCULE TAMBÉM*\nAcesse grátis, sem cadastro:\n${viralToolShareUrl(toolPath, utmCampaign)}`;
 }

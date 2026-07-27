@@ -18,11 +18,13 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import { analisarRedacao } from "@/lib/redacao-enem/analyze";
 import { cn } from "@/lib/utils";
+import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 
 export function RedacaoEnemApp() {
   const { toast } = useToast();
   const [tema, setTema] = useState("");
   const [texto, setTexto] = useState("");
+  const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
   const resultado = useMemo(() => {
     if (texto.trim().split(/\s+/).filter(Boolean).length < 20) return null;
@@ -33,7 +35,7 @@ export function RedacaoEnemApp() {
     if (!resultado) return "";
     if (resultado.textoInvalido) {
       return [
-        "*Correção estimada de redação ENEM · Resolva Jato*",
+        "*REDAÇÃO ENEM | ANÁLISE ESTIMADA*",
         tema ? `Tema: ${tema}` : "",
         "",
         "⚠️ Texto não reconhecido como uma redação (sem palavras reais em português). Reescreva com frases e parágrafos com sentido para receber uma estimativa de nota.",
@@ -45,12 +47,15 @@ export function RedacaoEnemApp() {
       .map((c) => `C${c.id} - ${c.titulo}: ${c.nota}/200`)
       .join("\n");
     return [
-      "*Correção estimada de redação ENEM · Resolva Jato*",
+      "*REDAÇÃO ENEM | ANÁLISE ESTIMADA*",
+      "_Resultado organizado por competência_",
       tema ? `Tema: ${tema}` : "",
       "",
+      "*COMPETÊNCIAS*",
       linhas,
       "",
-      `*Nota estimada total: ${resultado.notaTotalEstimada}/1000*`,
+      `*NOTA TOTAL ESTIMADA*`,
+      `${resultado.notaTotalEstimada}/1000`,
       "",
       "Estimativa automática baseada em heurísticas de estrutura, coesão e proposta de intervenção. Não substitui a correção de um professor ou corretor humano do ENEM.",
     ]
@@ -64,11 +69,7 @@ export function RedacaoEnemApp() {
   }
 
   function handleWhatsApp() {
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`,
-      "_blank",
-      "noopener,noreferrer",
-    );
+    setWhatsAppOpen(true);
   }
 
   return (
@@ -281,6 +282,12 @@ export function RedacaoEnemApp() {
           </div>
         </div>
       </div>
+      <WhatsAppSendModal
+        open={whatsAppOpen}
+        onClose={() => setWhatsAppOpen(false)}
+        message={resumoTexto()}
+        destinationHint="WhatsApp que receberá a análise"
+      />
     </AuthGate>
   );
 }

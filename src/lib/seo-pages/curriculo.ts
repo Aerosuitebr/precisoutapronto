@@ -18,7 +18,7 @@ export const curriculoSeoContent: SeoPageContent = {
   h1: 'Gerador de Currículo Online Gratuito',
   subtitle:
     'Crie um currículo profissional em poucos minutos, direto do navegador. Escolha um modelo, preencha seus dados e baixe em PDF pronto para enviar às vagas.',
-  ctaPrimary: 'Criar meu currículo grátis',
+  ctaPrimary: 'Criar conta grátis e baixar currículo',
   ctaSecondary: 'Ver modelos prontos',
   ctaHref: '/cadastro?next=/ferramentas/curriculo',
   quickBadges: [

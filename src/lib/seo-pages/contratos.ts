@@ -7,7 +7,7 @@ export const contratosSeoContent: SeoPageContent = {
   h1: 'Gerador de Contrato Online Gratuito',
   subtitle:
     'Monte um contrato profissional de aluguel, serviços, trabalho, compra e venda ou comodato em poucos minutos. Preencha os dados das partes e baixe em PDF pronto para assinar.',
-  ctaPrimary: 'Criar meu contrato grátis',
+  ctaPrimary: 'Criar conta grátis e baixar contrato',
   ctaSecondary: 'Ver modelos de contrato',
   ctaHref: '/cadastro?next=/ferramentas/contratos',
   quickBadges: [

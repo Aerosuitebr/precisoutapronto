@@ -1,5 +1,6 @@
 ﻿import { formatCurrency } from '@/lib/formatters';
 import { withViralMessageBrand } from '@/lib/viral-loop';
+import { buildStructuredWhatsAppMessage } from '@/lib/whatsapp/message-format';
 
 function digitsPhone(value: string) {
   const digits = value.replace(/\D+/g, '');
@@ -17,10 +18,22 @@ export function buildProfissionalWhatsAppNotifyText(input: {
   /** Inclui marca Resolva Jato (plano grátis do profissional). */
   branded?: boolean;
 }) {
-  const base =
-    input.status === 'approved'
-      ? `Olá ${input.profissionalNome}! Sou ${input.clienteNome}. Aprovei o orçamento de ${formatCurrency(input.total)}.\n\nLink: ${input.publicUrl}\n\nPodemos seguir?`
-      : `Olá ${input.profissionalNome}! Sou ${input.clienteNome}. Pedi ajuste no orçamento de ${formatCurrency(input.total)}.\n\nMotivo: ${input.feedbackCliente || '-'}\n\nLink: ${input.publicUrl}`;
+  const base = buildStructuredWhatsAppMessage({
+    title: input.status === 'approved' ? 'ORÇAMENTO APROVADO' : 'AJUSTE SOLICITADO',
+    subtitle: `Retorno de ${input.clienteNome}`,
+    sections: [
+      {
+        title: 'RESUMO',
+        lines: [
+          `Profissional: ${input.profissionalNome}`,
+          `Valor: ${formatCurrency(input.total)}`,
+          input.status === 'declined' ? `Motivo: ${input.feedbackCliente || 'Não informado'}` : 'Cliente confirmou a aprovação',
+        ],
+      },
+    ],
+    actionLabel: 'ABRIR ORÇAMENTO',
+    actionUrl: input.publicUrl,
+  });
   return withViralMessageBrand(base, input.branded !== false, 'orcamento_notify');
 }
 
@@ -65,10 +78,21 @@ export function buildClienteOrcamentoWhatsAppText(params: {
   url: string;
   branded?: boolean;
 }) {
-  const base =
-    `Olá ${params.clienteNome}! Sou ${params.profissionalNome}.\n\n` +
-    `Segue seu orçamento de ${formatCurrency(params.total)} para analisar e aprovar:\n` +
-    `${params.url}\n\n` +
-    `É só abrir o link, sem criar conta.`;
+  const base = buildStructuredWhatsAppMessage({
+    title: 'ORÇAMENTO PARA ANÁLISE',
+    subtitle: `Olá, ${params.clienteNome}. ${params.profissionalNome} enviou uma proposta.`,
+    sections: [
+      {
+        title: 'RESUMO',
+        lines: [
+          `Valor total: ${formatCurrency(params.total)}`,
+          'Abra o link para conferir os itens, aprovar ou solicitar ajustes',
+          'Não é necessário criar conta',
+        ],
+      },
+    ],
+    actionLabel: 'VER ORÇAMENTO',
+    actionUrl: params.url,
+  });
   return withViralMessageBrand(base, params.branded !== false, 'orcamento_whatsapp');
 }

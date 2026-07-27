@@ -28,9 +28,11 @@ import {
   type FaixaMei,
 } from "@/lib/mei-vs-clt/calc";
 import { cn } from "@/lib/utils";
-import { viralToolShareFooter } from "@/lib/viral-loop";
+import { viralToolShareUrl } from "@/lib/viral-loop";
 import { ResultShareCard } from "@/components/shared/result-share-card";
 import { trackEvent } from "@/lib/analytics";
+import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
+import { buildStructuredWhatsAppMessage } from "@/lib/whatsapp/message-format";
 
 const FAIXAS: FaixaMei[] = [
   "comercio-industria",
@@ -48,6 +50,7 @@ export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean }
   const [faturamentoInput, setFaturamentoInput] = useState("");
   const [faixa, setFaixa] = useState<FaixaMei>("servicos");
   const [custosInput, setCustosInput] = useState("");
+  const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
   const salarioClt = parseCurrency(salarioCltInput);
   const vt = parseCurrency(vtInput);
@@ -81,25 +84,41 @@ export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean }
 
   function resumoTexto() {
     if (!resultadoClt || !resultadoMei) return "";
-    return [
-      "*MEI vs CLT · Resolva Jato*",
-      "",
-      `CLT · líquido mensal médio (com 13º e férias diluídos): ${formatCurrency(resultadoClt.liquidoMensalEquivalente)}`,
-      `MEI · lucro líquido mensal estimado: ${formatCurrency(resultadoMei.lucroLiquido)}`,
-      "",
-      diferenca !== null
-        ? diferenca >= 0
-          ? `Como MEI você ficaria ~${formatCurrency(diferenca)} melhor por mês nesse cenário.`
-          : `Como CLT você ficaria ~${formatCurrency(Math.abs(diferenca))} melhor por mês nesse cenário.`
-        : "",
-      resultadoMei.ultrapassaLimite
-        ? "⚠ Faturamento projetado ultrapassa o limite anual do MEI (R$ 81.000)."
-        : "",
-      "",
-      "Simulação educativa, não considera FGTS, benefícios, estabilidade nem custos de formalização. Consulte um contador antes de decidir.",
-    ]
-      .filter(Boolean)
-      .join("\n") + viralToolShareFooter("/mei-ou-clt", "mei_clt_whatsapp");
+    const comparacao = resultadoMei.lucroLiquido - resultadoClt.liquidoMensalEquivalente;
+    return buildStructuredWhatsAppMessage({
+      title: "MEI OU CLT | COMPARATIVO",
+      subtitle: "Resumo organizado da sua simulação",
+      sections: [
+        {
+          title: "CENÁRIO CLT",
+          lines: [
+            `Líquido mensal médio: ${formatCurrency(resultadoClt.liquidoMensalEquivalente)}`,
+            "13º e férias considerados na média",
+          ],
+        },
+        {
+          title: "CENÁRIO MEI",
+          lines: [
+            `Lucro líquido mensal estimado: ${formatCurrency(resultadoMei.lucroLiquido)}`,
+            resultadoMei.ultrapassaLimite
+              ? "Faturamento projetado acima do limite anual do MEI"
+              : "Faturamento dentro do limite anual informado",
+          ],
+        },
+        {
+          title: "COMPARAÇÃO",
+          lines: [
+            comparacao >= 0
+              ? `MEI fica ${formatCurrency(comparacao)} acima por mês neste cenário`
+              : `CLT fica ${formatCurrency(Math.abs(comparacao))} acima por mês neste cenário`,
+          ],
+        },
+      ],
+      notice:
+        "Estimativa educativa. Benefícios, FGTS, estabilidade e custos de formalização também devem ser avaliados com um contador.",
+      actionLabel: "SIMULE O SEU CENÁRIO",
+      actionUrl: viralToolShareUrl("/mei-ou-clt", "mei_clt_whatsapp"),
+    });
   }
 
   function handleCopy() {
@@ -118,11 +137,7 @@ export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean }
       tool_path: "/mei-ou-clt",
       campaign: "mei_clt_whatsapp",
     });
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(resumoTexto())}`,
-      "_blank",
-      "noopener,noreferrer",
-    );
+    setWhatsAppOpen(true);
   }
 
   return (
@@ -420,6 +435,12 @@ export function MeiVsCltApp({ publicAccess = false }: { publicAccess?: boolean }
           )}
         </div>
       </div>
+      <WhatsAppSendModal
+        open={whatsAppOpen}
+        onClose={() => setWhatsAppOpen(false)}
+        message={resumoTexto()}
+        destinationHint="WhatsApp que receberá o comparativo"
+      />
     </AuthGate>
   );
 }

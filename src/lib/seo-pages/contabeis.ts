@@ -7,7 +7,7 @@ export const contabeisSeoContent: SeoPageContent = {
   h1: 'Gerador de Documentos Contábeis e de Despacho Gratuito',
   subtitle:
     'Contrato de serviços contábeis, procuração para contador, autorização e-CAC/gov.br, termo de entrega de documentos e mais, prontos em minutos e em PDF.',
-  ctaPrimary: 'Criar documento grátis',
+  ctaPrimary: 'Criar conta grátis e baixar documento',
   ctaSecondary: 'Ver modelos disponíveis',
   ctaHref: '/cadastro?next=/ferramentas/contabeis',
   quickBadges: [

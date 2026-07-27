@@ -1,4 +1,7 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { TestimonialsSection } from '@/components/marketing/testimonials-section';
@@ -46,11 +49,35 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
 
         <ToolLandingBenefits toolName={content.toolName} benefits={content.benefits} />
         <ToolLandingHowItWorks steps={content.steps} />
-        <ToolLandingEmbed toolName={content.toolName} tool={toolPreview} />
+        <ToolLandingEmbed
+          toolName={content.toolName}
+          tool={toolPreview}
+          ctaHref={content.ctaHref}
+          ctaLabel={content.ctaPrimary}
+        />
         <ToolLandingExamples examples={examples} />
         <TestimonialsSection />
         <ToolLandingFaq faq={content.faq} />
         <ToolLandingArticle title={content.article.title} html={content.article.html} />
+
+        <section className="border-y border-slate-200 bg-slate-950 text-white">
+          <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-14 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-16">
+            <div className="max-w-xl">
+              <h2 className="rj-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+                Pronto para salvar e baixar o PDF?
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-slate-300 sm:text-base">
+                Crie uma conta gratuita para continuar. Sem cartão. Leva menos de um minuto.
+              </p>
+            </div>
+            <Button asChild size="lg" className="h-12 shrink-0 bg-sky-500 px-6 font-bold hover:bg-sky-400">
+              <Link href={content.ctaHref}>
+                {content.ctaPrimary}
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </Button>
+          </div>
+        </section>
 
         <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <ToolLandingShare toolName={content.toolName} />
