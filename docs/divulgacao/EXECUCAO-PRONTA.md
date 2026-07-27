@@ -89,7 +89,7 @@ Descrição padrão: `colar/06-diretorios-descricao.txt`
 
 ## 7) Referral · 3 amigos = Premium
 
-**Status:** FEITO ops (e-mail aos usuários verificados) + COLAR mensagem pessoal  
+**Status:** FEITO (10 e-mails enviados via SMTP em 2026-07-27) + COLAR mensagem pessoal  
 **Arquivo:** `colar/07-referral-nudge.txt`
 
 Painel no produto: `/conta` (Indique e ganhe).
