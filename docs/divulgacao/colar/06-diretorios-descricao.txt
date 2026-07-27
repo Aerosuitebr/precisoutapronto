@@ -1,0 +1,15 @@
+Resolva Jato é uma plataforma brasileira de ferramentas online para MEIs, freelancers e estudantes. Oferece orçamento com Pix no WhatsApp, geradores de documentos em PDF e calculadoras práticas (rescisão, precificação e MEI vs CLT), com uso gratuito.
+
+Site: https://resolvajato.com.br/
+Press kit: https://resolvajato.com.br/sobre
+Logo: https://resolvajato.com.br/icon-512.png
+
+Diretórios alvo:
+- AlternativeTo
+- MicroSaaS MKT (https://microsaas.marketing/)
+- FindSaaS (https://www.findsaas.com.br/)
+- Indie Hackers (Show IH)
+- Softonic / similares (se aceitar web app)
+
+Categorias sugeridas:
+Productivity, Business, Freelancer tools, Finance (Pix/orçamento)
