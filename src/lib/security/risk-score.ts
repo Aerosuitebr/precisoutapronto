@@ -37,16 +37,27 @@ export async function computeRegistrationRisk(signals: RiskSignals): Promise<Ris
     const ipRegs = await prisma.auditLog.count({
       where: { event: 'register', ip: signals.ip, createdAt: { gte: since24h } }
     });
-    if (ipRegs >= 1) {
-      score += 30;
+    // 1 cadastro no mesmo IP é comum (NAT/escritório). Só escala a partir do 2º.
+    if (ipRegs >= 3) {
+      score += 40;
+      reasons.push('same_ip');
+    } else if (ipRegs >= 2) {
+      score += 25;
       reasons.push('same_ip');
     }
   }
 
   if (signals.deviceId) {
     const linkedUsers = await countUsersForDevice(signals.deviceId);
-    if (linkedUsers >= 1) {
+    // 1 conta no mesmo browser: sinal fraco. Burst real (2+) sobe o score.
+    if (linkedUsers >= 3) {
       score += 50;
+      reasons.push('same_device_cookie');
+    } else if (linkedUsers >= 2) {
+      score += 35;
+      reasons.push('same_device_cookie');
+    } else if (linkedUsers >= 1) {
+      score += 20;
       reasons.push('same_device_cookie');
     }
   }
