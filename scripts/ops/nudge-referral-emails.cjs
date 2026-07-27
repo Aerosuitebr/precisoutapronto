@@ -1,34 +1,76 @@
 #!/usr/bin/env node
 /**
  * Envia e-mail pedindo indicação de 3 amigos (usuários com e-mail verificado).
- * Uso no container app:
- *   DRY_RUN=1 node /tmp/nudge-referral-emails.mjs
- *   DRY_RUN=0 LIMIT=50 node /tmp/nudge-referral-emails.mjs
+ * Uso no container app (/app):
+ *   DRY_RUN=1 node /app/nudge-referral-emails.cjs
+ *   DRY_RUN=0 LIMIT=50 node /app/nudge-referral-emails.cjs
  */
 const { PrismaClient } = require('@prisma/client');
 const { randomBytes } = require('crypto');
+const nodemailer = require('nodemailer');
 
-// Inline minimal mail via Resend to avoid importing TS paths in container
-async function sendViaResend({ to, subject, html, text }) {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from =
-    process.env.RESEND_FROM ||
-    process.env.SMTP_FROM ||
-    'Resolva Jato <contato@resolvajato.com.br>';
-  if (!apiKey) return { sent: false, error: 'RESEND_API_KEY ausente' };
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ from, to: [to], subject, html, text })
-  });
-  if (!res.ok) {
+function env(name) {
+  return (process.env[name] || '').trim();
+}
+
+function defaultFrom() {
+  return (
+    env('SMTP_FROM') ||
+    env('RESEND_FROM') ||
+    (env('SMTP_USER') ? `Resolva Jato <${env('SMTP_USER')}>` : 'Resolva Jato <contato@resolvajato.com.br>')
+  );
+}
+
+function smtpConfigured() {
+  return Boolean(env('SMTP_HOST') && env('SMTP_USER') && env('SMTP_PASS'));
+}
+
+async function sendEmail({ to, subject, html, text }) {
+  if (env('RESEND_API_KEY')) {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env('RESEND_API_KEY')}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ from: defaultFrom(), to: [to], subject, html, text })
+    });
+    if (res.ok) return { sent: true, provider: 'resend' };
     const body = await res.text();
-    return { sent: false, error: body.slice(0, 300) };
+    if (!smtpConfigured()) {
+      return { sent: false, error: body.slice(0, 300), provider: 'resend' };
+    }
   }
-  return { sent: true };
+
+  if (!smtpConfigured()) {
+    return {
+      sent: false,
+      error: 'Nenhum provedor de e-mail (RESEND_API_KEY ou SMTP_*).'
+    };
+  }
+
+  const port = Number(env('SMTP_PORT') || '587');
+  const secure = env('SMTP_SSL') === 'true' || port === 465;
+  const requireTls =
+    env('SMTP_START_TLS').toUpperCase() === 'REQUIRED' || (!secure && port === 587);
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: env('SMTP_HOST'),
+      port,
+      secure,
+      requireTLS: requireTls,
+      auth: { user: env('SMTP_USER'), pass: env('SMTP_PASS') }
+    });
+    await transporter.sendMail({ from: defaultFrom(), to, subject, html, text });
+    return { sent: true, provider: 'smtp' };
+  } catch (error) {
+    return {
+      sent: false,
+      error: error instanceof Error ? error.message : 'Falha SMTP',
+      provider: 'smtp'
+    };
+  }
 }
 
 function makeCode() {
@@ -42,6 +84,19 @@ const BASE = (process.env.NEXT_PUBLIC_APP_URL || 'https://resolvajato.com.br').r
 async function main() {
   const prisma = new PrismaClient();
   try {
+    console.log(
+      JSON.stringify(
+        {
+          mail: {
+            resend: Boolean(env('RESEND_API_KEY')),
+            smtp: smtpConfigured()
+          }
+        },
+        null,
+        2
+      )
+    );
+
     const users = await prisma.user.findMany({
       where: { emailVerifiedAt: { not: null } },
       orderBy: { lastLoginAt: 'desc' },
@@ -106,19 +161,14 @@ async function main() {
         continue;
       }
 
-      const result = await sendViaResend({
-        to: user.email,
-        subject,
-        html,
-        text
-      });
+      const result = await sendEmail({ to: user.email, subject, html, text });
 
       await prisma.auditLog.create({
         data: {
           event: result.sent ? 'referral_nudge_email_sent' : 'referral_nudge_email_failed',
           userId: user.id,
           email: user.email,
-          meta: { error: result.error || null, code }
+          meta: { error: result.error || null, code, provider: result.provider || null }
         }
       });
 
@@ -128,7 +178,6 @@ async function main() {
         console.error(JSON.stringify({ email: user.email, error: result.error }));
       }
 
-      // leve espaçamento
       await new Promise((r) => setTimeout(r, 250));
     }
 

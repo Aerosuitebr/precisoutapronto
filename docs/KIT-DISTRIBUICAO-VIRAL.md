@@ -134,14 +134,17 @@ Feedback sincero é bem-vindo, sobretudo de MEIs e freelancers.
 
 Marque ao concluir:
 
-- [ ] Product Hunt (lançamento)
+- [ ] Product Hunt (lançamento) — pacote pronto em `docs/divulgacao/colar/05-product-hunt.txt`
 - [ ] AlternativeTo (criar conta, esperar 7 dias, depois Suggest new application)
+- [ ] MicroSaaS MKT / FindSaaS (diretórios BR)
 - [ ] Softonic / similar BR (se aceitar web app)
 - [ ] Indie Hackers (post Show IH; rascunho pronto no clipboard)
 - [ ] BetaList (opcional)
 - [x] Google Search Console: solicitar indexação das 4 URLs novas de guia + 3 calculadoras
 - [ ] Bing Webmaster: inspecionar as mesmas URLs
 - [x] CTAs de cadastro reforçados nas landings (conta grátis para baixar/salvar PDF)
+- [x] Pacote de execução pronto: `docs/divulgacao/EXECUCAO-PRONTA.md`
+- [x] Nudge de indicação por e-mail (usuários verificados)
 
 Descrição padrão para diretórios:
 

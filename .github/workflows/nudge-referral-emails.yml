@@ -44,9 +44,26 @@ jobs:
           ssh ${SSH_OPTS} "${USER}@${HOST}" bash -s <<EOF
           set -euo pipefail
           cd /opt/resolva-jato
+          set -a
+          # shellcheck disable=SC1091
+          source .env.production
+          set +a
           docker cp /tmp/nudge-referral-emails.cjs resolva-jato-app:/app/nudge-referral-emails.cjs
           docker exec -u root resolva-jato-app chown nextjs:nodejs /app/nudge-referral-emails.cjs
-          docker exec -w /app -e DRY_RUN='${DRY_RUN}' -e LIMIT='${LIMIT}' resolva-jato-app \
+          docker exec -w /app \
+            -e DRY_RUN='${DRY_RUN}' \
+            -e LIMIT='${LIMIT}' \
+            -e RESEND_API_KEY \
+            -e RESEND_FROM \
+            -e SMTP_HOST \
+            -e SMTP_PORT \
+            -e SMTP_USER \
+            -e SMTP_PASS \
+            -e SMTP_FROM \
+            -e SMTP_SSL \
+            -e SMTP_START_TLS \
+            -e NEXT_PUBLIC_APP_URL \
+            resolva-jato-app \
             node /app/nudge-referral-emails.cjs
           docker exec -u root resolva-jato-app rm -f /app/nudge-referral-emails.cjs || true
           rm -f /tmp/nudge-referral-emails.cjs
