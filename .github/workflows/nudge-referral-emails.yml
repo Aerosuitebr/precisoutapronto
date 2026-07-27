@@ -38,15 +38,15 @@ jobs:
           chmod 600 ~/.ssh/vultr_deploy
           SSH_OPTS="-i ~/.ssh/vultr_deploy -o StrictHostKeyChecking=accept-new -o BatchMode=yes"
 
-          scp ${SSH_OPTS} scripts/ops/nudge-referral-emails.mjs \
-            "${USER}@${HOST}:/tmp/nudge-referral-emails.mjs"
+          scp ${SSH_OPTS} scripts/ops/nudge-referral-emails.cjs \
+            "${USER}@${HOST}:/tmp/nudge-referral-emails.cjs"
 
           ssh ${SSH_OPTS} "${USER}@${HOST}" bash -s <<EOF
           set -euo pipefail
           cd /opt/resolva-jato
-          docker cp /tmp/nudge-referral-emails.mjs resolva-jato-app:/tmp/nudge-referral-emails.mjs
+          docker cp /tmp/nudge-referral-emails.cjs resolva-jato-app:/tmp/nudge-referral-emails.cjs
           docker exec -e DRY_RUN='${DRY_RUN}' -e LIMIT='${LIMIT}' resolva-jato-app \
-            node /tmp/nudge-referral-emails.mjs
-          docker exec resolva-jato-app rm -f /tmp/nudge-referral-emails.mjs || true
-          rm -f /tmp/nudge-referral-emails.mjs
+            node /tmp/nudge-referral-emails.cjs
+          docker exec resolva-jato-app rm -f /tmp/nudge-referral-emails.cjs || true
+          rm -f /tmp/nudge-referral-emails.cjs
           EOF
