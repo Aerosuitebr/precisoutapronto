@@ -5,6 +5,39 @@ import {
   consumeGuestTrial,
   hasGuestTrialAvailable
 } from './guest-trial';
+import { localeFromPathname, type Locale } from './i18n-locale';
+
+const guestCopy = {
+  'pt-BR': {
+    trialAvailable: 'Degustação gratuita: uma geração completa sem marca.',
+    accountRequired:
+      'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Resolva Jato.',
+    guestSuccess: 'Documento gerado sem marca. Crie uma conta grátis para continuar.',
+    saved: 'Documento salvo com sucesso.',
+    downloaded: 'Download concluído.'
+  },
+  en: {
+    trialAvailable: 'Free trial: one full generation without branding.',
+    accountRequired:
+      'Create a free account to keep generating documents. Generation stays free, with the Resolva Jato brand.',
+    guestSuccess: 'Document generated without branding. Create a free account to continue.',
+    saved: 'Document saved successfully.',
+    downloaded: 'Download complete.'
+  },
+  es: {
+    trialAvailable: 'Prueba gratuita: una generacion completa sin marca.',
+    accountRequired:
+      'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con la marca Resolva Jato.',
+    guestSuccess: 'Documento generado sin marca. Crea una cuenta gratis para continuar.',
+    saved: 'Documento guardado con exito.',
+    downloaded: 'Descarga concluida.'
+  }
+} as const;
+
+function billingLocale(): Locale {
+  if (typeof window === 'undefined') return 'pt-BR';
+  return localeFromPathname(window.location.pathname || '/');
+}
 
 export type { BillableAction, BillableContext, BillableToolId };
 
@@ -155,15 +188,15 @@ export function shouldBrandDocuments(): boolean {
 }
 
 export function canUseTool(): UsageDecision {
+  const copy = guestCopy[billingLocale()];
   if (!getSession()) {
     if (hasGuestTrialAvailable()) {
-      return { allowed: true, reason: 'Degustação gratuita: uma geração completa sem marca.' };
+      return { allowed: true, reason: copy.trialAvailable };
     }
     return {
       allowed: false,
       accountRequired: true,
-      reason:
-        'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Resolva Jato.'
+      reason: copy.accountRequired
     };
   }
   return { allowed: true };
@@ -210,10 +243,11 @@ export async function performBillableAction<T>(context: BillableContext, effect:
         nextHref: typeof window !== 'undefined' ? window.location.pathname : '/ferramentas'
       });
       if (typeof window !== 'undefined') {
+        const copy = guestCopy[billingLocale()];
         window.dispatchEvent(
           new CustomEvent('rj-billable-success', {
             detail: {
-              message: 'Documento gerado sem marca. Crie uma conta grátis para continuar.',
+              message: copy.guestSuccess,
               toolId: context.toolId,
               action: context.action,
               charged: false,
@@ -257,9 +291,10 @@ export async function performBillableAction<T>(context: BillableContext, effect:
 
     const charged = Boolean(consumeData.charged);
     if (typeof window !== 'undefined') {
+      const copy = guestCopy[billingLocale()];
       const labels: Record<BillableAction, string> = {
-        manual_save: 'Documento salvo com sucesso.',
-        download: 'Download concluído.'
+        manual_save: copy.saved,
+        download: copy.downloaded
       };
       window.dispatchEvent(
         new CustomEvent('rj-billable-success', {
