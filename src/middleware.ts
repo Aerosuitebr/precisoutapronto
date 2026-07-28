@@ -94,7 +94,6 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathLocale = localeFromPathname(pathname);
   const forcedLocale = parseLocale(request.nextUrl.searchParams.get(LOCALE_QUERY));
-  const cookieLocale = parseLocale(request.cookies.get(LOCALE_COOKIE)?.value);
   const userAgent = request.headers.get('user-agent');
   const bot = isLikelyBot(userAgent);
 
@@ -110,18 +109,13 @@ export function middleware(request: NextRequest) {
     return applyCommonHeaders(request, redirect);
   }
 
-  // Home: só respeita cookie de escolha explícita (bandeira). Sem Accept-Language
-  // automático, para MEI/BR com Windows/Chrome em inglês não cair em /en.
-  if (pathname === '/' && !bot) {
-    if (cookieLocale && cookieLocale !== 'pt-BR') {
-      const url = request.nextUrl.clone();
-      url.pathname = homePathForLocale(cookieLocale);
-      const redirect = NextResponse.redirect(url);
-      setLocaleCookie(redirect, cookieLocale);
-      return applyCommonHeaders(request, redirect);
-    }
+  // Home PT é sempre `/`. Nunca redireciona por Accept-Language nem por cookie
+  // legado (ex.: rj_locale=en gravado quando o usuário só visitou /en).
+  // Idioma EN/ES fica em /en e /es; a bandeira PT força cookie via ?rj_locale=.
+  if (pathname === '/') {
     const response = NextResponse.next();
-    if (!cookieLocale) setLocaleCookie(response, 'pt-BR');
+    // Apaga cookie EN/ES legado para a home PT não “grudar” idioma errado.
+    if (!bot) setLocaleCookie(response, 'pt-BR');
     return applyCommonHeaders(request, response);
   }
 

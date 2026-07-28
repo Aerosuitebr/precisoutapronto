@@ -17,11 +17,10 @@ import { Logo } from '@/components/brand/logo';
 import { LocaleSwitcher } from '@/components/i18n/locale-switcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MaskedInput } from '@/components/ui/masked-input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
 import { performBillableAction } from '@/lib/billing';
-import { formatCurrencyInput, parseCurrency } from '@/lib/formatters';
+import { parseLooseMoney } from '@/lib/formatters';
 import { buildPixBrCode } from '@/lib/pix/brcode';
 import type { PixKeyType } from '@/lib/pix/types';
 import { type InternationalLocale } from '@/lib/i18n';
@@ -135,6 +134,7 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
   const [validity, setValidity] = useState(locale === 'en' ? '15 days' : '15 días');
   const [notes, setNotes] = useState('');
   const [items, setItems] = useState<OrcamentoItem[]>([emptyItem()]);
+  const [priceDrafts, setPriceDrafts] = useState<Record<string, string>>({});
   const [pixType, setPixType] = useState<PixKeyType>('email');
   const [pixKey, setPixKey] = useState('');
   const [pixReceiver, setPixReceiver] = useState('');
@@ -188,9 +188,14 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
         if (item.id !== id) return item;
         if (field === 'nome') return { ...item, nome: value };
         if (field === 'quantidade') return { ...item, quantidade: Math.max(1, Number(value) || 1) };
-        return { ...item, valorUnitario: parseCurrency(value) };
+        return { ...item, valorUnitario: parseLooseMoney(value) };
       })
     );
+  }
+
+  function updateUnitPrice(id: string, raw: string) {
+    setPriceDrafts((current) => ({ ...current, [id]: raw }));
+    updateItem(id, 'valorUnitario', raw);
   }
 
   async function generate() {
@@ -230,8 +235,7 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
         }
       );
       if (!outcome.allowed) {
-        // Modal de conta abre via evento; não zera o formulário.
-        if ('accountRequired' in outcome && outcome.accountRequired) return;
+        // Modal de conta pode abrir via evento; também mostra erro no painel.
         setError(outcome.reason || t.loginRequired);
         return;
       }
@@ -316,15 +320,16 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
                       onChange={(e) => updateItem(item.id, 'quantidade', e.target.value)}
                       aria-label={t.quantity}
                     />
-                    <MaskedInput
-                      format={formatCurrencyInput}
+                    <Input
+                      type="text"
+                      inputMode="decimal"
                       value={
-                        item.valorUnitario > 0
-                          ? formatCurrencyInput(String(Math.round(item.valorUnitario * 100)))
-                          : ''
+                        priceDrafts[item.id] ??
+                        (item.valorUnitario > 0 ? String(item.valorUnitario) : '')
                       }
-                      onValueChange={(value) => updateItem(item.id, 'valorUnitario', value)}
+                      onChange={(e) => updateUnitPrice(item.id, e.target.value)}
                       placeholder={t.unitPrice}
+                      aria-label={t.unitPrice}
                     />
                     <button type="button" onClick={() => setItems((current) => current.filter((entry) => entry.id !== item.id))} disabled={items.length === 1} aria-label={t.remove} className="grid h-10 w-10 place-items-center rounded-xl text-slate-400 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30">
                       <Trash2 className="h-4 w-4" />
@@ -370,7 +375,7 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
                 ))}
               </ul>
               {error ? (
-                <div className="mt-4 rounded-xl bg-rose-50 px-3 py-3 text-sm text-rose-700">
+                <div className="mt-4 rounded-xl bg-rose-50 px-3 py-3 text-sm text-rose-700" role="alert">
                   {error}
                   {error === t.loginRequired ? (
                     <Link href={`/${locale}/login?next=${encodeURIComponent(`/${locale}/tools/quote-pix`)}`} className="ml-1 font-bold underline">
