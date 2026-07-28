@@ -160,7 +160,7 @@ function LoginForm() {
           disabled={Boolean(sessionConflict)}
         />
       </label>
-      {needsVerify ? <TurnstileWidget onToken={setTurnstileToken} /> : null}
+      {needsVerify ? <TurnstileWidget onToken={setTurnstileToken} language="pt-BR" /> : null}
 
       {sessionConflict ? (
         <div className="space-y-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 text-sm text-amber-950">

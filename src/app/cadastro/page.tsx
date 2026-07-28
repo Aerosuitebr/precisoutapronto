@@ -138,7 +138,7 @@ function CadastroForm() {
           <PasswordStrength password={password} />
         </div>
       </div>
-      <TurnstileWidget onToken={setTurnstileToken} />
+      <TurnstileWidget onToken={setTurnstileToken} language="pt-BR" />
       {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
       <Button
         type="submit"
