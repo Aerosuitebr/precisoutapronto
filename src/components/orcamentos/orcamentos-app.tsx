@@ -629,16 +629,6 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
           <ToolsBackButton href={publicAccess ? '/recursos' : '/ferramentas'} />
         </div>
 
-        {publicAccess && !session ? (
-          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-950">
-            <p className="font-bold">Experimente completo, sem cadastro</p>
-            <p className="mt-1 text-emerald-900/90">
-              A primeira geração de link e WhatsApp sai sem marca Resolva Jato, como no Premium. Depois
-              pedimos uma conta grátis para continuar (documentos seguem gratuitos, com a marca).
-            </p>
-          </div>
-        ) : null}
-
         <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 px-5 py-5 text-white shadow-sm sm:px-6">
           <ToolsWatermark />
           <div className="relative z-10 flex items-start gap-4">
@@ -1147,7 +1137,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
                     ? 'Premium: documentos sem marca Resolva Jato'
                     : brandDocuments
                       ? 'Grátis: PDF e WhatsApp com marca Resolva Jato. Premium remove tudo.'
-                      : 'Degustação: esta geração sai sem marca, como no Premium'}
+                      : 'Pronto para gerar o link de aprovação'}
                 </div>
 
                 <ul className="mt-4 space-y-2 border-t border-slate-100 pt-4" aria-label="Checklist do orçamento">
@@ -1213,7 +1203,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
                   <p className="mt-2 text-xs font-medium leading-5 text-amber-800">{blockedHint}</p>
                 ) : !session && !brandDocuments ? (
                   <p className="mt-2 text-xs font-medium leading-5 text-emerald-800">
-                    Primeira geração sem marca. Depois, conta grátis para continuar.
+                    Tudo certo. Pronto para gerar o link.
                   </p>
                 ) : (
                   <p className="mt-2 text-xs font-medium leading-5 text-emerald-800">

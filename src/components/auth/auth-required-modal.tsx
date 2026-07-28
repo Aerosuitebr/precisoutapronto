@@ -6,6 +6,7 @@ import { Gift, LockKeyhole, Sparkles, X } from 'lucide-react';
 import type { AuthRequiredVariant } from '@/components/auth/auth-required-provider';
 import { Button } from '@/components/ui/button';
 import { toolsCatalog } from '@/lib/tools-catalog';
+import { PLANS } from '@/lib/plans';
 import { cn } from '@/lib/utils';
 
 export function describeAuthDestination(nextHref: string) {
@@ -34,6 +35,7 @@ export function AuthRequiredModal({
   const loginHref = `/login?next=${encodeURIComponent(nextHref)}`;
   const signupHref = `/cadastro?next=${encodeURIComponent(nextHref)}`;
   const trialDone = variant === 'guest_trial_done';
+  const premiumPrice = PLANS.premium.priceLabel;
 
   useEffect(() => {
     if (!open) return;
@@ -95,14 +97,15 @@ export function AuthRequiredModal({
           </span>
           <h2 id="auth-required-title" className="rj-display relative mt-4 text-2xl font-extrabold tracking-tight">
             {trialDone
-              ? 'Gostou? A geração continua gratuita.'
+              ? 'Gostou? Continue gerando de graça.'
               : 'Falta pouco para continuar'}
           </h2>
           <p className="relative mt-2 text-sm leading-6 text-slate-300">
             {trialDone ? (
               <>
-                Você acabou de gerar um documento sem marca, como no Premium. Crie uma conta grátis
-                para seguir usando <strong className="font-semibold text-white">{destination}</strong>.
+                Crie uma conta grátis para seguir usando{' '}
+                <strong className="font-semibold text-white">{destination}</strong>. A geração de
+                documentos continua gratuita.
               </>
             ) : (
               <>
@@ -119,8 +122,9 @@ export function AuthRequiredModal({
             <p>
               {trialDone ? (
                 <>
-                  Com a conta, PDFs e WhatsApp seguem <strong>gratuitos</strong>, com a marca Resolva
-                  Jato. Para tirar qualquer referência, assine o Premium.
+                  No plano gratuito, PDFs e WhatsApp saem com marca d&apos;água e referências ao
+                  Resolva Jato. Para retirar tudo, assine o Premium por{' '}
+                  <strong>{premiumPrice}</strong>.
                 </>
               ) : (
                 <>Depois do cadastro ou login, você volta para a ferramenta e continua de onde parou.</>

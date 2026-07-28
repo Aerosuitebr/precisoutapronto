@@ -111,7 +111,12 @@ export function RecibosApp() {
       setReceipts([saved]);
       setActiveId(saved.id);
       setReceipt(saved);
-    }).catch(() => setError('Não foi possível carregar os recibos do servidor.'));
+    }).catch(() => {
+      const saved = saveReceipt(createEmptyReceipt());
+      setReceipts([saved]);
+      setActiveId(saved.id);
+      setReceipt(saved);
+    });
   }, []);
 
   useEffect(() => {

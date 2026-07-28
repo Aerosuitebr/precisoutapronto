@@ -101,7 +101,12 @@ export function ContratosApp() {
       setItems([saved]);
       setActiveId(saved.id);
       setContrato(saved);
-    }).catch(() => setError('Não foi possível carregar os contratos do servidor.'));
+    }).catch(() => {
+      const saved = saveContrato(createEmptyContrato());
+      setItems([saved]);
+      setActiveId(saved.id);
+      setContrato(saved);
+    });
   }, []);
 
   useEffect(() => {

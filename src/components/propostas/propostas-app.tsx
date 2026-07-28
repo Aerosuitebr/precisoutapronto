@@ -116,7 +116,12 @@ export function PropostasApp() {
       setProposals([saved]);
       setActiveId(saved.id);
       setProposal(saved);
-    }).catch(() => setError('Não foi possível carregar as propostas do servidor.'));
+    }).catch(() => {
+      const saved = saveProposal(createEmptyProposal());
+      setProposals([saved]);
+      setActiveId(saved.id);
+      setProposal(saved);
+    });
   }, []);
 
   useEffect(() => {

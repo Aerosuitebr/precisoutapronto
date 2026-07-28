@@ -137,6 +137,9 @@ export function RemoveBrandingUpsell({
 
   if (!ready) return null;
 
+  // Primeira experiência (visitante): zero pressão de Premium.
+  if (!isAuthenticated) return null;
+
   if (usage.unlimited) {
     return (
       <aside

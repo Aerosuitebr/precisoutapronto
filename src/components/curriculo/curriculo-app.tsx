@@ -102,7 +102,12 @@ export function CurriculoApp() {
       setResumes([saved]);
       setActiveId(saved.id);
       setResume(saved);
-    }).catch(() => setError('Não foi possível carregar os currículos do servidor.'));
+    }).catch(() => {
+      const saved = saveResume(createEmptyResume());
+      setResumes([saved]);
+      setActiveId(saved.id);
+      setResume(saved);
+    });
   }, []);
 
   useEffect(() => {
