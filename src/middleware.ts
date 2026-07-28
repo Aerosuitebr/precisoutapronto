@@ -3,7 +3,6 @@ import type { NextRequest } from 'next/server';
 import {
   homePathForLocale,
   isLikelyBot,
-  localeFromAcceptLanguage,
   localeFromPathname,
   LOCALE_COOKIE,
   LOCALE_COOKIE_MAX_AGE,
@@ -111,14 +110,14 @@ export function middleware(request: NextRequest) {
     return applyCommonHeaders(request, redirect);
   }
 
-  // Home: usa preferência salva ou Accept-Language na primeira visita (sem redirecionar bots).
+  // Home: só respeita cookie de escolha explícita (bandeira). Sem Accept-Language
+  // automático, para MEI/BR com Windows/Chrome em inglês não cair em /en.
   if (pathname === '/' && !bot) {
-    const preferred = cookieLocale || localeFromAcceptLanguage(request.headers.get('accept-language'));
-    if (preferred !== 'pt-BR') {
+    if (cookieLocale && cookieLocale !== 'pt-BR') {
       const url = request.nextUrl.clone();
-      url.pathname = homePathForLocale(preferred);
+      url.pathname = homePathForLocale(cookieLocale);
       const redirect = NextResponse.redirect(url);
-      setLocaleCookie(redirect, preferred);
+      setLocaleCookie(redirect, cookieLocale);
       return applyCommonHeaders(request, redirect);
     }
     const response = NextResponse.next();

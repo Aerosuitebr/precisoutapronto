@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import {
   ArrowLeft,
@@ -17,9 +17,11 @@ import { Logo } from '@/components/brand/logo';
 import { LocaleSwitcher } from '@/components/i18n/locale-switcher';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { MaskedInput } from '@/components/ui/masked-input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
 import { performBillableAction } from '@/lib/billing';
+import { formatCurrencyInput, parseCurrency } from '@/lib/formatters';
 import { buildPixBrCode } from '@/lib/pix/brcode';
 import type { PixKeyType } from '@/lib/pix/types';
 import { type InternationalLocale } from '@/lib/i18n';
@@ -126,11 +128,11 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
   const { session, refresh } = useAuth();
   const [professionalName, setProfessionalName] = useState('');
   const [professionalPhone, setProfessionalPhone] = useState('');
-  const [professionalEmail, setProfessionalEmail] = useState(session?.user.email || '');
+  const [professionalEmail, setProfessionalEmail] = useState('');
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [clientEmail, setClientEmail] = useState('');
-  const [validity, setValidity] = useState('15 days');
+  const [validity, setValidity] = useState(locale === 'en' ? '15 days' : '15 días');
   const [notes, setNotes] = useState('');
   const [items, setItems] = useState<OrcamentoItem[]>([emptyItem()]);
   const [pixType, setPixType] = useState<PixKeyType>('email');
@@ -141,6 +143,12 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
   const [error, setError] = useState('');
   const [generated, setGenerated] = useState<{ id: string; url: string } | null>(null);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (session?.user.email) {
+      setProfessionalEmail((current) => current || session.user.email || '');
+    }
+  }, [session?.user.email]);
 
   const total = useMemo(
     () => items.reduce((sum, item) => sum + item.quantidade * item.valorUnitario, 0),
@@ -176,17 +184,12 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
 
   function updateItem(id: string, field: 'nome' | 'quantidade' | 'valorUnitario', value: string) {
     setItems((current) =>
-      current.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              [field]:
-                field === 'nome'
-                  ? value
-                  : Math.max(field === 'quantidade' ? 1 : 0, Number(value) || 0)
-            }
-          : item
-      )
+      current.map((item) => {
+        if (item.id !== id) return item;
+        if (field === 'nome') return { ...item, nome: value };
+        if (field === 'quantidade') return { ...item, quantidade: Math.max(1, Number(value) || 1) };
+        return { ...item, valorUnitario: parseCurrency(value) };
+      })
     );
   }
 
@@ -226,8 +229,14 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
           return data as { id: string; url: string };
         }
       );
-      if (!outcome.allowed || !outcome.result) {
-        setError(t.loginRequired);
+      if (!outcome.allowed) {
+        // Modal de conta abre via evento; não zera o formulário.
+        if ('accountRequired' in outcome && outcome.accountRequired) return;
+        setError(outcome.reason || t.loginRequired);
+        return;
+      }
+      if (!outcome.result) {
+        setError(t.apiError);
         return;
       }
       const localizedUrl = `${window.location.origin}/${locale}/quote/${outcome.result.id}`;
@@ -299,8 +308,24 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
                 {items.map((item, index) => (
                   <div key={item.id} className="grid gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:grid-cols-[1fr_90px_140px_40px]">
                     <Input value={item.nome} onChange={(e) => updateItem(item.id, 'nome', e.target.value)} placeholder={`${t.item} ${index + 1}`} />
-                    <Input type="number" min="1" step="1" value={item.quantidade} onChange={(e) => updateItem(item.id, 'quantidade', e.target.value)} aria-label={t.quantity} />
-                    <Input type="number" min="0" step="0.01" value={item.valorUnitario || ''} onChange={(e) => updateItem(item.id, 'valorUnitario', e.target.value)} placeholder={t.unitPrice} />
+                    <Input
+                      type="number"
+                      min="1"
+                      step="1"
+                      value={item.quantidade}
+                      onChange={(e) => updateItem(item.id, 'quantidade', e.target.value)}
+                      aria-label={t.quantity}
+                    />
+                    <MaskedInput
+                      format={formatCurrencyInput}
+                      value={
+                        item.valorUnitario > 0
+                          ? formatCurrencyInput(String(Math.round(item.valorUnitario * 100)))
+                          : ''
+                      }
+                      onValueChange={(value) => updateItem(item.id, 'valorUnitario', value)}
+                      placeholder={t.unitPrice}
+                    />
                     <button type="button" onClick={() => setItems((current) => current.filter((entry) => entry.id !== item.id))} disabled={items.length === 1} aria-label={t.remove} className="grid h-10 w-10 place-items-center rounded-xl text-slate-400 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30">
                       <Trash2 className="h-4 w-4" />
                     </button>
