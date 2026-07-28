@@ -12,3 +12,9 @@ tsconfig.tsbuildinfo
 .env*.local
 /generated/prisma
 .git-credentials-env
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/e2e-agent/artifacts/
+/e2e-agent/.venv/

@@ -1,4 +1,6 @@
-# Deploy Resolva Jato Vultr — produção ou staging (manual)
+# Deploy Resolva Jato Vultr: produção ou staging (manual)
+# Staging: após deploy, dispara E2E gate (Playwright bloqueante + UX soft).
+# Produção: exige commit status e2e/staging=success nas últimas 24h.
 
 name: Deploy Resolva Jato Vultr
 
@@ -13,9 +15,67 @@ on:
         options:
           - production
           - staging
+      skip_e2e_gate:
+        description: 'Somente emergência: pular checagem E2E ao promover produção'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  statuses: write
+  actions: write
 
 jobs:
+  require-e2e-for-production:
+    name: Require staging E2E before production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Staging deploy does not need prior E2E
+        if: inputs.target == 'staging'
+        run: echo "Staging deploy: E2E roda depois deste workflow."
+
+      - name: Check e2e/staging commit status
+        if: inputs.target == 'production' && inputs.skip_e2e_gate != true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sha = context.sha;
+            const maxAgeMs = 24 * 60 * 60 * 1000;
+            const { data: statuses } = await github.rest.repos.listCommitStatusesForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: sha,
+              per_page: 100
+            });
+            const matches = statuses
+              .filter((s) => s.context === 'e2e/staging' && s.state === 'success')
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            if (!matches.length) {
+              core.setFailed(
+                `Sem status e2e/staging=success neste commit (${sha.slice(0,7)}). ` +
+                  'Faça deploy de staging e aguarde o E2E Staging Gate passar antes de promover.'
+              );
+              return;
+            }
+            const latest = matches[0];
+            const age = Date.now() - new Date(latest.created_at).getTime();
+            if (age > maxAgeMs) {
+              core.setFailed(
+                `e2e/staging passou, mas há ${Math.round(age / 3600000)}h (limite 24h). ` +
+                  'Rode staging + E2E de novo neste commit.'
+              );
+              return;
+            }
+            core.info(`OK: e2e/staging success at ${latest.created_at} (${latest.target_url || 'n/a'})`);
+
+      - name: Emergency skip acknowledged
+        if: inputs.target == 'production' && inputs.skip_e2e_gate == true
+        run: |
+          echo "::warning::skip_e2e_gate=true: promoção sem E2E. Use só em emergência."
+
   deploy:
+    needs: [require-e2e-for-production]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -30,6 +90,7 @@ jobs:
           tar --exclude=node_modules --exclude=.next --exclude=.git --exclude=.angular \
             --exclude='*.pack' --exclude='.env' --exclude='.env.local' \
             --exclude='.env.production' --exclude='.env.staging' \
+            --exclude='test-results' --exclude='playwright-report' --exclude='e2e-agent/artifacts' \
             -czf /tmp/resolva-jato-repo.tgz .
 
       - name: Deploy via SSH
@@ -56,3 +117,13 @@ jobs:
             ssh ${SSH_OPTS} "${USER}@${HOST}" \
               "chmod +x /tmp/vultr-deploy-resolvajato.sh && INSTALL_DIR=/opt/resolva-jato TARBALL=/tmp/resolva-jato-repo.tgz bash /tmp/vultr-deploy-resolvajato.sh"
           fi
+
+  e2e-staging:
+    name: E2E after staging deploy
+    needs: deploy
+    if: inputs.target == 'staging' && needs.deploy.result == 'success'
+    uses: ./.github/workflows/e2e-staging.yml
+    with:
+      base_url: 'https://staging.resolvajato.com.br'
+      git_sha: ${{ github.sha }}
+    secrets: inherit
