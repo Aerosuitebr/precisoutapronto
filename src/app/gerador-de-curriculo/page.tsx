@@ -12,7 +12,13 @@ export const metadata: Metadata = {
   description: curriculoSeoContent.seo.metaDescription,
   keywords: curriculoSeoContent.seo.keywords,
   alternates: {
-    canonical: `${SITE_URL}/${curriculoSeoContent.slug}`
+    canonical: `${SITE_URL}/${curriculoSeoContent.slug}`,
+    languages: {
+      'pt-BR': `/${curriculoSeoContent.slug}`,
+      en: '/en/tools/resume',
+      es: '/es/tools/resume',
+      'x-default': `/${curriculoSeoContent.slug}`
+    }
   },
   openGraph: {
     title: curriculoSeoContent.seo.metaTitle,

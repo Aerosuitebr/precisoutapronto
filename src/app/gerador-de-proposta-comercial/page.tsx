@@ -12,7 +12,13 @@ export const metadata: Metadata = {
   description: propostasSeoContent.seo.metaDescription,
   keywords: propostasSeoContent.seo.keywords,
   alternates: {
-    canonical: `${SITE_URL}/${propostasSeoContent.slug}`
+    canonical: `${SITE_URL}/${propostasSeoContent.slug}`,
+    languages: {
+      'pt-BR': `/${propostasSeoContent.slug}`,
+      en: '/en/tools/proposal',
+      es: '/es/tools/proposal',
+      'x-default': `/${propostasSeoContent.slug}`
+    }
   },
   openGraph: {
     title: propostasSeoContent.seo.metaTitle,

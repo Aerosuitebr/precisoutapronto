@@ -19,6 +19,7 @@ const SEO_LANDINGS = [
   '/recursos',
   '/guias',
   '/orcamento-com-pix',
+  '/gerador-de-qr-code-pix',
   '/para/mei',
   '/para/freelancers',
   '/para/estudantes',
@@ -49,7 +50,15 @@ const SEO_LANDINGS = [
   '/contato',
   '/sobre',
   '/privacidade',
-  '/termos'
+  '/termos',
+  '/en',
+  '/en/tools',
+  '/en/tools/quote-pix',
+  '/en/tools/pix',
+  '/es',
+  '/es/tools',
+  '/es/tools/quote-pix',
+  '/es/tools/pix'
 ];
 
 function parseArgs(argv) {

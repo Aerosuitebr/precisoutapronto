@@ -1,5 +1,6 @@
 export type SeoLandingId =
   | 'orcamento-com-pix'
+  | 'gerador-de-qr-code-pix'
   | 'para-mei'
   | 'para-freelancers'
   | 'para-estudantes'
@@ -78,13 +79,68 @@ export const SEO_LANDINGS = {
     related: [
       { href: '/para/mei', label: 'Para MEI', blurb: 'Cobrar e organizar o dia a dia' },
       { href: '/para/freelancers', label: 'Para freelancers', blurb: 'Proposta + contrato + Pix' },
+      { href: '/gerador-de-qr-code-pix', label: 'Gerador de QR Code Pix', blurb: 'QR e Copia e Cola grátis' },
       { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'PDF com valor por extenso' }
+    ]
+  },
+  'gerador-de-qr-code-pix': {
+    id: 'gerador-de-qr-code-pix',
+    path: '/gerador-de-qr-code-pix',
+    toolHref: '/gerador-de-qr-code-pix#gerar',
+    eyebrow: 'Gerador de QR Code Pix',
+    title: 'Gerador de QR Code Pix grátis (Copia e Cola)',
+    description:
+      'Crie QR Code Pix e código Copia e Cola no navegador. Padrão Banco Central, sem cadastro para gerar e copiar.',
+    heroBullets: [
+      'QR Code e Pix Copia e Cola na hora',
+      'Sem API bancária e sem instalar app',
+      'Funciona com CPF, CNPJ, e-mail, telefone ou chave aleatória'
+    ],
+    primaryCta: 'Gerar QR Code Pix agora',
+    secondaryCta: { label: 'Orçamento com Pix', href: '/orcamento-com-pix' },
+    sections: [
+      {
+        title: 'Cobrança Pix pronta para WhatsApp',
+        body: 'Preencha a chave, o nome e a cidade. O Resolva Jato monta o BR Code (padrão EMV do Banco Central) e mostra o QR na tela.',
+        bullets: [
+          'Valor fixo ou aberto (cliente digita no app)',
+          'Copia e Cola para colar no banco',
+          'Mensagem de cobrança com conta grátis'
+        ]
+      },
+      {
+        title: 'Quando usar o gerador e quando usar o orçamento',
+        body: 'Use o gerador de QR para cobranças rápidas. Se precisa de itens, validade e aprovação do cliente, use o orçamento com Pix.'
+      }
+    ],
+    faqs: [
+      {
+        q: 'O gerador de QR Code Pix é gratuito?',
+        a: 'Sim. Você gera o QR e copia o código Pix sem pagar. Conta grátis é opcional e só pedida para enviar pelo WhatsApp.'
+      },
+      {
+        q: 'O QR Code funciona em qualquer banco?',
+        a: 'Sim, o payload segue o padrão BR Code EMV do Banco Central e abre nos apps participantes do Pix.'
+      },
+      {
+        q: 'Meus dados da chave Pix ficam salvos?',
+        a: 'Nesta página, a geração monta o código no seu navegador. Não enviamos a chave para API bancária.'
+      },
+      {
+        q: 'Posso deixar o valor em branco?',
+        a: 'Sim. Sem valor, o pagador informa o valor no app do banco na hora do pagamento.'
+      }
+    ],
+    related: [
+      { href: '/orcamento-com-pix', label: 'Orçamento + Pix', blurb: 'Aprovação + cobrança' },
+      { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'Comprovante em PDF' },
+      { href: '/para/mei', label: 'Para MEI', blurb: 'Rotina de cobrança' }
     ]
   },
   'para-mei': {
     id: 'para-mei',
     path: '/para/mei',
-    toolHref: '/ferramentas/orcamentos',
+    toolHref: '/orcamento-com-pix',
     eyebrow: 'Para MEI',
     title: 'Ferramentas grátis para MEI cobrar e profissionalizar',
     description:
@@ -95,7 +151,7 @@ export const SEO_LANDINGS = {
       'Sem cartão para começar'
     ],
     primaryCta: 'Começar como MEI',
-    secondaryCta: { label: 'Ver ferramentas', href: '/ferramentas' },
+    secondaryCta: { label: 'Gerador de QR Code Pix', href: '/gerador-de-qr-code-pix' },
     sections: [
       {
         title: 'Seu cliente já está no WhatsApp',
@@ -126,7 +182,7 @@ export const SEO_LANDINGS = {
   'para-freelancers': {
     id: 'para-freelancers',
     path: '/para/freelancers',
-    toolHref: '/ferramentas/propostas',
+    toolHref: '/gerador-de-proposta-comercial',
     eyebrow: 'Para freelancers',
     title: 'Proposta, contrato e Pix sem parecer amador',
     description:
@@ -137,7 +193,7 @@ export const SEO_LANDINGS = {
       'Orçamento aprovável + Pix'
     ],
     primaryCta: 'Montar proposta agora',
-    secondaryCta: { label: 'Criar orçamento', href: '/ferramentas/orcamentos' },
+    secondaryCta: { label: 'Criar orçamento', href: '/orcamento-com-pix' },
     sections: [
       {
         title: 'Do briefing ao pagamento',
@@ -171,7 +227,7 @@ export const SEO_LANDINGS = {
   'para-estudantes': {
     id: 'para-estudantes',
     path: '/para/estudantes',
-    toolHref: '/ferramentas/trabalhos',
+    toolHref: '/gerador-de-curriculo',
     eyebrow: 'Para estudantes',
     title: 'Capa ABNT e currículo prontos antes do prazo',
     description:
@@ -181,8 +237,8 @@ export const SEO_LANDINGS = {
       'Currículo com preview ao vivo',
       'PDF para entregar ou imprimir'
     ],
-    primaryCta: 'Gerar capa agora',
-    secondaryCta: { label: 'Abrir currículo', href: '/ferramentas/curriculo' },
+    primaryCta: 'Gerar currículo agora',
+    secondaryCta: { label: 'Abrir currículo', href: '/gerador-de-curriculo' },
     sections: [
       {
         title: 'Quando o prazo aperta',

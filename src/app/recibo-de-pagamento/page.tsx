@@ -3,7 +3,7 @@ import { SeoLandingPage } from '@/components/marketing/seo-landing-page';
 import type { SeoLandingContent } from '@/lib/seo/landing-content';
 
 const content: SeoLandingContent = {
-  id: 'recibo-de-pagamento', path: '/recibo-de-pagamento', toolHref: '/ferramentas/recibos',
+  id: 'recibo-de-pagamento', path: '/recibo-de-pagamento', toolHref: '/gerador-de-recibo',
   eyebrow: 'Recibo de pagamento', title: 'Emita um recibo de pagamento profissional em PDF',
   description: 'Informe pagador, recebedor, valor e motivo. Gere um recibo organizado com valor por extenso.',
   heroBullets: ['Valor por extenso automático', 'Modelos limpos', 'PDF para enviar ou imprimir'],
@@ -23,9 +23,18 @@ const content: SeoLandingContent = {
   ]
 };
 export const metadata: Metadata = {
-  title: 'Recibo de pagamento online grátis em PDF', description: content.description,
-  alternates: { canonical: content.path },
-  openGraph: { title: content.title, description: content.description, url: content.path },
+  title: 'Recibo de pagamento online grátis em PDF',
+  description: content.description,
+  alternates: {
+    canonical: '/gerador-de-recibo',
+    languages: {
+      'pt-BR': '/gerador-de-recibo',
+      en: '/en/tools/receipt',
+      es: '/es/tools/receipt',
+      'x-default': '/gerador-de-recibo'
+    }
+  },
+  openGraph: { title: content.title, description: content.description, url: '/gerador-de-recibo' },
   twitter: { card: 'summary_large_image', title: content.title, description: content.description }
 };
 export default function Page() { return <SeoLandingPage content={content} />; }

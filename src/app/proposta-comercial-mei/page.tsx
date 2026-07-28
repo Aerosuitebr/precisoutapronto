@@ -3,7 +3,7 @@ import { SeoLandingPage } from '@/components/marketing/seo-landing-page';
 import type { SeoLandingContent } from '@/lib/seo/landing-content';
 
 const content: SeoLandingContent = {
-  id: 'proposta-comercial-mei', path: '/proposta-comercial-mei', toolHref: '/ferramentas/propostas',
+  id: 'proposta-comercial-mei', path: '/proposta-comercial-mei', toolHref: '/gerador-de-proposta-comercial',
   eyebrow: 'Proposta comercial para MEI', title: 'Apresente seu serviço com uma proposta comercial profissional',
   description: 'Organize solução, escopo, prazo, investimento e próximo passo em um PDF fácil de aprovar.',
   heroBullets: ['Escopo e investimento claros', 'Identidade visual', 'PDF pronto para o WhatsApp'],
@@ -23,9 +23,22 @@ const content: SeoLandingContent = {
   ]
 };
 export const metadata: Metadata = {
-  title: 'Proposta comercial para MEI: modelo em PDF', description: content.description,
-  alternates: { canonical: content.path },
-  openGraph: { title: content.title, description: content.description, url: content.path },
+  title: 'Proposta comercial para MEI: modelo em PDF',
+  description: content.description,
+  alternates: {
+    canonical: '/gerador-de-proposta-comercial',
+    languages: {
+      'pt-BR': '/gerador-de-proposta-comercial',
+      en: '/en/tools/proposal',
+      es: '/es/tools/proposal',
+      'x-default': '/gerador-de-proposta-comercial'
+    }
+  },
+  openGraph: {
+    title: content.title,
+    description: content.description,
+    url: '/gerador-de-proposta-comercial'
+  },
   twitter: { card: 'summary_large_image', title: content.title, description: content.description }
 };
 export default function Page() { return <SeoLandingPage content={content} />; }

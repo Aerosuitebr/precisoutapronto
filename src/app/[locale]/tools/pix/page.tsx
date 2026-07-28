@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   if (!isInternationalLocale(locale)) return {};
   return {
-    ...internationalSeo(locale, 'tools/pix', '/ferramentas/pix'),
+    ...internationalSeo(locale, 'tools/pix', '/gerador-de-qr-code-pix'),
     title: locale === 'en' ? 'Pix QR code generator' : 'Generador de código QR Pix',
     description:
       locale === 'en'

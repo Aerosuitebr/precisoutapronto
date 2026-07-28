@@ -5,7 +5,7 @@ import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-const CORE_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
+const CORE_UPDATED_AT = new Date('2026-07-28T21:00:00.000Z');
 const GUIDES_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
 
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
@@ -16,6 +16,7 @@ const PUBLIC_TOOL_LANDINGS = [
   '/documentos-contabeis-online',
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
+  '/gerador-de-qr-code-pix',
   '/calculadora-de-rescisao',
   '/calculadora-de-preco-freelancer',
   '/mei-ou-clt',

@@ -11,6 +11,7 @@ Language: pt-BR
 - https://resolvajato.com.br/guias
 - https://resolvajato.com.br/planos
 - https://resolvajato.com.br/orcamento-com-pix
+- https://resolvajato.com.br/gerador-de-qr-code-pix
 - https://resolvajato.com.br/gerador-de-curriculo
 - https://resolvajato.com.br/gerador-de-contrato
 - https://resolvajato.com.br/gerador-de-recibo
