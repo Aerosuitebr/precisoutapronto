@@ -1,19 +1,24 @@
 'use client';
 
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal';
 import { getSession } from '@/lib/auth';
+import { GUEST_TRIAL_CONSUMED_EVENT } from '@/lib/guest-trial';
 
-/** Após login/cadastro por acesso a ferramentas, sempre cai no hub (não volta à busca). */
+/** Após login/cadastro por acesso a ferramentas, preserva deep link da tool. */
 export function resolveToolsAuthNext(href?: string) {
   const path = (href || '/ferramentas').split('?')[0] || '/ferramentas';
   if (path.startsWith('/conta')) return path;
+  if (path === '/ferramentas' || path.startsWith('/ferramentas/')) return path;
+  if (path === '/en/tools' || path.startsWith('/en/tools/')) return path;
+  if (path === '/es/tools' || path.startsWith('/es/tools/')) return path;
   return '/ferramentas';
 }
 
+export type AuthRequiredVariant = 'default' | 'guest_trial_done';
+
 interface AuthRequiredContextValue {
-  /** Abre o modal pedindo login/cadastro e guarda o destino pós-auth. */
-  requireAuth: (nextHref?: string) => void;
+  requireAuth: (nextHref?: string, variant?: AuthRequiredVariant) => void;
   closeAuthRequired: () => void;
 }
 
@@ -22,14 +27,38 @@ const AuthRequiredContext = createContext<AuthRequiredContextValue | null>(null)
 export function AuthRequiredProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [nextHref, setNextHref] = useState('/ferramentas');
+  const [variant, setVariant] = useState<AuthRequiredVariant>('default');
 
-  const requireAuth = useCallback((href = '/ferramentas') => {
+  const requireAuth = useCallback((href = '/ferramentas', nextVariant: AuthRequiredVariant = 'default') => {
     if (getSession()) return;
     setNextHref(resolveToolsAuthNext(href));
+    setVariant(nextVariant);
     setOpen(true);
   }, []);
 
   const closeAuthRequired = useCallback(() => setOpen(false), []);
+
+  useEffect(() => {
+    function onGuestTrial(event: Event) {
+      if (getSession()) return;
+      const detail = (event as CustomEvent<{ nextHref?: string }>).detail;
+      requireAuth(detail?.nextHref || window.location.pathname || '/ferramentas', 'guest_trial_done');
+    }
+    function onAccountRequired(event: Event) {
+      if (getSession()) return;
+      const detail = (event as CustomEvent<{ nextHref?: string; variant?: AuthRequiredVariant }>).detail;
+      requireAuth(
+        detail?.nextHref || window.location.pathname || '/ferramentas',
+        detail?.variant || 'guest_trial_done'
+      );
+    }
+    window.addEventListener(GUEST_TRIAL_CONSUMED_EVENT, onGuestTrial);
+    window.addEventListener('rj-account-required', onAccountRequired);
+    return () => {
+      window.removeEventListener(GUEST_TRIAL_CONSUMED_EVENT, onGuestTrial);
+      window.removeEventListener('rj-account-required', onAccountRequired);
+    };
+  }, [requireAuth]);
 
   const value = useMemo(
     () => ({ requireAuth, closeAuthRequired }),
@@ -39,7 +68,12 @@ export function AuthRequiredProvider({ children }: { children: ReactNode }) {
   return (
     <AuthRequiredContext.Provider value={value}>
       {children}
-      <AuthRequiredModal open={open} nextHref={nextHref} onClose={closeAuthRequired} />
+      <AuthRequiredModal
+        open={open}
+        nextHref={nextHref}
+        variant={variant}
+        onClose={closeAuthRequired}
+      />
     </AuthRequiredContext.Provider>
   );
 }

@@ -30,18 +30,18 @@ export const SEO_LANDINGS = {
   'orcamento-com-pix': {
     id: 'orcamento-com-pix',
     path: '/orcamento-com-pix',
-    toolHref: '/ferramentas/orcamentos',
+    toolHref: '/orcamento-com-pix#montar',
     eyebrow: 'Orçamento digital + Pix',
     title: 'Gerador de orçamento com aprovação e Pix no WhatsApp',
     description:
-      'Monte o orçamento, envie o link, o cliente aprova no celular e você cobra com QR Code Pix. Grátis para testar.',
+      'Monte o orçamento, envie o link, o cliente aprova no celular e você cobra com QR Code Pix. Experimente sem cadastro.',
     heroBullets: [
       'Cliente aprova sem instalar app',
       'QR Pix e Copia e Cola prontos',
       'Link público para mandar no WhatsApp'
     ],
-    primaryCta: 'Criar conta grátis e montar orçamento',
-    secondaryCta: { label: 'Só gerar Pix', href: '/ferramentas/pix' },
+    primaryCta: 'Experimentar sem cadastro',
+    secondaryCta: { label: 'Criar conta grátis', href: '/cadastro?next=/ferramentas/orcamentos' },
     sections: [
       {
         title: 'Do preço à cobrança, no mesmo fluxo',
@@ -64,7 +64,11 @@ export const SEO_LANDINGS = {
       },
       {
         q: 'É grátis?',
-        a: 'Sim, documentos profissionais gratuitos. A busca de recursos também é grátis.'
+        a: 'Sim. Você experimenta o orçamento sem cadastro. Conta grátis para gerar o link, salvar e enviar no WhatsApp.'
+      },
+      {
+        q: 'Preciso criar conta para testar?',
+        a: 'Não. Preencha e veja o preview na hora. A conta só entra na hora de gerar o link ou enviar ao cliente.'
       },
       {
         q: 'Serve para qualquer serviço?',

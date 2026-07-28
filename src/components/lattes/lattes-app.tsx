@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import { cn } from '@/lib/utils';
 import { completion, createEntry, createLattesProfile, LATTES_STORAGE_KEY, validateProfile } from '@/lib/lattes/model';
@@ -48,7 +49,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 export function LattesApp() {
   const { usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const previewRef = useRef<HTMLDivElement>(null); const fileRef = useRef<HTMLInputElement>(null);
   const [profile, setProfile] = useState<LattesProfile>(createLattesProfile); const [hydrated, setHydrated] = useState(false);
   const [saveState, setSaveState] = useState<'saved' | 'saving'>('saved'); const [assistant, setAssistant] = useState('');

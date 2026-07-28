@@ -42,12 +42,12 @@ const copy: Record<
     needsPrefix: 'A senha precisa ter:',
     assertFallback: 'A senha não atende aos requisitos de segurança.',
     rules: {
-      length: 'Pelo menos 8 caracteres',
-      upper: 'Uma letra maiúscula',
-      lower: 'Uma letra minúscula',
-      number: 'Um número',
-      special: 'Um caractere especial (ex.: !@#$%)',
-      sequence: 'Sem letras ou números em sequência (ex.: abc, 123)'
+      length: 'Pelo menos 8 caracteres (obrigatório)',
+      upper: 'Uma letra maiúscula (recomendado)',
+      lower: 'Uma letra minúscula (recomendado)',
+      number: 'Um número (recomendado)',
+      special: 'Um caractere especial (recomendado)',
+      sequence: 'Sem letras ou números em sequência (recomendado)'
     }
   },
   en: {
@@ -60,12 +60,12 @@ const copy: Record<
     needsPrefix: 'Your password needs:',
     assertFallback: 'The password does not meet the security requirements.',
     rules: {
-      length: 'At least 8 characters',
-      upper: 'One uppercase letter',
-      lower: 'One lowercase letter',
-      number: 'One number',
-      special: 'One special character (e.g. !@#$%)',
-      sequence: 'No sequential letters or numbers (e.g. abc, 123)'
+      length: 'At least 8 characters (required)',
+      upper: 'One uppercase letter (recommended)',
+      lower: 'One lowercase letter (recommended)',
+      number: 'One number (recommended)',
+      special: 'One special character (recommended)',
+      sequence: 'No sequential letters or numbers (recommended)'
     }
   },
   es: {
@@ -78,12 +78,12 @@ const copy: Record<
     needsPrefix: 'La contraseña necesita:',
     assertFallback: 'La contraseña no cumple los requisitos de seguridad.',
     rules: {
-      length: 'Al menos 8 caracteres',
-      upper: 'Una letra mayúscula',
-      lower: 'Una letra minúscula',
-      number: 'Un número',
-      special: 'Un carácter especial (ej.: !@#$%)',
-      sequence: 'Sin letras o números en secuencia (ej.: abc, 123)'
+      length: 'Al menos 8 caracteres (obligatorio)',
+      upper: 'Una letra mayúscula (recomendado)',
+      lower: 'Una letra minúscula (recomendado)',
+      number: 'Un número (recomendado)',
+      special: 'Un carácter especial (recomendado)',
+      sequence: 'Sin letras o números en secuencia (recomendado)'
     }
   }
 };
@@ -149,8 +149,9 @@ export function evaluatePasswordStrength(
   }
 
   const score = rules.filter((rule) => rule.ok).length;
-  const valid = score === rules.length;
-  const failed = rules.find((rule) => !rule.ok);
+  const lengthOk = value.length >= 8;
+  const valid = lengthOk;
+  const failedRequired = !lengthOk ? rules.find((rule) => rule.id === 'length') : undefined;
 
   let level: PasswordStrengthResult['level'] = 'fraca';
   let label = t.weak;
@@ -158,6 +159,9 @@ export function evaluatePasswordStrength(
     level = 'forte';
     label = t.strong;
   } else if (score >= 4) {
+    level = 'media';
+    label = t.medium;
+  } else if (lengthOk && score >= 2) {
     level = 'media';
     label = t.medium;
   }
@@ -169,7 +173,7 @@ export function evaluatePasswordStrength(
     level,
     label,
     rules,
-    firstError: failed ? `${t.needsPrefix} ${failed.label.toLowerCase()}.` : null
+    firstError: failedRequired ? `${t.needsPrefix} ${failedRequired.label.toLowerCase()}.` : null
   };
 }
 

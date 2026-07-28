@@ -28,6 +28,7 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import {
@@ -76,7 +77,7 @@ export function CurriculoApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const exportingLockRef = useRef(false);
   const { refresh: refreshAuth, usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [resumes, setResumes] = useState<ResumeData[]>([]);

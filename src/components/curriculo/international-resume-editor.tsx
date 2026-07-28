@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { InternationalLocale } from '@/lib/i18n';
@@ -118,6 +119,7 @@ export function InternationalResumeEditor({ locale }: { locale: InternationalLoc
   const t = copy[locale];
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh, session, usage } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [personal, setPersonal] = useState({ name: '', headline: '', email: '', phone: '', location: '', website: '', summary: '' });
   const [experiences, setExperiences] = useState<Experience[]>([emptyExperience()]);
   const [education, setEducation] = useState<Education[]>([emptyEducation()]);
@@ -197,7 +199,7 @@ export function InternationalResumeEditor({ locale }: { locale: InternationalLoc
             id: draftId, locale, personal, experiences, education, skillsText, languages,
             updatedAt: new Date().toISOString()
           });
-          return exportElementToPdf(previewRef.current!, `resume-${personal.name.replace(/\s+/g, '-').toLowerCase()}.pdf`, { branded: !usage.unlimited });
+          return exportElementToPdf(previewRef.current!, `resume-${personal.name.replace(/\s+/g, '-').toLowerCase()}.pdf`, { branded: brandDocuments });
         }
       );
       if (!outcome.allowed) {

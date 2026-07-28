@@ -2,7 +2,8 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { LockKeyhole, Sparkles, X } from 'lucide-react';
+import { Gift, LockKeyhole, Sparkles, X } from 'lucide-react';
+import type { AuthRequiredVariant } from '@/components/auth/auth-required-provider';
 import { Button } from '@/components/ui/button';
 import { toolsCatalog } from '@/lib/tools-catalog';
 import { cn } from '@/lib/utils';
@@ -19,13 +20,20 @@ export function describeAuthDestination(nextHref: string) {
 interface AuthRequiredModalProps {
   open: boolean;
   nextHref: string;
+  variant?: AuthRequiredVariant;
   onClose: () => void;
 }
 
-export function AuthRequiredModal({ open, nextHref, onClose }: AuthRequiredModalProps) {
+export function AuthRequiredModal({
+  open,
+  nextHref,
+  variant = 'default',
+  onClose
+}: AuthRequiredModalProps) {
   const destination = describeAuthDestination(nextHref);
   const loginHref = `/login?next=${encodeURIComponent(nextHref)}`;
   const signupHref = `/cadastro?next=${encodeURIComponent(nextHref)}`;
+  const trialDone = variant === 'guest_trial_done';
 
   useEffect(() => {
     if (!open) return;
@@ -82,15 +90,26 @@ export function AuthRequiredModal({ open, nextHref, onClose }: AuthRequiredModal
           </button>
 
           <span className="relative inline-flex items-center gap-2 rounded-lg bg-sky-400/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-sky-200">
-            <LockKeyhole className="h-3.5 w-3.5" />
-            Acesso com conta
+            {trialDone ? <Gift className="h-3.5 w-3.5" /> : <LockKeyhole className="h-3.5 w-3.5" />}
+            {trialDone ? 'Continue grátis' : 'Acesso com conta'}
           </span>
           <h2 id="auth-required-title" className="rj-display relative mt-4 text-2xl font-extrabold tracking-tight">
-            Falta pouco para acessar esta ferramenta!
+            {trialDone
+              ? 'Gostou? A geração continua gratuita.'
+              : 'Falta pouco para continuar'}
           </h2>
           <p className="relative mt-2 text-sm leading-6 text-slate-300">
-            Crie uma conta gratuita ou faça login para começar a usar{' '}
-            <strong className="font-semibold text-white">{destination}</strong> agora mesmo.
+            {trialDone ? (
+              <>
+                Você acabou de gerar um documento sem marca, como no Premium. Crie uma conta grátis
+                para seguir usando <strong className="font-semibold text-white">{destination}</strong>.
+              </>
+            ) : (
+              <>
+                Crie uma conta gratuita ou faça login para continuar usando{' '}
+                <strong className="font-semibold text-white">{destination}</strong>.
+              </>
+            )}
           </p>
         </div>
 
@@ -98,7 +117,14 @@ export function AuthRequiredModal({ open, nextHref, onClose }: AuthRequiredModal
           <div className="flex items-start gap-3 rounded-2xl border border-sky-100 bg-sky-50/80 px-4 py-3 text-sm leading-6 text-slate-700">
             <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-sky-600" />
             <p>
-              Depois do cadastro ou login, você entra na área de ferramentas para começar a usar.
+              {trialDone ? (
+                <>
+                  Com a conta, PDFs e WhatsApp seguem <strong>gratuitos</strong>, com a marca Resolva
+                  Jato. Para tirar qualquer referência, assine o Premium.
+                </>
+              ) : (
+                <>Depois do cadastro ou login, você volta para a ferramenta e continua de onde parou.</>
+              )}
             </p>
           </div>
 
@@ -119,7 +145,7 @@ export function AuthRequiredModal({ open, nextHref, onClose }: AuthRequiredModal
             onClick={onClose}
             className="w-full py-2 text-center text-sm font-semibold text-slate-500 transition-colors hover:text-slate-800"
           >
-            Continuar na busca gratuita
+            {trialDone ? 'Fechar por agora' : 'Continuar navegando'}
           </button>
         </div>
       </div>

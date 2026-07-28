@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { InternationalLocale } from '@/lib/i18n';
@@ -144,6 +145,7 @@ export function InternationalProposalEditor({ locale }: { locale: InternationalL
   const t = copy[locale];
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh, session, usage } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [number, setNumber] = useState(`PROP-${new Date().getFullYear()}-001`);
   const [issueDate, setIssueDate] = useState(today());
   const [validity, setValidity] = useState(15);
@@ -239,7 +241,7 @@ export function InternationalProposalEditor({ locale }: { locale: InternationalL
             items, discountPercent, additional, paymentTerms, deliveryTerms, notes,
             updatedAt: new Date().toISOString()
           });
-          return exportElementToPdf(previewRef.current!, `proposal-${number}.pdf`, { branded: !usage.unlimited });
+          return exportElementToPdf(previewRef.current!, `proposal-${number}.pdf`, { branded: brandDocuments });
         }
       );
       if (!outcome.allowed) {

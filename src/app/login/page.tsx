@@ -33,7 +33,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = safeNext(searchParams.get('next'));
-  const { ready, isAuthenticated, emailVerified, refresh } = useAuth();
+  const { ready, isAuthenticated, refresh } = useAuth();
   const [email, setEmail] = useState(searchParams.get('email') || '');
   const [password, setPassword] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
@@ -48,8 +48,8 @@ function LoginForm() {
 
   useEffect(() => {
     if (!ready) return;
-    if (isAuthenticated && emailVerified) router.replace(next);
-  }, [emailVerified, isAuthenticated, next, ready, router]);
+    if (isAuthenticated) router.replace(next);
+  }, [isAuthenticated, next, ready, router]);
 
   useEffect(() => {
     try {
@@ -81,8 +81,9 @@ function LoginForm() {
       await refresh();
       if (!('emailVerified' in data) || !data.emailVerified) {
         setNeedsVerify(true);
-        setInfo('Conta encontrada, mas o e-mail ainda não foi confirmado.');
-        return;
+        setInfo(
+          'Conta encontrada. Você já pode usar as ferramentas. Confirme o e-mail quando puder para proteger o acesso.'
+        );
       }
       if ('replaced' in data && data.replaced) {
         setInfo('O outro dispositivo foi desconectado. Você está conectado aqui.');

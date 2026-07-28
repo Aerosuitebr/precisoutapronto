@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import { listRemoteDocuments, saveRemoteDocument } from '@/lib/documents/remote-storage';
@@ -65,6 +66,7 @@ export function InternationalAcademicCover({ locale }: { locale: InternationalLo
   const t = copy[locale];
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh, session, usage } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [template, setTemplate] = useState<Template>('cover');
   const [data, setData] = useState<CoverData>(emptyData);
   const [busy, setBusy] = useState(false);
@@ -111,7 +113,7 @@ export function InternationalAcademicCover({ locale }: { locale: InternationalLo
         { toolId: 'trabalhos', artifactId: `international-${locale}`, action: 'download' },
         async () => {
           await saveRemoteDocument('academic-cover-intl', { id: draftId, locale, template, data, updatedAt: new Date().toISOString() });
-          return exportElementToPdf(previewRef.current!, `academic-cover-${data.author.replace(/\s+/g, '-').toLowerCase()}.pdf`, { branded: !usage.unlimited });
+          return exportElementToPdf(previewRef.current!, `academic-cover-${data.author.replace(/\s+/g, '-').toLowerCase()}.pdf`, { branded: brandDocuments });
         }
       );
       if (!outcome.allowed) {

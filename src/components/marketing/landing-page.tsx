@@ -125,10 +125,10 @@ export function LandingPage() {
             </ul>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
-                <AuthAwareLink href="/ferramentas/orcamentos">
+                <Link href="/orcamento-com-pix#montar">
                   Montar orçamento e gerar Pix
                   <ArrowRight className="h-4 w-4" />
-                </AuthAwareLink>
+                </Link>
               </Button>
               <Button
                 asChild
@@ -145,16 +145,27 @@ export function LandingPage() {
                 Ou vá direto ao ponto
               </p>
               <ul className="mt-3 flex flex-wrap gap-2.5">
-                {toolIntentOptions.map((option) => (
-                  <li key={option.id}>
-                    <AuthAwareLink
-                      href={`/ferramentas/${option.toolId}`}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                    >
-                      {option.label}
-                    </AuthAwareLink>
-                  </li>
-                ))}
+                {toolIntentOptions.map((option) => {
+                  const href =
+                    option.toolId === 'orcamentos'
+                      ? '/orcamento-com-pix#montar'
+                      : `/ferramentas/${option.toolId}`;
+                  const className =
+                    'inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md';
+                  return (
+                    <li key={option.id}>
+                      {option.toolId === 'orcamentos' ? (
+                        <Link href={href} className={className}>
+                          {option.label}
+                        </Link>
+                      ) : (
+                        <AuthAwareLink href={href} className={className}>
+                          {option.label}
+                        </AuthAwareLink>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <p className="mt-4 text-xs text-slate-400">
@@ -234,10 +245,10 @@ export function LandingPage() {
             />
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild className={cn(primaryCtaClass)} size="lg">
-                <AuthAwareLink href="/ferramentas/orcamentos">
+                <Link href="/orcamento-com-pix#montar">
                   <ClipboardList className="h-4 w-4" />
                   Criar orçamento grátis
-                </AuthAwareLink>
+                </Link>
               </Button>
               <Button
                 asChild
@@ -351,7 +362,7 @@ export function LandingPage() {
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
             Currículo, proposta, contrato e capa ABNT com a mesma qualidade. Documentos
-            profissionais, totalmente grátis.
+            profissionais grátis (com marca Resolva Jato). Premium remove qualquer referência.
           </p>
           <ul className="mt-10 flex snap-x gap-4 overflow-x-auto pb-2 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
             {OTHER_TOOLS.map((tool) => (
@@ -485,15 +496,15 @@ export function LandingPage() {
             </ul>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild size="lg" className={cn('h-12', primaryCtaClass)}>
-                <AuthAwareLink href="/ferramentas/orcamentos">
+                <Link href="/orcamento-com-pix#montar">
                   Montar orçamento e gerar Pix
-                </AuthAwareLink>
+                </Link>
               </Button>
               <Link
                 href="/cadastro"
                 className="text-center text-sm font-semibold text-slate-300 underline-offset-4 transition hover:text-white hover:underline sm:text-left"
               >
-                Criar conta grátis para baixar e salvar PDFs
+                Criar conta grátis (docs com marca; Premium remove)
               </Link>
             </div>
             <TrustSeals tone="dark" className="mt-8" />

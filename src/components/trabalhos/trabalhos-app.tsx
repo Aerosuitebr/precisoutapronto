@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { DocumentFontId } from '@/lib/documents/fonts';
@@ -26,7 +27,7 @@ import { cn } from '@/lib/utils';
 export function TrabalhosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const [items, setItems] = useState<TrabalhoData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [trabalho, setTrabalho] = useState<TrabalhoData>(createEmptyTrabalho());

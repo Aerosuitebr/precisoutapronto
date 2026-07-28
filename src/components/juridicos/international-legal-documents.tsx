@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import { listRemoteDocuments, saveRemoteDocument } from '@/lib/documents/remote-storage';
@@ -84,6 +85,7 @@ export function InternationalLegalDocuments({ locale }: { locale: InternationalL
   const t = copy[locale];
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh, session, usage } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [template, setTemplate] = useState<Template>('authorization');
   const [draft, setDraft] = useState<Draft>(blank);
   const [busy, setBusy] = useState(false);
@@ -133,7 +135,7 @@ export function InternationalLegalDocuments({ locale }: { locale: InternationalL
         { toolId: 'juridicos', artifactId: `international-${locale}`, action: 'download' },
         async () => {
           await saveRemoteDocument('legal-documents-intl', { id: draftId, locale, template, draft, updatedAt: new Date().toISOString() });
-          return exportElementToPdf(previewRef.current!, `${template}-${draft.partyA.replace(/\s+/g, '-').toLowerCase()}.pdf`, { branded: !usage.unlimited });
+          return exportElementToPdf(previewRef.current!, `${template}-${draft.partyA.replace(/\s+/g, '-').toLowerCase()}.pdf`, { branded: brandDocuments });
         }
       );
       if (!outcome.allowed) {

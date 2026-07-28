@@ -30,6 +30,7 @@ import { MaskedInput } from '@/components/ui/masked-input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
@@ -91,7 +92,7 @@ export function PropostasApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [proposals, setProposals] = useState<ProposalData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);

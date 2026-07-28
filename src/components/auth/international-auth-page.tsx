@@ -73,7 +73,6 @@ export function InternationalLoginPage({ locale }: { locale: InternationalLocale
       if (!('emailVerified' in result) || !result.emailVerified) {
         setNeedsVerify(true);
         setMessage(copy.login.verify);
-        return;
       }
       await refresh();
       router.push(next);

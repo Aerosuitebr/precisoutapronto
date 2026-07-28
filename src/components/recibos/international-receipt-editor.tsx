@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { InternationalLocale } from '@/lib/i18n';
@@ -151,6 +152,7 @@ export function InternationalReceiptEditor({ locale }: { locale: InternationalLo
   const t = copy[locale];
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh, session, usage } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [amount, setAmount] = useState('');
   const [reference, setReference] = useState('');
   const [method, setMethod] = useState<string>('Pix');
@@ -213,7 +215,7 @@ export function InternationalReceiptEditor({ locale }: { locale: InternationalLo
             id: draftId, locale, amount, reference, method, date, city, number,
             receiver, payer, notes, updatedAt: new Date().toISOString()
           });
-          return exportElementToPdf(previewRef.current!, `receipt-${number}.pdf`, { branded: !usage.unlimited });
+          return exportElementToPdf(previewRef.current!, `receipt-${number}.pdf`, { branded: brandDocuments });
         }
       );
       if (!outcome.allowed) {

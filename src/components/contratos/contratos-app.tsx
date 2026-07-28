@@ -30,6 +30,7 @@ import { ProgressBanner } from '@/components/ui/progress-banner';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { buildDefaultClauses } from '@/lib/contratos/clauses';
 import { createEmptyContrato, SAMPLE_CONTRATO } from '@/lib/contratos/defaults';
@@ -55,7 +56,7 @@ const TAB_ORDER = TABS.map((item) => item.id);
 export function ContratosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [items, setItems] = useState<ContractData[]>([]);

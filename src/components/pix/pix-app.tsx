@@ -22,6 +22,7 @@ import { Select } from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast';
 import { WhatsAppSendModal } from '@/components/whatsapp/whatsapp-send-modal';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { formatCpfCnpj, formatCurrencyInput, formatPhone, parseCurrency } from '@/lib/formatters';
 import { buildPixBrCode, buildPixWhatsAppMessage, normalizePixKey } from '@/lib/pix/brcode';
@@ -70,6 +71,7 @@ function validatePixKey(key: string, keyType: PixKeyType): string {
 export function PixApp() {
   const { toast } = useToast();
   const { session, usage, refresh: refreshAuth } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [keyType, setKeyType] = useState<PixKeyType>('cpf');
   const [key, setKey] = useState('');
   const [merchantName, setMerchantName] = useState('');
@@ -179,7 +181,7 @@ export function PixApp() {
         amount: amount > 0 ? amount : undefined,
         brCode,
         description,
-        branded: !usage.unlimited
+        branded: brandDocuments
       });
       try {
         await navigator.clipboard.writeText(message);

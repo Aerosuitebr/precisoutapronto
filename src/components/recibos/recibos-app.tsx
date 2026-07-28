@@ -30,6 +30,7 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
@@ -84,7 +85,7 @@ const STEPS: { id: EditorTab; label: string }[] = [
 export function RecibosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [receipts, setReceipts] = useState<ReceiptData[]>([]);

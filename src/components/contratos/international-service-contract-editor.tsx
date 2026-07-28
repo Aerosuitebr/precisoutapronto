@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { InternationalLocale } from '@/lib/i18n';
@@ -130,6 +131,7 @@ export function InternationalServiceContractEditor({ locale }: { locale: Interna
   const t = copy[locale];
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh, session, usage } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [client, setClient] = useState<Party>(emptyParty());
   const [provider, setProvider] = useState<Party>(emptyParty());
   const [scope, setScope] = useState('');
@@ -206,7 +208,7 @@ export function InternationalServiceContractEditor({ locale }: { locale: Interna
             terminationDays, jurisdiction, confidentiality, intellectualProperty, notes,
             witness1, witness2, updatedAt: new Date().toISOString()
           });
-          return exportElementToPdf(previewRef.current!, 'service-agreement.pdf', { branded: !usage.unlimited });
+          return exportElementToPdf(previewRef.current!, 'service-agreement.pdf', { branded: brandDocuments });
         }
       );
       if (!outcome.allowed) {

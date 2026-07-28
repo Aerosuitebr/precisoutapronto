@@ -1,6 +1,10 @@
 import { getSession } from './auth';
 import { getPlan, type PlanId } from './plans';
 import type { BillableAction, BillableContext, BillableToolId } from './billing-server';
+import {
+  consumeGuestTrial,
+  hasGuestTrialAvailable
+} from './guest-trial';
 
 export type { BillableAction, BillableContext, BillableToolId };
 
@@ -139,19 +143,27 @@ export function getToolUsageProgress(): ToolUsageProgress {
   return { ...cachedProgress };
 }
 
+/**
+ * Marca Resolva Jato no PDF/WhatsApp?
+ * Premium: não. Guest na 1ª geração: não. Conta grátis: sim.
+ */
+export function shouldBrandDocuments(): boolean {
+  if (cachedProgress.unlimited) return false;
+  if (!getSession() && hasGuestTrialAvailable()) return false;
+  if (!getSession()) return false;
+  return true;
+}
+
 export function canUseTool(): UsageDecision {
   if (!getSession()) {
+    if (hasGuestTrialAvailable()) {
+      return { allowed: true, reason: 'Degustação gratuita: uma geração completa sem marca.' };
+    }
     return {
       allowed: false,
       accountRequired: true,
-      reason: 'Crie uma conta gratuita para salvar ou baixar documentos.'
-    };
-  }
-  if (getSession()?.user.emailVerified === false) {
-    return {
-      allowed: false,
-      emailVerificationRequired: true,
-      reason: 'Confirme seu e-mail para liberar as ferramentas.'
+      reason:
+        'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Resolva Jato.'
     };
   }
   return { allowed: true };
@@ -165,11 +177,25 @@ function billableContextKey(context: BillableContext) {
 
 /**
  * Executa a ação e só registra o consumo no servidor após sucesso.
+ * Guest: 1 geração completa sem marca; depois pede conta.
  */
 export async function performBillableAction<T>(context: BillableContext, effect: () => Promise<T> | T) {
   const access = canUseTool();
-  if (!access.allowed) return { ...access, result: undefined as T | undefined, charged: false };
+  if (!access.allowed) {
+    if (access.accountRequired && typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('rj-account-required', {
+          detail: {
+            nextHref: window.location.pathname || '/ferramentas',
+            variant: 'guest_trial_done'
+          }
+        })
+      );
+    }
+    return { ...access, result: undefined as T | undefined, charged: false };
+  }
 
+  const isGuest = !getSession();
   const key = billableContextKey(context);
   if (inFlightBillableKeys.has(key)) {
     return { allowed: true, result: undefined as T | undefined, charged: false };
@@ -178,6 +204,26 @@ export async function performBillableAction<T>(context: BillableContext, effect:
   inFlightBillableKeys.add(key);
   try {
     const result = await effect();
+
+    if (isGuest) {
+      consumeGuestTrial({
+        nextHref: typeof window !== 'undefined' ? window.location.pathname : '/ferramentas'
+      });
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('rj-billable-success', {
+            detail: {
+              message: 'Documento gerado sem marca. Crie uma conta grátis para continuar.',
+              toolId: context.toolId,
+              action: context.action,
+              charged: false,
+              guestTrial: true
+            }
+          })
+        );
+      }
+      return { allowed: true, result, charged: false, guestTrial: true };
+    }
 
     const consumeRes = await fetch('/api/billing/consume', {
       method: 'POST',
@@ -188,7 +234,6 @@ export async function performBillableAction<T>(context: BillableContext, effect:
     const consumeData = await consumeRes.json().catch(() => ({}));
 
     if (!consumeRes.ok && consumeRes.status !== 402) {
-      // Ação já executou; não reverte, mas sinaliza
       console.warn('[billing] consume failed', consumeData);
     }
 

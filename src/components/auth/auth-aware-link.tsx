@@ -4,20 +4,24 @@ import Link from 'next/link';
 import type { ComponentProps, MouseEvent } from 'react';
 import { resolveToolsAuthNext, useAuthRequired } from '@/components/auth/auth-required-provider';
 import { useAuth } from '@/hooks/use-auth';
+import { hasGuestTrialAvailable } from '@/lib/guest-trial';
 
 type AuthAwareLinkProps = Omit<ComponentProps<typeof Link>, 'href'> & {
   href: string;
   /** Destino quando o visitante não está logado (padrão: modal + login com next). */
   guestHref?: string;
-  /** Se true (padrão), abre modal contextual em vez de ir direto ao login. */
+  /**
+   * Se true, bloqueia e abre modal. Padrão false: tools abertas (degustação).
+   * Use true só em CTAs que exigem conta de imediato.
+   */
   promptModal?: boolean;
 };
 
-/** Link que pede login via modal (ou redireciona) quando o destino exige conta. */
+/** Link para ferramentas. Por padrão navega sem pedir conta (1ª geração livre). */
 export function AuthAwareLink({
   href,
   guestHref,
-  promptModal = true,
+  promptModal = false,
   onClick,
   ...props
 }: AuthAwareLinkProps) {
@@ -29,15 +33,15 @@ export function AuthAwareLink({
     if (event.defaultPrevented) return;
     if (!ready) return;
 
-    if (!isAuthenticated) {
+    if (promptModal && !isAuthenticated) {
       event.preventDefault();
       const next = resolveToolsAuthNext(href);
-      if (promptModal) {
-        requireAuth(next);
-        return;
-      }
-      window.location.assign(guestHref || `/login?next=${encodeURIComponent(next)}`);
+      requireAuth(next);
+      return;
     }
+
+    // Sem trial restante: ainda deixa abrir a tool; o gate é na geração.
+    void hasGuestTrialAvailable;
   }
 
   return <Link href={isAuthenticated ? href : guestHref || href} onClick={handleClick} {...props} />;

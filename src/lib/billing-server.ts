@@ -116,15 +116,8 @@ export async function getServerUsageProgress(userId: string) {
 }
 
 export async function canUseToolServer(userId: string, emailVerified: boolean) {
-  if (!emailVerified) {
-    return {
-      allowed: false,
-      emailVerificationRequired: true,
-      reason: 'Confirme seu e-mail para liberar as ferramentas.'
-    };
-  }
-
-  // Sem cota de utilizações no plano gratuito.
+  // Verificação de e-mail vira soft-gate no cliente (banner). Não bloqueia uso das tools.
+  void emailVerified;
   void userId;
   return { allowed: true };
 }
