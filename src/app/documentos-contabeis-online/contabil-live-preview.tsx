@@ -4,6 +4,10 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { ContabilPreview } from '@/components/contabeis/contabil-preview';
+import {
+  LiveToolPreviewLayout,
+  livePreviewFieldClass
+} from '@/components/marketing/tool-landing/live-tool-preview-layout';
 import { buildDefaultClauses } from '@/lib/contabeis/clauses';
 import { SAMPLE_CONTABIL_DOCUMENT } from '@/lib/contabeis/defaults';
 import type { ContabilTemplateId } from '@/lib/contabeis/types';
@@ -35,8 +39,9 @@ export function ContabilLivePreview() {
   const completedCount = checklist.filter((item) => item.done).length;
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] lg:items-start">
-      <div className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <LiveToolPreviewLayout
+      form={
+        <>
         <div aria-live="polite">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wide text-slate-500">Seu progresso</span>
@@ -74,7 +79,7 @@ export function ContabilLivePreview() {
             value={partyAName}
             onChange={(event) => setPartyAName(event.target.value)}
             placeholder="Ex: Comércio Norte LTDA"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus-visible:border-sky-500 focus-visible:ring-2 focus-visible:ring-sky-200"
+            className={livePreviewFieldClass}
           />
         </div>
 
@@ -87,7 +92,7 @@ export function ContabilLivePreview() {
             value={partyBName}
             onChange={(event) => setPartyBName(event.target.value)}
             placeholder="Ex: Escritório Silva Contabilidade"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus-visible:border-sky-500 focus-visible:ring-2 focus-visible:ring-sky-200"
+            className={livePreviewFieldClass}
           />
         </div>
 
@@ -100,15 +105,13 @@ export function ContabilLivePreview() {
             value={objectDescription}
             onChange={(event) => setObjectDescription(event.target.value)}
             placeholder="Ex: escrituração contábil e obrigações acessórias mensais"
-            rows={2}
-            className="w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus-visible:border-sky-500 focus-visible:ring-2 focus-visible:ring-sky-200"
+            rows={3}
+            className={`${livePreviewFieldClass} resize-none`}
           />
         </div>
 
         <div>
-          <span className="mb-2 block text-sm font-semibold text-slate-800">
-            Tipo de documento <span className="font-normal text-slate-500">(veja a mudança em tempo real)</span>
-          </span>
+          <span className="mb-2 block text-sm font-semibold text-slate-800">Tipo de documento</span>
           <div className="flex flex-wrap gap-2">
             {CONTABIL_TEMPLATES.map((template) => (
               <button
@@ -116,7 +119,7 @@ export function ContabilLivePreview() {
                 type="button"
                 onClick={() => setTemplateId(template.id)}
                 aria-pressed={templateId === template.id}
-                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+                className={`rounded-full border px-3 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                   templateId === template.id
                     ? 'border-sky-600 bg-sky-600 text-white'
                     : 'border-slate-300 bg-white text-slate-700 hover:border-sky-400 hover:text-sky-700'
@@ -130,18 +133,14 @@ export function ContabilLivePreview() {
 
         <Link
           href="/cadastro?next=/ferramentas/contabeis"
-          className="block w-full rounded-lg bg-sky-600 px-4 py-3 text-center text-sm font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
+          className="block w-full rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
         >
           Continuar e baixar meu documento
         </Link>
-        <p className="text-center text-xs font-medium text-slate-500">Crie uma conta grátis para baixar o PDF. Sem cartão.</p>
-      </div>
-
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-8">
-        <div className="mx-auto max-w-[560px] origin-top scale-[0.85] rounded-lg bg-white shadow-lg sm:scale-100">
-          <ContabilPreview data={previewData} />
-        </div>
-      </div>
-    </div>
+        <p className="text-center text-xs font-medium text-slate-500">Conta grátis para baixar o PDF. Sem cartão.</p>
+        </>
+      }
+      preview={<ContabilPreview data={previewData} />}
+    />
   );
 }

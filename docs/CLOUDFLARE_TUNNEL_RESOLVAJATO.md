@@ -18,6 +18,15 @@
 
 - `resolvajato.com.br` → CNAME tunnel (proxied)
 - `www.resolvajato.com.br` → CNAME tunnel (proxied)
+- `staging.resolvajato.com.br` → CNAME tunnel (proxied) · homolog i18n → `http://127.0.0.1:3001`
+
+## Staging (homolog i18n)
+
+1. Criar DNS `staging.resolvajato.com.br` (CNAME para o mesmo tunnel, proxied).
+2. Atualizar config do tunnel no VPS com o ingress de staging (porta 3001) a partir de `scripts/deploy/cloudflared-config.resolvajato.yml`.
+3. Reiniciar o serviço `cloudflared-resolvajato`.
+4. Em Zero Trust → Access → Application: proteger `staging.resolvajato.com.br` (e-mails do time).
+5. Subir stack: ver `DOCKER.md` (seção Staging) e `docs/I18N-STAGING-QA.md`.
 
 ## Nameservers no Registro.br
 

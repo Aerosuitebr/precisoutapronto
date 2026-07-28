@@ -29,7 +29,7 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
 import { getBrazilHolidays } from '@/lib/agenda/holidays';
-import { deleteAgendaEvent, listAgendaEvents, saveAgendaEvent } from '@/lib/agenda/storage';
+import { loadAgendaEvents, persistAgendaEvent, removeAgendaEvent } from '@/lib/agenda/storage';
 import type { AgendaEvent, AgendaEventPriority, AgendaEventStatus } from '@/lib/agenda/types';
 import { performBillableAction } from '@/lib/billing';
 import { cn } from '@/lib/utils';
@@ -142,13 +142,16 @@ export function AgendaApp() {
   const [firedAlerts, setFiredAlerts] = useState<string[]>([]);
 
   useEffect(() => {
-    const stored = listAgendaEvents();
-    setEvents(stored);
-    if (stored.length > 0) {
-      const next = stored.find((item) => item.date >= todayKey) ?? stored[0];
-      setSelectedDate(next.date);
-      setCurrentMonth(fromDateKey(next.date));
-    }
+    loadAgendaEvents()
+      .then((stored) => {
+        setEvents(stored);
+        if (stored.length > 0) {
+          const next = stored.find((item) => item.date >= todayKey) ?? stored[0];
+          setSelectedDate(next.date);
+          setCurrentMonth(fromDateKey(next.date));
+        }
+      })
+      .catch(() => setError('Não foi possível carregar os compromissos do servidor.'));
     setNotificationState('Notification' in window ? Notification.permission : 'unsupported');
   }, [todayKey]);
 
@@ -234,13 +237,18 @@ export function AgendaApp() {
     try {
       const outcome = await performBillableAction(
         { toolId: 'agenda', artifactId: draft.id, action: 'manual_save' },
-        () => saveAgendaEvent({ ...draft, title: draft.title.trim() })
+        () => persistAgendaEvent({ ...draft, title: draft.title.trim() })
       );
       if (!outcome.allowed) {
         setError(outcome.reason || 'Faça login e confirme seu e-mail para continuar.');
         return;
       }
-      const stored = listAgendaEvents();
+      if (!outcome.result) {
+        throw new Error('O servidor não retornou o compromisso salvo.');
+      }
+      const savedEvent = outcome.result;
+      const stored = [...events.filter((event) => event.id !== savedEvent.id), savedEvent]
+        .sort((a, b) => `${a.date}T${a.startTime}`.localeCompare(`${b.date}T${b.startTime}`));
       setEvents(stored);
       setDemoEvents((current) => current.filter((event) => event.id !== draft.id));
       const saved = stored.find((event) => event.id === draft.id);
@@ -254,28 +262,35 @@ export function AgendaApp() {
     }
   }
 
-  function handleDelete(eventId: string) {
+  async function handleDelete(eventId: string) {
     if (demoEvents.some((event) => event.id === eventId)) {
       setDemoEvents((current) => current.filter((event) => event.id !== eventId));
       if (draft.id === eventId) setDraft(createEvent(selectedDate));
       return;
     }
-    deleteAgendaEvent(eventId);
-    const stored = listAgendaEvents();
-    setEvents(stored);
-    if (draft.id === eventId) setDraft(createEvent(selectedDate));
+    try {
+      await removeAgendaEvent(eventId);
+      setEvents((current) => current.filter((event) => event.id !== eventId));
+      if (draft.id === eventId) setDraft(createEvent(selectedDate));
+    } catch {
+      setError('Não foi possível excluir o compromisso.');
+    }
   }
 
-  function handleToggleDone(event: AgendaEvent) {
+  async function handleToggleDone(event: AgendaEvent) {
     if (demoEvents.some((item) => item.id === event.id)) {
       const updated = { ...event, status: event.status === 'done' ? 'confirmed' : 'done' } as AgendaEvent;
       setDemoEvents((current) => current.map((item) => (item.id === event.id ? updated : item)));
       if (draft.id === updated.id) setDraft(updated);
       return;
     }
-    const updated = saveAgendaEvent({ ...event, status: event.status === 'done' ? 'confirmed' : 'done' });
-    setEvents(listAgendaEvents());
-    if (draft.id === updated.id) setDraft(updated);
+    try {
+      const updated = await persistAgendaEvent({ ...event, status: event.status === 'done' ? 'confirmed' : 'done' });
+      setEvents((current) => current.map((item) => item.id === updated.id ? updated : item));
+      if (draft.id === updated.id) setDraft(updated);
+    } catch {
+      setError('Não foi possível atualizar o compromisso.');
+    }
   }
 
   function handleLoadExample() {

@@ -33,7 +33,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { performBillableAction } from '@/lib/billing';
 import { buildDefaultClauses } from '@/lib/contratos/clauses';
 import { createEmptyContrato, SAMPLE_CONTRATO } from '@/lib/contratos/defaults';
-import { deleteContrato, listContratos, saveContrato } from '@/lib/contratos/storage';
+import { listContratos, loadContratos, persistContrato, removeContrato, saveContrato } from '@/lib/contratos/storage';
 import { CONTRACT_TEMPLATES, getContractTemplate } from '@/lib/contratos/templates';
 import type { ContractClause, ContractData, ContractParty, ContractTemplateId } from '@/lib/contratos/types';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
@@ -89,17 +89,18 @@ export function ContratosApp() {
   const showDurationFields = contrato.templateId !== 'compra-venda';
 
   useEffect(() => {
-    const stored = listContratos();
-    if (stored.length > 0) {
-      setItems(stored);
-      setActiveId(stored[0].id);
-      setContrato(stored[0]);
-      return;
-    }
-    const saved = saveContrato(createEmptyContrato());
-    setItems([saved]);
-    setActiveId(saved.id);
-    setContrato(saved);
+    loadContratos().then((stored) => {
+      if (stored.length > 0) {
+        setItems(stored);
+        setActiveId(stored[0].id);
+        setContrato(stored[0]);
+        return;
+      }
+      const saved = saveContrato(createEmptyContrato());
+      setItems([saved]);
+      setActiveId(saved.id);
+      setContrato(saved);
+    }).catch(() => setError('Não foi possível carregar os contratos do servidor.'));
   }, []);
 
   useEffect(() => {
@@ -155,11 +156,16 @@ export function ContratosApp() {
     toast('Cópia criada.');
   }
 
-  function handleDeleteById(id: string) {
+  async function handleDeleteById(id: string) {
     if (items.length <= 1) return;
     const snapshot = items.find((item) => item.id === id);
-    deleteContrato(id);
-    const next = listContratos();
+    try {
+      await removeContrato(id);
+    } catch {
+      setError('Não foi possível excluir o contrato.');
+      return;
+    }
+    const next = items.filter((item) => item.id !== id);
     setItems(next);
     if (activeId === id) {
       setActiveId(next[0].id);
@@ -247,7 +253,7 @@ export function ContratosApp() {
   }
 
   function handleDelete() {
-    handleDeleteById(contrato.id);
+    void handleDeleteById(contrato.id);
   }
 
   const historyItems = items.map((item) => ({
@@ -264,13 +270,15 @@ export function ContratosApp() {
     try {
       const outcome = await performBillableAction(
         { toolId: 'contratos', artifactId: contrato.id, action: 'manual_save' },
-        () => saveContrato(contrato)
+        () => persistContrato(contrato)
       );
       if (!outcome.allowed) {
         setError(outcome.reason || 'Faça login e confirme seu e-mail para continuar.');
         return;
       }
-      setItems(listContratos());
+      if (!outcome.result) throw new Error('Contrato não retornado pelo servidor.');
+      setContrato(outcome.result);
+      setItems((current) => [outcome.result!, ...current.filter((item) => item.id !== outcome.result!.id)]);
       refreshAuth();
       setSaveState('saved');
       toast('Contrato salvo com sucesso!');

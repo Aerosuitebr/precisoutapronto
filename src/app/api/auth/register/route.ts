@@ -39,6 +39,7 @@ export async function POST(request: Request) {
       timezone?: string;
       screen?: string;
       referralCode?: string;
+      locale?: string;
     };
 
     const email = (body.email || '').trim().toLowerCase();
@@ -189,8 +190,9 @@ export async function POST(request: Request) {
     await ensureUserReferralCode(user.id);
     await linkDeviceToUser(deviceId, user.id);
 
-    const { raw, verifyUrl } = await createEmailVerificationToken(user.id);
-    const mail = await sendVerificationEmail({ to: email, name, verifyUrl });
+    const locale = body.locale === 'en' || body.locale === 'es' ? body.locale : undefined;
+    const { raw, verifyUrl } = await createEmailVerificationToken(user.id, locale);
+    const mail = await sendVerificationEmail({ to: email, name, verifyUrl, locale });
 
     await writeAuditLog({
       event: 'register',

@@ -7,9 +7,16 @@ import { Logo } from '@/components/brand/logo';
 interface AuthShellProps {
   children: ReactNode;
   subtitle: string;
+  homeHref?: string;
+  homeLabel?: string;
 }
 
-export function AuthShell({ children, subtitle }: AuthShellProps) {
+export function AuthShell({
+  children,
+  subtitle,
+  homeHref = '/',
+  homeLabel = 'Página inicial Resolva Jato'
+}: AuthShellProps) {
   return (
     <main className="rj-auth-ambient relative isolate min-h-screen overflow-x-hidden px-4 py-8 sm:py-10">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -33,7 +40,7 @@ export function AuthShell({ children, subtitle }: AuthShellProps) {
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-md items-center py-4">
         <section className="w-full rounded-[28px] border border-white/70 bg-white/95 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.12)] backdrop-blur-md sm:p-8">
-          <Link href="/" className="mx-auto mb-4 flex justify-center" aria-label="Página inicial Resolva Jato">
+          <Link href={homeHref} className="mx-auto mb-4 flex justify-center" aria-label={homeLabel}>
             <Logo variant="auth" />
           </Link>
           <p className="mb-5 text-center text-sm leading-6 text-slate-600">{subtitle}</p>

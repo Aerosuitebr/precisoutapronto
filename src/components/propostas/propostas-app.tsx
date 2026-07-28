@@ -43,7 +43,7 @@ import {
   parseCurrency
 } from '@/lib/formatters';
 import { createEmptyProposal, createProposalItem, SAMPLE_PROPOSAL } from '@/lib/propostas/defaults';
-import { deleteProposal, listProposals, saveProposal } from '@/lib/propostas/storage';
+import { listProposals, loadProposals, persistProposal, removeProposal, saveProposal } from '@/lib/propostas/storage';
 import { PROPOSAL_TEMPLATES } from '@/lib/propostas/templates';
 import type { ProposalCompany, ProposalData, ProposalItem } from '@/lib/propostas/types';
 import type { DigitalSignature } from '@/lib/signatures/types';
@@ -104,17 +104,18 @@ export function PropostasApp() {
   const [logoError, setLogoError] = useState('');
 
   useEffect(() => {
-    const stored = listProposals();
-    if (stored.length > 0) {
-      setProposals(stored);
-      setActiveId(stored[0].id);
-      setProposal(stored[0]);
-      return;
-    }
-    const saved = saveProposal(createEmptyProposal());
-    setProposals([saved]);
-    setActiveId(saved.id);
-    setProposal(saved);
+    loadProposals().then((stored) => {
+      if (stored.length > 0) {
+        setProposals(stored);
+        setActiveId(stored[0].id);
+        setProposal(stored[0]);
+        return;
+      }
+      const saved = saveProposal(createEmptyProposal());
+      setProposals([saved]);
+      setActiveId(saved.id);
+      setProposal(saved);
+    }).catch(() => setError('Não foi possível carregar as propostas do servidor.'));
   }, []);
 
   useEffect(() => {
@@ -220,10 +221,15 @@ export function PropostasApp() {
     setLogoError('');
   }
 
-  function handleDelete() {
+  async function handleDelete() {
     if (proposals.length <= 1) return;
-    deleteProposal(proposal.id);
-    const next = listProposals();
+    try {
+      await removeProposal(proposal.id);
+    } catch {
+      setError('Não foi possível excluir a proposta.');
+      return;
+    }
+    const next = proposals.filter((item) => item.id !== proposal.id);
     setProposals(next);
     setActiveId(next[0].id);
     setProposal(next[0]);
@@ -248,13 +254,15 @@ export function PropostasApp() {
     try {
       const outcome = await performBillableAction(
         { toolId: 'propostas', artifactId: proposal.id, action: 'manual_save' },
-        () => saveProposal(proposal)
+        () => persistProposal(proposal)
       );
       if (!outcome.allowed) {
         setError(outcome.reason || 'Faça login e confirme seu e-mail para continuar.');
         return;
       }
-      setProposals(listProposals());
+      if (!outcome.result) throw new Error('Proposta não retornada pelo servidor.');
+      setProposal(outcome.result);
+      setProposals((current) => [outcome.result!, ...current.filter((item) => item.id !== outcome.result!.id)]);
       refreshAuth();
       setSaveState('saved');
     } catch {

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
+import { LocaleSwitcher } from '@/components/i18n/locale-switcher';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -51,6 +52,7 @@ export function SiteHeader() {
           })}
         </nav>
         <div className="flex items-center gap-2">
+          <LocaleSwitcher locale="pt-BR" label="Idioma" />
           {isAuthenticated ? (
             <Button asChild className="hidden sm:inline-flex">
               <Link href="/ferramentas">Minhas ferramentas</Link>

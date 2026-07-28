@@ -32,7 +32,15 @@ export async function GET(request: Request) {
       userId: checkout.client_reference_id,
       email: checkout.customer_details?.email || checkout.customer_email,
       amountTotal: checkout.amount_total,
-      days: checkout.metadata?.days ? Number(checkout.metadata.days) : null
+      expectedAmountTotal: checkout.metadata?.expectedAmountTotal
+        ? Number(checkout.metadata.expectedAmountTotal)
+        : null,
+      days: checkout.metadata?.days ? Number(checkout.metadata.days) : null,
+      locale: checkout.metadata?.locale === 'es'
+        ? 'es'
+        : checkout.metadata?.locale === 'en'
+          ? 'en'
+          : null
     });
 
     return NextResponse.json({

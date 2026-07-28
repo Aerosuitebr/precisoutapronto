@@ -8,7 +8,15 @@ import { SiteJsonLd } from '@/components/marketing/site-json-ld';
 import { ReferralCapture } from '@/components/referral/referral-capture';
 
 export const metadata: Metadata = {
-  alternates: { canonical: '/' }
+  alternates: {
+    canonical: '/',
+    languages: {
+      'pt-BR': '/',
+      en: '/en',
+      es: '/es',
+      'x-default': '/'
+    }
+  }
 };
 
 export default function HomePage() {

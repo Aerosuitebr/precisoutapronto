@@ -49,7 +49,15 @@ export async function POST(request: Request) {
         userId: session.client_reference_id,
         email: session.customer_details?.email || session.customer_email,
         amountTotal: session.amount_total,
-        days: session.metadata?.days ? Number(session.metadata.days) : null
+        expectedAmountTotal: session.metadata?.expectedAmountTotal
+          ? Number(session.metadata.expectedAmountTotal)
+          : null,
+        days: session.metadata?.days ? Number(session.metadata.days) : null,
+        locale: session.metadata?.locale === 'es'
+          ? 'es'
+          : session.metadata?.locale === 'en'
+            ? 'en'
+            : null
       });
       console.info('[stripe-webhook] session', {
         id: session.id,

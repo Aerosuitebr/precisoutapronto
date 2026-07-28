@@ -43,8 +43,18 @@ function randomDeviceId() {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
 }
 
+function isStagingRequest(request: NextRequest) {
+  const appEnv = (process.env.APP_ENV || '').toLowerCase();
+  if (appEnv === 'staging' || appEnv === 'homolog' || appEnv === 'homologacao') return true;
+  const host = request.headers.get('host') || request.nextUrl.hostname || '';
+  return host.startsWith('staging.') || host.startsWith('homolog.');
+}
+
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
+  if (isStagingRequest(request)) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  }
   if (needsDeviceCookie(request.nextUrl.pathname) && !request.cookies.get(DEVICE_COOKIE)?.value) {
     response.cookies.set(DEVICE_COOKIE, randomDeviceId(), {
       httpOnly: true,

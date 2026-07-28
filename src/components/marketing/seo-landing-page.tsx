@@ -49,7 +49,7 @@ export function SeoLandingPage({ content }: { content: SeoLandingContent }) {
                 ))}
               </ul>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Button asChild size="lg" className={primaryCtaClass}>
+                <Button asChild size="lg" className={`${primaryCtaClass} w-full sm:w-auto`}>
                   <AuthAwareLink href={content.toolHref}>
                     {content.primaryCta}
                     <ArrowRight className="h-4 w-4" />
@@ -60,7 +60,7 @@ export function SeoLandingPage({ content }: { content: SeoLandingContent }) {
                     asChild
                     size="lg"
                     variant="outline"
-                    className="h-12 border-white/25 bg-white/5 px-6 text-white hover:bg-white/10"
+                    className="h-12 w-full border-white/25 bg-white/5 px-6 text-white hover:bg-white/10 sm:w-auto"
                   >
                     <AuthAwareLink href={content.secondaryCta.href}>
                       {content.secondaryCta.label}

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { isStagingEnv } from '@/lib/app-env';
 import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
@@ -27,7 +28,34 @@ const PUBLIC_TOOL_LANDINGS = [
   ,'/proposta-comercial-mei'
 ] as const;
 
+const INTERNATIONAL_PUBLIC_PATHS = [
+  '',
+  '/tools',
+  '/plans',
+  '/about',
+  '/contact',
+  '/terms',
+  '/privacy',
+  '/tools/quote-pix',
+  '/tools/pix',
+  '/tools/receipt',
+  '/tools/proposal',
+  '/tools/resume',
+  '/tools/service-contract',
+  '/tools/freelance-pricing',
+  '/tools/severance',
+  '/tools/agenda',
+  '/tools/academic-cover',
+  '/tools/legal-documents',
+  '/tools/accounting-documents',
+  '/tools/resource-search'
+] as const;
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (isStagingEnv()) {
+    return [];
+  }
+
   const base = getViralBaseUrl();
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -75,8 +103,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
+  const internationalRoutes: MetadataRoute.Sitemap = (['en', 'es'] as const).flatMap((locale) =>
+    INTERNATIONAL_PUBLIC_PATHS.map((path) => ({
+      url: `${base}/${locale}${path}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: path === '' || path === '/tools' ? 'weekly' as const : 'monthly' as const,
+      priority: path === '' ? 0.9 : path === '/tools' ? 0.85 : path.startsWith('/tools/') ? 0.7 : 0.5
+    }))
+  );
+
   const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
-  for (const entry of [...staticRoutes, ...seoRoutes, ...toolLandingRoutes, ...guideRoutes]) {
+  for (const entry of [...staticRoutes, ...seoRoutes, ...toolLandingRoutes, ...guideRoutes, ...internationalRoutes]) {
     byUrl.set(entry.url, entry);
   }
   return [...byUrl.values()];

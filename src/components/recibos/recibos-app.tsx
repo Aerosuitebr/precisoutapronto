@@ -37,7 +37,7 @@ import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/vir
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import { createEmptyReceipt, PAYMENT_METHODS, SAMPLE_RECEIPT } from '@/lib/recibos/defaults';
-import { deleteReceipt, listReceipts, saveReceipt } from '@/lib/recibos/storage';
+import { listReceipts, loadReceipts, persistReceipt, removeReceipt, saveReceipt } from '@/lib/recibos/storage';
 import type { ReceiptData, ReceiptParty, ReceiptTemplateId } from '@/lib/recibos/types';
 import { getSignatureTemplate } from '@/lib/signatures/templates';
 import type { DigitalSignature } from '@/lib/signatures/types';
@@ -99,18 +99,18 @@ export function RecibosApp() {
   const [showAllErrors, setShowAllErrors] = useState(false);
 
   useEffect(() => {
-    const stored = listReceipts();
-    if (stored.length > 0) {
-      setReceipts(stored);
-      setActiveId(stored[0].id);
-      setReceipt(stored[0]);
-      return;
-    }
-    const initial = createEmptyReceipt();
-    const saved = saveReceipt(initial);
-    setReceipts([saved]);
-    setActiveId(saved.id);
-    setReceipt(saved);
+    loadReceipts().then((stored) => {
+      if (stored.length > 0) {
+        setReceipts(stored);
+        setActiveId(stored[0].id);
+        setReceipt(stored[0]);
+        return;
+      }
+      const saved = saveReceipt(createEmptyReceipt());
+      setReceipts([saved]);
+      setActiveId(saved.id);
+      setReceipt(saved);
+    }).catch(() => setError('Não foi possível carregar os recibos do servidor.'));
   }, []);
 
   useEffect(() => {
@@ -205,11 +205,16 @@ export function RecibosApp() {
     toast('Formulário limpo');
   }
 
-  function handleDelete() {
+  async function handleDelete() {
     if (receipts.length <= 1) return;
     const removed = receipt;
-    deleteReceipt(receipt.id);
-    const next = listReceipts();
+    try {
+      await removeReceipt(receipt.id);
+    } catch {
+      setError('Não foi possível excluir o recibo.');
+      return;
+    }
+    const next = receipts.filter((item) => item.id !== receipt.id);
     setReceipts(next);
     setActiveId(next[0].id);
     setReceipt(next[0]);
@@ -232,14 +237,16 @@ export function RecibosApp() {
     try {
       const outcome = await performBillableAction(
         { toolId: 'recibos', artifactId: receipt.id, action: 'manual_save' },
-        () => saveReceipt(receipt)
+        () => persistReceipt(receipt)
       );
       if (!outcome.allowed) {
         setError(outcome.reason || 'Faça login e confirme seu e-mail para continuar.');
         toast(outcome.reason || 'Não foi possível salvar');
         return;
       }
-      setReceipts(listReceipts());
+      if (!outcome.result) throw new Error('Recibo não retornado pelo servidor.');
+      setReceipt(outcome.result);
+      setReceipts((current) => [outcome.result!, ...current.filter((item) => item.id !== outcome.result!.id)]);
       refreshAuth();
       setSaveState('saved');
       toast('Recibo salvo');

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { isBillingProductId } from '@/lib/billing-products';
 import { createStripePremiumCheckout, isStripeConfigured } from '@/lib/stripe';
+import { isInternationalLocale } from '@/lib/i18n';
 
 export async function POST(request: Request) {
   try {
@@ -17,13 +18,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Faça login para assinar com a Stripe.' }, { status: 401 });
     }
 
-    const body = (await request.json().catch(() => ({}))) as { product?: string };
+    const body = (await request.json().catch(() => ({}))) as { product?: string; locale?: string };
     const product = body.product && isBillingProductId(body.product) ? body.product : 'premium';
+    const locale = body.locale && isInternationalLocale(body.locale) ? body.locale : undefined;
 
     const result = await createStripePremiumCheckout({
       userId: session.sub,
       email: session.email,
-      product
+      product,
+      locale
     });
 
     return NextResponse.json({
