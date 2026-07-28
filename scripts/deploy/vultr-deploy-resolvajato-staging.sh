@@ -48,11 +48,8 @@ echo "==> Validar compose staging"
 echo "==> Build + up staging (app em 127.0.0.1:${APP_PORT})"
 "${COMPOSE[@]}" up -d --build --remove-orphans
 
-echo "==> Prisma migrate (staging)"
-if ! "${COMPOSE[@]}" exec -T app npx prisma migrate deploy; then
-  echo "AVISO: migrate via exec falhou; tentando run one-off"
-  "${COMPOSE[@]}" run --rm --entrypoint npx app prisma migrate deploy
-fi
+echo "==> Schema Prisma (staging usa db push no entrypoint; sem pasta prisma/migrations)"
+# Não rodar migrate deploy: o entrypoint já aplica o schema com prisma db push.
 
 echo "==> Aguardar health do app staging"
 ok=0
