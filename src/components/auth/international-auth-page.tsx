@@ -5,7 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { Lock, Mail, ShieldCheck, User } from 'lucide-react';
 import { TurnstileWidget } from '@/components/auth/turnstile-widget';
+import { PasswordStrength } from '@/components/auth/password-strength';
 import { AuthShell } from '@/components/brand/auth-shell';
+import { DocumentLang } from '@/components/i18n/document-lang';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/use-auth';
@@ -21,6 +23,26 @@ import { normalizeReferralCode } from '@/lib/referral-shared';
 function safeNext(raw: string | null, fallback: string) {
   if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return fallback;
   return raw;
+}
+
+function turnstileLanguage(locale: InternationalLocale): 'en' | 'es' {
+  return locale === 'es' ? 'es' : 'en';
+}
+
+function requiredMessage(locale: InternationalLocale) {
+  return locale === 'es' ? 'Completa este campo.' : 'Please fill out this field.';
+}
+
+function applyRequiredValidity(
+  event: React.FormEvent<HTMLInputElement>,
+  locale: InternationalLocale
+) {
+  const input = event.currentTarget;
+  if (input.validity.valueMissing) {
+    input.setCustomValidity(requiredMessage(locale));
+  } else {
+    input.setCustomValidity('');
+  }
 }
 
 export function InternationalLoginPage({ locale }: { locale: InternationalLocale }) {
@@ -73,12 +95,14 @@ export function InternationalLoginPage({ locale }: { locale: InternationalLocale
   }
 
   return (
+    <>
+      <DocumentLang lang={locale} />
     <AuthShell
       subtitle={copy.login.subtitle}
       homeHref={`/${locale}`}
       homeLabel={copy.backHome}
     >
-      <form onSubmit={submit} className="space-y-4">
+      <form onSubmit={submit} className="space-y-4" lang={locale}>
         <p className="text-center text-sm text-slate-600">{copy.login.intro}</p>
         <label className="block">
           <span className="mb-1.5 block text-xs font-bold uppercase tracking-[0.08em] text-slate-500">
@@ -89,7 +113,11 @@ export function InternationalLoginPage({ locale }: { locale: InternationalLocale
             <Input
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                event.currentTarget.setCustomValidity('');
+                setEmail(event.target.value);
+              }}
+              onInvalid={(event) => applyRequiredValidity(event, locale)}
               placeholder="email@example.com"
               className="pl-10"
               autoComplete="email"
@@ -106,7 +134,11 @@ export function InternationalLoginPage({ locale }: { locale: InternationalLocale
             <Input
               type="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                event.currentTarget.setCustomValidity('');
+                setPassword(event.target.value);
+              }}
+              onInvalid={(event) => applyRequiredValidity(event, locale)}
               placeholder={copy.login.password}
               className="pl-10"
               autoComplete="current-password"
@@ -115,7 +147,9 @@ export function InternationalLoginPage({ locale }: { locale: InternationalLocale
           </span>
         </label>
 
-        {needsVerify ? <TurnstileWidget onToken={setTurnstileToken} /> : null}
+        {needsVerify ? (
+          <TurnstileWidget onToken={setTurnstileToken} language={turnstileLanguage(locale)} />
+        ) : null}
         {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
         {message ? <p className="text-sm font-medium text-sky-700">{message}</p> : null}
 
@@ -143,6 +177,7 @@ export function InternationalLoginPage({ locale }: { locale: InternationalLocale
         </p>
       </form>
     </AuthShell>
+    </>
   );
 }
 
@@ -160,13 +195,13 @@ export function InternationalRegisterPage({ locale }: { locale: InternationalLoc
   const [loading, setLoading] = useState(false);
   const [doneEmail, setDoneEmail] = useState('');
   const [referralCode] = useState(() => referralFromUrl || readStoredReferralCode());
-  const strength = useMemo(() => evaluatePasswordStrength(password), [password]);
+  const strength = useMemo(() => evaluatePasswordStrength(password, locale), [password, locale]);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError('');
     if (!strength.valid) {
-      setError(copy.register.passwordHelp);
+      setError(strength.firstError || copy.register.passwordHelp);
       return;
     }
     setLoading(true);
@@ -190,6 +225,8 @@ export function InternationalRegisterPage({ locale }: { locale: InternationalLoc
 
   if (doneEmail) {
     return (
+      <>
+        <DocumentLang lang={locale} />
       <AuthShell
         subtitle={copy.register.subtitle}
         homeHref={`/${locale}`}
@@ -211,22 +248,29 @@ export function InternationalRegisterPage({ locale }: { locale: InternationalLoc
           <p className="text-xs text-slate-500">{copy.register.confirmHelp}</p>
         </div>
       </AuthShell>
+      </>
     );
   }
 
   return (
+    <>
+      <DocumentLang lang={locale} />
     <AuthShell
       subtitle={copy.register.subtitle}
       homeHref={`/${locale}`}
       homeLabel={copy.backHome}
     >
-      <form onSubmit={submit} className="space-y-4">
+      <form onSubmit={submit} className="space-y-4" lang={locale}>
         <p className="text-center text-sm text-slate-600">{copy.register.intro}</p>
         <label className="relative block">
           <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <Input
             value={name}
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event) => {
+              event.currentTarget.setCustomValidity('');
+              setName(event.target.value);
+            }}
+            onInvalid={(event) => applyRequiredValidity(event, locale)}
             placeholder={copy.register.name}
             className="pl-10"
             autoComplete="name"
@@ -237,7 +281,11 @@ export function InternationalRegisterPage({ locale }: { locale: InternationalLoc
           <Input
             type="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              event.currentTarget.setCustomValidity('');
+              setEmail(event.target.value);
+            }}
+            onInvalid={(event) => applyRequiredValidity(event, locale)}
             placeholder={copy.email}
             className="pl-10"
             autoComplete="email"
@@ -253,7 +301,11 @@ export function InternationalRegisterPage({ locale }: { locale: InternationalLoc
             <Input
               type="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                event.currentTarget.setCustomValidity('');
+                setPassword(event.target.value);
+              }}
+              onInvalid={(event) => applyRequiredValidity(event, locale)}
               placeholder={copy.register.passwordPlaceholder}
               className="pl-10"
               autoComplete="new-password"
@@ -262,8 +314,8 @@ export function InternationalRegisterPage({ locale }: { locale: InternationalLoc
             />
           </span>
         </label>
-        <p className="text-xs leading-5 text-slate-500">{copy.register.passwordHelp}</p>
-        <TurnstileWidget onToken={setTurnstileToken} />
+        <PasswordStrength password={password} locale={locale} />
+        <TurnstileWidget onToken={setTurnstileToken} language={turnstileLanguage(locale)} />
         {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
         <Button
           type="submit"
@@ -284,5 +336,6 @@ export function InternationalRegisterPage({ locale }: { locale: InternationalLoc
         </p>
       </form>
     </AuthShell>
+    </>
   );
 }

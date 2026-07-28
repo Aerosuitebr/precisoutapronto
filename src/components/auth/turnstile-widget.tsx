@@ -14,6 +14,7 @@ declare global {
           'error-callback'?: () => void;
           'expired-callback'?: () => void;
           theme?: 'light' | 'dark' | 'auto';
+          language?: string;
         }
       ) => string;
       reset: (widgetId?: string) => void;
@@ -26,10 +27,12 @@ const SCRIPT_ID = 'cf-turnstile-script';
 
 export function TurnstileWidget({
   onToken,
-  className
+  className,
+  language = 'auto'
 }: {
   onToken: (token: string) => void;
   className?: string;
+  language?: 'auto' | 'en' | 'es' | 'pt-br';
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
@@ -54,7 +57,8 @@ export function TurnstileWidget({
         callback: (token) => onToken(token),
         'expired-callback': () => onToken(''),
         'error-callback': () => onToken(''),
-        theme: 'light'
+        theme: 'light',
+        language
       });
     }
 
@@ -79,12 +83,18 @@ export function TurnstileWidget({
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [siteKey]);
+  }, [siteKey, language]);
 
   if (missingKey) {
+    const missingCopy =
+      language === 'en'
+        ? 'Turnstile is not configured (dev). Signup without captcha.'
+        : language === 'es'
+          ? 'Turnstile no configurado (dev). Registro sin captcha.'
+          : 'Turnstile não configurado (dev). Cadastro sem captcha.';
     return (
       <p className={cn('rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-800', className)}>
-        Turnstile não configurado (dev). Cadastro sem captcha.
+        {missingCopy}
       </p>
     );
   }
