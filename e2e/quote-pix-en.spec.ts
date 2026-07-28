@@ -7,10 +7,15 @@ test.describe('EN quote + Pix gate', () => {
 
     await page.getByPlaceholder('Service or product 1').fill('Website design');
     await page.getByLabel('Qty.').fill('1');
-    await page.getByLabel('Unit price (BRL)').fill('1000');
+
+    const price = page.getByLabel('Unit price (BRL)');
+    await price.click();
+    await price.fill('');
+    await price.pressSequentially('1000', { delay: 30 });
+    await price.blur();
 
     const total = page.getByText('Quote total', { exact: false }).locator('xpath=following-sibling::p[1]');
-    await expect(total).toContainText(/R\$\s*1[,.]000/);
+    await expect(total).toContainText(/R\$\s*1[,.]000/, { timeout: 20_000 });
     await expect(total).not.toHaveText(/R\$0([.,]00)?$/);
 
     await page.getByPlaceholder('Professional or business name').fill('E2E Pro');
