@@ -1,8 +1,14 @@
 'use client';
 
-import { Languages } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { localeLabel, localePath, locales, type Locale } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
+
+const localeCode: Record<Locale, string> = {
+  'pt-BR': 'PT',
+  en: 'EN',
+  es: 'ES'
+};
 
 export function LocaleSwitcher({
   locale,
@@ -13,30 +19,35 @@ export function LocaleSwitcher({
   label?: string;
   paths?: Partial<Record<Locale, string>>;
 }) {
-  const router = useRouter();
-
   return (
-    <label className="relative inline-flex items-center">
-      <span className="sr-only">{label}</span>
-      <Languages
-        className="pointer-events-none absolute left-2.5 h-4 w-4 text-slate-500"
-        aria-hidden
-      />
-      <select
-        value={locale}
-        onChange={(event) => {
-          const nextLocale = event.target.value as Locale;
-          router.push(paths?.[nextLocale] || localePath[nextLocale]);
-        }}
-        className="h-10 appearance-none rounded-xl border border-slate-200 bg-white py-2 pl-8 pr-7 text-xs font-bold text-slate-700 shadow-sm outline-none transition hover:border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
-        aria-label={label}
-      >
-        {locales.map((item) => (
-          <option key={item} value={item}>
-            {localeLabel[item]}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div
+      role="group"
+      aria-label={label}
+      className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-slate-50/90 p-1 shadow-sm"
+    >
+      {locales.map((item) => {
+        const active = item === locale;
+        const href = paths?.[item] || localePath[item];
+
+        return (
+          <Link
+            key={item}
+            href={href}
+            hrefLang={item === 'pt-BR' ? 'pt-BR' : item}
+            aria-current={active ? 'true' : undefined}
+            aria-label={localeLabel[item]}
+            title={localeLabel[item]}
+            className={cn(
+              'inline-flex h-8 min-w-[2.25rem] items-center justify-center rounded-full px-2.5 text-[11px] font-bold tracking-wide transition',
+              active
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'text-slate-500 hover:bg-white hover:text-slate-900'
+            )}
+          >
+            {localeCode[item]}
+          </Link>
+        );
+      })}
+    </div>
   );
 }
