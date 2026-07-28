@@ -3,11 +3,12 @@ import type { NextRequest } from 'next/server';
 import {
   homePathForLocale,
   isLikelyBot,
-  isLocale,
   localeFromAcceptLanguage,
   localeFromPathname,
   LOCALE_COOKIE,
   LOCALE_COOKIE_MAX_AGE,
+  LOCALE_QUERY,
+  parseLocale,
   type Locale
 } from '@/lib/i18n-locale';
 
@@ -93,10 +94,22 @@ function applyCommonHeaders(request: NextRequest, response: NextResponse) {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathLocale = localeFromPathname(pathname);
-  const cookieLocaleRaw = request.cookies.get(LOCALE_COOKIE)?.value;
-  const cookieLocale = isLocale(cookieLocaleRaw) ? cookieLocaleRaw : null;
+  const forcedLocale = parseLocale(request.nextUrl.searchParams.get(LOCALE_QUERY));
+  const cookieLocale = parseLocale(request.cookies.get(LOCALE_COOKIE)?.value);
   const userAgent = request.headers.get('user-agent');
   const bot = isLikelyBot(userAgent);
+
+  // Escolha explícita via query (bandeira PT) ganha de cookie antigo e Accept-Language.
+  if (forcedLocale) {
+    const url = request.nextUrl.clone();
+    url.searchParams.delete(LOCALE_QUERY);
+    if (forcedLocale === 'en' || forcedLocale === 'es') {
+      url.pathname = homePathForLocale(forcedLocale);
+    }
+    const redirect = NextResponse.redirect(url);
+    setLocaleCookie(redirect, forcedLocale);
+    return applyCommonHeaders(request, redirect);
+  }
 
   // Home: usa preferência salva ou Accept-Language na primeira visita (sem redirecionar bots).
   if (pathname === '/' && !bot) {
@@ -114,7 +127,7 @@ export function middleware(request: NextRequest) {
   }
 
   const response = NextResponse.next();
-  // EN/ES na URL sincronizam a preferência. PT fica a cargo do switcher (cookie no clique).
+  // EN/ES na URL sincronizam a preferência. PT fica a cargo do switcher (cookie/query).
   if (pathLocale === 'en' || pathLocale === 'es') {
     setLocaleCookie(response, pathLocale);
   }

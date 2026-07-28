@@ -3,7 +3,11 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { localeLabel, localePath, locales, type Locale } from '@/lib/i18n';
-import { LOCALE_COOKIE, LOCALE_COOKIE_MAX_AGE } from '@/lib/i18n-locale';
+import {
+  hrefWithLocalePreference,
+  LOCALE_COOKIE,
+  LOCALE_COOKIE_MAX_AGE
+} from '@/lib/i18n-locale';
 import { cn } from '@/lib/utils';
 
 function FlagBrazil({ className }: { className?: string }) {
@@ -76,7 +80,8 @@ const localeFlag: Record<Locale, (props: { className?: string }) => ReactNode> =
 
 function persistLocalePreference(locale: Locale) {
   const secure = typeof window !== 'undefined' && window.location.protocol === 'https:' ? '; Secure' : '';
-  document.cookie = `${LOCALE_COOKIE}=${encodeURIComponent(locale)}; Path=/; Max-Age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax${secure}`;
+  // Valor literal (sem encode) para bater com o Set-Cookie do middleware.
+  document.cookie = `${LOCALE_COOKIE}=${locale}; Path=/; Max-Age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax${secure}`;
 }
 
 export function LocaleSwitcher({
@@ -96,13 +101,14 @@ export function LocaleSwitcher({
     >
       {locales.map((item) => {
         const active = item === locale;
-        const href = paths?.[item] || localePath[item];
+        const href = hrefWithLocalePreference(paths?.[item] || localePath[item], item);
         const Flag = localeFlag[item];
 
         return (
           <Link
             key={item}
             href={href}
+            prefetch={false}
             hrefLang={item === 'pt-BR' ? 'pt-BR' : item}
             aria-current={active ? 'true' : undefined}
             aria-label={localeLabel[item]}

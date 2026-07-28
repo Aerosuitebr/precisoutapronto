@@ -8,10 +8,36 @@ export const localeHomePath: Record<Locale, string> = {
 };
 
 export const LOCALE_COOKIE = 'rj_locale';
+export const LOCALE_QUERY = 'rj_locale';
 export const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 export function isLocale(value: string | undefined | null): value is Locale {
-  return value === 'pt-BR' || value === 'en' || value === 'es';
+  return parseLocale(value) !== null;
+}
+
+export function parseLocale(value: string | undefined | null): Locale | null {
+  if (!value) return null;
+  let normalized = value.trim();
+  try {
+    normalized = decodeURIComponent(normalized).trim();
+  } catch {
+    // mantém o valor bruto
+  }
+  if (normalized === 'pt-BR' || normalized === 'en' || normalized === 'es') return normalized;
+  return null;
+}
+
+/** Anexa `rj_locale` ao href PT para o middleware não sobrescrever com Accept-Language/cookie antigo. */
+export function hrefWithLocalePreference(href: string, locale: Locale): string {
+  if (locale !== 'pt-BR') return href;
+  const hashIndex = href.indexOf('#');
+  const withoutHash = hashIndex >= 0 ? href.slice(0, hashIndex) : href;
+  const hash = hashIndex >= 0 ? href.slice(hashIndex) : '';
+  if (new RegExp(`[?&]${LOCALE_QUERY}=`).test(withoutHash)) {
+    return href;
+  }
+  const join = withoutHash.includes('?') ? '&' : '?';
+  return `${withoutHash}${join}${LOCALE_QUERY}=pt-BR${hash}`;
 }
 
 /** Infere o idioma pela URL (`/en`, `/es` ou restante em PT). */
