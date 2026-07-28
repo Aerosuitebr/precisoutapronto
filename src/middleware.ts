@@ -1,5 +1,15 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import {
+  homePathForLocale,
+  isLikelyBot,
+  isLocale,
+  localeFromAcceptLanguage,
+  localeFromPathname,
+  LOCALE_COOKIE,
+  LOCALE_COOKIE_MAX_AGE,
+  type Locale
+} from '@/lib/i18n-locale';
 
 const DEVICE_COOKIE = 'rj_device';
 const PUBLIC_CACHEABLE_PATHS = new Set([
@@ -50,8 +60,21 @@ function isStagingRequest(request: NextRequest) {
   return host.startsWith('staging.') || host.startsWith('homolog.');
 }
 
-export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
+function localeCookieOptions() {
+  return {
+    httpOnly: false,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+    maxAge: LOCALE_COOKIE_MAX_AGE
+  };
+}
+
+function setLocaleCookie(response: NextResponse, locale: Locale) {
+  response.cookies.set(LOCALE_COOKIE, locale, localeCookieOptions());
+}
+
+function applyCommonHeaders(request: NextRequest, response: NextResponse) {
   if (isStagingRequest(request)) {
     response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }
@@ -65,6 +88,37 @@ export function middleware(request: NextRequest) {
     });
   }
   return response;
+}
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const pathLocale = localeFromPathname(pathname);
+  const cookieLocaleRaw = request.cookies.get(LOCALE_COOKIE)?.value;
+  const cookieLocale = isLocale(cookieLocaleRaw) ? cookieLocaleRaw : null;
+  const userAgent = request.headers.get('user-agent');
+  const bot = isLikelyBot(userAgent);
+
+  // Home: usa preferência salva ou Accept-Language na primeira visita (sem redirecionar bots).
+  if (pathname === '/' && !bot) {
+    const preferred = cookieLocale || localeFromAcceptLanguage(request.headers.get('accept-language'));
+    if (preferred !== 'pt-BR') {
+      const url = request.nextUrl.clone();
+      url.pathname = homePathForLocale(preferred);
+      const redirect = NextResponse.redirect(url);
+      setLocaleCookie(redirect, preferred);
+      return applyCommonHeaders(request, redirect);
+    }
+    const response = NextResponse.next();
+    if (!cookieLocale) setLocaleCookie(response, 'pt-BR');
+    return applyCommonHeaders(request, response);
+  }
+
+  const response = NextResponse.next();
+  // EN/ES na URL sincronizam a preferência. PT fica a cargo do switcher (cookie no clique).
+  if (pathLocale === 'en' || pathLocale === 'es') {
+    setLocaleCookie(response, pathLocale);
+  }
+  return applyCommonHeaders(request, response);
 }
 
 export const config = {
