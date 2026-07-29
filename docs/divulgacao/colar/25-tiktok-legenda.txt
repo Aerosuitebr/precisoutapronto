@@ -1,0 +1,34 @@
+TikTok · legenda + link
+
+Vídeo: 9:16 (CapCut com artes promo-*-stories.png, ver reel/CAPCUT.md)
+Não usar o mp4 16:9 do repo (letterbox no feed vertical).
+
+Público amplo: estudantes, profissionais liberais, MEI, freela, autônomos.
+
+---
+
+LEGENDA
+
+Ferramentas grátis pro dia a dia.
+Currículo, orçamento com Pix, recibo e proposta.
+Pra estudar, trabalhar ou atender cliente.
+Link na bio: resolvajato.com.br
+
+#estudante #advogado #MEI #freelancer #Pix #curriculo #ResolvaJato #ferramentasgratis #profissionalliberal
+
+---
+
+LINK (bio ou comentário fixo)
+
+https://resolvajato.com.br/?utm_source=tiktok&utm_medium=organic_social&utm_campaign=br_reel_marca
+
+---
+
+CHECKLIST CAPCUT / APP (se o upload web falhar)
+
+1. Abrir CapCut (ou app TikTok)
+2. Novo projeto 9:16 com as artes de docs/divulgacao/assets/promo-*-stories.png
+3. Seguir cortes em docs/divulgacao/reel/ROTEIRO.md (~15s)
+4. Trilha da biblioteca do app (BPM ~118–132)
+5. Exportar e publicar com a legenda acima
+6. Colar o link na bio ou no primeiro comentário

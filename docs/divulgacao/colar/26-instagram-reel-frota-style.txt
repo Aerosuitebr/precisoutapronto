@@ -1,0 +1,37 @@
+Instagram Reel · pegada Frota 162 (dor → solução → CTA)
+
+Referência: https://www.instagram.com/p/DZ58wh6gMqZ/
+Vídeo pronto: docs/divulgacao/reel/resolvajato-reel-frota-style-7s.mp4
+Artes: docs/divulgacao/assets/reel-frota-style-dor.png
+       docs/divulgacao/assets/reel-frota-style-meio.png
+       docs/divulgacao/assets/reel-frota-style-cta.png
+
+---
+
+LEGENDA (colar no Reel)
+
+Pare de improvisar no Word.
+Crie, aprove e receba no Pix.
+
+https://resolvajato.com.br/orcamento-com-pix?utm_source=instagram&utm_medium=organic_social&utm_campaign=reel_frota_style
+
+#ResolvaJato #orcamento #Pix #MEI #freelancer #profissionalLiberal #ferramentasgratis
+
+---
+
+TEXTOS NA TELA
+
+0.0–3.5   Pare de improvisar no Word.
+3.1–5.9   Crie, aprove e receba no Pix. (fade)
+5.5–14.9  Arte de marca (fade + explode) + CTA
+
+Narração (sem corte):
+0.28s   Pare de improvisar no Word!
+3.22s   Crie, aprove e receba no Pix.
+6.10s   Comece agora mesmo, acesse resolvajato.com.br e facilite a sua vida.
+        (+1s de pausa)
+13.02s  Resolva Jato!
+
+Arte final: assets/reel-frota-style-cta-marca.png (base promo-marca-site-stories)
+Trilha: neon-synthwave-drive.mp3
+Vídeo: docs/divulgacao/reel/resolvajato-reel-frota-style-7s.mp4 (~14.9s)

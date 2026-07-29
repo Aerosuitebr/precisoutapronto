@@ -1,0 +1,43 @@
+Facebook · Página Resolva Jato
+
+Ângulo: orçamento com Pix (público amplo)
+Artes de hoje (usar estas, não as OG antigas):
+  Perfil: docs/divulgacao/assets/perfil-fb-marca-hoje.png
+  Capa:   docs/divulgacao/assets/capa-fb-marca-hoje.png
+  Post:   docs/divulgacao/assets/promo-orcamento-pix-stories.png
+  Extra:  docs/divulgacao/assets/promo-marca-site-stories.png
+          docs/divulgacao/assets/promo-ferramentas-vivo-stories.png
+
+Público: estudantes, profissionais liberais (advogados etc.), MEI, freelancer, autônomos e pequenos negócios. Não restringir a copy só a MEI/freela.
+
+---
+
+BIO DA PÁGINA
+
+Ferramentas grátis pra estudar, trabalhar e vender.
+Currículo, orçamento com Pix, recibo, proposta e calculadoras.
+resolvajato.com.br
+
+---
+
+TEXTO DO POST
+
+Orçamento com Pix no WhatsApp.
+Cliente aprova no celular. Você recebe.
+
+Serve pra quem atende cliente: profissional liberal, MEI, freela, autônomo.
+Sem app extra, sem cartão. Grátis pra começar:
+
+https://resolvajato.com.br/orcamento-com-pix?utm_source=facebook&utm_medium=organic_social&utm_campaign=br_pagina_orcamento
+
+Resolva Jato: PDFs, Pix e calculadoras pro dia a dia.
+
+---
+
+GRUPO (1 só · não spammar)
+
+Usar: docs/divulgacao/colar/04-comunidade-mei.txt
+(ou adaptar o ângulo do grupo: currículo pra estudantes, rescisão pra CLT, etc.)
+
+UTM do grupo (se quiser marcar à parte):
+utm_source=facebook&utm_medium=group&utm_campaign=br_mei_clt
