@@ -385,6 +385,61 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
                     </p>
                   </div>
                 </div>
+
+                <div className="flex items-center justify-between rounded-xl bg-slate-900 px-4 py-3 text-white">
+                  <span className="text-sm font-semibold">
+                    {t.notaTotalLabel}
+                  </span>
+                  <span className="rj-display text-lg font-bold">
+                    {resultado.notaTotalEstimada}/1000
+                  </span>
+                </div>
+
+                <ul className="space-y-2">
+                  {resultado.competencias.map((c) => (
+                    <li
+                      key={c.id}
+                      className="rounded-xl border border-slate-200 p-3"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-bold text-slate-800">
+                          C{c.id} · {c.titulo}
+                        </p>
+                        <span className="rj-display text-sm font-bold text-sky-700">
+                          {c.nota}/200
+                        </span>
+                      </div>
+                      <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                        <div
+                          className="h-full rounded-full bg-sky-500"
+                          style={{ width: `${(c.nota / 200) * 100}%` }}
+                        />
+                      </div>
+                      <p className="mt-1 text-xs text-slate-600">{c.comentario}</p>
+                    </li>
+                  ))}
+                </ul>
+
+                {resultado.alertas.length > 0 ? (
+                  <div className="space-y-1.5 rounded-xl bg-amber-50 p-3">
+                    <p className="text-xs font-bold uppercase tracking-wide text-amber-900">
+                      {t.pontosAtencaoLabel}
+                    </p>
+                    {resultado.alertas.map((a, i) => (
+                      <p
+                        key={i}
+                        className="flex items-start gap-1.5 text-xs font-medium text-amber-900"
+                      >
+                        <AlertTriangle
+                          className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                          aria-hidden
+                        />
+                        {a}
+                      </p>
+                    ))}
+                  </div>
+                ) : null}
+
                 <p className="text-xs leading-5 text-slate-500">
                   {t.invalidHint}
                 </p>

@@ -1,20 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, PenLine, QrCode, Sparkles, Wallet } from 'lucide-react';
+import { ArrowRight, CheckCircle2, PenLine, QrCode, Wallet } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Button } from '@/components/ui/button';
+import { REDACAO_HOME_DEMO } from '@/lib/redacao-enem/demo-showcase';
 import { cn } from '@/lib/utils';
 
 const laneCtaClass =
   'h-11 w-full bg-amber-400 px-5 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/25 ring-1 ring-amber-300/50 transition hover:bg-amber-300 sm:w-auto';
 
 function EnemPreview() {
-  const competencias = [
-    { label: 'C1 Norma culta', score: 180 },
-    { label: 'C3 Argumentação', score: 160 },
-    { label: 'C5 Intervenção', score: 160 }
-  ];
+  const demo = REDACAO_HOME_DEMO;
+  const highlight = demo.competencias.filter((c) => [1, 3, 5].includes(c.id));
 
   return (
     <div className="overflow-hidden rounded-2xl border border-white/15 bg-white text-slate-900 shadow-2xl shadow-black/30">
@@ -25,35 +23,34 @@ function EnemPreview() {
         </span>
       </div>
       <div className="p-4">
-        <p className="text-xs leading-5 text-slate-500">
-          “Nos últimos anos, o desafio da educação digital no Brasil tem se tornado cada vez mais
-          evidente diante das desigualdades de acesso...”
-        </p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Tema</p>
+        <p className="mt-1 line-clamp-2 text-xs font-semibold leading-5 text-slate-800">{demo.tema}</p>
+        <p className="mt-3 text-xs leading-5 text-slate-600">“{demo.trecho}”</p>
         <div className="mt-4 flex items-end justify-between gap-3 border-t border-slate-100 pt-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Nota geral</p>
-          <p className="text-3xl font-black tracking-tight text-slate-950">860</p>
+          <p className="text-3xl font-black tracking-tight text-slate-950">{demo.notaTotal}</p>
         </div>
         <div className="mt-3 space-y-2">
-          {competencias.map((item) => (
-            <div key={item.label} className="flex items-center gap-2.5">
+          {highlight.map((item) => (
+            <div key={item.id} className="flex items-center gap-2.5">
               <span className="w-[7.5rem] shrink-0 truncate text-[11px] font-medium text-slate-600">
                 {item.label}
               </span>
               <div className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-slate-100">
                 <div
                   className="h-full rounded-full bg-sky-500"
-                  style={{ width: `${(item.score / 200) * 100}%` }}
+                  style={{ width: `${(item.nota / 200) * 100}%` }}
                 />
               </div>
               <span className="w-8 shrink-0 text-right text-[11px] font-bold text-slate-700">
-                {item.score}
+                {item.nota}
               </span>
             </div>
           ))}
         </div>
-        <p className="mt-3 flex items-center gap-1.5 text-[11px] text-slate-500">
-          <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-          Feedback por competência, em segundos.
+        <p className="mt-3 flex items-start gap-1.5 text-[11px] leading-4 text-emerald-800">
+          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />
+          {demo.pontosFortes[1]}
         </p>
       </div>
     </div>
