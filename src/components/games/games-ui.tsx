@@ -16,7 +16,7 @@ export function GamesReadablePanel({
   return (
     <div
       className={cn(
-        'rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.35)] backdrop-blur-md sm:p-8',
+        'rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5 sm:p-8',
         className
       )}
     >
@@ -109,30 +109,74 @@ export function SetupTable({ game }: { game: GameEntry }) {
   );
 }
 
-export function GameCard({ game, className }: { game: GameEntry; className?: string }) {
+function rankBarClass(rank: number) {
+  if (rank === 1) return 'from-teal-500 via-emerald-400 to-teal-300';
+  if (rank <= 4) return 'from-cyan-500 via-sky-400 to-blue-400';
+  if (rank <= 7) return 'from-indigo-400 via-sky-400 to-cyan-300';
+  return 'from-amber-400 via-yellow-300 to-orange-300';
+}
+
+export function GameCard({
+  game,
+  className,
+  featured = false
+}: {
+  game: GameEntry;
+  className?: string;
+  featured?: boolean;
+}) {
   return (
     <Link
       href={`/games/jogos/${game.slug}`}
       className={cn(
-        'group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md',
+        'group relative flex cursor-pointer overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_30px_-18px_rgba(15,23,42,0.45)] ring-1 ring-slate-900/5 transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-[0_18px_40px_-18px_rgba(15,23,42,0.5)]',
+        featured
+          ? 'flex-col gap-4 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8'
+          : 'flex-col p-6',
         className
       )}
     >
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-teal-400 via-cyan-400 to-amber-300 opacity-80" />
-      <div className="flex min-w-0 items-start justify-between gap-3">
-        <span className="rj-display shrink-0 text-2xl font-black text-teal-600">#{game.rank}</span>
-        <span className="max-w-[70%] break-words rounded-full bg-slate-100 px-2.5 py-1 text-right text-[11px] font-semibold uppercase leading-4 tracking-wide text-slate-500">
+      <div
+        className={cn('absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r opacity-90', rankBarClass(game.rank))}
+      />
+      <div
+        className={cn(
+          'flex shrink-0 items-start justify-between gap-3',
+          featured && 'sm:flex-col sm:items-start sm:justify-center'
+        )}
+      >
+        <span
+          className={cn(
+            'rj-display font-black leading-none text-teal-600',
+            featured ? 'text-5xl sm:text-6xl' : 'text-4xl'
+          )}
+        >
+          #{game.rank}
+        </span>
+        <span className="max-w-[70%] break-words rounded-full bg-slate-100 px-2.5 py-1 text-right text-[11px] font-semibold uppercase leading-4 tracking-wide text-slate-500 sm:max-w-none">
           {game.platforms.join(' · ')}
         </span>
       </div>
-      <h3 className="rj-display mt-4 break-words text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800">
-        {game.title}
-      </h3>
-      <p className="mt-3 flex-1 break-words text-base leading-7 text-slate-700">{game.blurb}</p>
-      <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700">
-        Ver setup
-        <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-      </p>
+      <div className={cn('min-w-0 flex-1', !featured && 'mt-4')}>
+        {featured ? (
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+            Destaque do ranking
+          </p>
+        ) : null}
+        <h3
+          className={cn(
+            'rj-display break-words font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800',
+            featured ? 'mt-1 text-2xl sm:text-3xl' : 'text-xl'
+          )}
+        >
+          {game.title}
+        </h3>
+        <p className="mt-3 break-words text-base leading-7 text-slate-700">{game.blurb}</p>
+        <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-teal-700">
+          Ver setup
+          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+        </p>
+      </div>
     </Link>
   );
 }
@@ -141,7 +185,7 @@ export function HardwareCard({ guide }: { guide: HardwareGuide }) {
   return (
     <Link
       href={`/games/hardware/${guide.slug}`}
-      className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
+      className="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.45)] ring-1 ring-slate-900/5 transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-[0_18px_40px_-18px_rgba(15,23,42,0.5)]"
     >
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-amber-600">Guia</p>
       <h3 className="rj-display mt-2 text-xl font-extrabold text-slate-900 group-hover:text-amber-800">
@@ -159,7 +203,7 @@ export function StoreCard({ store }: { store: GameStore }) {
       href={store.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+      className="block cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.45)] ring-1 ring-slate-900/5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_18px_40px_-18px_rgba(15,23,42,0.5)]"
     >
       <div className="flex items-center justify-between gap-3">
         <h3 className="rj-display text-base font-extrabold text-slate-900">{store.name}</h3>

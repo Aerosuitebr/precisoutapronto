@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { GameCard, GamesReadablePanel, SectionAccent } from '@/components/games/games-ui';
+import { GamesReadablePanel, SectionAccent } from '@/components/games/games-ui';
 import { listGamesByRank } from '@/lib/games/games';
+import { TopJogosClient } from './top-jogos-client';
 
 export const metadata: Metadata = {
   title: 'Top 10 jogos com setup sugerido',
@@ -25,11 +26,7 @@ export default function TopJogosPage() {
             plataformas, dicas e PC sugerido.
           </p>
         </GamesReadablePanel>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {games.map((game) => (
-            <GameCard key={game.slug} game={game} />
-          ))}
-        </div>
+        <TopJogosClient games={games} />
       </SectionAccent>
     </div>
   );

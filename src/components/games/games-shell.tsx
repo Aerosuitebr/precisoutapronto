@@ -90,14 +90,14 @@ export function GamesShell({
         className
       )}
     >
-      {/* Fundo suave: collage atenuada + velatura (menos fadiga visual) */}
+      {/* Fundo limpo: gradiente + collage bem sutil (sem sujeira atras dos cards) */}
       <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-teal-50/40 to-amber-50/30" />
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-teal-50/50 to-amber-50/40" />
         <div
-          className="absolute inset-0 bg-[url('/background_games.png')] bg-cover bg-[center_35%] bg-no-repeat opacity-[0.28] sm:bg-center sm:opacity-[0.22]"
+          className="absolute inset-0 bg-[url('/background_games.png')] bg-cover bg-[center_35%] bg-no-repeat opacity-[0.12] blur-[1.5px] sm:bg-center sm:opacity-[0.1]"
         />
-        <div className="absolute inset-0 bg-white/70 sm:bg-white/75" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-transparent to-white/60" />
+        <div className="absolute inset-0 bg-white/82 sm:bg-white/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-transparent to-white/70" />
       </div>
 
       <GamesHeader />
