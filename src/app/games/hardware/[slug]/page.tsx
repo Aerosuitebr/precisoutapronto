@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ProductBridge } from '@/components/games/games-ui';
+import { ProductBridge, GamesReadablePanel } from '@/components/games/games-ui';
 import { JATO_GAMES } from '@/lib/games/brand';
 import { getHardwareGuide, hardwareGuides } from '@/lib/games/hardware';
 import { getViralBaseUrl } from '@/lib/viral-loop';
@@ -83,7 +83,7 @@ export default async function HardwareGuidePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav className="text-xs text-slate-500">
+      <nav className="mb-6 rounded-xl border border-white/70 bg-white/85 px-3 py-2 text-xs text-slate-500 backdrop-blur-sm">
         <Link href="/games" className="hover:text-teal-700">
           Jato Games
         </Link>
@@ -95,17 +95,19 @@ export default async function HardwareGuidePage({ params }: Props) {
         <span className="text-slate-700">{guide.title}</span>
       </nav>
 
-      <p className="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-amber-600">
-        {guide.readTime} de leitura
-      </p>
-      <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-        {guide.title}
-      </h1>
-      <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-950">
-        {guide.answer}
-      </p>
+      <GamesReadablePanel>
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">
+          {guide.readTime} de leitura
+        </p>
+        <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+          {guide.title}
+        </h1>
+        <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-950">
+          {guide.answer}
+        </p>
+      </GamesReadablePanel>
 
-      <div className="mt-10 space-y-8">
+      <div className="mt-10 space-y-8 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm sm:p-7">
         {guide.sections.map((section) => (
           <section key={section.title}>
             <h2 className="rj-display text-xl font-extrabold text-slate-900">{section.title}</h2>
@@ -126,12 +128,14 @@ export default async function HardwareGuidePage({ params }: Props) {
       </div>
 
       <section className="mt-12">
-        <h2 className="rj-display text-xl font-extrabold text-slate-900">Perguntas frequentes</h2>
-        <div className="mt-4 space-y-3">
+        <h2 className="rj-display mb-4 rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-xl font-extrabold text-slate-900 backdrop-blur-sm">
+          Perguntas frequentes
+        </h2>
+        <div className="space-y-3">
           {guide.faq.map((item) => (
             <div
               key={item.question}
-              className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+              className="rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-sm backdrop-blur-sm"
             >
               <p className="text-sm font-bold text-slate-900">{item.question}</p>
               <p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p>

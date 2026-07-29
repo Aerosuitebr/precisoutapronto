@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ProductBridge, SetupTable } from '@/components/games/games-ui';
+import { ProductBridge, SetupTable, GamesReadablePanel } from '@/components/games/games-ui';
 import { JATO_GAMES } from '@/lib/games/brand';
 import { gamesCatalog, getGame } from '@/lib/games/games';
 import { getViralBaseUrl } from '@/lib/viral-loop';
@@ -77,7 +77,7 @@ export default async function GamePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav className="break-words text-xs text-slate-500">
+      <nav className="mb-6 break-words rounded-xl border border-white/70 bg-white/85 px-3 py-2 text-xs text-slate-500 backdrop-blur-sm">
         <Link href="/games" className="hover:text-teal-700">
           Jato Games
         </Link>
@@ -89,30 +89,32 @@ export default async function GamePage({ params }: Props) {
         <span className="text-slate-700">{game.title}</span>
       </nav>
 
-      <p className="mt-6 break-words text-sm font-bold uppercase tracking-[0.16em] text-teal-700">
-        #{game.rank} · {game.genres.join(' · ')}
-      </p>
-      <h1 className="rj-display mt-2 break-words text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-        {game.title}
-      </h1>
-      <p className="mt-3 max-w-3xl break-words text-base leading-7 text-slate-600">{game.blurb}</p>
-      <p className="mt-2 break-words text-sm text-slate-500">
-        Plataformas: {game.platforms.join(', ')}
-      </p>
+      <GamesReadablePanel>
+        <p className="break-words text-sm font-bold uppercase tracking-[0.16em] text-teal-700">
+          #{game.rank} · {game.genres.join(' · ')}
+        </p>
+        <h1 className="rj-display mt-2 break-words text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+          {game.title}
+        </h1>
+        <p className="mt-3 max-w-3xl break-words text-base leading-7 text-slate-600">{game.blurb}</p>
+        <p className="mt-2 break-words text-sm text-slate-500">
+          Plataformas: {game.platforms.join(', ')}
+        </p>
+      </GamesReadablePanel>
 
       <div className="mt-10 grid min-w-0 gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="min-w-0 space-y-8">
-          <section className="min-w-0">
+          <section className="min-w-0 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm">
             <h2 className="rj-display text-xl font-extrabold text-slate-900">Por que está no radar</h2>
             <p className="mt-3 break-words text-sm leading-7 text-slate-600">{game.whyPopular}</p>
           </section>
-          <section className="min-w-0">
+          <section className="min-w-0 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm">
             <h2 className="rj-display text-xl font-extrabold text-slate-900">Setup sugerido</h2>
             <div className="mt-4 min-w-0">
               <SetupTable game={game} />
             </div>
           </section>
-          <section>
+          <section className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm">
             <h2 className="rj-display text-xl font-extrabold text-slate-900">Dicas rápidas</h2>
             <ul className="mt-3 space-y-2">
               {game.tips.map((tip) => (
@@ -130,7 +132,7 @@ export default async function GamePage({ params }: Props) {
           <ProductBridge />
           <Link
             href="/games/hardware/escolher-placa-de-video"
-            className="block rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-700 shadow-sm transition hover:border-amber-300"
+            className="block rounded-2xl border border-slate-200 bg-white/95 p-5 text-sm text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-amber-300"
           >
             Montando PC? Veja o guia de placa de vídeo.
           </Link>

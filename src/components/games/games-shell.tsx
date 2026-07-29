@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 export function GamesHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white">
+    <header className="sticky top-0 z-40 border-b border-white/60 bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href={JATO_GAMES.path} className="flex min-w-0 items-center gap-2.5">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-teal-500 text-white shadow-sm shadow-teal-500/25">
@@ -23,7 +23,7 @@ export function GamesHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white/80 hover:text-slate-900"
             >
               {item.label}
             </Link>
@@ -39,13 +39,13 @@ export function GamesHeader() {
       {/* Nav com scroll horizontal isolado para nao puxar a pagina no eixo Y */}
       <nav
         aria-label="Jato Games mobile"
-        className="flex touch-pan-x gap-1 overflow-x-auto overscroll-x-contain border-t border-slate-100 px-4 py-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
+        className="flex touch-pan-x gap-1 overflow-x-auto overscroll-x-contain border-t border-slate-100/80 px-4 py-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
       >
         {JATO_GAMES.nav.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700"
+            className="shrink-0 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700"
           >
             {item.label}
           </Link>
@@ -57,8 +57,8 @@ export function GamesHeader() {
 
 export function GamesFooter() {
   return (
-    <footer className="mt-auto border-t border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <footer className="relative z-10 mt-auto border-t border-white/60 bg-white/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
           <span className="font-semibold text-slate-800">{JATO_GAMES.name}</span>
           {' · '}
@@ -86,20 +86,22 @@ export function GamesShell({
     <div
       className={cn(
         // svh = altura com a barra do browser visivel; evita loop sobe/desce do 100vh no mobile
-        'relative flex min-h-svh flex-col overscroll-x-none bg-slate-50 text-slate-800',
+        'relative flex min-h-svh flex-col overscroll-x-none text-slate-800',
         className
       )}
     >
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[url('/background_games.png')] bg-cover bg-[center_30%] bg-no-repeat opacity-[0.18]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white/95 via-slate-50/92 to-indigo-50/90"
-        aria-hidden
-      />
+      {/* Fundo da vertical inteira: collage no lugar do branco */}
+      <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
+        <div
+          className="absolute inset-0 bg-[url('/background_games.png')] bg-cover bg-[center_35%] bg-no-repeat sm:bg-center"
+        />
+        {/* Velatura para texto/cards; a arte continua visivel nas laterais e no scroll */}
+        <div className="absolute inset-0 bg-white/55 sm:bg-white/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/45" />
+      </div>
+
       <GamesHeader />
-      <main className="relative min-w-0 flex-1 overflow-x-clip">{children}</main>
+      <main className="relative z-0 min-w-0 flex-1 overflow-x-clip">{children}</main>
       <GamesFooter />
     </div>
   );

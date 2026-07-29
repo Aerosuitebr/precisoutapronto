@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, Cpu, Gamepad2, Joystick, Store } from 'lucide-react';
 import {
   GameCard,
-  GamesHeroBackdrop,
+  GamesReadablePanel,
   HardwareCard,
   ProductBridge,
   SectionAccent
@@ -60,45 +60,42 @@ export default function GamesHubPage() {
 
   return (
     <div>
-      <section className="relative min-h-[28rem] overflow-hidden border-b border-slate-200/80 sm:min-h-[34rem]">
-        <GamesHeroBackdrop />
-        <div className="relative mx-auto flex max-w-6xl items-center px-4 py-14 sm:px-6 sm:py-20">
-          <div className="w-full max-w-xl rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_20px_50px_-28px_rgba(15,23,42,0.35)] backdrop-blur-md sm:p-8">
-            <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
-              <Gamepad2 className="h-3.5 w-3.5" />
-              Jato Games
-            </p>
-            <h1 className="rj-display mt-4 text-[clamp(2.1rem,4.8vw,3.4rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
-              {JATO_GAMES.tagline}
-            </h1>
-            <p className="mt-4 text-base leading-7 text-slate-700 sm:text-lg">{JATO_GAMES.description}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/games/top-jogos"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:bg-teal-500"
-              >
-                Ver top jogos
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/games/hardware"
-                className="inline-flex h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-6 text-sm font-semibold text-slate-800 transition hover:border-teal-300 hover:text-teal-800"
-              >
-                Guias de hardware
-              </Link>
-            </div>
+      <section className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <GamesReadablePanel className="max-w-xl">
+          <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+            <Gamepad2 className="h-3.5 w-3.5" />
+            Jato Games
+          </p>
+          <h1 className="rj-display mt-4 text-[clamp(2.1rem,4.8vw,3.4rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
+            {JATO_GAMES.tagline}
+          </h1>
+          <p className="mt-4 text-base leading-7 text-slate-700 sm:text-lg">{JATO_GAMES.description}</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/games/top-jogos"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:bg-teal-500"
+            >
+              Ver top jogos
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/games/hardware"
+              className="inline-flex h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-6 text-sm font-semibold text-slate-800 transition hover:border-teal-300 hover:text-teal-800"
+            >
+              Guias de hardware
+            </Link>
           </div>
-        </div>
+        </GamesReadablePanel>
       </section>
 
-      <section className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
         <SectionAccent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {pillars.map((pillar) => (
               <Link
                 key={pillar.href}
                 href={pillar.href}
-                className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+                className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
               >
                 <div className="flex items-center justify-between gap-3">
                   <pillar.icon className="h-5 w-5 text-teal-600" aria-hidden />
@@ -116,10 +113,10 @@ export default function GamesHubPage() {
 
       <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
         <SectionAccent>
-          <div className="mb-6 flex items-end justify-between gap-4">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-white/70 bg-white/85 px-4 py-3 backdrop-blur-sm">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Em alta</p>
-              <h2 className="rj-display mt-2 text-2xl font-extrabold text-slate-950 sm:text-3xl">
+              <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
                 Top jogos com setup
               </h2>
             </div>
@@ -137,11 +134,13 @@ export default function GamesHubPage() {
 
       <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
         <SectionAccent>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">Hardware</p>
-          <h2 className="rj-display mt-2 text-2xl font-extrabold text-slate-950 sm:text-3xl">
-            Guias para não comprar errado
-          </h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="mb-6 rounded-2xl border border-white/70 bg-white/85 px-4 py-3 backdrop-blur-sm">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">Hardware</p>
+            <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
+              Guias para não comprar errado
+            </h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
             {hardwareGuides.slice(0, 4).map((guide) => (
               <HardwareCard key={guide.slug} guide={guide} />
             ))}

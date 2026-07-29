@@ -1,28 +1,26 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import type { GameEntry } from '@/lib/games/games';
 import type { HardwareGuide } from '@/lib/games/hardware';
 import type { GameStore } from '@/lib/games/stores';
-import gamesBackground from '@/assets/background_games.png';
 import { cn } from '@/lib/utils';
 
-/** Hero full-bleed com collage dos jogos + scrims para manter texto legível. */
-export function GamesHeroBackdrop() {
+/** Painel legível sobre o fundo collage (títulos e intros). */
+export function GamesReadablePanel({
+  children,
+  className
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      <Image
-        src={gamesBackground}
-        alt=""
-        fill
-        priority
-        placeholder="blur"
-        sizes="100vw"
-        className="scale-105 object-cover object-[62%_42%] sm:scale-100 sm:object-center"
-      />
-      {/* Velatura leve: a arte aparece nas bordas; o painel do hero garante o texto */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/45 to-transparent sm:from-white/70 sm:via-white/25" />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-transparent to-white/55" />
+    <div
+      className={cn(
+        'rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.35)] backdrop-blur-md sm:p-8',
+        className
+      )}
+    >
+      {children}
     </div>
   );
 }
@@ -116,7 +114,7 @@ export function GameCard({ game, className }: { game: GameEntry; className?: str
     <Link
       href={`/games/jogos/${game.slug}`}
       className={cn(
-        'group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md',
+        'group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md',
         className
       )}
     >
@@ -143,7 +141,7 @@ export function HardwareCard({ guide }: { guide: HardwareGuide }) {
   return (
     <Link
       href={`/games/hardware/${guide.slug}`}
-      className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
+      className="group rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
     >
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-amber-600">Guia</p>
       <h3 className="rj-display mt-2 text-lg font-extrabold text-slate-900 group-hover:text-amber-800">
@@ -161,7 +159,7 @@ export function StoreCard({ store }: { store: GameStore }) {
       href={store.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+      className="block rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
     >
       <div className="flex items-center justify-between gap-3">
         <h3 className="rj-display text-base font-extrabold text-slate-900">{store.name}</h3>
