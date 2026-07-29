@@ -15,11 +15,145 @@ import type { Referencia, ReferenciaTipo } from '@/lib/referencias-abnt/types';
 import { exportElementToPdf } from '@/lib/simple-element-pdf';
 import { cn } from '@/lib/utils';
 
-const TIPO_OPTIONS: Array<{ id: ReferenciaTipo; label: string; icon: typeof Globe2 }> = [
-  { id: 'site', label: 'Página / site', icon: Globe2 },
-  { id: 'livro', label: 'Livro', icon: Library },
-  { id: 'artigo', label: 'Artigo científico', icon: Newspaper }
-];
+type Locale = 'pt-BR' | 'en' | 'es';
+
+const copy = {
+  'pt-BR': {
+    authTitle: 'Referências ABNT',
+    authDescription: 'Cadastre-se gratuitamente para gerar suas referências.',
+    heroTitle: 'Referências no padrão ABNT em segundos',
+    heroSubtitle:
+      'Preencha os dados da fonte (site, livro ou artigo) e receba a referência já formatada, ordenada e pronta para colar no seu trabalho.',
+    tipoTabAriaLabel: 'Tipo de fonte',
+    tipoSite: 'Página / site',
+    tipoLivro: 'Livro',
+    tipoArtigo: 'Artigo científico',
+    autorLabel: 'Autor(es)',
+    autorHint: 'Separe vários autores com ; . Ex.: Silva, João; Souza, Maria',
+    autorPlaceholder: 'Sobrenome, Nome',
+    tituloLabel: 'Título',
+    tituloPlaceholder: 'Título da obra, página ou artigo',
+    anoLabel: 'Ano',
+    nomeSiteLabel: 'Nome do site',
+    nomeSitePlaceholder: 'Ex.: Resolva Jato',
+    urlLabel: 'URL',
+    urlPlaceholder: 'https://...',
+    dataAcessoLabel: 'Data de acesso',
+    editoraLabel: 'Editora',
+    cidadeLabel: 'Cidade',
+    edicaoLabel: 'Edição',
+    edicaoHint: 'Ex.: 3. ed.',
+    revistaLabel: 'Revista / periódico',
+    volumeLabel: 'Volume',
+    numeroLabel: 'Número',
+    paginasLabel: 'Páginas',
+    paginasHint: 'Ex.: 12-30',
+    adicionarBtn: 'Adicionar referência',
+    listTitle: (n: number) => `Suas referências (${n})`,
+    copiarTudoBtn: 'Copiar tudo',
+    pdfBtn: 'PDF',
+    emptyList:
+      'Adicione uma referência ao lado. Elas aparecem aqui já em ordem alfabética por autor.',
+    copiarUmaBtn: 'Copiar',
+    removerBtn: 'Remover',
+    footerNote:
+      'Formatação segue as regras gerais da ABNT NBR 6023. Confira sempre as normas específicas da sua instituição.',
+    toastAdded: 'Referência adicionada!',
+    toastCopiedAll: 'Todas as referências foram copiadas!',
+    toastCopiedOne: 'Referência copiada!',
+    toastPdf: 'PDF gerado!',
+  },
+  en: {
+    authTitle: 'ABNT References',
+    authDescription: 'Sign up for free to generate your references.',
+    heroTitle: 'ABNT-style references in seconds',
+    heroSubtitle:
+      'Fill in the source details (website, book or article) and get the reference already formatted, sorted and ready to paste into your paper, using ABNT (the Brazilian citation standard).',
+    tipoTabAriaLabel: 'Source type',
+    tipoSite: 'Web page / website',
+    tipoLivro: 'Book',
+    tipoArtigo: 'Scientific article',
+    autorLabel: 'Author(s)',
+    autorHint: 'Separate multiple authors with ; . Ex.: Silva, João; Souza, Maria',
+    autorPlaceholder: 'Last name, First name',
+    tituloLabel: 'Title',
+    tituloPlaceholder: 'Title of the work, page or article',
+    anoLabel: 'Year',
+    nomeSiteLabel: 'Website name',
+    nomeSitePlaceholder: 'Ex.: Resolva Jato',
+    urlLabel: 'URL',
+    urlPlaceholder: 'https://...',
+    dataAcessoLabel: 'Access date',
+    editoraLabel: 'Publisher',
+    cidadeLabel: 'City',
+    edicaoLabel: 'Edition',
+    edicaoHint: 'Ex.: 3rd ed.',
+    revistaLabel: 'Journal / periodical',
+    volumeLabel: 'Volume',
+    numeroLabel: 'Issue number',
+    paginasLabel: 'Pages',
+    paginasHint: 'Ex.: 12-30',
+    adicionarBtn: 'Add reference',
+    listTitle: (n: number) => `Your references (${n})`,
+    copiarTudoBtn: 'Copy all',
+    pdfBtn: 'PDF',
+    emptyList:
+      'Add a reference on the side. They will appear here already sorted alphabetically by author.',
+    copiarUmaBtn: 'Copy',
+    removerBtn: 'Remove',
+    footerNote:
+      'Formatting follows the general rules of ABNT NBR 6023, the Brazilian citation standard. Always check the specific rules of your institution.',
+    toastAdded: 'Reference added!',
+    toastCopiedAll: 'All references were copied!',
+    toastCopiedOne: 'Reference copied!',
+    toastPdf: 'PDF generated!',
+  },
+  es: {
+    authTitle: 'Referencias ABNT',
+    authDescription: 'Regístrate gratis para generar tus referencias.',
+    heroTitle: 'Referencias en el estándar ABNT en segundos',
+    heroSubtitle:
+      'Completa los datos de la fuente (sitio, libro o artículo) y recibe la referencia ya formateada, ordenada y lista para pegar en tu trabajo, usando ABNT (el estándar de citas brasileño).',
+    tipoTabAriaLabel: 'Tipo de fuente',
+    tipoSite: 'Página / sitio web',
+    tipoLivro: 'Libro',
+    tipoArtigo: 'Artículo científico',
+    autorLabel: 'Autor(es)',
+    autorHint: 'Separa varios autores con ; . Ej.: Silva, João; Souza, Maria',
+    autorPlaceholder: 'Apellido, Nombre',
+    tituloLabel: 'Título',
+    tituloPlaceholder: 'Título de la obra, página o artículo',
+    anoLabel: 'Año',
+    nomeSiteLabel: 'Nombre del sitio',
+    nomeSitePlaceholder: 'Ej.: Resolva Jato',
+    urlLabel: 'URL',
+    urlPlaceholder: 'https://...',
+    dataAcessoLabel: 'Fecha de acceso',
+    editoraLabel: 'Editorial',
+    cidadeLabel: 'Ciudad',
+    edicaoLabel: 'Edición',
+    edicaoHint: 'Ej.: 3.ª ed.',
+    revistaLabel: 'Revista / publicación periódica',
+    volumeLabel: 'Volumen',
+    numeroLabel: 'Número',
+    paginasLabel: 'Páginas',
+    paginasHint: 'Ej.: 12-30',
+    adicionarBtn: 'Agregar referencia',
+    listTitle: (n: number) => `Tus referencias (${n})`,
+    copiarTudoBtn: 'Copiar todo',
+    pdfBtn: 'PDF',
+    emptyList:
+      'Agrega una referencia al lado. Aparecerán aquí ya en orden alfabético por autor.',
+    copiarUmaBtn: 'Copiar',
+    removerBtn: 'Eliminar',
+    footerNote:
+      'El formato sigue las reglas generales de la ABNT NBR 6023, el estándar de citas brasileño. Verifica siempre las normas específicas de tu institución.',
+    toastAdded: '¡Referencia agregada!',
+    toastCopiedAll: '¡Todas las referencias fueron copiadas!',
+    toastCopiedOne: '¡Referencia copiada!',
+    toastPdf: '¡PDF generado!',
+  },
+} as const satisfies Record<Locale, Record<string, unknown>>;
 
 function emptyForm(tipo: ReferenciaTipo) {
   return {
@@ -40,7 +174,13 @@ function emptyForm(tipo: ReferenciaTipo) {
   };
 }
 
-export function ReferenciasAbntApp() {
+export function ReferenciasAbntApp({ locale = 'pt-BR' }: { locale?: Locale } = {}) {
+  const t = copy[locale];
+  const TIPO_OPTIONS: Array<{ id: ReferenciaTipo; label: string; icon: typeof Globe2 }> = [
+    { id: 'site', label: t.tipoSite, icon: Globe2 },
+    { id: 'livro', label: t.tipoLivro, icon: Library },
+    { id: 'artigo', label: t.tipoArtigo, icon: Newspaper }
+  ];
   const { toast } = useToast();
   const [form, setForm] = useState(emptyForm('site'));
   const [referencias, setReferencias] = useState<Referencia[]>([]);
@@ -82,7 +222,7 @@ export function ReferenciasAbntApp() {
     }
     setReferencias((prev) => [...prev, nova]);
     setForm(emptyForm(form.tipo));
-    toast('Referência adicionada!');
+    toast(t.toastAdded);
   }
 
   function removerReferencia(id: string) {
@@ -98,36 +238,36 @@ export function ReferenciasAbntApp() {
   function copiarTudo() {
     if (!textoCompleto) return;
     navigator.clipboard.writeText(textoCompleto);
-    toast('Todas as referências foram copiadas!');
+    toast(t.toastCopiedAll);
   }
 
   function copiarUma(ref: Referencia) {
     navigator.clipboard.writeText(formatarReferenciaAbnt(ref));
-    toast('Referência copiada!');
+    toast(t.toastCopiedOne);
   }
 
   async function baixarPdf() {
     if (!listRef.current || ordenadas.length === 0) return;
     await exportElementToPdf(listRef.current, 'referencias-abnt');
-    toast('PDF gerado!');
+    toast(t.toastPdf);
   }
 
   return (
-    <AuthGate title="Referências ABNT" description="Cadastre-se gratuitamente para gerar suas referências.">
+    <AuthGate title={t.authTitle} description={t.authDescription}>
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
           <ToolsBackButton />
         </div>
 
         <PageHero
-          title="Referências no padrão ABNT em segundos"
-          subtitle="Preencha os dados da fonte (site, livro ou artigo) e receba a referência já formatada, ordenada e pronta para colar no seu trabalho."
+          title={t.heroTitle}
+          subtitle={t.heroSubtitle}
           icon={BookOpen}
         />
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <section className="space-y-4 rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50 to-white p-4 shadow-sm sm:p-5">
-            <div className="flex flex-wrap gap-2" role="tablist" aria-label="Tipo de fonte">
+            <div className="flex flex-wrap gap-2" role="tablist" aria-label={t.tipoTabAriaLabel}>
               {TIPO_OPTIONS.map((opt) => (
                 <button
                   key={opt.id}
@@ -150,30 +290,30 @@ export function ReferenciasAbntApp() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <FormField
-                label="Autor(es)"
+                label={t.autorLabel}
                 htmlFor="ref-autor"
                 required
-                hint="Separe vários autores com ; . Ex.: Silva, João; Souza, Maria"
+                hint={t.autorHint}
                 className="sm:col-span-2"
               >
                 <Input
                   id="ref-autor"
-                  placeholder="Sobrenome, Nome"
+                  placeholder={t.autorPlaceholder}
                   value={form.autor}
                   onChange={(e) => updateField('autor', e.target.value)}
                 />
               </FormField>
 
-              <FormField label="Título" htmlFor="ref-titulo" required className="sm:col-span-2">
+              <FormField label={t.tituloLabel} htmlFor="ref-titulo" required className="sm:col-span-2">
                 <Input
                   id="ref-titulo"
-                  placeholder="Título da obra, página ou artigo"
+                  placeholder={t.tituloPlaceholder}
                   value={form.titulo}
                   onChange={(e) => updateField('titulo', e.target.value)}
                 />
               </FormField>
 
-              <FormField label="Ano" htmlFor="ref-ano" required>
+              <FormField label={t.anoLabel} htmlFor="ref-ano" required>
                 <Input
                   id="ref-ano"
                   inputMode="numeric"
@@ -185,23 +325,23 @@ export function ReferenciasAbntApp() {
 
               {form.tipo === 'site' ? (
                 <>
-                  <FormField label="Nome do site" htmlFor="ref-site-nome" required>
+                  <FormField label={t.nomeSiteLabel} htmlFor="ref-site-nome" required>
                     <Input
                       id="ref-site-nome"
-                      placeholder="Ex.: Resolva Jato"
+                      placeholder={t.nomeSitePlaceholder}
                       value={form.nomeSite}
                       onChange={(e) => updateField('nomeSite', e.target.value)}
                     />
                   </FormField>
-                  <FormField label="URL" htmlFor="ref-url" required className="sm:col-span-2">
+                  <FormField label={t.urlLabel} htmlFor="ref-url" required className="sm:col-span-2">
                     <Input
                       id="ref-url"
-                      placeholder="https://..."
+                      placeholder={t.urlPlaceholder}
                       value={form.url}
                       onChange={(e) => updateField('url', e.target.value)}
                     />
                   </FormField>
-                  <FormField label="Data de acesso" htmlFor="ref-data-acesso">
+                  <FormField label={t.dataAcessoLabel} htmlFor="ref-data-acesso">
                     <Input
                       id="ref-data-acesso"
                       type="date"
@@ -214,21 +354,21 @@ export function ReferenciasAbntApp() {
 
               {form.tipo === 'livro' ? (
                 <>
-                  <FormField label="Editora" htmlFor="ref-editora" required>
+                  <FormField label={t.editoraLabel} htmlFor="ref-editora" required>
                     <Input
                       id="ref-editora"
                       value={form.editora}
                       onChange={(e) => updateField('editora', e.target.value)}
                     />
                   </FormField>
-                  <FormField label="Cidade" htmlFor="ref-cidade">
+                  <FormField label={t.cidadeLabel} htmlFor="ref-cidade">
                     <Input
                       id="ref-cidade"
                       value={form.cidade}
                       onChange={(e) => updateField('cidade', e.target.value)}
                     />
                   </FormField>
-                  <FormField label="Edição" htmlFor="ref-edicao" hint="Ex.: 3. ed.">
+                  <FormField label={t.edicaoLabel} htmlFor="ref-edicao" hint={t.edicaoHint}>
                     <Input
                       id="ref-edicao"
                       value={form.edicao}
@@ -240,20 +380,20 @@ export function ReferenciasAbntApp() {
 
               {form.tipo === 'artigo' ? (
                 <>
-                  <FormField label="Revista / periódico" htmlFor="ref-revista" required className="sm:col-span-2">
+                  <FormField label={t.revistaLabel} htmlFor="ref-revista" required className="sm:col-span-2">
                     <Input
                       id="ref-revista"
                       value={form.revista}
                       onChange={(e) => updateField('revista', e.target.value)}
                     />
                   </FormField>
-                  <FormField label="Volume" htmlFor="ref-volume">
+                  <FormField label={t.volumeLabel} htmlFor="ref-volume">
                     <Input id="ref-volume" value={form.volume} onChange={(e) => updateField('volume', e.target.value)} />
                   </FormField>
-                  <FormField label="Número" htmlFor="ref-numero">
+                  <FormField label={t.numeroLabel} htmlFor="ref-numero">
                     <Input id="ref-numero" value={form.numero} onChange={(e) => updateField('numero', e.target.value)} />
                   </FormField>
-                  <FormField label="Páginas" htmlFor="ref-paginas" hint="Ex.: 12-30">
+                  <FormField label={t.paginasLabel} htmlFor="ref-paginas" hint={t.paginasHint}>
                     <Input id="ref-paginas" value={form.paginas} onChange={(e) => updateField('paginas', e.target.value)} />
                   </FormField>
                 </>
@@ -261,22 +401,22 @@ export function ReferenciasAbntApp() {
             </div>
 
             <Button type="button" onClick={adicionarReferencia} disabled={!podeAdicionar} icon={Plus} className="w-full sm:w-auto">
-              Adicionar referência
+              {t.adicionarBtn}
             </Button>
           </section>
 
           <aside className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
             <div className="mb-3 flex items-center justify-between gap-2">
               <h2 className="rj-display text-base font-bold text-slate-900">
-                Suas referências ({ordenadas.length})
+                {t.listTitle(ordenadas.length)}
               </h2>
               {ordenadas.length > 0 ? (
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={copiarTudo} icon={Copy}>
-                    Copiar tudo
+                    {t.copiarTudoBtn}
                   </Button>
                   <Button variant="success" size="sm" onClick={baixarPdf} icon={Download}>
-                    PDF
+                    {t.pdfBtn}
                   </Button>
                 </div>
               ) : null}
@@ -284,7 +424,7 @@ export function ReferenciasAbntApp() {
 
             {ordenadas.length === 0 ? (
               <p className="text-sm font-medium leading-6 text-slate-600">
-                Adicione uma referência ao lado. Elas aparecem aqui já em ordem alfabética por autor.
+                {t.emptyList}
               </p>
             ) : (
               <div ref={listRef} className="space-y-3 bg-white">
@@ -297,14 +437,14 @@ export function ReferenciasAbntApp() {
                         onClick={() => copiarUma(ref)}
                         className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold text-teal-800 hover:bg-teal-100"
                       >
-                        <Copy className="h-3 w-3" aria-hidden /> Copiar
+                        <Copy className="h-3 w-3" aria-hidden /> {t.copiarUmaBtn}
                       </button>
                       <button
                         type="button"
                         onClick={() => removerReferencia(ref.id)}
                         className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold text-rose-700 hover:bg-rose-100"
                       >
-                        <Trash2 className="h-3 w-3" aria-hidden /> Remover
+                        <Trash2 className="h-3 w-3" aria-hidden /> {t.removerBtn}
                       </button>
                     </div>
                   </div>
@@ -313,7 +453,7 @@ export function ReferenciasAbntApp() {
             )}
 
             <p className="mt-4 text-xs leading-5 text-slate-500">
-              Formatação segue as regras gerais da ABNT NBR 6023. Confira sempre as normas específicas da sua instituição.
+              {t.footerNote}
             </p>
           </aside>
         </div>

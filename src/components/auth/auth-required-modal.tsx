@@ -95,7 +95,17 @@ const internationalToolNames: Record<string, Record<'en' | 'es', string>> = {
   'accounting-documents': { en: 'Accounting documents', es: 'Documentos contables' },
   'academic-cover': { en: 'Academic cover page', es: 'Portada academica' },
   agenda: { en: 'Agenda', es: 'Agenda' },
-  'resource-search': { en: 'Resource search', es: 'Busqueda de recursos' }
+  'resource-search': { en: 'Resource search', es: 'Busqueda de recursos' },
+  'email-signature': { en: 'Email signature', es: 'Firma de email' },
+  'delivery-schedule': { en: 'Delivery schedule', es: 'Cronograma de entregas' },
+  'bill-splitter': { en: 'Bill splitter', es: 'Divisor de cuenta' },
+  'study-schedule': { en: 'Study schedule', es: 'Cronograma de estudios' },
+  'background-remover': { en: 'Background remover', es: 'Quitar fondo' },
+  'pdf-editor': { en: 'PDF editor', es: 'Editor de PDF' },
+  'mei-vs-employment': { en: 'MEI vs employment', es: 'MEI vs empleo' },
+  'enem-essay': { en: 'ENEM essay helper', es: 'Redaccion ENEM' },
+  'abnt-references': { en: 'ABNT references', es: 'Referencias ABNT' },
+  'lattes-cv': { en: 'Lattes CV helper', es: 'Curriculum Lattes' }
 };
 
 export function describeAuthDestination(nextHref: string, locale: Locale = 'pt-BR') {

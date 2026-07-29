@@ -21,6 +21,10 @@ Language: pt-BR
 - https://resolvajato.com.br/calculadora-de-rescisao
 - https://resolvajato.com.br/calculadora-de-preco-freelancer
 - https://resolvajato.com.br/mei-ou-clt
+- https://resolvajato.com.br/en
+- https://resolvajato.com.br/en/tools
+- https://resolvajato.com.br/es
+- https://resolvajato.com.br/es/tools
 
 ## Audience pages
 - https://resolvajato.com.br/para/mei

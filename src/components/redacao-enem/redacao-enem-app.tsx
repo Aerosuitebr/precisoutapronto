@@ -20,7 +20,161 @@ import { analisarRedacao } from "@/lib/redacao-enem/analyze";
 import { cn } from "@/lib/utils";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 
-export function RedacaoEnemApp() {
+type Locale = "pt-BR" | "en" | "es";
+
+const copy = {
+  "pt-BR": {
+    authTitle: "Corretor de Redação ENEM",
+    authDescription:
+      "Cadastre-se gratuitamente para receber a estimativa da sua redação.",
+    heroTitle: "Corretor de Redação ENEM",
+    heroSubtitle:
+      "Cole sua redação e receba uma estimativa de nota por competência, com pontos fortes e alertas para revisar antes da prova.",
+    insightCompetenciasLabel: "C1-C5",
+    insightCompetenciasText: "Nota estimada por competência, não só total.",
+    insightRaioXLabel: "Raio-x",
+    insightRaioXText: "Mostra pontos fortes e alertas de revisão.",
+    insightAvisoLabel: "Aviso",
+    insightAvisoText: "É uma estimativa automática, não correção humana.",
+    temaLabel: "Tema da redação (opcional)",
+    temaPlaceholder: "Ex: Desafios para o combate à desinformação no Brasil",
+    textoLabel: "Texto da redação",
+    textoHint:
+      "Cole os 4-5 parágrafos separados por linha em branco, como no papel de prova.",
+    textoPlaceholder: "Cole aqui o texto completo da sua redação...",
+    wordCount: (n: number) => `${n} palavra(s)`,
+    wordCountEmpty: "Escreva ao menos 20 palavras para ver a estimativa.",
+    estimativaTitle: "Estimativa",
+    emptyTitle: "Cole pelo menos 20 palavras para começar.",
+    emptyText:
+      "Quanto mais parecido com a redação final, melhor a leitura de estrutura, coesão e intervenção.",
+    invalidTitle: "Texto sem sentido detectado",
+    invalidHint:
+      "Substitua o texto por parágrafos reais em português (com introdução, desenvolvimento e conclusão) para receber uma estimativa de nota por competência.",
+    notaTotalLabel: "Nota estimada total",
+    pontosFortesLabel: "Pontos fortes",
+    pontosAtencaoLabel: "Pontos de atenção",
+    disclaimer:
+      "Estimativa automática baseada em heurísticas de estrutura, coesão e proposta de intervenção. Não substitui a correção humana. Use como um primeiro raio-x antes de pedir revisão de um professor.",
+    copyBtn: "Copiar resultado",
+    whatsappBtn: "Enviar no WhatsApp",
+    whatsappDestinationHint: "WhatsApp que receberá a análise",
+    toastCopied: "Resultado copiado!",
+    waTitle: "REDAÇÃO ENEM | ANÁLISE ESTIMADA",
+    waSubtitle: "Resultado organizado por competência",
+    waTema: (tema: string) => `Tema: ${tema}`,
+    waInvalidWarning:
+      "⚠️ Texto não reconhecido como uma redação (sem palavras reais em português). Reescreva com frases e parágrafos com sentido para receber uma estimativa de nota.",
+    waCompetenciasTitle: "COMPETÊNCIAS",
+    waCompetenciaLine: (id: number, titulo: string, nota: number) =>
+      `C${id} - ${titulo}: ${nota}/200`,
+    waNotaTotalTitle: "NOTA TOTAL ESTIMADA",
+    waDisclaimer:
+      "Estimativa automática baseada em heurísticas de estrutura, coesão e proposta de intervenção. Não substitui a correção de um professor ou corretor humano do ENEM.",
+  },
+  en: {
+    authTitle: "ENEM Essay Grader",
+    authDescription:
+      "Sign up for free to receive an estimate for your essay.",
+    heroTitle: "ENEM Essay Grader",
+    heroSubtitle:
+      "Paste your essay (for the ENEM, the Brazilian university entrance exam) and get a score estimate per competency, with strengths and warnings to review before the test.",
+    insightCompetenciasLabel: "C1-C5",
+    insightCompetenciasText:
+      "Estimated score per competency, not just the total.",
+    insightRaioXLabel: "X-ray",
+    insightRaioXText: "Shows strengths and points to review.",
+    insightAvisoLabel: "Notice",
+    insightAvisoText: "This is an automatic estimate, not human grading.",
+    temaLabel: "Essay topic (optional)",
+    temaPlaceholder: "Ex: Challenges to fighting misinformation in Brazil",
+    textoLabel: "Essay text",
+    textoHint:
+      "Paste the 4 to 5 paragraphs separated by a blank line, like on the exam paper.",
+    textoPlaceholder: "Paste the full text of your essay here...",
+    wordCount: (n: number) => `${n} word(s)`,
+    wordCountEmpty: "Write at least 20 words to see the estimate.",
+    estimativaTitle: "Estimate",
+    emptyTitle: "Paste at least 20 words to get started.",
+    emptyText:
+      "The closer to a final essay, the better the reading of structure, cohesion and intervention proposal.",
+    invalidTitle: "Nonsensical text detected",
+    invalidHint:
+      "Replace the text with real paragraphs (with introduction, body and conclusion) to receive a score estimate per competency.",
+    notaTotalLabel: "Total estimated score",
+    pontosFortesLabel: "Strengths",
+    pontosAtencaoLabel: "Points to review",
+    disclaimer:
+      "Automatic estimate based on heuristics of structure, cohesion and intervention proposal. It does not replace human grading. Use it as a first check before asking a teacher for review.",
+    copyBtn: "Copy result",
+    whatsappBtn: "Send on WhatsApp",
+    whatsappDestinationHint: "WhatsApp number that will receive the analysis",
+    toastCopied: "Result copied!",
+    waTitle: "ENEM ESSAY | ESTIMATED ANALYSIS",
+    waSubtitle: "Result organized by competency",
+    waTema: (tema: string) => `Topic: ${tema}`,
+    waInvalidWarning:
+      "⚠️ Text not recognized as an essay (no real words found). Rewrite it with meaningful sentences and paragraphs to receive a score estimate.",
+    waCompetenciasTitle: "COMPETENCIES",
+    waCompetenciaLine: (id: number, titulo: string, nota: number) =>
+      `C${id} - ${titulo}: ${nota}/200`,
+    waNotaTotalTitle: "TOTAL ESTIMATED SCORE",
+    waDisclaimer:
+      "Automatic estimate based on heuristics of structure, cohesion and intervention proposal. It does not replace a teacher or a human ENEM grader.",
+  },
+  es: {
+    authTitle: "Corrector de Redacción ENEM",
+    authDescription:
+      "Regístrate gratis para recibir la estimación de tu redacción.",
+    heroTitle: "Corrector de Redacción ENEM",
+    heroSubtitle:
+      "Pega tu redacción (para el ENEM, el examen de ingreso a la universidad de Brasil) y recibe una estimación de nota por competencia, con puntos fuertes y alertas para revisar antes de la prueba.",
+    insightCompetenciasLabel: "C1-C5",
+    insightCompetenciasText: "Nota estimada por competencia, no solo el total.",
+    insightRaioXLabel: "Radiografía",
+    insightRaioXText: "Muestra puntos fuertes y alertas de revisión.",
+    insightAvisoLabel: "Aviso",
+    insightAvisoText: "Es una estimación automática, no una corrección humana.",
+    temaLabel: "Tema de la redacción (opcional)",
+    temaPlaceholder: "Ej: Desafíos para combatir la desinformación en Brasil",
+    textoLabel: "Texto de la redacción",
+    textoHint:
+      "Pega los 4 a 5 párrafos separados por una línea en blanco, como en la hoja de prueba.",
+    textoPlaceholder: "Pega aquí el texto completo de tu redacción...",
+    wordCount: (n: number) => `${n} palabra(s)`,
+    wordCountEmpty: "Escribe al menos 20 palabras para ver la estimación.",
+    estimativaTitle: "Estimación",
+    emptyTitle: "Pega al menos 20 palabras para comenzar.",
+    emptyText:
+      "Cuanto más se parezca a la redacción final, mejor será la lectura de estructura, cohesión e intervención.",
+    invalidTitle: "Texto sin sentido detectado",
+    invalidHint:
+      "Reemplaza el texto por párrafos reales (con introducción, desarrollo y conclusión) para recibir una estimación de nota por competencia.",
+    notaTotalLabel: "Nota total estimada",
+    pontosFortesLabel: "Puntos fuertes",
+    pontosAtencaoLabel: "Puntos de atención",
+    disclaimer:
+      "Estimación automática basada en heurísticas de estructura, cohesión y propuesta de intervención. No sustituye la corrección humana. Úsala como una primera revisión antes de pedirle una corrección a un profesor.",
+    copyBtn: "Copiar resultado",
+    whatsappBtn: "Enviar por WhatsApp",
+    whatsappDestinationHint: "Número de WhatsApp que recibirá el análisis",
+    toastCopied: "¡Resultado copiado!",
+    waTitle: "REDACCIÓN ENEM | ANÁLISIS ESTIMADO",
+    waSubtitle: "Resultado organizado por competencia",
+    waTema: (tema: string) => `Tema: ${tema}`,
+    waInvalidWarning:
+      "⚠️ Texto no reconocido como una redacción (sin palabras reales). Reescríbelo con frases y párrafos con sentido para recibir una estimación de nota.",
+    waCompetenciasTitle: "COMPETENCIAS",
+    waCompetenciaLine: (id: number, titulo: string, nota: number) =>
+      `C${id} - ${titulo}: ${nota}/200`,
+    waNotaTotalTitle: "NOTA TOTAL ESTIMADA",
+    waDisclaimer:
+      "Estimación automática basada en heurísticas de estructura, cohesión y propuesta de intervención. No sustituye la corrección de un profesor o un corrector humano del ENEM.",
+  },
+} as const satisfies Record<Locale, Record<string, unknown>>;
+
+export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
+  const t = copy[locale];
   const { toast } = useToast();
   const [tema, setTema] = useState("");
   const [texto, setTexto] = useState("");
@@ -35,29 +189,29 @@ export function RedacaoEnemApp() {
     if (!resultado) return "";
     if (resultado.textoInvalido) {
       return [
-        "*REDAÇÃO ENEM | ANÁLISE ESTIMADA*",
-        tema ? `Tema: ${tema}` : "",
+        `*${t.waTitle}*`,
+        tema ? t.waTema(tema) : "",
         "",
-        "⚠️ Texto não reconhecido como uma redação (sem palavras reais em português). Reescreva com frases e parágrafos com sentido para receber uma estimativa de nota.",
+        t.waInvalidWarning,
       ]
         .filter(Boolean)
         .join("\n");
     }
     const linhas = resultado.competencias
-      .map((c) => `C${c.id} - ${c.titulo}: ${c.nota}/200`)
+      .map((c) => t.waCompetenciaLine(c.id, c.titulo, c.nota))
       .join("\n");
     return [
-      "*REDAÇÃO ENEM | ANÁLISE ESTIMADA*",
-      "_Resultado organizado por competência_",
-      tema ? `Tema: ${tema}` : "",
+      `*${t.waTitle}*`,
+      `_${t.waSubtitle}_`,
+      tema ? t.waTema(tema) : "",
       "",
-      "*COMPETÊNCIAS*",
+      `*${t.waCompetenciasTitle}*`,
       linhas,
       "",
-      `*NOTA TOTAL ESTIMADA*`,
+      `*${t.waNotaTotalTitle}*`,
       `${resultado.notaTotalEstimada}/1000`,
       "",
-      "Estimativa automática baseada em heurísticas de estrutura, coesão e proposta de intervenção. Não substitui a correção de um professor ou corretor humano do ENEM.",
+      t.waDisclaimer,
     ]
       .filter(Boolean)
       .join("\n");
@@ -65,7 +219,7 @@ export function RedacaoEnemApp() {
 
   function handleCopy() {
     navigator.clipboard.writeText(resumoTexto());
-    toast("Resultado copiado!");
+    toast(t.toastCopied);
   }
 
   function handleWhatsApp() {
@@ -74,8 +228,8 @@ export function RedacaoEnemApp() {
 
   return (
     <AuthGate
-      title="Corretor de Redação ENEM"
-      description="Cadastre-se gratuitamente para receber a estimativa da sua redação."
+      title={t.authTitle}
+      description={t.authDescription}
     >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
@@ -83,71 +237,70 @@ export function RedacaoEnemApp() {
         </div>
 
         <PageHero
-          title="Corretor de Redação ENEM"
-          subtitle="Cole sua redação e receba uma estimativa de nota por competência, com pontos fortes e alertas para revisar antes da prova."
+          title={t.heroTitle}
+          subtitle={t.heroSubtitle}
           icon={GraduationCap}
         />
 
         <div className="grid gap-2 sm:grid-cols-3">
           <Insight
-            label="C1-C5"
-            text="Nota estimada por competência, não só total."
+            label={t.insightCompetenciasLabel}
+            text={t.insightCompetenciasText}
           />
           <Insight
-            label="Raio-x"
-            text="Mostra pontos fortes e alertas de revisão."
+            label={t.insightRaioXLabel}
+            text={t.insightRaioXText}
           />
           <Insight
-            label="Aviso"
-            text="É uma estimativa automática, não correção humana."
+            label={t.insightAvisoLabel}
+            text={t.insightAvisoText}
           />
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
           <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-            <FormField label="Tema da redação (opcional)" htmlFor="tema">
+            <FormField label={t.temaLabel} htmlFor="tema">
               <Input
                 id="tema"
-                placeholder="Ex: Desafios para o combate à desinformação no Brasil"
+                placeholder={t.temaPlaceholder}
                 value={tema}
                 onChange={(e) => setTema(e.target.value)}
               />
             </FormField>
 
             <FormField
-              label="Texto da redação"
+              label={t.textoLabel}
               htmlFor="texto"
               required
-              hint="Cole os 4-5 parágrafos separados por linha em branco, como no papel de prova."
+              hint={t.textoHint}
             >
               <textarea
                 id="texto"
                 value={texto}
                 onChange={(e) => setTexto(e.target.value)}
-                placeholder="Cole aqui o texto completo da sua redação..."
+                placeholder={t.textoPlaceholder}
                 rows={16}
                 className="w-full rounded-xl border border-slate-200 bg-white p-3.5 text-sm font-medium text-slate-900 shadow-sm outline-none transition-all duration-150 placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
               />
             </FormField>
             <p className="text-xs text-slate-500">
               {texto.trim()
-                ? `${texto.trim().split(/\s+/).filter(Boolean).length} palavra(s)`
-                : "Escreva ao menos 20 palavras para ver a estimativa."}
+                ? t.wordCount(texto.trim().split(/\s+/).filter(Boolean).length)
+                : t.wordCountEmpty}
             </p>
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:sticky lg:top-24">
             <h2 className="rj-display mb-3 text-base font-bold text-slate-900">
-              Estimativa
+              {t.estimativaTitle}
             </h2>
             {!resultado ? (
               <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4">
                 <p className="text-sm font-bold text-slate-800">
-                  Cole pelo menos 20 palavras para começar.
+                  {t.emptyTitle}
                 </p>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  Quanto mais parecido com a redação final, melhor a leitura de
-                  estrutura, coesão e intervenção.
+                  {t.emptyText}
                 </p>
               </div>
             ) : resultado.textoInvalido ? (
@@ -159,7 +312,7 @@ export function RedacaoEnemApp() {
                   />
                   <div>
                     <p className="text-sm font-bold text-red-800">
-                      Texto sem sentido detectado
+                      {t.invalidTitle}
                     </p>
                     <p className="mt-1 text-sm leading-6 text-red-700">
                       {resultado.avisoCritico}
@@ -167,16 +320,14 @@ export function RedacaoEnemApp() {
                   </div>
                 </div>
                 <p className="text-xs leading-5 text-slate-500">
-                  Substitua o texto por parágrafos reais em português (com
-                  introdução, desenvolvimento e conclusão) para receber uma
-                  estimativa de nota por competência.
+                  {t.invalidHint}
                 </p>
               </div>
             ) : (
               <div className="space-y-3">
                 <div className="flex items-center justify-between rounded-xl bg-slate-900 px-4 py-3 text-white">
                   <span className="text-sm font-semibold">
-                    Nota estimada total
+                    {t.notaTotalLabel}
                   </span>
                   <span className="rj-display text-lg font-bold">
                     {resultado.notaTotalEstimada}/1000
@@ -213,7 +364,7 @@ export function RedacaoEnemApp() {
                 {resultado.pontosFortes.length > 0 ? (
                   <div className="space-y-1.5 rounded-xl bg-emerald-50 p-3">
                     <p className="text-xs font-bold uppercase tracking-wide text-emerald-800">
-                      Pontos fortes
+                      {t.pontosFortesLabel}
                     </p>
                     {resultado.pontosFortes.map((p, i) => (
                       <p
@@ -233,7 +384,7 @@ export function RedacaoEnemApp() {
                 {resultado.alertas.length > 0 ? (
                   <div className="space-y-1.5 rounded-xl bg-amber-50 p-3">
                     <p className="text-xs font-bold uppercase tracking-wide text-amber-900">
-                      Pontos de atenção
+                      {t.pontosAtencaoLabel}
                     </p>
                     {resultado.alertas.map((a, i) => (
                       <p
@@ -251,10 +402,7 @@ export function RedacaoEnemApp() {
                 ) : null}
 
                 <p className="text-xs leading-5 text-slate-500">
-                  Estimativa automática baseada em heurísticas de estrutura,
-                  coesão e proposta de intervenção. Não substitui a correção
-                  humana. Use como um primeiro raio-x antes de pedir revisão de
-                  um professor.
+                  {t.disclaimer}
                 </p>
 
                 <div className="flex flex-wrap gap-2">
@@ -265,7 +413,7 @@ export function RedacaoEnemApp() {
                     onClick={handleCopy}
                     icon={Copy}
                   >
-                    Copiar resultado
+                    {t.copyBtn}
                   </Button>
                   <Button
                     variant="success"
@@ -274,7 +422,7 @@ export function RedacaoEnemApp() {
                     onClick={handleWhatsApp}
                     icon={MessageCircle}
                   >
-                    Enviar no WhatsApp
+                    {t.whatsappBtn}
                   </Button>
                 </div>
               </div>
@@ -286,7 +434,7 @@ export function RedacaoEnemApp() {
         open={whatsAppOpen}
         onClose={() => setWhatsAppOpen(false)}
         message={resumoTexto()}
-        destinationHint="WhatsApp que receberá a análise"
+        destinationHint={t.whatsappDestinationHint}
       />
     </AuthGate>
   );

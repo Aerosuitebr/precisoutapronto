@@ -48,9 +48,296 @@ import {
   type SourceFile
 } from '@/lib/editor-pdf/pdf-engine';
 
+type Locale = 'pt-BR' | 'en' | 'es';
+
 const MAX_FILE_MB = 40;
 
-export function EditorPdfApp() {
+const COPY: Record<
+  Locale,
+  {
+    authTitle: string;
+    authDescription: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    insightEdit: string;
+    insightResize: string;
+    insightLocal: string;
+    dropzoneLoading: string;
+    dropzoneTitle: string;
+    dropzoneSubtitlePrefix: string;
+    dropzoneSubtitleWord: string;
+    dropzoneSubtitleSuffix: (mb: number) => string;
+    selectFiles: string;
+    addPdf: string;
+    blankPage: string;
+    clearSelection: string;
+    selectAll: string;
+    rotate: string;
+    extract: string;
+    deleteSelected: (count: number) => string;
+    restart: string;
+    editedBadge: string;
+    pageAlt: (idx: number) => string;
+    selectPageAria: string;
+    editContentAria: string;
+    editButton: string;
+    rotateAria: string;
+    duplicateAria: string;
+    moveUpAria: string;
+    moveDownAria: string;
+    removeAria: string;
+    finalizeTitle: string;
+    resizeSelectedTitle: string;
+    formatLabel: string;
+    formatOriginal: string;
+    formatA4: string;
+    formatLetter: string;
+    formatA5: string;
+    formatSquare: string;
+    fitLabel: string;
+    fitContain: string;
+    fitCover: string;
+    fitStretch: string;
+    fitNone: string;
+    applyToSelected: string;
+    pageNumbersLabel: string;
+    watermarkLabel: string;
+    watermarkHint: string;
+    watermarkPlaceholder: string;
+    opacityLabel: (pct: number) => string;
+    summarySuffix: string;
+    summaryMerged: (count: number) => string;
+    downloadFinal: string;
+    toastInvalidFiles: string;
+    toastTooBig: (name: string, mb: number) => string;
+    toastMultipleLoaded: (count: number) => string;
+    toastSingleLoaded: string;
+    toastLoadError: string;
+    toastRemoved: (count: number) => string;
+    toastSelectToResize: string;
+    toastResizeApplied: (count: number) => string;
+    toastSelectAtLeastOne: string;
+    toastAddPdfFirst: string;
+    toastPdfSuccess: string;
+    toastPdfError: string;
+    toastPageSavedWithEdits: (count: number) => string;
+    toastPageSaved: string;
+  }
+> = {
+  'pt-BR': {
+    authTitle: 'Editor de PDF',
+    authDescription: 'Cadastre-se gratuitamente para editar seus PDFs.',
+    heroTitle: 'Editor de PDF',
+    heroSubtitle:
+      'Clique no texto da página para editar, redimensione o formato, junte arquivos e finalize. Tudo no navegador, sem enviar o PDF para servidor.',
+    insightEdit: 'Clique em qualquer letra ou número da página para editar.',
+    insightResize: 'Redimensione para A4, Letter, A5 ou tamanho personalizado.',
+    insightLocal: '100% local: seus arquivos nunca saem do navegador.',
+    dropzoneLoading: 'Carregando páginas…',
+    dropzoneTitle: 'Arraste seus PDFs aqui ou clique para selecionar',
+    dropzoneSubtitlePrefix: 'Envie um ou vários arquivos. Depois clique em',
+    dropzoneSubtitleWord: 'Editar',
+    dropzoneSubtitleSuffix: (mb) => `em cada página para alterar o conteúdo. Máx. ${mb}MB por arquivo.`,
+    selectFiles: 'Selecionar arquivos',
+    addPdf: 'Adicionar PDF',
+    blankPage: 'Página em branco',
+    clearSelection: 'Limpar seleção',
+    selectAll: 'Selecionar tudo',
+    rotate: 'Girar',
+    extract: 'Extrair',
+    deleteSelected: (count) => `Excluir (${count})`,
+    restart: 'Recomeçar',
+    editedBadge: 'Editada',
+    pageAlt: (idx) => `Página ${idx}`,
+    selectPageAria: 'Selecionar página',
+    editContentAria: 'Editar conteúdo da página',
+    editButton: 'Editar',
+    rotateAria: 'Girar',
+    duplicateAria: 'Duplicar',
+    moveUpAria: 'Mover para cima',
+    moveDownAria: 'Mover para baixo',
+    removeAria: 'Remover',
+    finalizeTitle: 'Finalizar documento',
+    resizeSelectedTitle: 'Redimensionar selecionadas',
+    formatLabel: 'Formato',
+    formatOriginal: 'Original',
+    formatA4: 'A4',
+    formatLetter: 'Letter',
+    formatA5: 'A5',
+    formatSquare: 'Quadrado',
+    fitLabel: 'Encaixe',
+    fitContain: 'Conter',
+    fitCover: 'Cobrir',
+    fitStretch: 'Esticar',
+    fitNone: 'Original',
+    applyToSelected: 'Aplicar às selecionadas',
+    pageNumbersLabel: 'Numerar páginas (rodapé)',
+    watermarkLabel: "Marca d'água (opcional)",
+    watermarkHint: 'Texto diagonal aplicado em todas as páginas.',
+    watermarkPlaceholder: 'Ex.: CONFIDENCIAL',
+    opacityLabel: (pct) => `Opacidade (${pct}%)`,
+    summarySuffix: 'página(s) no documento final',
+    summaryMerged: (count) => ` · ${count} arquivos mesclados`,
+    downloadFinal: 'Baixar PDF final',
+    toastInvalidFiles: 'Selecione arquivos PDF válidos.',
+    toastTooBig: (name, mb) => `"${name}" excede ${mb}MB.`,
+    toastMultipleLoaded: (count) => `${count} PDFs carregados e mesclados.`,
+    toastSingleLoaded: 'PDF carregado.',
+    toastLoadError: 'Não foi possível ler um dos PDFs. Verifique se não está protegido por senha.',
+    toastRemoved: (count) => `${count} página(s) removida(s).`,
+    toastSelectToResize: 'Selecione ao menos uma página para redimensionar.',
+    toastResizeApplied: (count) => `Tamanho aplicado a ${count} página(s).`,
+    toastSelectAtLeastOne: 'Selecione ao menos uma página.',
+    toastAddPdfFirst: 'Adicione um PDF primeiro.',
+    toastPdfSuccess: 'PDF gerado com sucesso!',
+    toastPdfError: 'Erro ao gerar o PDF. Tente novamente.',
+    toastPageSavedWithEdits: (count) => `Página salva com ${count} texto(s) alterado(s).`,
+    toastPageSaved: 'Página salva.'
+  },
+  en: {
+    authTitle: 'PDF Editor',
+    authDescription: 'Sign up for free to edit your PDFs.',
+    heroTitle: 'PDF Editor',
+    heroSubtitle:
+      'Click the text on the page to edit it, resize the format, merge files and finish. All in the browser, without sending the PDF to a server.',
+    insightEdit: 'Click any letter or number on the page to edit it.',
+    insightResize: 'Resize to A4, Letter, A5 or a custom size.',
+    insightLocal: '100% local: your files never leave the browser.',
+    dropzoneLoading: 'Loading pages...',
+    dropzoneTitle: 'Drag your PDFs here or click to select',
+    dropzoneSubtitlePrefix: 'Upload one or several files. Then click',
+    dropzoneSubtitleWord: 'Edit',
+    dropzoneSubtitleSuffix: (mb) => `on each page to change the content. Max. ${mb}MB per file.`,
+    selectFiles: 'Select files',
+    addPdf: 'Add PDF',
+    blankPage: 'Blank page',
+    clearSelection: 'Clear selection',
+    selectAll: 'Select all',
+    rotate: 'Rotate',
+    extract: 'Extract',
+    deleteSelected: (count) => `Delete (${count})`,
+    restart: 'Start over',
+    editedBadge: 'Edited',
+    pageAlt: (idx) => `Page ${idx}`,
+    selectPageAria: 'Select page',
+    editContentAria: 'Edit page content',
+    editButton: 'Edit',
+    rotateAria: 'Rotate',
+    duplicateAria: 'Duplicate',
+    moveUpAria: 'Move up',
+    moveDownAria: 'Move down',
+    removeAria: 'Remove',
+    finalizeTitle: 'Finish document',
+    resizeSelectedTitle: 'Resize selected',
+    formatLabel: 'Format',
+    formatOriginal: 'Original',
+    formatA4: 'A4',
+    formatLetter: 'Letter',
+    formatA5: 'A5',
+    formatSquare: 'Square',
+    fitLabel: 'Fit',
+    fitContain: 'Contain',
+    fitCover: 'Cover',
+    fitStretch: 'Stretch',
+    fitNone: 'Original',
+    applyToSelected: 'Apply to selected',
+    pageNumbersLabel: 'Number pages (footer)',
+    watermarkLabel: 'Watermark (optional)',
+    watermarkHint: 'Diagonal text applied to every page.',
+    watermarkPlaceholder: 'E.g.: CONFIDENTIAL',
+    opacityLabel: (pct) => `Opacity (${pct}%)`,
+    summarySuffix: 'page(s) in the final document',
+    summaryMerged: (count) => `, ${count} files merged`,
+    downloadFinal: 'Download final PDF',
+    toastInvalidFiles: 'Select valid PDF files.',
+    toastTooBig: (name, mb) => `"${name}" exceeds ${mb}MB.`,
+    toastMultipleLoaded: (count) => `${count} PDFs loaded and merged.`,
+    toastSingleLoaded: 'PDF loaded.',
+    toastLoadError: 'Could not read one of the PDFs. Check if it is password protected.',
+    toastRemoved: (count) => `${count} page(s) removed.`,
+    toastSelectToResize: 'Select at least one page to resize.',
+    toastResizeApplied: (count) => `Size applied to ${count} page(s).`,
+    toastSelectAtLeastOne: 'Select at least one page.',
+    toastAddPdfFirst: 'Add a PDF first.',
+    toastPdfSuccess: 'PDF generated successfully!',
+    toastPdfError: 'Error generating the PDF. Try again.',
+    toastPageSavedWithEdits: (count) => `Page saved with ${count} edited text(s).`,
+    toastPageSaved: 'Page saved.'
+  },
+  es: {
+    authTitle: 'Editor de PDF',
+    authDescription: 'Registrate gratis para editar tus PDFs.',
+    heroTitle: 'Editor de PDF',
+    heroSubtitle:
+      'Haz clic en el texto de la pagina para editarlo, cambia el tamano, une archivos y finaliza. Todo en el navegador, sin enviar el PDF a un servidor.',
+    insightEdit: 'Haz clic en cualquier letra o numero de la pagina para editarlo.',
+    insightResize: 'Cambia el tamano a A4, Letter, A5 o un tamano personalizado.',
+    insightLocal: '100% local: tus archivos nunca salen del navegador.',
+    dropzoneLoading: 'Cargando paginas...',
+    dropzoneTitle: 'Arrastra tus PDFs aqui o haz clic para seleccionar',
+    dropzoneSubtitlePrefix: 'Sube uno o varios archivos. Despues haz clic en',
+    dropzoneSubtitleWord: 'Editar',
+    dropzoneSubtitleSuffix: (mb) => `en cada pagina para cambiar el contenido. Max. ${mb}MB por archivo.`,
+    selectFiles: 'Seleccionar archivos',
+    addPdf: 'Agregar PDF',
+    blankPage: 'Pagina en blanco',
+    clearSelection: 'Limpiar seleccion',
+    selectAll: 'Seleccionar todo',
+    rotate: 'Girar',
+    extract: 'Extraer',
+    deleteSelected: (count) => `Eliminar (${count})`,
+    restart: 'Volver a empezar',
+    editedBadge: 'Editada',
+    pageAlt: (idx) => `Pagina ${idx}`,
+    selectPageAria: 'Seleccionar pagina',
+    editContentAria: 'Editar contenido de la pagina',
+    editButton: 'Editar',
+    rotateAria: 'Girar',
+    duplicateAria: 'Duplicar',
+    moveUpAria: 'Mover hacia arriba',
+    moveDownAria: 'Mover hacia abajo',
+    removeAria: 'Quitar',
+    finalizeTitle: 'Finalizar documento',
+    resizeSelectedTitle: 'Redimensionar seleccionadas',
+    formatLabel: 'Formato',
+    formatOriginal: 'Original',
+    formatA4: 'A4',
+    formatLetter: 'Letter',
+    formatA5: 'A5',
+    formatSquare: 'Cuadrado',
+    fitLabel: 'Ajuste',
+    fitContain: 'Contener',
+    fitCover: 'Cubrir',
+    fitStretch: 'Estirar',
+    fitNone: 'Original',
+    applyToSelected: 'Aplicar a las seleccionadas',
+    pageNumbersLabel: 'Numerar paginas (pie de pagina)',
+    watermarkLabel: 'Marca de agua (opcional)',
+    watermarkHint: 'Texto diagonal aplicado en todas las paginas.',
+    watermarkPlaceholder: 'Ej.: CONFIDENCIAL',
+    opacityLabel: (pct) => `Opacidad (${pct}%)`,
+    summarySuffix: 'pagina(s) en el documento final',
+    summaryMerged: (count) => `, ${count} archivos combinados`,
+    downloadFinal: 'Descargar PDF final',
+    toastInvalidFiles: 'Selecciona archivos PDF validos.',
+    toastTooBig: (name, mb) => `"${name}" supera ${mb}MB.`,
+    toastMultipleLoaded: (count) => `${count} PDFs cargados y combinados.`,
+    toastSingleLoaded: 'PDF cargado.',
+    toastLoadError: 'No se pudo leer uno de los PDFs. Verifica que no este protegido con contrasena.',
+    toastRemoved: (count) => `${count} pagina(s) eliminada(s).`,
+    toastSelectToResize: 'Selecciona al menos una pagina para redimensionar.',
+    toastResizeApplied: (count) => `Tamano aplicado a ${count} pagina(s).`,
+    toastSelectAtLeastOne: 'Selecciona al menos una pagina.',
+    toastAddPdfFirst: 'Agrega un PDF primero.',
+    toastPdfSuccess: 'PDF generado con exito!',
+    toastPdfError: 'Error al generar el PDF. Intenta de nuevo.',
+    toastPageSavedWithEdits: (count) => `Pagina guardada con ${count} texto(s) modificado(s).`,
+    toastPageSaved: 'Pagina guardada.'
+  }
+};
+
+export function EditorPdfApp({ locale = 'pt-BR' }: { locale?: Locale } = {}) {
+  const t = COPY[locale];
   const { toast } = useToast();
   const [sources, setSources] = useState<Map<string, SourceFile>>(new Map());
   const [pages, setPages] = useState<PageItem[]>([]);
@@ -75,12 +362,12 @@ export function EditorPdfApp() {
         (f) => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')
       );
       if (files.length === 0) {
-        toast('Selecione arquivos PDF válidos.');
+        toast(t.toastInvalidFiles);
         return;
       }
       const tooBig = files.find((f) => f.size > MAX_FILE_MB * 1024 * 1024);
       if (tooBig) {
-        toast(`"${tooBig.name}" excede ${MAX_FILE_MB}MB.`);
+        toast(t.toastTooBig(tooBig.name, MAX_FILE_MB));
         return;
       }
       setLoading(true);
@@ -90,15 +377,15 @@ export function EditorPdfApp() {
           setSources((prev) => new Map(prev).set(source.id, source));
           setPages((prev) => [...prev, ...newPages]);
         }
-        toast(files.length > 1 ? `${files.length} PDFs carregados e mesclados.` : 'PDF carregado.');
+        toast(files.length > 1 ? t.toastMultipleLoaded(files.length) : t.toastSingleLoaded);
       } catch (err) {
         console.error(err);
-        toast('Não foi possível ler um dos PDFs. Verifique se não está protegido por senha.');
+        toast(t.toastLoadError);
       } finally {
         setLoading(false);
       }
     },
-    [toast]
+    [toast, t]
   );
 
   function onDrop(e: React.DragEvent) {
@@ -134,7 +421,7 @@ export function EditorPdfApp() {
   function removeSelected() {
     if (selectedCount === 0) return;
     setPages((prev) => prev.filter((p) => !p.selected));
-    toast(`${selectedCount} página(s) removida(s).`);
+    toast(t.toastRemoved(selectedCount));
   }
 
   function duplicatePage(id: string) {
@@ -187,7 +474,7 @@ export function EditorPdfApp() {
   function applySizeToSelected() {
     const targets = pages.filter((p) => p.selected);
     if (targets.length === 0) {
-      toast('Selecione ao menos uma página para redimensionar.');
+      toast(t.toastSelectToResize);
       return;
     }
     setPages((prev) =>
@@ -219,13 +506,13 @@ export function EditorPdfApp() {
         };
       })
     );
-    toast(`Tamanho aplicado a ${targets.length} página(s).`);
+    toast(t.toastResizeApplied(targets.length));
   }
 
   async function handleDownload(onlySelected: boolean) {
     const list = onlySelected ? pages.filter((p) => p.selected) : pages;
     if (list.length === 0) {
-      toast(onlySelected ? 'Selecione ao menos uma página.' : 'Adicione um PDF primeiro.');
+      toast(onlySelected ? t.toastSelectAtLeastOne : t.toastAddPdfFirst);
       return;
     }
     setBuilding(true);
@@ -236,10 +523,10 @@ export function EditorPdfApp() {
         watermarkOpacity
       });
       downloadBytes(bytes as Uint8Array, buildResolvaJatoDownloadName('pdf'));
-      toast('PDF gerado com sucesso!');
+      toast(t.toastPdfSuccess);
     } catch (err) {
       console.error(err);
-      toast('Erro ao gerar o PDF. Tente novamente.');
+      toast(t.toastPdfError);
     } finally {
       setBuilding(false);
     }
@@ -271,30 +558,22 @@ export function EditorPdfApp() {
     const editedTexts = next.overlays.filter(
       (o) => o.kind === 'text' && o.fromPdf && o.text !== o.originalText
     ).length;
-    toast(
-      editedTexts > 0
-        ? `Página salva com ${editedTexts} texto(s) alterado(s).`
-        : 'Página salva.'
-    );
+    toast(editedTexts > 0 ? t.toastPageSavedWithEdits(editedTexts) : t.toastPageSaved);
   }
 
   return (
-    <AuthGate title="Editor de PDF" description="Cadastre-se gratuitamente para editar seus PDFs.">
+    <AuthGate title={t.authTitle} description={t.authDescription}>
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
           <ToolsBackButton />
         </div>
 
-        <PageHero
-          title="Editor de PDF"
-          subtitle="Clique no texto da página para editar, redimensione o formato, junte arquivos e finalize. Tudo no navegador, sem enviar o PDF para servidor."
-          icon={FileStack}
-        />
+        <PageHero title={t.heroTitle} subtitle={t.heroSubtitle} icon={FileStack} />
 
         <div className="grid gap-2 sm:grid-cols-3">
-          <Insight icon={Type} text="Clique em qualquer letra ou número da página para editar." />
-          <Insight icon={Maximize2} text="Redimensione para A4, Letter, A5 ou tamanho personalizado." />
-          <Insight icon={Lock} text="100% local: seus arquivos nunca saem do navegador." />
+          <Insight icon={Type} text={t.insightEdit} />
+          <Insight icon={Maximize2} text={t.insightResize} />
+          <Insight icon={Lock} text={t.insightLocal} />
         </div>
 
         {pages.length === 0 ? (
@@ -327,14 +606,14 @@ export function EditorPdfApp() {
               <Upload className="h-10 w-10 text-sky-600" aria-hidden />
             )}
             <p className="text-base font-bold text-slate-900">
-              {loading ? 'Carregando páginas…' : 'Arraste seus PDFs aqui ou clique para selecionar'}
+              {loading ? t.dropzoneLoading : t.dropzoneTitle}
             </p>
             <p className="max-w-md text-sm leading-6 text-slate-500">
-              Envie um ou vários arquivos. Depois clique em <strong>Editar</strong> em cada página para
-              alterar o conteúdo. Máx. {MAX_FILE_MB}MB por arquivo.
+              {t.dropzoneSubtitlePrefix} <strong>{t.dropzoneSubtitleWord}</strong>{' '}
+              {t.dropzoneSubtitleSuffix(MAX_FILE_MB)}
             </p>
             <Button variant="outline" size="sm" icon={FileUp} disabled={loading}>
-              Selecionar arquivos
+              {t.selectFiles}
             </Button>
           </div>
         ) : (
@@ -347,7 +626,7 @@ export function EditorPdfApp() {
                 onClick={() => inputRef.current?.click()}
                 disabled={loading}
               >
-                Adicionar PDF
+                {t.addPdf}
               </Button>
               <input
                 ref={inputRef}
@@ -358,7 +637,7 @@ export function EditorPdfApp() {
                 onChange={(e) => e.target.files && void handleFiles(e.target.files)}
               />
               <Button variant="outline" size="sm" icon={StickyNote} onClick={insertBlankPage}>
-                Página em branco
+                {t.blankPage}
               </Button>
               <Button
                 variant="outline"
@@ -366,7 +645,7 @@ export function EditorPdfApp() {
                 icon={allSelected ? Square : CheckSquare}
                 onClick={toggleSelectAll}
               >
-                {allSelected ? 'Limpar seleção' : 'Selecionar tudo'}
+                {allSelected ? t.clearSelection : t.selectAll}
               </Button>
               <div className="mx-1 h-6 w-px bg-slate-200" />
               <Button
@@ -376,7 +655,7 @@ export function EditorPdfApp() {
                 disabled={!selectedCount}
                 onClick={() => rotateSelected(-90)}
               >
-                Girar
+                {t.rotate}
               </Button>
               <Button
                 variant="outline"
@@ -385,7 +664,7 @@ export function EditorPdfApp() {
                 disabled={!selectedCount}
                 onClick={() => rotateSelected(90)}
               >
-                Girar
+                {t.rotate}
               </Button>
               <Button
                 variant="outline"
@@ -394,7 +673,7 @@ export function EditorPdfApp() {
                 disabled={!selectedCount}
                 onClick={() => handleDownload(true)}
               >
-                Extrair
+                {t.extract}
               </Button>
               <Button
                 variant="danger"
@@ -403,10 +682,10 @@ export function EditorPdfApp() {
                 disabled={!selectedCount}
                 onClick={removeSelected}
               >
-                Excluir ({selectedCount})
+                {t.deleteSelected(selectedCount)}
               </Button>
               <Button variant="ghost" size="sm" onClick={resetAll} className="ml-auto">
-                Recomeçar
+                {t.restart}
               </Button>
             </div>
 
@@ -426,7 +705,7 @@ export function EditorPdfApp() {
                       type="button"
                       onClick={() => toggleSelect(p.id)}
                       className="absolute left-3 top-3 z-10 grid h-6 w-6 place-items-center rounded-md border border-slate-300 bg-white/90 text-sky-600 shadow-sm"
-                      aria-label="Selecionar página"
+                      aria-label={t.selectPageAria}
                     >
                       {p.selected ? (
                         <CheckSquare className="h-4 w-4" />
@@ -439,14 +718,14 @@ export function EditorPdfApp() {
                     </span>
                     {p.overlays.length > 0 || p.pageSize.preset !== 'original' ? (
                       <span className="absolute bottom-14 left-3 z-10 rounded-md bg-emerald-600 px-1.5 py-0.5 text-[0.6rem] font-bold text-white">
-                        Editada
+                        {t.editedBadge}
                       </span>
                     ) : null}
                     <div className="flex h-40 items-center justify-center overflow-hidden rounded-lg bg-slate-100">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={p.thumbnail}
-                        alt={`Página ${idx + 1}`}
+                        alt={t.pageAlt(idx + 1)}
                         style={{ transform: `rotate(${p.rotation}deg)` }}
                         className="max-h-full max-w-full object-contain transition-transform"
                       />
@@ -456,16 +735,16 @@ export function EditorPdfApp() {
                         type="button"
                         onClick={() => setEditingPageId(p.id)}
                         className="inline-flex h-8 flex-1 items-center justify-center gap-1 rounded-lg bg-sky-600 px-2 text-[0.7rem] font-bold text-white hover:bg-sky-700"
-                        aria-label="Editar conteúdo da página"
+                        aria-label={t.editContentAria}
                       >
                         <Pencil className="h-3.5 w-3.5" />
-                        Editar
+                        {t.editButton}
                       </button>
                       <button
                         type="button"
                         onClick={() => rotate(p.id, 90)}
                         className="grid h-8 w-8 place-items-center rounded-lg text-slate-500 hover:bg-slate-100"
-                        aria-label="Girar"
+                        aria-label={t.rotateAria}
                       >
                         <RotateCw className="h-4 w-4" />
                       </button>
@@ -473,7 +752,7 @@ export function EditorPdfApp() {
                         type="button"
                         onClick={() => duplicatePage(p.id)}
                         className="grid h-8 w-8 place-items-center rounded-lg text-slate-500 hover:bg-slate-100"
-                        aria-label="Duplicar"
+                        aria-label={t.duplicateAria}
                       >
                         <Copy className="h-4 w-4" />
                       </button>
@@ -482,7 +761,7 @@ export function EditorPdfApp() {
                         onClick={() => move(p.id, -1)}
                         disabled={idx === 0}
                         className="grid h-8 w-8 place-items-center rounded-lg text-slate-500 hover:bg-slate-100 disabled:opacity-25"
-                        aria-label="Mover para cima"
+                        aria-label={t.moveUpAria}
                       >
                         <ArrowUp className="h-4 w-4" />
                       </button>
@@ -491,7 +770,7 @@ export function EditorPdfApp() {
                         onClick={() => move(p.id, 1)}
                         disabled={idx === pages.length - 1}
                         className="grid h-8 w-8 place-items-center rounded-lg text-slate-500 hover:bg-slate-100 disabled:opacity-25"
-                        aria-label="Mover para baixo"
+                        aria-label={t.moveDownAria}
                       >
                         <ArrowDown className="h-4 w-4" />
                       </button>
@@ -499,7 +778,7 @@ export function EditorPdfApp() {
                         type="button"
                         onClick={() => removePage(p.id)}
                         className="grid h-8 w-8 place-items-center rounded-lg text-rose-500 hover:bg-rose-50"
-                        aria-label="Remover"
+                        aria-label={t.removeAria}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -509,35 +788,35 @@ export function EditorPdfApp() {
               </div>
 
               <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:sticky lg:top-24">
-                <h2 className="rj-display text-base font-bold text-slate-900">Finalizar documento</h2>
+                <h2 className="rj-display text-base font-bold text-slate-900">{t.finalizeTitle}</h2>
 
                 <div className="space-y-2 rounded-xl border border-sky-100 bg-sky-50/80 p-3">
                   <p className="text-xs font-bold uppercase tracking-wide text-sky-800">
-                    Redimensionar selecionadas
+                    {t.resizeSelectedTitle}
                   </p>
-                  <FormField label="Formato" htmlFor="bulk-preset">
+                  <FormField label={t.formatLabel} htmlFor="bulk-preset">
                     <Select
                       id="bulk-preset"
                       value={bulkPreset}
                       onChange={(e) => setBulkPreset(e.target.value as PageSizePreset)}
                     >
-                      <option value="original">Original</option>
-                      <option value="a4">A4</option>
-                      <option value="letter">Letter</option>
-                      <option value="a5">A5</option>
-                      <option value="square">Quadrado</option>
+                      <option value="original">{t.formatOriginal}</option>
+                      <option value="a4">{t.formatA4}</option>
+                      <option value="letter">{t.formatLetter}</option>
+                      <option value="a5">{t.formatA5}</option>
+                      <option value="square">{t.formatSquare}</option>
                     </Select>
                   </FormField>
-                  <FormField label="Encaixe" htmlFor="bulk-fit">
+                  <FormField label={t.fitLabel} htmlFor="bulk-fit">
                     <Select
                       id="bulk-fit"
                       value={bulkFit}
                       onChange={(e) => setBulkFit(e.target.value as PageFitMode)}
                     >
-                      <option value="contain">Conter</option>
-                      <option value="cover">Cobrir</option>
-                      <option value="stretch">Esticar</option>
-                      <option value="none">Original</option>
+                      <option value="contain">{t.fitContain}</option>
+                      <option value="cover">{t.fitCover}</option>
+                      <option value="stretch">{t.fitStretch}</option>
+                      <option value="none">{t.fitNone}</option>
                     </Select>
                   </FormField>
                   <Button
@@ -547,7 +826,7 @@ export function EditorPdfApp() {
                     icon={Maximize2}
                     onClick={applySizeToSelected}
                   >
-                    Aplicar às selecionadas
+                    {t.applyToSelected}
                   </Button>
                 </div>
 
@@ -558,25 +837,25 @@ export function EditorPdfApp() {
                     checked={pageNumbers}
                     onChange={(e) => setPageNumbers(e.target.checked)}
                   />
-                  Numerar páginas (rodapé)
+                  {t.pageNumbersLabel}
                 </label>
 
                 <FormField
-                  label="Marca d'água (opcional)"
+                  label={t.watermarkLabel}
                   htmlFor="watermark"
-                  hint="Texto diagonal aplicado em todas as páginas."
+                  hint={t.watermarkHint}
                 >
                   <Input
                     id="watermark"
                     value={watermarkText}
                     onChange={(e) => setWatermarkText(e.target.value)}
-                    placeholder="Ex.: CONFIDENCIAL"
+                    placeholder={t.watermarkPlaceholder}
                   />
                 </FormField>
 
                 {watermarkText.trim() ? (
                   <FormField
-                    label={`Opacidade (${Math.round(watermarkOpacity * 100)}%)`}
+                    label={t.opacityLabel(Math.round(watermarkOpacity * 100))}
                     htmlFor="opacity"
                   >
                     <input
@@ -593,9 +872,8 @@ export function EditorPdfApp() {
                 ) : null}
 
                 <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-3 text-xs leading-5 text-slate-500">
-                  <span className="font-bold text-slate-700">{pages.length}</span> página(s) no documento
-                  final
-                  {sources.size > 1 ? ` · ${sources.size} arquivos mesclados` : ''}.
+                  <span className="font-bold text-slate-700">{pages.length}</span> {t.summarySuffix}
+                  {sources.size > 1 ? t.summaryMerged(sources.size) : ''}.
                 </div>
 
                 <Button
@@ -605,7 +883,7 @@ export function EditorPdfApp() {
                   loading={building}
                   onClick={() => handleDownload(false)}
                 >
-                  Baixar PDF final
+                  {t.downloadFinal}
                 </Button>
               </div>
             </div>
