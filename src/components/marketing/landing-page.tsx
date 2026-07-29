@@ -354,7 +354,7 @@ export function LandingPage() {
               {
                 href: '/para/estudantes',
                 title: 'Estudantes',
-                text: 'Capa ABNT e currículo antes do prazo acabar.'
+                text: 'Peças acadêmicas, fichamentos, estudos de caso, redação, ABNT e currículo.'
               }
             ].map((persona) => (
               <li key={persona.href}>

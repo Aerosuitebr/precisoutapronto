@@ -32,7 +32,6 @@ import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
@@ -348,7 +347,6 @@ export function RecibosApp() {
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-4">

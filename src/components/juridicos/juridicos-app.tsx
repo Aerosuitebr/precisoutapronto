@@ -13,7 +13,6 @@ import {
   Trash2
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { JuridicoPreview } from '@/components/juridicos/juridico-preview';
@@ -275,7 +274,6 @@ export function JuridicosApp() {
       description="Crie sua conta gratuita para montar procurações, honorários e notificações em PDF."
     >
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
           <div className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-r from-stone-950 via-amber-950 to-stone-900 px-5 py-6 text-white sm:px-6">
             <ToolsWatermark />

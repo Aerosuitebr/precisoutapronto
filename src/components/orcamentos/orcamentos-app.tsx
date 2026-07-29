@@ -26,7 +26,6 @@ import {
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
 import { useAuthRequired } from '@/components/auth/auth-required-provider';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { OrcamentoItemsEditor } from '@/components/orcamentos/orcamento-items-editor';
 import { ViralInviteShareRow } from '@/components/marketing/viral-recruit-cta';
@@ -647,7 +646,6 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
           </div>
         </section>
 
-        {showAccountExtras ? <RemoveBrandingUpsell /> : null}
 
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(280px,0.85fr)]">
           <div className="space-y-5">

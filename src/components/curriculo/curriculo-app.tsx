@@ -12,7 +12,6 @@ import {
   Trash2
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { ResumePreview } from '@/components/curriculo/resume-preview';
@@ -281,7 +280,6 @@ export function CurriculoApp() {
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <ToolsWatermark />
           <div className="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

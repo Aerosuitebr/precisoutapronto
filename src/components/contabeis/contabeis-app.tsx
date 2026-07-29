@@ -13,7 +13,6 @@ import {
   Trash2
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { ContabilPreview } from '@/components/contabeis/contabil-preview';
@@ -292,7 +291,6 @@ export function ContabeisApp() {
       description="Crie sua conta gratuita para montar contratos, procurações e termos para contadores e despachantes."
     >
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
           <div className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-r from-slate-950 via-cyan-950 to-slate-900 px-5 py-6 text-white sm:px-6">
             <ToolsWatermark />

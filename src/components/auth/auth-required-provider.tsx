@@ -3,7 +3,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { AuthRequiredModal } from '@/components/auth/auth-required-modal';
 import { getSession } from '@/lib/auth';
-import { GUEST_TRIAL_CONSUMED_EVENT } from '@/lib/guest-trial';
 
 /** Após login/cadastro por acesso a ferramentas, preserva deep link da tool. */
 export function resolveToolsAuthNext(href?: string) {
@@ -39,11 +38,6 @@ export function AuthRequiredProvider({ children }: { children: ReactNode }) {
   const closeAuthRequired = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
-    function onGuestTrial(event: Event) {
-      if (getSession()) return;
-      const detail = (event as CustomEvent<{ nextHref?: string }>).detail;
-      requireAuth(detail?.nextHref || window.location.pathname || '/ferramentas', 'guest_trial_done');
-    }
     function onAccountRequired(event: Event) {
       if (getSession()) return;
       const detail = (event as CustomEvent<{ nextHref?: string; variant?: AuthRequiredVariant }>).detail;
@@ -52,10 +46,8 @@ export function AuthRequiredProvider({ children }: { children: ReactNode }) {
         detail?.variant || 'guest_trial_done'
       );
     }
-    window.addEventListener(GUEST_TRIAL_CONSUMED_EVENT, onGuestTrial);
     window.addEventListener('rj-account-required', onAccountRequired);
     return () => {
-      window.removeEventListener(GUEST_TRIAL_CONSUMED_EVENT, onGuestTrial);
       window.removeEventListener('rj-account-required', onAccountRequired);
     };
   }, [requireAuth]);

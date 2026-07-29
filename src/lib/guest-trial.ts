@@ -3,6 +3,33 @@ import { getSession } from '@/lib/auth';
 export const GUEST_TRIAL_STORAGE_KEY = 'rj_guest_exports';
 export const GUEST_TRIAL_LIMIT = 1;
 export const GUEST_TRIAL_CONSUMED_EVENT = 'rj-guest-trial-consumed';
+export const POST_SIGNUP_PREMIUM_OFFER_KEY = 'rj_post_signup_premium_offer';
+
+export function markPostSignupPremiumOffer(nextHref: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(
+      POST_SIGNUP_PREMIUM_OFFER_KEY,
+      JSON.stringify({ nextHref, createdAt: Date.now() })
+    );
+  } catch {
+    // A oferta é opcional; falha de storage não deve bloquear o cadastro.
+  }
+}
+
+export function consumePostSignupPremiumOffer(): { nextHref: string } | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(POST_SIGNUP_PREMIUM_OFFER_KEY);
+    if (!raw) return null;
+    window.localStorage.removeItem(POST_SIGNUP_PREMIUM_OFFER_KEY);
+    const parsed = JSON.parse(raw) as { nextHref?: string; createdAt?: number };
+    if (!parsed.createdAt || Date.now() - parsed.createdAt > 24 * 60 * 60 * 1000) return null;
+    return { nextHref: parsed.nextHref || '/ferramentas' };
+  } catch {
+    return null;
+  }
+}
 
 function readCount(): number {
   if (typeof window === 'undefined') return 0;

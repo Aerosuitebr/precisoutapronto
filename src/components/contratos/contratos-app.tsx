@@ -12,7 +12,6 @@ import {
   Trash2
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { ContratoPreview } from '@/components/contratos/contrato-preview';
@@ -326,7 +325,6 @@ export function ContratosApp() {
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
       <div className="space-y-6">
-        <RemoveBrandingUpsell />
         <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
           <div className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-r from-slate-950 via-slate-900 to-sky-950 px-5 py-6 text-white sm:px-6">
             <ToolsWatermark />

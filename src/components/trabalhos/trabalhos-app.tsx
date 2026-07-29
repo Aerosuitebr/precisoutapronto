@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { BookOpen, Download, Eraser, FilePlus2, Loader2, Save, Sparkles, Trash2 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { TrabalhoPreview } from '@/components/trabalhos/trabalho-preview';
 import { DocumentFontPicker } from '@/components/shared/document-font-picker';
@@ -163,7 +162,6 @@ export function TrabalhosApp() {
       description="Crie sua conta gratuita para gerar capas escolares e universitárias em segundos."
     >
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-4">
