@@ -234,6 +234,150 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
           'Não existe percentual universal. Benefícios, impostos, risco, custos e períodos sem faturamento variam demais para uma regra única.'
       }
     ]
+  },
+  ferias: {
+    path: '/calculadora-de-ferias',
+    name: 'Calculadora de férias CLT',
+    description:
+      'Calcule uma estimativa de férias, 1/3 constitucional e abono pecuniário sem cadastro.',
+    breadcrumbLabel: 'Férias',
+    interpretTitle: 'Como interpretar a estimativa de férias',
+    interpretBody: [
+      'O resultado separa os dias de gozo, o abono pecuniário (quando houver) e o terço constitucional. Médias de variáveis e convenções coletivas podem alterar o valor final.',
+      'Use a simulação como conferência inicial. Ela não substitui holerite nem análise de um contador ou advogado trabalhista.'
+    ],
+    howToTitle: 'Como usar a calculadora de férias',
+    howToSteps: [
+      'Informe o salário bruto e, se quiser, a média de variáveis.',
+      'Escolha quantos dias de férias serão gozados.',
+      'Se for vender parte das férias, informe os dias de abono (até 10).',
+      'Copie o resumo ou envie no WhatsApp para conferir com um profissional.'
+    ],
+    disclaimer:
+      'Conteúdo educativo. Não constitui parecer jurídico, trabalhista ou contábil. Regras e percentuais podem variar por acordo coletivo, categoria e legislação vigente.',
+    guideHref: '/guias/como-calcular-rescisao',
+    guideLabel: 'guia de cálculos trabalhistas',
+    related: [
+      {
+        href: '/calculadora-de-decimo-terceiro',
+        label: 'Calculadora de 13º',
+        description: 'Estime o 13º proporcional por avos.'
+      },
+      {
+        href: '/calculadora-de-rescisao',
+        label: 'Calculadora de rescisão',
+        description: 'Organize as verbas no desligamento.'
+      },
+      {
+        href: '/mei-ou-clt',
+        label: 'MEI ou CLT',
+        description: 'Compare cenários de remuneração líquida.'
+      }
+    ],
+    faq: [
+      {
+        question: 'O abono pecuniário também recebe 1/3?',
+        answer:
+          'Sim. Na estimativa, o abono (dias vendidos) também leva o terço constitucional correspondente.'
+      },
+      {
+        question: 'Posso vender mais de 10 dias de férias?',
+        answer:
+          'Em regra, o abono fica limitado a um terço do período (até 10 dias em férias de 30). Confirme convenções da sua categoria.'
+      },
+      {
+        question: 'Preciso me cadastrar para usar?',
+        answer:
+          'Não. A versão pública funciona sem cadastro. Você pode compartilhar o resumo no WhatsApp ou baixar um card do resultado.'
+      },
+      {
+        question: 'O valor é líquido ou bruto?',
+        answer:
+          'Os valores são estimados e brutos, sem descontos de INSS ou IRRF. Confirme com um contador antes de planejar as férias.'
+      },
+      {
+        question: 'Serve para estágio ou MEI?',
+        answer:
+          'Não. A ferramenta foca vínculos CLT típicos. Estágio e regimes especiais pedem análise específica.'
+      },
+      {
+        question: 'Médias de horas extras entram no cálculo?',
+        answer:
+          'Você pode informar uma média de variáveis. A calculadora soma esse valor à base. O critério exato pode variar por categoria.'
+      }
+    ]
+  },
+  decimoTerceiro: {
+    path: '/calculadora-de-decimo-terceiro',
+    name: 'Calculadora de 13º salário',
+    description:
+      'Calcule uma estimativa do 13º salário proporcional por avos e das duas parcelas sem cadastro.',
+    breadcrumbLabel: '13º salário',
+    interpretTitle: 'Como interpretar o 13º estimado',
+    interpretBody: [
+      'O total usa a regra dos avos: meses com 15 dias ou mais trabalhados no ano. A divisão em duas parcelas é uma referência educacional.',
+      'Descontos de INSS/IRRF, médias salariais e acordos coletivos podem alterar o valor líquido pago no holerite.'
+    ],
+    howToTitle: 'Como usar a calculadora de 13º',
+    howToSteps: [
+      'Informe o salário bruto mensal.',
+      'Se quiser, some a média de variáveis habituais.',
+      'Indique quantos avos você tem no ano (1 a 12).',
+      'Revise total, 1ª e 2ª parcela estimadas e compartilhe o resumo.'
+    ],
+    disclaimer:
+      'Conteúdo educativo. Não constitui parecer jurídico, trabalhista ou contábil. Confirme prazos e descontos com o empregador ou um contador.',
+    guideHref: '/guias/como-calcular-rescisao',
+    guideLabel: 'guia de cálculos trabalhistas',
+    related: [
+      {
+        href: '/calculadora-de-ferias',
+        label: 'Calculadora de férias',
+        description: 'Estime férias, 1/3 e abono pecuniário.'
+      },
+      {
+        href: '/calculadora-de-rescisao',
+        label: 'Calculadora de rescisão',
+        description: 'Inclui 13º proporcional no desligamento.'
+      },
+      {
+        href: '/mei-ou-clt',
+        label: 'MEI ou CLT',
+        description: 'Compare cenários de remuneração líquida.'
+      }
+    ],
+    faq: [
+      {
+        question: 'O que é um avo do 13º?',
+        answer:
+          'Em regra, cada mês com 15 dias ou mais trabalhados no ano conta como 1/12 do 13º. A calculadora usa os avos que você informar.'
+      },
+      {
+        question: 'A 1ª parcela é sempre metade?',
+        answer:
+          'É a referência mais comum. O empregador pode adiantar até novembro. A 2ª parcela quita o saldo, com eventuais descontos.'
+      },
+      {
+        question: 'Preciso de cadastro?',
+        answer:
+          'Não. A página pública permite simular e compartilhar sem criar conta.'
+      },
+      {
+        question: 'O valor é líquido?',
+        answer:
+          'Não. A estimativa é bruta, sem INSS ou IRRF. O líquido depende da faixa e de outros descontos do holerite.'
+      },
+      {
+        question: 'Serve para quem pediu demissão no meio do ano?',
+        answer:
+          'O 13º proporcional pode ser devido conforme a situação. Use os avos corretos e confirme com um profissional.'
+      },
+      {
+        question: 'Variáveis entram no 13º?',
+        answer:
+          'Adicionais habituais podem integrar a base. Informe uma média se fizer sentido no seu caso e valide com o RH ou contador.'
+      }
+    ]
   }
 };
 

@@ -1,8 +1,34 @@
-import { BookOpen, Bot, BriefcaseBusiness, HeartPulse, Search, Sparkles, Wrench } from 'lucide-react';
+import {
+  BookOpen,
+  Bot,
+  BriefcaseBusiness,
+  Bus,
+  GraduationCap,
+  HeartPulse,
+  Home,
+  House,
+  Search,
+  Sparkles,
+  Wallet,
+  Wrench
+} from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { nicheResources } from '@/lib/catalog/niche-resources';
 import { resources } from '@/resources';
 
-export type SearchCategoryId = 'todos' | 'negocios' | 'estudos' | 'utilidade-publica' | 'ferramentas' | 'saude' | 'inteligencia-artificial';
+export type SearchCategoryId =
+  | 'todos'
+  | 'negocios'
+  | 'estudos'
+  | 'utilidade-publica'
+  | 'ferramentas'
+  | 'saude'
+  | 'inteligencia-artificial'
+  | 'financas'
+  | 'imoveis'
+  | 'concursos'
+  | 'transporte'
+  | 'casa';
 
 export interface SearchCategory {
   id: SearchCategoryId;
@@ -67,10 +93,40 @@ export const searchCategories: SearchCategory[] = [
     label: 'Inteligência artificial',
     description: 'Chats, imagem, vídeo, código, automação e pesquisa com IA.',
     icon: Bot
+  },
+  {
+    id: 'financas',
+    label: 'Finanças',
+    description: 'Imposto de renda, crédito, investimentos e educação financeira.',
+    icon: Wallet
+  },
+  {
+    id: 'imoveis',
+    label: 'Imóveis',
+    description: 'Habitação, financiamento, cartório e regularização.',
+    icon: Home
+  },
+  {
+    id: 'concursos',
+    label: 'Concursos',
+    description: 'ENEM, SISU, Prouni, bancas e editais de concursos públicos.',
+    icon: GraduationCap
+  },
+  {
+    id: 'transporte',
+    label: 'Transporte',
+    description: 'CNH, DETRAN, IPVA, multas e transporte público.',
+    icon: Bus
+  },
+  {
+    id: 'casa',
+    label: 'Casa e consumo',
+    description: 'Energia, telecom, Procon, saneamento e direitos do consumidor.',
+    icon: House
   }
 ];
 
-export const searchResources = resources as SearchResource[];
+export const searchResources = [...resources, ...nicheResources] as SearchResource[];
 
 /** Categorias que filtram o catálogo público (exclui o atalho autenticado de Ferramentas). */
 export const searchableCategories = searchCategories.filter((category) => !category.requiresAuth);
@@ -124,7 +180,13 @@ const SEARCH_ALIASES: Record<string, string[]> = {
   documento: ['documento', 'documentos', 'certidao', 'gov', 'oficial'],
   curso: ['curso', 'cursos', 'aula', 'aprend', 'certificado'],
   saude: ['saude', 'sus', 'medico', 'hospital', 'vacina'],
-  mei: ['mei', 'cnpj', 'empreendedor', 'formaliza']
+  mei: ['mei', 'cnpj', 'empreendedor', 'formaliza'],
+  financas: ['financas', 'financeiro', 'credito', 'divida', 'score', 'irpf', 'investimento'],
+  aluguel: ['aluguel', 'imovel', 'imoveis', 'locacao', 'habitacao', 'iptu'],
+  concurso: ['concurso', 'concursos', 'edital', 'enem', 'sisu', 'prouni', 'banca'],
+  cnh: ['cnh', 'detran', 'habilitacao', 'transito', 'motorista', 'crlv'],
+  ipva: ['ipva', 'veiculo', 'detran', 'licenciamento'],
+  procon: ['procon', 'consumidor', 'reclamacao', 'aneel', 'anatel']
 };
 
 function expandToken(token: string) {

@@ -27,6 +27,9 @@ const PUBLIC_TOOL_LANDINGS = [
   ,'/contrato-de-aluguel'
   ,'/recibo-de-pagamento'
   ,'/proposta-comercial-mei'
+  ,'/calculadora-de-ferias'
+  ,'/calculadora-de-decimo-terceiro'
+  ,'/recibo-de-aluguel'
 ] as const;
 
 const INTERNATIONAL_PUBLIC_PATHS = [
@@ -49,7 +52,17 @@ const INTERNATIONAL_PUBLIC_PATHS = [
   '/tools/academic-cover',
   '/tools/legal-documents',
   '/tools/accounting-documents',
-  '/tools/resource-search'
+  '/tools/resource-search',
+  '/tools/email-signature',
+  '/tools/delivery-schedule',
+  '/tools/bill-splitter',
+  '/tools/study-schedule',
+  '/tools/background-remover',
+  '/tools/pdf-editor',
+  '/tools/mei-vs-employment',
+  '/tools/enem-essay',
+  '/tools/abnt-references',
+  '/tools/lattes-cv'
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -86,13 +99,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     else if (
       path === '/calculadora-de-rescisao' ||
       path === '/calculadora-de-preco-freelancer' ||
-      path === '/mei-ou-clt'
+      path === '/mei-ou-clt' ||
+      path === '/calculadora-de-ferias' ||
+      path === '/calculadora-de-decimo-terceiro'
     ) {
       priority = 0.9;
     } else if (
       path === '/contrato-de-aluguel' ||
       path === '/recibo-de-pagamento' ||
-      path === '/proposta-comercial-mei'
+      path === '/proposta-comercial-mei' ||
+      path === '/recibo-de-aluguel'
     ) {
       priority = 0.8;
     }

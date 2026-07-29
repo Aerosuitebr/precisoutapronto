@@ -10,7 +10,8 @@ export type SeoLandingId =
   | 'gerador-de-recibo'
   | 'contrato-de-aluguel'
   | 'recibo-de-pagamento'
-  | 'proposta-comercial-mei';
+  | 'proposta-comercial-mei'
+  | 'recibo-de-aluguel';
 
 export interface SeoLandingContent {
   id: SeoLandingId;
