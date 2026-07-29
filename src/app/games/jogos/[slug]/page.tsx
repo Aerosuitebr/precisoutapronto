@@ -72,12 +72,12 @@ export default async function GamePage({ params }: Props) {
   };
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+    <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav className="text-xs text-slate-500">
+      <nav className="break-words text-xs text-slate-500">
         <Link href="/games" className="hover:text-teal-700">
           Jato Games
         </Link>
@@ -89,24 +89,26 @@ export default async function GamePage({ params }: Props) {
         <span className="text-slate-700">{game.title}</span>
       </nav>
 
-      <p className="mt-6 text-sm font-bold uppercase tracking-[0.16em] text-teal-700">
+      <p className="mt-6 break-words text-sm font-bold uppercase tracking-[0.16em] text-teal-700">
         #{game.rank} · {game.genres.join(' · ')}
       </p>
-      <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+      <h1 className="rj-display mt-2 break-words text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
         {game.title}
       </h1>
-      <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">{game.blurb}</p>
-      <p className="mt-2 text-sm text-slate-500">Plataformas: {game.platforms.join(', ')}</p>
+      <p className="mt-3 max-w-3xl break-words text-base leading-7 text-slate-600">{game.blurb}</p>
+      <p className="mt-2 break-words text-sm text-slate-500">
+        Plataformas: {game.platforms.join(', ')}
+      </p>
 
-      <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="space-y-8">
-          <section>
+      <div className="mt-10 grid min-w-0 gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="min-w-0 space-y-8">
+          <section className="min-w-0">
             <h2 className="rj-display text-xl font-extrabold text-slate-900">Por que está no radar</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">{game.whyPopular}</p>
+            <p className="mt-3 break-words text-sm leading-7 text-slate-600">{game.whyPopular}</p>
           </section>
-          <section>
+          <section className="min-w-0">
             <h2 className="rj-display text-xl font-extrabold text-slate-900">Setup sugerido</h2>
-            <div className="mt-4">
+            <div className="mt-4 min-w-0">
               <SetupTable game={game} />
             </div>
           </section>

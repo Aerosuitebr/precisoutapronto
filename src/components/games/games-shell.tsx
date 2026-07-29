@@ -38,7 +38,7 @@ export function GamesHeader() {
       </div>
       <nav
         aria-label="Jato Games mobile"
-        className="flex gap-1 overflow-x-auto border-t border-slate-100 px-4 py-2 md:hidden"
+        className="-mx-0 flex gap-1 overflow-x-auto overscroll-x-contain border-t border-slate-100 px-4 py-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
       >
         {JATO_GAMES.nav.map((item) => (
           <Link
@@ -84,12 +84,12 @@ export function GamesShell({
   return (
     <div
       className={cn(
-        'flex min-h-screen flex-col bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_45%,#eef2ff_100%)] text-slate-800',
+        'flex min-h-screen flex-col overflow-x-clip bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_45%,#eef2ff_100%)] text-slate-800',
         className
       )}
     >
       <GamesHeader />
-      <main className="flex-1">{children}</main>
+      <main className="min-w-0 flex-1">{children}</main>
       <GamesFooter />
     </div>
   );

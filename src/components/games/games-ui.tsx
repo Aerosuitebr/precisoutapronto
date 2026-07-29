@@ -75,32 +75,67 @@ export function SetupTable({ game }: { game: GameEntry }) {
     { label: 'RAM', min: game.setupMin.ram, rec: game.setupRec.ram },
     { label: 'Armazenamento', min: game.setupMin.storage, rec: game.setupRec.storage }
   ];
+  const note = [game.setupMin.note, game.setupRec.note].filter(Boolean).join(' ');
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <table className="w-full min-w-[32rem] text-left text-sm">
-        <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-          <tr>
-            <th className="px-4 py-3 font-semibold">Peça</th>
-            <th className="px-4 py-3 font-semibold">Mínimo</th>
-            <th className="px-4 py-3 font-semibold">Recomendado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.label} className="border-b border-slate-100 last:border-0">
-              <td className="px-4 py-3 font-semibold text-teal-700">{row.label}</td>
-              <td className="px-4 py-3 text-slate-700">{row.min}</td>
-              <td className="px-4 py-3 text-slate-700">{row.rec}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {(game.setupMin.note || game.setupRec.note) && (
-        <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
-          {[game.setupMin.note, game.setupRec.note].filter(Boolean).join(' ')}
+    <div className="w-full min-w-0 max-w-full">
+      {/* Mobile: cards empilhados, texto inteiro, sem scroll horizontal */}
+      <div className="space-y-3 md:hidden">
+        {rows.map((row) => (
+          <article
+            key={row.label}
+            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+          >
+            <h3 className="text-sm font-extrabold tracking-tight text-teal-700">{row.label}</h3>
+            <dl className="mt-3 space-y-3">
+              <div>
+                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                  Mínimo
+                </dt>
+                <dd className="mt-1 break-words text-sm leading-6 text-slate-700">{row.min}</dd>
+              </div>
+              <div className="rounded-xl bg-teal-50/80 px-3 py-2.5">
+                <dt className="text-[11px] font-bold uppercase tracking-[0.14em] text-teal-700/80">
+                  Recomendado
+                </dt>
+                <dd className="mt-1 break-words text-sm font-semibold leading-6 text-slate-800">
+                  {row.rec}
+                </dd>
+              </div>
+            </dl>
+          </article>
+        ))}
+      </div>
+
+      {/* Desktop: tabela completa */}
+      <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm md:block">
+        <div className="w-full min-w-0 overflow-x-auto overscroll-x-contain">
+          <table className="w-full min-w-[36rem] table-fixed text-left text-sm">
+            <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+              <tr>
+                <th className="w-[22%] px-4 py-3 font-semibold">Peça</th>
+                <th className="w-[39%] px-4 py-3 font-semibold">Mínimo</th>
+                <th className="w-[39%] px-4 py-3 font-semibold">Recomendado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.label} className="border-b border-slate-100 last:border-0">
+                  <td className="px-4 py-3 align-top font-semibold text-teal-700">{row.label}</td>
+                  <td className="px-4 py-3 align-top break-words text-slate-700">{row.min}</td>
+                  <td className="px-4 py-3 align-top break-words text-slate-700">{row.rec}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {note ? (
+        <p className="mt-3 break-words rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-500">
+          {note}
         </p>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -115,16 +150,16 @@ export function GameCard({ game, className }: { game: GameEntry; className?: str
       )}
     >
       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-teal-400 via-cyan-400 to-amber-300 opacity-80" />
-      <div className="flex items-center justify-between gap-3">
-        <span className="rj-display text-2xl font-black text-teal-600">#{game.rank}</span>
-        <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+      <div className="flex min-w-0 items-start justify-between gap-3">
+        <span className="rj-display shrink-0 text-2xl font-black text-teal-600">#{game.rank}</span>
+        <span className="max-w-[70%] break-words rounded-full bg-slate-100 px-2.5 py-1 text-right text-[11px] font-semibold uppercase leading-4 tracking-wide text-slate-500">
           {game.platforms.join(' · ')}
         </span>
       </div>
-      <h3 className="rj-display mt-3 text-lg font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800">
+      <h3 className="rj-display mt-3 break-words text-lg font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800">
         {game.title}
       </h3>
-      <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{game.blurb}</p>
+      <p className="mt-2 flex-1 break-words text-sm leading-6 text-slate-600">{game.blurb}</p>
       <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700">
         Ver setup
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
@@ -171,20 +206,20 @@ export function StoreCard({ store }: { store: GameStore }) {
 
 export function ProductBridge() {
   return (
-    <aside className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <aside className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
         Também no Resolva Jato
       </p>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
         <Link
           href="/ferramentas/divisor-conta"
-          className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
+          className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold leading-5 text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
         >
           Rateio Game Pass / assinatura
         </Link>
         <Link
           href="/gerador-de-qr-code-pix"
-          className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
+          className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold leading-5 text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
         >
           Cobrar coach no Pix
         </Link>
