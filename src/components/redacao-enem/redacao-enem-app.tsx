@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -16,8 +16,11 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
-import { analisarRedacao } from "@/lib/redacao-enem/analyze";
-import { cn } from "@/lib/utils";
+import { performBillableAction } from "@/lib/billing";
+import {
+  analisarRedacao,
+  type RedacaoAnaliseResult,
+} from "@/lib/redacao-enem/analyze";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 
 type Locale = "pt-BR" | "en" | "es";
@@ -43,11 +46,15 @@ const copy = {
       "Cole os 4-5 parágrafos separados por linha em branco, como no papel de prova.",
     textoPlaceholder: "Cole aqui o texto completo da sua redação...",
     wordCount: (n: number) => `${n} palavra(s)`,
-    wordCountEmpty: "Escreva ao menos 20 palavras para ver a estimativa.",
+    wordCountEmpty: "Escreva ao menos 20 palavras para analisar.",
     estimativaTitle: "Estimativa",
-    emptyTitle: "Cole pelo menos 20 palavras para começar.",
+    emptyTitle: "Cole o texto e clique em Analisar redação.",
     emptyText:
-      "Quanto mais parecido com a redação final, melhor a leitura de estrutura, coesão e intervenção.",
+      "Quanto mais parecido com a redação final, melhor a leitura de estrutura, coesão e intervenção. A 1ª análise é grátis sem conta.",
+    analyzeBtn: "Analisar redação",
+    analyzingBtn: "Analisando...",
+    analyzeNeedWords: "Escreva ao menos 20 palavras para analisar.",
+    analyzeBlocked: "Faça login para continuar analisando.",
     invalidTitle: "Texto sem sentido detectado",
     invalidHint:
       "Substitua o texto por parágrafos reais em português (com introdução, desenvolvimento e conclusão) para receber uma estimativa de nota por competência.",
@@ -93,11 +100,15 @@ const copy = {
       "Paste the 4 to 5 paragraphs separated by a blank line, like on the exam paper.",
     textoPlaceholder: "Paste the full text of your essay here...",
     wordCount: (n: number) => `${n} word(s)`,
-    wordCountEmpty: "Write at least 20 words to see the estimate.",
+    wordCountEmpty: "Write at least 20 words to analyze.",
     estimativaTitle: "Estimate",
-    emptyTitle: "Paste at least 20 words to get started.",
+    emptyTitle: "Paste your text and click Analyze essay.",
     emptyText:
-      "The closer to a final essay, the better the reading of structure, cohesion and intervention proposal.",
+      "The closer to a final essay, the better the reading of structure, cohesion and intervention proposal. The first analysis is free without an account.",
+    analyzeBtn: "Analyze essay",
+    analyzingBtn: "Analyzing...",
+    analyzeNeedWords: "Write at least 20 words to analyze.",
+    analyzeBlocked: "Sign in to keep analyzing.",
     invalidTitle: "Nonsensical text detected",
     invalidHint:
       "Replace the text with real paragraphs (with introduction, body and conclusion) to receive a score estimate per competency.",
@@ -142,11 +153,15 @@ const copy = {
       "Pega los 4 a 5 párrafos separados por una línea en blanco, como en la hoja de prueba.",
     textoPlaceholder: "Pega aquí el texto completo de tu redacción...",
     wordCount: (n: number) => `${n} palabra(s)`,
-    wordCountEmpty: "Escribe al menos 20 palabras para ver la estimación.",
+    wordCountEmpty: "Escribe al menos 20 palabras para analizar.",
     estimativaTitle: "Estimación",
-    emptyTitle: "Pega al menos 20 palabras para comenzar.",
+    emptyTitle: "Pega el texto y haz clic en Analizar redacción.",
     emptyText:
-      "Cuanto más se parezca a la redacción final, mejor será la lectura de estructura, cohesión e intervención.",
+      "Cuanto más se parezca a la redacción final, mejor será la lectura de estructura, cohesión e intervención. El primer análisis es gratis sin cuenta.",
+    analyzeBtn: "Analizar redacción",
+    analyzingBtn: "Analizando...",
+    analyzeNeedWords: "Escribe al menos 20 palabras para analizar.",
+    analyzeBlocked: "Inicia sesión para seguir analizando.",
     invalidTitle: "Texto sin sentido detectado",
     invalidHint:
       "Reemplaza el texto por párrafos reales (con introducción, desarrollo y conclusión) para recibir una estimación de nota por competencia.",
@@ -178,12 +193,51 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
   const { toast } = useToast();
   const [tema, setTema] = useState("");
   const [texto, setTexto] = useState("");
+  const [resultado, setResultado] = useState<RedacaoAnaliseResult | null>(null);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [analyzeError, setAnalyzeError] = useState("");
   const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
-  const resultado = useMemo(() => {
-    if (texto.trim().split(/\s+/).filter(Boolean).length < 20) return null;
-    return analisarRedacao(texto);
-  }, [texto]);
+  const wordCount = texto.trim().split(/\s+/).filter(Boolean).length;
+
+  function handleTextoChange(value: string) {
+    setTexto(value);
+    setResultado(null);
+    setAnalyzeError("");
+  }
+
+  async function handleAnalyze() {
+    setAnalyzeError("");
+    if (wordCount < 20) {
+      setAnalyzeError(t.analyzeNeedWords);
+      return;
+    }
+
+    setAnalyzing(true);
+    try {
+      const outcome = await performBillableAction(
+        {
+          toolId: "redacao-enem",
+          artifactId: `redacao_${Date.now()}`,
+          action: "analyze",
+        },
+        () => analisarRedacao(texto)
+      );
+      if (!outcome.allowed) {
+        setAnalyzeError(outcome.reason || t.analyzeBlocked);
+        return;
+      }
+      if (outcome.result) {
+        setResultado(outcome.result);
+      }
+    } catch (error) {
+      setAnalyzeError(
+        error instanceof Error ? error.message : t.analyzeBlocked
+      );
+    } finally {
+      setAnalyzing(false);
+    }
+  }
 
   function resumoTexto() {
     if (!resultado) return "";
@@ -277,17 +331,29 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
               <textarea
                 id="texto"
                 value={texto}
-                onChange={(e) => setTexto(e.target.value)}
+                onChange={(e) => handleTextoChange(e.target.value)}
                 placeholder={t.textoPlaceholder}
                 rows={16}
                 className="w-full rounded-xl border border-slate-200 bg-white p-3.5 text-sm font-medium text-slate-900 shadow-sm outline-none transition-all duration-150 placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
               />
             </FormField>
-            <p className="text-xs text-slate-500">
-              {texto.trim()
-                ? t.wordCount(texto.trim().split(/\s+/).filter(Boolean).length)
-                : t.wordCountEmpty}
-            </p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-slate-500">
+                {texto.trim() ? t.wordCount(wordCount) : t.wordCountEmpty}
+              </p>
+              <Button
+                type="button"
+                onClick={handleAnalyze}
+                disabled={analyzing || wordCount < 20}
+                className="w-full bg-sky-600 text-white hover:bg-sky-500 sm:w-auto"
+                icon={Sparkles}
+              >
+                {analyzing ? t.analyzingBtn : t.analyzeBtn}
+              </Button>
+            </div>
+            {analyzeError ? (
+              <p className="text-sm font-medium text-red-600">{analyzeError}</p>
+            ) : null}
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:sticky lg:top-24">

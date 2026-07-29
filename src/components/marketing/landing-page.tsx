@@ -13,14 +13,13 @@ import {
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Logo } from '@/components/brand/logo';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
-import { HeroToolsShowcase } from '@/components/marketing/hero-tools-showcase';
+import { HeroDualNiche } from '@/components/marketing/hero-dual-niche';
 import { PromoVideoPlayer } from '@/components/marketing/promo-video-section';
 import { TestimonialsSection } from '@/components/marketing/testimonials-section';
 import { TrustSeals } from '@/components/marketing/trust-seals';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { toolIntentOptions } from '@/lib/tools-catalog';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
@@ -102,20 +101,20 @@ export function LandingPage() {
               <Logo variant="hero" />
             </div>
             <p className="rj-animate-fade-up mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
-              O escritório digital que resolve tudo
+              Escritório digital grátis
             </p>
             <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(1.9rem,4.2vw,3.35rem)] font-extrabold leading-[1.08] tracking-tight text-white">
-              Orçamento, redação, PDF, currículo e contrato. Prontos em minutos.
+              Resolva estudo e cobrança no mesmo lugar.
             </h1>
             <p className="rj-animate-fade-up-delay-2 mt-4 max-w-lg text-base leading-7 text-slate-200 sm:text-lg">
-              Mande o orçamento e receba o Pix aprovado no WhatsApp, corrija sua redação do ENEM,
-              edite um PDF ou monte currículo e contrato — tudo grátis, no mesmo lugar.
+              Analise a redação do ENEM com feedback por competência ou gere cobrança Pix com QR e
+              Copia e Cola. Tudo grátis, no navegador.
             </p>
             <ul className="rj-animate-fade-up-delay-2 mt-5 space-y-2 text-sm text-slate-200">
               {[
-                'Aprovação no celular, sem instalar nada',
-                'QR Pix e Copia e Cola prontos',
-                'PDF profissional, totalmente grátis'
+                '1ª geração grátis, sem criar conta',
+                'Feedback ENEM por competência',
+                'QR Pix e Copia e Cola prontos'
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 shrink-0 text-amber-300" />
@@ -125,10 +124,10 @@ export function LandingPage() {
             </ul>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
-                <Link href="/orcamento-com-pix#montar">
-                  Montar orçamento e gerar Pix
+                <AuthAwareLink href="/ferramentas/redacao-enem">
+                  Analisar redação
                   <ArrowRight className="h-4 w-4" />
-                </Link>
+                </AuthAwareLink>
               </Button>
               <Button
                 asChild
@@ -136,36 +135,39 @@ export function LandingPage() {
                 variant="outline"
                 className="h-12 w-full border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10 sm:w-auto"
               >
-                <Link href="#demo-60s">Ver o fluxo em 60s</Link>
+                <Link href="/gerador-de-qr-code-pix">Gerar cobrança Pix</Link>
               </Button>
             </div>
 
             <div className="rj-animate-fade-up-delay-2 mt-6">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                Ou vá direto ao ponto
+                Também no hub
               </p>
               <ul className="mt-3 flex flex-wrap gap-2.5">
-                {toolIntentOptions.map((option) => {
-                  const href =
-                    option.toolId === 'orcamentos'
-                      ? '/orcamento-com-pix#montar'
-                      : `/ferramentas/${option.toolId}`;
-                  const className =
-                    'inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md';
-                  return (
-                    <li key={option.id}>
-                      {option.toolId === 'orcamentos' ? (
-                        <Link href={href} className={className}>
-                          {option.label}
-                        </Link>
-                      ) : (
-                        <AuthAwareLink href={href} className={className}>
-                          {option.label}
-                        </AuthAwareLink>
-                      )}
-                    </li>
-                  );
-                })}
+                <li>
+                  <Link
+                    href="/orcamento-com-pix#montar"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    Orçamento com Pix
+                  </Link>
+                </li>
+                <li>
+                  <AuthAwareLink
+                    href="/ferramentas/curriculo"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    Currículo
+                  </AuthAwareLink>
+                </li>
+                <li>
+                  <Link
+                    href="#demo-60s"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    Ver o fluxo em 60s
+                  </Link>
+                </li>
               </ul>
             </div>
             <p className="mt-4 text-xs text-slate-400">
@@ -174,9 +176,9 @@ export function LandingPage() {
             </p>
           </div>
 
-          <div className="relative flex h-full flex-col rj-animate-fade-up-delay-2">
+          <div className="relative flex h-full min-w-0 flex-col">
             <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-emerald-400/20 via-transparent to-amber-300/10 blur-2xl" />
-            <HeroToolsShowcase className="relative h-full" />
+            <HeroDualNiche className="relative h-full" />
           </div>
         </div>
       </section>
@@ -483,22 +485,30 @@ export function LandingPage() {
             <ul className="mt-5 space-y-2 text-sm text-slate-300">
               <li className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Monte o orçamento em minutos
+                Analise a redação do ENEM ou gere cobrança Pix
               </li>
               <li className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Cliente aprova no celular e você gera o Pix
+                Monte orçamento, currículo, recibo e contrato no mesmo lugar
               </li>
               <li className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Currículo, recibo e contrato no mesmo lugar
+                1ª geração grátis sem conta; depois continue com conta grátis
               </li>
             </ul>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild size="lg" className={cn('h-12', primaryCtaClass)}>
-                <Link href="/orcamento-com-pix#montar">
-                  Montar orçamento e gerar Pix
-                </Link>
+                <AuthAwareLink href="/ferramentas/redacao-enem">
+                  Analisar redação
+                </AuthAwareLink>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-12 border-white/25 bg-white/5 text-white hover:bg-white/10"
+              >
+                <Link href="/gerador-de-qr-code-pix">Gerar cobrança Pix</Link>
               </Button>
               <Link
                 href="/cadastro"

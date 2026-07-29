@@ -14,7 +14,8 @@ const guestCopy = {
       'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Resolva Jato.',
     guestSuccess: 'Documento gerado sem marca. Crie uma conta grátis para continuar.',
     saved: 'Documento salvo com sucesso.',
-    downloaded: 'Download concluído.'
+    downloaded: 'Download concluído.',
+    analyzed: 'Análise concluída.'
   },
   en: {
     trialAvailable: 'Free trial: one full generation without branding.',
@@ -22,7 +23,8 @@ const guestCopy = {
       'Create a free account to keep generating documents. Generation stays free, with the Resolva Jato brand.',
     guestSuccess: 'Document generated without branding. Create a free account to continue.',
     saved: 'Document saved successfully.',
-    downloaded: 'Download complete.'
+    downloaded: 'Download complete.',
+    analyzed: 'Analysis complete.'
   },
   es: {
     trialAvailable: 'Prueba gratuita: una generacion completa sin marca.',
@@ -30,7 +32,8 @@ const guestCopy = {
       'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con la marca Resolva Jato.',
     guestSuccess: 'Documento generado sin marca. Crea una cuenta gratis para continuar.',
     saved: 'Documento guardado con exito.',
-    downloaded: 'Descarga concluida.'
+    downloaded: 'Descarga concluida.',
+    analyzed: 'Analisis concluido.'
   }
 } as const;
 
@@ -294,7 +297,8 @@ export async function performBillableAction<T>(context: BillableContext, effect:
       const copy = guestCopy[billingLocale()];
       const labels: Record<BillableAction, string> = {
         manual_save: copy.saved,
-        download: copy.downloaded
+        download: copy.downloaded,
+        analyze: copy.analyzed
       };
       window.dispatchEvent(
         new CustomEvent('rj-billable-success', {
