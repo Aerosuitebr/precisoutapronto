@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check, ExternalLink } from 'lucide-react';
 import type { GameEntry } from '@/lib/games/games';
 import type { HardwareGuide } from '@/lib/games/hardware';
 import type { GameStore } from '@/lib/games/stores';
+import { gameHeroTheme, getGameStoreLinks } from '@/lib/games/game-links';
 import { cn } from '@/lib/utils';
 
 /** Painel legível sobre o fundo collage (títulos e intros). */
@@ -101,7 +102,7 @@ export function SetupTable({ game }: { game: GameEntry }) {
       </div>
 
       {note ? (
-        <p className="mt-3 break-words rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-500">
+        <p className="mt-3 break-words rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-700">
           {note}
         </p>
       ) : null}
@@ -217,26 +218,163 @@ export function StoreCard({ store }: { store: GameStore }) {
   );
 }
 
-export function ProductBridge() {
+export function ProductBridge({ context = 'default' }: { context?: 'default' | 'game' }) {
+  const isGame = context === 'game';
+
   return (
-    <aside className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
-        Também no Resolva Jato
+    <aside className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5">
+      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal-700">
+        {isGame ? 'Ferramentas para a galera' : 'Também no Resolva Jato'}
       </p>
-      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      {isGame ? (
+        <p className="mt-2 text-sm leading-6 text-slate-700">
+          Depois do setup, use estas ferramentas do hub para organizar a sessão com amigos.
+        </p>
+      ) : null}
+      <div className="mt-4 flex flex-col gap-2">
         <Link
           href="/ferramentas/divisor-conta"
-          className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold leading-5 text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
+          className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold leading-5 text-slate-800 transition hover:border-teal-400 hover:bg-teal-50 hover:text-teal-900"
         >
-          Rateio Game Pass / assinatura
+          Rateio de Game Pass / assinatura
         </Link>
         <Link
           href="/gerador-de-qr-code-pix"
-          className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold leading-5 text-slate-700 transition hover:border-teal-300 hover:text-teal-800"
+          className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold leading-5 text-slate-800 transition hover:border-teal-400 hover:bg-teal-50 hover:text-teal-900"
         >
           Cobrar coach no Pix
         </Link>
       </div>
     </aside>
+  );
+}
+
+export function GameHero({ game }: { game: GameEntry }) {
+  const theme = gameHeroTheme(game.slug);
+
+  return (
+    <header className="relative overflow-hidden rounded-[28px] border border-slate-200 shadow-[0_18px_40px_-24px_rgba(15,23,42,0.45)] ring-1 ring-slate-900/5">
+      <div
+        className={cn(
+          'absolute inset-0 bg-gradient-to-br',
+          theme.from,
+          theme.via,
+          theme.to
+        )}
+        aria-hidden
+      />
+      <div
+        className={cn(
+          'pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full blur-3xl',
+          theme.glow
+        )}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-25"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)',
+          backgroundSize: '22px 22px'
+        }}
+        aria-hidden
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-slate-950/55 to-slate-950/25" />
+
+      <div className="relative z-10 grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-end sm:p-8 lg:p-10">
+        <div className="min-w-0">
+          <p className="inline-flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-200">
+            <span className="rounded-full bg-white/15 px-2.5 py-1 text-white backdrop-blur-sm">
+              #{game.rank}
+            </span>
+            <span className="rounded-full bg-white/15 px-2.5 py-1 text-white/90 backdrop-blur-sm">
+              {theme.label}
+            </span>
+            <span className="text-teal-100">{game.genres.join(' · ')}</span>
+          </p>
+          <h1 className="rj-display mt-4 break-words text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            {game.title}
+          </h1>
+          <p className="mt-4 max-w-2xl break-words text-base leading-7 text-white/95 sm:text-lg">
+            {game.blurb}
+          </p>
+          <p className="mt-3 break-words text-sm font-semibold text-white/90">
+            Plataformas: {game.platforms.join(', ')}
+          </p>
+        </div>
+        <div
+          className="rj-display hidden select-none text-[7rem] font-black leading-none text-white/15 sm:block lg:text-[9rem]"
+          aria-hidden
+        >
+          #{game.rank}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export function GameTips({ tips }: { tips: string[] }) {
+  return (
+    <ul className="mt-4 space-y-3">
+      {tips.map((tip) => (
+        <li key={tip} className="flex gap-3 text-sm leading-6 text-slate-800">
+          <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-teal-50 text-teal-700">
+            <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden />
+          </span>
+          <span className="min-w-0 break-words">{tip}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function GameNextSteps({ game }: { game: GameEntry }) {
+  const storeLinks = getGameStoreLinks(game);
+
+  return (
+    <section className="rounded-2xl border border-teal-200 bg-teal-50/60 p-5 shadow-sm ring-1 ring-teal-900/5 sm:p-6">
+      <h2 className="rj-display text-xl font-extrabold text-slate-950">Próximo passo</h2>
+      <p className="mt-2 text-sm leading-6 text-slate-700">
+        Use o setup acima como base e avance para cotação, lojas confiáveis ou a página oficial do
+        jogo.
+      </p>
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <Link
+          href="/games/hardware/escolher-placa-de-video"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:bg-teal-500"
+        >
+          Ver guia da GPU
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+        <Link
+          href="/games/lojas"
+          className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-slate-800 bg-white px-5 text-sm font-bold text-slate-900 transition hover:border-teal-700 hover:bg-teal-50"
+        >
+          Ver lojas de jogos e hardware
+        </Link>
+        {storeLinks.map((link) =>
+          link.external ? (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-sm font-bold text-slate-800 transition hover:border-teal-400 hover:text-teal-900"
+            >
+              {link.label}
+              <ExternalLink className="h-4 w-4" aria-hidden />
+            </a>
+          ) : (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="inline-flex h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-bold text-slate-800 transition hover:border-teal-400 hover:text-teal-900"
+            >
+              {link.label}
+            </Link>
+          )
+        )}
+      </div>
+    </section>
   );
 }

@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ProductBridge, SetupTable, GamesReadablePanel } from '@/components/games/games-ui';
+import {
+  GameHero,
+  GameNextSteps,
+  GameTips,
+  ProductBridge,
+  SetupTable
+} from '@/components/games/games-ui';
 import { JATO_GAMES } from '@/lib/games/brand';
 import { gamesCatalog, getGame } from '@/lib/games/games';
 import { getViralBaseUrl } from '@/lib/viral-loop';
@@ -77,7 +83,7 @@ export default async function GamePage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav className="mb-6 break-words rounded-xl border border-white/70 bg-white/85 px-3 py-2 text-xs text-slate-500 backdrop-blur-sm">
+      <nav className="mb-6 break-words rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm">
         <Link href="/games" className="hover:text-teal-700">
           Jato Games
         </Link>
@@ -86,57 +92,55 @@ export default async function GamePage({ params }: Props) {
           Top jogos
         </Link>
         {' / '}
-        <span className="text-slate-700">{game.title}</span>
+        <span className="text-slate-900">{game.title}</span>
       </nav>
 
-      <GamesReadablePanel>
-        <p className="break-words text-sm font-bold uppercase tracking-[0.16em] text-teal-700">
-          #{game.rank} · {game.genres.join(' · ')}
-        </p>
-        <h1 className="rj-display mt-2 break-words text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
-          {game.title}
-        </h1>
-        <p className="mt-3 max-w-3xl break-words text-base leading-7 text-slate-600">{game.blurb}</p>
-        <p className="mt-2 break-words text-sm text-slate-500">
-          Plataformas: {game.platforms.join(', ')}
-        </p>
-      </GamesReadablePanel>
+      <GameHero game={game} />
 
-      <div className="mt-10 grid min-w-0 gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="mt-10 grid min-w-0 gap-8 lg:grid-cols-[1.25fr_0.75fr]">
         <div className="min-w-0 space-y-8">
-          <section className="min-w-0 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm">
-            <h2 className="rj-display text-xl font-extrabold text-slate-900">Por que está no radar</h2>
-            <p className="mt-3 break-words text-sm leading-7 text-slate-600">{game.whyPopular}</p>
+          <section className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5 sm:p-6">
+            <h2 className="rj-display text-xl font-extrabold text-slate-950">Por que está no radar</h2>
+            <p className="mt-3 break-words text-base leading-7 text-slate-800">{game.whyPopular}</p>
           </section>
-          <section className="min-w-0 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm">
-            <h2 className="rj-display text-xl font-extrabold text-slate-900">Setup sugerido</h2>
+
+          <section className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5 sm:p-6">
+            <h2 className="rj-display text-xl font-extrabold text-slate-950">Setup sugerido</h2>
             <div className="mt-4 min-w-0">
               <SetupTable game={game} />
             </div>
+            <div className="mt-6">
+              <GameNextSteps game={game} />
+            </div>
           </section>
-          <section className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm">
-            <h2 className="rj-display text-xl font-extrabold text-slate-900">Dicas rápidas</h2>
-            <ul className="mt-3 space-y-2">
-              {game.tips.map((tip) => (
-                <li
-                  key={tip}
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-sm"
-                >
-                  {tip}
-                </li>
-              ))}
-            </ul>
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5 sm:p-6">
+            <h2 className="rj-display text-xl font-extrabold text-slate-950">Dicas rápidas</h2>
+            <GameTips tips={game.tips} />
           </section>
         </div>
-        <div className="space-y-4">
-          <ProductBridge />
+
+        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          <ProductBridge context="game" />
           <Link
             href="/games/hardware/escolher-placa-de-video"
-            className="block rounded-2xl border border-slate-200 bg-white/95 p-5 text-sm text-slate-700 shadow-sm backdrop-blur-sm transition hover:border-amber-300"
+            className="block rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-slate-800 shadow-sm ring-1 ring-amber-900/5 transition hover:border-amber-400 hover:bg-amber-100/80"
           >
-            Montando PC? Veja o guia de placa de vídeo.
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-amber-700">
+              Guia de hardware
+            </p>
+            <p className="mt-2 font-semibold text-slate-950">
+              Montando PC? Veja como escolher placa de vídeo sem desperdício.
+            </p>
           </Link>
-        </div>
+          <Link
+            href="/games/top-jogos"
+            className="block rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-800 shadow-sm ring-1 ring-slate-900/5 transition hover:border-teal-300"
+          >
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal-700">Ranking</p>
+            <p className="mt-2 font-semibold text-slate-950">Voltar ao Top 10 com setup sugerido</p>
+          </Link>
+        </aside>
       </div>
     </div>
   );
