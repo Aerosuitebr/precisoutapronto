@@ -60,20 +60,18 @@ export default function GamesHubPage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-slate-200/80">
+      <section className="relative min-h-[28rem] overflow-hidden border-b border-slate-200/80 sm:min-h-[34rem]">
         <GamesHeroBackdrop />
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div className="max-w-xl">
+        <div className="relative mx-auto flex max-w-6xl items-center px-4 py-14 sm:px-6 sm:py-20">
+          <div className="w-full max-w-xl rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_20px_50px_-28px_rgba(15,23,42,0.35)] backdrop-blur-md sm:p-8">
             <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
               <Gamepad2 className="h-3.5 w-3.5" />
               Jato Games
             </p>
-            <h1 className="rj-display mt-4 text-[clamp(2.1rem,4.8vw,3.6rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
+            <h1 className="rj-display mt-4 text-[clamp(2.1rem,4.8vw,3.4rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
               {JATO_GAMES.tagline}
             </h1>
-            <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
-              {JATO_GAMES.description}
-            </p>
+            <p className="mt-4 text-base leading-7 text-slate-700 sm:text-lg">{JATO_GAMES.description}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/games/top-jogos"
@@ -89,44 +87,18 @@ export default function GamesHubPage() {
                 Guias de hardware
               </Link>
             </div>
-            <ul className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
-              {['CS2', 'LoL', 'Valorant', 'GTA V', 'Minecraft', 'Fortnite'].map((name) => (
-                <li
-                  key={name}
-                  className="rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 shadow-sm"
-                >
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="relative min-h-[16rem] sm:min-h-[20rem] lg:min-h-[24rem]">
-            {/* posters rendered by backdrop on desktop; compact strip on mobile */}
-            <div className="grid grid-cols-2 gap-3 sm:hidden">
-              {['CS2', 'Valorant', 'Minecraft', 'GTA V'].map((title, i) => (
-                <div
-                  key={title}
-                  className={cnPoster(i)}
-                >
-                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/80">
-                    Destaque
-                  </p>
-                  <p className="rj-display mt-1 text-lg font-black">{title}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <section className="relative mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <SectionAccent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {pillars.map((pillar) => (
               <Link
                 key={pillar.href}
                 href={pillar.href}
-                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+                className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
               >
                 <div className="flex items-center justify-between gap-3">
                   <pillar.icon className="h-5 w-5 text-teal-600" aria-hidden />
@@ -142,7 +114,7 @@ export default function GamesHubPage() {
         </SectionAccent>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+      <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
         <SectionAccent>
           <div className="mb-6 flex items-end justify-between gap-4">
             <div>
@@ -163,7 +135,7 @@ export default function GamesHubPage() {
         </SectionAccent>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+      <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
         <SectionAccent>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">Hardware</p>
           <h2 className="rj-display mt-2 text-2xl font-extrabold text-slate-950 sm:text-3xl">
@@ -177,19 +149,9 @@ export default function GamesHubPage() {
         </SectionAccent>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+      <section className="relative mx-auto max-w-6xl px-4 pb-16 sm:px-6">
         <ProductBridge />
       </section>
     </div>
   );
-}
-
-function cnPoster(index: number) {
-  const tones = [
-    'bg-gradient-to-br from-orange-500 to-amber-600',
-    'bg-gradient-to-br from-rose-500 to-red-700',
-    'bg-gradient-to-br from-lime-500 to-green-700',
-    'bg-gradient-to-br from-emerald-500 to-teal-700'
-  ];
-  return `rounded-2xl p-4 text-white shadow-md ${tones[index % tones.length]}`;
 }

@@ -86,12 +86,20 @@ export function GamesShell({
     <div
       className={cn(
         // svh = altura com a barra do browser visivel; evita loop sobe/desce do 100vh no mobile
-        'flex min-h-svh flex-col overscroll-x-none bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_45%,#eef2ff_100%)] text-slate-800',
+        'relative flex min-h-svh flex-col overscroll-x-none bg-slate-50 text-slate-800',
         className
       )}
     >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[url('/background_games.png')] bg-cover bg-[center_30%] bg-no-repeat opacity-[0.18]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white/95 via-slate-50/92 to-indigo-50/90"
+        aria-hidden
+      />
       <GamesHeader />
-      <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
+      <main className="relative min-w-0 flex-1 overflow-x-clip">{children}</main>
       <GamesFooter />
     </div>
   );

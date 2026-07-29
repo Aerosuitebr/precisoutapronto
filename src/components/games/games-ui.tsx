@@ -1,57 +1,28 @@
 import Link from 'next/link';
-import { ArrowRight, Crosshair, Gamepad2, Joystick, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 import type { GameEntry } from '@/lib/games/games';
 import type { HardwareGuide } from '@/lib/games/hardware';
 import type { GameStore } from '@/lib/games/stores';
+import gamesBackground from '@/assets/background_games.png';
 import { cn } from '@/lib/utils';
 
-const HERO_POSTERS = [
-  { title: 'CS2', subtitle: 'FPS tático', tone: 'from-orange-500 to-amber-600' },
-  { title: 'LoL', subtitle: 'MOBA', tone: 'from-sky-500 to-blue-700' },
-  { title: 'Valorant', subtitle: 'Tático', tone: 'from-rose-500 to-red-700' },
-  { title: 'GTA V', subtitle: 'Mundo aberto', tone: 'from-emerald-500 to-teal-700' },
-  { title: 'Minecraft', subtitle: 'Sandbox', tone: 'from-lime-500 to-green-700' },
-  { title: 'Fortnite', subtitle: 'Battle royale', tone: 'from-violet-500 to-indigo-700' },
-  { title: 'Elden Ring', subtitle: 'Action RPG', tone: 'from-yellow-600 to-stone-800' },
-  { title: 'Free Fire', subtitle: 'Mobile', tone: 'from-cyan-500 to-slate-800' }
-] as const;
-
+/** Hero full-bleed com collage dos jogos + scrims para manter texto legível. */
 export function GamesHeroBackdrop() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(20,184,166,0.22),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(251,191,36,0.14),transparent_50%),linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)]" />
-      <div className="absolute inset-0 opacity-[0.4] [background-image:radial-gradient(circle_at_1px_1px,rgba(15,23,42,0.06)_1px,transparent_0)] [background-size:22px_22px]" />
-      <div className="absolute -right-4 top-6 hidden w-[min(52%,30rem)] -rotate-1 grid-cols-2 gap-3 sm:grid lg:right-6 lg:top-8 lg:w-[28rem] lg:rotate-2">
-        {HERO_POSTERS.slice(0, 6).map((poster, index) => (
-          <div
-            key={poster.title}
-            className={cn(
-              'relative min-h-[7.5rem] overflow-hidden rounded-2xl bg-gradient-to-br p-4 text-white shadow-xl shadow-slate-900/10 ring-1 ring-white/50',
-              poster.tone,
-              index % 2 === 1 ? 'translate-y-6' : 'translate-y-0'
-            )}
-          >
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/85">
-              {poster.subtitle}
-            </p>
-            <p className="rj-display mt-2 text-2xl font-black tracking-tight drop-shadow-sm">
-              {poster.title}
-            </p>
-            <span className="absolute -bottom-4 -right-3 opacity-25">
-              {index % 3 === 0 ? (
-                <Crosshair className="h-20 w-20" />
-              ) : index % 3 === 1 ? (
-                <Joystick className="h-20 w-20" />
-              ) : (
-                <Gamepad2 className="h-20 w-20" />
-              )}
-            </span>
-          </div>
-        ))}
-      </div>
-      <Sparkles className="absolute left-[8%] top-10 h-5 w-5 text-teal-500/55" />
-      <Sparkles className="absolute bottom-16 left-[18%] h-4 w-4 text-amber-500/45" />
-      <Joystick className="absolute bottom-10 right-[42%] hidden h-8 w-8 text-slate-300/70 lg:block" />
+      <Image
+        src={gamesBackground}
+        alt=""
+        fill
+        priority
+        placeholder="blur"
+        sizes="100vw"
+        className="scale-105 object-cover object-[62%_42%] sm:scale-100 sm:object-center"
+      />
+      {/* Velatura leve: a arte aparece nas bordas; o painel do hero garante o texto */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/45 to-transparent sm:from-white/70 sm:via-white/25" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-transparent to-white/55" />
     </div>
   );
 }
