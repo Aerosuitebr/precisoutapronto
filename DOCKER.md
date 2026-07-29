@@ -57,7 +57,13 @@ TURNSTILE_SECRET_KEY=...
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=...
 ```
 
-O `prisma db push` no entrypoint cria as tabelas de User, usage, audit, blacklist, etc.
+O entrypoint usa `PRISMA_SCHEMA_MODE` para controlar alterações no banco:
+
+- `migrate` (forçado pelo overlay Vultr de produção e pelo compose de staging): executa `prisma migrate deploy`;
+- `push` (padrão do compose base para desenvolvimento local): sincroniza o schema sem `--accept-data-loss`;
+- `skip`: inicia a aplicação sem alterar o schema.
+
+Produção e staging nunca devem usar `PRISMA_SCHEMA_MODE=push`. Para uma instalação totalmente nova, crie um baseline completo antes de usar somente as migrations incrementais atuais.
 
 Contas antigas só em localStorage **não** migram — o usuário precisa cadastrar de novo e confirmar e-mail.
 

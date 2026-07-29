@@ -10,6 +10,8 @@
     "start:next": "next start",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:status": "prisma migrate status",
     "db:studio": "prisma studio",
     "push:vapid": "web-push generate-vapid-keys",
     "docker:up": "docker compose up -d --build",

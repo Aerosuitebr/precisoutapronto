@@ -56,6 +56,7 @@ services:
       NODE_ENV: production
       APP_ENV: staging
       PORT: '3000'
+      PRISMA_SCHEMA_MODE: ${PRISMA_SCHEMA_MODE:-migrate}
       DATABASE_URL: postgresql://${POSTGRES_USER:-resolvajato}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-resolvajato_staging}?schema=public
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://staging.resolvajato.com.br}
       NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: ${NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY:-}
