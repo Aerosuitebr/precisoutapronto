@@ -114,7 +114,7 @@ export function GameCard({ game, className }: { game: GameEntry; className?: str
     <Link
       href={`/games/jogos/${game.slug}`}
       className={cn(
-        'group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md',
+        'group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md',
         className
       )}
     >
@@ -125,11 +125,11 @@ export function GameCard({ game, className }: { game: GameEntry; className?: str
           {game.platforms.join(' · ')}
         </span>
       </div>
-      <h3 className="rj-display mt-3 break-words text-lg font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800">
+      <h3 className="rj-display mt-4 break-words text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800">
         {game.title}
       </h3>
-      <p className="mt-2 flex-1 break-words text-sm leading-6 text-slate-600">{game.blurb}</p>
-      <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700">
+      <p className="mt-3 flex-1 break-words text-base leading-7 text-slate-700">{game.blurb}</p>
+      <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700">
         Ver setup
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
       </p>
@@ -141,14 +141,14 @@ export function HardwareCard({ guide }: { guide: HardwareGuide }) {
   return (
     <Link
       href={`/games/hardware/${guide.slug}`}
-      className="group rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
+      className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md"
     >
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-amber-600">Guia</p>
-      <h3 className="rj-display mt-2 text-lg font-extrabold text-slate-900 group-hover:text-amber-800">
+      <h3 className="rj-display mt-2 text-xl font-extrabold text-slate-900 group-hover:text-amber-800">
         {guide.title}
       </h3>
-      <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
-      <p className="mt-4 text-xs font-semibold text-slate-500">{guide.readTime} de leitura</p>
+      <p className="mt-3 text-base leading-7 text-slate-700">{guide.description}</p>
+      <p className="mt-5 text-sm font-semibold text-slate-500">{guide.readTime} de leitura</p>
     </Link>
   );
 }
@@ -159,7 +159,7 @@ export function StoreCard({ store }: { store: GameStore }) {
       href={store.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+      className="block rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
     >
       <div className="flex items-center justify-between gap-3">
         <h3 className="rj-display text-base font-extrabold text-slate-900">{store.name}</h3>
@@ -167,8 +167,8 @@ export function StoreCard({ store }: { store: GameStore }) {
           {store.kind}
         </span>
       </div>
-      <p className="mt-2 text-sm leading-6 text-slate-600">{store.blurb}</p>
-      <p className="mt-3 text-xs leading-5 text-slate-500">{store.trustNote}</p>
+      <p className="mt-3 text-base leading-7 text-slate-700">{store.blurb}</p>
+      <p className="mt-3 text-sm leading-6 text-slate-500">{store.trustNote}</p>
     </a>
   );
 }

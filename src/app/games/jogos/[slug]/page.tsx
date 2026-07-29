@@ -72,7 +72,7 @@ export default async function GamePage({ params }: Props) {
   };
 
   return (
-    <div className="mx-auto w-full min-w-0 max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+    <div className="mx-auto w-full min-w-0 max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

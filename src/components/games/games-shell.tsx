@@ -5,25 +5,25 @@ import { cn } from '@/lib/utils';
 
 export function GamesHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-white/60 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+    <header className="sticky top-0 z-40 border-b border-slate-200/90 bg-white/95 shadow-sm backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
         <Link href={JATO_GAMES.path} className="flex min-w-0 items-center gap-2.5">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-teal-500 text-white shadow-sm shadow-teal-500/25">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-teal-500 text-white shadow-sm shadow-teal-500/25">
             <Gamepad2 className="h-5 w-5" aria-hidden />
           </span>
           <span className="min-w-0">
-            <span className="rj-display block truncate text-base font-extrabold tracking-tight text-slate-900">
+            <span className="rj-display block truncate text-lg font-extrabold tracking-tight text-slate-900">
               {JATO_GAMES.name}
             </span>
-            <span className="hidden text-[11px] text-slate-500 sm:block">{JATO_GAMES.tagline}</span>
+            <span className="hidden text-xs text-slate-500 sm:block">{JATO_GAMES.tagline}</span>
           </span>
         </Link>
-        <nav aria-label="Jato Games" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Jato Games" className="hidden items-center gap-0.5 md:flex">
           {JATO_GAMES.nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white/80 hover:text-slate-900"
+              className="rounded-lg px-3.5 py-2.5 text-[15px] font-bold text-slate-800 transition hover:bg-teal-50 hover:text-teal-800"
             >
               {item.label}
             </Link>
@@ -31,7 +31,7 @@ export function GamesHeader() {
         </nav>
         <Link
           href="/busca?categoria=games"
-          className="rounded-lg bg-teal-600 px-3 py-2 text-sm font-bold text-white transition hover:bg-teal-500 md:hidden"
+          className="rounded-lg bg-teal-600 px-3.5 py-2.5 text-sm font-bold text-white transition hover:bg-teal-500 md:hidden"
         >
           Busca
         </Link>
@@ -39,13 +39,13 @@ export function GamesHeader() {
       {/* Nav com scroll horizontal isolado para nao puxar a pagina no eixo Y */}
       <nav
         aria-label="Jato Games mobile"
-        className="flex touch-pan-x gap-1 overflow-x-auto overscroll-x-contain border-t border-slate-100/80 px-4 py-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
+        className="flex touch-pan-x gap-1.5 overflow-x-auto overscroll-x-contain border-t border-slate-200/80 px-4 py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
       >
         {JATO_GAMES.nav.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="shrink-0 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700"
+            className="shrink-0 rounded-full border border-slate-300 bg-white px-3.5 py-2 text-sm font-bold text-slate-800"
           >
             {item.label}
           </Link>
@@ -58,7 +58,7 @@ export function GamesHeader() {
 export function GamesFooter() {
   return (
     <footer className="relative z-10 mt-auto border-t border-white/60 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
           <span className="font-semibold text-slate-800">{JATO_GAMES.name}</span>
           {' · '}
@@ -90,14 +90,14 @@ export function GamesShell({
         className
       )}
     >
-      {/* Fundo da vertical inteira: collage no lugar do branco */}
+      {/* Fundo suave: collage atenuada + velatura (menos fadiga visual) */}
       <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-100 via-teal-50/40 to-amber-50/30" />
         <div
-          className="absolute inset-0 bg-[url('/background_games.png')] bg-cover bg-[center_35%] bg-no-repeat sm:bg-center"
+          className="absolute inset-0 bg-[url('/background_games.png')] bg-cover bg-[center_35%] bg-no-repeat opacity-[0.28] sm:bg-center sm:opacity-[0.22]"
         />
-        {/* Velatura para texto/cards; a arte continua visivel nas laterais e no scroll */}
-        <div className="absolute inset-0 bg-white/55 sm:bg-white/50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/45" />
+        <div className="absolute inset-0 bg-white/70 sm:bg-white/75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-transparent to-white/60" />
       </div>
 
       <GamesHeader />

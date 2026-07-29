@@ -13,7 +13,7 @@ export default function TopJogosPage() {
   const games = listGamesByRank();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
       <SectionAccent>
         <GamesReadablePanel className="max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Ranking</p>

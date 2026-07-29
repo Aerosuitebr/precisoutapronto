@@ -60,8 +60,8 @@ export default function GamesHubPage() {
 
   return (
     <div>
-      <section className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-        <GamesReadablePanel className="max-w-xl">
+      <section className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+        <GamesReadablePanel className="max-w-2xl">
           <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
             <Gamepad2 className="h-3.5 w-3.5" />
             Jato Games
@@ -80,7 +80,7 @@ export default function GamesHubPage() {
             </Link>
             <Link
               href="/games/hardware"
-              className="inline-flex h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-6 text-sm font-semibold text-slate-800 transition hover:border-teal-300 hover:text-teal-800"
+              className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-slate-800 bg-white px-6 text-sm font-bold text-slate-900 shadow-sm transition hover:border-teal-700 hover:bg-teal-50 hover:text-teal-900"
             >
               Guias de hardware
             </Link>
@@ -88,14 +88,14 @@ export default function GamesHubPage() {
         </GamesReadablePanel>
       </section>
 
-      <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+      <section className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
         <SectionAccent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {pillars.map((pillar) => (
               <Link
                 key={pillar.href}
                 href={pillar.href}
-                className="rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
               >
                 <div className="flex items-center justify-between gap-3">
                   <pillar.icon className="h-5 w-5 text-teal-600" aria-hidden />
@@ -111,20 +111,20 @@ export default function GamesHubPage() {
         </SectionAccent>
       </section>
 
-      <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+      <section className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
         <SectionAccent>
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-white/70 bg-white/85 px-4 py-3 backdrop-blur-sm">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Em alta</p>
               <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
                 Top jogos com setup
               </h2>
             </div>
-            <Link href="/games/top-jogos" className="text-sm font-semibold text-teal-700 hover:underline">
+            <Link href="/games/top-jogos" className="text-sm font-bold text-teal-700 hover:underline">
               Ver ranking
             </Link>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {top.map((game) => (
               <GameCard key={game.slug} game={game} />
             ))}
@@ -132,15 +132,15 @@ export default function GamesHubPage() {
         </SectionAccent>
       </section>
 
-      <section className="relative mx-auto max-w-6xl px-4 pb-12 sm:px-6">
+      <section className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
         <SectionAccent>
-          <div className="mb-6 rounded-2xl border border-white/70 bg-white/85 px-4 py-3 backdrop-blur-sm">
+          <div className="mb-6 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">Hardware</p>
             <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
               Guias para não comprar errado
             </h2>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-5 sm:grid-cols-2">
             {hardwareGuides.slice(0, 4).map((guide) => (
               <HardwareCard key={guide.slug} guide={guide} />
             ))}
@@ -148,7 +148,7 @@ export default function GamesHubPage() {
         </SectionAccent>
       </section>
 
-      <section className="relative mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+      <section className="relative mx-auto max-w-7xl px-4 pb-16 sm:px-6">
         <ProductBridge />
       </section>
     </div>
