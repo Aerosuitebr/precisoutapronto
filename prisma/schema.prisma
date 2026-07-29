@@ -83,10 +83,50 @@ model User {
   auditLogs          AuditLog[]
   toolsPreference    ToolsPreference?
   activeSession      UserSession?
+  agendaEvents       AgendaEvent[]
+  toolDocuments      ToolDocument[]
 
   @@index([createdAt])
   @@index([referredByUserId])
   @@map("users")
+}
+
+model AgendaEvent {
+  id           String   @id
+  userId       String
+  title        String
+  client       String   @default("")
+  date         String
+  startTime    String
+  endTime      String
+  location     String   @default("")
+  notes        String   @default("")
+  alertMinutes Int      @default(30)
+  priority     String   @default("normal")
+  status       String   @default("confirmed")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@map("agenda_events")
+}
+
+model ToolDocument {
+  id         String   @id @default(cuid())
+  userId     String
+  toolId     String
+  artifactId String
+  data       Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, toolId, artifactId])
+  @@index([userId, toolId, updatedAt])
+  @@map("tool_documents")
 }
 
 /// Uma sessão ativa por usuário: login novo substitui e invalida as anteriores.

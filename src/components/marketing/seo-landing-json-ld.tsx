@@ -1,7 +1,7 @@
 import type { SeoLandingContent } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
-/** JSON-LD (WebPage, BreadcrumbList e FAQPage) para as landings de SEO. */
+/** JSON-LD (WebPage, SoftwareApplication, BreadcrumbList e FAQPage) para landings SEO. */
 export function SeoLandingJsonLd({ content }: { content: SeoLandingContent }) {
   const siteUrl = getViralBaseUrl();
   const pageUrl = `${siteUrl}${content.path}`;
@@ -17,6 +17,21 @@ export function SeoLandingJsonLd({ content }: { content: SeoLandingContent }) {
       '@type': 'WebSite',
       name: 'Resolva Jato',
       url: siteUrl
+    }
+  };
+
+  const softwareApplication = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: `Resolva Jato: ${content.eyebrow}`,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: pageUrl,
+    description: content.description,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'BRL'
     }
   };
 
@@ -45,7 +60,7 @@ export function SeoLandingJsonLd({ content }: { content: SeoLandingContent }) {
         }
       : null;
 
-  const blocks = [webPage, breadcrumb, faqPage].filter(Boolean);
+  const blocks = [webPage, softwareApplication, breadcrumb, faqPage].filter(Boolean);
 
   return (
     <>

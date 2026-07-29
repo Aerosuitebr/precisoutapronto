@@ -1,15 +1,20 @@
 'use client';
 
 import { Check, X } from 'lucide-react';
-import { evaluatePasswordStrength } from '@/lib/password';
+import {
+  evaluatePasswordStrength,
+  getPasswordStrengthTitle,
+  type PasswordLocale
+} from '@/lib/password';
 import { cn } from '@/lib/utils';
 
 interface PasswordStrengthProps {
   password: string;
+  locale?: PasswordLocale;
 }
 
-export function PasswordStrength({ password }: PasswordStrengthProps) {
-  const result = evaluatePasswordStrength(password);
+export function PasswordStrength({ password, locale = 'pt-BR' }: PasswordStrengthProps) {
+  const result = evaluatePasswordStrength(password, locale);
   const ratio = result.maxScore === 0 ? 0 : result.score / result.maxScore;
 
   const barClass =
@@ -33,7 +38,9 @@ export function PasswordStrength({ password }: PasswordStrengthProps) {
   return (
     <div className="space-y-3 rounded-2xl border border-sky-200 bg-sky-50/80 p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-800">Força da senha</p>
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-800">
+          {getPasswordStrengthTitle(locale)}
+        </p>
         <p className={cn('text-sm font-bold', labelClass)}>{result.label}</p>
       </div>
       <div className="h-2.5 overflow-hidden rounded-full bg-white">

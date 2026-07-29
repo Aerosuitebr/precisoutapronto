@@ -13,7 +13,7 @@ export function ToolLandingHero({
   return (
     <section className="relative overflow-hidden bg-[linear-gradient(180deg,#020617_0%,#0f172a_55%,#0c4a6e_100%)] text-white">
       <div className="pointer-events-none absolute inset-0 opacity-40 [background:radial-gradient(60%_50%_at_80%_0%,theme(colors.sky.500/40),transparent)]" />
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-24">
+      <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:py-24">
         <div>
           <p className="rj-display text-xs font-bold uppercase tracking-[0.25em] text-sky-300">
             Resolva Jato · {content.toolName}
@@ -42,7 +42,7 @@ export function ToolLandingHero({
               size="lg"
               className="h-13 border-2 border-white bg-transparent px-6 text-base font-semibold text-white hover:bg-white/15"
             >
-              <a href="#exemplos">{content.ctaSecondary}</a>
+              <a href="#ferramenta">{content.ctaSecondary}</a>
             </Button>
           </div>
 
@@ -56,7 +56,8 @@ export function ToolLandingHero({
           </ul>
         </div>
 
-        <div className="relative">
+        {/* Mockup pesado só no desktop: no celular o foco é CTA + formulário estável. */}
+        <div className="relative hidden lg:block">
           <div className="absolute -inset-4 rounded-[32px] bg-white/5 blur-2xl" aria-hidden />
           <div className="relative rounded-[28px] border border-white/10 bg-white/[0.03] p-3 shadow-2xl backdrop-blur-sm sm:p-4">
             {preview}

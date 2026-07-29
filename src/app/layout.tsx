@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { AnalyticsScripts } from '@/components/analytics/analytics-scripts';
 import { AppProviders } from '@/components/providers/app-providers';
+import { isStagingEnv, stagingRobots } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import './globals.css';
 
 const siteUrl = getViralBaseUrl();
+const staging = isStagingEnv();
 
 const googleVerification =
   process.env.GOOGLE_SITE_VERIFICATION || 'DK13pDrQ06EP4nkGF8Dyqp_pby4oOT14LvkL0bBOSSk';
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg'
   },
+  ...(staging ? { robots: stagingRobots() } : {}),
   openGraph: {
     title: 'Resolva Jato | Orçamento com Pix no WhatsApp',
     description: 'Cliente aprova no celular. Você recebe no Pix. Sem app, sem cartão.',
@@ -49,7 +52,7 @@ export const metadata: Metadata = {
     'proposta comercial',
     'ferramentas grátis para MEI'
   ],
-  ...(googleVerification || bingVerification
+  ...(!staging && (googleVerification || bingVerification)
     ? {
         verification: {
           ...(googleVerification ? { google: googleVerification } : {}),

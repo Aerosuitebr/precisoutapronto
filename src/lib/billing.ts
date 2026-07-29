@@ -1,6 +1,43 @@
 import { getSession } from './auth';
 import { getPlan, type PlanId } from './plans';
 import type { BillableAction, BillableContext, BillableToolId } from './billing-server';
+import {
+  consumeGuestTrial,
+  hasGuestTrialAvailable
+} from './guest-trial';
+import { localeFromPathname, type Locale } from './i18n-locale';
+
+const guestCopy = {
+  'pt-BR': {
+    trialAvailable: 'Degustação gratuita: uma geração completa sem marca.',
+    accountRequired:
+      'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Resolva Jato.',
+    guestSuccess: 'Documento gerado sem marca. Crie uma conta grátis para continuar.',
+    saved: 'Documento salvo com sucesso.',
+    downloaded: 'Download concluído.'
+  },
+  en: {
+    trialAvailable: 'Free trial: one full generation without branding.',
+    accountRequired:
+      'Create a free account to keep generating documents. Generation stays free, with the Resolva Jato brand.',
+    guestSuccess: 'Document generated without branding. Create a free account to continue.',
+    saved: 'Document saved successfully.',
+    downloaded: 'Download complete.'
+  },
+  es: {
+    trialAvailable: 'Prueba gratuita: una generacion completa sin marca.',
+    accountRequired:
+      'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con la marca Resolva Jato.',
+    guestSuccess: 'Documento generado sin marca. Crea una cuenta gratis para continuar.',
+    saved: 'Documento guardado con exito.',
+    downloaded: 'Descarga concluida.'
+  }
+} as const;
+
+function billingLocale(): Locale {
+  if (typeof window === 'undefined') return 'pt-BR';
+  return localeFromPathname(window.location.pathname || '/');
+}
 
 export type { BillableAction, BillableContext, BillableToolId };
 
@@ -139,19 +176,27 @@ export function getToolUsageProgress(): ToolUsageProgress {
   return { ...cachedProgress };
 }
 
+/**
+ * Marca Resolva Jato no PDF/WhatsApp?
+ * Premium: não. Guest na 1ª geração: não. Conta grátis: sim.
+ */
+export function shouldBrandDocuments(): boolean {
+  if (cachedProgress.unlimited) return false;
+  if (!getSession() && hasGuestTrialAvailable()) return false;
+  if (!getSession()) return false;
+  return true;
+}
+
 export function canUseTool(): UsageDecision {
+  const copy = guestCopy[billingLocale()];
   if (!getSession()) {
+    if (hasGuestTrialAvailable()) {
+      return { allowed: true, reason: copy.trialAvailable };
+    }
     return {
       allowed: false,
       accountRequired: true,
-      reason: 'Crie uma conta gratuita para salvar ou baixar documentos.'
-    };
-  }
-  if (getSession()?.user.emailVerified === false) {
-    return {
-      allowed: false,
-      emailVerificationRequired: true,
-      reason: 'Confirme seu e-mail para liberar as ferramentas.'
+      reason: copy.accountRequired
     };
   }
   return { allowed: true };
@@ -165,11 +210,25 @@ function billableContextKey(context: BillableContext) {
 
 /**
  * Executa a ação e só registra o consumo no servidor após sucesso.
+ * Guest: 1 geração completa sem marca; depois pede conta.
  */
 export async function performBillableAction<T>(context: BillableContext, effect: () => Promise<T> | T) {
   const access = canUseTool();
-  if (!access.allowed) return { ...access, result: undefined as T | undefined, charged: false };
+  if (!access.allowed) {
+    if (access.accountRequired && typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('rj-account-required', {
+          detail: {
+            nextHref: window.location.pathname || '/ferramentas',
+            variant: 'guest_trial_done'
+          }
+        })
+      );
+    }
+    return { ...access, result: undefined as T | undefined, charged: false };
+  }
 
+  const isGuest = !getSession();
   const key = billableContextKey(context);
   if (inFlightBillableKeys.has(key)) {
     return { allowed: true, result: undefined as T | undefined, charged: false };
@@ -178,6 +237,27 @@ export async function performBillableAction<T>(context: BillableContext, effect:
   inFlightBillableKeys.add(key);
   try {
     const result = await effect();
+
+    if (isGuest) {
+      consumeGuestTrial({
+        nextHref: typeof window !== 'undefined' ? window.location.pathname : '/ferramentas'
+      });
+      if (typeof window !== 'undefined') {
+        const copy = guestCopy[billingLocale()];
+        window.dispatchEvent(
+          new CustomEvent('rj-billable-success', {
+            detail: {
+              message: copy.guestSuccess,
+              toolId: context.toolId,
+              action: context.action,
+              charged: false,
+              guestTrial: true
+            }
+          })
+        );
+      }
+      return { allowed: true, result, charged: false, guestTrial: true };
+    }
 
     const consumeRes = await fetch('/api/billing/consume', {
       method: 'POST',
@@ -188,7 +268,6 @@ export async function performBillableAction<T>(context: BillableContext, effect:
     const consumeData = await consumeRes.json().catch(() => ({}));
 
     if (!consumeRes.ok && consumeRes.status !== 402) {
-      // Ação já executou; não reverte, mas sinaliza
       console.warn('[billing] consume failed', consumeData);
     }
 
@@ -212,9 +291,10 @@ export async function performBillableAction<T>(context: BillableContext, effect:
 
     const charged = Boolean(consumeData.charged);
     if (typeof window !== 'undefined') {
+      const copy = guestCopy[billingLocale()];
       const labels: Record<BillableAction, string> = {
-        manual_save: 'Documento salvo com sucesso.',
-        download: 'Download concluído.'
+        manual_save: copy.saved,
+        download: copy.downloaded
       };
       window.dispatchEvent(
         new CustomEvent('rj-billable-success', {

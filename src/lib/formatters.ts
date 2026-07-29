@@ -65,6 +65,50 @@ export function parseCurrency(value: string): number {
   return Number(digits) / 100;
 }
 
+/**
+ * Interpreta valor digitado em EN/ES/PT sem máscara de centavos.
+ * "1000", "1,000.50", "1.000,50", "R$ 1000" → reais (não centavos).
+ */
+export function parseLooseMoney(value: string): number {
+  const raw = value.trim();
+  if (!raw) return 0;
+  const cleaned = raw.replace(/[^\d.,-]/g, '');
+  if (!cleaned || cleaned === '-' || cleaned === '.' || cleaned === ',') return 0;
+
+  const hasComma = cleaned.includes(',');
+  const hasDot = cleaned.includes('.');
+
+  if (hasComma && hasDot) {
+    const lastComma = cleaned.lastIndexOf(',');
+    const lastDot = cleaned.lastIndexOf('.');
+    if (lastComma > lastDot) {
+      return Number(cleaned.replace(/\./g, '').replace(',', '.')) || 0;
+    }
+    return Number(cleaned.replace(/,/g, '')) || 0;
+  }
+
+  if (hasComma) {
+    const parts = cleaned.split(',');
+    if (parts.length === 2 && parts[1].length > 0 && parts[1].length <= 2) {
+      return Number(`${parts[0].replace(/\./g, '')}.${parts[1]}`) || 0;
+    }
+    return Number(cleaned.replace(/,/g, '')) || 0;
+  }
+
+  if (hasDot) {
+    const parts = cleaned.split('.');
+    if (parts.length === 2 && parts[1].length > 0 && parts[1].length <= 2) {
+      return Number(cleaned) || 0;
+    }
+    if (parts.length > 2 || (parts.length === 2 && parts[1].length === 3)) {
+      return Number(cleaned.replace(/\./g, '')) || 0;
+    }
+    return Number(cleaned) || 0;
+  }
+
+  return Number(cleaned) || 0;
+}
+
 /** Formata número como moeda BRL. */
 export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('pt-BR', {

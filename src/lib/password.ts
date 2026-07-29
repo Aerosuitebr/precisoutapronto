@@ -14,7 +14,79 @@ export interface PasswordStrengthResult {
   firstError: string | null;
 }
 
+export type PasswordLocale = 'pt-BR' | 'en' | 'es';
+
 const SPECIAL_CHAR = /[^A-Za-z0-9]/;
+
+const copy: Record<
+  PasswordLocale,
+  {
+    strengthTitle: string;
+    empty: string;
+    emptyError: string;
+    weak: string;
+    medium: string;
+    strong: string;
+    needsPrefix: string;
+    assertFallback: string;
+    rules: Record<string, string>;
+  }
+> = {
+  'pt-BR': {
+    strengthTitle: 'Força da senha',
+    empty: 'Digite uma senha',
+    emptyError: 'Informe uma senha.',
+    weak: 'Senha fraca',
+    medium: 'Senha média',
+    strong: 'Senha forte',
+    needsPrefix: 'A senha precisa ter:',
+    assertFallback: 'A senha não atende aos requisitos de segurança.',
+    rules: {
+      length: 'Pelo menos 8 caracteres (obrigatório)',
+      upper: 'Uma letra maiúscula (recomendado)',
+      lower: 'Uma letra minúscula (recomendado)',
+      number: 'Um número (recomendado)',
+      special: 'Um caractere especial (recomendado)',
+      sequence: 'Sem letras ou números em sequência (recomendado)'
+    }
+  },
+  en: {
+    strengthTitle: 'Password strength',
+    empty: 'Enter a password',
+    emptyError: 'Please enter a password.',
+    weak: 'Weak password',
+    medium: 'Medium password',
+    strong: 'Strong password',
+    needsPrefix: 'Your password needs:',
+    assertFallback: 'The password does not meet the security requirements.',
+    rules: {
+      length: 'At least 8 characters (required)',
+      upper: 'One uppercase letter (recommended)',
+      lower: 'One lowercase letter (recommended)',
+      number: 'One number (recommended)',
+      special: 'One special character (recommended)',
+      sequence: 'No sequential letters or numbers (recommended)'
+    }
+  },
+  es: {
+    strengthTitle: 'Fortaleza de la contraseña',
+    empty: 'Escribe una contraseña',
+    emptyError: 'Ingresa una contraseña.',
+    weak: 'Contraseña débil',
+    medium: 'Contraseña media',
+    strong: 'Contraseña fuerte',
+    needsPrefix: 'La contraseña necesita:',
+    assertFallback: 'La contraseña no cumple los requisitos de seguridad.',
+    rules: {
+      length: 'Al menos 8 caracteres (obligatorio)',
+      upper: 'Una letra mayúscula (recomendado)',
+      lower: 'Una letra minúscula (recomendado)',
+      number: 'Un número (recomendado)',
+      special: 'Un carácter especial (recomendado)',
+      sequence: 'Sin letras o números en secuencia (recomendado)'
+    }
+  }
+};
 
 /** Detecta 3+ letras ou dígitos em sequência crescente ou decrescente (ex.: abc, 321). */
 export function hasSequentialRun(value: string, runLength = 3): boolean {
@@ -41,37 +113,25 @@ export function hasSequentialRun(value: string, runLength = 3): boolean {
   return false;
 }
 
-export function evaluatePasswordStrength(password: string): PasswordStrengthResult {
+export function getPasswordStrengthTitle(locale: PasswordLocale = 'pt-BR') {
+  return copy[locale].strengthTitle;
+}
+
+export function evaluatePasswordStrength(
+  password: string,
+  locale: PasswordLocale = 'pt-BR'
+): PasswordStrengthResult {
+  const t = copy[locale];
   const value = password;
   const rules: PasswordRule[] = [
-    {
-      id: 'length',
-      label: 'Pelo menos 8 caracteres',
-      ok: value.length >= 8
-    },
-    {
-      id: 'upper',
-      label: 'Uma letra maiúscula',
-      ok: /[A-Z]/.test(value)
-    },
-    {
-      id: 'lower',
-      label: 'Uma letra minúscula',
-      ok: /[a-z]/.test(value)
-    },
-    {
-      id: 'number',
-      label: 'Um número',
-      ok: /\d/.test(value)
-    },
-    {
-      id: 'special',
-      label: 'Um caractere especial (ex.: !@#$%)',
-      ok: SPECIAL_CHAR.test(value)
-    },
+    { id: 'length', label: t.rules.length, ok: value.length >= 8 },
+    { id: 'upper', label: t.rules.upper, ok: /[A-Z]/.test(value) },
+    { id: 'lower', label: t.rules.lower, ok: /[a-z]/.test(value) },
+    { id: 'number', label: t.rules.number, ok: /\d/.test(value) },
+    { id: 'special', label: t.rules.special, ok: SPECIAL_CHAR.test(value) },
     {
       id: 'sequence',
-      label: 'Sem letras ou números em sequência (ex.: abc, 123)',
+      label: t.rules.sequence,
       ok: value.length === 0 ? false : !hasSequentialRun(value)
     }
   ];
@@ -82,24 +142,28 @@ export function evaluatePasswordStrength(password: string): PasswordStrengthResu
       score: 0,
       maxScore: rules.length,
       level: 'vazia',
-      label: 'Digite uma senha',
+      label: t.empty,
       rules: rules.map((rule) => ({ ...rule, ok: false })),
-      firstError: 'Informe uma senha.'
+      firstError: t.emptyError
     };
   }
 
   const score = rules.filter((rule) => rule.ok).length;
-  const valid = score === rules.length;
-  const failed = rules.find((rule) => !rule.ok);
+  const lengthOk = value.length >= 8;
+  const valid = lengthOk;
+  const failedRequired = !lengthOk ? rules.find((rule) => rule.id === 'length') : undefined;
 
   let level: PasswordStrengthResult['level'] = 'fraca';
-  let label = 'Senha fraca';
+  let label = t.weak;
   if (score >= rules.length) {
     level = 'forte';
-    label = 'Senha forte';
+    label = t.strong;
   } else if (score >= 4) {
     level = 'media';
-    label = 'Senha média';
+    label = t.medium;
+  } else if (lengthOk && score >= 2) {
+    level = 'media';
+    label = t.medium;
   }
 
   return {
@@ -109,14 +173,14 @@ export function evaluatePasswordStrength(password: string): PasswordStrengthResu
     level,
     label,
     rules,
-    firstError: failed ? `A senha precisa ter: ${failed.label.toLowerCase()}.` : null
+    firstError: failedRequired ? `${t.needsPrefix} ${failedRequired.label.toLowerCase()}.` : null
   };
 }
 
-export function assertStrongPassword(password: string) {
-  const result = evaluatePasswordStrength(password);
+export function assertStrongPassword(password: string, locale: PasswordLocale = 'pt-BR') {
+  const result = evaluatePasswordStrength(password, locale);
   if (!result.valid) {
-    throw new Error(result.firstError || 'A senha não atende aos requisitos de segurança.');
+    throw new Error(result.firstError || copy[locale].assertFallback);
   }
   return result;
 }

@@ -1,6 +1,8 @@
 import { getPrisma } from '@/lib/db';
 import { premiumDaysFromAmount } from '@/lib/billing-products';
 import { getPlan, type PlanId } from '@/lib/plans';
+import { sendPremiumConfirmationEmail } from '@/lib/billing-email';
+import type { InternationalLocale } from '@/lib/i18n';
 
 /** Dias de vigência do Premium mensal após pagamento. */
 export const ACCESS_DAYS = 30;
@@ -114,15 +116,8 @@ export async function getServerUsageProgress(userId: string) {
 }
 
 export async function canUseToolServer(userId: string, emailVerified: boolean) {
-  if (!emailVerified) {
-    return {
-      allowed: false,
-      emailVerificationRequired: true,
-      reason: 'Confirme seu e-mail para liberar as ferramentas.'
-    };
-  }
-
-  // Sem cota de utilizações no plano gratuito.
+  // Verificação de e-mail vira soft-gate no cliente (banner). Não bloqueia uso das tools.
+  void emailVerified;
   void userId;
   return { allowed: true };
 }
@@ -349,7 +344,9 @@ export async function activatePremiumFromStripeSession(input: {
   email?: string | null;
   /** Total em centavos (amount_total da sessão). */
   amountTotal?: number | null;
+  expectedAmountTotal?: number | null;
   days?: number | null;
+  locale?: InternationalLocale | null;
 }): Promise<PremiumActivationResult> {
   const status = input.paymentStatus;
   const email = (input.email || '').trim().toLowerCase();
@@ -358,11 +355,15 @@ export async function activatePremiumFromStripeSession(input: {
     return { activated: false, reason: 'not_paid', status, email };
   }
 
-  const amount =
+  const amountTotal =
     typeof input.amountTotal === 'number' && Number.isFinite(input.amountTotal)
-      ? input.amountTotal / 100
-      : undefined;
-  if (!premiumAmountMatches(amount)) {
+      ? Math.round(input.amountTotal)
+      : null;
+  const expectedAmountTotal =
+    typeof input.expectedAmountTotal === 'number' && Number.isFinite(input.expectedAmountTotal)
+      ? Math.round(input.expectedAmountTotal)
+      : null;
+  if (amountTotal === null || expectedAmountTotal === null || amountTotal !== expectedAmountTotal) {
     return { activated: false, reason: 'amount_mismatch', status, email };
   }
 
@@ -400,9 +401,16 @@ export async function activatePremiumFromStripeSession(input: {
     (typeof input.days === 'number' && Number.isFinite(input.days) && input.days > 0
       ? Math.round(input.days)
       : null) ??
-    premiumDaysFromAmount(amount) ??
     ACCESS_DAYS;
   const sub = await grantPremiumDaysServer(user.id, days, providerRef);
+  if (input.locale === 'en' || input.locale === 'es') {
+    const mail = await sendPremiumConfirmationEmail({
+      to: user.email,
+      locale: input.locale,
+      expiresAt: sub.expiresAt
+    });
+    if (!mail.sent) console.warn('[stripe] premium confirmation email failed', mail.error);
+  }
   return {
     activated: true,
     userId: user.id,

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Check, ChevronRight } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
@@ -12,7 +13,41 @@ import type { SeoLandingContent } from '@/lib/seo/landing-content';
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 hover:bg-amber-300';
 
-export function SeoLandingPage({ content }: { content: SeoLandingContent }) {
+function isAuthGatedHref(href: string) {
+  const path = href.split('#')[0]?.split('?')[0] || '';
+  return path === '/ferramentas' || path.startsWith('/ferramentas/');
+}
+
+function CtaLink({
+  href,
+  className,
+  children
+}: {
+  href: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  if (isAuthGatedHref(href)) {
+    return (
+      <AuthAwareLink href={href} className={className}>
+        {children}
+      </AuthAwareLink>
+    );
+  }
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+export function SeoLandingPage({
+  content,
+  demo
+}: {
+  content: SeoLandingContent;
+  demo?: ReactNode;
+}) {
   return (
     <>
       <SeoLandingJsonLd content={content} />
@@ -49,28 +84,28 @@ export function SeoLandingPage({ content }: { content: SeoLandingContent }) {
                 ))}
               </ul>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Button asChild size="lg" className={primaryCtaClass}>
-                  <AuthAwareLink href={content.toolHref}>
+                <Button asChild size="lg" className={`${primaryCtaClass} w-full sm:w-auto`}>
+                  <CtaLink href={content.toolHref}>
                     {content.primaryCta}
                     <ArrowRight className="h-4 w-4" />
-                  </AuthAwareLink>
+                  </CtaLink>
                 </Button>
                 {content.secondaryCta ? (
                   <Button
                     asChild
                     size="lg"
                     variant="outline"
-                    className="h-12 border-white/25 bg-white/5 px-6 text-white hover:bg-white/10"
+                    className="h-12 w-full border-white/25 bg-white/5 px-6 text-white hover:bg-white/10 sm:w-auto"
                   >
-                    <AuthAwareLink href={content.secondaryCta.href}>
-                      {content.secondaryCta.label}
-                    </AuthAwareLink>
+                    <CtaLink href={content.secondaryCta.href}>{content.secondaryCta.label}</CtaLink>
                   </Button>
                 ) : null}
               </div>
               <TrustSeals tone="dark" className="mt-8" />
             </div>
           </section>
+
+          {demo}
 
           {content.sections.map((section) => (
             <section key={section.title} className="border-b border-slate-200 bg-white">
@@ -131,10 +166,10 @@ export function SeoLandingPage({ content }: { content: SeoLandingContent }) {
               </ul>
               <div className="mt-10">
                 <Button asChild size="lg" className={primaryCtaClass}>
-                  <AuthAwareLink href={content.toolHref}>
+                  <CtaLink href={content.toolHref}>
                     {content.primaryCta}
                     <ArrowRight className="h-4 w-4" />
-                  </AuthAwareLink>
+                  </CtaLink>
                 </Button>
               </div>
             </div>

@@ -13,7 +13,13 @@ export const metadata: Metadata = {
   description: contratosSeoContent.seo.metaDescription,
   keywords: contratosSeoContent.seo.keywords,
   alternates: {
-    canonical: `${SITE_URL}/${contratosSeoContent.slug}`
+    canonical: `${SITE_URL}/${contratosSeoContent.slug}`,
+    languages: {
+      'pt-BR': `/${contratosSeoContent.slug}`,
+      en: '/en/tools/service-contract',
+      es: '/es/tools/service-contract',
+      'x-default': `/${contratosSeoContent.slug}`
+    }
   },
   openGraph: {
     title: contratosSeoContent.seo.metaTitle,

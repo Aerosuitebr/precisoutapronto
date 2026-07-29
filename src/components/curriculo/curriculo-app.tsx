@@ -28,6 +28,7 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import {
@@ -40,7 +41,7 @@ import {
 } from '@/lib/curriculo/defaults';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
-import { deleteResume, listResumes, saveResume } from '@/lib/curriculo/storage';
+import { listResumes, loadResumes, persistResume, removeResume, saveResume } from '@/lib/curriculo/storage';
 import { RESUME_TEMPLATES } from '@/lib/curriculo/templates';
 import type { ResumeData, ResumeTemplateId } from '@/lib/curriculo/types';
 import { LANGUAGE_LEVEL_LABELS } from '@/lib/curriculo/types';
@@ -76,7 +77,7 @@ export function CurriculoApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const exportingLockRef = useRef(false);
   const { refresh: refreshAuth, usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [resumes, setResumes] = useState<ResumeData[]>([]);
@@ -90,18 +91,23 @@ export function CurriculoApp() {
   const [touchedWebsite, setTouchedWebsite] = useState(false);
 
   useEffect(() => {
-    const stored = listResumes();
-    if (stored.length > 0) {
-      setResumes(stored);
-      setActiveId(stored[0].id);
-      setResume(stored[0]);
-      return;
-    }
-    const initial = createEmptyResume();
-    const saved = saveResume(initial);
-    setResumes([saved]);
-    setActiveId(saved.id);
-    setResume(saved);
+    loadResumes().then((stored) => {
+      if (stored.length > 0) {
+        setResumes(stored);
+        setActiveId(stored[0].id);
+        setResume(stored[0]);
+        return;
+      }
+      const saved = saveResume(createEmptyResume());
+      setResumes([saved]);
+      setActiveId(saved.id);
+      setResume(saved);
+    }).catch(() => {
+      const saved = saveResume(createEmptyResume());
+      setResumes([saved]);
+      setActiveId(saved.id);
+      setResume(saved);
+    });
   }, []);
 
   useEffect(() => {
@@ -168,11 +174,16 @@ export function CurriculoApp() {
     toast('Formulário limpo.');
   }
 
-  function handleDeleteResume() {
+  async function handleDeleteResume() {
     if (resumes.length <= 1) return;
     const removed = resume;
-    deleteResume(resume.id);
-    const next = listResumes();
+    try {
+      await removeResume(resume.id);
+    } catch {
+      setError('Não foi possível excluir o currículo.');
+      return;
+    }
+    const next = resumes.filter((item) => item.id !== resume.id);
     setResumes(next);
     const first = next[0];
     setActiveId(first.id);
@@ -202,14 +213,16 @@ export function CurriculoApp() {
     try {
       const outcome = await performBillableAction(
         { toolId: 'curriculo', artifactId: resume.id, action: 'manual_save' },
-        () => saveResume(resume)
+        () => persistResume(resume)
       );
       if (!outcome.allowed) {
         setError(outcome.reason || 'Faça login e confirme seu e-mail para continuar.');
         toast(outcome.reason || 'Não foi possível salvar.');
         return;
       }
-      setResumes(listResumes());
+      if (!outcome.result) throw new Error('Currículo não retornado pelo servidor.');
+      setResume(outcome.result);
+      setResumes((current) => [outcome.result!, ...current.filter((item) => item.id !== outcome.result!.id)]);
       refreshAuth();
       setSaveState('saved');
       toast('Currículo salvo com sucesso!');

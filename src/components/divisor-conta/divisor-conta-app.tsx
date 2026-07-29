@@ -16,28 +16,217 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
-import {
-  formatCurrency,
-  formatCurrencyInput,
-  parseCurrency,
-} from "@/lib/formatters";
+import { parseCurrency } from "@/lib/formatters";
 import { calcularDivisao } from "@/lib/divisor-conta/calc";
 import { cn } from "@/lib/utils";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
+
+type Locale = "pt-BR" | "en" | "es";
 
 interface PessoaForm {
   nome: string;
   consumoExtraInput: string;
 }
 
-export function DivisorContaApp() {
+const CURRENCY_CONFIG: Record<Locale, { locale: string; currency: string }> = {
+  "pt-BR": { locale: "pt-BR", currency: "BRL" },
+  en: { locale: "en-US", currency: "USD" },
+  es: { locale: "es-ES", currency: "EUR" },
+};
+
+function formatMoneyInput(value: string, locale: Locale) {
+  const digits = value.replace(/\D/g, "");
+  if (!digits) return "";
+  const cents = Number(digits) / 100;
+  const cfg = CURRENCY_CONFIG[locale];
+  return new Intl.NumberFormat(cfg.locale, {
+    style: "currency",
+    currency: cfg.currency,
+  }).format(cents);
+}
+
+const COPY: Record<
+  Locale,
+  {
+    authTitle: string;
+    authDescription: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    insightTotalLabel: string;
+    insightTotalText: string;
+    insightJustoLabel: string;
+    insightJustoText: string;
+    insightGrupoLabel: string;
+    insightGrupoText: string;
+    valorTotalLabel: string;
+    valorTotalPlaceholder: string;
+    taxaLabel: string;
+    dividirIgualmenteLabel: string;
+    participantesLabel: string;
+    pessoaPlaceholder: (idx: number) => string;
+    pessoaNome: (idx: number) => string;
+    consumoExtraPlaceholder: string;
+    removerAria: (nome: string) => string;
+    addPessoa: string;
+    resultTitle: string;
+    emptyResultTitle: string;
+    emptyResultText: string;
+    comumLabel: string;
+    individualLabel: string;
+    taxaCompactLabel: string;
+    totalComTaxaLabel: string;
+    copiarDivisao: string;
+    enviarWhatsApp: string;
+    destinationHint: string;
+    semNome: string;
+    toastCopiado: string;
+    resumoTitulo: string;
+    resumoSubtitulo: string;
+    resumoTotalComTaxa: string;
+    resumoValorPorPessoa: string;
+    resumoRodape: string;
+  }
+> = {
+  "pt-BR": {
+    authTitle: "Divisor de Conta em Grupo",
+    authDescription: "Cadastre-se gratuitamente para dividir a conta.",
+    heroTitle: "Divisor de Conta em Grupo",
+    heroSubtitle:
+      "Rateie o churrasco, o restaurante, a viagem ou o aluguel entre amigos, com ou sem consumo individual e taxa de serviço.",
+    insightTotalLabel: "Total",
+    insightTotalText: "Informe a conta antes ou depois de conferir a comanda.",
+    insightJustoLabel: "Justo",
+    insightJustoText: "Divida igual ou registre consumo individual.",
+    insightGrupoLabel: "Grupo",
+    insightGrupoText: "Envie a divisão pronta no WhatsApp.",
+    valorTotalLabel: "Valor total da conta",
+    valorTotalPlaceholder: "R$ 0,00",
+    taxaLabel: "Taxa de serviço (%)",
+    dividirIgualmenteLabel: "Dividir tudo igualmente (ignora consumo individual)",
+    participantesLabel: "Participantes",
+    pessoaPlaceholder: (idx) => `Pessoa ${idx}`,
+    pessoaNome: (idx) => `Pessoa ${idx}`,
+    consumoExtraPlaceholder: "Consumo extra",
+    removerAria: (nome) => `Remover ${nome}`,
+    addPessoa: "Adicionar pessoa",
+    resultTitle: "Quanto cada um paga",
+    emptyResultTitle: "A divisão aparece aqui em tempo real.",
+    emptyResultText:
+      "Informe o total, ajuste a taxa e adicione os participantes para evitar conta de cabeça na mesa.",
+    comumLabel: "Comum",
+    individualLabel: "Individual",
+    taxaCompactLabel: "Taxa",
+    totalComTaxaLabel: "Total com taxa de serviço",
+    copiarDivisao: "Copiar divisão",
+    enviarWhatsApp: "Enviar no WhatsApp",
+    destinationHint: "WhatsApp que receberá a divisão",
+    semNome: "Sem nome",
+    toastCopiado: "Divisão copiada!",
+    resumoTitulo: "*DIVISÃO DA CONTA | RESUMO*",
+    resumoSubtitulo: "_Valores organizados por participante_",
+    resumoTotalComTaxa: "*TOTAL COM TAXA*",
+    resumoValorPorPessoa: "*VALOR POR PESSOA*",
+    resumoRodape: "Divisão automática. Confira antes de pagar.",
+  },
+  en: {
+    authTitle: "Group Bill Splitter",
+    authDescription: "Sign up for free to split the bill.",
+    heroTitle: "Group Bill Splitter",
+    heroSubtitle:
+      "Split the barbecue, restaurant, trip or rent among friends, with or without individual items and a service fee.",
+    insightTotalLabel: "Total",
+    insightTotalText: "Enter the bill before or after checking the receipt.",
+    insightJustoLabel: "Fair",
+    insightJustoText: "Split evenly or track individual items.",
+    insightGrupoLabel: "Group",
+    insightGrupoText: "Send the ready split on WhatsApp.",
+    valorTotalLabel: "Bill total",
+    valorTotalPlaceholder: "$0.00",
+    taxaLabel: "Service fee (%)",
+    dividirIgualmenteLabel: "Split everything evenly (ignores individual items)",
+    participantesLabel: "Participants",
+    pessoaPlaceholder: (idx) => `Person ${idx}`,
+    pessoaNome: (idx) => `Person ${idx}`,
+    consumoExtraPlaceholder: "Extra item",
+    removerAria: (nome) => `Remove ${nome}`,
+    addPessoa: "Add person",
+    resultTitle: "How much each person pays",
+    emptyResultTitle: "The split shows up here in real time.",
+    emptyResultText:
+      "Enter the total, adjust the fee and add the participants to avoid doing math at the table.",
+    comumLabel: "Shared",
+    individualLabel: "Individual",
+    taxaCompactLabel: "Fee",
+    totalComTaxaLabel: "Total with service fee",
+    copiarDivisao: "Copy split",
+    enviarWhatsApp: "Send on WhatsApp",
+    destinationHint: "WhatsApp that will receive the split",
+    semNome: "No name",
+    toastCopiado: "Split copied!",
+    resumoTitulo: "*BILL SPLIT | SUMMARY*",
+    resumoSubtitulo: "_Amounts organized by participant_",
+    resumoTotalComTaxa: "*TOTAL WITH FEE*",
+    resumoValorPorPessoa: "*AMOUNT PER PERSON*",
+    resumoRodape: "Automatic split. Double check it before paying.",
+  },
+  es: {
+    authTitle: "Divisor de Cuenta en Grupo",
+    authDescription: "Registrate gratis para dividir la cuenta.",
+    heroTitle: "Divisor de Cuenta en Grupo",
+    heroSubtitle:
+      "Divide el asado, el restaurante, el viaje o el alquiler entre amigos, con o sin consumo individual y cargo por servicio.",
+    insightTotalLabel: "Total",
+    insightTotalText: "Ingresa la cuenta antes o despues de revisar el recibo.",
+    insightJustoLabel: "Justo",
+    insightJustoText: "Divide en partes iguales o registra el consumo individual.",
+    insightGrupoLabel: "Grupo",
+    insightGrupoText: "Envia la division lista por WhatsApp.",
+    valorTotalLabel: "Valor total de la cuenta",
+    valorTotalPlaceholder: "0,00 €",
+    taxaLabel: "Cargo por servicio (%)",
+    dividirIgualmenteLabel: "Dividir todo en partes iguales (ignora el consumo individual)",
+    participantesLabel: "Participantes",
+    pessoaPlaceholder: (idx) => `Persona ${idx}`,
+    pessoaNome: (idx) => `Persona ${idx}`,
+    consumoExtraPlaceholder: "Consumo extra",
+    removerAria: (nome) => `Quitar ${nome}`,
+    addPessoa: "Agregar persona",
+    resultTitle: "Cuanto paga cada uno",
+    emptyResultTitle: "La division aparece aqui en tiempo real.",
+    emptyResultText:
+      "Ingresa el total, ajusta el cargo y agrega a los participantes para evitar hacer cuentas en la mesa.",
+    comumLabel: "Comun",
+    individualLabel: "Individual",
+    taxaCompactLabel: "Cargo",
+    totalComTaxaLabel: "Total con cargo por servicio",
+    copiarDivisao: "Copiar division",
+    enviarWhatsApp: "Enviar por WhatsApp",
+    destinationHint: "WhatsApp que recibira la division",
+    semNome: "Sin nombre",
+    toastCopiado: "Division copiada!",
+    resumoTitulo: "*DIVISION DE CUENTA | RESUMEN*",
+    resumoSubtitulo: "_Montos organizados por participante_",
+    resumoTotalComTaxa: "*TOTAL CON CARGO*",
+    resumoValorPorPessoa: "*MONTO POR PERSONA*",
+    resumoRodape: "Division automatica. Revisa antes de pagar.",
+  },
+};
+
+export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
+  const t = COPY[locale];
+  const currencyConfig = CURRENCY_CONFIG[locale];
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat(currencyConfig.locale, {
+      style: "currency",
+      currency: currencyConfig.currency,
+    }).format(Number.isFinite(value) ? value : 0);
   const { toast } = useToast();
   const [valorTotalInput, setValorTotalInput] = useState("");
   const [taxaServico, setTaxaServico] = useState(10);
   const [dividirIgualmente, setDividirIgualmente] = useState(true);
-  const [pessoas, setPessoas] = useState<PessoaForm[]>([
-    { nome: "Pessoa 1", consumoExtraInput: "" },
-    { nome: "Pessoa 2", consumoExtraInput: "" },
+  const [pessoas, setPessoas] = useState<PessoaForm[]>(() => [
+    { nome: t.pessoaNome(1), consumoExtraInput: "" },
+    { nome: t.pessoaNome(2), consumoExtraInput: "" },
   ]);
   const [whatsAppOpen, setWhatsAppOpen] = useState(false);
 
@@ -46,7 +235,7 @@ export function DivisorContaApp() {
   function addPessoa() {
     setPessoas((prev) => [
       ...prev,
-      { nome: `Pessoa ${prev.length + 1}`, consumoExtraInput: "" },
+      { nome: t.pessoaNome(prev.length + 1), consumoExtraInput: "" },
     ]);
   }
 
@@ -61,7 +250,7 @@ export function DivisorContaApp() {
   function atualizarConsumo(idx: number, value: string) {
     setPessoas((prev) =>
       prev.map((p, i) =>
-        i === idx ? { ...p, consumoExtraInput: formatCurrencyInput(value) } : p,
+        i === idx ? { ...p, consumoExtraInput: formatMoneyInput(value, locale) } : p,
       ),
     );
   }
@@ -71,13 +260,13 @@ export function DivisorContaApp() {
     return calcularDivisao({
       valorTotal,
       pessoas: pessoas.map((p) => ({
-        nome: p.nome || "Sem nome",
+        nome: p.nome || t.semNome,
         consumoExtra: parseCurrency(p.consumoExtraInput),
       })),
       taxaServicoPercentual: taxaServico,
       dividirIgualmente,
     });
-  }, [valorTotal, pessoas, taxaServico, dividirIgualmente]);
+  }, [valorTotal, pessoas, taxaServico, dividirIgualmente, t.semNome]);
 
   function resumoTexto() {
     if (!resultado) return "";
@@ -85,22 +274,22 @@ export function DivisorContaApp() {
       .map((p) => `• ${p.nome}: ${formatCurrency(p.total)}`)
       .join("\n");
     return [
-      "*DIVISÃO DA CONTA | RESUMO*",
-      "_Valores organizados por participante_",
+      t.resumoTitulo,
+      t.resumoSubtitulo,
       "",
-      "*TOTAL COM TAXA*",
+      t.resumoTotalComTaxa,
       formatCurrency(resultado.totalComTaxa),
       "",
-      "*VALOR POR PESSOA*",
+      t.resumoValorPorPessoa,
       linhas,
       "",
-      "Divisão automática. Confira antes de pagar.",
+      t.resumoRodape,
     ].join("\n");
   }
 
   function handleCopy() {
     navigator.clipboard.writeText(resumoTexto());
-    toast("Divisão copiada!");
+    toast(t.toastCopiado);
   }
 
   function handleWhatsApp() {
@@ -109,8 +298,8 @@ export function DivisorContaApp() {
 
   return (
     <AuthGate
-      title="Divisor de Conta em Grupo"
-      description="Cadastre-se gratuitamente para dividir a conta."
+      title={t.authTitle}
+      description={t.authDescription}
     >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
@@ -118,42 +307,42 @@ export function DivisorContaApp() {
         </div>
 
         <PageHero
-          title="Divisor de Conta em Grupo"
-          subtitle="Rateie o churrasco, o restaurante, a viagem ou o aluguel entre amigos, com ou sem consumo individual e taxa de serviço."
+          title={t.heroTitle}
+          subtitle={t.heroSubtitle}
           icon={Users}
         />
 
         <div className="grid gap-2 sm:grid-cols-3">
           <Insight
-            label="Total"
-            text="Informe a conta antes ou depois de conferir a comanda."
+            label={t.insightTotalLabel}
+            text={t.insightTotalText}
           />
           <Insight
-            label="Justo"
-            text="Divida igual ou registre consumo individual."
+            label={t.insightJustoLabel}
+            text={t.insightJustoText}
           />
-          <Insight label="Grupo" text="Envie a divisão pronta no WhatsApp." />
+          <Insight label={t.insightGrupoLabel} text={t.insightGrupoText} />
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <FormField
-                label="Valor total da conta"
+                label={t.valorTotalLabel}
                 htmlFor="valor-total"
                 required
               >
                 <Input
                   id="valor-total"
                   inputMode="numeric"
-                  placeholder="R$ 0,00"
+                  placeholder={t.valorTotalPlaceholder}
                   value={valorTotalInput}
                   onChange={(e) =>
-                    setValorTotalInput(formatCurrencyInput(e.target.value))
+                    setValorTotalInput(formatMoneyInput(e.target.value, locale))
                   }
                 />
               </FormField>
-              <FormField label="Taxa de serviço (%)" htmlFor="taxa">
+              <FormField label={t.taxaLabel} htmlFor="taxa">
                 <Input
                   id="taxa"
                   type="number"
@@ -174,12 +363,12 @@ export function DivisorContaApp() {
                 checked={dividirIgualmente}
                 onChange={(e) => setDividirIgualmente(e.target.checked)}
               />
-              Dividir tudo igualmente (ignora consumo individual)
+              {t.dividirIgualmenteLabel}
             </label>
 
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-slate-700">
-                Participantes
+                {t.participantesLabel}
               </p>
               <div className="space-y-2">
                 {pessoas.map((p, idx) => (
@@ -187,13 +376,13 @@ export function DivisorContaApp() {
                     <Input
                       value={p.nome}
                       onChange={(e) => atualizarNome(idx, e.target.value)}
-                      placeholder={`Pessoa ${idx + 1}`}
+                      placeholder={t.pessoaPlaceholder(idx + 1)}
                       className="flex-1"
                     />
                     {!dividirIgualmente ? (
                       <Input
                         inputMode="numeric"
-                        placeholder="Consumo extra"
+                        placeholder={t.consumoExtraPlaceholder}
                         value={p.consumoExtraInput}
                         onChange={(e) => atualizarConsumo(idx, e.target.value)}
                         className="w-36"
@@ -204,7 +393,7 @@ export function DivisorContaApp() {
                       onClick={() => removerPessoa(idx)}
                       disabled={pessoas.length <= 1}
                       className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-slate-400 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-30"
-                      aria-label={`Remover ${p.nome}`}
+                      aria-label={t.removerAria(p.nome)}
                     >
                       <Trash2 className="h-4 w-4" aria-hidden />
                     </button>
@@ -218,23 +407,22 @@ export function DivisorContaApp() {
                 onClick={addPessoa}
                 icon={Plus}
               >
-                Adicionar pessoa
+                {t.addPessoa}
               </Button>
             </div>
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:sticky lg:top-24">
             <h2 className="rj-display mb-3 text-base font-bold text-slate-900">
-              Quanto cada um paga
+              {t.resultTitle}
             </h2>
             {!resultado ? (
               <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4">
                 <p className="text-sm font-bold text-slate-800">
-                  A divisão aparece aqui em tempo real.
+                  {t.emptyResultTitle}
                 </p>
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  Informe o total, ajuste a taxa e adicione os participantes
-                  para evitar conta de cabeça na mesa.
+                  {t.emptyResultText}
                 </p>
               </div>
             ) : (
@@ -255,8 +443,8 @@ export function DivisorContaApp() {
                       </div>
                       {!dividirIgualmente ? (
                         <p className="mt-1 text-xs text-slate-500">
-                          Comum: {formatCurrency(p.parteComum)} · Individual:{" "}
-                          {formatCurrency(p.consumoExtra)} · Taxa:{" "}
+                          {t.comumLabel}: {formatCurrency(p.parteComum)} · {t.individualLabel}:{" "}
+                          {formatCurrency(p.consumoExtra)} · {t.taxaCompactLabel}:{" "}
                           {formatCurrency(p.taxaServico)}
                         </p>
                       ) : null}
@@ -266,7 +454,7 @@ export function DivisorContaApp() {
 
                 <div className="flex items-center justify-between rounded-xl bg-slate-900 px-4 py-3 text-white">
                   <span className="text-sm font-semibold">
-                    Total com taxa de serviço
+                    {t.totalComTaxaLabel}
                   </span>
                   <span className="rj-display text-lg font-bold">
                     {formatCurrency(resultado.totalComTaxa)}
@@ -281,7 +469,7 @@ export function DivisorContaApp() {
                     onClick={handleCopy}
                     icon={Copy}
                   >
-                    Copiar divisão
+                    {t.copiarDivisao}
                   </Button>
                   <Button
                     variant="success"
@@ -290,7 +478,7 @@ export function DivisorContaApp() {
                     onClick={handleWhatsApp}
                     icon={MessageCircle}
                   >
-                    Enviar no WhatsApp
+                    {t.enviarWhatsApp}
                   </Button>
                 </div>
               </div>
@@ -302,7 +490,7 @@ export function DivisorContaApp() {
         open={whatsAppOpen}
         onClose={() => setWhatsAppOpen(false)}
         message={resumoTexto()}
-        destinationHint="WhatsApp que receberá a divisão"
+        destinationHint={t.destinationHint}
       />
     </AuthGate>
   );

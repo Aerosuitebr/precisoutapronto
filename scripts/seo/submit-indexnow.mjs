@@ -19,6 +19,7 @@ const SEO_LANDINGS = [
   '/recursos',
   '/guias',
   '/orcamento-com-pix',
+  '/gerador-de-qr-code-pix',
   '/para/mei',
   '/para/freelancers',
   '/para/estudantes',
@@ -34,6 +35,9 @@ const SEO_LANDINGS = [
   '/contrato-de-aluguel',
   '/recibo-de-pagamento',
   '/proposta-comercial-mei',
+  '/calculadora-de-ferias',
+  '/calculadora-de-decimo-terceiro',
+  '/recibo-de-aluguel',
   '/guias/modelo-de-recibo-mei',
   '/guias/contrato-de-prestacao-de-servicos-gratis',
   '/guias/como-calcular-rescisao',
@@ -49,7 +53,15 @@ const SEO_LANDINGS = [
   '/contato',
   '/sobre',
   '/privacidade',
-  '/termos'
+  '/termos',
+  '/en',
+  '/en/tools',
+  '/en/tools/quote-pix',
+  '/en/tools/pix',
+  '/es',
+  '/es/tools',
+  '/es/tools/quote-pix',
+  '/es/tools/pix'
 ];
 
 function parseArgs(argv) {

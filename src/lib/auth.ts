@@ -55,6 +55,7 @@ export async function registerUser(input: {
   password: string;
   turnstileToken?: string;
   referralCode?: string;
+  locale?: 'en' | 'es';
 }) {
   const response = await fetch('/api/auth/register', {
     method: 'POST',
@@ -65,6 +66,7 @@ export async function registerUser(input: {
       password: input.password,
       turnstileToken: input.turnstileToken,
       referralCode: input.referralCode,
+      locale: input.locale,
       language: typeof navigator !== 'undefined' ? navigator.language : undefined,
       timezone: typeof Intl !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : undefined,
       screen:
@@ -162,11 +164,11 @@ export async function fetchMe() {
   };
 }
 
-export async function resendVerification(email: string, turnstileToken?: string) {
+export async function resendVerification(email: string, turnstileToken?: string, locale?: 'en' | 'es') {
   const response = await fetch('/api/auth/resend-verification', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, turnstileToken })
+    body: JSON.stringify({ email, turnstileToken, locale })
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {

@@ -13,21 +13,23 @@ function appUrl() {
 }
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const locale = searchParams.get('locale');
+  const verifyPath = locale === 'en' || locale === 'es' ? `/${locale}/verify-email` : '/verificar-email';
   try {
     if (!isDatabaseConfigured()) {
-      return NextResponse.redirect(`${appUrl()}/verificar-email?error=db`);
+      return NextResponse.redirect(`${appUrl()}${verifyPath}?error=db`);
     }
 
-    const { searchParams } = new URL(request.url);
     const token = searchParams.get('token') || '';
     if (!token) {
-      return NextResponse.redirect(`${appUrl()}/verificar-email?error=missing`);
+      return NextResponse.redirect(`${appUrl()}${verifyPath}?error=missing`);
     }
 
     const result = await consumeVerificationToken(token);
     if (!result.ok) {
       return NextResponse.redirect(
-        `${appUrl()}/verificar-email?error=${encodeURIComponent(result.error)}`
+        `${appUrl()}${verifyPath}?error=${encodeURIComponent(result.error)}`
       );
     }
 
@@ -58,9 +60,9 @@ export async function GET(request: Request) {
       deviceId
     });
 
-    return NextResponse.redirect(`${appUrl()}/verificar-email?ok=1`);
+    return NextResponse.redirect(`${appUrl()}${verifyPath}?ok=1`);
   } catch (error) {
     console.error('[verify-email]', error);
-    return NextResponse.redirect(`${appUrl()}/verificar-email?error=server`);
+    return NextResponse.redirect(`${appUrl()}${verifyPath}?error=server`);
   }
 }

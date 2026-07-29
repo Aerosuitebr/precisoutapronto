@@ -28,6 +28,7 @@ import { FormField } from '@/components/ui/form-field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { DocumentFontId } from '@/lib/documents/fonts';
@@ -53,7 +54,7 @@ export function JuridicosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const exportingLockRef = useRef(false);
   const { refresh: refreshAuth, usage } = useAuth();
-  const brandDocuments = !usage.unlimited;
+  const brandDocuments = useDocumentBranding();
   const [items, setItems] = useState<LegalDocumentData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [doc, setDoc] = useState<LegalDocumentData>(createEmptyLegalDocument());

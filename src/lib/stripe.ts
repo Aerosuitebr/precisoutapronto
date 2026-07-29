@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { getBillingProduct } from '@/lib/billing-products';
+import type { InternationalLocale } from '@/lib/i18n';
 
 let client: Stripe | null = null;
 
@@ -34,14 +35,49 @@ export async function createStripePremiumCheckout(input: {
   userId: string;
   email: string;
   product?: string;
+  locale?: InternationalLocale;
 }) {
   const stripe = getStripe();
   const appUrl = getAppPublicUrl();
   const product = getBillingProduct(input.product);
+  const locale = input.locale;
+  const international = locale === 'en' || locale === 'es';
+  const currency = international
+    ? (process.env[`STRIPE_CURRENCY_${locale.toUpperCase()}`] || 'usd').toLowerCase()
+    : 'brl';
+  const configuredAmount = international
+    ? Number(process.env[`STRIPE_PREMIUM_AMOUNT_${locale.toUpperCase()}`] || '100')
+    : Math.round(product.price * 100);
+  const fallbackAmount =
+    Number.isFinite(configuredAmount) && configuredAmount > 0 ? Math.round(configuredAmount) : 100;
+  const localized = locale === 'es'
+    ? {
+        name: 'Resolva Jato Premium: documentos sin marca · 30 días',
+        description: 'PDF, WhatsApp y correo sin la marca Resolva Jato durante 30 días'
+      }
+    : locale === 'en' ? {
+        name: 'Resolva Jato Premium: brand-free documents · 30 days',
+        description: 'PDFs, WhatsApp and email without Resolva Jato branding for 30 days'
+      }
+    : {
+        name: product.title,
+        description: product.description
+      };
 
-  // Premium usa o price criado no Dashboard; demais produtos usam price_data inline.
+  // Um Price por mercado permite definir moeda e valor no Dashboard sem alterar o código.
   const dashboardPriceId =
-    product.id === 'premium' ? (process.env.STRIPE_PRICE_PREMIUM || '').trim() : '';
+    product.id === 'premium'
+      ? (
+          (international ? process.env[`STRIPE_PRICE_PREMIUM_${locale.toUpperCase()}`] : '') ||
+          process.env.STRIPE_PRICE_PREMIUM ||
+          ''
+        ).trim()
+      : '';
+  const dashboardPrice = dashboardPriceId ? await stripe.prices.retrieve(dashboardPriceId) : null;
+  if (dashboardPriceId && (!dashboardPrice?.active || dashboardPrice.unit_amount === null)) {
+    throw new Error('The configured Stripe price is inactive or does not have a fixed amount.');
+  }
+  const expectedAmountTotal = dashboardPrice?.unit_amount ?? fallbackAmount;
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
@@ -53,11 +89,11 @@ export async function createStripePremiumCheckout(input: {
         : {
             quantity: 1,
             price_data: {
-              currency: 'brl',
-              unit_amount: Math.round(product.price * 100),
+              currency,
+              unit_amount: fallbackAmount,
               product_data: {
-                name: product.title,
-                description: product.description
+                name: localized.name,
+                description: localized.description
               }
             }
           }
@@ -65,10 +101,17 @@ export async function createStripePremiumCheckout(input: {
     metadata: {
       userId: input.userId,
       product: product.id,
-      days: String(product.days)
+      days: String(product.days),
+      locale: locale || 'pt-BR',
+      expectedAmountTotal: String(expectedAmountTotal)
     },
-    success_url: `${appUrl}/checkout?method=stripe&billing=stripe-success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${appUrl}/checkout?method=stripe&billing=stripe-cancel`
+    locale: locale === 'es' ? 'es' : locale === 'en' ? 'en' : 'pt-BR',
+    success_url: international
+      ? `${appUrl}/${locale}/checkout?billing=stripe-success&session_id={CHECKOUT_SESSION_ID}`
+      : `${appUrl}/checkout?method=stripe&billing=stripe-success&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: international
+      ? `${appUrl}/${locale}/checkout?billing=stripe-cancel`
+      : `${appUrl}/checkout?method=stripe&billing=stripe-cancel`
   });
 
   if (!session.url) {

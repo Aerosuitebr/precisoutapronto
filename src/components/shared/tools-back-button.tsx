@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { localeFromPathname } from '@/lib/i18n-locale';
 
 interface ToolsBackButtonProps {
   className?: string;
@@ -10,12 +12,24 @@ interface ToolsBackButtonProps {
   href?: string;
 }
 
-/** Volta para a grade de ferramentas (/ferramentas). */
-export function ToolsBackButton({ className, size = 'sm', href = '/ferramentas' }: ToolsBackButtonProps) {
+/** Volta para a grade de ferramentas no locale atual. */
+export function ToolsBackButton({ className, size = 'sm', href }: ToolsBackButtonProps) {
+  const pathname = usePathname() || '/';
+  const locale = localeFromPathname(pathname);
+  const fallback =
+    locale === 'en' ? '/en/tools' : locale === 'es' ? '/es/tools' : '/ferramentas';
+  const label = locale === 'en' ? 'Back' : locale === 'es' ? 'Volver' : 'Voltar';
+  const aria =
+    locale === 'en'
+      ? 'Back to tools'
+      : locale === 'es'
+        ? 'Volver a herramientas'
+        : 'Voltar para ferramentas';
+
   return (
     <Link
-      href={href}
-      aria-label="Voltar para ferramentas"
+      href={href || fallback}
+      aria-label={aria}
       className={cn(
         'rj-press inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white font-semibold text-slate-700 shadow-sm transition-all duration-150',
         'hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950',
@@ -27,7 +41,7 @@ export function ToolsBackButton({ className, size = 'sm', href = '/ferramentas' 
       )}
     >
       <ChevronLeft className="h-4 w-4 shrink-0" aria-hidden />
-      Voltar
+      {label}
     </Link>
   );
 }

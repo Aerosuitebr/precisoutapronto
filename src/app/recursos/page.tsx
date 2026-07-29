@@ -91,6 +91,26 @@ export default function RecursosPage() {
               </section>
             );
           })}
+
+          <section aria-labelledby="calculadoras-clt" className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 id="calculadoras-clt" className="text-xl font-bold text-slate-950">
+              Calculadoras CLT
+            </h2>
+            <p className="mt-2 text-sm text-slate-500">
+              Estimativas educativas de férias, 13º e rescisão, sem cadastro nas páginas públicas.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <Link href="/calculadora-de-ferias" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-sky-700 hover:bg-slate-50">
+                Férias CLT
+              </Link>
+              <Link href="/calculadora-de-decimo-terceiro" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-sky-700 hover:bg-slate-50">
+                13º salário
+              </Link>
+              <Link href="/recibo-de-aluguel" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-sky-700 hover:bg-slate-50">
+                Recibo de aluguel
+              </Link>
+            </div>
+          </section>
         </div>
       </main>
       <SiteFooter />

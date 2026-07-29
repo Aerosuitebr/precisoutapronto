@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
+import { isStagingEnv } from '@/lib/app-env';
 import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-const CORE_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
+const CORE_UPDATED_AT = new Date('2026-07-28T21:00:00.000Z');
 const GUIDES_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
 
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
@@ -15,6 +16,7 @@ const PUBLIC_TOOL_LANDINGS = [
   '/documentos-contabeis-online',
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
+  '/gerador-de-qr-code-pix',
   '/calculadora-de-rescisao',
   '/calculadora-de-preco-freelancer',
   '/mei-ou-clt',
@@ -25,9 +27,49 @@ const PUBLIC_TOOL_LANDINGS = [
   ,'/contrato-de-aluguel'
   ,'/recibo-de-pagamento'
   ,'/proposta-comercial-mei'
+  ,'/calculadora-de-ferias'
+  ,'/calculadora-de-decimo-terceiro'
+  ,'/recibo-de-aluguel'
+] as const;
+
+const INTERNATIONAL_PUBLIC_PATHS = [
+  '',
+  '/tools',
+  '/plans',
+  '/about',
+  '/contact',
+  '/terms',
+  '/privacy',
+  '/tools/quote-pix',
+  '/tools/pix',
+  '/tools/receipt',
+  '/tools/proposal',
+  '/tools/resume',
+  '/tools/service-contract',
+  '/tools/freelance-pricing',
+  '/tools/severance',
+  '/tools/agenda',
+  '/tools/academic-cover',
+  '/tools/legal-documents',
+  '/tools/accounting-documents',
+  '/tools/resource-search',
+  '/tools/email-signature',
+  '/tools/delivery-schedule',
+  '/tools/bill-splitter',
+  '/tools/study-schedule',
+  '/tools/background-remover',
+  '/tools/pdf-editor',
+  '/tools/mei-vs-employment',
+  '/tools/enem-essay',
+  '/tools/abnt-references',
+  '/tools/lattes-cv'
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (isStagingEnv()) {
+    return [];
+  }
+
   const base = getViralBaseUrl();
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -57,13 +99,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     else if (
       path === '/calculadora-de-rescisao' ||
       path === '/calculadora-de-preco-freelancer' ||
-      path === '/mei-ou-clt'
+      path === '/mei-ou-clt' ||
+      path === '/calculadora-de-ferias' ||
+      path === '/calculadora-de-decimo-terceiro'
     ) {
       priority = 0.9;
     } else if (
       path === '/contrato-de-aluguel' ||
       path === '/recibo-de-pagamento' ||
-      path === '/proposta-comercial-mei'
+      path === '/proposta-comercial-mei' ||
+      path === '/recibo-de-aluguel'
     ) {
       priority = 0.8;
     }
@@ -75,8 +120,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
+  const internationalRoutes: MetadataRoute.Sitemap = (['en', 'es'] as const).flatMap((locale) =>
+    INTERNATIONAL_PUBLIC_PATHS.map((path) => ({
+      url: `${base}/${locale}${path}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: path === '' || path === '/tools' ? 'weekly' as const : 'monthly' as const,
+      priority: path === '' ? 0.9 : path === '/tools' ? 0.85 : path.startsWith('/tools/') ? 0.7 : 0.5
+    }))
+  );
+
   const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
-  for (const entry of [...staticRoutes, ...seoRoutes, ...toolLandingRoutes, ...guideRoutes]) {
+  for (const entry of [...staticRoutes, ...seoRoutes, ...toolLandingRoutes, ...guideRoutes, ...internationalRoutes]) {
     byUrl.set(entry.url, entry);
   }
   return [...byUrl.values()];

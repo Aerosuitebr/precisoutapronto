@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Banco de dados não configurado.' }, { status: 503 });
     }
 
-    const body = (await request.json()) as { email?: string; turnstileToken?: string };
+    const body = (await request.json()) as { email?: string; turnstileToken?: string; locale?: string };
     const email = (body.email || '').trim().toLowerCase();
     if (!email) {
       return NextResponse.json({ error: 'Informe o e-mail.' }, { status: 400 });
@@ -50,8 +50,9 @@ export async function POST(request: Request) {
       });
     }
 
-    const { verifyUrl } = await createEmailVerificationToken(user.id);
-    const mail = await sendVerificationEmail({ to: email, name: user.name, verifyUrl });
+    const locale = body.locale === 'en' || body.locale === 'es' ? body.locale : undefined;
+    const { verifyUrl } = await createEmailVerificationToken(user.id, locale);
+    const mail = await sendVerificationEmail({ to: email, name: user.name, verifyUrl, locale });
 
     await writeAuditLog({
       event: 'resend_verification',

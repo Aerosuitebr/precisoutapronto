@@ -12,7 +12,13 @@ export const metadata: Metadata = {
   description: recibosSeoContent.seo.metaDescription,
   keywords: recibosSeoContent.seo.keywords,
   alternates: {
-    canonical: `${SITE_URL}/${recibosSeoContent.slug}`
+    canonical: `${SITE_URL}/${recibosSeoContent.slug}`,
+    languages: {
+      'pt-BR': `/${recibosSeoContent.slug}`,
+      en: '/en/tools/receipt',
+      es: '/es/tools/receipt',
+      'x-default': `/${recibosSeoContent.slug}`
+    }
   },
   openGraph: {
     title: recibosSeoContent.seo.metaTitle,

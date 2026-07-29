@@ -106,3 +106,35 @@ export function deleteAgendaEvent(eventId: string) {
   if (typeof window === 'undefined') return;
   saveAgendaEvents(listAgendaEvents().filter((item) => item.id !== eventId));
 }
+
+async function apiRequest<T>(url: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(url, {
+    ...init,
+    headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) }
+  });
+  if (!response.ok) throw new Error(`Agenda API returned ${response.status}`);
+  return response.json() as Promise<T>;
+}
+
+/** PostgreSQL é a fonte principal; dados locais antigos são migrados quando a conta ainda está vazia. */
+export async function loadAgendaEvents(): Promise<AgendaEvent[]> {
+  const payload = await apiRequest<{ events: AgendaEvent[] }>('/api/agenda');
+  const remote = payload.events.map(normalizeEvent);
+  if (remote.length > 0) return remote;
+  const legacy = listAgendaEvents();
+  if (legacy.length === 0) return [];
+  const migrated = await Promise.all(legacy.map((event) => persistAgendaEvent(event)));
+  return migrated.sort((a, b) => `${a.date}T${a.startTime}`.localeCompare(`${b.date}T${b.startTime}`));
+}
+
+export async function persistAgendaEvent(event: AgendaEvent): Promise<AgendaEvent> {
+  const payload = await apiRequest<{ event: AgendaEvent }>('/api/agenda', {
+    method: 'POST',
+    body: JSON.stringify(event)
+  });
+  return normalizeEvent(payload.event);
+}
+
+export async function removeAgendaEvent(eventId: string): Promise<void> {
+  await apiRequest(`/api/agenda/${encodeURIComponent(eventId)}`, { method: 'DELETE' });
+}

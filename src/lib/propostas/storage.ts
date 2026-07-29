@@ -2,6 +2,7 @@ import { getSession } from '@/lib/auth';
 import { createDefaultSignature, normalizeSignature } from '@/lib/signatures/types';
 import { createProposalItem } from './defaults';
 import type { ProposalData } from './types';
+import { deleteRemoteDocument, listRemoteDocuments, saveRemoteDocument } from '@/lib/documents/remote-storage';
 
 const STORAGE_PREFIX = 'resolva-jato-propostas';
 
@@ -55,6 +56,7 @@ export function saveProposal(proposal: ProposalData) {
     ? proposals.map((item, itemIndex) => (itemIndex === index ? next : item))
     : [next, ...proposals];
   localStorage.setItem(storageKey(), JSON.stringify(updated));
+  void saveRemoteDocument('propostas', next).catch(() => undefined);
   return next;
 }
 
@@ -62,5 +64,23 @@ export function deleteProposal(proposalId: string) {
   if (typeof window === 'undefined') return;
   const updated = listProposals().filter((item) => item.id !== proposalId);
   localStorage.setItem(storageKey(), JSON.stringify(updated));
+  void deleteRemoteDocument('propostas', proposalId).catch(() => undefined);
+}
+
+export async function loadProposals(): Promise<ProposalData[]> {
+  const remote = (await listRemoteDocuments<ProposalData>('propostas')).map(normalizeProposal);
+  if (remote.length > 0) return remote.sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  const legacy = listProposals();
+  if (legacy.length) await Promise.all(legacy.map((item) => saveRemoteDocument('propostas', item)));
+  return legacy;
+}
+
+export async function persistProposal(proposal: ProposalData): Promise<ProposalData> {
+  const next = normalizeProposal({ ...proposal, updatedAt: new Date().toISOString() });
+  return normalizeProposal(await saveRemoteDocument('propostas', next));
+}
+
+export async function removeProposal(proposalId: string) {
+  await deleteRemoteDocument('propostas', proposalId);
 }
 

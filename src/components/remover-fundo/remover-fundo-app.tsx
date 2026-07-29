@@ -25,6 +25,8 @@ import {
   removeImageBackground,
 } from "@/lib/remover-fundo/process";
 
+type Locale = "pt-BR" | "en" | "es";
+
 const MAX_FILE_MB = 15;
 const PRESET_COLORS = [
   "transparent",
@@ -36,7 +38,150 @@ const PRESET_COLORS = [
   "#eab308",
 ];
 
-export function RemoverFundoApp() {
+const COPY: Record<
+  Locale,
+  {
+    authTitle: string;
+    authDescription: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    insightLocal: string;
+    insightIA: string;
+    insightPng: string;
+    dropzoneTitle: string;
+    dropzoneSubtitle: string;
+    selectImage: string;
+    originalLabel: string;
+    semFundoLabel: string;
+    originalAlt: string;
+    semFundoAlt: string;
+    chooseAnother: string;
+    outputTitle: string;
+    waitingTitle: string;
+    waitingText: string;
+    transparentBg: string;
+    customBg: (color: string) => string;
+    presetHint: string;
+    downloadButton: string;
+    toastInvalidImage: string;
+    toastMaxSize: (mb: number) => string;
+    toastSuccess: string;
+    toastError: string;
+    progressPreparing: string;
+    progressDownloadingModel: string;
+    progressRefining: string;
+    progressRemoving: string;
+  }
+> = {
+  "pt-BR": {
+    authTitle: "Removedor de Fundo de Imagem",
+    authDescription: "Cadastre-se gratuitamente para remover fundos de imagens.",
+    heroTitle: "Removedor de Fundo de Imagem",
+    heroSubtitle:
+      "Recorte pessoas, produtos e objetos automaticamente e baixe em PNG transparente. O processamento roda no seu navegador, a imagem não é enviada a nenhum servidor.",
+    insightLocal: "100% local: a imagem nunca sai do seu dispositivo.",
+    insightIA: "Recorte automático por IA em segundos.",
+    insightPng: "Baixe em PNG com fundo transparente ou colorido.",
+    dropzoneTitle: "Arraste uma imagem aqui ou clique para selecionar",
+    dropzoneSubtitle: `JPG, JPEG, JFIF, PNG ou WEBP · até ${MAX_FILE_MB}MB.`,
+    selectImage: "Selecionar imagem",
+    originalLabel: "Original",
+    semFundoLabel: "Sem fundo",
+    originalAlt: "Imagem original",
+    semFundoAlt: "Imagem sem fundo",
+    chooseAnother: "Escolher outra imagem",
+    outputTitle: "Fundo de saída",
+    waitingTitle: "Aguarde o processamento.",
+    waitingText:
+      "Na primeira vez o modelo de alta qualidade é baixado (um pouco maior); depois fica em cache. Bordas e cores são refinadas automaticamente.",
+    transparentBg: "Fundo transparente",
+    customBg: (color) => `Fundo ${color}`,
+    presetHint:
+      "Escolha um fundo sólido ou mantenha transparente para usar em qualquer lugar (apresentações, editores de imagem, catálogos).",
+    downloadButton: "Baixar PNG",
+    toastInvalidImage: "Selecione uma imagem (JPG, JFIF, PNG ou WEBP).",
+    toastMaxSize: (mb) => `A imagem excede ${mb}MB.`,
+    toastSuccess: "Fundo removido com sucesso!",
+    toastError: "Não foi possível remover o fundo dessa imagem. Tente outro arquivo.",
+    progressPreparing: "Preparando imagem…",
+    progressDownloadingModel: "Baixando modelo de alta qualidade (só na primeira vez)…",
+    progressRefining: "Refinando bordas e cores…",
+    progressRemoving: "Removendo o fundo…",
+  },
+  en: {
+    authTitle: "Image Background Remover",
+    authDescription: "Sign up for free to remove image backgrounds.",
+    heroTitle: "Image Background Remover",
+    heroSubtitle:
+      "Cut out people, products and objects automatically and download a transparent PNG. Processing runs in your browser, the image is never sent to any server.",
+    insightLocal: "100% local: the image never leaves your device.",
+    insightIA: "Automatic AI cutout in seconds.",
+    insightPng: "Download as PNG with a transparent or solid background.",
+    dropzoneTitle: "Drag an image here or click to select",
+    dropzoneSubtitle: `JPG, JPEG, JFIF, PNG or WEBP, up to ${MAX_FILE_MB}MB.`,
+    selectImage: "Select image",
+    originalLabel: "Original",
+    semFundoLabel: "No background",
+    originalAlt: "Original image",
+    semFundoAlt: "Image without background",
+    chooseAnother: "Choose another image",
+    outputTitle: "Output background",
+    waitingTitle: "Please wait while processing.",
+    waitingText:
+      "The first time, the high-quality model is downloaded (slightly larger); after that it stays cached. Edges and colors are refined automatically.",
+    transparentBg: "Transparent background",
+    customBg: (color) => `Background ${color}`,
+    presetHint:
+      "Choose a solid background or keep it transparent to use anywhere (presentations, image editors, catalogs).",
+    downloadButton: "Download PNG",
+    toastInvalidImage: "Select an image (JPG, JFIF, PNG or WEBP).",
+    toastMaxSize: (mb) => `The image exceeds ${mb}MB.`,
+    toastSuccess: "Background removed successfully!",
+    toastError: "Could not remove the background from that image. Try another file.",
+    progressPreparing: "Preparing image...",
+    progressDownloadingModel: "Downloading high-quality model (first time only)...",
+    progressRefining: "Refining edges and colors...",
+    progressRemoving: "Removing the background...",
+  },
+  es: {
+    authTitle: "Eliminador de Fondo de Imagen",
+    authDescription: "Registrate gratis para eliminar fondos de imagenes.",
+    heroTitle: "Eliminador de Fondo de Imagen",
+    heroSubtitle:
+      "Recorta personas, productos y objetos automaticamente y descarga en PNG transparente. El procesamiento corre en tu navegador, la imagen no se envia a ningun servidor.",
+    insightLocal: "100% local: la imagen nunca sale de tu dispositivo.",
+    insightIA: "Recorte automatico por IA en segundos.",
+    insightPng: "Descarga en PNG con fondo transparente o de color.",
+    dropzoneTitle: "Arrastra una imagen aqui o haz clic para seleccionar",
+    dropzoneSubtitle: `JPG, JPEG, JFIF, PNG o WEBP, hasta ${MAX_FILE_MB}MB.`,
+    selectImage: "Seleccionar imagen",
+    originalLabel: "Original",
+    semFundoLabel: "Sin fondo",
+    originalAlt: "Imagen original",
+    semFundoAlt: "Imagen sin fondo",
+    chooseAnother: "Elegir otra imagen",
+    outputTitle: "Fondo de salida",
+    waitingTitle: "Espera mientras se procesa.",
+    waitingText:
+      "La primera vez se descarga el modelo de alta calidad (un poco mas grande); despues queda en cache. Los bordes y colores se refinan automaticamente.",
+    transparentBg: "Fondo transparente",
+    customBg: (color) => `Fondo ${color}`,
+    presetHint:
+      "Elige un fondo solido o mantenlo transparente para usar en cualquier lugar (presentaciones, editores de imagen, catalogos).",
+    downloadButton: "Descargar PNG",
+    toastInvalidImage: "Selecciona una imagen (JPG, JFIF, PNG o WEBP).",
+    toastMaxSize: (mb) => `La imagen supera ${mb}MB.`,
+    toastSuccess: "Fondo eliminado con exito!",
+    toastError: "No se pudo eliminar el fondo de esa imagen. Prueba con otro archivo.",
+    progressPreparing: "Preparando imagen...",
+    progressDownloadingModel: "Descargando modelo de alta calidad (solo la primera vez)...",
+    progressRefining: "Refinando bordes y colores...",
+    progressRemoving: "Eliminando el fondo...",
+  },
+};
+
+export function RemoverFundoApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
+  const t = COPY[locale];
   const { toast } = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -52,13 +197,13 @@ export function RemoverFundoApp() {
   const handleFile = useCallback(
     async (file: File) => {
       if (!isSupportedImageFile(file)) {
-        toast("Selecione uma imagem (JPG, JFIF, PNG ou WEBP).", {
+        toast(t.toastInvalidImage, {
           variant: "error",
         });
         return;
       }
       if (file.size > MAX_FILE_MB * 1024 * 1024) {
-        toast(`A imagem excede ${MAX_FILE_MB}MB.`, { variant: "error" });
+        toast(t.toastMaxSize(MAX_FILE_MB), { variant: "error" });
         return;
       }
       setOriginalUrl(URL.createObjectURL(file));
@@ -67,7 +212,7 @@ export function RemoverFundoApp() {
       setCompositeUrl(null);
       setBgColor("transparent");
       setProcessing(true);
-      setProgressLabel("Preparando imagem…");
+      setProgressLabel(t.progressPreparing);
       setProgressPct(0);
       try {
         const { blob, url } = await removeImageBackground(
@@ -77,30 +222,26 @@ export function RemoverFundoApp() {
             setProgressPct(pct);
             setProgressLabel(
               label.startsWith("fetch")
-                ? "Baixando modelo de alta qualidade (só na primeira vez)…"
+                ? t.progressDownloadingModel
                 : label.startsWith("prepare")
-                  ? "Preparando imagem…"
+                  ? t.progressPreparing
                   : label.includes("refine")
-                    ? "Refinando bordas e cores…"
-                    : "Removendo o fundo…",
+                    ? t.progressRefining
+                    : t.progressRemoving,
             );
           },
         );
         setResultBlob(blob);
         setResultUrl(url);
-        toast("Fundo removido com sucesso!");
+        toast(t.toastSuccess);
       } catch (err) {
         console.error(err);
-        const detail =
-          err instanceof Error && err.message
-            ? err.message
-            : "Não foi possível remover o fundo dessa imagem. Tente outro arquivo.";
-        toast(detail, { variant: "error" });
+        toast(t.toastError, { variant: "error" });
       } finally {
         setProcessing(false);
       }
     },
-    [toast],
+    [toast, t],
   );
 
   function onDrop(e: React.DragEvent) {
@@ -163,8 +304,8 @@ export function RemoverFundoApp() {
 
   return (
     <AuthGate
-      title="Removedor de Fundo de Imagem"
-      description="Cadastre-se gratuitamente para remover fundos de imagens."
+      title={t.authTitle}
+      description={t.authDescription}
     >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
@@ -172,20 +313,20 @@ export function RemoverFundoApp() {
         </div>
 
         <PageHero
-          title="Removedor de Fundo de Imagem"
-          subtitle="Recorte pessoas, produtos e objetos automaticamente e baixe em PNG transparente. O processamento roda no seu navegador, a imagem não é enviada a nenhum servidor."
+          title={t.heroTitle}
+          subtitle={t.heroSubtitle}
           icon={ImageOff}
         />
 
         <div className="grid gap-2 sm:grid-cols-3">
           <Insight
             icon={Lock}
-            text="100% local: a imagem nunca sai do seu dispositivo."
+            text={t.insightLocal}
           />
-          <Insight icon={Wand2} text="Recorte automático por IA em segundos." />
+          <Insight icon={Wand2} text={t.insightIA} />
           <Insight
             icon={ShieldCheck}
-            text="Baixe em PNG com fundo transparente ou colorido."
+            text={t.insightPng}
           />
         </div>
 
@@ -216,13 +357,13 @@ export function RemoverFundoApp() {
             />
             <Upload className="h-10 w-10 text-sky-600" aria-hidden />
             <p className="text-base font-bold text-slate-900">
-              Arraste uma imagem aqui ou clique para selecionar
+              {t.dropzoneTitle}
             </p>
             <p className="max-w-md text-sm leading-6 text-slate-500">
-              JPG, JPEG, JFIF, PNG ou WEBP · até {MAX_FILE_MB}MB.
+              {t.dropzoneSubtitle}
             </p>
             <Button variant="outline" size="sm" icon={Upload}>
-              Selecionar imagem
+              {t.selectImage}
             </Button>
           </div>
         ) : (
@@ -231,20 +372,20 @@ export function RemoverFundoApp() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
                   <p className="mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-                    Original
+                    {t.originalLabel}
                   </p>
                   <div className="flex h-72 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={originalUrl}
-                      alt="Imagem original"
+                      alt={t.originalAlt}
                       className="max-h-full max-w-full object-contain"
                     />
                   </div>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
                   <p className="mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-                    Sem fundo
+                    {t.semFundoLabel}
                   </p>
                   <div
                     className="flex h-72 items-center justify-center overflow-hidden rounded-xl"
@@ -281,7 +422,7 @@ export function RemoverFundoApp() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={previewUrl}
-                        alt="Imagem sem fundo"
+                        alt={t.semFundoAlt}
                         className="max-h-full max-w-full object-contain"
                       />
                     ) : null}
@@ -294,23 +435,21 @@ export function RemoverFundoApp() {
                 icon={RefreshCcw}
                 onClick={reset}
               >
-                Escolher outra imagem
+                {t.chooseAnother}
               </Button>
             </div>
 
             <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:sticky lg:top-24">
               <h2 className="rj-display text-base font-bold text-slate-900">
-                Fundo de saída
+                {t.outputTitle}
               </h2>
               {!resultUrl ? (
                 <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4">
                   <p className="text-sm font-bold text-slate-800">
-                    Aguarde o processamento.
+                    {t.waitingTitle}
                   </p>
                   <p className="mt-1 text-sm leading-6 text-slate-500">
-                    Na primeira vez o modelo de alta qualidade é baixado (um
-                    pouco maior); depois fica em cache. Bordas e cores são
-                    refinadas automaticamente.
+                    {t.waitingText}
                   </p>
                 </div>
               ) : (
@@ -323,8 +462,8 @@ export function RemoverFundoApp() {
                         onClick={() => applyBackground(color)}
                         aria-label={
                           color === "transparent"
-                            ? "Fundo transparente"
-                            : `Fundo ${color}`
+                            ? t.transparentBg
+                            : t.customBg(color)
                         }
                         className={cn(
                           "h-9 w-9 rounded-lg border-2 transition-all",
@@ -354,9 +493,7 @@ export function RemoverFundoApp() {
                     </label>
                   </div>
                   <p className="text-xs leading-5 text-slate-500">
-                    Escolha um fundo sólido ou mantenha transparente para usar
-                    em qualquer lugar (apresentações, editores de imagem,
-                    catálogos).
+                    {t.presetHint}
                   </p>
                   <Button
                     className="w-full"
@@ -364,7 +501,7 @@ export function RemoverFundoApp() {
                     icon={Download}
                     onClick={handleDownload}
                   >
-                    Baixar PNG
+                    {t.downloadButton}
                   </Button>
                 </>
               )}

@@ -22,6 +22,7 @@ import { Select } from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast';
 import { WhatsAppSendModal } from '@/components/whatsapp/whatsapp-send-modal';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { formatCpfCnpj, formatCurrencyInput, formatPhone, parseCurrency } from '@/lib/formatters';
 import { buildPixBrCode, buildPixWhatsAppMessage, normalizePixKey } from '@/lib/pix/brcode';
@@ -67,9 +68,10 @@ function validatePixKey(key: string, keyType: PixKeyType): string {
     : 'Chave aleatória não reconhecida. Cole o UUID completo do banco.';
 }
 
-export function PixApp() {
+export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}) {
   const { toast } = useToast();
   const { session, usage, refresh: refreshAuth } = useAuth();
+  const brandDocuments = useDocumentBranding();
   const [keyType, setKeyType] = useState<PixKeyType>('cpf');
   const [key, setKey] = useState('');
   const [merchantName, setMerchantName] = useState('');
@@ -137,6 +139,10 @@ export function PixApp() {
         );
         return;
       }
+      if (publicAccess) {
+        await effect();
+        return;
+      }
       const outcome = await performBillableAction(
         { toolId: 'pix', artifactId: artifact, action: 'download' },
         async () => {
@@ -164,6 +170,20 @@ export function PixApp() {
   }
 
   async function handleWhatsAppMessage() {
+    if (publicAccess && !ownerEmail) {
+      setError('Crie uma conta grátis para enviar a cobrança pelo WhatsApp.');
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('rj-account-required', {
+            detail: {
+              nextHref: window.location.pathname || '/gerador-de-qr-code-pix',
+              variant: 'default'
+            }
+          })
+        );
+      }
+      return;
+    }
     if (!ownerEmail) {
       setError('Faça login novamente para enviar pelo WhatsApp.');
       return;
@@ -179,7 +199,7 @@ export function PixApp() {
         amount: amount > 0 ? amount : undefined,
         brCode,
         description,
-        branded: !usage.unlimited
+        branded: brandDocuments
       });
       try {
         await navigator.clipboard.writeText(message);
@@ -191,11 +211,7 @@ export function PixApp() {
     }, `pix_wa_${Date.now()}`);
   }
 
-  return (
-    <AuthGate
-      title="Cobrança Pix exige cadastro"
-      description="Crie sua conta gratuita para gerar QR Code Pix e mensagens de cobrança."
-    >
+  const body = (
       <div className="space-y-5">
         <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
           <div className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 px-5 py-6 text-white sm:px-6">
@@ -207,21 +223,31 @@ export function PixApp() {
                 </span>
                 <div>
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-300">
-                    Microferramenta
+                    {publicAccess ? 'Gerador grátis' : 'Microferramenta'}
                   </p>
-                  <h1 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
-                    Cobrança Pix com QR Code
-                  </h1>
+                  {publicAccess ? (
+                    <h2 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                      Cobrança Pix com QR Code
+                    </h2>
+                  ) : (
+                    <h1 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                      Cobrança Pix com QR Code
+                    </h1>
+                  )}
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
-                    Gere QR e Pix Copia e Cola no navegador, sem API bancária. No plano gratuito, o envio
-                    pode incluir referência ao Resolva Jato.
+                    Gere QR e Pix Copia e Cola no navegador, sem API bancária.
+                    {publicAccess
+                      ? ' Experimente agora; conta grátis só para enviar pelo WhatsApp.'
+                      : ' No plano gratuito, o envio pode incluir referência ao Resolva Jato.'}
                   </p>
                 </div>
               </div>
-              <ToolsBackButton
-                size="default"
-                className="shrink-0 border-white/25 bg-white/10 text-white hover:border-white/40 hover:bg-white/20 hover:text-white"
-              />
+              {publicAccess ? null : (
+                <ToolsBackButton
+                  size="default"
+                  className="shrink-0 border-white/25 bg-white/10 text-white hover:border-white/40 hover:bg-white/20 hover:text-white"
+                />
+              )}
             </div>
           </div>
 
@@ -415,7 +441,7 @@ export function PixApp() {
                 >
                   Enviar no WhatsApp
                 </Button>
-                <ToolsBackButton size="default" />
+                {publicAccess ? null : <ToolsBackButton size="default" />}
               </div>
             </div>
 
@@ -532,6 +558,16 @@ export function PixApp() {
           />
         ) : null}
       </div>
+  );
+
+  if (publicAccess) return body;
+
+  return (
+    <AuthGate
+      title="Cobrança Pix exige cadastro"
+      description="Crie sua conta gratuita para gerar QR Code Pix e mensagens de cobrança."
+    >
+      {body}
     </AuthGate>
   );
 }

@@ -25,6 +25,7 @@ import {
   XCircle
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
+import { useAuthRequired } from '@/components/auth/auth-required-provider';
 import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { OrcamentoItemsEditor } from '@/components/orcamentos/orcamento-items-editor';
@@ -40,6 +41,7 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { formatCurrency, formatPhone } from '@/lib/formatters';
 import {
@@ -115,9 +117,12 @@ function detectValidadeMode(value: string): 'period' | 'date' {
   return /^\d{2}\/\d{2}\/\d{4}$/.test(value.trim()) ? 'date' : 'period';
 }
 
-export function OrcamentosApp() {
+export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean } = {}) {
   const { toast } = useToast();
   const { session, usage, refresh: refreshAuth } = useAuth();
+  const brandDocuments = useDocumentBranding();
+  const { requireAuth } = useAuthRequired();
+  const showAccountExtras = Boolean(session);
   const [profissionalNome, setProfissionalNome] = useState('');
   const [profissionalWhatsapp, setProfissionalWhatsapp] = useState('');
   const [profissionalEmail, setProfissionalEmail] = useState('');
@@ -267,7 +272,7 @@ export function OrcamentosApp() {
   }, [session?.user.email]);
 
   const loadHistory = useCallback(async () => {
-    if (!ownerEmail) return;
+    if (!ownerEmail || (publicAccess && !session)) return;
     setHistoryLoading(true);
     try {
       const response = await fetch(`/api/orcamentos?ownerEmail=${encodeURIComponent(ownerEmail)}`);
@@ -279,18 +284,23 @@ export function OrcamentosApp() {
     } finally {
       setHistoryLoading(false);
     }
-  }, [ownerEmail]);
+  }, [ownerEmail, publicAccess, session]);
 
   useEffect(() => {
+    if (publicAccess && !session) {
+      setWhatsAppApiReady(false);
+      return;
+    }
     fetch('/api/whatsapp/status')
       .then((res) => res.json())
       .then((data) => setWhatsAppApiReady(Boolean(data.configured)))
       .catch(() => setWhatsAppApiReady(false));
-  }, []);
+  }, [publicAccess, session]);
 
   useEffect(() => {
+    if (publicAccess && !session) return;
     loadHistory();
-  }, [loadHistory]);
+  }, [loadHistory, publicAccess, session]);
 
   function savePrefs() {
     saveOrcamentoPrefs({
@@ -411,7 +421,11 @@ export function OrcamentosApp() {
       );
 
       if (!outcome.allowed) {
-        setBannerError(outcome.reason || 'Faça login e confirme seu e-mail para continuar.');
+        if ('accountRequired' in outcome && outcome.accountRequired) {
+          requireAuth('/ferramentas/orcamentos', 'guest_trial_done');
+          return;
+        }
+        setBannerError(outcome.reason || 'Faça login para continuar.');
         return;
       }
 
@@ -515,7 +529,7 @@ export function OrcamentosApp() {
     total: number;
   }) {
     // Plano grátis: só envio pelo servidor (marca não editável no Zap)
-    if (!usage.unlimited) {
+    if (brandDocuments) {
       openEphemeralSend({
         id: link.id,
         url: link.url,
@@ -585,21 +599,34 @@ export function OrcamentosApp() {
     <AuthGate
       title="Orçamentos exigem cadastro"
       description="Crie sua conta gratuita para gerar links de aprovação para seus clientes."
+      publicAccess={publicAccess}
     >
       <div className="space-y-5 pb-24 lg:pb-0">
-        <EnablePushButton variant="banner" />
+        {showAccountExtras ? <EnablePushButton variant="banner" /> : null}
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <nav className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-slate-500">
-            <Link href="/ferramentas" className="hover:text-slate-700 hover:underline">
-              Ferramentas
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
-            <span>Orçamentos</span>
-            <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
-            <span className="text-slate-900">Novo orçamento</span>
+            {publicAccess ? (
+              <>
+                <Link href="/orcamento-com-pix" className="hover:text-slate-700 hover:underline">
+                  Orçamento + Pix
+                </Link>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+                <span className="text-slate-900">Experimentar agora</span>
+              </>
+            ) : (
+              <>
+                <Link href="/ferramentas" className="hover:text-slate-700 hover:underline">
+                  Ferramentas
+                </Link>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+                <span>Orçamentos</span>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+                <span className="text-slate-900">Novo orçamento</span>
+              </>
+            )}
           </nav>
-          <ToolsBackButton />
+          <ToolsBackButton href={publicAccess ? '/recursos' : '/ferramentas'} />
         </div>
 
         <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950 px-5 py-5 text-white shadow-sm sm:px-6">
@@ -620,7 +647,7 @@ export function OrcamentosApp() {
           </div>
         </section>
 
-        <RemoveBrandingUpsell />
+        {showAccountExtras ? <RemoveBrandingUpsell /> : null}
 
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(280px,0.85fr)]">
           <div className="space-y-5">
@@ -1108,7 +1135,9 @@ export function OrcamentosApp() {
                 <div className="mt-3 rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">
                   {usage.unlimited
                     ? 'Premium: documentos sem marca Resolva Jato'
-                    : 'Ferramentas profissionais liberadas na sua conta'}
+                    : brandDocuments
+                      ? 'Grátis: PDF e WhatsApp com marca Resolva Jato. Premium remove tudo.'
+                      : 'Pronto para gerar o link de aprovação'}
                 </div>
 
                 <ul className="mt-4 space-y-2 border-t border-slate-100 pt-4" aria-label="Checklist do orçamento">
@@ -1168,10 +1197,14 @@ export function OrcamentosApp() {
                   onClick={editingId ? handleUpdatePending : handleGenerate}
                   disabled={generating || updating || !readyToGenerate}
                 >
-                  {editingId ? 'Salvar alterações' : 'Gerar link'}
+                  {editingId ? 'Salvar alterações' : brandDocuments ? 'Gerar link' : session ? 'Gerar link' : 'Gerar link (experiência completa)'}
                 </Button>
                 {!readyToGenerate ? (
                   <p className="mt-2 text-xs font-medium leading-5 text-amber-800">{blockedHint}</p>
+                ) : !session && !brandDocuments ? (
+                  <p className="mt-2 text-xs font-medium leading-5 text-emerald-800">
+                    Tudo certo. Pronto para gerar o link.
+                  </p>
                 ) : (
                   <p className="mt-2 text-xs font-medium leading-5 text-emerald-800">
                     Tudo certo. Pronto para gerar o link de aprovação.
@@ -1219,7 +1252,7 @@ export function OrcamentosApp() {
                         ? 'Reenviar (conectar → enviar → desconectar)'
                         : 'Enviar com meu WhatsApp (QR)'}
                     </Button>
-                    {usage.unlimited ? (
+                    {usage.unlimited || !brandDocuments ? (
                       <Button variant="outline" onClick={() => openClienteWhatsAppFallback(generated)}>
                         <MessageCircle className="h-4 w-4" />
                         Abrir WhatsApp manual (contingência)
@@ -1241,6 +1274,7 @@ export function OrcamentosApp() {
               ) : null}
             </div>
 
+            {showAccountExtras ? (
             <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900">
@@ -1320,10 +1354,19 @@ export function OrcamentosApp() {
                 Ver todo o histórico →
               </button>
             </div>
+            ) : (
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
+                <p className="font-bold text-slate-900">Histórico na sua conta</p>
+                <p className="mt-1">
+                  Depois de criar a conta, você reabre orçamentos, edita pendentes e reenvia no WhatsApp.
+                </p>
+              </div>
+            )}
           </aside>
         </div>
 
         {/* Histórico completo */}
+        {showAccountExtras ? (
         <section
           id="historico-completo"
           className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
@@ -1447,6 +1490,7 @@ export function OrcamentosApp() {
             </ul>
           )}
         </section>
+        ) : null}
       </div>
 
       {/* Barra fixa mobile */}
@@ -1488,10 +1532,10 @@ export function OrcamentosApp() {
             profissionalNome: sendModal.profissionalNome,
             total: sendModal.total,
             url: sendModal.url,
-            branded: !usage.unlimited
+            branded: brandDocuments
           })}
-          allowWaMeFallback={usage.unlimited}
-          brandLocked={!usage.unlimited}
+          allowWaMeFallback={!brandDocuments}
+          brandLocked={brandDocuments}
           onSent={() => {
             setGenerated((current) =>
               current && current.id === sendModal.id

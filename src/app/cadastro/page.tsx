@@ -70,10 +70,10 @@ function CadastroForm() {
   if (doneEmail) {
     return (
       <div className="space-y-4 text-center">
-        <p className="text-lg font-bold text-slate-900">Confirme seu e-mail</p>
+        <p className="text-lg font-bold text-slate-900">Conta criada. Confirme seu e-mail</p>
         <p className="text-sm leading-6 text-slate-600">
-          Enviamos um link para <strong>{doneEmail}</strong>. Sem a confirmação, as ferramentas
-          não são liberadas para salvamento e download.
+          Enviamos um link para <strong>{doneEmail}</strong>. Você já pode entrar e gerar documentos
+          grátis (com a marca Resolva Jato). No Premium, remove qualquer referência.
         </p>
         <Button asChild className="w-full">
           <Link href={`/login?next=${encodeURIComponent(next)}&email=${encodeURIComponent(doneEmail)}`}>
@@ -92,7 +92,7 @@ function CadastroForm() {
       <ReferralCapture />
       <AuthReturnBanner nextHref={searchParams.get('next')} />
       <p className="text-center text-sm text-slate-600">
-        Sem cartão. Confirme o e-mail para liberar as ferramentas.
+        Sem cartão. Gere documentos grátis. A marca Resolva Jato sai no Premium.
       </p>
       {referralCode ? (
         <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-center text-xs font-semibold text-emerald-900">
@@ -125,7 +125,7 @@ function CadastroForm() {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              placeholder="Crie uma senha forte"
+              placeholder="Mínimo 8 caracteres"
               className="pl-10"
               required
               minLength={8}
@@ -138,7 +138,7 @@ function CadastroForm() {
           <PasswordStrength password={password} />
         </div>
       </div>
-      <TurnstileWidget onToken={setTurnstileToken} />
+      <TurnstileWidget onToken={setTurnstileToken} language="pt-BR" />
       {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
       <Button
         type="submit"
@@ -163,7 +163,7 @@ function CadastroForm() {
 
 export default function CadastroPage() {
   return (
-    <AuthShell subtitle="Crie sua conta gratuita. Confirme o e-mail e libere as ferramentas.">
+    <AuthShell subtitle="Conta grátis: documentos ilimitados com a marca Resolva Jato. Premium remove tudo.">
       <Suspense>
         <CadastroForm />
       </Suspense>

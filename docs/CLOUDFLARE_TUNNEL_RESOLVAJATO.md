@@ -18,6 +18,20 @@
 
 - `resolvajato.com.br` → CNAME tunnel (proxied)
 - `www.resolvajato.com.br` → CNAME tunnel (proxied)
+- `staging.resolvajato.com.br` → CNAME tunnel (proxied) · homolog i18n → `http://127.0.0.1:3001`
+
+## Staging (homolog i18n)
+
+Hostname: `https://staging.resolvajato.com.br` → `http://127.0.0.1:3001`
+
+1. DNS `staging.resolvajato.com.br` CNAME → `3f99aa58-2811-4cd2-9b0b-a0819ee70242.cfargotunnel.com` (proxied).
+2. **Config remota do tunnel** (obrigatória): o conector no VPS recebe ingress da Cloudflare e sobrescreve o YAML local. Inclua `staging.resolvajato.com.br` → `http://127.0.0.1:3001` na config do tunnel `resolvajato` (Zero Trust / Networks → Tunnels, ou API `cfd_tunnel/.../configurations`).
+3. Manter também `scripts/deploy/cloudflared-config.resolvajato.yml` alinhado no VPS (`/etc/cloudflared-resolvajato/config.yml`) como fallback/documentação.
+4. Cloudflare Access:
+   - App `Resolva Jato Staging` em `staging.resolvajato.com.br` (allow `@aerosuite.com.br`).
+   - App bypass em `staging.resolvajato.com.br/api/webhooks/stripe` para o webhook Stripe test.
+5. Stack: `/opt/resolva-jato-staging` · ver `DOCKER.md` e `docs/I18N-STAGING-QA.md`.
+   Deploy: GitHub Action **Deploy Resolva Jato Vultr** → target `staging` (branch `feat/i18n-pt-en-es`).
 
 ## Nameservers no Registro.br
 

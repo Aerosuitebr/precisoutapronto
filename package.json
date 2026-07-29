@@ -22,7 +22,11 @@
     "whatsapp:up": "docker compose -f docker-compose.whatsapp.yml up -d",
     "whatsapp:down": "docker compose -f docker-compose.whatsapp.yml down",
     "whatsapp:logs": "docker compose -f docker-compose.whatsapp.yml logs -f rj-evolution-api",
-    "whatsapp:setup": "node --env-file=.env scripts/whatsapp-ensure-instance.mjs"
+    "whatsapp:setup": "node --env-file=.env scripts/whatsapp-ensure-instance.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:staging": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@imgly/background-removal": "^1.7.0",
@@ -46,6 +50,7 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "@types/node": "^20.17.10",
     "@types/nodemailer": "^8.0.1",
     "@types/react": "^18.3.17",

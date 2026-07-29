@@ -103,3 +103,21 @@ Deploy incremental (sem reenviar .env / tunnel):
 ```powershell
 powershell -File scripts\deploy\setup-vultr-resolvajato.ps1 -SkipEnv -SkipTunnel
 ```
+
+## Staging / homolog i18n
+
+Stack paralelo no mesmo VPS (sem Evolution), porta **3001**:
+
+```bash
+# No servidor: /opt/resolva-jato-staging
+cp .env.staging.example .env.staging
+# Preencha Stripe test, AUTH_SECRET, POSTGRES_PASSWORD
+
+docker compose --env-file .env.staging \
+  -f docker-compose.staging.yml -p resolva-jato-staging up -d --build
+```
+
+- Hostname: `https://staging.resolvajato.com.br`
+- Checklist: [`docs/I18N-STAGING-QA.md`](docs/I18N-STAGING-QA.md)
+- Deploy Action: **Deploy Resolva Jato Vultr** → target `staging`
+- Tunnel: incluir hostname em [`scripts/deploy/cloudflared-config.resolvajato.yml`](scripts/deploy/cloudflared-config.resolvajato.yml)

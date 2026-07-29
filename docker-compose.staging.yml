@@ -1,0 +1,114 @@
+# Staging / homolog Resolva Jato (i18n) — stack paralelo no mesmo VPS.
+# Sem Caddy e sem Evolution. App em 127.0.0.1:3001.
+#
+# Uso:
+#   docker compose --env-file .env.staging \
+#     -f docker-compose.staging.yml -p resolva-jato-staging up -d --build
+#
+# Tunnel: staging.resolvajato.com.br → http://127.0.0.1:3001
+
+name: resolva-jato-staging
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: resolva-jato-staging-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-resolvajato}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env.staging}
+      POSTGRES_DB: ${POSTGRES_DB:-resolvajato_staging}
+    volumes:
+      - rj_staging_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${POSTGRES_USER:-resolvajato} -d ${POSTGRES_DB:-resolvajato_staging}'
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - rj_staging_net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://staging.resolvajato.com.br}
+        NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: ${NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY:-}
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
+        NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${NEXT_PUBLIC_VAPID_PUBLIC_KEY:-}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ''
+        NEXT_PUBLIC_CLARITY_PROJECT_ID: ''
+        GOOGLE_SITE_VERIFICATION: ''
+        BING_SITE_VERIFICATION: ''
+    container_name: resolva-jato-staging-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '127.0.0.1:3001:3000'
+    environment:
+      NODE_ENV: production
+      APP_ENV: staging
+      PORT: '3000'
+      DATABASE_URL: postgresql://${POSTGRES_USER:-resolvajato}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-resolvajato_staging}?schema=public
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://staging.resolvajato.com.br}
+      NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: ${NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY:-}
+      MERCADOPAGO_ACCESS_TOKEN: ${MERCADOPAGO_ACCESS_TOKEN:-}
+      MERCADOPAGO_WEBHOOK_SECRET: ${MERCADOPAGO_WEBHOOK_SECRET:-}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
+      STRIPE_PRICE_PREMIUM: ${STRIPE_PRICE_PREMIUM:-}
+      STRIPE_PRICE_PREMIUM_EN: ${STRIPE_PRICE_PREMIUM_EN:-}
+      STRIPE_PRICE_PREMIUM_ES: ${STRIPE_PRICE_PREMIUM_ES:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      ASAAS_MODE: ${ASAAS_MODE:-sandbox}
+      ASAAS_API_KEY: ${ASAAS_API_KEY:-}
+      ASAAS_WEBHOOK_TOKEN: ${ASAAS_WEBHOOK_TOKEN:-}
+      NUPAY_MODE: ${NUPAY_MODE:-sandbox}
+      NUPAY_APP_KEY: ${NUPAY_APP_KEY:-}
+      NUPAY_APP_TOKEN: ${NUPAY_APP_TOKEN:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      RESEND_FROM: ${RESEND_FROM:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_SSL: ${SMTP_SSL:-false}
+      SMTP_START_TLS: ${SMTP_START_TLS:-REQUIRED}
+      AUTH_SECRET: ${AUTH_SECRET:-}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
+      WHATSAPP_PROVIDER: disabled
+      WHATSAPP_API_ENABLED: 'false'
+      EVOLUTION_API_URL: ''
+      WHATSAPP_API_URL: ''
+      EVOLUTION_API_KEY: ${EVOLUTION_API_KEY:-staging-unused}
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${NEXT_PUBLIC_VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-mailto:contato@resolvajato.com.br}
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ''
+      NEXT_PUBLIC_CLARITY_PROJECT_ID: ''
+      GOOGLE_SITE_VERIFICATION: ''
+      BING_SITE_VERIFICATION: ''
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1:3000/']
+      interval: 30s
+      timeout: 5s
+      retries: 8
+      start_period: 60s
+    networks:
+      - rj_staging_net
+
+volumes:
+  rj_staging_postgres:
+
+networks:
+  rj_staging_net:
+    driver: bridge

@@ -1,6 +1,7 @@
 import type { ReceiptData } from './types';
 import { getSession } from '@/lib/auth';
 import { normalizeSignature } from '@/lib/signatures/types';
+import { deleteRemoteDocument, listRemoteDocuments, saveRemoteDocument } from '@/lib/documents/remote-storage';
 
 function normalizeReceipt(receipt: ReceiptData): ReceiptData {
   return {
@@ -38,6 +39,7 @@ export function saveReceipt(receipt: ReceiptData) {
   const index = receipts.findIndex((item) => item.id === next.id);
   const updated = index >= 0 ? receipts.map((item, i) => (i === index ? next : item)) : [next, ...receipts];
   localStorage.setItem(storageKey(), JSON.stringify(updated));
+  void saveRemoteDocument('recibos', next).catch(() => undefined);
   return next;
 }
 
@@ -45,4 +47,22 @@ export function deleteReceipt(receiptId: string) {
   if (typeof window === 'undefined') return;
   const updated = listReceipts().filter((item) => item.id !== receiptId);
   localStorage.setItem(storageKey(), JSON.stringify(updated));
+  void deleteRemoteDocument('recibos', receiptId).catch(() => undefined);
+}
+
+export async function loadReceipts(): Promise<ReceiptData[]> {
+  const remote = (await listRemoteDocuments<ReceiptData>('recibos')).map(normalizeReceipt);
+  if (remote.length > 0) return remote.sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  const legacy = listReceipts();
+  if (legacy.length) await Promise.all(legacy.map((item) => saveRemoteDocument('recibos', item)));
+  return legacy;
+}
+
+export async function persistReceipt(receipt: ReceiptData): Promise<ReceiptData> {
+  const next = normalizeReceipt({ ...receipt, updatedAt: new Date().toISOString() });
+  return normalizeReceipt(await saveRemoteDocument('recibos', next));
+}
+
+export async function removeReceipt(receiptId: string) {
+  await deleteRemoteDocument('recibos', receiptId);
 }

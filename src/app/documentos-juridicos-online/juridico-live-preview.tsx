@@ -4,6 +4,10 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { JuridicoPreview } from '@/components/juridicos/juridico-preview';
+import {
+  LiveToolPreviewLayout,
+  livePreviewFieldClass
+} from '@/components/marketing/tool-landing/live-tool-preview-layout';
 import { buildDefaultClauses } from '@/lib/juridicos/clauses';
 import { SAMPLE_LEGAL_DOCUMENT } from '@/lib/juridicos/defaults';
 import type { LegalTemplateId } from '@/lib/juridicos/types';
@@ -39,8 +43,9 @@ export function JuridicoLivePreview() {
   const completedCount = checklist.filter((item) => item.done).length;
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,340px)_1fr] lg:items-start">
-      <div className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <LiveToolPreviewLayout
+      form={
+        <>
         <div aria-live="polite">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wide text-slate-500">Seu progresso</span>
@@ -78,7 +83,7 @@ export function JuridicoLivePreview() {
             value={partyAName}
             onChange={(event) => setPartyAName(event.target.value)}
             placeholder="Ex: Ana Paula Ferreira"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus-visible:border-sky-500 focus-visible:ring-2 focus-visible:ring-sky-200"
+            className={livePreviewFieldClass}
           />
         </div>
 
@@ -91,7 +96,7 @@ export function JuridicoLivePreview() {
             value={partyBName}
             onChange={(event) => setPartyBName(event.target.value)}
             placeholder="Ex: Dr. Ricardo Mendes Oliveira"
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus-visible:border-sky-500 focus-visible:ring-2 focus-visible:ring-sky-200"
+            className={livePreviewFieldClass}
           />
         </div>
 
@@ -104,15 +109,13 @@ export function JuridicoLivePreview() {
             value={objectDescription}
             onChange={(event) => setObjectDescription(event.target.value)}
             placeholder="Ex: Ação de cobrança e demais medidas cíveis"
-            rows={2}
-            className="w-full resize-none rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus-visible:border-sky-500 focus-visible:ring-2 focus-visible:ring-sky-200"
+            rows={3}
+            className={`${livePreviewFieldClass} resize-none`}
           />
         </div>
 
         <div>
-          <span className="mb-2 block text-sm font-semibold text-slate-800">
-            Tipo de documento <span className="font-normal text-slate-500">(veja a mudança em tempo real)</span>
-          </span>
+          <span className="mb-2 block text-sm font-semibold text-slate-800">Tipo de documento</span>
           <div className="flex flex-wrap gap-2">
             {FEATURED_TEMPLATES.map((template) => (
               <button
@@ -120,7 +123,7 @@ export function JuridicoLivePreview() {
                 type="button"
                 onClick={() => setTemplateId(template.id)}
                 aria-pressed={templateId === template.id}
-                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+                className={`rounded-full border px-3 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                   templateId === template.id
                     ? 'border-sky-600 bg-sky-600 text-white'
                     : 'border-slate-300 bg-white text-slate-700 hover:border-sky-400 hover:text-sky-700'
@@ -134,18 +137,14 @@ export function JuridicoLivePreview() {
 
         <Link
           href="/cadastro?next=/ferramentas/juridicos"
-          className="block w-full rounded-lg bg-sky-600 px-4 py-3 text-center text-sm font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
+          className="block w-full rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
         >
           Continuar e baixar meu documento
         </Link>
-        <p className="text-center text-xs font-medium text-slate-500">Crie uma conta grátis para baixar o PDF. Sem cartão.</p>
-      </div>
-
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm sm:p-8">
-        <div className="mx-auto max-w-[560px] origin-top scale-[0.85] rounded-lg bg-white shadow-lg sm:scale-100">
-          <JuridicoPreview data={previewData} />
-        </div>
-      </div>
-    </div>
+        <p className="text-center text-xs font-medium text-slate-500">Conta grátis para baixar o PDF. Sem cartão.</p>
+        </>
+      }
+      preview={<JuridicoPreview data={previewData} />}
+    />
   );
 }

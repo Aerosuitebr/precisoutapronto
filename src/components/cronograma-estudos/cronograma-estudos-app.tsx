@@ -19,21 +19,181 @@ import { useToast } from "@/components/ui/toast";
 import {
   formatarMinutos,
   gerarCronograma,
-  nomeDia,
   type Materia,
 } from "@/lib/cronograma-estudos/gerar";
 import { cn } from "@/lib/utils";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 
-const DIAS_LABEL = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+type Locale = "pt-BR" | "en" | "es";
 
-export function CronogramaEstudosApp() {
-  const { toast } = useToast();
-  const [materias, setMaterias] = useState<Materia[]>([
+const DIAS_LABEL: Record<Locale, string[]> = {
+  "pt-BR": ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+  en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+};
+
+const NOME_DIA: Record<Locale, string[]> = {
+  "pt-BR": ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+  en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  es: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+};
+
+const MATERIAS_INICIAIS: Record<Locale, Materia[]> = {
+  "pt-BR": [
     { nome: "Matemática", peso: 4 },
     { nome: "Português", peso: 3 },
     { nome: "Redação", peso: 3 },
-  ]);
+  ],
+  en: [
+    { nome: "Math", peso: 4 },
+    { nome: "Language Arts", peso: 3 },
+    { nome: "Writing", peso: 3 },
+  ],
+  es: [
+    { nome: "Matematicas", peso: 4 },
+    { nome: "Lengua", peso: 3 },
+    { nome: "Redaccion", peso: 3 },
+  ],
+};
+
+const COPY: Record<
+  Locale,
+  {
+    authTitle: string;
+    authDescription: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    insightPesoLabel: string;
+    insightPesoText: string;
+    insightRotinaLabel: string;
+    insightRotinaText: string;
+    insightRevisaoLabel: string;
+    insightRevisaoText: string;
+    materiasLabel: string;
+    removerMateriaAria: (nome: string) => string;
+    addMateriaPlaceholder: string;
+    addButton: string;
+    diasDisponiveisLabel: string;
+    horasPorDiaLabel: string;
+    semanasLabel: string;
+    incluirRevisaoLabel: string;
+    semanaModeloTitle: (semanas: number) => string;
+    emptyMaterias: string;
+    copiarCronograma: string;
+    enviarWhatsApp: string;
+    destinationHint: string;
+    toastCopiado: string;
+    resumoTitulo: string;
+    resumoSubtitulo: (semanas: number, horasPorDia: number, materias: number) => string;
+    resumoSemana1: string;
+    resumoRodape: string;
+  }
+> = {
+  "pt-BR": {
+    authTitle: "Gerador de Cronograma de Estudos",
+    authDescription: "Cadastre-se gratuitamente para montar seu cronograma.",
+    heroTitle: "Cronograma de Estudos personalizado",
+    heroSubtitle:
+      "Informe suas matérias, dias disponíveis e carga horária. A gente monta a distribuição semanal priorizando o que é mais difícil ou mais importante.",
+    insightPesoLabel: "Peso",
+    insightPesoText: "Dê mais peso para matéria difícil ou decisiva.",
+    insightRotinaLabel: "Rotina",
+    insightRotinaText: "Escolha dias reais para não criar plano impossível.",
+    insightRevisaoLabel: "Revisão",
+    insightRevisaoText: "Reserve um dia para consolidar a semana.",
+    materiasLabel: "Matérias e peso (dificuldade/importância)",
+    removerMateriaAria: (nome) => `Remover ${nome}`,
+    addMateriaPlaceholder: "Adicionar matéria (ex: Física)",
+    addButton: "Adicionar",
+    diasDisponiveisLabel: "Dias disponíveis",
+    horasPorDiaLabel: "Horas de estudo por dia",
+    semanasLabel: "Duração (semanas)",
+    incluirRevisaoLabel: "Reservar o último dia da semana para revisão geral",
+    semanaModeloTitle: (semanas) => `Semana modelo (repete até a semana ${semanas})`,
+    emptyMaterias: "Adicione matérias e selecione ao menos um dia da semana.",
+    copiarCronograma: "Copiar cronograma",
+    enviarWhatsApp: "Enviar no WhatsApp",
+    destinationHint: "WhatsApp que receberá o cronograma",
+    toastCopiado: "Cronograma copiado!",
+    resumoTitulo: "*CRONOGRAMA DE ESTUDOS | PLANO SEMANAL*",
+    resumoSubtitulo: (semanas, horasPorDia, materias) =>
+      `_${semanas} semana(s) | ${horasPorDia}h por dia | ${materias} matéria(s)_`,
+    resumoSemana1: "*SEMANA 1*",
+    resumoRodape: "Gerado automaticamente com base no peso/dificuldade de cada matéria.",
+  },
+  en: {
+    authTitle: "Study Schedule Generator",
+    authDescription: "Sign up for free to build your schedule.",
+    heroTitle: "Personalized Study Schedule",
+    heroSubtitle:
+      "Enter your subjects, available days and study hours. We build the weekly distribution prioritizing what is hardest or most important.",
+    insightPesoLabel: "Weight",
+    insightPesoText: "Give more weight to harder or decisive subjects.",
+    insightRotinaLabel: "Routine",
+    insightRotinaText: "Pick realistic days so the plan is actually doable.",
+    insightRevisaoLabel: "Review",
+    insightRevisaoText: "Reserve one day to consolidate the week.",
+    materiasLabel: "Subjects and weight (difficulty/importance)",
+    removerMateriaAria: (nome) => `Remove ${nome}`,
+    addMateriaPlaceholder: "Add subject (e.g.: Physics)",
+    addButton: "Add",
+    diasDisponiveisLabel: "Available days",
+    horasPorDiaLabel: "Study hours per day",
+    semanasLabel: "Duration (weeks)",
+    incluirRevisaoLabel: "Reserve the last day of the week for a general review",
+    semanaModeloTitle: (semanas) => `Sample week (repeats until week ${semanas})`,
+    emptyMaterias: "Add subjects and select at least one day of the week.",
+    copiarCronograma: "Copy schedule",
+    enviarWhatsApp: "Send on WhatsApp",
+    destinationHint: "WhatsApp that will receive the schedule",
+    toastCopiado: "Schedule copied!",
+    resumoTitulo: "*STUDY SCHEDULE | WEEKLY PLAN*",
+    resumoSubtitulo: (semanas, horasPorDia, materias) =>
+      `_${semanas} week(s) | ${horasPorDia}h per day | ${materias} subject(s)_`,
+    resumoSemana1: "*WEEK 1*",
+    resumoRodape: "Automatically generated based on the weight/difficulty of each subject.",
+  },
+  es: {
+    authTitle: "Generador de Cronograma de Estudio",
+    authDescription: "Registrate gratis para armar tu cronograma.",
+    heroTitle: "Cronograma de Estudio personalizado",
+    heroSubtitle:
+      "Ingresa tus materias, dias disponibles y carga horaria. Armamos la distribucion semanal priorizando lo mas dificil o mas importante.",
+    insightPesoLabel: "Peso",
+    insightPesoText: "Da mas peso a la materia dificil o decisiva.",
+    insightRotinaLabel: "Rutina",
+    insightRotinaText: "Elige dias reales para no crear un plan imposible.",
+    insightRevisaoLabel: "Repaso",
+    insightRevisaoText: "Reserva un dia para consolidar la semana.",
+    materiasLabel: "Materias y peso (dificultad/importancia)",
+    removerMateriaAria: (nome) => `Quitar ${nome}`,
+    addMateriaPlaceholder: "Agregar materia (ej: Fisica)",
+    addButton: "Agregar",
+    diasDisponiveisLabel: "Dias disponibles",
+    horasPorDiaLabel: "Horas de estudio por dia",
+    semanasLabel: "Duracion (semanas)",
+    incluirRevisaoLabel: "Reservar el ultimo dia de la semana para repaso general",
+    semanaModeloTitle: (semanas) => `Semana modelo (se repite hasta la semana ${semanas})`,
+    emptyMaterias: "Agrega materias y selecciona al menos un dia de la semana.",
+    copiarCronograma: "Copiar cronograma",
+    enviarWhatsApp: "Enviar por WhatsApp",
+    destinationHint: "WhatsApp que recibira el cronograma",
+    toastCopiado: "Cronograma copiado!",
+    resumoTitulo: "*CRONOGRAMA DE ESTUDIO | PLAN SEMANAL*",
+    resumoSubtitulo: (semanas, horasPorDia, materias) =>
+      `_${semanas} semana(s) | ${horasPorDia}h por dia | ${materias} materia(s)_`,
+    resumoSemana1: "*SEMANA 1*",
+    resumoRodape: "Generado automaticamente segun el peso/dificultad de cada materia.",
+  },
+};
+
+export function CronogramaEstudosApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
+  const t = COPY[locale];
+  const diasLabel = DIAS_LABEL[locale];
+  const nomesDia = NOME_DIA[locale];
+  const nomeDiaLocal = (diaSemana: number) => nomesDia[diaSemana] ?? "";
+  const { toast } = useToast();
+  const [materias, setMaterias] = useState<Materia[]>(() => MATERIAS_INICIAIS[locale]);
   const [novaMateria, setNovaMateria] = useState("");
   const [diasSemana, setDiasSemana] = useState<number[]>([1, 2, 3, 4, 5, 6]);
   const [horasPorDia, setHorasPorDia] = useState(2);
@@ -85,23 +245,23 @@ export function CronogramaEstudosApp() {
         const sessoes = dia.sessoes
           .map((s) => `${s.materia} (${formatarMinutos(s.minutos)})`)
           .join(", ");
-        return `${nomeDia(dia.diaSemana)}: ${sessoes}`;
+        return `${nomeDiaLocal(dia.diaSemana)}: ${sessoes}`;
       })
       .join("\n");
     return [
-      "*CRONOGRAMA DE ESTUDOS | PLANO SEMANAL*",
-      `_${semanas} semana(s) | ${horasPorDia}h por dia | ${materias.length} matéria(s)_`,
+      t.resumoTitulo,
+      t.resumoSubtitulo(semanas, horasPorDia, materias.length),
       "",
-      "*SEMANA 1*",
+      t.resumoSemana1,
       linhas,
       "",
-      "Gerado automaticamente com base no peso/dificuldade de cada matéria.",
+      t.resumoRodape,
     ].join("\n");
   }
 
   function handleCopy() {
     navigator.clipboard.writeText(resumoTexto());
-    toast("Cronograma copiado!");
+    toast(t.toastCopiado);
   }
 
   function handleWhatsApp() {
@@ -112,8 +272,8 @@ export function CronogramaEstudosApp() {
 
   return (
     <AuthGate
-      title="Gerador de Cronograma de Estudos"
-      description="Cadastre-se gratuitamente para montar seu cronograma."
+      title={t.authTitle}
+      description={t.authDescription}
     >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
@@ -121,23 +281,23 @@ export function CronogramaEstudosApp() {
         </div>
 
         <PageHero
-          title="Cronograma de Estudos personalizado"
-          subtitle="Informe suas matérias, dias disponíveis e carga horária. A gente monta a distribuição semanal priorizando o que é mais difícil ou mais importante."
+          title={t.heroTitle}
+          subtitle={t.heroSubtitle}
           icon={CalendarDays}
         />
 
         <div className="grid gap-2 sm:grid-cols-3">
           <Insight
-            label="Peso"
-            text="Dê mais peso para matéria difícil ou decisiva."
+            label={t.insightPesoLabel}
+            text={t.insightPesoText}
           />
           <Insight
-            label="Rotina"
-            text="Escolha dias reais para não criar plano impossível."
+            label={t.insightRotinaLabel}
+            text={t.insightRotinaText}
           />
           <Insight
-            label="Revisão"
-            text="Reserve um dia para consolidar a semana."
+            label={t.insightRevisaoLabel}
+            text={t.insightRevisaoText}
           />
         </div>
 
@@ -145,7 +305,7 @@ export function CronogramaEstudosApp() {
           <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-slate-700">
-                Matérias e peso (dificuldade/importância)
+                {t.materiasLabel}
               </p>
               <div className="space-y-2">
                 {materias.map((m) => (
@@ -173,7 +333,7 @@ export function CronogramaEstudosApp() {
                       type="button"
                       onClick={() => removerMateria(m.nome)}
                       className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-slate-400 hover:bg-rose-50 hover:text-rose-600"
-                      aria-label={`Remover ${m.nome}`}
+                      aria-label={t.removerMateriaAria(m.nome)}
                     >
                       <Trash2 className="h-4 w-4" aria-hidden />
                     </button>
@@ -182,7 +342,7 @@ export function CronogramaEstudosApp() {
               </div>
               <div className="mt-2 flex gap-2">
                 <Input
-                  placeholder="Adicionar matéria (ex: Física)"
+                  placeholder={t.addMateriaPlaceholder}
                   value={novaMateria}
                   onChange={(e) => setNovaMateria(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addMateria()}
@@ -193,17 +353,17 @@ export function CronogramaEstudosApp() {
                   onClick={addMateria}
                   icon={Plus}
                 >
-                  Adicionar
+                  {t.addButton}
                 </Button>
               </div>
             </div>
 
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-slate-700">
-                Dias disponíveis
+                {t.diasDisponiveisLabel}
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {DIAS_LABEL.map((label, idx) => (
+                {diasLabel.map((label, idx) => (
                   <button
                     key={label}
                     type="button"
@@ -222,7 +382,7 @@ export function CronogramaEstudosApp() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Horas de estudo por dia" htmlFor="horas-dia">
+              <FormField label={t.horasPorDiaLabel} htmlFor="horas-dia">
                 <Input
                   id="horas-dia"
                   type="number"
@@ -234,7 +394,7 @@ export function CronogramaEstudosApp() {
                   }
                 />
               </FormField>
-              <FormField label="Duração (semanas)" htmlFor="semanas">
+              <FormField label={t.semanasLabel} htmlFor="semanas">
                 <Input
                   id="semanas"
                   type="number"
@@ -257,17 +417,17 @@ export function CronogramaEstudosApp() {
                 checked={incluirRevisao}
                 onChange={(e) => setIncluirRevisao(e.target.checked)}
               />
-              Reservar o último dia da semana para revisão geral
+              {t.incluirRevisaoLabel}
             </label>
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:sticky lg:top-24">
             <h2 className="rj-display mb-3 text-base font-bold text-slate-900">
-              Semana modelo (repete até a semana {semanas})
+              {t.semanaModeloTitle(semanas)}
             </h2>
             {semana1.length === 0 ? (
               <p className="text-sm font-medium text-slate-500">
-                Adicione matérias e selecione ao menos um dia da semana.
+                {t.emptyMaterias}
               </p>
             ) : (
               <div className="space-y-2">
@@ -277,7 +437,7 @@ export function CronogramaEstudosApp() {
                     className="rounded-xl border border-slate-200 p-3"
                   >
                     <p className="text-sm font-bold text-slate-900">
-                      {nomeDia(dia.diaSemana)}
+                      {nomeDiaLocal(dia.diaSemana)}
                     </p>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
                       {dia.sessoes.map((s, i) => (
@@ -300,7 +460,7 @@ export function CronogramaEstudosApp() {
                     onClick={handleCopy}
                     icon={Copy}
                   >
-                    Copiar cronograma
+                    {t.copiarCronograma}
                   </Button>
                   <Button
                     variant="success"
@@ -309,7 +469,7 @@ export function CronogramaEstudosApp() {
                     onClick={handleWhatsApp}
                     icon={MessageCircle}
                   >
-                    Enviar no WhatsApp
+                    {t.enviarWhatsApp}
                   </Button>
                 </div>
               </div>
@@ -321,7 +481,7 @@ export function CronogramaEstudosApp() {
         open={whatsAppOpen}
         onClose={() => setWhatsAppOpen(false)}
         message={resumoTexto()}
-        destinationHint="WhatsApp que receberá o cronograma"
+        destinationHint={t.destinationHint}
       />
     </AuthGate>
   );
