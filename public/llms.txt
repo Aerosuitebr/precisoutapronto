@@ -50,11 +50,23 @@ Language: pt-BR
 - https://resolvajato.com.br/guias/custos-fixos-do-freelancer-como-ratear
 - https://resolvajato.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
 
+## Jato Games (gaming vertical)
+Evergreen hub for games, suggested PC setups, hardware guides, consoles and curated stores.
+- https://resolvajato.com.br/games
+- https://resolvajato.com.br/games/top-jogos
+- https://resolvajato.com.br/games/hardware
+- https://resolvajato.com.br/games/consoles
+- https://resolvajato.com.br/games/lojas
+- https://resolvajato.com.br/games/jogos/counter-strike-2
+- https://resolvajato.com.br/games/hardware/escolher-placa-de-video
+- https://resolvajato.com.br/busca?categoria=games
+
 ## Product notes
 - Public pages explain each tool before registration.
 - Some editors require a free account to save and export documents.
 - Premium access is optional and does not change the public educational content.
 - Legal, labor and accounting materials are educational and do not replace professional advice.
+- Jato Games is a separate content vertical under the same domain; it does not replace Resolva Jato document tools.
 
 ## Policies and contact
 - https://resolvajato.com.br/sobre

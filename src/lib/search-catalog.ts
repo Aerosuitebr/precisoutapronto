@@ -3,6 +3,7 @@ import {
   Bot,
   BriefcaseBusiness,
   Bus,
+  Gamepad2,
   GraduationCap,
   HeartPulse,
   Home,
@@ -13,6 +14,7 @@ import {
   Wrench
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { gamesResources } from '@/lib/catalog/games-resources';
 import { nicheResources } from '@/lib/catalog/niche-resources';
 import { resources } from '@/resources';
 
@@ -28,7 +30,8 @@ export type SearchCategoryId =
   | 'imoveis'
   | 'concursos'
   | 'transporte'
-  | 'casa';
+  | 'casa'
+  | 'games';
 
 export interface SearchCategory {
   id: SearchCategoryId;
@@ -123,10 +126,20 @@ export const searchCategories: SearchCategory[] = [
     label: 'Casa e consumo',
     description: 'Energia, telecom, Procon, saneamento e direitos do consumidor.',
     icon: House
+  },
+  {
+    id: 'games',
+    label: 'Games',
+    description: 'Jogos, setups, hardware, consoles, skins e lojas do Jato Games.',
+    icon: Gamepad2
   }
 ];
 
-export const searchResources = [...resources, ...nicheResources] as SearchResource[];
+export const searchResources = [
+  ...resources,
+  ...nicheResources,
+  ...gamesResources
+] as SearchResource[];
 
 /** Categorias que filtram o catálogo público (exclui o atalho autenticado de Ferramentas). */
 export const searchableCategories = searchCategories.filter((category) => !category.requiresAuth);
@@ -186,7 +199,17 @@ const SEARCH_ALIASES: Record<string, string[]> = {
   concurso: ['concurso', 'concursos', 'edital', 'enem', 'sisu', 'prouni', 'banca'],
   cnh: ['cnh', 'detran', 'habilitacao', 'transito', 'motorista', 'crlv'],
   ipva: ['ipva', 'veiculo', 'detran', 'licenciamento'],
-  procon: ['procon', 'consumidor', 'reclamacao', 'aneel', 'anatel']
+  procon: ['procon', 'consumidor', 'reclamacao', 'aneel', 'anatel'],
+  skin: ['skin', 'skins', 'cs', 'cs2', 'steam', 'marketplace'],
+  steam: ['steam', 'steamdb', 'pc', 'jogo', 'jogos'],
+  xbox: ['xbox', 'gamepass', 'console', 'microsoft'],
+  ps5: ['ps5', 'playstation', 'console', 'psplus'],
+  playstation: ['playstation', 'ps5', 'ps4', 'console'],
+  gpu: ['gpu', 'placa', 'video', 'nvidia', 'amd', 'radeon', 'geforce'],
+  'placa de video': ['gpu', 'placa', 'video', 'nvidia', 'amd'],
+  placadevideo: ['gpu', 'placa', 'video', 'nvidia', 'amd'],
+  gamer: ['games', 'jogo', 'jogos', 'setup', 'console', 'steam'],
+  games: ['games', 'jogo', 'jogos', 'steam', 'console', 'hardware']
 };
 
 function expandToken(token: string) {

@@ -1,5 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { isStagingEnv } from '@/lib/app-env';
+import { gamesCatalog } from '@/lib/games/games';
+import { hardwareGuides } from '@/lib/games/hardware';
 import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
@@ -7,6 +9,7 @@ import { guides } from '@/lib/guides';
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 const CORE_UPDATED_AT = new Date('2026-07-28T21:00:00.000Z');
 const GUIDES_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
+const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
 const PUBLIC_TOOL_LANDINGS = [
@@ -86,6 +89,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75
   }));
 
+  const gamesStatic = [
+    '/games',
+    '/games/top-jogos',
+    '/games/hardware',
+    '/games/consoles',
+    '/games/lojas'
+  ] as const;
+
+  const gamesRoutes: MetadataRoute.Sitemap = [
+    ...gamesStatic.map((path) => ({
+      url: `${base}${path}`,
+      lastModified: GAMES_UPDATED_AT,
+      changeFrequency: 'weekly' as const,
+      priority: path === '/games' ? 0.9 : 0.8
+    })),
+    ...gamesCatalog.map((game) => ({
+      url: `${base}/games/jogos/${game.slug}`,
+      lastModified: GAMES_UPDATED_AT,
+      changeFrequency: 'monthly' as const,
+      priority: 0.75
+    })),
+    ...hardwareGuides.map((guide) => ({
+      url: `${base}/games/hardware/${guide.slug}`,
+      lastModified: GAMES_UPDATED_AT,
+      changeFrequency: 'monthly' as const,
+      priority: 0.75
+    }))
+  ];
+
   const seoRoutes = listSeoLandings().map((page) => ({
     url: `${base}${page.path}`,
     lastModified: CORE_UPDATED_AT,
@@ -130,7 +162,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
-  for (const entry of [...staticRoutes, ...seoRoutes, ...toolLandingRoutes, ...guideRoutes, ...internationalRoutes]) {
+  for (const entry of [
+    ...staticRoutes,
+    ...seoRoutes,
+    ...toolLandingRoutes,
+    ...guideRoutes,
+    ...gamesRoutes,
+    ...internationalRoutes
+  ]) {
     byUrl.set(entry.url, entry);
   }
   return [...byUrl.values()];

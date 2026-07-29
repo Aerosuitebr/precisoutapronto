@@ -1,0 +1,32 @@
+import type { Metadata } from 'next';
+import { GameCard } from '@/components/games/games-ui';
+import { listGamesByRank } from '@/lib/games/games';
+
+export const metadata: Metadata = {
+  title: 'Top 10 jogos com setup sugerido',
+  description:
+    'Ranking evergreen de jogos populares no Brasil com ficha, plataformas e setup mínimo e recomendado.',
+  alternates: { canonical: '/games/top-jogos' }
+};
+
+export default function TopJogosPage() {
+  const games = listGamesByRank();
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Ranking</p>
+      <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+        Top 10 jogos com setup sugerido
+      </h1>
+      <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
+        Lista evergreen focada no que a galera joga de verdade no Brasil. Cada ficha traz plataformas,
+        dicas e PC sugerido.
+      </p>
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {games.map((game) => (
+          <GameCard key={game.slug} game={game} />
+        ))}
+      </div>
+    </div>
+  );
+}
