@@ -90,7 +90,7 @@ export function LandingPage() {
     <div className="bg-[image:var(--rj-page-bg)]">
       <section className="relative overflow-hidden bg-[linear-gradient(145deg,#020617_0%,#0f172a_42%,#064e3b_100%)] text-white">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl rj-animate-drift" />
+          <div className="pointer-events-none absolute -left-24 top-10 hidden h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl rj-animate-drift sm:block" />
           <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-amber-400/10 blur-3xl" />
           <div className="absolute inset-0 bg-[linear-gradient(rgba(52,211,153,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(52,211,153,0.06)_1px,transparent_1px)] bg-[size:40px_40px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
           <ToolsWatermark className="opacity-70" />

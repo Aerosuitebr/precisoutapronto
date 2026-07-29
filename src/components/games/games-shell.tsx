@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 export function GamesHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href={JATO_GAMES.path} className="flex min-w-0 items-center gap-2.5">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-teal-500 text-white shadow-sm shadow-teal-500/25">
@@ -36,9 +36,10 @@ export function GamesHeader() {
           Busca
         </Link>
       </div>
+      {/* Nav com scroll horizontal isolado para nao puxar a pagina no eixo Y */}
       <nav
         aria-label="Jato Games mobile"
-        className="-mx-0 flex gap-1 overflow-x-auto overscroll-x-contain border-t border-slate-100 px-4 py-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
+        className="flex touch-pan-x gap-1 overflow-x-auto overscroll-x-contain border-t border-slate-100 px-4 py-2 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
       >
         {JATO_GAMES.nav.map((item) => (
           <Link
@@ -84,12 +85,13 @@ export function GamesShell({
   return (
     <div
       className={cn(
-        'flex min-h-screen flex-col overflow-x-clip bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_45%,#eef2ff_100%)] text-slate-800',
+        // svh = altura com a barra do browser visivel; evita loop sobe/desce do 100vh no mobile
+        'flex min-h-svh flex-col overscroll-x-none bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_45%,#eef2ff_100%)] text-slate-800',
         className
       )}
     >
       <GamesHeader />
-      <main className="min-w-0 flex-1">{children}</main>
+      <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
       <GamesFooter />
     </div>
   );
