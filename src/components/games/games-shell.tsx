@@ -57,16 +57,19 @@ export function GamesHeader() {
 
 export function GamesFooter() {
   return (
-    <footer className="relative z-10 mt-auto border-t border-white/60 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <footer className="relative z-10 mt-auto border-t border-slate-200 bg-white">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm font-medium text-slate-700 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
-          <span className="font-semibold text-slate-800">{JATO_GAMES.name}</span>
+          <span className="font-bold text-slate-950">{JATO_GAMES.name}</span>
           {' · '}
           Conteúdo evergreen sobre jogos, setups e lojas.
         </p>
-        <p>
+        <p className="text-slate-700">
           Powered by{' '}
-          <Link href={JATO_GAMES.poweredByHref} className="font-semibold text-teal-700 hover:underline">
+          <Link
+            href={JATO_GAMES.poweredByHref}
+            className="font-bold text-teal-800 underline-offset-2 hover:underline"
+          >
             {JATO_GAMES.poweredBy}
           </Link>
         </p>

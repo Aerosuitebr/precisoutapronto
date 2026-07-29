@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, Cpu, Gamepad2, Joystick, Store } from 'lucide-react';
 import {
   GameCard,
+  GamesHeroArt,
   GamesReadablePanel,
   HardwareCard,
   ProductBridge,
@@ -61,29 +62,36 @@ export default function GamesHubPage() {
   return (
     <div>
       <section className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
-        <GamesReadablePanel className="max-w-2xl">
-          <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
-            <Gamepad2 className="h-3.5 w-3.5" />
-            Jato Games
-          </p>
-          <h1 className="rj-display mt-4 text-[clamp(2.1rem,4.8vw,3.4rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
-            {JATO_GAMES.tagline}
-          </h1>
-          <p className="mt-4 text-base leading-7 text-slate-700 sm:text-lg">{JATO_GAMES.description}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/games/top-jogos"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:bg-teal-500"
-            >
-              Ver top jogos
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/games/hardware"
-              className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-slate-800 bg-white px-6 text-sm font-bold text-slate-900 shadow-sm transition hover:border-teal-700 hover:bg-teal-50 hover:text-teal-900"
-            >
-              Guias de hardware
-            </Link>
+        <GamesReadablePanel className="max-w-none">
+          <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+            <div className="min-w-0">
+              <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+                <Gamepad2 className="h-3.5 w-3.5" />
+                Jato Games
+              </p>
+              <h1 className="rj-display mt-4 text-[clamp(2.1rem,4.8vw,3.4rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
+                {JATO_GAMES.tagline}
+              </h1>
+              <p className="mt-4 text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                {JATO_GAMES.description}
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/games/top-jogos"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:bg-teal-500"
+                >
+                  Ver top jogos
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/games/hardware"
+                  className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-slate-800 bg-white px-6 text-sm font-bold text-slate-900 shadow-sm transition hover:border-teal-700 hover:bg-teal-50 hover:text-teal-900"
+                >
+                  Guias de hardware
+                </Link>
+              </div>
+            </div>
+            <GamesHeroArt className="min-h-[260px] max-sm:hidden" />
           </div>
         </GamesReadablePanel>
       </section>
@@ -95,7 +103,7 @@ export default function GamesHubPage() {
               <Link
                 key={pillar.href}
                 href={pillar.href}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md"
+                className="h-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-teal-400 hover:shadow-md"
               >
                 <div className="flex items-center justify-between gap-3">
                   <pillar.icon className="h-5 w-5 text-teal-600" aria-hidden />
@@ -104,7 +112,7 @@ export default function GamesHubPage() {
                   </span>
                 </div>
                 <h2 className="rj-display mt-3 text-lg font-extrabold text-slate-900">{pillar.title}</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{pillar.text}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-700 sm:text-base">{pillar.text}</p>
               </Link>
             ))}
           </div>
