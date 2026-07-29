@@ -2,6 +2,40 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model UserProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  segment     String
+  occupation  String?
+  companyName String?
+  preferences Json     @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([segment])
+  @@map("user_profiles")
+}
+
+model SharedDocument {
+  id             String    @id @default(cuid())
+  token          String    @unique
+  ownerId        String
+  toolDocumentId String
+  title          String
+  createdAt      DateTime  @default(now())
+  expiresAt      DateTime?
+  revokedAt      DateTime?
+
+  owner        User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  toolDocument ToolDocument @relation(fields: [toolDocumentId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId, createdAt])
+  @@index([toolDocumentId])
+  @@map("shared_documents")
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -70,10 +104,10 @@ model User {
   referralCode     String?   @unique
   referredByUserId String?
 
-  referredBy                 User?                 @relation("UserReferrals", fields: [referredByUserId], references: [id], onDelete: SetNull)
-  referrals                  User[]                @relation("UserReferrals")
-  referralActivationsGiven   ReferralActivation[]  @relation("ReferrerActivations")
-  referralActivationReceived ReferralActivation?   @relation("ReferredActivation")
+  referredBy                 User?                @relation("UserReferrals", fields: [referredByUserId], references: [id], onDelete: SetNull)
+  referrals                  User[]               @relation("UserReferrals")
+  referralActivationsGiven   ReferralActivation[] @relation("ReferrerActivations")
+  referralActivationReceived ReferralActivation?  @relation("ReferredActivation")
   referralRewards            ReferralReward[]
 
   verificationTokens EmailVerificationToken[]
@@ -85,6 +119,8 @@ model User {
   activeSession      UserSession?
   agendaEvents       AgendaEvent[]
   toolDocuments      ToolDocument[]
+  profile            UserProfile?
+  sharedDocuments    SharedDocument[]
 
   @@index([createdAt])
   @@index([referredByUserId])
@@ -122,7 +158,8 @@ model ToolDocument {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares SharedDocument[]
 
   @@unique([userId, toolId, artifactId])
   @@index([userId, toolId, updatedAt])
@@ -207,15 +244,15 @@ model EmailVerificationToken {
 }
 
 model ToolUsage {
-  id             String    @id @default(cuid())
-  userId         String    @unique
-  availableUses  Int       @default(5)
-  totalConsumed  Int       @default(0)
-  exhaustedAt    DateTime?
-  nextReleaseAt  DateTime?
-  periodDays     Int       @default(30)
-  recentActions  Json      @default("[]")
-  updatedAt      DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  availableUses Int       @default(5)
+  totalConsumed Int       @default(0)
+  exhaustedAt   DateTime?
+  nextReleaseAt DateTime?
+  periodDays    Int       @default(30)
+  recentActions Json      @default("[]")
+  updatedAt     DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

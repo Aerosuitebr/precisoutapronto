@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { ChevronDown, Menu, X } from 'lucide-react';
+import { growthSegments } from '@/lib/growth/segments';
 import { Logo } from '@/components/brand/logo';
 import { LocaleSwitcher } from '@/components/i18n/locale-switcher';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
@@ -12,7 +13,8 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
 
 const links = [
-  { href: '/guias', label: 'Guias', auth: false },
+  { href: '/biblioteca', label: 'Biblioteca', auth: false },
+  { href: '/assistente/documentos', label: 'Assistente IA', auth: false },
   { href: '/calculadora-de-rescisao', label: 'Rescisão', auth: false },
   { href: '/mei-ou-clt', label: 'MEI ou CLT', auth: false },
   { href: '/recursos', label: 'Ferramentas', auth: false }
@@ -33,6 +35,19 @@ export function SiteHeader() {
           />
         </Link>
         <nav className="hidden items-center gap-1 md:flex">
+          <div className="group relative">
+            <button className="inline-flex items-center gap-1 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+              Para você <ChevronDown className="h-4 w-4" />
+            </button>
+            <div className="invisible absolute left-0 top-full z-50 mt-2 grid w-[520px] grid-cols-2 gap-1 rounded-2xl border border-slate-200 bg-white p-3 opacity-0 shadow-xl transition group-hover:visible group-hover:opacity-100">
+              {growthSegments.map((segment) => (
+                <Link key={segment.slug} href={`/para/${segment.slug}`} className="rounded-xl p-3 hover:bg-slate-50">
+                  <span className="block text-sm font-bold text-slate-900">{segment.name}</span>
+                  <span className="mt-1 block text-xs leading-5 text-slate-500">{segment.shortDescription}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
           {links.map((link) => {
             const className = cn(
               'rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors',
@@ -85,6 +100,14 @@ export function SiteHeader() {
       {mobileOpen ? (
         <div className="border-t border-slate-200 bg-white px-4 py-4 md:hidden">
           <nav className="mx-auto grid max-w-6xl gap-2">
+            <p className="px-4 pt-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Por perfil</p>
+            <div className="grid grid-cols-2 gap-1">
+              {growthSegments.map((segment) => (
+                <Link key={segment.slug} href={`/para/${segment.slug}`} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100" onClick={() => setMobileOpen(false)}>
+                  {segment.name}
+                </Link>
+              ))}
+            </div>
             {links.map((link) => {
               const className =
                 'rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100';

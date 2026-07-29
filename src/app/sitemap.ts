@@ -5,6 +5,8 @@ import { hardwareGuides } from '@/lib/games/hardware';
 import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
+import { growthSegments } from '@/lib/growth/segments';
+import { intentPages } from '@/lib/growth/intents';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 const CORE_UPDATED_AT = new Date('2026-07-28T21:00:00.000Z');
@@ -80,6 +82,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/planos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/recursos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${base}/guias`, lastModified: GUIDES_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 }
+    ,{ url: `${base}/biblioteca`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.9 }
+    ,{ url: `${base}/assistente/documentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 }
   ];
 
   const guideRoutes: MetadataRoute.Sitemap = guides.map((guide) => ({
@@ -162,6 +166,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
+  const growthRoutes: MetadataRoute.Sitemap = [
+    ...growthSegments.map((segment) => ({ url: `${base}/para/${segment.slug}`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly' as const, priority: 0.85 })),
+    ...intentPages.map((intent) => ({ url: `${base}/modelos/${intent.slug}`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly' as const, priority: 0.8 }))
+  ];
   for (const entry of [
     ...staticRoutes,
     ...seoRoutes,
@@ -169,6 +177,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...guideRoutes,
     ...gamesRoutes,
     ...internationalRoutes
+    ,...growthRoutes
   ]) {
     byUrl.set(entry.url, entry);
   }

@@ -2,6 +2,10 @@
 
 Aplicacao Next.js para layout, identidade visual e estrutura de componentes reutilizaveis do RJ Resolva Jato, uma plataforma de gestao para manutencao de jatos executivos.
 
+## Documentacao de arquitetura
+
+- [Arquitetura incremental de crescimento](docs/ARQUITETURA-CRESCIMENTO.md)
+
 ## Como rodar
 
 ```bash
