@@ -5,6 +5,7 @@ import {
   Check,
   ClipboardList,
   FileText,
+  Gamepad2,
   GraduationCap,
   Scale,
   Search,
@@ -146,6 +147,15 @@ export function LandingPage() {
               <ul className="mt-3 flex flex-wrap gap-2.5">
                 <li>
                   <Link
+                    href="/games"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-teal-300/50 bg-teal-400/15 px-4 py-2 text-sm font-semibold text-teal-100 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:bg-teal-300/25 hover:text-white hover:shadow-md"
+                  >
+                    <Gamepad2 className="h-3.5 w-3.5" />
+                    Jato Games
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/orcamento-com-pix#montar"
                     className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
                   >
@@ -180,6 +190,34 @@ export function LandingPage() {
             <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-emerald-400/20 via-transparent to-amber-300/10 blur-2xl" />
             <HeroDualNiche className="relative h-full" />
           </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200 bg-[linear-gradient(135deg,#f0fdfa_0%,#ffffff_45%,#fff7ed_100%)]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-12">
+          <div className="max-w-2xl">
+            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+              <Gamepad2 className="h-3.5 w-3.5" />
+              Jato Games
+            </p>
+            <h2 className="rj-display mt-2 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">
+              Top jogos, setups e lojas para a rapaziada gamer.
+            </h2>
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              Ranking com PC sugerido, guias de GPU e CPU, consoles e marketplaces curados. Vertical
+              clean, no mesmo domínio.
+            </p>
+          </div>
+          <Button
+            asChild
+            size="lg"
+            className="h-12 shrink-0 bg-teal-600 px-6 font-bold text-white shadow-lg shadow-teal-600/20 hover:bg-teal-500"
+          >
+            <Link href="/games">
+              Entrar no Jato Games
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </section>
 

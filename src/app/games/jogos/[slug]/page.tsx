@@ -78,43 +78,46 @@ export default async function GamePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <nav className="text-xs text-slate-500">
-        <Link href="/games" className="hover:text-cyan-300">
+        <Link href="/games" className="hover:text-teal-700">
           Jato Games
         </Link>
         {' / '}
-        <Link href="/games/top-jogos" className="hover:text-cyan-300">
+        <Link href="/games/top-jogos" className="hover:text-teal-700">
           Top jogos
         </Link>
         {' / '}
-        <span className="text-slate-300">{game.title}</span>
+        <span className="text-slate-700">{game.title}</span>
       </nav>
 
-      <p className="mt-6 text-sm font-bold uppercase tracking-[0.16em] text-cyan-300">
+      <p className="mt-6 text-sm font-bold uppercase tracking-[0.16em] text-teal-700">
         #{game.rank} · {game.genres.join(' · ')}
       </p>
-      <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+      <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
         {game.title}
       </h1>
-      <p className="mt-3 max-w-3xl text-base leading-7 text-slate-300">{game.blurb}</p>
+      <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600">{game.blurb}</p>
       <p className="mt-2 text-sm text-slate-500">Plataformas: {game.platforms.join(', ')}</p>
 
       <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="space-y-8">
           <section>
-            <h2 className="rj-display text-xl font-extrabold text-white">Por que está no radar</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-400">{game.whyPopular}</p>
+            <h2 className="rj-display text-xl font-extrabold text-slate-900">Por que está no radar</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{game.whyPopular}</p>
           </section>
           <section>
-            <h2 className="rj-display text-xl font-extrabold text-white">Setup sugerido</h2>
+            <h2 className="rj-display text-xl font-extrabold text-slate-900">Setup sugerido</h2>
             <div className="mt-4">
               <SetupTable game={game} />
             </div>
           </section>
           <section>
-            <h2 className="rj-display text-xl font-extrabold text-white">Dicas rápidas</h2>
+            <h2 className="rj-display text-xl font-extrabold text-slate-900">Dicas rápidas</h2>
             <ul className="mt-3 space-y-2">
               {game.tips.map((tip) => (
-                <li key={tip} className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm leading-6 text-slate-300">
+                <li
+                  key={tip}
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-sm"
+                >
                   {tip}
                 </li>
               ))}
@@ -125,7 +128,7 @@ export default async function GamePage({ params }: Props) {
           <ProductBridge />
           <Link
             href="/games/hardware/escolher-placa-de-video"
-            className="block rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-sm text-slate-300 transition hover:border-amber-300/40"
+            className="block rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-700 shadow-sm transition hover:border-amber-300"
           >
             Montando PC? Veja o guia de placa de vídeo.
           </Link>

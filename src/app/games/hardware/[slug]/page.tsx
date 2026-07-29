@@ -84,38 +84,38 @@ export default async function HardwareGuidePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <nav className="text-xs text-slate-500">
-        <Link href="/games" className="hover:text-cyan-300">
+        <Link href="/games" className="hover:text-teal-700">
           Jato Games
         </Link>
         {' / '}
-        <Link href="/games/hardware" className="hover:text-cyan-300">
+        <Link href="/games/hardware" className="hover:text-teal-700">
           Hardware
         </Link>
         {' / '}
-        <span className="text-slate-300">{guide.title}</span>
+        <span className="text-slate-700">{guide.title}</span>
       </nav>
 
-      <p className="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-amber-300">
+      <p className="mt-6 text-xs font-bold uppercase tracking-[0.16em] text-amber-600">
         {guide.readTime} de leitura
       </p>
-      <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+      <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
         {guide.title}
       </h1>
-      <p className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-400/5 p-4 text-sm leading-7 text-amber-50">
+      <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-950">
         {guide.answer}
       </p>
 
       <div className="mt-10 space-y-8">
         {guide.sections.map((section) => (
           <section key={section.title}>
-            <h2 className="rj-display text-xl font-extrabold text-white">{section.title}</h2>
+            <h2 className="rj-display text-xl font-extrabold text-slate-900">{section.title}</h2>
             {section.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)} className="mt-3 text-sm leading-7 text-slate-400">
+              <p key={paragraph.slice(0, 40)} className="mt-3 text-sm leading-7 text-slate-600">
                 {paragraph}
               </p>
             ))}
             {section.bullets ? (
-              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-300">
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
                 {section.bullets.map((bullet) => (
                   <li key={bullet}>{bullet}</li>
                 ))}
@@ -126,12 +126,15 @@ export default async function HardwareGuidePage({ params }: Props) {
       </div>
 
       <section className="mt-12">
-        <h2 className="rj-display text-xl font-extrabold text-white">Perguntas frequentes</h2>
+        <h2 className="rj-display text-xl font-extrabold text-slate-900">Perguntas frequentes</h2>
         <div className="mt-4 space-y-3">
           {guide.faq.map((item) => (
-            <div key={item.question} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <p className="text-sm font-bold text-white">{item.question}</p>
-              <p className="mt-2 text-sm leading-6 text-slate-400">{item.answer}</p>
+            <div
+              key={item.question}
+              className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+            >
+              <p className="text-sm font-bold text-slate-900">{item.question}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p>
             </div>
           ))}
         </div>
