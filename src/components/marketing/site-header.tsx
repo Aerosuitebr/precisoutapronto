@@ -25,9 +25,12 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-3.5">
-        <Link href="/" className="min-w-0 shrink-0" aria-label="Página inicial Resolva Jato">
-          <Logo variant="marketing" className="h-12 sm:h-14 lg:h-[4.25rem]" />
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-3 sm:gap-4 sm:px-6 sm:py-3.5">
+        <Link href="/" className="min-w-0 shrink" aria-label="Página inicial Resolva Jato">
+          <Logo
+            variant="marketing"
+            className="h-10 max-w-[7.5rem] sm:h-14 sm:max-w-none lg:h-[4.25rem]"
+          />
         </Link>
         <nav className="hidden items-center gap-1 md:flex">
           {links.map((link) => {
@@ -51,7 +54,7 @@ export function SiteHeader() {
             );
           })}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 shrink-0 items-center gap-1.5 sm:gap-2">
           <LocaleSwitcher locale="pt-BR" label="Idioma" />
           {isAuthenticated ? (
             <Button asChild className="hidden sm:inline-flex">
@@ -62,14 +65,14 @@ export function SiteHeader() {
               <Button variant="ghost" asChild className="hidden sm:inline-flex">
                 <Link href="/login">Entrar</Link>
               </Button>
-              <Button asChild>
+              <Button asChild className="hidden sm:inline-flex">
                 <Link href="/cadastro">Criar conta grátis</Link>
               </Button>
             </>
           )}
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 md:hidden"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 md:hidden"
             onClick={() => setMobileOpen((current) => !current)}
             aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={mobileOpen}

@@ -166,7 +166,11 @@ export function ResultShareCard({
         </Button>
       </div>
 
-      <div className="pointer-events-none fixed left-0 top-0 -z-50 opacity-0" aria-hidden>
+      {/* Wrapper 0×0 + overflow:hidden evita o card 1080px expandir o scroll horizontal no mobile. */}
+      <div
+        className="pointer-events-none fixed left-0 top-0 -z-50 h-0 w-0 overflow-hidden opacity-0"
+        aria-hidden
+      >
         <div
           ref={cardRef}
           style={{

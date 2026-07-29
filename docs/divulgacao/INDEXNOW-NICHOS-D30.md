@@ -33,8 +33,10 @@ As três paths também foram incluídas em `scripts/seo/submit-indexnow.mjs` (li
 
 ## Checklist pós-publicação
 
-- [ ] Health check do site em produção
-- [ ] `npm run seo:indexnow` sem erro bloqueante
+- [x] Health check do site em produção (HTTP 200 nas 3 URLs + sitemap)
+- [x] `npm run seo:indexnow` sem erro bloqueante (lote 48 + 3 URLs individuais, HTTP 200)
 - [ ] Inspeção GSC das 3 URLs
-- [ ] Inspeção Bing das 3 URLs
-- [ ] Smoke: abrir as páginas no mobile e gerar um cálculo/CTA
+- [x] IndexNow reenviado (2026-07-29): 3 URLs com HTTP 200 (Bing/parceiros)
+- [x] Smoke mobile: férias e 13º calculam + CTAs Copiar/WhatsApp; recibo landing com CTA para `/gerador-de-recibo`
+
+Atualizado em 2026-07-29 após smoke mobile + reenvio IndexNow.

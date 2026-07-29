@@ -97,7 +97,7 @@ export function LocaleSwitcher({
     <div
       role="group"
       aria-label={label}
-      className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-slate-50/90 p-1 shadow-sm"
+      className="inline-flex h-9 shrink-0 items-center rounded-full border border-slate-200 bg-slate-50/90 p-0.5 shadow-sm sm:h-10 sm:p-1"
     >
       {locales.map((item) => {
         const active = item === locale;
@@ -115,7 +115,7 @@ export function LocaleSwitcher({
             title={localeLabel[item]}
             onClick={() => persistLocalePreference(item)}
             className={cn(
-              'relative inline-flex h-8 w-9 items-center justify-center rounded-full transition duration-200',
+              'relative inline-flex h-7 w-8 items-center justify-center rounded-full transition duration-200 sm:h-8 sm:w-9',
               active
                 ? 'bg-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_14px_rgba(250,204,21,0.55)]'
                 : 'hover:bg-white'
