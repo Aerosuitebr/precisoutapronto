@@ -1,35 +1,47 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using JatoGamesDiagnostic.Models;
 
-namespace JatoGamesDiagnostic.Services
-{
+namespace JatoGamesDiagnostic.Services;
 
 public sealed class GameCatalogService
 {
+    public const int SupportedSchemaVersion = 2;
     private const string ProductionUrl = "https://resolvajato.com.br/api/games/catalog";
-    private readonly string _cachePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "JatoGamesDiagnostic",
-        "catalog.json");
+    private readonly string _cachePath;
+    private readonly HttpClient _client;
+    private readonly string _url;
+
+    public GameCatalogService(HttpClient? client = null, string? cachePath = null, string? url = null)
+    {
+        _client = client ?? new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
+        _cachePath = cachePath ?? Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "JatoGamesDiagnostic", "catalog-v2.json");
+        _url = url ?? Environment.GetEnvironmentVariable("JATO_GAMES_CATALOG_URL") ?? ProductionUrl;
+        if (!Uri.TryCreate(_url, UriKind.Absolute, out var uri) ||
+            (uri.Scheme != Uri.UriSchemeHttps && uri.Host is not ("localhost" or "127.0.0.1")))
+            throw new ArgumentException("O catálogo deve usar HTTPS; HTTP é permitido apenas em testes locais.", nameof(url));
+    }
 
     public IReadOnlyList<GameProfile> Fallback() => new List<GameProfile>
     {
-        new() { Slug = "counter-strike-2", Rank = 1, Name = "Counter-Strike 2", CpuTarget = 58, GpuTarget = 54, RamMinimumGb = 8, StorageMinimumGb = 85 },
-        new() { Slug = "league-of-legends", Rank = 2, Name = "League of Legends", CpuTarget = 44, GpuTarget = 38, RamMinimumGb = 8, StorageMinimumGb = 20 },
-        new() { Slug = "valorant", Rank = 3, Name = "Valorant", CpuTarget = 52, GpuTarget = 48, RamMinimumGb = 8, StorageMinimumGb = 40 },
-        new() { Slug = "grand-theft-auto-v", Rank = 4, Name = "Grand Theft Auto V", CpuTarget = 55, GpuTarget = 56, RamMinimumGb = 8, StorageMinimumGb = 100 },
-        new() { Slug = "minecraft", Rank = 5, Name = "Minecraft", CpuTarget = 48, GpuTarget = 42, RamMinimumGb = 4, StorageMinimumGb = 2 },
-        new() { Slug = "fortnite", Rank = 6, Name = "Fortnite", CpuTarget = 60, GpuTarget = 58, RamMinimumGb = 8, StorageMinimumGb = 30 },
-        new() { Slug = "elden-ring", Rank = 7, Name = "Elden Ring", CpuTarget = 68, GpuTarget = 70, RamMinimumGb = 12, StorageMinimumGb = 60 },
-        new() { Slug = "free-fire", Rank = 8, Name = "Free Fire", CpuTarget = 38, GpuTarget = 34, RamMinimumGb = 4, StorageMinimumGb = 2 },
-        new() { Slug = "roblox", Rank = 9, Name = "Roblox", CpuTarget = 40, GpuTarget = 38, RamMinimumGb = 4, StorageMinimumGb = 2 },
-        new() { Slug = "ea-sports-fc", Rank = 10, Name = "EA Sports FC", CpuTarget = 63, GpuTarget = 60, RamMinimumGb = 8, StorageMinimumGb = 100 }
+        Profile("counter-strike-2", 1, "Counter-Strike 2", 58, 54, 8, 85, "https://store.steampowered.com/app/730/CounterStrike_2/"),
+        Profile("league-of-legends", 2, "League of Legends", 44, 38, 8, 20, "https://support-leagueoflegends.riotgames.com/hc/pt-br/articles/201752654", integrated: true),
+        Profile("valorant", 3, "Valorant", 52, 48, 8, 40, "https://support-valorant.riotgames.com/hc/pt-br/articles/360044136134", integrated: true),
+        Profile("grand-theft-auto-v", 4, "Grand Theft Auto V", 55, 56, 8, 100, "https://store.steampowered.com/app/271590/Grand_Theft_Auto_V/"),
+        Profile("minecraft", 5, "Minecraft", 48, 42, 4, 2, "https://www.minecraft.net/store/minecraft-java-bedrock-edition-pc", integrated: true),
+        Profile("fortnite", 6, "Fortnite", 60, 58, 8, 30, "https://www.epicgames.com/help/fortnite-c5719335176219/technical-support-c5719372265755/what-are-the-system-requirements-for-fortnite-on-pc-a5720377106075"),
+        Profile("elden-ring", 7, "Elden Ring", 68, 70, 12, 60, "https://store.steampowered.com/app/1245620/ELDEN_RING/"),
+        Profile("free-fire", 8, "Free Fire", 38, 34, 4, 2, "https://ffsupport.garena.com/hc/en-us", integrated: true, nativeWindows: false),
+        Profile("roblox", 9, "Roblox", 40, 38, 4, 2, "https://en.help.roblox.com/hc/en-us/articles/203312800", integrated: true),
+        Profile("ea-sports-fc", 10, "EA Sports FC", 63, 60, 8, 100, "https://www.ea.com/games/ea-sports-fc")
     };
 
     public GameCatalog? ReadCache()
@@ -37,31 +49,80 @@ public sealed class GameCatalogService
         try
         {
             if (!File.Exists(_cachePath)) return null;
-            return Deserialize(File.ReadAllText(_cachePath));
+            var catalog = Deserialize(File.ReadAllText(_cachePath));
+            return Validate(catalog, out _) ? catalog : null;
         }
-        catch
+        catch (Exception exception)
         {
+            LocalLog.Write(exception, "Leitura do catálogo offline");
             return null;
         }
     }
 
     public async Task<GameCatalog> RefreshAsync(CancellationToken cancellationToken)
     {
-        var overrideUrl = Environment.GetEnvironmentVariable("JATO_GAMES_CATALOG_URL");
-        var url = string.IsNullOrWhiteSpace(overrideUrl) ? ProductionUrl : overrideUrl;
-        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
-        client.DefaultRequestHeaders.UserAgent.ParseAdd("JatoGamesDiagnostic/0.2");
-        var json = await client.GetStringAsync(url, cancellationToken);
-        var catalog = Deserialize(json) ?? throw new InvalidDataException("Catálogo recebido em formato inválido.");
-        if (catalog.SchemaVersion != 1 || catalog.Games.Count == 0)
-            throw new InvalidDataException("Catálogo vazio ou incompatível.");
+        _client.DefaultRequestHeaders.UserAgent.ParseAdd("JatoGamesDiagnostic/0.9");
+        using var response = await _client.GetAsync(_url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        response.EnsureSuccessStatusCode();
+        if (response.Content.Headers.ContentLength > 512_000)
+            throw new InvalidDataException("Catálogo excede o tamanho permitido.");
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        if (json.Length > 512_000) throw new InvalidDataException("Catálogo excede o tamanho permitido.");
+        var catalog = Deserialize(json);
+        if (!Validate(catalog, out var reason))
+            throw new InvalidDataException($"Catálogo rejeitado: {reason}");
 
         Directory.CreateDirectory(Path.GetDirectoryName(_cachePath)!);
-        File.WriteAllText(_cachePath, json);
-        return catalog;
+        var temporaryPath = _cachePath + ".tmp";
+        File.WriteAllText(temporaryPath, json);
+        File.Move(temporaryPath, _cachePath, true);
+        return catalog!;
     }
 
-    private static GameCatalog? Deserialize(string json) =>
-        JsonSerializer.Deserialize<GameCatalog>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-}
+    public static bool Validate(GameCatalog? catalog, out string reason)
+    {
+        reason = "";
+        if (catalog is null) { reason = "JSON inválido"; return false; }
+        if (catalog.SchemaVersion != SupportedSchemaVersion) { reason = "schema incompatível"; return false; }
+        if (string.IsNullOrWhiteSpace(catalog.CatalogVersion) || catalog.Games.Count is < 1 or > 50)
+        { reason = "versão ou quantidade inválida"; return false; }
+        if (catalog.Games.Select(game => game.Slug).Distinct(StringComparer.OrdinalIgnoreCase).Count() != catalog.Games.Count)
+        { reason = "jogos duplicados"; return false; }
+
+        foreach (var game in catalog.Games)
+        {
+            if (string.IsNullOrWhiteSpace(game.Slug) || string.IsNullOrWhiteSpace(game.Name) ||
+                game.CpuTarget is < 0 or > 100 || game.GpuTarget is < 0 or > 100 ||
+                game.RamMinimumGb is <= 0 or > 256 || game.StorageMinimumGb is <= 0 or > 4096 ||
+                game.RequirementsVerifiedAt == default || string.IsNullOrWhiteSpace(game.EditorialVersion) ||
+                !Uri.TryCreate(game.RequirementsSourceUrl, UriKind.Absolute, out var source) ||
+                source.Scheme != Uri.UriSchemeHttps)
+            { reason = $"perfil inválido: {game.Slug}"; return false; }
+        }
+        return true;
+    }
+
+    private static GameProfile Profile(string slug, int rank, string name, int cpu, int gpu, double ram, double storage,
+        string source, bool integrated = false, bool nativeWindows = true) => new()
+        {
+            Slug = slug, Rank = rank, Name = name, Platforms = nativeWindows ? new[] { "PC" } : new[] { "Mobile" },
+            CpuTarget = cpu, GpuTarget = gpu, RamMinimumGb = ram, StorageMinimumGb = storage,
+            RequirementsSourceUrl = source, RequirementsVerifiedAt = new DateTimeOffset(2026, 7, 30, 0, 0, 0, TimeSpan.Zero),
+            EditorialVersion = "2026.07", Minimum = $"{ram:0} GB RAM · {storage:0} GB",
+            Recommended = "Consulte a fonte oficial versionada.", QualityNotes = "Estimativa orientativa; não prevê FPS.",
+            SupportsIntegratedGpu = integrated, NativeWindowsSupport = nativeWindows
+        };
+
+    private static GameCatalog? Deserialize(string json)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<GameCatalog>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                MaxDepth = 16
+            });
+        }
+        catch (JsonException) { return null; }
+    }
 }

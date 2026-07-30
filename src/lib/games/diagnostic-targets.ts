@@ -5,19 +5,48 @@ type DiagnosticTarget = {
   gpuTarget: number;
   ramMinimumGb: number;
   storageMinimumGb: number;
+  requirementsSourceUrl: string;
+  requirementsVerifiedAt: string;
+  editorialVersion: string;
+  qualityNotes: string;
+  supportsIntegratedGpu: boolean;
+  nativeWindowsSupport: boolean;
 };
 
+const VERIFIED_AT = '2026-07-30T00:00:00.000Z';
+const VERSION = '2026.07';
+const target = (
+  cpuTarget: number,
+  gpuTarget: number,
+  ramMinimumGb: number,
+  storageMinimumGb: number,
+  requirementsSourceUrl: string,
+  supportsIntegratedGpu = false,
+  nativeWindowsSupport = true
+): DiagnosticTarget => ({
+  cpuTarget,
+  gpuTarget,
+  ramMinimumGb,
+  storageMinimumGb,
+  requirementsSourceUrl,
+  requirementsVerifiedAt: VERIFIED_AT,
+  editorialVersion: VERSION,
+  qualityNotes: 'Comparação orientativa; FPS varia com resolução, preset, drivers, temperatura e processos em segundo plano.',
+  supportsIntegratedGpu,
+  nativeWindowsSupport
+});
+
 const TARGETS: Record<string, DiagnosticTarget> = {
-  'counter-strike-2': { cpuTarget: 58, gpuTarget: 54, ramMinimumGb: 8, storageMinimumGb: 85 },
-  'league-of-legends': { cpuTarget: 44, gpuTarget: 38, ramMinimumGb: 8, storageMinimumGb: 20 },
-  valorant: { cpuTarget: 52, gpuTarget: 48, ramMinimumGb: 8, storageMinimumGb: 40 },
-  'grand-theft-auto-v': { cpuTarget: 55, gpuTarget: 56, ramMinimumGb: 8, storageMinimumGb: 100 },
-  minecraft: { cpuTarget: 48, gpuTarget: 42, ramMinimumGb: 4, storageMinimumGb: 2 },
-  fortnite: { cpuTarget: 60, gpuTarget: 58, ramMinimumGb: 8, storageMinimumGb: 30 },
-  'elden-ring': { cpuTarget: 68, gpuTarget: 70, ramMinimumGb: 12, storageMinimumGb: 60 },
-  'free-fire': { cpuTarget: 38, gpuTarget: 34, ramMinimumGb: 4, storageMinimumGb: 2 },
-  roblox: { cpuTarget: 40, gpuTarget: 38, ramMinimumGb: 4, storageMinimumGb: 2 },
-  'ea-sports-fc': { cpuTarget: 63, gpuTarget: 60, ramMinimumGb: 8, storageMinimumGb: 100 }
+  'counter-strike-2': target(58, 54, 8, 85, 'https://store.steampowered.com/app/730/CounterStrike_2/'),
+  'league-of-legends': target(44, 38, 8, 20, 'https://support-leagueoflegends.riotgames.com/hc/pt-br/articles/201752654', true),
+  valorant: target(52, 48, 8, 40, 'https://support-valorant.riotgames.com/hc/pt-br/articles/360044136134', true),
+  'grand-theft-auto-v': target(55, 56, 8, 100, 'https://store.steampowered.com/app/271590/Grand_Theft_Auto_V/'),
+  minecraft: target(48, 42, 4, 2, 'https://www.minecraft.net/store/minecraft-java-bedrock-edition-pc', true),
+  fortnite: target(60, 58, 8, 30, 'https://www.epicgames.com/help/fortnite-c5719335176219/technical-support-c5719372265755/what-are-the-system-requirements-for-fortnite-on-pc-a5720377106075'),
+  'elden-ring': target(68, 70, 12, 60, 'https://store.steampowered.com/app/1245620/ELDEN_RING/'),
+  'free-fire': target(38, 34, 4, 2, 'https://ffsupport.garena.com/hc/en-us', true, false),
+  roblox: target(40, 38, 4, 2, 'https://en.help.roblox.com/hc/en-us/articles/203312800', true),
+  'ea-sports-fc': target(63, 60, 8, 100, 'https://www.ea.com/games/ea-sports-fc')
 };
 
 export function getDiagnosticTarget(game: GameEntry): DiagnosticTarget {
@@ -25,6 +54,12 @@ export function getDiagnosticTarget(game: GameEntry): DiagnosticTarget {
     cpuTarget: 55,
     gpuTarget: 55,
     ramMinimumGb: Number.parseFloat(game.setupMin.ram) || 8,
-    storageMinimumGb: Number.parseFloat(game.setupMin.storage.replace(/[^\d.]/g, '')) || 20
+    storageMinimumGb: Number.parseFloat(game.setupMin.storage.replace(/[^\d.]/g, '')) || 20,
+    requirementsSourceUrl: `https://resolvajato.com.br/games/jogos/${game.slug}`,
+    requirementsVerifiedAt: VERIFIED_AT,
+    editorialVersion: VERSION,
+    qualityNotes: 'Perfil editorial pendente de fonte oficial específica; não prevê FPS.',
+    supportsIntegratedGpu: false,
+    nativeWindowsSupport: game.platforms.includes('PC')
   };
 }

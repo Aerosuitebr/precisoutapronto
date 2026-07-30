@@ -4,7 +4,7 @@
 
 O `JatoGamesDiagnostic` é um aplicativo Windows complementar ao Jato Games. Ele coleta inventário real da máquina, executa benchmarks locais e gera um relatório comparativo para o jogo selecionado.
 
-O MVP está em `apps/JatoGamesDiagnostic`.
+A candidata 0.9.0 está em `apps/JatoGamesDiagnostic` e usa .NET 10 LTS.
 
 ## Fluxo
 
@@ -53,7 +53,8 @@ O MVP não afirma executar um benchmark Direct3D equivalente a um jogo nem preve
 - Faz somente uma consulta `GET` ao catálogo público de jogos; a requisição não contém inventário nem benchmark.
 - Não envia diagnóstico ou telemetria.
 - Exporta somente por escolha explícita.
-- O relatório contém nome da máquina; a futura integração web deverá omitir esse campo por padrão.
+- O relatório não contém nome da máquina, nome do usuário ou identificador de conta.
+- Logs técnicos locais removem referências ao usuário, máquina e pasta pessoal e expiram em 14 dias.
 
 ## Build reproduzível
 
@@ -76,18 +77,12 @@ Saída:
 - Arquivo temporário não permaneceu após o teste.
 - Relatório visual inspecionado.
 
-## Antes da distribuição pública
+## Estado de publicação
 
-1. Migrar para uma versão LTS atual do .NET.
-2. Versionar requisitos de jogos e registrar a fonte de cada perfil.
-3. Adicionar testes automatizados dos cálculos de compatibilidade.
-4. Produzir MSIX.
-5. Configurar Azure Artifact Signing.
-6. Publicar pela Microsoft Store.
-7. Adicionar ícone e identidade visual definitivos.
-8. Submeter cada release ao Microsoft Defender e acompanhar falsos positivos.
-9. Revisar juridicamente consentimento e política de privacidade.
-10. Projetar tokens temporários antes de qualquer integração com o site.
+- Concluído no código: .NET 10 LTS, requisitos versionados, testes automatizados, MSIX x64, identidade visual, cancelamento, logs sanitizados e documentos públicos.
+- Depende de conta externa: identidade do Partner Center, assinatura, certificação da Store e submissão de falsos positivos.
+- Depende de laboratório: matriz de Windows, hardware, idiomas, escala visual, instalação, atualização e desinstalação.
+- Qualquer integração futura com o site deverá usar token temporário e um segundo consentimento explícito.
 
 ## Catálogo Top 10
 

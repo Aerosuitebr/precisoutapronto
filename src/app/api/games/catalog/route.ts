@@ -10,14 +10,14 @@ export function GET() {
     rank: game.rank,
     name: game.title,
     platforms: game.platforms,
-    minimum: game.setupMin,
-    recommended: game.setupRec,
+    minimum: `${game.setupMin.cpu} · ${game.setupMin.gpu} · ${game.setupMin.ram} · ${game.setupMin.storage}`,
+    recommended: `${game.setupRec.cpu} · ${game.setupRec.gpu} · ${game.setupRec.ram} · ${game.setupRec.storage}`,
     ...getDiagnosticTarget(game)
   }));
 
   return NextResponse.json(
     {
-      schemaVersion: 1,
+      schemaVersion: 2,
       catalogVersion: CATALOG_UPDATED_AT,
       source: 'Jato Games',
       games

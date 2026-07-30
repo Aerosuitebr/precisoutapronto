@@ -134,6 +134,7 @@
             <TextBlock x:Name="StageText" Text="Preparando diagnóstico…" Foreground="{StaticResource TealBrush}" FontSize="15" Margin="0,10,0,0" />
             <ProgressBar x:Name="MainProgress" Minimum="0" Maximum="100" Margin="0,22,0,0" />
             <TextBlock Text="Não use aplicações pesadas durante o teste. A duração esperada é inferior a 15 segundos." Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" LineHeight="21" Margin="0,15,0,0" />
+            <Button Content="Cancelar teste" Background="#294056" Foreground="White" Margin="0,18,0,0" Click="CancelButton_Click" />
           </StackPanel>
 
           <Border Grid.Column="1" Background="{StaticResource PanelBrush}" CornerRadius="22" Padding="28">
@@ -172,7 +173,7 @@
               <TextBlock Text="RELATÓRIO CONCLUÍDO" Foreground="{StaticResource TealBrush}" FontFamily="Segoe UI Bold" FontSize="11" />
               <TextBlock x:Name="VerdictText" Text="Perfil compatível" FontFamily="Segoe UI Black" FontSize="32" Margin="0,8,0,0" />
               <TextBlock x:Name="ReportSubtitle" Foreground="{StaticResource MutedBrush}" FontSize="14" Margin="0,8,0,0" />
-              <TextBlock Text="Fidelidade do diagnóstico: 91%" Foreground="#65E6B4" FontFamily="Segoe UI Semibold" Margin="0,9,0,0" />
+              <TextBlock x:Name="ConfidenceText" Text="Fidelidade do diagnóstico: --" Foreground="#65E6B4" FontFamily="Segoe UI Semibold" Margin="0,9,0,0" />
             </StackPanel>
             <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
               <Button Content="Exportar JSON" Background="{StaticResource AmberBrush}" Margin="0,0,10,0" Click="ExportButton_Click" />

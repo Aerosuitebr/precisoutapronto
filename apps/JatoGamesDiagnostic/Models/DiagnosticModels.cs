@@ -6,7 +6,6 @@ namespace JatoGamesDiagnostic.Models
 
 public sealed class HardwareSnapshot
 {
-    public string MachineName { get; set; } = Environment.MachineName;
     public string OperatingSystem { get; set; } = "";
     public string CpuName { get; set; } = "";
     public int LogicalProcessors { get; set; }
@@ -15,8 +14,18 @@ public sealed class HardwareSnapshot
     public string GpuName { get; set; } = "";
     public double VideoMemoryGb { get; set; }
     public string DriverVersion { get; set; } = "";
+    public List<GraphicsAdapter> GraphicsAdapters { get; set; } = new();
     public string PrimaryDisk { get; set; } = "";
     public double DiskFreeGb { get; set; }
+    public List<string> InventoryWarnings { get; set; } = new();
+}
+
+public sealed class GraphicsAdapter
+{
+    public string Name { get; set; } = "";
+    public double VideoMemoryGb { get; set; }
+    public string DriverVersion { get; set; } = "";
+    public bool IsIntegrated { get; set; }
 }
 
 public sealed class BenchmarkResult
@@ -30,6 +39,7 @@ public sealed class BenchmarkResult
     public int MemoryScore { get; set; }
     public int StorageScore { get; set; }
     public int GraphicsScore { get; set; }
+    public List<string> Warnings { get; set; } = new();
 }
 
 public sealed class GameProfile
@@ -42,6 +52,14 @@ public sealed class GameProfile
     public int GpuTarget { get; set; }
     public double RamMinimumGb { get; set; }
     public double StorageMinimumGb { get; set; }
+    public string RequirementsSourceUrl { get; set; } = "";
+    public DateTimeOffset RequirementsVerifiedAt { get; set; }
+    public string EditorialVersion { get; set; } = "";
+    public string Minimum { get; set; } = "";
+    public string Recommended { get; set; } = "";
+    public string QualityNotes { get; set; } = "";
+    public bool SupportsIntegratedGpu { get; set; }
+    public bool NativeWindowsSupport { get; set; } = true;
     public override string ToString() => Rank > 0 ? $"#{Rank}  {Name}" : Name;
 }
 
@@ -56,9 +74,10 @@ public sealed class GameCatalog
 public sealed class DiagnosticReport
 {
     public string Product { get; set; } = "Jato Games Diagnostic";
-    public string Version { get; set; } = "0.2.0";
+    public string Version { get; set; } = "0.9.0";
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
     public string Privacy { get; set; } = "Gerado localmente e exportado somente por ação do usuário.";
+    public string DataClassification { get; set; } = "Contém somente dados técnicos. Nome do computador, usuário, arquivos e identificadores pessoais não são coletados.";
     public HardwareSnapshot Hardware { get; set; } = new();
     public BenchmarkResult Benchmark { get; set; } = new();
     public GameProfile Game { get; set; } = new();

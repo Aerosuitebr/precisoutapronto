@@ -18,6 +18,7 @@ public partial class MainWindow : Window
     private readonly ReportService _reports = new();
     private readonly GameCatalogService _catalog = new();
     private DiagnosticReport? _currentReport;
+    private CancellationTokenSource? _diagnosticCancellation;
 
     public MainWindow()
     {
@@ -38,13 +39,16 @@ public partial class MainWindow : Window
         ConsentView.Visibility = Visibility.Collapsed;
         BenchmarkView.Visibility = Visibility.Visible;
         var game = (GameProfile)GameSelector.SelectedItem;
+        _diagnosticCancellation?.Dispose();
+        _diagnosticCancellation = new CancellationTokenSource();
+        var cancellationToken = _diagnosticCancellation.Token;
 
         try
         {
             StageText.Text = "Lendo inventário do Windows";
             MainProgress.Value = 3;
             ProgressNumber.Text = "3%";
-            var hardware = await Task.Run(() => _inventory.Collect());
+            var hardware = await Task.Run(() => _inventory.Collect(), cancellationToken);
             LiveHardware.Text =
                 $"CPU  {hardware.CpuName}\n" +
                 $"GPU  {hardware.GpuName}\n" +
@@ -57,7 +61,7 @@ public partial class MainWindow : Window
                 ProgressNumber.Text = $"{value.progress}%";
                 StageText.Text = value.stage;
             });
-            var benchmark = await _benchmark.RunAsync(progress, CancellationToken.None);
+            var benchmark = await _benchmark.RunAsync(progress, cancellationToken);
             MainProgress.Value = 100;
             ProgressNumber.Text = "100%";
             StageText.Text = "Relatório finalizado";
@@ -65,8 +69,14 @@ public partial class MainWindow : Window
             await Task.Delay(260);
             RenderReport(_currentReport);
         }
+        catch (OperationCanceledException)
+        {
+            MessageBox.Show("O teste foi cancelado com segurança. Nenhum resultado foi enviado.", "Jato Games Diagnostic", MessageBoxButton.OK, MessageBoxImage.Information);
+            Restart();
+        }
         catch (Exception exception)
         {
+            LocalLog.Write(exception, "Diagnóstico");
             MessageBox.Show(
                 $"O diagnóstico foi interrompido.\n\n{exception.Message}\n\nNenhum arquivo temporário foi mantido.",
                 "Jato Games Diagnostic",
@@ -82,6 +92,7 @@ public partial class MainWindow : Window
         ReportView.Visibility = Visibility.Visible;
         OverallScore.Text = report.CompatibilityScore.ToString();
         VerdictText.Text = report.Verdict;
+        ConfidenceText.Text = $"Fidelidade do diagnóstico: {report.Confidence}%";
         ReportSubtitle.Text = $"{report.Game.Name} · diagnóstico concluído em {report.CreatedAt:dd/MM/yyyy HH:mm}";
 
         SetMetric(CpuScoreText, CpuBar, report.Benchmark.CpuScore, $"{report.Hardware.CpuName}\nÍndice multi {report.Benchmark.CpuMultiIndex:0}");
@@ -118,12 +129,21 @@ public partial class MainWindow : Window
         };
         if (dialog.ShowDialog(this) == true)
         {
-            File.WriteAllText(dialog.FileName, _reports.Serialize(_currentReport));
-            MessageBox.Show("Relatório exportado. Compartilhe somente se desejar.", "Jato Games Diagnostic", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                File.WriteAllText(dialog.FileName, _reports.Serialize(_currentReport));
+                MessageBox.Show("Relatório técnico exportado sem nome do computador ou usuário. Compartilhe somente se desejar.", "Jato Games Diagnostic", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception exception)
+            {
+                LocalLog.Write(exception, "Exportação do relatório");
+                MessageBox.Show("Não foi possível salvar nesse local. Escolha uma pasta em que você tenha permissão.", "Jato Games Diagnostic", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 
     private void RestartButton_Click(object sender, RoutedEventArgs e) => Restart();
+    private void CancelButton_Click(object sender, RoutedEventArgs e) => _diagnosticCancellation?.Cancel();
 
     private async void RefreshCatalogButton_Click(object sender, RoutedEventArgs e) =>
         await RefreshCatalogAsync(true);
@@ -164,6 +184,8 @@ public partial class MainWindow : Window
 
     private void Restart()
     {
+        _diagnosticCancellation?.Dispose();
+        _diagnosticCancellation = null;
         _currentReport = null;
         MainProgress.Value = 0;
         ProgressNumber.Text = "0%";

@@ -12,23 +12,45 @@ public sealed class BenchmarkService
 {
     public async Task<BenchmarkResult> RunAsync(IProgress<(int progress, string stage)> progress, CancellationToken cancellationToken)
     {
+        var warnings = new System.Collections.Generic.List<string>();
         progress.Report((8, "Preparando carga de processamento"));
-        var single = await Task.Run(() => RunCpuWorker(900, cancellationToken), cancellationToken);
-
-        progress.Report((26, "Medindo processamento paralelo"));
-        var workers = Math.Max(1, Math.Min(Environment.ProcessorCount, 16));
-        var tasks = new Task<double>[workers];
-        for (var index = 0; index < workers; index++)
-            tasks[index] = Task.Run(() => RunCpuWorker(1050, cancellationToken), cancellationToken);
-        var multiValues = await Task.WhenAll(tasks);
+        var single = 0d;
         var multi = 0d;
-        foreach (var value in multiValues) multi += value;
+        try
+        {
+            single = await Task.Run(() => RunCpuWorker(900, cancellationToken), cancellationToken);
+
+            progress.Report((26, "Medindo processamento paralelo"));
+            var workers = Math.Max(1, Math.Min(Environment.ProcessorCount, 16));
+            var tasks = new Task<double>[workers];
+            for (var index = 0; index < workers; index++)
+                tasks[index] = Task.Run(() => RunCpuWorker(1050, cancellationToken), cancellationToken);
+            var multiValues = await Task.WhenAll(tasks);
+            foreach (var value in multiValues) multi += value;
+        }
+        catch (Exception exception) when (exception is not OperationCanceledException)
+        {
+            warnings.Add("O teste de CPU não pôde ser concluído.");
+            LocalLog.Write(exception, "Benchmark de CPU");
+        }
 
         progress.Report((50, "Medindo largura de banda da memória"));
-        var memory = await Task.Run(() => RunMemoryBenchmark(cancellationToken), cancellationToken);
+        var memory = 0d;
+        try { memory = await Task.Run(() => RunMemoryBenchmark(cancellationToken), cancellationToken); }
+        catch (Exception exception) when (exception is not OperationCanceledException)
+        {
+            warnings.Add("O teste de memória não pôde ser concluído.");
+            LocalLog.Write(exception, "Benchmark de memória");
+        }
 
         progress.Report((69, "Criando arquivo temporário para o teste de disco"));
-        var storage = await Task.Run(() => RunStorageBenchmark(cancellationToken), cancellationToken);
+        var storage = (write: 0d, read: 0d);
+        try { storage = await Task.Run(() => RunStorageBenchmark(cancellationToken), cancellationToken); }
+        catch (Exception exception) when (exception is not OperationCanceledException)
+        {
+            warnings.Add("O teste de disco foi ignorado por falta de espaço, permissão ou bloqueio de segurança.");
+            LocalLog.Write(exception, "Benchmark de disco");
+        }
 
         progress.Report((91, "Normalizando resultados locais"));
         await Task.Delay(180, cancellationToken);
@@ -41,7 +63,8 @@ public sealed class BenchmarkService
             StorageReadMegabytesPerSecond = storage.read,
             CpuScore = Clamp(25 + Math.Log10(Math.Max(multi, 1)) * 18),
             MemoryScore = Clamp(memory / 180),
-            StorageScore = Clamp((storage.write + storage.read) / 55)
+            StorageScore = Clamp((storage.write + storage.read) / 55),
+            Warnings = warnings
         };
     }
 
@@ -82,6 +105,9 @@ public sealed class BenchmarkService
     {
         var path = Path.Combine(Path.GetTempPath(), $"jato-games-benchmark-{Guid.NewGuid():N}.tmp");
         const int totalBytes = 192 * 1024 * 1024;
+        var drive = new DriveInfo(Path.GetPathRoot(path)!);
+        if (drive.AvailableFreeSpace < totalBytes * 2L)
+            throw new IOException("Espaço temporário insuficiente para executar o teste com segurança.");
         var buffer = new byte[4 * 1024 * 1024];
         new Random(84).NextBytes(buffer);
         try
@@ -111,10 +137,11 @@ public sealed class BenchmarkService
         }
         finally
         {
-            if (File.Exists(path)) File.Delete(path);
+            try { if (File.Exists(path)) File.Delete(path); }
+            catch (Exception exception) { LocalLog.Write(exception, "Limpeza do benchmark"); }
         }
     }
 
-    private static int Clamp(double value) => (int)Math.Max(0, Math.Min(100, Math.Round(value)));
+    public static int Clamp(double value) => (int)Math.Max(0, Math.Min(100, Math.Round(value)));
 }
 }

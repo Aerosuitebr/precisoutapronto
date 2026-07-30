@@ -1,19 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <AssemblyName>JatoGamesDiagnostic</AssemblyName>
     <RootNamespace>JatoGamesDiagnostic</RootNamespace>
     <ApplicationIcon>Assets\JatoGamesDiagnostic.ico</ApplicationIcon>
-    <Version>0.2.0</Version>
+    <Version>0.9.0</Version>
     <Company>Resolva Jato</Company>
     <Product>Jato Games Diagnostic</Product>
     <Description>Diagnóstico local e transparente de hardware para jogos.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Management" Version="5.0.0" />
+    <PackageReference Include="System.Management" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\diagnostic-mark-512.png" />

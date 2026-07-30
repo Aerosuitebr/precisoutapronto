@@ -101,6 +101,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/games/ferramentas/planejador-armazenamento',
     '/games/ferramentas/custo-por-hora',
     '/games/ferramentas/meu-pc-roda',
+    '/games/diagnostico',
+    '/games/diagnostico/privacidade',
+    '/games/diagnostico/termos',
+    '/games/diagnostico/suporte',
+    '/games/diagnostico/changelog',
     '/games/hardware',
     '/games/consoles',
     '/games/lojas'

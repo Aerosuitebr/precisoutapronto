@@ -1,6 +1,6 @@
 # Jato Games Diagnostic
 
-Aplicativo Windows local para inventário de hardware, benchmark controlado e comparação com perfis de jogos.
+Aplicativo Windows local para inventário de hardware, benchmark controlado e comparação com perfis de jogos. A versão candidata atual é `0.9.0`, baseada em .NET 10 LTS.
 
 ## Privacidade
 
@@ -22,7 +22,8 @@ Aplicativo Windows local para inventário de hardware, benchmark controlado e co
 
 ## Medições
 
-- Inventário via WMI: CPU, núcleos, GPU, driver e RAM.
+- Inventário tolerante a falhas via WMI: CPU, núcleos, todas as GPUs, driver e RAM.
+- Em notebooks híbridos, seleciona o adaptador gráfico mais capaz e mantém a lista identificada no relatório.
 - CPU: carga matemática single-thread e multi-thread.
 - Memória: cópia repetida de bloco de 128 MB.
 - Disco: escrita síncrona e leitura sequencial de arquivo temporário.
@@ -40,18 +41,20 @@ Aplicativo Windows local para inventário de hardware, benchmark controlado e co
 ## Compilar
 
 ```powershell
-dotnet restore
+dotnet test ..\JatoGamesDiagnostic.Tests -c Release
 dotnet build -c Release
-dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true
+powershell -ExecutionPolicy Bypass -File build-release.ps1
+powershell -ExecutionPolicy Bypass -File build-msix.ps1
 ```
 
 O executável publicado fica em:
 
 `bin/Release/net5.0-windows/win-x64/publish/JatoGamesDiagnostic.exe`
 
-## Próxima fase
+## Publicação
 
-1. Assinar o binário com Azure Artifact Signing.
-2. Criar pacote MSIX e publicação na Microsoft Store.
-3. Validar os perfis de jogos contra fontes oficiais versionadas.
-4. Integrar relatórios por token temporário, sem persistência por padrão.
+- O MSIX x64 reproduzível é gerado por `build-msix.ps1`.
+- `IdentityName` e `Publisher` devem receber exatamente os valores do Partner Center.
+- `CertificateThumbprint` assina e verifica o MSIX quando houver certificado para distribuição direta.
+- `verify-release.ps1` executa os testes, calcula o hash, verifica assinatura e pode solicitar análise do Microsoft Defender.
+- A matriz de validação externa está em `RELEASE-CHECKLIST.md`.

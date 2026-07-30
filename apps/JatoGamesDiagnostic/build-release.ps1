@@ -1,6 +1,7 @@
 param(
   [string]$Runtime = 'win-x64',
-  [string]$Output = ''
+  [string]$Output = '',
+  [string]$DotnetPath = 'dotnet'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -11,8 +12,8 @@ if (-not $Output) {
   $Output = Join-Path $repositoryRoot 'dist\JatoGamesDiagnostic'
 }
 
-dotnet restore (Join-Path $projectRoot 'JatoGamesDiagnostic.csproj')
-dotnet publish (Join-Path $projectRoot 'JatoGamesDiagnostic.csproj') `
+& $DotnetPath restore (Join-Path $projectRoot 'JatoGamesDiagnostic.csproj')
+& $DotnetPath publish (Join-Path $projectRoot 'JatoGamesDiagnostic.csproj') `
   -c Release `
   -r $Runtime `
   --self-contained true `
