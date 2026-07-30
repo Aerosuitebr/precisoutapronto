@@ -11,7 +11,18 @@ import { getViralBaseUrl } from '@/lib/viral-loop';
 export const metadata: Metadata = {
   title: 'Biblioteca de documentos, trabalho e negócios',
   description: 'Respostas práticas, modelos, perguntas frequentes e ferramentas para concluir tarefas.',
-  alternates: { canonical: '/biblioteca' }
+  alternates: { canonical: '/biblioteca' },
+  openGraph: {
+    title: 'Biblioteca de documentos, trabalho e negócios | Resolva Jato',
+    description: 'Respostas práticas, modelos, perguntas frequentes e ferramentas para concluir tarefas.',
+    url: '/biblioteca',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Biblioteca | Resolva Jato',
+    description: 'Respostas práticas, modelos e ferramentas para concluir tarefas.'
+  }
 };
 
 export default function LibraryPage() {
