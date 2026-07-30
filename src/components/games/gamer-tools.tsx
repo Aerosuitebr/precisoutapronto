@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Calculator, Copy, Crosshair, HardDrive, Share2 } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Calculator, Copy, Crosshair, HardDrive, Link2, Share2 } from 'lucide-react';
 
 function NumberField({
   label,
@@ -36,15 +36,28 @@ function NumberField({
   );
 }
 
-function ResultShare({ text }: { text: string }) {
+function buildShareUrl(params: Record<string, number>) {
+  const url = new URL(window.location.href);
+  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, String(value)));
+  return url.toString();
+}
+
+function readSharedNumber(query: URLSearchParams, key: string) {
+  if (!query.has(key)) return null;
+  const value = Number(query.get(key));
+  return Number.isFinite(value) ? value : null;
+}
+
+function ResultShare({ text, params }: { text: string; params: Record<string, number> }) {
   const [copied, setCopied] = useState(false);
 
   async function share() {
+    const url = buildShareUrl(params);
     if (navigator.share) {
-      await navigator.share({ title: 'Resultado no Jato Games', text, url: window.location.href });
+      await navigator.share({ title: 'Resultado no Jato Games', text, url });
       return;
     }
-    await navigator.clipboard.writeText(`${text} ${window.location.href}`);
+    await navigator.clipboard.writeText(`${text} ${url}`);
     setCopied(true);
   }
 
@@ -53,10 +66,18 @@ function ResultShare({ text }: { text: string }) {
     setCopied(true);
   }
 
+  async function copyLink() {
+    await navigator.clipboard.writeText(buildShareUrl(params));
+    setCopied(true);
+  }
+
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       <button type="button" onClick={copy} className="inline-flex h-10 items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700 hover:border-teal-400">
         <Copy className="h-4 w-4" /> {copied ? 'Copiado' : 'Copiar resultado'}
+      </button>
+      <button type="button" onClick={copyLink} className="inline-flex h-10 items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700 hover:border-teal-400">
+        <Link2 className="h-4 w-4" /> Copiar link
       </button>
       <button type="button" onClick={share} className="inline-flex h-10 items-center gap-2 rounded-lg bg-teal-600 px-3 text-sm font-bold text-white hover:bg-teal-500">
         <Share2 className="h-4 w-4" /> Compartilhar
@@ -71,6 +92,14 @@ export function EdpiCalculator() {
   const edpi = useMemo(() => Math.round(dpi * sensitivity * 100) / 100, [dpi, sensitivity]);
   const result = `Meu eDPI é ${edpi} (${dpi} DPI × ${sensitivity} de sensibilidade).`;
 
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const sharedDpi = readSharedNumber(query, 'dpi');
+    const sharedSensitivity = readSharedNumber(query, 'sens');
+    if (sharedDpi !== null && sharedDpi > 0) setDpi(sharedDpi);
+    if (sharedSensitivity !== null && sharedSensitivity >= 0) setSensitivity(sharedSensitivity);
+  }, []);
+
   return (
     <ToolCard icon={Crosshair} eyebrow="FPS competitivo" title="Calculadora de eDPI" description="Compare sensibilidades no mesmo jogo sem depender apenas do DPI do mouse.">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -78,7 +107,7 @@ export function EdpiCalculator() {
         <NumberField label="Sensibilidade no jogo" value={sensitivity} onChange={setSensitivity} step={0.01} />
       </div>
       <ResultBox label="Seu eDPI" value={edpi.toLocaleString('pt-BR')} note="eDPI = DPI × sensibilidade. Compare apenas dentro do mesmo jogo; escalas variam entre títulos." />
-      <ResultShare text={result} />
+      <ResultShare text={result} params={{ dpi, sens: sensitivity }} />
     </ToolCard>
   );
 }
@@ -96,6 +125,15 @@ export function StoragePlanner() {
     ? `O jogo cabe no meu armazenamento. Restarão ${freeAfter} GB livres (${usage}% ocupado).`
     : `Faltam ${Math.abs(capacity - system - installed - newGame)} GB para instalar o jogo.`;
 
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const values = ['cap', 'sys', 'used', 'game'].map((key) => readSharedNumber(query, key));
+    if (values[0] !== null && values[0] > 0) setCapacity(values[0]);
+    if (values[1] !== null && values[1] >= 0) setSystem(values[1]);
+    if (values[2] !== null && values[2] >= 0) setInstalled(values[2]);
+    if (values[3] !== null && values[3] >= 0) setNewGame(values[3]);
+  }, []);
+
   return (
     <ToolCard icon={HardDrive} eyebrow="PC e console" title="Planejador de armazenamento" description="Descubra se o próximo jogo cabe sem apagar arquivos no susto.">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -105,7 +143,7 @@ export function StoragePlanner() {
         <NumberField label="Tamanho do novo jogo" value={newGame} onChange={setNewGame} suffix="GB" />
       </div>
       <ResultBox label={fits ? 'Espaço livre depois da instalação' : 'Espaço insuficiente'} value={fits ? `${freeAfter} GB` : `Faltam ${Math.abs(rawFreeAfter)} GB`} note={fits ? `O disco ficará aproximadamente ${usage}% ocupado.` : 'Considere remover jogos não usados ou escolher outro disco.'} tone={fits ? 'success' : 'warning'} />
-      <ResultShare text={result} />
+      <ResultShare text={result} params={{ cap: capacity, sys: system, used: installed, game: newGame }} />
     </ToolCard>
   );
 }
@@ -118,6 +156,16 @@ export function CostPerHourCalculator() {
   const cost = hours > 0 ? total / hours : 0;
   const result = `Este jogo custará cerca de ${cost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} por hora considerando ${hours} horas jogadas.`;
 
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const sharedPrice = readSharedNumber(query, 'preco');
+    const sharedExtra = readSharedNumber(query, 'extras');
+    const sharedHours = readSharedNumber(query, 'horas');
+    if (sharedPrice !== null && sharedPrice >= 0) setPrice(sharedPrice);
+    if (sharedExtra !== null && sharedExtra >= 0) setExtra(sharedExtra);
+    if (sharedHours !== null && sharedHours >= 0) setHours(sharedHours);
+  }, []);
+
   return (
     <ToolCard icon={Calculator} eyebrow="Compra consciente" title="Custo por hora jogada" description="Compare preço, DLCs e tempo real de uso antes de comprar.">
       <div className="grid gap-4 sm:grid-cols-3">
@@ -126,7 +174,7 @@ export function CostPerHourCalculator() {
         <NumberField label="Horas esperadas" value={hours} onChange={setHours} suffix="h" />
       </div>
       <ResultBox label="Custo estimado por hora" value={cost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} note={`Investimento total considerado: ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}. Use como comparação pessoal, não como regra de qualidade.`} />
-      <ResultShare text={result} />
+      <ResultShare text={result} params={{ preco: price, extras: extra, horas: hours }} />
     </ToolCard>
   );
 }
