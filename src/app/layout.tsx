@@ -18,11 +18,11 @@ const bingVerification = process.env.BING_SITE_VERIFICATION;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Resolva Jato | Orçamento com Pix no WhatsApp',
+    default: 'Resolva Jato | Ferramentas online grátis para o dia a dia',
     template: '%s'
   },
   description:
-    'Mande o orçamento, o cliente aprova no celular e você cobra com Pix no WhatsApp. Também currículo, contrato e proposta. Comece grátis.',
+    'Ferramentas online grátis para trabalho, estudo e tarefas do dia a dia: contratos, recibos, currículo, Pix, cálculos, documentos, IA e Jato Games.',
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   ...(staging ? { robots: stagingRobots() } : {}),
   openGraph: {
-    title: 'Resolva Jato | Orçamento com Pix no WhatsApp',
-    description: 'Cliente aprova no celular. Você recebe no Pix. Sem app, sem cartão.',
+    title: 'Resolva Jato | Ferramentas online grátis para o dia a dia',
+    description: 'Documentos, cálculos, estudo, produtividade e games em ferramentas práticas que funcionam no navegador.',
     locale: 'pt_BR',
     type: 'website',
     url: siteUrl,
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Resolva Jato | Orçamento com Pix no WhatsApp',
-    description: 'Cliente aprova no celular. Você recebe no Pix.'
+    title: 'Resolva Jato | Ferramentas online grátis',
+    description: 'Resolva trabalho, estudo e tarefas práticas com ferramentas gratuitas no navegador.'
   },
   keywords: [
     'orçamento com pix',
@@ -53,7 +53,11 @@ export const metadata: Metadata = {
     'gerador de contrato',
     'gerador de currículo',
     'proposta comercial',
-    'ferramentas grátis para MEI'
+    'ferramentas grátis para MEI',
+    'ferramentas online grátis',
+    'ferramentas para o dia a dia',
+    'calculadoras online',
+    'ferramentas para estudantes'
   ],
   ...(!staging && (googleVerification || bingVerification)
     ? {

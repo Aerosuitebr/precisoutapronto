@@ -28,37 +28,37 @@ const primaryCtaClass =
 
 const OTHER_TOOLS = [
   {
-    href: '/ferramentas/curriculo',
+    href: '/gerador-de-curriculo',
     title: 'Currículo',
     text: 'Layouts profissionais e PDF em um clique.',
     icon: GraduationCap
   },
   {
-    href: '/ferramentas/propostas',
+    href: '/gerador-de-proposta-comercial',
     title: 'Proposta comercial',
     text: 'Cara de agência, totais e validade claros.',
     icon: FileText
   },
   {
-    href: '/ferramentas/contratos',
+    href: '/gerador-de-contrato',
     title: 'Contrato',
     text: 'Modelos editáveis sem fila na papelaria.',
     icon: Scale
   },
   {
-    href: '/ferramentas/trabalhos',
+    href: '/para/estudantes',
     title: 'Capa ABNT',
     text: 'Escolar e universitária prontas em minutos.',
     icon: BookOpen
   },
   {
-    href: '/ferramentas/recibos',
+    href: '/gerador-de-recibo',
     title: 'Recibo',
     text: 'Valor por extenso e assinatura no PDF.',
     icon: Wallet
   },
   {
-    href: '/ferramentas/pix',
+    href: '/gerador-de-qr-code-pix',
     title: 'Pix avulso',
     text: 'QR Code e Copia e Cola para cobrar rápido.',
     icon: ClipboardList
@@ -103,20 +103,20 @@ export function LandingPage() {
               <Logo variant="hero" />
             </div>
             <p className="rj-animate-fade-up mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
-              Escritório digital grátis
+              Ferramentas para trabalho, estudo e vida prática
             </p>
             <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(1.9rem,4.2vw,3.35rem)] font-extrabold leading-[1.08] tracking-tight text-white">
-              Resolva estudo e cobrança no mesmo lugar.
+              Ferramentas online grátis para resolver o dia a dia.
             </h1>
             <p className="rj-animate-fade-up-delay-2 mt-4 max-w-lg text-base leading-7 text-slate-200 sm:text-lg">
-              Analise a redação do ENEM com feedback por competência ou gere cobrança Pix com QR e
-              Copia e Cola. Tudo grátis, no navegador.
+              Crie documentos, faça cálculos, organize tarefas, estude melhor e cuide do seu PC.
+              Recursos práticos, organizados por objetivo e disponíveis no navegador.
             </p>
             <ul className="rj-animate-fade-up-delay-2 mt-5 space-y-2 text-sm text-slate-200">
               {[
-                '1ª geração grátis, sem criar conta',
-                'Feedback ENEM por competência',
-                'QR Pix e Copia e Cola prontos'
+                'Mais de 20 ferramentas em um único catálogo',
+                'Conteúdo organizado para 10 perfis profissionais',
+                'Modelos, guias e respostas para concluir cada tarefa'
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 shrink-0 text-amber-300" />
@@ -126,10 +126,10 @@ export function LandingPage() {
             </ul>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
-                <AuthAwareLink href="/ferramentas/redacao-enem">
-                  Analisar redação
+                <Link href="/recursos">
+                  Explorar ferramentas
                   <ArrowRight className="h-4 w-4" />
-                </AuthAwareLink>
+                </Link>
               </Button>
               <Button
                 asChild
@@ -137,7 +137,7 @@ export function LandingPage() {
                 variant="outline"
                 className="h-12 w-full border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10 sm:w-auto"
               >
-                <Link href="/gerador-de-qr-code-pix">Gerar cobrança Pix</Link>
+                <Link href="/biblioteca">Consultar a biblioteca</Link>
               </Button>
             </div>
 
@@ -164,12 +164,12 @@ export function LandingPage() {
                   </Link>
                 </li>
                 <li>
-                  <AuthAwareLink
-                    href="/ferramentas/curriculo"
+                  <Link
+                    href="/gerador-de-curriculo"
                     className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
                   >
                     Currículo
-                  </AuthAwareLink>
+                  </Link>
                 </li>
                 <li>
                   <Link
@@ -182,8 +182,8 @@ export function LandingPage() {
               </ul>
             </div>
             <p className="mt-4 text-xs text-slate-400">
-              E se não for isso: editor de PDF, remoção de fundo e mais de 15 ferramentas grátis,
-              tudo no mesmo lugar.
+              Contratos, currículo, recibos, Pix, cálculos, produtividade, estudos e Jato Games:
+              encontre o próximo passo sem precisar conhecer o nome da ferramenta.
             </p>
           </div>
 

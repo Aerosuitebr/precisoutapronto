@@ -21,7 +21,6 @@ export default function robots(): MetadataRoute.Robots {
       disallow: [
         '/api/',
         '/conta',
-        '/ferramentas/',
         '/oficina/',
         '/comercial/',
         '/checkout',

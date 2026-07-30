@@ -10,6 +10,16 @@ export function SiteJsonLd() {
     name: 'Resolva Jato',
     url: siteUrl,
     logo: `${siteUrl}/icon-512.png`
+    ,
+    description:
+      'Plataforma brasileira de ferramentas online grátis para trabalho, estudo, documentos, cálculos e games.',
+    knowsAbout: [
+      'documentos profissionais',
+      'produtividade',
+      'trabalho e estudo',
+      'cálculos trabalhistas',
+      'ferramentas para games'
+    ]
   };
 
   const webSite = {
@@ -19,7 +29,7 @@ export function SiteJsonLd() {
     url: siteUrl,
     inLanguage: 'pt-BR',
     description:
-      'Orçamento com aprovação e Pix no WhatsApp, além de currículo, contrato, proposta e recibo em PDF.',
+      'Ferramentas online grátis para trabalho, estudo e tarefas do dia a dia, com documentos, cálculos, IA e Jato Games.',
     potentialAction: {
       '@type': 'SearchAction',
       target: {

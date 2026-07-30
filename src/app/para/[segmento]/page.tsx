@@ -62,6 +62,27 @@ export default async function SegmentPage({ params }: Props) {
           { '@type': 'ListItem', position: 1, name: 'Início', item: base },
           { '@type': 'ListItem', position: 2, name: `Para ${segment.name}`, item: pageUrl }
         ]
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: `Quais ferramentas o Resolva Jato oferece para ${segment.name}?`,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: `A seleção para ${segment.name} reúne ${segment.tools.map((tool) => tool.label).join(', ')} e conteúdos relacionados a tarefas frequentes.`
+            }
+          },
+          {
+            '@type': 'Question',
+            name: 'As ferramentas são gratuitas?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'O catálogo e as páginas educativas são públicos. Algumas funções de edição, histórico ou exportação podem solicitar uma conta gratuita.'
+            }
+          }
+        ]
       }
     ]
   };
@@ -107,6 +128,26 @@ export default async function SegmentPage({ params }: Props) {
               Ver toda a biblioteca para {segment.name} <ArrowRight className="h-4 w-4" />
             </SegmentJourneyLink>
           </div>
+        </section>
+        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <h2 className="rj-display text-3xl font-extrabold text-slate-950">Uma jornada organizada para {segment.name}</h2>
+          <div className="mt-7 grid gap-5 md:grid-cols-3">
+            {[
+              ['1. Entenda', 'Consulte uma resposta objetiva, exemplos e limites antes de começar.'],
+              ['2. Resolva', 'Abra a ferramenta adequada e preencha somente as informações necessárias.'],
+              ['3. Reutilize', 'Salve seu contexto e descubra recursos relacionados ao seu perfil.']
+            ].map(([title, text]) => (
+              <article key={title} className="rounded-3xl border border-slate-200 bg-white p-6">
+                <h3 className="font-extrabold text-slate-950">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+              </article>
+            ))}
+          </div>
+          <p className="mt-8 max-w-3xl text-sm leading-7 text-slate-600">
+            Esta curadoria é atualizada conforme novas ferramentas e dúvidas recorrentes são incorporadas ao catálogo.
+            Materiais de natureza jurídica, contábil ou trabalhista têm finalidade educativa e devem ser validados por
+            profissional habilitado quando a decisão envolver riscos ou particularidades do caso.
+          </p>
         </section>
       </main>
       <SiteFooter />

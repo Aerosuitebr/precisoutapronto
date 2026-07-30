@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { guides } from '@/lib/guides';
 import { intentPages } from '@/lib/growth/intents';
 import { IntentLibraryBrowser } from '@/components/growth/intent-library-browser';
+import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
   title: 'Biblioteca de documentos, trabalho e negócios',
@@ -14,8 +15,41 @@ export const metadata: Metadata = {
 };
 
 export default function LibraryPage() {
+  const base = getViralBaseUrl().replace(/\/$/, '');
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: 'Biblioteca Resolva Jato',
+        headline: 'Respostas práticas para concluir tarefas do dia a dia',
+        description: metadata.description,
+        url: `${base}/biblioteca`,
+        inLanguage: 'pt-BR',
+        dateModified: '2026-07-30',
+        publisher: { '@type': 'Organization', name: 'Resolva Jato', url: base }
+      },
+      {
+        '@type': 'ItemList',
+        name: 'Guias e modelos da biblioteca',
+        numberOfItems: guides.length + intentPages.length,
+        itemListElement: [
+          ...intentPages.map((item) => ({ name: item.title, url: `${base}/modelos/${item.slug}` })),
+          ...guides.map((guide) => ({ name: guide.title, url: `${base}/guias/${guide.slug}` }))
+        ].map((item, index) => ({ '@type': 'ListItem', position: index + 1, ...item }))
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Início', item: base },
+          { '@type': 'ListItem', position: 2, name: 'Biblioteca', item: `${base}/biblioteca` }
+        ]
+      }
+    ]
+  };
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteHeader />
       <main className="bg-slate-50">
         <section className="border-b border-slate-200 bg-white">
@@ -23,6 +57,9 @@ export default function LibraryPage() {
             <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-sky-700"><BookOpen className="h-4 w-4" /> Central do Conhecimento</p>
             <h1 className="rj-display mt-4 max-w-3xl text-4xl font-extrabold text-slate-950 sm:text-5xl">Da dúvida à tarefa concluída</h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Conteúdo estruturado por intenção, com respostas diretas, FAQs e a ferramenta certa para agir.</p>
+            <p className="mt-4 text-sm font-semibold text-slate-500">
+              {intentPages.length} respostas por intenção e {guides.length} guias aprofundados, revisados para conectar explicação e ação.
+            </p>
           </div>
         </section>
         <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -42,6 +79,15 @@ export default function LibraryPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {guides.map((guide) => <Link key={guide.slug} href={`/guias/${guide.slug}`} className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-sky-300"><p className="text-xs font-bold uppercase text-sky-700">{guide.category}</p><h3 className="mt-2 font-bold text-slate-950">{guide.title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p></Link>)}
           </div>
+          <aside className="mt-12 rounded-3xl border border-slate-200 bg-white p-6 text-sm leading-7 text-slate-600">
+            <h2 className="text-xl font-extrabold text-slate-950">Como produzimos este conteúdo</h2>
+            <p className="mt-3">
+              Cada material responde a uma tarefa específica, apresenta limites e conduz a uma ferramenta relacionada.
+              Conteúdos jurídicos, trabalhistas e contábeis são educativos, recebem revisão editorial e não substituem
+              a avaliação de um profissional habilitado para o caso concreto.
+            </p>
+            <Link href="/sobre" className="mt-4 inline-flex font-bold text-sky-700">Conheça o Resolva Jato e nossos critérios editoriais</Link>
+          </aside>
         </section>
       </main>
       <SiteFooter />
