@@ -8,6 +8,7 @@ Esta evolução organiza o Resolva Jato por problemas e perfis sem substituir os
 
 - `src/lib/growth/segments.ts`: catálogo central de segmentos, ferramentas e intenções.
 - `src/lib/growth/intents.ts`: registro editorial das páginas de intenção. Cada entrada possui resposta direta, passos, FAQs e uma ação.
+- `src/lib/growth/validation.ts`: auditoria automática de slugs, referências entre segmentos, quantidade mínima de passos/FAQs e destinos de CTA.
 - `/para/[segmento]`: centrais por perfil. As rotas antigas de MEI, freelancers e estudantes continuam válidas e têm precedência.
 - `/biblioteca` e `/modelos/[slug]`: base da Central do Conhecimento, com FAQPage estruturado.
 - `/assistente/documentos`: fluxo guiado que organiza o briefing e encaminha ao editor atual. A primeira versão funciona sem provedor externo.
@@ -106,6 +107,8 @@ COMMIT;
 3. Relacione a intenção aos segmentos adequados.
 4. Revise resposta, FAQs, riscos e CTA manualmente.
 5. O sitemap, a biblioteca e as centrais de segmento passam a incluir o conteúdo automaticamente.
+
+O catálogo inicial contém 20 intenções revisadas e cobre todas as referências exibidas nas dez centrais de segmento. O teste `growth-content-validation.spec.ts` impede que uma central publique um link para conteúdo inexistente.
 
 ## Próximos passos seguros
 
