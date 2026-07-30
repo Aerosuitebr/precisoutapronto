@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Termos e limitações — Jato Games Diagnostic',
+  title: 'Termos e limitações · Jato Games Diagnostic',
   description: 'Entenda o escopo, as limitações e o uso responsável das estimativas do Jato Games Diagnostic.',
   alternates: { canonical: '/games/diagnostico/termos' }
 };

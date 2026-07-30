@@ -1,48 +1,85 @@
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
-/** JSON-LD de Organization e WebSite para a home (ajuda buscadores a entender a marca). */
+/** JSON-LD de Organization e WebSite (rich results / Knowledge Panel). */
 export function SiteJsonLd() {
   const siteUrl = getViralBaseUrl().replace(/\/$/, '');
 
   const organization = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': `${siteUrl}/#organization`,
     name: 'Resolva Jato',
+    alternateName: 'RJ',
     url: siteUrl,
-    logo: `${siteUrl}/icon-512.png`
-    ,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/icon-512.png`,
+      width: 512,
+      height: 512
+    },
+    image: `${siteUrl}/opengraph-image`,
     description:
       'Plataforma brasileira de ferramentas online grátis para trabalho, estudo, documentos, cálculos e games.',
+    foundingDate: '2025',
+    areaServed: {
+      '@type': 'Country',
+      name: 'Brazil'
+    },
     knowsAbout: [
       'documentos profissionais',
+      'orçamento com Pix',
       'produtividade',
       'trabalho e estudo',
       'cálculos trabalhistas',
+      'MEI e freelancers',
       'ferramentas para games'
-    ]
+    ],
+    brand: {
+      '@type': 'Brand',
+      name: 'Resolva Jato'
+    }
   };
 
   const webSite = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${siteUrl}/#website`,
     name: 'Resolva Jato',
     url: siteUrl,
     inLanguage: 'pt-BR',
     description:
       'Ferramentas online grátis para trabalho, estudo e tarefas do dia a dia, com documentos, cálculos, IA e Jato Games.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${siteUrl}/busca?q={search_term_string}`
-      },
-      'query-input': 'required name=search_term_string'
-    }
+    publisher: { '@id': `${siteUrl}/#organization` },
+    about: { '@id': `${siteUrl}/#organization` }
+  };
+
+  const itemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': `${siteUrl}/#top-tools`,
+    name: 'Ferramentas em destaque',
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    numberOfItems: 8,
+    itemListElement: [
+      { name: 'Orçamento com Pix', path: '/orcamento-com-pix' },
+      { name: 'Gerador de contrato', path: '/gerador-de-contrato' },
+      { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
+      { name: 'Gerador de currículo', path: '/gerador-de-curriculo' },
+      { name: 'Proposta comercial', path: '/gerador-de-proposta-comercial' },
+      { name: 'Calculadora de rescisão', path: '/calculadora-de-rescisao' },
+      { name: 'Para MEI', path: '/para/mei' },
+      { name: 'Biblioteca', path: '/biblioteca' }
+    ].map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      url: `${siteUrl}${item.path}`
+    }))
   };
 
   return (
     <>
-      {[organization, webSite].map((block, index) => (
+      {[organization, webSite, itemList].map((block, index) => (
         <script
           key={index}
           type="application/ld+json"

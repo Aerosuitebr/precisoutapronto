@@ -3,7 +3,7 @@ import { isStagingEnv } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export default function robots(): MetadataRoute.Robots {
-  const base = getViralBaseUrl();
+  const base = getViralBaseUrl().replace(/\/$/, '');
 
   if (isStagingEnv()) {
     return {
@@ -21,11 +21,17 @@ export default function robots(): MetadataRoute.Robots {
       disallow: [
         '/api/',
         '/conta',
+        '/ferramentas/',
         '/oficina/',
         '/comercial/',
         '/checkout',
         '/design-system',
         '/verificar-email',
+        '/login',
+        '/cadastro',
+        '/busca',
+        '/documento/',
+        '/orcamento/',
         '/en/account',
         '/es/account',
         '/en/checkout',
@@ -40,6 +46,6 @@ export default function robots(): MetadataRoute.Robots {
         '/es/quote/'
       ]
     },
-    sitemap: `${base}/sitemap.xml`
+    sitemap: [`${base}/sitemap.xml`, `${base}/sitemaps/index.xml`]
   };
 }

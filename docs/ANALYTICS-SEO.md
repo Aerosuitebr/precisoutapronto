@@ -33,7 +33,7 @@ node scripts/seo/submit-indexnow.mjs --url https://resolvajato.com.br/guias
 
 ## Rotina após publicação
 
-1. Conferir `/sitemap.xml`, `/robots.txt` e `/llms.txt`.
-2. Inspecionar as novas URLs no Google Search Console.
+1. Conferir `/sitemap.xml`, `/sitemaps/index.xml`, `/robots.txt` e `/llms.txt`.
+2. Inspecionar as novas URLs no Google Search Console (propriedade de **domínio**).
 3. Rodar Site Scan e URL Inspection no Bing Webmaster Tools.
 4. Acompanhar consultas, páginas de entrada, início de checkout e compra.

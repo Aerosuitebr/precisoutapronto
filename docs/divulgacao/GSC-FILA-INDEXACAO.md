@@ -1,6 +1,8 @@
 # Fila GSC · solicitar indexação (todas as landings SEO)
 
-Fonte: `https://resolvajato.com.br/sitemap.xml` (149 URLs).  
+Fonte: `https://resolvajato.com.br/sitemap.xml` (~159 URLs).  
+Índice por segmento (melhor visão no GSC): `https://resolvajato.com.br/sitemaps/index.xml`.  
+Use a propriedade de **domínio** `resolvajato.com.br` (a de prefixo HTTPS é secundária).  
 “Solicitar indexação” no GSC tem cota diária. Use os lotes abaixo.
 
 ## Já confirmados no Google
@@ -71,7 +73,8 @@ Arquivo: `gsc-fila-rest.txt` (inclui EN/ES, games, institucionais)
 4. Se já estiver indexada: pular (não gastar cota)
 5. Parar quando o GSC avisar limite diário
 
-## Cobertura automática (todas as 149)
+## Cobertura automática (todas as ~159)
 
-- Sitemap reenviado em 2026-07-30
-- IndexNow no deploy + lote prioritário enviado
+- Sitemap completo: `/sitemap.xml`
+- Índice segmentado: `/sitemaps/index.xml` (core, tools, growth, guides, games, i18n)
+- IndexNow no deploy lê o sitemap ao vivo (lote completo)

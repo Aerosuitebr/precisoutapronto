@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Privacidade — Jato Games Diagnostic',
+  title: 'Privacidade · Jato Games Diagnostic',
   description: 'Política de privacidade específica do diagnóstico local de hardware do Jato Games.',
   alternates: { canonical: '/games/diagnostico/privacidade' }
 };

@@ -57,6 +57,10 @@ const nextConfig = {
         // Dois Cache-Control quebram o parse de alguns crawlers (erro HTTP geral no GSC).
         source: '/sitemap.xml',
         headers: [{ key: 'X-Robots-Tag', value: 'noindex' }]
+      },
+      {
+        source: '/sitemaps/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }]
       }
     ];
   }
