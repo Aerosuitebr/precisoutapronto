@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
   getSharedLinkExpiry,
+  getSharedLinkStatus,
   isActiveSharedLink,
   summarizeSharePerformance
 } from '../src/lib/share-performance';
@@ -26,6 +27,27 @@ test('considera revogação e expiração ao calcular links ativos', () => {
     expiresAt: '2026-08-28T12:00:00.000Z',
     revokedAt: '2026-07-29T10:00:00.000Z'
   }, now)).toBe(false);
+});
+
+test('classifica o ciclo de vida do link de forma determinística', () => {
+  expect(getSharedLinkStatus({
+    title: 'Ativo',
+    viewCount: 0,
+    expiresAt: '2026-08-01T12:00:00.000Z',
+    revokedAt: null
+  }, now)).toBe('active');
+  expect(getSharedLinkStatus({
+    title: 'Expirado',
+    viewCount: 0,
+    expiresAt: '2026-07-20T12:00:00.000Z',
+    revokedAt: null
+  }, now)).toBe('expired');
+  expect(getSharedLinkStatus({
+    title: 'Revogado',
+    viewCount: 0,
+    expiresAt: null,
+    revokedAt: '2026-07-20T12:00:00.000Z'
+  }, now)).toBe('revoked');
 });
 
 test('resume alcance sem dados individuais de visitantes', () => {

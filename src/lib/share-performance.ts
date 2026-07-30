@@ -5,11 +5,17 @@ export interface SharePerformanceLink {
   revokedAt: string | null;
 }
 
-export function isActiveSharedLink(link: SharePerformanceLink, now = Date.now()) {
-  if (link.revokedAt) return false;
-  if (!link.expiresAt) return true;
+export type SharedLinkStatus = 'active' | 'expired' | 'revoked';
+
+export function getSharedLinkStatus(link: SharePerformanceLink, now = Date.now()): SharedLinkStatus {
+  if (link.revokedAt) return 'revoked';
+  if (!link.expiresAt) return 'active';
   const expiresAt = Date.parse(link.expiresAt);
-  return Number.isFinite(expiresAt) && expiresAt > now;
+  return Number.isFinite(expiresAt) && expiresAt > now ? 'active' : 'expired';
+}
+
+export function isActiveSharedLink(link: SharePerformanceLink, now = Date.now()) {
+  return getSharedLinkStatus(link, now) === 'active';
 }
 
 export function getSharedLinkExpiry(link: Pick<SharePerformanceLink, 'expiresAt'>, now = Date.now()) {

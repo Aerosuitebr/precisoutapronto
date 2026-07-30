@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { BarChart3, Clock3, Copy, ExternalLink, Eye, Link2, RefreshCw, Share2, Trophy, Trash2 } from 'lucide-react';
+import { BarChart3, Clock3, Copy, ExternalLink, Eye, History, Link2, RefreshCw, RotateCcw, Share2, Trophy, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import {
@@ -12,6 +12,7 @@ import {
 import { trackEvent } from '@/lib/analytics';
 import {
   getSharedLinkExpiry,
+  getSharedLinkStatus,
   isActiveSharedLink,
   summarizeSharePerformance
 } from '@/lib/share-performance';
@@ -34,6 +35,7 @@ export function SharedLinksPanel() {
   const [links, setLinks] = useState<SharedLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [renewing, setRenewing] = useState<string | null>(null);
+  const [recreating, setRecreating] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -119,7 +121,36 @@ export function SharedLinksPanel() {
     }
   }
 
+  async function recreate(item: SharedLink) {
+    if (recreating === item.token) return;
+    setRecreating(item.token);
+    try {
+      const response = await fetch('/api/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          toolId: item.toolId,
+          artifactId: item.artifactId,
+          title: item.title,
+          expiresInDays: 30
+        })
+      });
+      if (!response.ok) throw new Error();
+      await load();
+      trackEvent('document_share_link_recreated', {
+        tool_id: item.toolId,
+        previous_status: getSharedLinkStatus(item)
+      });
+      toast('Novo link criado com validade de 30 dias.');
+    } catch {
+      toast('Não foi possível criar um novo link.');
+    } finally {
+      setRecreating(null);
+    }
+  }
+
   const active = links.filter((item) => isActiveSharedLink(item));
+  const ended = links.filter((item) => !isActiveSharedLink(item));
   const performance = summarizeSharePerformance(links);
 
   return (
@@ -222,6 +253,44 @@ export function SharedLinksPanel() {
           ))}
         </ul>
       )}
+      {!loading && ended.length > 0 ? (
+        <details className="mt-5 overflow-hidden rounded-2xl border border-slate-200" open={active.length === 0}>
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700">
+            <span className="inline-flex items-center gap-2">
+              <History className="h-4 w-4" />
+              Histórico de links encerrados
+            </span>
+            <span className="rounded-full bg-white px-2.5 py-1 text-xs text-slate-500">{ended.length}</span>
+          </summary>
+          <ul className="divide-y divide-slate-100">
+            {ended.map((item) => {
+              const status = getSharedLinkStatus(item);
+              return (
+                <li key={item.token} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold text-slate-900">{item.title}</p>
+                    <p className="mt-1 text-xs text-slate-500">
+                      {status === 'revoked'
+                        ? `Revogado em ${new Date(item.revokedAt!).toLocaleDateString('pt-BR')}`
+                        : `Expirou em ${new Date(item.expiresAt!).toLocaleDateString('pt-BR')}`}
+                      {' · '}{item.viewCount} {item.viewCount === 1 ? 'visualização' : 'visualizações'}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={recreating === item.token}
+                    onClick={() => void recreate(item)}
+                  >
+                    <RotateCcw className={`h-3.5 w-3.5 ${recreating === item.token ? 'animate-spin' : ''}`} />
+                    Criar novo link
+                  </Button>
+                </li>
+              );
+            })}
+          </ul>
+        </details>
+      ) : null}
     </section>
   );
 }

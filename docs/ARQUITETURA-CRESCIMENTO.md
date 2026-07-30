@@ -48,6 +48,8 @@ O painel apresenta um resumo de desempenho calculado no cliente: visualizações
 
 Cada link com prazo mostra os dias restantes e recebe destaque quando faltam até sete dias. A ação “Renovar 30 dias” chama novamente a API idempotente com o mesmo documento: o token e a URL são preservados, enquanto `expiresAt` passa a contar 30 dias a partir da renovação. Links históricos sem expiração permanecem sem prazo e não exibem essa ação.
 
+Links expirados ou revogados permanecem visíveis em “Histórico de links encerrados”, incluindo motivo/data e visualizações acumuladas. A ação “Criar novo link” usa o documento original e gera um token diferente com validade de 30 dias; o endereço encerrado continua inválido e o histórico não é apagado. Essa distinção evita transmitir a impressão incorreta de que um link revogado foi reativado.
+
 ### Acesso às áreas da conta
 
 O topo de `/conta` oferece atalhos para documentos, compartilhamentos, perfil e indicações. Cada área possui uma âncora permanente e margem de rolagem compatível com o cabeçalho:
