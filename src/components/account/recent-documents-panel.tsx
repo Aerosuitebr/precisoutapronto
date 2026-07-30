@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, Clock3, CopyPlus, FileText, Search, Star } from 'lucide-react';
+import { ArrowRight, Clock3, CopyPlus, FileText, Search, Share2, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
+import { useDocumentShare } from '@/hooks/use-document-share';
 import {
   filterDocumentHistory,
   sortDocumentHistory,
@@ -26,6 +27,7 @@ const FILTERS: { id: DocumentHistoryFilter; label: string }[] = [
 
 export function RecentDocumentsPanel() {
   const { toast } = useToast();
+  const { shareDocument, sharing } = useDocumentShare();
   const [documents, setDocuments] = useState<DocumentHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
@@ -250,6 +252,21 @@ export function RecentDocumentsPanel() {
                     </span>
                     <ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-violet-700" />
                   </Link>
+                  <button
+                    type="button"
+                    aria-label={`Compartilhar ${item.title}`}
+                    title="Compartilhar documento"
+                    disabled={sharing}
+                    onClick={() => void shareDocument({
+                      toolId: item.toolId,
+                      artifactId: item.artifactId,
+                      title: item.title,
+                      source: 'account'
+                    })}
+                    className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-slate-400 transition hover:bg-white hover:text-sky-700 disabled:opacity-50"
+                  >
+                    <Share2 className="h-4.5 w-4.5" />
+                  </button>
                   <button
                     type="button"
                     aria-label={`Duplicar ${item.title}`}

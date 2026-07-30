@@ -3,12 +3,17 @@
 import { useState } from 'react';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
-import { buildDocumentSharePayload, isShareCancellation } from '@/lib/document-sharing';
+import {
+  buildDocumentSharePayload,
+  buildDocumentShareRequest,
+  isShareCancellation
+} from '@/lib/document-sharing';
 
 interface ShareDocumentInput {
   toolId: string;
   artifactId: string;
   title: string;
+  source?: 'editor' | 'account';
 }
 
 interface ShareResponse {
@@ -29,7 +34,7 @@ export function useDocumentShare() {
       const response = await fetch('/api/share', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...input, expiresInDays: 30 })
+        body: JSON.stringify(buildDocumentShareRequest(input))
       });
       const data = await response.json() as ShareResponse;
       if (!response.ok || !data.url) {
@@ -44,12 +49,16 @@ export function useDocumentShare() {
           await navigator.share(payload);
           trackEvent('document_share_native_completed', {
             tool_id: input.toolId,
+            source: input.source || 'editor',
             reused: Boolean(data.reused)
           });
           return;
         } catch (error) {
           if (isShareCancellation(error)) {
-            trackEvent('document_share_native_cancelled', { tool_id: input.toolId });
+            trackEvent('document_share_native_cancelled', {
+              tool_id: input.toolId,
+              source: input.source || 'editor'
+            });
             return;
           }
         }
@@ -58,6 +67,7 @@ export function useDocumentShare() {
       await navigator.clipboard.writeText(url);
       trackEvent('document_share_link_copied', {
         tool_id: input.toolId,
+        source: input.source || 'editor',
         reused: Boolean(data.reused)
       });
       toast('Link público copiado. Ele ficará ativo por 30 dias.');
@@ -65,6 +75,7 @@ export function useDocumentShare() {
       const notSaved = error instanceof Error && error.message === 'Document not found.';
       trackEvent('document_share_link_failed', {
         tool_id: input.toolId,
+        source: input.source || 'editor',
         reason: notSaved ? 'not_saved' : linkCreated ? 'delivery_failed' : 'request_failed'
       });
       toast(notSaved

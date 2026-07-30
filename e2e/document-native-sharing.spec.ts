@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { buildDocumentSharePayload } from '../src/lib/document-sharing';
+import {
+  buildDocumentSharePayload,
+  buildDocumentShareRequest
+} from '../src/lib/document-sharing';
 
 test('native share payload contains the public URL and no document body', () => {
   const payload = buildDocumentSharePayload(
@@ -18,4 +21,22 @@ test('native share payload contains the public URL and no document body', () => 
 test('native share title is bounded and has a fallback', () => {
   expect(buildDocumentSharePayload('', '/documento/token').title).toBe('Documento compartilhado');
   expect(String(buildDocumentSharePayload('a'.repeat(200), '/documento/token').title)).toHaveLength(140);
+});
+
+test('share request is bounded, private and expires in 30 days', () => {
+  expect(buildDocumentShareRequest({
+    toolId: 'contratos',
+    artifactId: 'ctr_123',
+    title: '  Contrato de fotografia  '
+  })).toEqual({
+    toolId: 'contratos',
+    artifactId: 'ctr_123',
+    title: 'Contrato de fotografia',
+    expiresInDays: 30
+  });
+  expect(buildDocumentShareRequest({
+    toolId: 'recibos',
+    artifactId: 'rct_123',
+    title: ''
+  }).title).toBe('Documento compartilhado');
 });
