@@ -189,7 +189,7 @@ O Jato Games evolui de um diretório editorial para uma central de decisão e fe
 - Calculadora de eDPI para comparar configurações dentro do mesmo jogo.
 - Planejador de armazenamento para antecipar espaço livre após uma instalação.
 - Calculadora de custo por hora jogada para apoiar decisões de compra.
-- Comparador “Meu PC roda?” com CPU, GPU, RAM e armazenamento, conectado às fichas do catálogo e com diagnóstico explicitamente orientativo.
+- Comparador “Meu PC roda?” com dois níveis: benchmark local de CPU e recursos gráficos mediante consentimento, ou leitura passiva sem carga. O relatório compara CPU, GPU, RAM e armazenamento, mostra gargalo, pontuação e fidelidade por evidência, sem enviar o diagnóstico ao servidor.
 - Histórico local de até quatro cálculos por ferramenta, sem conta e sem envio ao servidor.
 - Resultados copiáveis e compartilháveis, criando um ciclo de distribuição orgânica.
 - Links de resultado preservam os valores do cálculo na URL e restauram a configuração para quem recebe.
