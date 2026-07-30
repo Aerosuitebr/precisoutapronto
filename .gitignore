@@ -20,3 +20,5 @@ tsconfig.tsbuildinfo
 /playwright/.cache/
 /e2e-agent/artifacts/
 /e2e-agent/.venv/
+/apps/**/bin/
+/apps/**/obj/
