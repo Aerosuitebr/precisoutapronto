@@ -2,18 +2,36 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { ChevronRight, Search, X } from 'lucide-react';
 import { growthSegments } from '@/lib/growth/segments';
-import { filterLibraryIntents, type LibraryIntentItem } from '@/lib/growth/library';
+import { filterLibraryIntents, normalizeLibrarySegment, type LibraryIntentItem } from '@/lib/growth/library';
 import { trackEvent } from '@/lib/analytics';
 
 export function IntentLibraryBrowser({ items }: { items: LibraryIntentItem[] }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [query, setQuery] = useState('');
   const [segment, setSegment] = useState('');
   const filtered = useMemo(
     () => filterLibraryIntents(items, query, segment),
     [items, query, segment]
   );
+
+  useEffect(() => {
+    const fromUrl = normalizeLibrarySegment(new URLSearchParams(window.location.search).get('segment'));
+    if (fromUrl) {
+      setSegment(fromUrl);
+      localStorage.setItem('rj-growth-segment', fromUrl);
+      trackEvent('library_opened_segmented', { segment: fromUrl, source: 'url' });
+      return;
+    }
+    const fromPreference = normalizeLibrarySegment(localStorage.getItem('rj-growth-segment'));
+    if (fromPreference) {
+      setSegment(fromPreference);
+      trackEvent('library_opened_segmented', { segment: fromPreference, source: 'preference' });
+    }
+  }, []);
 
   useEffect(() => {
     const trimmed = query.trim();
@@ -29,8 +47,16 @@ export function IntentLibraryBrowser({ items }: { items: LibraryIntentItem[] }) 
   }, [filtered.length, query, segment]);
 
   function selectSegment(slug: string) {
-    setSegment(slug);
-    trackEvent('library_segment_filtered', { segment: slug || 'all' });
+    const normalized = normalizeLibrarySegment(slug);
+    setSegment(normalized);
+    if (normalized) localStorage.setItem('rj-growth-segment', normalized);
+    else localStorage.removeItem('rj-growth-segment');
+    const params = new URLSearchParams(window.location.search);
+    if (normalized) params.set('segment', normalized);
+    else params.delete('segment');
+    const queryString = params.toString();
+    router.replace(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
+    trackEvent('library_segment_filtered', { segment: normalized || 'all' });
   }
 
   return (

@@ -116,6 +116,8 @@ Cada página de intenção publica `WebPage`, `BreadcrumbList` e `FAQPage` em JS
 
 A `/biblioteca` oferece busca instantânea tolerante a acentos e filtros para os dez segmentos. A busca acontece no navegador, sem chamadas à API. A telemetria registra apenas o tamanho da consulta, quantidade de resultados e segmento escolhido; o texto pesquisado não é enviado.
 
+As centrais `/para/[segmento]` encaminham para a biblioteca com `?segment=` validado. Sem parâmetro, a biblioteca pode aplicar a preferência já escolhida na homepage. A seleção atualiza a URL sem recarregar a página, permitindo compartilhar a visualização filtrada. O evento `segment_journey_clicked` mede apenas segmento e tipo de destino (`tool`, `intent` ou `library`).
+
 ## Indicações
 
 O parâmetro `?ref=` é capturado globalmente e preservado no navegador até a conclusão do cadastro, mesmo quando o convite entra por uma landing diferente da homepage. O painel da conta permite compartilhar o convite pelo seletor nativo, WhatsApp, cópia do link ou cópia do código.

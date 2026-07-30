@@ -5,6 +5,16 @@ export interface LibraryIntentItem {
   segmentSlugs: string[];
 }
 
+const LIBRARY_SEGMENTS = new Set([
+  'mei', 'autonomos', 'empresas', 'rh', 'contadores',
+  'advogados', 'estudantes', 'prestadores', 'saude', 'gestores'
+]);
+
+export function normalizeLibrarySegment(raw: string | null | undefined) {
+  const segment = (raw || '').trim().toLocaleLowerCase('pt-BR');
+  return LIBRARY_SEGMENTS.has(segment) ? segment : '';
+}
+
 function normalize(value: string) {
   return value
     .normalize('NFD')
