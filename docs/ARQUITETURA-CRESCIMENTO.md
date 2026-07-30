@@ -112,6 +112,8 @@ O catálogo inicial contém 20 intenções revisadas e cobre todas as referênci
 
 Cada página de intenção publica `WebPage`, `BreadcrumbList` e `FAQPage` em JSON-LD, exibe breadcrumbs visíveis e recomenda até três conteúdos relacionados por afinidade de segmento e ferramenta. O clique do conteúdo para a ferramenta gera `intent_tool_cta_clicked` com apenas o slug editorial e o caminho da ferramenta.
 
+A `/biblioteca` oferece busca instantânea tolerante a acentos e filtros para os dez segmentos. A busca acontece no navegador, sem chamadas à API. A telemetria registra apenas o tamanho da consulta, quantidade de resultados e segmento escolhido; o texto pesquisado não é enviado.
+
 ## Próximos passos seguros
 
 - Adicionar testes de integração para criação, expiração e revogação de links.
