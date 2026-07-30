@@ -91,11 +91,25 @@ Copies e UTMs: [`KIT-DISTRIBUICAO-VIRAL.md`](../KIT-DISTRIBUICAO-VIRAL.md) e [`E
 
 ## Checklist rápido
 
-- [ ] MX / SPF / DKIM / DMARC no Cloudflare
+- [x] MX Google no DNS (`smtp.google.com`)
+- [x] DKIM `google._domainkey` publicado
+- [ ] SPF TXT no apex: `v=spf1 include:_spf.google.com ~all` (**faltando**)
+- [ ] DMARC TXT em `_dmarc`: `v=DMARC1; p=none; rua=mailto:contato@resolvajato.com.br` (**faltando**)
 - [ ] Senha de app na conta `contato@`
-- [ ] `.env` de produção com SMTP Workspace + rebuild
-- [ ] E-mail de verificação chega na caixa de entrada
-- [ ] Sitemaps enviados no GSC (domínio)
+- [ ] `.env.production` no VPS com `SMTP_USER`/`SMTP_PASS`/`SMTP_FROM` Workspace + recreate do app
+  - Script: `scripts/deploy/patch-smtp-workspace.sh`
+- [ ] E-mail de verificação chega na caixa de entrada (From `contato@resolvajato.com.br`)
+- [ ] Sitemaps enviados no GSC (domínio): `/sitemap.xml` + `/sitemaps/index.xml`
 - [ ] GA4 vinculado ao GSC
-- [ ] `security.txt` e `/contato` no ar após deploy
+- [x] `security.txt`, JSON-LD com e-mail e `/contato` no ar (deploy 30/jul)
+- [x] IndexNow reenviado no deploy (159 URLs)
 - [ ] (Opcional) Google Business Profile área de serviço
+
+### Cloudflare · colar agora (DNS → Records)
+
+| Type | Name | Content | Proxy |
+|------|------|---------|-------|
+| TXT | `@` | `v=spf1 include:_spf.google.com ~all` | DNS only |
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:contato@resolvajato.com.br` | DNS only |
+
+Se já existir outro TXT SPF no apex, **unifique** num único registro (não crie dois `v=spf1`).
