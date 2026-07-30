@@ -24,6 +24,8 @@ import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
 import { formatDate, formatDateTime, cancelPremium } from '@/lib/billing';
 import { PLANS } from '@/lib/plans';
+import { ProfileSettings } from '@/components/account/profile-settings';
+import { SharedLinksPanel } from '@/components/account/shared-links-panel';
 
 const ASAAS_CHECKOUT = '/checkout?method=asaas';
 
@@ -236,6 +238,9 @@ function ContaContent() {
             </p>
           </aside>
         </section>
+
+        <ProfileSettings />
+        <SharedLinksPanel />
 
         <ReferralPanel />
 

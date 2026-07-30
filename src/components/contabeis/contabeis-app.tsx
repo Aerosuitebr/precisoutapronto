@@ -384,6 +384,7 @@ export function ContabeisApp() {
         </DocumentStickyActions>
 
         <DocumentHistoryPanel
+          toolId="contabeis"
           items={historyItems}
           activeId={activeId}
           onEdit={handleSelect}

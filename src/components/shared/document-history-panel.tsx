@@ -1,8 +1,9 @@
 'use client';
 
-import { Copy, Pencil, Trash2 } from 'lucide-react';
+import { Copy, Link2, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/components/ui/toast';
 
 export interface DocumentHistoryItem {
   id: string;
@@ -22,6 +23,7 @@ interface DocumentHistoryPanelProps {
   /** Cria um documento novo com as mesmas informações. */
   onDuplicate: (id: string) => void;
   onDelete: (id: string) => void;
+  toolId?: string;
   emptyLabel?: string;
 }
 
@@ -40,8 +42,27 @@ export function DocumentHistoryPanel({
   onEdit,
   onDuplicate,
   onDelete,
+  toolId,
   emptyLabel = 'Nenhum documento salvo ainda.'
 }: DocumentHistoryPanelProps) {
+  const { toast } = useToast();
+
+  async function share(item: DocumentHistoryItem) {
+    try {
+      const response = await fetch('/api/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ toolId, artifactId: item.id, title: item.title, expiresInDays: 30 })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error);
+      const url = new URL(data.url, window.location.origin).toString();
+      await navigator.clipboard.writeText(url);
+      toast('Link público copiado. Ele ficará ativo por 30 dias.');
+    } catch {
+      toast('Salve o documento e tente compartilhar novamente.');
+    }
+  }
   if (items.length === 0) {
     return (
       <section className="rounded-[28px] border border-dashed border-slate-200 bg-slate-50/80 p-5 sm:p-6">
@@ -87,7 +108,7 @@ export function DocumentHistoryPanel({
                 <p className="mt-1 text-[11px] text-slate-500">Atualizado em {formatUpdatedAt(item.updatedAt)}</p>
               </div>
 
-              <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto sm:flex-wrap">
+              <div className={cn('grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap', toolId ? 'grid-cols-2' : 'grid-cols-3')}>
                 <Button
                   type="button"
                   size="sm"
@@ -100,6 +121,12 @@ export function DocumentHistoryPanel({
                   <Pencil className="h-3.5 w-3.5" />
                   <span className="sm:inline">{active ? 'Editando' : 'Editar'}</span>
                 </Button>
+                {toolId ? (
+                  <Button type="button" size="sm" variant="outline" onClick={() => share(item)} className="justify-center">
+                    <Link2 className="h-3.5 w-3.5" />
+                    <span>Compartilhar</span>
+                  </Button>
+                ) : null}
                 <Button
                   type="button"
                   size="sm"

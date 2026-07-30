@@ -432,6 +432,7 @@ export function ContratosApp() {
         </DocumentStickyActions>
 
         <DocumentHistoryPanel
+          toolId="contratos"
           items={historyItems}
           activeId={activeId}
           onEdit={handleSelect}

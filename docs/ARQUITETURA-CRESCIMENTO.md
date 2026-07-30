@@ -14,6 +14,19 @@ Esta evolução organiza o Resolva Jato por problemas e perfis sem substituir os
 - `UserProfile`: preferência de segmento e dados opcionais de ocupação/empresa.
 - `SharedDocument`: token público revogável ligado a um `ToolDocument`. `/api/share` cria o link e `/documento/[token]` o exibe sem indexação.
 
+## Experiência de perfil e compartilhamento
+
+A página `/conta` permite editar segmento, profissão e empresa. A preferência também alimenta a personalização local da homepage.
+
+Os históricos de contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar**. O link:
+
+- é criado somente para um documento pertencente ao usuário autenticado;
+- é reutilizado enquanto estiver ativo, evitando links duplicados;
+- expira em 30 dias quando criado pela interface;
+- pode ser copiado, aberto e revogado na área **Links compartilhados** da conta;
+- deixa de funcionar imediatamente após revogação ou expiração;
+- nunca é incluído no índice de mecanismos de busca.
+
 ## Compatibilidade
 
 Nada foi removido. A navegação anterior, `/guias`, `/recursos`, `/ferramentas/*`, landings e APIs de documentos permanecem. A personalização usa `localStorage` para visitantes e tenta sincronizar com `/api/profile` apenas quando há sessão.

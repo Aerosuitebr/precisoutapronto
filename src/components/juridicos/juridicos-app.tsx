@@ -367,6 +367,7 @@ export function JuridicosApp() {
         </DocumentStickyActions>
 
         <DocumentHistoryPanel
+          toolId="juridicos"
           items={historyItems}
           activeId={activeId}
           onEdit={handleSelect}
