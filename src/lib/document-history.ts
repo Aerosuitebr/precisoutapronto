@@ -8,6 +8,8 @@ export interface DocumentHistoryItem {
   toolLabel: string;
 }
 
+export type DocumentHistoryFilter = 'all' | 'favorites' | 'curriculo' | 'recibos' | 'propostas' | 'contratos';
+
 const TOOL_HISTORY = {
   curriculo: { label: 'Currículo', href: '/ferramentas/curriculo' },
   recibos: { label: 'Recibo', href: '/ferramentas/recibos' },
@@ -47,4 +49,26 @@ export function sortDocumentHistory<T extends Pick<DocumentHistoryItem, 'isFavor
       Number(b.isFavorite) - Number(a.isFavorite) ||
       Date.parse(b.updatedAt) - Date.parse(a.updatedAt)
   );
+}
+
+function normalizeSearch(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('pt-BR')
+    .trim();
+}
+
+export function filterDocumentHistory(
+  documents: DocumentHistoryItem[],
+  filter: DocumentHistoryFilter,
+  query: string
+) {
+  const normalizedQuery = normalizeSearch(query);
+  return documents.filter((document) => {
+    if (filter === 'favorites' && !document.isFavorite) return false;
+    if (filter !== 'all' && filter !== 'favorites' && document.toolId !== filter) return false;
+    if (!normalizedQuery) return true;
+    return normalizeSearch(`${document.title} ${document.toolLabel}`).includes(normalizedQuery);
+  });
 }

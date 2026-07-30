@@ -1,14 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { ArrowRight, Clock3, FileText, Star } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowRight, Clock3, FileText, Search, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
-import { sortDocumentHistory, type DocumentHistoryItem } from '@/lib/document-history';
+import {
+  filterDocumentHistory,
+  sortDocumentHistory,
+  type DocumentHistoryFilter,
+  type DocumentHistoryItem
+} from '@/lib/document-history';
 
 const VISIBLE_LIMIT = 8;
+const FILTERS: { id: DocumentHistoryFilter; label: string }[] = [
+  { id: 'all', label: 'Todos' },
+  { id: 'favorites', label: 'Favoritos' },
+  { id: 'curriculo', label: 'Currículos' },
+  { id: 'contratos', label: 'Contratos' },
+  { id: 'recibos', label: 'Recibos' },
+  { id: 'propostas', label: 'Propostas' }
+];
 
 export function RecentDocumentsPanel() {
   const { toast } = useToast();
@@ -16,6 +30,8 @@ export function RecentDocumentsPanel() {
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [filter, setFilter] = useState<DocumentHistoryFilter>('all');
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -38,10 +54,28 @@ export function RecentDocumentsPanel() {
     };
   }, [toast]);
 
-  const visible = showAll ? documents : documents.slice(0, VISIBLE_LIMIT);
+  const filtered = useMemo(
+    () => filterDocumentHistory(documents, filter, query),
+    [documents, filter, query]
+  );
+  const visible = showAll ? filtered : filtered.slice(0, VISIBLE_LIMIT);
 
   function trackOpen(item: DocumentHistoryItem) {
     trackEvent('account_document_resumed', { tool_id: item.toolId });
+  }
+
+  function selectFilter(nextFilter: DocumentHistoryFilter) {
+    setFilter(nextFilter);
+    setShowAll(false);
+    trackEvent('account_documents_filtered', { filter_id: nextFilter });
+  }
+
+  function trackSearch() {
+    if (!query.trim()) return;
+    trackEvent('account_documents_searched', {
+      result_count: filtered.length,
+      has_results: filtered.length > 0
+    });
   }
 
   async function toggleFavorite(item: DocumentHistoryItem) {
@@ -119,6 +153,59 @@ export function RecentDocumentsPanel() {
         </div>
       ) : (
         <>
+          <div className="mt-6 space-y-3">
+            <label className="relative block">
+              <span className="sr-only">Buscar documentos por nome ou tipo</span>
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <Input
+                type="search"
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setShowAll(false);
+                }}
+                onBlur={trackSearch}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') trackSearch();
+                }}
+                placeholder="Buscar por nome ou tipo de documento"
+                className="pl-10"
+              />
+            </label>
+            <div className="flex gap-2 overflow-x-auto pb-1" aria-label="Filtrar documentos">
+              {FILTERS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={filter === option.id}
+                  onClick={() => selectFilter(option.id)}
+                  className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold transition ${
+                    filter === option.id
+                      ? 'bg-violet-700 text-white'
+                      : 'bg-slate-100 text-slate-600 hover:bg-violet-100 hover:text-violet-800'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {filtered.length === 0 ? (
+            <div className="mt-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
+              <p className="text-sm font-semibold text-slate-700">Nenhum documento encontrado.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery('');
+                  selectFilter('all');
+                }}
+                className="mt-2 text-sm font-bold text-violet-700 hover:text-violet-900"
+              >
+                Limpar busca e filtros
+              </button>
+            </div>
+          ) : (
+            <>
           <ul className="mt-6 grid gap-3 md:grid-cols-2">
             {visible.map((item) => (
               <li key={`${item.toolId}:${item.artifactId}`}>
@@ -154,7 +241,7 @@ export function RecentDocumentsPanel() {
               </li>
             ))}
           </ul>
-          {documents.length > VISIBLE_LIMIT ? (
+          {filtered.length > VISIBLE_LIMIT ? (
             <Button
               type="button"
               variant="ghost"
@@ -162,9 +249,11 @@ export function RecentDocumentsPanel() {
               className="mt-4"
               onClick={() => setShowAll((current) => !current)}
             >
-              {showAll ? 'Mostrar menos' : `Ver mais ${documents.length - VISIBLE_LIMIT}`}
+              {showAll ? 'Mostrar menos' : `Ver mais ${filtered.length - VISIBLE_LIMIT}`}
             </Button>
           ) : null}
+            </>
+          )}
         </>
       )}
     </section>

@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import {
   buildDocumentEditorHref,
   DOCUMENT_HISTORY_TOOL_IDS,
+  filterDocumentHistory,
   getDocumentHistoryTitle,
   getDocumentHistoryTool,
   sortDocumentHistory
@@ -40,4 +41,32 @@ test('mantém favoritos no topo e ordena cada grupo por atualização', () => {
     { isFavorite: true, updatedAt: '2026-07-28T12:00:00.000Z', id: 'favorite-new' }
   ]);
   expect(sorted.map((item) => item.id)).toEqual(['favorite-new', 'favorite-old', 'recent']);
+});
+
+test('filtra metadados por favorito, ferramenta e busca sem acentos', () => {
+  const documents = [
+    {
+      artifactId: '1',
+      toolId: 'curriculo',
+      title: 'Currículo da Ana',
+      updatedAt: '2026-07-29T12:00:00.000Z',
+      isFavorite: true,
+      editorHref: '/curriculo',
+      toolLabel: 'Currículo'
+    },
+    {
+      artifactId: '2',
+      toolId: 'contratos',
+      title: 'Prestação de serviços',
+      updatedAt: '2026-07-28T12:00:00.000Z',
+      isFavorite: false,
+      editorHref: '/contratos',
+      toolLabel: 'Contrato'
+    }
+  ];
+  expect(filterDocumentHistory(documents, 'favorites', '')).toHaveLength(1);
+  expect(filterDocumentHistory(documents, 'contratos', '')[0].artifactId).toBe('2');
+  expect(filterDocumentHistory(documents, 'all', 'curriculo')[0].artifactId).toBe('1');
+  expect(filterDocumentHistory(documents, 'all', 'servicos')[0].artifactId).toBe('2');
+  expect(filterDocumentHistory(documents, 'all', 'inexistente')).toEqual([]);
 });
