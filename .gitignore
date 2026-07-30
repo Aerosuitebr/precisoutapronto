@@ -1,5 +1,6 @@
 .data/
 tmp/
+-w
 node_modules/
 .next/
 .angular/

@@ -110,6 +110,14 @@ Deploy incremental (sem reenviar .env / tunnel):
 powershell -File scripts\deploy\setup-vultr-resolvajato.ps1 -SkipEnv -SkipTunnel
 ```
 
+Fluxo completo via GitHub Actions (staging + E2E + producao automatica), com barra de progresso:
+
+```bat
+DeployMaster.bat
+```
+
+Opcoes: `DeployMaster.bat -StagingOnly` · `DeployMaster.bat -Branch nome-da-branch` · `DeployMaster.bat -SkipPush` · `DeployMaster.bat -SkipCommit`
+
 ## Staging / homolog i18n
 
 Stack paralelo no mesmo VPS (sem Evolution), porta **3001**:
