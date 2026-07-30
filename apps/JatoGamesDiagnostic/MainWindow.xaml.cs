@@ -16,13 +16,14 @@ public partial class MainWindow : Window
     private readonly HardwareInventoryService _inventory = new();
     private readonly BenchmarkService _benchmark = new();
     private readonly ReportService _reports = new();
+    private readonly GameCatalogService _catalog = new();
     private DiagnosticReport? _currentReport;
 
     public MainWindow()
     {
         InitializeComponent();
-        GameSelector.ItemsSource = GameProfiles();
-        GameSelector.SelectedIndex = 0;
+        ApplyCatalog(_catalog.ReadCache()?.Games ?? _catalog.Fallback(), "Top 10 offline disponível");
+        Loaded += async (_, _) => await RefreshCatalogAsync(false);
     }
 
     private async void StartButton_Click(object sender, RoutedEventArgs e)
@@ -124,6 +125,43 @@ public partial class MainWindow : Window
 
     private void RestartButton_Click(object sender, RoutedEventArgs e) => Restart();
 
+    private async void RefreshCatalogButton_Click(object sender, RoutedEventArgs e) =>
+        await RefreshCatalogAsync(true);
+
+    private async Task RefreshCatalogAsync(bool notifyFailure)
+    {
+        RefreshCatalogButton.IsEnabled = false;
+        CatalogStatus.Text = "Verificando Top 10 do Jato Games…";
+        try
+        {
+            var catalog = await _catalog.RefreshAsync(CancellationToken.None);
+            var version = DateTimeOffset.TryParse(catalog.CatalogVersion, out var updatedAt)
+                ? updatedAt.ToLocalTime().ToString("dd/MM/yyyy")
+                : catalog.CatalogVersion;
+            ApplyCatalog(catalog.Games, $"✓ Top 10 atualizado · {version}");
+        }
+        catch
+        {
+            CatalogStatus.Text = "Modo offline · usando último Top 10 disponível";
+            if (notifyFailure)
+                MessageBox.Show("Não foi possível consultar o catálogo agora. A lista offline continua disponível.", "Jato Games Diagnostic", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        finally
+        {
+            RefreshCatalogButton.IsEnabled = true;
+        }
+    }
+
+    private void ApplyCatalog(IEnumerable<GameProfile> games, string status)
+    {
+        var selectedSlug = (GameSelector.SelectedItem as GameProfile)?.Slug;
+        var list = new List<GameProfile>(games);
+        if (list.Count == 0) list.AddRange(_catalog.Fallback());
+        GameSelector.ItemsSource = list;
+        GameSelector.SelectedItem = list.Find(game => game.Slug == selectedSlug) ?? list[0];
+        CatalogStatus.Text = status;
+    }
+
     private void Restart()
     {
         _currentReport = null;
@@ -135,15 +173,5 @@ public partial class MainWindow : Window
         ConsentView.Visibility = Visibility.Visible;
     }
 
-    private static List<GameProfile> GameProfiles() => new()
-    {
-        new() { Name = "Counter-Strike 2", CpuTarget = 58, GpuTarget = 54, RamMinimumGb = 8, StorageMinimumGb = 85 },
-        new() { Name = "Valorant", CpuTarget = 52, GpuTarget = 48, RamMinimumGb = 8, StorageMinimumGb = 40 },
-        new() { Name = "Fortnite", CpuTarget = 60, GpuTarget = 58, RamMinimumGb = 8, StorageMinimumGb = 30 },
-        new() { Name = "Elden Ring", CpuTarget = 68, GpuTarget = 70, RamMinimumGb = 12, StorageMinimumGb = 60 },
-        new() { Name = "Grand Theft Auto V", CpuTarget = 55, GpuTarget = 56, RamMinimumGb = 8, StorageMinimumGb = 100 },
-        new() { Name = "Minecraft com shaders", CpuTarget = 62, GpuTarget = 62, RamMinimumGb = 8, StorageMinimumGb = 10 },
-        new() { Name = "EA Sports FC", CpuTarget = 63, GpuTarget = 60, RamMinimumGb = 8, StorageMinimumGb = 100 }
-    };
 }
 }

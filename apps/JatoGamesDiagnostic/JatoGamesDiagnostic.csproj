@@ -7,7 +7,7 @@
     <AssemblyName>JatoGamesDiagnostic</AssemblyName>
     <RootNamespace>JatoGamesDiagnostic</RootNamespace>
     <ApplicationIcon />
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Company>Resolva Jato</Company>
     <Product>Jato Games Diagnostic</Product>
     <Description>Diagnóstico local e transparente de hardware para jogos.</Description>

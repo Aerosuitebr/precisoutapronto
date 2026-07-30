@@ -50,8 +50,8 @@ O MVP não afirma executar um benchmark Direct3D equivalente a um jogo nem preve
 - Não cria serviço do Windows.
 - Não inicia com o sistema.
 - Não altera registro ou configurações de segurança.
-- Não possui comunicação de rede.
-- Não envia telemetria.
+- Faz somente uma consulta `GET` ao catálogo público de jogos; a requisição não contém inventário nem benchmark.
+- Não envia diagnóstico ou telemetria.
 - Exporta somente por escolha explícita.
 - O relatório contém nome da máquina; a futura integração web deverá omitir esse campo por padrão.
 
@@ -88,3 +88,16 @@ Saída:
 8. Submeter cada release ao Microsoft Defender e acompanhar falsos positivos.
 9. Revisar juridicamente consentimento e política de privacidade.
 10. Projetar tokens temporários antes de qualquer integração com o site.
+
+## Catálogo Top 10
+
+O site expõe `GET /api/games/catalog` com versão de schema, versão editorial, plataformas, referências mínimas/recomendadas e alvos normalizados.
+
+O agente:
+
+1. carrega imediatamente os dez perfis embutidos;
+2. tenta atualizar a lista com timeout de cinco segundos;
+3. valida schema e conteúdo antes de aceitar a resposta;
+4. mantém a seleção atual ao atualizar;
+5. salva a última resposta válida em `%LOCALAPPDATA%`;
+6. usa cache ou fallback quando está offline.

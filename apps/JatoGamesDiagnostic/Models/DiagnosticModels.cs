@@ -34,18 +34,29 @@ public sealed class BenchmarkResult
 
 public sealed class GameProfile
 {
+    public string Slug { get; set; } = "";
+    public int Rank { get; set; }
     public string Name { get; set; } = "";
+    public string[] Platforms { get; set; } = Array.Empty<string>();
     public int CpuTarget { get; set; }
     public int GpuTarget { get; set; }
     public double RamMinimumGb { get; set; }
     public double StorageMinimumGb { get; set; }
-    public override string ToString() => Name;
+    public override string ToString() => Rank > 0 ? $"#{Rank}  {Name}" : Name;
+}
+
+public sealed class GameCatalog
+{
+    public int SchemaVersion { get; set; }
+    public string CatalogVersion { get; set; } = "";
+    public string Source { get; set; } = "";
+    public List<GameProfile> Games { get; set; } = new();
 }
 
 public sealed class DiagnosticReport
 {
     public string Product { get; set; } = "Jato Games Diagnostic";
-    public string Version { get; set; } = "0.1.0";
+    public string Version { get; set; } = "0.2.0";
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
     public string Privacy { get; set; } = "Gerado localmente e exportado somente por ação do usuário.";
     public HardwareSnapshot Hardware { get; set; } = new();

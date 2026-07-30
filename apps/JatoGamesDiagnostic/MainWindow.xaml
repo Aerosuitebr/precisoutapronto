@@ -70,6 +70,14 @@
               <TextBlock Text="Preparar diagnóstico" FontFamily="Segoe UI Black" FontSize="26" />
               <TextBlock Text="Selecione o jogo que será usado como referência." Foreground="{StaticResource MutedBrush}" FontSize="13" Margin="0,7,0,0" />
               <ComboBox x:Name="GameSelector" Height="48" Margin="0,20,0,0" FontSize="14" Padding="10" Foreground="#0F172A" Background="#F8FAFC" />
+              <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="CatalogStatus" Text="Top 10 offline disponível" Foreground="{StaticResource MutedBrush}" FontSize="11" VerticalAlignment="Center" />
+                <Button x:Name="RefreshCatalogButton" Grid.Column="1" Content="↻  Verificar atualização" Padding="12,7" FontSize="11" Background="#294056" Foreground="White" Click="RefreshCatalogButton_Click" />
+              </Grid>
 
               <Border Background="#0B1726" CornerRadius="14" Padding="18" Margin="0,20,0,0">
                 <StackPanel>
@@ -196,7 +204,7 @@
     </ScrollViewer>
 
     <Grid Grid.Row="2" Margin="28,0">
-      <TextBlock Text="Jato Games Diagnostic 0.1.0 · benchmark local educativo · nenhum dado é enviado automaticamente" Foreground="#62758C" FontSize="10" VerticalAlignment="Center" />
+      <TextBlock Text="Jato Games Diagnostic 0.2.0 · benchmark local educativo · nenhum diagnóstico é enviado automaticamente" Foreground="#62758C" FontSize="10" VerticalAlignment="Center" />
     </Grid>
   </Grid>
 </Window>
