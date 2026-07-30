@@ -110,6 +110,8 @@ COMMIT;
 
 O catálogo inicial contém 20 intenções revisadas e cobre todas as referências exibidas nas dez centrais de segmento. O teste `growth-content-validation.spec.ts` impede que uma central publique um link para conteúdo inexistente.
 
+Cada página de intenção publica `WebPage`, `BreadcrumbList` e `FAQPage` em JSON-LD, exibe breadcrumbs visíveis e recomenda até três conteúdos relacionados por afinidade de segmento e ferramenta. O clique do conteúdo para a ferramenta gera `intent_tool_cta_clicked` com apenas o slug editorial e o caminho da ferramenta.
+
 ## Próximos passos seguros
 
 - Adicionar testes de integração para criação, expiração e revogação de links.

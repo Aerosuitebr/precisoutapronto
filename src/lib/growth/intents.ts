@@ -296,3 +296,19 @@ export const intentPages: IntentPage[] = [
 export function getIntentPage(slug: string) {
   return intentPages.find((page) => page.slug === slug);
 }
+
+export function getRelatedIntentPages(page: IntentPage, limit = 3) {
+  const segments = new Set(page.segmentSlugs);
+  return intentPages
+    .filter((candidate) => candidate.slug !== page.slug)
+    .map((candidate) => ({
+      candidate,
+      score:
+        candidate.segmentSlugs.filter((slug) => segments.has(slug)).length * 2 +
+        (candidate.toolHref.split('?')[0] === page.toolHref.split('?')[0] ? 1 : 0)
+    }))
+    .filter(({ score }) => score > 0)
+    .sort((left, right) => right.score - left.score || left.candidate.slug.localeCompare(right.candidate.slug))
+    .slice(0, Math.max(0, limit))
+    .map(({ candidate }) => candidate);
+}
