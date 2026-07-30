@@ -23,6 +23,8 @@ const SEO_LANDINGS = [
   '/para/mei',
   '/para/freelancers',
   '/para/estudantes',
+  '/biblioteca',
+  '/assistente/documentos',
   '/gerador-de-curriculo',
   '/gerador-de-contrato',
   '/gerador-de-proposta-comercial',
