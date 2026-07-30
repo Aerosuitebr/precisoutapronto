@@ -50,6 +50,8 @@ import { formatPhone } from '@/lib/formatters';
 import { isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, resumeFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToResume, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'dados' | 'experiencia' | 'formacao' | 'cursos' | 'extras';
 
@@ -77,6 +79,7 @@ function isLikelyWebsite(value: string) {
 
 export function CurriculoApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const exportingLockRef = useRef(false);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
@@ -94,7 +97,8 @@ export function CurriculoApp() {
   const [touchedWebsite, setTouchedWebsite] = useState(false);
 
   useEffect(() => {
-    loadResumes().then((stored) => {
+    Promise.all([loadResumes(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
       const briefing = consumeAssistantBriefing('curriculo');
       if (briefing) {
         const saved = saveResume(resumeFromBriefing(briefing));
@@ -111,7 +115,9 @@ export function CurriculoApp() {
         setResume(stored[0]);
         return;
       }
-      const saved = saveResume(createEmptyResume());
+      const prepared = applyProfileToResume(createEmptyResume(), profile);
+      const saved = saveResume(prepared.document);
+      trackProfileMemoryApplied('curriculo', prepared.applied);
       setResumes([saved]);
       setActiveId(saved.id);
       setResume(saved);
@@ -156,7 +162,9 @@ export function CurriculoApp() {
   }
 
   function handleNewResume(templateId: ResumeTemplateId = resume.templateId) {
-    const created = saveResume(createEmptyResume(templateId));
+    const prepared = applyProfileToResume(createEmptyResume(templateId), profileMemoryRef.current);
+    const created = saveResume(prepared.document);
+    trackProfileMemoryApplied('curriculo', prepared.applied);
     const next = listResumes();
     setResumes(next);
     setActiveId(created.id);

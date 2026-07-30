@@ -51,6 +51,8 @@ import type { ProposalCompany, ProposalData, ProposalItem } from '@/lib/proposta
 import type { DigitalSignature } from '@/lib/signatures/types';
 import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, proposalFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToProposal, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'empresa' | 'cliente' | 'itens' | 'condicoes';
 
@@ -92,6 +94,7 @@ async function optimizeLogo(file: File): Promise<string> {
 
 export function PropostasApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
@@ -108,7 +111,8 @@ export function PropostasApp() {
   const [logoError, setLogoError] = useState('');
 
   useEffect(() => {
-    loadProposals().then((stored) => {
+    Promise.all([loadProposals(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
       const briefing = consumeAssistantBriefing('proposta');
       if (briefing) {
         const saved = saveProposal(proposalFromBriefing(briefing));
@@ -125,7 +129,9 @@ export function PropostasApp() {
         setProposal(stored[0]);
         return;
       }
-      const saved = saveProposal(createEmptyProposal());
+      const prepared = applyProfileToProposal(createEmptyProposal(), profile);
+      const saved = saveProposal(prepared.document);
+      trackProfileMemoryApplied('propostas', prepared.applied);
       setProposals([saved]);
       setActiveId(saved.id);
       setProposal(saved);

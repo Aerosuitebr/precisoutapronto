@@ -47,6 +47,8 @@ import { currencyToWords, formatCpfCnpj, formatCurrencyInput, formatPhone, parse
 import { isValidCpfCnpj, isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, receiptFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToReceipt, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'valores' | 'recebedor' | 'pagador';
 type TouchedKey =
@@ -86,6 +88,7 @@ const STEPS: { id: EditorTab; label: string }[] = [
 
 export function RecibosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
   const { shareDocument, sharing } = useDocumentShare();
@@ -103,7 +106,8 @@ export function RecibosApp() {
   const [showAllErrors, setShowAllErrors] = useState(false);
 
   useEffect(() => {
-    loadReceipts().then((stored) => {
+    Promise.all([loadReceipts(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
       const briefing = consumeAssistantBriefing('recibo');
       if (briefing) {
         const saved = saveReceipt(receiptFromBriefing(briefing));
@@ -120,7 +124,9 @@ export function RecibosApp() {
         setReceipt(stored[0]);
         return;
       }
-      const saved = saveReceipt(createEmptyReceipt());
+      const prepared = applyProfileToReceipt(createEmptyReceipt(), profile);
+      const saved = saveReceipt(prepared.document);
+      trackProfileMemoryApplied('recibos', prepared.applied);
       setReceipts([saved]);
       setActiveId(saved.id);
       setReceipt(saved);
@@ -187,7 +193,12 @@ export function RecibosApp() {
   }
 
   function handleNew() {
-    const created = saveReceipt(createEmptyReceipt(receipt.templateId));
+    const prepared = applyProfileToReceipt(
+      createEmptyReceipt(receipt.templateId),
+      profileMemoryRef.current
+    );
+    const created = saveReceipt(prepared.document);
+    trackProfileMemoryApplied('recibos', prepared.applied);
     setReceipts(listReceipts());
     setActiveId(created.id);
     setReceipt(created);

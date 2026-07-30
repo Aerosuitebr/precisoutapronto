@@ -41,6 +41,8 @@ import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, contractFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToContract, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'partes' | 'termos' | 'clausulas' | 'assinatura';
 
@@ -55,6 +57,7 @@ const TAB_ORDER = TABS.map((item) => item.id);
 
 export function ContratosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
@@ -90,7 +93,8 @@ export function ContratosApp() {
   const showDurationFields = contrato.templateId !== 'compra-venda';
 
   useEffect(() => {
-    loadContratos().then((stored) => {
+    Promise.all([loadContratos(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
       const briefing = consumeAssistantBriefing('contrato');
       if (briefing) {
         const saved = saveContrato(contractFromBriefing(briefing));
@@ -107,7 +111,9 @@ export function ContratosApp() {
         setContrato(stored[0]);
         return;
       }
-      const saved = saveContrato(createEmptyContrato());
+      const prepared = applyProfileToContract(createEmptyContrato(), profile);
+      const saved = saveContrato(prepared.document);
+      trackProfileMemoryApplied('contratos', prepared.applied);
       setItems([saved]);
       setActiveId(saved.id);
       setContrato(saved);
@@ -201,7 +207,12 @@ export function ContratosApp() {
   }
 
   function handleNew() {
-    const created = saveContrato(createEmptyContrato(contrato.templateId));
+    const prepared = applyProfileToContract(
+      createEmptyContrato(contrato.templateId),
+      profileMemoryRef.current
+    );
+    const created = saveContrato(prepared.document);
+    trackProfileMemoryApplied('contratos', prepared.applied);
     setItems(listContratos());
     setActiveId(created.id);
     setContrato(created);

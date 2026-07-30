@@ -19,6 +19,15 @@ Esta evolução organiza o Resolva Jato por problemas e perfis sem substituir os
 
 A página `/conta` permite editar segmento, profissão e empresa. A homepage usa primeiro a preferência local para responder sem atraso e, quando o usuário está autenticado, sincroniza o segmento salvo no perfil. Assim, a personalização acompanha o usuário entre dispositivos sem prejudicar visitantes anônimos.
 
+### Memória segura nos documentos
+
+Os campos não sensíveis já existentes no perfil agora reduzem preenchimento repetitivo em novos rascunhos:
+
+- empresa: nome da parte principal do contrato, recebedor do recibo e empresa/assinatura da proposta;
+- profissão: profissão da parte principal do contrato e título profissional do currículo.
+
+A aplicação é conservadora: só ocorre em campos vazios, não altera documentos salvos e não é executada sobre um briefing vindo do assistente de IA. Falhas ou ausência de autenticação mantêm o fluxo anterior, com um documento vazio. O evento `profile_memory_applied` registra somente a ferramenta e a quantidade de campos aplicados, sem enviar os valores do perfil.
+
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:
 
 - é criado somente para um documento pertencente ao usuário autenticado;
