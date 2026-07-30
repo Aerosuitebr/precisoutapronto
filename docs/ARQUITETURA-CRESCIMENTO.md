@@ -57,6 +57,8 @@ O topo de `/conta` oferece atalhos para documentos, compartilhamentos, perfil e 
 
 Isso permite apontar diretamente para o painel de desempenho em suporte, onboarding e comunicações, sem criar novas páginas ou duplicar permissões. A navegação registra apenas `section_id`.
 
+O acesso a `/conta#compartilhamentos` também está presente no cabeçalho autenticado — desktop e móvel — e na seção “Conta” do menu lateral das ferramentas. Assim, o usuário não precisa estar previamente na página da conta para consultar links e métricas.
+
 Migration correspondente: `20260729234500_add_tool_document_favorites`. Ela adiciona `tool_documents.isFavorite BOOLEAN NOT NULL DEFAULT false` e um índice por usuário, favorito e atualização. O valor padrão mantém todos os registros existentes compatíveis e não exige backfill.
 
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:

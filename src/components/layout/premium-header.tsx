@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ChevronRight, LogOut, Menu, Search, Sparkles, UserRound, X } from 'lucide-react';
+import { ChevronRight, LogOut, Menu, Search, Share2, Sparkles, UserRound, X } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 const links = [
   { href: '/ferramentas', label: 'Ferramentas', icon: Sparkles },
@@ -70,6 +71,15 @@ export function PremiumHeader() {
         <div className="ml-auto flex items-center gap-2">
           {isAuthenticated ? (
             <>
+              <Link
+                href="/conta#compartilhamentos"
+                onClick={() => trackEvent('account_section_navigated', { section_id: 'compartilhamentos', source: 'header' })}
+                className="hidden h-9 items-center gap-2 rounded-xl border border-sky-200 bg-sky-50 px-3 text-xs font-bold text-sky-800 transition hover:border-sky-300 hover:bg-sky-100 sm:flex"
+                aria-label="Abrir compartilhamentos"
+              >
+                <Share2 className="h-3.5 w-3.5" />
+                <span className="hidden lg:inline">Compartilhamentos</span>
+              </Link>
               <Link
                 href="/conta"
                 className={`hidden min-w-0 max-w-[240px] items-center gap-3 rounded-2xl border px-3 py-2 transition xl:flex ${
@@ -153,6 +163,20 @@ export function PremiumHeader() {
             })}
             {isAuthenticated ? (
               <>
+                <Link
+                  href="/conta#compartilhamentos"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    trackEvent('account_section_navigated', {
+                      section_id: 'compartilhamentos',
+                      source: 'mobile_header'
+                    });
+                  }}
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-sky-800 hover:bg-sky-50"
+                >
+                  <Share2 className="h-4 w-4" />
+                  Compartilhamentos
+                </Link>
                 <Link
                   href="/conta"
                   onClick={() => setMobileOpen(false)}
