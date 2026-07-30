@@ -191,6 +191,9 @@ O Jato Games evolui de um diretório editorial para uma central de decisão e fe
 - Calculadora de custo por hora jogada para apoiar decisões de compra.
 - Resultados copiáveis e compartilháveis, criando um ciclo de distribuição orgânica.
 - JSON-LD de `CollectionPage`, `ItemList` e `BreadcrumbList`.
+- Páginas próprias para `/calculadora-edpi`, `/planejador-armazenamento` e `/custo-por-hora`, cada uma com resposta direta, tutorial, FAQ visível e JSON-LD de `SoftwareApplication`, `HowTo`, `FAQPage` e `BreadcrumbList`.
+- Chamadas contextuais na homepage, no rodapé, nas fichas de jogos e nos guias de hardware.
+- Descoberta reforçada no sitemap, na busca pública e no `llms.txt`.
 
 Próximos incrementos recomendados, condicionados a bases técnicas verificáveis:
 
@@ -198,4 +201,4 @@ Próximos incrementos recomendados, condicionados a bases técnicas verificávei
 2. Checklist “meu PC roda?” por requisitos mínimos e recomendados.
 3. Calculadora de fonte e consumo estimado.
 4. Planejador de upgrade por resolução, taxa de atualização e orçamento.
-5. Páginas de intenção para cada ferramenta, com FAQs e links para guias relacionados.
+5. Estado compartilhável por URL para que cada configuração possa ser reaberta por outra pessoa.

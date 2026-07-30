@@ -204,23 +204,24 @@ export function LandingPage() {
               Jato Games
             </p>
             <h2 className="rj-display mt-2 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">
-              Top jogos, setups e lojas para a rapaziada gamer.
+              Calcule seu eDPI, planeje o SSD e escolha o próximo jogo sem chute.
             </h2>
             <p className="mt-2 text-sm leading-7 text-slate-600">
-              Ranking com PC sugerido, guias de GPU e CPU, consoles e marketplaces curados. Vertical
-              clean, no mesmo domínio.
+              Ferramentas gamer grátis, requisitos de PC, guias de GPU e CPU, setups sugeridos,
+              consoles e lojas confiáveis em uma central feita para decisões rápidas.
             </p>
           </div>
-          <Button
-            asChild
-            size="lg"
-            className="h-12 shrink-0 bg-teal-600 px-6 font-bold text-white shadow-lg shadow-teal-600/20 hover:bg-teal-500"
-          >
-            <Link href="/games">
-              Entrar no Jato Games
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
+          <div className="flex shrink-0 flex-wrap gap-3">
+            <Button asChild size="lg" className="h-12 bg-teal-600 px-6 font-bold text-white shadow-lg shadow-teal-600/20 hover:bg-teal-500">
+              <Link href="/games/ferramentas/calculadora-edpi">
+                Calcular meu eDPI
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="h-12 border-teal-200 bg-white px-6 font-bold text-teal-800 hover:bg-teal-50">
+              <Link href="/games">Explorar Jato Games</Link>
+            </Button>
+          </div>
         </div>
       </section>
 

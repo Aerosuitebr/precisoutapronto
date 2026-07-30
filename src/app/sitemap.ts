@@ -97,6 +97,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/games',
     '/games/top-jogos',
     '/games/ferramentas',
+    '/games/ferramentas/calculadora-edpi',
+    '/games/ferramentas/planejador-armazenamento',
+    '/games/ferramentas/custo-por-hora',
     '/games/hardware',
     '/games/consoles',
     '/games/lojas'

@@ -225,5 +225,29 @@ export const gamesResources = [
     description: 'Hub evergreen com top jogos, setups, hardware, consoles e lojas curadas.',
     url: 'https://resolvajato.com.br/games',
     tags: ['#Games', '#Setup', '#Hardware', '#Hub']
+  },
+  {
+    name: 'Calculadora de eDPI para FPS',
+    category: 'games',
+    categoryLabel: 'Games',
+    description: 'Calcula DPI vezes sensibilidade para comparar configurações de mira no mesmo jogo.',
+    url: 'https://resolvajato.com.br/games/ferramentas/calculadora-edpi',
+    tags: ['#eDPI', '#Sensibilidade', '#CS2', '#Valorant']
+  },
+  {
+    name: 'Calculadora de espaço para jogos',
+    category: 'games',
+    categoryLabel: 'Games',
+    description: 'Planeja o espaço necessário no SSD para jogos, atualizações e arquivos temporários.',
+    url: 'https://resolvajato.com.br/games/ferramentas/planejador-armazenamento',
+    tags: ['#SSD', '#Armazenamento', '#PCGamer', '#Console']
+  },
+  {
+    name: 'Calculadora de custo por hora de jogo',
+    category: 'games',
+    categoryLabel: 'Games',
+    description: 'Compara preço, DLCs e horas estimadas para avaliar uma compra gamer.',
+    url: 'https://resolvajato.com.br/games/ferramentas/custo-por-hora',
+    tags: ['#Preço', '#Promoção', '#Jogos', '#Calculadora']
   }
 ] as const;

@@ -29,6 +29,9 @@ const SEO_LINKS = [
   { href: '/para/mei', label: 'Para MEI' },
   { href: '/para/freelancers', label: 'Para freelancers' },
   { href: '/para/estudantes', label: 'Para estudantes' },
+  { href: '/games', label: 'Jato Games' },
+  { href: '/games/ferramentas/calculadora-edpi', label: 'Calculadora de eDPI' },
+  { href: '/games/ferramentas/planejador-armazenamento', label: 'Espaço para jogos' },
   { href: '/gerador-de-curriculo', label: 'Currículo' },
   { href: '/gerador-de-recibo', label: 'Recibo' }
 ] as const;

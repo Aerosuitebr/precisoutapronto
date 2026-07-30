@@ -147,6 +147,18 @@ export default async function HardwareGuidePage({ params }: Props) {
       <div className="mt-10">
         <ProductBridge />
       </div>
+      <aside className="mt-6 rounded-2xl border border-teal-200 bg-teal-50 p-5">
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Utilidades gratuitas</p>
+        <h2 className="rj-display mt-2 text-xl font-extrabold text-slate-950">Teste decisões do seu setup</h2>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link href="/games/ferramentas/calculadora-edpi" className="rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-teal-600">
+            Calcular eDPI
+          </Link>
+          <Link href="/games/ferramentas/planejador-armazenamento" className="rounded-xl border border-teal-300 bg-white px-4 py-2.5 text-sm font-bold text-teal-800 hover:bg-teal-100">
+            Planejar espaço no SSD
+          </Link>
+        </div>
+      </aside>
     </div>
   );
 }

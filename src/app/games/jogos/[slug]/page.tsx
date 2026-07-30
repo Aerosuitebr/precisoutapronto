@@ -134,6 +134,17 @@ export default async function GamePage({ params }: Props) {
             </p>
           </Link>
           <Link
+            href="/games/ferramentas/planejador-armazenamento"
+            className="block rounded-2xl border border-teal-200 bg-teal-50 p-5 text-sm leading-6 text-slate-800 shadow-sm transition hover:border-teal-400 hover:bg-teal-100/80"
+          >
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal-700">
+              Antes de instalar
+            </p>
+            <p className="mt-2 font-semibold text-slate-950">
+              Some seus jogos e descubra quanto espaço reservar no SSD.
+            </p>
+          </Link>
+          <Link
             href="/games/top-jogos"
             className="block rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-800 shadow-sm ring-1 ring-slate-900/5 transition hover:border-teal-300"
           >

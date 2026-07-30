@@ -162,7 +162,7 @@ export default function GamesHubPage() {
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { href: '/games/ferramentas#edpi', icon: Gauge, title: 'Jogar competitivo', text: 'eDPI, estabilidade, monitor e decisões que afetam a resposta.' },
+              { href: '/games/ferramentas/calculadora-edpi', icon: Gauge, title: 'Jogar competitivo', text: 'Calcule eDPI e entenda decisões de estabilidade, monitor e resposta.' },
               { href: '/games/hardware/montar-pc-gamer-sem-desperdicar', icon: Cpu, title: 'Montar ou melhorar o PC', text: 'Priorize peças pelo jogo e pela resolução, não pelo marketing.' },
               { href: '/games/lojas', icon: ShieldCheck, title: 'Comprar com segurança', text: 'Canais confiáveis, alertas de golpe e cuidados antes de pagar.' },
               { href: '/games/top-jogos', icon: Gamepad2, title: 'Descobrir o que jogar', text: 'Jogos populares, plataformas, dicas e setup sugerido.' }
