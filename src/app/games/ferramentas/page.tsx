@@ -122,8 +122,12 @@ export default function GamerToolsPage() {
         </div>
       </section>
       <section className="mt-10 rounded-3xl border border-amber-200 bg-amber-50 p-6 sm:p-8">
-        <h2 className="rj-display text-2xl font-extrabold text-slate-950">Próximas ferramentas previstas</h2>
-        <p className="mt-3 leading-7 text-slate-700">Comparador de sensibilidade entre jogos, checklist “meu PC roda?”, calculadora de fonte e planejador de upgrade serão adicionados com bases técnicas verificáveis.</p>
+        <h2 className="rj-display text-2xl font-extrabold text-slate-950">Próximas ferramentas em estudo</h2>
+        <p className="mt-3 leading-7 text-slate-700">
+          Comparador de sensibilidade entre jogos, calculadora de fonte e planejador de upgrade
+          estão em avaliação. Cada ferramenta será publicada somente com fórmulas, limites e bases
+          técnicas verificáveis. O comparador “Meu PC roda?” já está disponível nesta página.
+        </p>
       </section>
     </div>
   );
