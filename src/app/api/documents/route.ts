@@ -25,9 +25,10 @@ export async function GET() {
         artifactId: true,
         toolId: true,
         data: true,
+        isFavorite: true,
         updatedAt: true
       },
-      orderBy: { updatedAt: 'desc' },
+      orderBy: [{ isFavorite: 'desc' }, { updatedAt: 'desc' }],
       take: 50
     });
 
@@ -40,6 +41,7 @@ export async function GET() {
         toolId: row.toolId,
         title: getDocumentHistoryTitle(row.data, tool.label),
         updatedAt: row.updatedAt.toISOString(),
+        isFavorite: row.isFavorite,
         editorHref,
         toolLabel: tool.label
       }];

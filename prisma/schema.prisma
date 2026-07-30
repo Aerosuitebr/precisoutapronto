@@ -157,6 +157,7 @@ model ToolDocument {
   toolId     String
   artifactId String
   data       Json
+  isFavorite Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -165,6 +166,7 @@ model ToolDocument {
 
   @@unique([userId, toolId, artifactId])
   @@index([userId, toolId, updatedAt])
+  @@index([userId, isFavorite, updatedAt])
   @@map("tool_documents")
 }
 

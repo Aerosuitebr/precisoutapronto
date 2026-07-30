@@ -3,6 +3,7 @@ export interface DocumentHistoryItem {
   toolId: string;
   title: string;
   updatedAt: string;
+  isFavorite: boolean;
   editorHref: string;
   toolLabel: string;
 }
@@ -36,4 +37,14 @@ export function buildDocumentEditorHref(toolId: string, artifactId: string) {
   if (!tool) return null;
   const params = new URLSearchParams({ document: artifactId });
   return `${tool.href}?${params.toString()}`;
+}
+
+export function sortDocumentHistory<T extends Pick<DocumentHistoryItem, 'isFavorite' | 'updatedAt'>>(
+  documents: T[]
+) {
+  return [...documents].sort(
+    (a, b) =>
+      Number(b.isFavorite) - Number(a.isFavorite) ||
+      Date.parse(b.updatedAt) - Date.parse(a.updatedAt)
+  );
 }

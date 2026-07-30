@@ -34,6 +34,10 @@ A conta reúne até 50 documentos autenticados recentes de currículos, recibos,
 
 Cada item abre o editor com `?document=<id>`, e o editor seleciona o rascunho solicitado depois de carregar o armazenamento atual. Identificadores inexistentes usam o documento mais recente como fallback, preservando links antigos e o comportamento anterior. A retomada registra `account_document_resumed` apenas com o identificador da ferramenta.
 
+Documentos importantes podem ser marcados como favoritos na própria conta. Favoritos são exibidos antes dos demais, mantendo a ordem de atualização dentro de cada grupo. A mutation usa `PATCH /api/documents/[toolId]/[artifactId]` e atualiza apenas o booleano `isFavorite`; o conteúdo do documento não é reenviado.
+
+Migration correspondente: `20260729234500_add_tool_document_favorites`. Ela adiciona `tool_documents.isFavorite BOOLEAN NOT NULL DEFAULT false` e um índice por usuário, favorito e atualização. O valor padrão mantém todos os registros existentes compatíveis e não exige backfill.
+
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:
 
 - é criado somente para um documento pertencente ao usuário autenticado;
