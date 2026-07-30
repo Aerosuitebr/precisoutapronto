@@ -46,6 +46,17 @@ Após a API confirmar a criação ou reutilização, o cliente emite o sinal int
 
 O painel apresenta um resumo de desempenho calculado no cliente: visualizações acumuladas, quantidade de links ativos e documento mais visto. As métricas usam somente `viewCount`, validade e revogação já retornados pela API; não existem identificação de visitante, endereço IP ou eventos individuais nessa visão.
 
+### Acesso às áreas da conta
+
+O topo de `/conta` oferece atalhos para documentos, compartilhamentos, perfil e indicações. Cada área possui uma âncora permanente e margem de rolagem compatível com o cabeçalho:
+
+- `/conta#documentos`;
+- `/conta#compartilhamentos`;
+- `/conta#perfil`;
+- `/conta#indicacoes`.
+
+Isso permite apontar diretamente para o painel de desempenho em suporte, onboarding e comunicações, sem criar novas páginas ou duplicar permissões. A navegação registra apenas `section_id`.
+
 Migration correspondente: `20260729234500_add_tool_document_favorites`. Ela adiciona `tool_documents.isFavorite BOOLEAN NOT NULL DEFAULT false` e um índice por usuário, favorito e atualização. O valor padrão mantém todos os registros existentes compatíveis e não exige backfill.
 
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:

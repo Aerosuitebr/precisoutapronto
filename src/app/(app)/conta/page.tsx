@@ -6,12 +6,16 @@ import { Suspense, useEffect, useState } from 'react';
 import {
   CheckCircle2,
   Crown,
+  Files,
   Gauge,
+  Gift,
+  Link2,
   Mail,
   Search,
   ShieldCheck,
   Sparkles,
-  UserRound
+  UserRound,
+  UserRoundCog
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
 import { PremiumHireArt } from '@/components/billing/premium-hire-art';
@@ -27,8 +31,16 @@ import { PLANS } from '@/lib/plans';
 import { ProfileSettings } from '@/components/account/profile-settings';
 import { SharedLinksPanel } from '@/components/account/shared-links-panel';
 import { RecentDocumentsPanel } from '@/components/account/recent-documents-panel';
+import { ACCOUNT_SECTIONS, type AccountSectionId } from '@/lib/account-sections';
+import { trackEvent } from '@/lib/analytics';
 
 const ASAAS_CHECKOUT = '/checkout?method=asaas';
+const ACCOUNT_SECTION_ICONS = {
+  documentos: Files,
+  compartilhamentos: Link2,
+  perfil: UserRoundCog,
+  indicacoes: Gift
+} satisfies Record<AccountSectionId, typeof Files>;
 
 function ContaContent() {
   const router = useRouter();
@@ -69,9 +81,31 @@ function ContaContent() {
       <div className="space-y-5">
         <PageHero
           title="Minha conta"
-          subtitle="Gerencie seu plano e remova a marca Resolva Jato com o Premium quando fizer sentido."
+          subtitle="Acesse seus documentos, compartilhamentos, perfil e benefícios em um só lugar."
           icon={Sparkles}
         />
+
+        <nav aria-label="Atalhos da conta" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {ACCOUNT_SECTIONS.map((section) => {
+            const Icon = ACCOUNT_SECTION_ICONS[section.id];
+            return (
+              <Link
+                key={section.id}
+                href={section.href}
+                onClick={() => trackEvent('account_section_navigated', { section_id: section.id })}
+                className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-300 hover:bg-sky-50"
+              >
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-600 group-hover:bg-white group-hover:text-sky-700">
+                  <Icon className="h-4.5 w-4.5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-sm font-bold text-slate-950">{section.label}</span>
+                  <span className="mt-0.5 block truncate text-xs text-slate-500">{section.description}</span>
+                </span>
+              </Link>
+            );
+          })}
+        </nav>
 
         {billingMessage ? (
           <div
@@ -244,7 +278,9 @@ function ContaContent() {
         <RecentDocumentsPanel />
         <SharedLinksPanel />
 
-        <ReferralPanel />
+        <div id="indicacoes" className="scroll-mt-24">
+          <ReferralPanel />
+        </div>
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">

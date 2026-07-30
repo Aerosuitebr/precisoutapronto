@@ -88,7 +88,7 @@ export function SharedLinksPanel() {
   const performance = summarizeSharePerformance(links);
 
   return (
-    <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+    <section id="compartilhamentos" className="scroll-mt-24 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <span className="grid h-11 w-11 place-items-center rounded-2xl bg-sky-100 text-sky-700"><Link2 className="h-5 w-5" /></span>
