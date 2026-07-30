@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
   buildDocumentEditorHref,
+  buildDuplicateDocumentData,
   DOCUMENT_HISTORY_TOOL_IDS,
   filterDocumentHistory,
   getDocumentHistoryTitle,
@@ -69,4 +70,16 @@ test('filtra metadados por favorito, ferramenta e busca sem acentos', () => {
   expect(filterDocumentHistory(documents, 'all', 'curriculo')[0].artifactId).toBe('1');
   expect(filterDocumentHistory(documents, 'all', 'servicos')[0].artifactId).toBe('2');
   expect(filterDocumentHistory(documents, 'all', 'inexistente')).toEqual([]);
+});
+
+test('cria dados independentes para uma cópia sem alterar a origem', () => {
+  const source = { id: 'old', title: 'Contrato principal', clauses: [{ id: '1' }] };
+  const duplicate = buildDuplicateDocumentData(source, 'new', 'Contrato');
+  expect(duplicate).toMatchObject({
+    id: 'new',
+    title: 'Cópia · Contrato principal',
+    clauses: [{ id: '1' }]
+  });
+  expect(source).toEqual({ id: 'old', title: 'Contrato principal', clauses: [{ id: '1' }] });
+  expect(buildDuplicateDocumentData(null, 'new', 'Documento')).toBeNull();
 });

@@ -34,6 +34,18 @@ export function getDocumentHistoryTitle(data: unknown, fallback: string) {
   return fallback;
 }
 
+export function buildDuplicateDocumentData(data: unknown, artifactId: string, fallbackTitle: string) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+  const source = data as Record<string, unknown>;
+  const originalTitle = getDocumentHistoryTitle(source, fallbackTitle);
+  return {
+    ...source,
+    id: artifactId,
+    title: `Cópia · ${originalTitle}`.slice(0, 160),
+    updatedAt: new Date().toISOString()
+  };
+}
+
 export function buildDocumentEditorHref(toolId: string, artifactId: string) {
   const tool = getDocumentHistoryTool(toolId);
   if (!tool) return null;

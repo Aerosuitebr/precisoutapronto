@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, Clock3, FileText, Search, Star } from 'lucide-react';
+import { ArrowRight, Clock3, CopyPlus, FileText, Search, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
@@ -30,6 +30,7 @@ export function RecentDocumentsPanel() {
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [duplicating, setDuplicating] = useState<string | null>(null);
   const [filter, setFilter] = useState<DocumentHistoryFilter>('all');
   const [query, setQuery] = useState('');
 
@@ -118,6 +119,28 @@ export function RecentDocumentsPanel() {
       toast('Não foi possível atualizar o favorito.');
     } finally {
       setUpdating(null);
+    }
+  }
+
+  async function duplicateDocument(item: DocumentHistoryItem) {
+    const key = `${item.toolId}:${item.artifactId}`;
+    if (duplicating === key) return;
+    setDuplicating(key);
+    try {
+      const response = await fetch(
+        `/api/documents/${encodeURIComponent(item.toolId)}/${encodeURIComponent(item.artifactId)}`,
+        { method: 'POST' }
+      );
+      if (!response.ok) throw new Error();
+      const payload = await response.json() as { document?: DocumentHistoryItem };
+      if (!payload.document) throw new Error();
+      setDocuments((current) => sortDocumentHistory([payload.document!, ...current]));
+      trackEvent('account_document_duplicated', { tool_id: item.toolId });
+      toast('Cópia criada. Você já pode abri-la e editar.');
+    } catch {
+      toast('Não foi possível duplicar o documento.');
+    } finally {
+      setDuplicating(null);
     }
   }
 
@@ -227,6 +250,16 @@ export function RecentDocumentsPanel() {
                     </span>
                     <ArrowRight className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-violet-700" />
                   </Link>
+                  <button
+                    type="button"
+                    aria-label={`Duplicar ${item.title}`}
+                    title="Duplicar documento"
+                    disabled={duplicating === `${item.toolId}:${item.artifactId}`}
+                    onClick={() => void duplicateDocument(item)}
+                    className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-slate-400 transition hover:bg-white hover:text-violet-700 disabled:opacity-50"
+                  >
+                    <CopyPlus className="h-4.5 w-4.5" />
+                  </button>
                   <button
                     type="button"
                     aria-label={item.isFavorite ? `Remover ${item.title} dos favoritos` : `Favoritar ${item.title}`}

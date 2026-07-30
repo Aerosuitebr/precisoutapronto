@@ -38,6 +38,8 @@ Documentos importantes podem ser marcados como favoritos na própria conta. Favo
 
 O histórico também funciona como biblioteca pessoal: permite buscar pelos metadados de título/tipo, filtrar favoritos ou uma ferramenta específica e limpar a seleção sem recarregar a página. A busca é local sobre os metadados já retornados, tolera acentos e nunca consulta o conteúdo do documento. A telemetria registra filtro e quantidade de resultados, mas não o termo digitado.
 
+Cada item pode ser duplicado pela conta. O `POST /api/documents/[toolId]/[artifactId]` busca a origem pelo usuário autenticado, cria um novo `artifactId`, ajusta título/data dentro da cópia e retorna somente seus metadados. O conteúdo original não é alterado nem trafega pela biblioteca; a cópia começa sem favorito e pode ser aberta imediatamente pelo link de retomada.
+
 Migration correspondente: `20260729234500_add_tool_document_favorites`. Ela adiciona `tool_documents.isFavorite BOOLEAN NOT NULL DEFAULT false` e um índice por usuário, favorito e atualização. O valor padrão mantém todos os registros existentes compatíveis e não exige backfill.
 
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:
