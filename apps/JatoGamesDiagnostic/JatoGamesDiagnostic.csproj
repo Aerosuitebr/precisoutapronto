@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>JatoGamesDiagnostic</AssemblyName>
     <RootNamespace>JatoGamesDiagnostic</RootNamespace>
-    <ApplicationIcon />
+    <ApplicationIcon>Assets\JatoGamesDiagnostic.ico</ApplicationIcon>
     <Version>0.2.0</Version>
     <Company>Resolva Jato</Company>
     <Product>Jato Games Diagnostic</Product>
@@ -14,5 +14,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\diagnostic-mark-512.png" />
+    <Resource Include="Assets\diagnostic-key-art.png" />
   </ItemGroup>
 </Project>

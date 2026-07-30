@@ -28,6 +28,15 @@ Aplicativo Windows local para inventário de hardware, benchmark controlado e co
 - Disco: escrita síncrona e leitura sequencial de arquivo temporário.
 - GPU: inventário real e classificação editorial do adaptador. O MVP não afirma medir FPS.
 
+## Identidade visual
+
+- O símbolo oficial combina microchip, telemetria e medidor de desempenho.
+- O ícone do Windows está em `Assets/JatoGamesDiagnostic.ico`.
+- As versões transparentes do símbolo estão em `Assets/diagnostic-mark-master.png` e `Assets/diagnostic-mark-512.png`.
+- A arte cinematográfica oficial está em `Assets/diagnostic-key-art.png`.
+- Cores, conceito, tipografia e regras de uso estão documentados em `BRAND.md`.
+- As cópias destinadas às páginas públicas ficam em `public/images/jato-games/diagnostic`.
+
 ## Compilar
 
 ```powershell

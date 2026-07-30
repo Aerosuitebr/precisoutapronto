@@ -25,8 +25,8 @@
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Border Width="42" Height="42" CornerRadius="12" Background="{StaticResource TealBrush}" VerticalAlignment="Center">
-          <TextBlock Text="JG" FontFamily="Segoe UI Black" FontSize="15" Foreground="#04131B" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Border Width="48" Height="48" CornerRadius="13" Background="#07111F" BorderBrush="#24445A" BorderThickness="1" VerticalAlignment="Center">
+          <Image Source="Assets/diagnostic-mark-512.png" Width="43" Height="43" Stretch="Uniform" />
         </Border>
         <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
           <TextBlock Text="JATO GAMES DIAGNOSTIC" FontFamily="Segoe UI Black" FontSize="17" />
@@ -45,6 +45,10 @@
             <ColumnDefinition Width="1.1*" />
             <ColumnDefinition Width=".9*" />
           </Grid.ColumnDefinitions>
+          <Border Grid.ColumnSpan="2" CornerRadius="24" ClipToBounds="True" Opacity=".16" IsHitTestVisible="False">
+            <Image Source="Assets/diagnostic-key-art.png" Stretch="UniformToFill" HorizontalAlignment="Right" />
+          </Border>
+          <Border Grid.ColumnSpan="2" Background="#B807111F" CornerRadius="24" IsHitTestVisible="False" />
           <StackPanel Margin="0,18,44,0">
             <TextBlock Text="DESCUBRA O LIMITE REAL DO SEU SETUP" Foreground="{StaticResource TealBrush}" FontFamily="Segoe UI Bold" FontSize="12" />
             <TextBlock Text="Seu PC roda&#x0a;o próximo jogo?" FontFamily="Segoe UI Black" FontSize="48" LineHeight="52" Margin="0,12,0,0" />
@@ -63,6 +67,26 @@
                 </UniformGrid>
               </StackPanel>
             </Border>
+            <Grid Height="164" Margin="0,16,0,0" ClipToBounds="True">
+              <Border CornerRadius="16" BorderBrush="#24445A" BorderThickness="1" ClipToBounds="True">
+                <Grid>
+                  <Image Source="Assets/diagnostic-key-art.png" Stretch="UniformToFill" />
+                  <Border>
+                    <Border.Background>
+                      <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#E607111F" Offset="0" />
+                        <GradientStop Color="#9907111F" Offset=".42" />
+                        <GradientStop Color="#1807111F" Offset="1" />
+                      </LinearGradientBrush>
+                    </Border.Background>
+                  </Border>
+                  <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <TextBlock Text="SCAN. MEASURE. DECIDE." Foreground="{StaticResource TealBrush}" FontFamily="Segoe UI Black" FontSize="11" />
+                    <TextBlock Text="Telemetria real,&#x0a;decisão sem chute." FontFamily="Segoe UI Black" FontSize="21" LineHeight="24" Margin="0,7,0,0" />
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </Grid>
           </StackPanel>
 
           <Border Grid.Column="1" Background="{StaticResource PanelBrush}" CornerRadius="22" Padding="28">
