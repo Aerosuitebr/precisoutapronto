@@ -45,5 +45,6 @@ export const RATE_LIMITS = {
   login: { limit: 10, windowMs: 15 * 60 * 1000 },
   resendVerification: { limit: 5, windowMs: 60 * 60 * 1000 },
   toolSuggestion: { limit: 5, windowMs: 60 * 60 * 1000 },
+  assistantReview: { limit: 20, windowMs: 60 * 60 * 1000 },
   cardPayment: { limit: 8, windowMs: 10 * 60 * 1000 }
 } as const;

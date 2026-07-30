@@ -31,6 +31,19 @@ Os históricos de contratos, documentos jurídicos e documentos contábeis ofere
 
 Ao concluir o assistente, o briefing fica temporariamente na sessão do navegador e é consumido uma única vez pelo editor correspondente. Contratos, currículos, recibos e propostas recebem um novo rascunho, sem sobrescrever documentos existentes. O payload expira em 30 minutos e é removido após leitura.
 
+## Análise do briefing
+
+`POST /api/assistant/review` valida tamanho e tipo do payload, limita chamadas por IP e devolve sugestões e alertas. Sem configuração externa, usa regras locais específicas para cada documento.
+
+Para conectar um serviço privado de IA:
+
+```env
+DOCUMENT_AI_ENDPOINT="https://seu-servico.example/review"
+DOCUMENT_AI_API_KEY="segredo-do-servidor"
+```
+
+O endpoint recebe `task`, `locale`, `documentType`, `answers` e `responseSchema`. Deve devolver JSON com `summary`, `suggestions[]` e `alerts[]`. A chave permanece exclusivamente no servidor. Falhas, timeouts ou respostas inválidas retornam automaticamente ao fallback local.
+
 ## Compatibilidade
 
 Nada foi removido. A navegação anterior, `/guias`, `/recursos`, `/ferramentas/*`, landings e APIs de documentos permanecem. A personalização usa `localStorage` para visitantes e tenta sincronizar com `/api/profile` apenas quando há sessão.
