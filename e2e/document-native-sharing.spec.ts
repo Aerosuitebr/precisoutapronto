@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test';
 import {
   buildDocumentSharePayload,
-  buildDocumentShareRequest
+  buildDocumentShareRequest,
+  dispatchDocumentShareUpdated,
+  DOCUMENT_SHARE_UPDATED_EVENT
 } from '../src/lib/document-sharing';
 
 test('native share payload contains the public URL and no document body', () => {
@@ -39,4 +41,13 @@ test('share request is bounded, private and expires in 30 days', () => {
     artifactId: 'rct_123',
     title: ''
   }).title).toBe('Documento compartilhado');
+});
+
+test('share update signal is stable and safe during server rendering', () => {
+  expect(DOCUMENT_SHARE_UPDATED_EVENT).toBe('resolva-jato:document-share-updated');
+  expect(() => dispatchDocumentShareUpdated({
+    toolId: 'contratos',
+    artifactId: 'ctr_123',
+    reused: true
+  })).not.toThrow();
 });

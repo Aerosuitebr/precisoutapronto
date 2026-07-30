@@ -4,7 +4,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { Copy, ExternalLink, Eye, Link2, Share2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
-import { buildDocumentSharePayload, isShareCancellation } from '@/lib/document-sharing';
+import {
+  buildDocumentSharePayload,
+  DOCUMENT_SHARE_UPDATED_EVENT,
+  isShareCancellation
+} from '@/lib/document-sharing';
 import { trackEvent } from '@/lib/analytics';
 
 type SharedLink = {
@@ -38,6 +42,12 @@ export function SharedLinksPanel() {
   }, [toast]);
 
   useEffect(() => { void load(); }, [load]);
+
+  useEffect(() => {
+    const refreshLinks = () => void load();
+    window.addEventListener(DOCUMENT_SHARE_UPDATED_EVENT, refreshLinks);
+    return () => window.removeEventListener(DOCUMENT_SHARE_UPDATED_EVENT, refreshLinks);
+  }, [load]);
 
   async function copy(url: string) {
     await navigator.clipboard.writeText(new URL(url, window.location.origin).toString());

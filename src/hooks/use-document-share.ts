@@ -6,6 +6,7 @@ import { trackEvent } from '@/lib/analytics';
 import {
   buildDocumentSharePayload,
   buildDocumentShareRequest,
+  dispatchDocumentShareUpdated,
   isShareCancellation
 } from '@/lib/document-sharing';
 
@@ -43,6 +44,11 @@ export function useDocumentShare() {
 
       const url = new URL(data.url, window.location.origin).toString();
       linkCreated = true;
+      dispatchDocumentShareUpdated({
+        toolId: input.toolId,
+        artifactId: input.artifactId,
+        reused: Boolean(data.reused)
+      });
       const payload = buildDocumentSharePayload(input.title, url);
       if (typeof navigator.share === 'function' && (!navigator.canShare || navigator.canShare(payload))) {
         try {
