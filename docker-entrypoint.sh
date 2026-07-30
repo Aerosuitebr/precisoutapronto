@@ -6,7 +6,21 @@ PRISMA_SCHEMA_MODE="${PRISMA_SCHEMA_MODE:-push}"
 case "${PRISMA_SCHEMA_MODE}" in
   migrate)
     echo "[resolva-jato] Aplicando migrations versionadas (prisma migrate deploy)..."
-    npx prisma migrate deploy
+    # Bancos criados antes via db push nao tem _prisma_migrations.
+    # P3005: marcar o baseline vazio como aplicado e seguir com as migrations aditivas.
+    if ! deploy_out="$(npx prisma migrate deploy 2>&1)"; then
+      deploy_code=$?
+      printf "%s\n" "${deploy_out}"
+      if printf "%s" "${deploy_out}" | grep -q "P3005"; then
+        echo "[resolva-jato] P3005 detectado. Baseline de schema existente..."
+        npx prisma migrate resolve --applied 20260729000000_baseline_existing_schema
+        npx prisma migrate deploy
+      else
+        exit "${deploy_code}"
+      fi
+    else
+      printf "%s\n" "${deploy_out}"
+    fi
     ;;
   push)
     echo "[resolva-jato] Sincronizando schema local (prisma db push, sem accept-data-loss)..."

@@ -53,7 +53,9 @@ npm run db:migrate:status
 
 Antes do deploy, faça backup e confirme que `DATABASE_URL` aponta para a instância correta. Não use `prisma db push` em produção.
 
-Se a base de produção já existia antes da adoção de `prisma/migrations`, registre e teste o baseline em staging antes do primeiro `migrate deploy`. A migration atual pressupõe que as tabelas `users` e `tool_documents` já existem com os nomes definidos no schema.
+Se a base já existia antes da adoção de `prisma/migrations` (criada via `db push`), o primeiro `migrate deploy` pode retornar **P3005**. O entrypoint trata isso marcando `20260729000000_baseline_existing_schema` como aplicada e em seguida executa as migrations aditivas. Em staging isso já foi validado: as tabelas `user_profiles` e `shared_documents` existem e o app responde em `https://staging.resolvajato.com.br`.
+
+A migration aditiva pressupõe que as tabelas `users` e `tool_documents` já existem com os nomes definidos no schema.
 
 Nos containers, `PRISMA_SCHEMA_MODE=migrate` é forçado pelo overlay Vultr de produção e pelo compose de staging. O entrypoint não usa mais `--accept-data-loss`. O compose base usa `push` para permitir o bootstrap do desenvolvimento local, e o modo `skip` inicia um container sem tocar no schema.
 
