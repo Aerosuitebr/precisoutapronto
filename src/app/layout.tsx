@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
 import { AnalyticsScripts } from '@/components/analytics/analytics-scripts';
 import { AppProviders } from '@/components/providers/app-providers';
+import { ReferralCapture } from '@/components/referral/referral-capture';
 import { isStagingEnv, stagingRobots } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import './globals.css';
@@ -73,7 +75,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pt-BR">
       <body>
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          <Suspense fallback={null}><ReferralCapture /></Suspense>
+          {children}
+        </AppProviders>
         <AnalyticsScripts />
       </body>
     </html>

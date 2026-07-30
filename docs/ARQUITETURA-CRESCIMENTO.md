@@ -116,6 +116,12 @@ Cada página de intenção publica `WebPage`, `BreadcrumbList` e `FAQPage` em JS
 
 A `/biblioteca` oferece busca instantânea tolerante a acentos e filtros para os dez segmentos. A busca acontece no navegador, sem chamadas à API. A telemetria registra apenas o tamanho da consulta, quantidade de resultados e segmento escolhido; o texto pesquisado não é enviado.
 
+## Indicações
+
+O parâmetro `?ref=` é capturado globalmente e preservado no navegador até a conclusão do cadastro, mesmo quando o convite entra por uma landing diferente da homepage. O painel da conta permite compartilhar o convite pelo seletor nativo, WhatsApp, cópia do link ou cópia do código.
+
+O evento `referral_invite_shared` registra somente o canal (`native`, `whatsapp`, `link_copy` ou `code_copy`). Código, URL e identidade do usuário não são enviados ao analytics. A ativação e recompensa continuam protegidas pelas regras existentes de e-mail confirmado, primeiro uso e bloqueio de mesmo dispositivo.
+
 ## Próximos passos seguros
 
 - Adicionar testes de integração para criação, expiração e revogação de links.

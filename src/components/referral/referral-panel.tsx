@@ -1,10 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Check, Copy, Gift, Loader2, MessageCircle, Users } from 'lucide-react';
+import { Check, Copy, Gift, Loader2, MessageCircle, Share2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
-import { REFERRAL_BATCH_SIZE } from '@/lib/referral-shared';
+import { buildReferralSharePayload, REFERRAL_BATCH_SIZE } from '@/lib/referral-shared';
+import { isShareCancellation } from '@/lib/document-sharing';
+import { trackEvent } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 
 interface ReferralDashboard {
@@ -48,9 +50,25 @@ export function ReferralPanel({ className }: { className?: string }) {
   async function copy(text: string, label: string) {
     try {
       await navigator.clipboard.writeText(text);
+      trackEvent('referral_invite_shared', { channel: label === 'Código' ? 'code_copy' : 'link_copy' });
       toast(`${label} copiado.`);
     } catch {
       toast('Não foi possível copiar.');
+    }
+  }
+
+  async function shareNative() {
+    if (!data) return;
+    const payload = buildReferralSharePayload(data.code);
+    if (typeof navigator.share !== 'function' || (navigator.canShare && !navigator.canShare(payload))) {
+      await copy(data.inviteUrl, 'Link');
+      return;
+    }
+    try {
+      await navigator.share(payload);
+      trackEvent('referral_invite_shared', { channel: 'native' });
+    } catch (error) {
+      if (!isShareCancellation(error)) await copy(data.inviteUrl, 'Link');
     }
   }
 
@@ -136,15 +154,19 @@ export function ReferralPanel({ className }: { className?: string }) {
               {data.inviteUrl}
             </p>
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <Button onClick={() => void shareNative()}>
+                <Share2 className="h-4 w-4" />
+                Compartilhar convite
+              </Button>
               <Button
-                className="bg-emerald-600 hover:bg-emerald-500"
+                variant="outline"
                 onClick={() => void copy(data.inviteUrl, 'Link')}
               >
                 <Copy className="h-4 w-4" />
                 Copiar link
               </Button>
               <Button variant="outline" asChild>
-                <a href={data.whatsappUrl} target="_blank" rel="noreferrer">
+                <a href={data.whatsappUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent('referral_invite_shared', { channel: 'whatsapp' })}>
                   <MessageCircle className="h-4 w-4" />
                   Convidar no WhatsApp
                 </a>
