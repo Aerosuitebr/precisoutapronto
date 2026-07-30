@@ -1,9 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Copy, ExternalLink, Eye, Link2, Trash2 } from 'lucide-react';
+import { Copy, ExternalLink, Eye, Link2, Share2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
+import { buildDocumentSharePayload, isShareCancellation } from '@/lib/document-sharing';
+import { trackEvent } from '@/lib/analytics';
 
 type SharedLink = {
   token: string;
@@ -42,6 +44,25 @@ export function SharedLinksPanel() {
     toast('Link copiado.');
   }
 
+  async function share(item: SharedLink) {
+    const url = new URL(item.url, window.location.origin).toString();
+    const payload = buildDocumentSharePayload(item.title, url);
+    if (typeof navigator.share !== 'function' || (navigator.canShare && !navigator.canShare(payload))) {
+      await copy(item.url);
+      trackEvent('document_share_account_fallback_copied', { tool_id: item.toolId });
+      return;
+    }
+    try {
+      await navigator.share(payload);
+      trackEvent('document_share_account_native_completed', { tool_id: item.toolId });
+    } catch (error) {
+      if (!isShareCancellation(error)) {
+        await copy(item.url);
+        trackEvent('document_share_account_fallback_copied', { tool_id: item.toolId });
+      }
+    }
+  }
+
   async function revoke(token: string) {
     const response = await fetch(`/api/share?token=${encodeURIComponent(token)}`, { method: 'DELETE' });
     if (!response.ok) {
@@ -76,7 +97,8 @@ export function SharedLinksPanel() {
                   {item.lastViewedAt ? ` · última em ${new Date(item.lastViewedAt).toLocaleDateString('pt-BR')}` : ''}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={() => share(item)}><Share2 className="h-3.5 w-3.5" />Compartilhar</Button>
                 <Button size="sm" variant="outline" onClick={() => copy(item.url)}><Copy className="h-3.5 w-3.5" />Copiar</Button>
                 <Button size="sm" variant="ghost" asChild><a href={item.url} target="_blank" rel="noreferrer"><ExternalLink className="h-3.5 w-3.5" />Abrir</a></Button>
                 <Button size="sm" variant="outline" className="border-red-200 text-red-700 hover:bg-red-50" onClick={() => revoke(item.token)}><Trash2 className="h-3.5 w-3.5" />Revogar</Button>

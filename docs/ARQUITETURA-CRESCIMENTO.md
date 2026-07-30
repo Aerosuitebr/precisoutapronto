@@ -28,6 +28,8 @@ Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Com
 - deixa de funcionar imediatamente após revogação ou expiração;
 - nunca é incluído no índice de mecanismos de busca.
 
+Em navegadores compatíveis, **Compartilhar** abre o seletor nativo do dispositivo, permitindo escolher WhatsApp, Telegram, e-mail e outros aplicativos instalados. Quando a API nativa não está disponível ou falha, o link é copiado automaticamente. O cancelamento voluntário do seletor não é tratado como erro.
+
 Os eventos `document_share_link_copied`, `document_share_link_failed` e `growth_segment_selected` são enviados para as integrações de analytics já configuradas, sempre sem conteúdo do documento ou outros dados pessoais.
 
 Cada acesso válido ao link incrementa `viewCount` e atualiza `lastViewedAt`. Essas métricas são agregadas: o sistema não grava IP, cookie, user-agent ou qualquer identificador do visitante. O proprietário vê o total e a data da última visualização na área da conta.
