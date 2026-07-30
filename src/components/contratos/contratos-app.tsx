@@ -40,6 +40,7 @@ import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/vir
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, contractFromBriefing } from '@/lib/assistant-briefing';
 
 type EditorTab = 'partes' | 'termos' | 'clausulas' | 'assinatura';
 
@@ -90,6 +91,16 @@ export function ContratosApp() {
 
   useEffect(() => {
     loadContratos().then((stored) => {
+      const briefing = consumeAssistantBriefing('contrato');
+      if (briefing) {
+        const saved = saveContrato(contractFromBriefing(briefing));
+        const next = listContratos();
+        setItems(next);
+        setActiveId(saved.id);
+        setContrato(saved);
+        setTab('termos');
+        return;
+      }
       if (stored.length > 0) {
         setItems(stored);
         setActiveId(stored[0].id);

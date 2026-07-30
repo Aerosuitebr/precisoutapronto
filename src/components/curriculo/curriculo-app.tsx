@@ -47,6 +47,7 @@ import { LANGUAGE_LEVEL_LABELS } from '@/lib/curriculo/types';
 import { formatPhone } from '@/lib/formatters';
 import { isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, resumeFromBriefing } from '@/lib/assistant-briefing';
 
 type EditorTab = 'dados' | 'experiencia' | 'formacao' | 'cursos' | 'extras';
 
@@ -91,6 +92,16 @@ export function CurriculoApp() {
 
   useEffect(() => {
     loadResumes().then((stored) => {
+      const briefing = consumeAssistantBriefing('curriculo');
+      if (briefing) {
+        const saved = saveResume(resumeFromBriefing(briefing));
+        const next = listResumes();
+        setResumes(next);
+        setActiveId(saved.id);
+        setResume(saved);
+        setTab('dados');
+        return;
+      }
       if (stored.length > 0) {
         setResumes(stored);
         setActiveId(stored[0].id);

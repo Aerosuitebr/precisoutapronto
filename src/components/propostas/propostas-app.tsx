@@ -48,6 +48,7 @@ import { PROPOSAL_TEMPLATES } from '@/lib/propostas/templates';
 import type { ProposalCompany, ProposalData, ProposalItem } from '@/lib/propostas/types';
 import type { DigitalSignature } from '@/lib/signatures/types';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, proposalFromBriefing } from '@/lib/assistant-briefing';
 
 type EditorTab = 'empresa' | 'cliente' | 'itens' | 'condicoes';
 
@@ -105,6 +106,16 @@ export function PropostasApp() {
 
   useEffect(() => {
     loadProposals().then((stored) => {
+      const briefing = consumeAssistantBriefing('proposta');
+      if (briefing) {
+        const saved = saveProposal(proposalFromBriefing(briefing));
+        const next = listProposals();
+        setProposals(next);
+        setActiveId(saved.id);
+        setProposal(saved);
+        setTab('itens');
+        return;
+      }
       if (stored.length > 0) {
         setProposals(stored);
         setActiveId(stored[0].id);

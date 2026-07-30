@@ -44,6 +44,7 @@ import type { DigitalSignature } from '@/lib/signatures/types';
 import { currencyToWords, formatCpfCnpj, formatCurrencyInput, formatPhone, parseCurrency } from '@/lib/formatters';
 import { isValidCpfCnpj, isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, receiptFromBriefing } from '@/lib/assistant-briefing';
 
 type EditorTab = 'valores' | 'recebedor' | 'pagador';
 type TouchedKey =
@@ -100,6 +101,16 @@ export function RecibosApp() {
 
   useEffect(() => {
     loadReceipts().then((stored) => {
+      const briefing = consumeAssistantBriefing('recibo');
+      if (briefing) {
+        const saved = saveReceipt(receiptFromBriefing(briefing));
+        const next = listReceipts();
+        setReceipts(next);
+        setActiveId(saved.id);
+        setReceipt(saved);
+        setTab('valores');
+        return;
+      }
       if (stored.length > 0) {
         setReceipts(stored);
         setActiveId(stored[0].id);

@@ -27,6 +27,10 @@ Os históricos de contratos, documentos jurídicos e documentos contábeis ofere
 - deixa de funcionar imediatamente após revogação ou expiração;
 - nunca é incluído no índice de mecanismos de busca.
 
+## Ponte entre assistente e editores
+
+Ao concluir o assistente, o briefing fica temporariamente na sessão do navegador e é consumido uma única vez pelo editor correspondente. Contratos, currículos, recibos e propostas recebem um novo rascunho, sem sobrescrever documentos existentes. O payload expira em 30 minutos e é removido após leitura.
+
 ## Compatibilidade
 
 Nada foi removido. A navegação anterior, `/guias`, `/recursos`, `/ferramentas/*`, landings e APIs de documentos permanecem. A personalização usa `localStorage` para visitantes e tenta sincronizar com `/api/profile` apenas quando há sessão.
