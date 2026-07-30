@@ -119,9 +119,11 @@ export function RecibosApp() {
         return;
       }
       if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
         setReceipts(stored);
-        setActiveId(stored[0].id);
-        setReceipt(stored[0]);
+        setActiveId(selected.id);
+        setReceipt(selected);
         return;
       }
       const prepared = applyProfileToReceipt(createEmptyReceipt(), profile);

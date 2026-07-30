@@ -124,9 +124,11 @@ export function PropostasApp() {
         return;
       }
       if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
         setProposals(stored);
-        setActiveId(stored[0].id);
-        setProposal(stored[0]);
+        setActiveId(selected.id);
+        setProposal(selected);
         return;
       }
       const prepared = applyProfileToProposal(createEmptyProposal(), profile);

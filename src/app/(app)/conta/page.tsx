@@ -26,6 +26,7 @@ import { formatDate, formatDateTime, cancelPremium } from '@/lib/billing';
 import { PLANS } from '@/lib/plans';
 import { ProfileSettings } from '@/components/account/profile-settings';
 import { SharedLinksPanel } from '@/components/account/shared-links-panel';
+import { RecentDocumentsPanel } from '@/components/account/recent-documents-panel';
 
 const ASAAS_CHECKOUT = '/checkout?method=asaas';
 
@@ -240,6 +241,7 @@ function ContaContent() {
         </section>
 
         <ProfileSettings />
+        <RecentDocumentsPanel />
         <SharedLinksPanel />
 
         <ReferralPanel />

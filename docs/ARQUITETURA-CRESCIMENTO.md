@@ -28,6 +28,12 @@ Os campos não sensíveis já existentes no perfil agora reduzem preenchimento r
 
 A aplicação é conservadora: só ocorre em campos vazios, não altera documentos salvos e não é executada sobre um briefing vindo do assistente de IA. Falhas ou ausência de autenticação mantêm o fluxo anterior, com um documento vazio. O evento `profile_memory_applied` registra somente a ferramenta e a quantidade de campos aplicados, sem enviar os valores do perfil.
 
+### Histórico transversal
+
+A conta reúne até 50 documentos autenticados recentes de currículos, recibos, propostas e contratos. A rota agregadora `/api/documents` retorna apenas identificador, tipo, título resumido e data de atualização; o conteúdo completo continua restrito às rotas de cada ferramenta.
+
+Cada item abre o editor com `?document=<id>`, e o editor seleciona o rascunho solicitado depois de carregar o armazenamento atual. Identificadores inexistentes usam o documento mais recente como fallback, preservando links antigos e o comportamento anterior. A retomada registra `account_document_resumed` apenas com o identificador da ferramenta.
+
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:
 
 - é criado somente para um documento pertencente ao usuário autenticado;

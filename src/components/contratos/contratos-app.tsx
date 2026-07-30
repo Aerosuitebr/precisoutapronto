@@ -106,9 +106,11 @@ export function ContratosApp() {
         return;
       }
       if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
         setItems(stored);
-        setActiveId(stored[0].id);
-        setContrato(stored[0]);
+        setActiveId(selected.id);
+        setContrato(selected);
         return;
       }
       const prepared = applyProfileToContract(createEmptyContrato(), profile);

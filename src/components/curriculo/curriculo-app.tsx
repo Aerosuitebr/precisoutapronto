@@ -110,9 +110,11 @@ export function CurriculoApp() {
         return;
       }
       if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
         setResumes(stored);
-        setActiveId(stored[0].id);
-        setResume(stored[0]);
+        setActiveId(selected.id);
+        setResume(selected);
         return;
       }
       const prepared = applyProfileToResume(createEmptyResume(), profile);
