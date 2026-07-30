@@ -103,16 +103,28 @@ function buildCore(base: string): MetadataRoute.Sitemap {
   ];
 }
 
+/** Paths já cobertos por `buildGrowth` (evita URL duplicada nos sitemaps segmentados). */
+function growthPaths(): Set<string> {
+  return new Set([
+    ...growthSegments.map((segment) => `/para/${segment.slug}`),
+    ...intentPages.map((intent) => `/modelos/${intent.slug}`)
+  ]);
+}
+
 function buildTools(base: string): MetadataRoute.Sitemap {
-  const seoRoutes = listSeoLandings().map((page) => ({
-    url: `${base}${page.path}`,
-    lastModified: CORE_UPDATED_AT,
-    changeFrequency: 'weekly' as const,
-    priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
-  }));
+  const inGrowth = growthPaths();
+  const seoRoutes = listSeoLandings()
+    .filter((page) => !inGrowth.has(page.path))
+    .map((page) => ({
+      url: `${base}${page.path}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'weekly' as const,
+      priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
+    }));
 
   const toolLandingRoutes: MetadataRoute.Sitemap = PUBLIC_TOOL_LANDINGS.filter(
-    (path) => !['/contato', '/sobre', '/privacidade', '/termos'].includes(path)
+    (path) =>
+      !['/contato', '/sobre', '/privacidade', '/termos'].includes(path) && !inGrowth.has(path)
   ).map((path) => {
     let priority = 0.4;
     if (path.startsWith('/gerador-') || path.startsWith('/documentos-')) priority = 0.9;
