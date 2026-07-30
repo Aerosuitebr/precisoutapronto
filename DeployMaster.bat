@@ -47,7 +47,7 @@ if errorlevel 1 (
   exit /b 1
 )
 
-echo  Opcoes: -StagingOnly  -SkipPush  -SkipCommit  -Branch NOME  -NoPause
+echo  Opcoes: -StagingOnly  -DryRun  -SkipPush  -SkipCommit  -Branch NOME  -NoPause
 echo.
 
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0DeployMaster.ps1" %PSARGS%
