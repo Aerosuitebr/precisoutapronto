@@ -15,8 +15,6 @@ import { useAuth } from '@/hooks/use-auth';
 const links = [
   { href: '/biblioteca', label: 'Biblioteca', auth: false },
   { href: '/assistente/documentos', label: 'Assistente IA', auth: false },
-  { href: '/calculadora-de-rescisao', label: 'Rescisão', auth: false },
-  { href: '/mei-ou-clt', label: 'MEI ou CLT', auth: false },
   { href: '/recursos', label: 'Ferramentas', auth: false }
 ] as const;
 
@@ -24,33 +22,75 @@ export function SiteHeader() {
   const pathname = usePathname();
   const { isAuthenticated } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [segmentsOpen, setSegmentsOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-3 sm:gap-4 sm:px-6 sm:py-3.5">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:px-6 lg:gap-5">
         <Link href="/" className="min-w-0 shrink" aria-label="Página inicial Resolva Jato">
           <Logo
             variant="marketing"
-            className="h-10 max-w-[7.5rem] sm:h-14 sm:max-w-none lg:h-[4.25rem]"
+            className="h-10 max-w-[7.5rem] sm:h-12 sm:max-w-none lg:h-14"
           />
         </Link>
-        <nav className="hidden items-center gap-1 md:flex">
-          <div className="group relative">
-            <button className="inline-flex items-center gap-1 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900">
-              Para você <ChevronDown className="h-4 w-4" />
+        <nav className="hidden items-center gap-1.5 lg:flex">
+          <div
+            className="relative"
+            onMouseEnter={() => setSegmentsOpen(true)}
+            onMouseLeave={() => setSegmentsOpen(false)}
+            onFocus={() => setSegmentsOpen(true)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) setSegmentsOpen(false);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') {
+                setSegmentsOpen(false);
+                event.currentTarget.querySelector('button')?.focus();
+              }
+            }}
+          >
+            <button
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={segmentsOpen}
+              onClick={() => setSegmentsOpen(true)}
+              className={cn(
+                'inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors',
+                segmentsOpen
+                  ? 'bg-slate-100 text-slate-950'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              )}
+            >
+              Para você
+              <ChevronDown className={cn('h-4 w-4 transition-transform', segmentsOpen && 'rotate-180')} />
             </button>
-            <div className="invisible absolute left-0 top-full z-50 mt-2 grid w-[520px] grid-cols-2 gap-1 rounded-2xl border border-slate-200 bg-white p-3 opacity-0 shadow-xl transition group-hover:visible group-hover:opacity-100">
-              {growthSegments.map((segment) => (
-                <Link key={segment.slug} href={`/para/${segment.slug}`} className="rounded-xl p-3 hover:bg-slate-50">
-                  <span className="block text-sm font-bold text-slate-900">{segment.name}</span>
-                  <span className="mt-1 block text-xs leading-5 text-slate-500">{segment.shortDescription}</span>
-                </Link>
-              ))}
+            <div
+              className={cn(
+                'absolute left-0 top-full z-50 w-[560px] pt-2 transition duration-150',
+                segmentsOpen
+                  ? 'visible translate-y-0 opacity-100'
+                  : 'invisible -translate-y-1 opacity-0'
+              )}
+            >
+              <div role="menu" className="grid grid-cols-2 gap-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl shadow-slate-900/15">
+                {growthSegments.map((segment) => (
+                  <Link
+                    key={segment.slug}
+                    href={`/para/${segment.slug}`}
+                    role="menuitem"
+                    onClick={() => setSegmentsOpen(false)}
+                    className="rounded-xl p-3 outline-none transition-colors hover:bg-sky-50 focus:bg-sky-50 focus:ring-2 focus:ring-sky-300"
+                  >
+                    <span className="block text-sm font-bold text-slate-900">{segment.name}</span>
+                    <span className="mt-1 block text-xs leading-5 text-slate-500">{segment.shortDescription}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
           {links.map((link) => {
             const className = cn(
-              'rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors',
+              'whitespace-nowrap rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors',
               pathname === link.href || pathname.startsWith(`${link.href}/`)
                 ? 'bg-slate-900 text-white'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
@@ -87,7 +127,7 @@ export function SiteHeader() {
           )}
           <button
             type="button"
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 md:hidden"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 lg:hidden"
             onClick={() => setMobileOpen((current) => !current)}
             aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={mobileOpen}
@@ -98,7 +138,7 @@ export function SiteHeader() {
       </div>
 
       {mobileOpen ? (
-        <div className="border-t border-slate-200 bg-white px-4 py-4 md:hidden">
+        <div className="border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
           <nav className="mx-auto grid max-w-6xl gap-2">
             <p className="px-4 pt-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Por perfil</p>
             <div className="grid grid-cols-2 gap-1">

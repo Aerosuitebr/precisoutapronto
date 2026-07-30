@@ -63,6 +63,12 @@ Isso permite apontar diretamente para o painel de desempenho em suporte, onboard
 
 O acesso a `/conta#compartilhamentos` também está presente no cabeçalho autenticado — desktop e móvel — e na seção “Conta” do menu lateral das ferramentas. Assim, o usuário não precisa estar previamente na página da conta para consultar links e métricas.
 
+### Cabeçalho público
+
+O cabeçalho público mantém apenas quatro decisões principais no desktop: segmentos, biblioteca, assistente e ferramentas. Itens específicos continuam acessíveis pelos hubs correspondentes, evitando rótulos quebrados e competição com autenticação/idioma.
+
+O menu de segmentos usa estado explícito e permanece aberto por cursor, clique ou foco. A área posicionada entre o gatilho e o painel faz parte do próprio dropdown, eliminando o vão que encerrava o `hover`. `Escape`, saída do cursor e seleção de um segmento fecham o painel. Em larguras abaixo de `lg`, a navegação completa migra para o menu móvel. O seletor de idioma usa bandeiras coloridas e estado ativo discreto, sem brilho ornamental.
+
 Migration correspondente: `20260729234500_add_tool_document_favorites`. Ela adiciona `tool_documents.isFavorite BOOLEAN NOT NULL DEFAULT false` e um índice por usuário, favorito e atualização. O valor padrão mantém todos os registros existentes compatíveis e não exige backfill.
 
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:

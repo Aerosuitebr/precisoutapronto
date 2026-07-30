@@ -97,7 +97,7 @@ export function LocaleSwitcher({
     <div
       role="group"
       aria-label={label}
-      className="inline-flex h-9 shrink-0 items-center rounded-full border border-slate-200 bg-slate-50/90 p-0.5 shadow-sm sm:h-10 sm:p-1"
+      className="inline-flex h-9 shrink-0 items-center rounded-xl border border-slate-200 bg-white p-0.5 sm:h-10"
     >
       {locales.map((item) => {
         const active = item === locale;
@@ -115,26 +115,20 @@ export function LocaleSwitcher({
             title={localeLabel[item]}
             onClick={() => persistLocalePreference(item)}
             className={cn(
-              'relative inline-flex h-7 w-8 items-center justify-center rounded-full transition duration-200 sm:h-8 sm:w-9',
+              'relative inline-flex h-7 w-8 items-center justify-center rounded-lg transition duration-150 sm:h-8 sm:w-9',
               active
-                ? 'bg-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_14px_rgba(250,204,21,0.55)]'
-                : 'hover:bg-white'
+                ? 'bg-slate-100 ring-1 ring-slate-200'
+                : 'hover:bg-slate-50'
             )}
           >
             <Flag
               className={cn(
-                'h-[14px] w-[21px] rounded-[2px] transition duration-200',
+                'h-[14px] w-[21px] rounded-[2px] shadow-sm transition duration-150',
                 active
-                  ? 'opacity-100 brightness-110 drop-shadow-[0_0_6px_rgba(250,204,21,0.85)]'
-                  : 'opacity-40 grayscale hover:opacity-70 hover:grayscale-0'
+                  ? 'opacity-100'
+                  : 'opacity-65 hover:opacity-100'
               )}
             />
-            {active ? (
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-amber-300/70"
-              />
-            ) : null}
           </Link>
         );
       })}
