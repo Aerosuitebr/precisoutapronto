@@ -12,6 +12,7 @@ import {
 import { JATO_GAMES } from '@/lib/games/brand';
 import { listGamesByRank } from '@/lib/games/games';
 import { hardwareGuides } from '@/lib/games/hardware';
+import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
   title: { absolute: `${JATO_GAMES.name} | ${JATO_GAMES.tagline}` },
@@ -63,11 +64,41 @@ const pillars = [
   }
 ] as const;
 
+const gamesFaq = [
+  { question: 'O que encontro no Jato Games?', answer: 'Ferramentas gamer gratuitas, requisitos e setups de jogos, guias de hardware, consoles e uma curadoria de lojas e canais oficiais.' },
+  { question: 'As ferramentas gamer são gratuitas?', answer: 'Sim. Calculadora de eDPI, planejamento de armazenamento, custo por hora e comparação de requisitos podem ser usadas sem pagamento.' },
+  { question: 'Os setups garantem uma taxa de FPS?', answer: 'Não. São referências editoriais. Desempenho real varia com resolução, qualidade gráfica, drivers, temperatura, memória e atualizações do jogo.' }
+];
+
 export default function GamesHubPage() {
   const top = listGamesByRank().slice(0, 4);
+  const base = getViralBaseUrl().replace(/\/$/, '');
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: 'Jato Games',
+        description: JATO_GAMES.description,
+        url: `${base}/games`,
+        inLanguage: 'pt-BR',
+        hasPart: pillars.map((pillar) => ({ '@type': 'WebPage', name: pillar.title, url: `${base}${pillar.href}` }))
+      },
+      {
+        '@type': 'ItemList',
+        name: 'Jogos populares com setup sugerido',
+        itemListElement: top.map((game, index) => ({ '@type': 'ListItem', position: index + 1, name: game.title, url: `${base}/games/jogos/${game.slug}` }))
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: gamesFaq.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } }))
+      }
+    ]
+  };
 
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
         <GamesReadablePanel className="max-w-none">
           <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
@@ -216,6 +247,21 @@ export default function GamesHubPage() {
 
       <section className="relative mx-auto max-w-7xl px-4 pb-16 sm:px-6">
         <ProductBridge />
+      </section>
+
+      <section className="relative mx-auto max-w-7xl px-4 pb-16 sm:px-6">
+        <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Dúvidas rápidas</p>
+          <h2 className="rj-display mt-2 text-2xl font-extrabold text-slate-950">Perguntas sobre o Jato Games</h2>
+          <dl className="mt-6 grid gap-6 md:grid-cols-3">
+            {gamesFaq.map((item) => (
+              <div key={item.question}>
+                <dt className="font-extrabold text-slate-950">{item.question}</dt>
+                <dd className="mt-2 text-sm leading-6 text-slate-700">{item.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </section>
     </div>
   );
