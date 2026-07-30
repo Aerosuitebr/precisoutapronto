@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Copy, ExternalLink, Link2, Trash2 } from 'lucide-react';
+import { Copy, ExternalLink, Eye, Link2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 
@@ -13,6 +13,8 @@ type SharedLink = {
   createdAt: string;
   expiresAt: string | null;
   revokedAt: string | null;
+  viewCount: number;
+  lastViewedAt: string | null;
 };
 
 export function SharedLinksPanel() {
@@ -65,7 +67,15 @@ export function SharedLinksPanel() {
         <ul className="mt-6 divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200">
           {active.map((item) => (
             <li key={item.token} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="min-w-0"><p className="truncate text-sm font-bold text-slate-950">{item.title}</p><p className="mt-1 text-xs text-slate-500">{item.toolId} · criado em {new Date(item.createdAt).toLocaleDateString('pt-BR')}{item.expiresAt ? ` · expira em ${new Date(item.expiresAt).toLocaleDateString('pt-BR')}` : ' · sem expiração'}</p></div>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-bold text-slate-950">{item.title}</p>
+                <p className="mt-1 text-xs text-slate-500">{item.toolId} · criado em {new Date(item.createdAt).toLocaleDateString('pt-BR')}{item.expiresAt ? ` · expira em ${new Date(item.expiresAt).toLocaleDateString('pt-BR')}` : ' · sem expiração'}</p>
+                <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700">
+                  <Eye className="h-3.5 w-3.5" />
+                  {item.viewCount} {item.viewCount === 1 ? 'visualização' : 'visualizações'}
+                  {item.lastViewedAt ? ` · última em ${new Date(item.lastViewedAt).toLocaleDateString('pt-BR')}` : ''}
+                </p>
+              </div>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={() => copy(item.url)}><Copy className="h-3.5 w-3.5" />Copiar</Button>
                 <Button size="sm" variant="ghost" asChild><a href={item.url} target="_blank" rel="noreferrer"><ExternalLink className="h-3.5 w-3.5" />Abrir</a></Button>

@@ -27,6 +27,8 @@ model SharedDocument {
   createdAt      DateTime  @default(now())
   expiresAt      DateTime?
   revokedAt      DateTime?
+  viewCount      Int       @default(0)
+  lastViewedAt   DateTime?
 
   owner        User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   toolDocument ToolDocument @relation(fields: [toolDocumentId], references: [id], onDelete: Cascade)

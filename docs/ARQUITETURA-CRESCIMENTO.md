@@ -29,6 +29,8 @@ Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Com
 
 Os eventos `document_share_link_copied`, `document_share_link_failed` e `growth_segment_selected` são enviados para as integrações de analytics já configuradas, sempre sem conteúdo do documento ou outros dados pessoais.
 
+Cada acesso válido ao link incrementa `viewCount` e atualiza `lastViewedAt`. Essas métricas são agregadas: o sistema não grava IP, cookie, user-agent ou qualquer identificador do visitante. O proprietário vê o total e a data da última visualização na área da conta.
+
 ## Ponte entre assistente e editores
 
 Ao concluir o assistente, o briefing fica temporariamente na sessão do navegador e é consumido uma única vez pelo editor correspondente. Contratos, currículos, recibos e propostas recebem um novo rascunho, sem sobrescrever documentos existentes. O payload expira em 30 minutos e é removido após leitura.
@@ -57,6 +59,12 @@ A alteração PostgreSQL está versionada em:
 `prisma/migrations/20260729210000_add_growth_profiles_and_document_sharing/migration.sql`
 
 Ela é estritamente aditiva: cria `user_profiles` e `shared_documents`, seus índices e as relações com `users` e `tool_documents`. Não reescreve nem remove registros existentes.
+
+As métricas agregadas de compartilhamento são adicionadas por:
+
+`prisma/migrations/20260729233000_add_shared_document_metrics/migration.sql`
+
+Essa segunda migration apenas acrescenta `viewCount` com padrão zero e `lastViewedAt` opcional, preservando todos os links existentes.
 
 Para aplicar em produção pelo Prisma:
 
@@ -93,7 +101,6 @@ COMMIT;
 
 ## Próximos passos seguros
 
-- Registrar visualizações agregadas dos links compartilhados sem identificar o visitante.
 - Adicionar testes de integração para criação, expiração e revogação de links.
 - Medir início e conclusão do assistente para localizar abandono entre etapas.
 - Expandir intenções somente após medir indexação, cliques para ferramenta e conclusão do documento.

@@ -27,7 +27,9 @@ export async function GET() {
       artifactId: link.toolDocument.artifactId,
       createdAt: link.createdAt.toISOString(),
       expiresAt: link.expiresAt?.toISOString() || null,
-      revokedAt: link.revokedAt?.toISOString() || null
+      revokedAt: link.revokedAt?.toISOString() || null,
+      viewCount: link.viewCount,
+      lastViewedAt: link.lastViewedAt?.toISOString() || null
     }))
   });
 }
