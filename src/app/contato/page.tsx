@@ -4,11 +4,11 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Contato',
-  description: 'Fale com a equipe do Resolva Jato.',
+  description: 'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
   alternates: { canonical: '/contato' },
   openGraph: {
     title: 'Contato | Resolva Jato',
-    description: 'Fale com a equipe do Resolva Jato.',
+    description: 'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
     url: '/contato'
   }
 };

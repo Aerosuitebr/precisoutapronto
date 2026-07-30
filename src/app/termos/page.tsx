@@ -3,11 +3,11 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Termos de uso',
-  description: 'Condições de uso da plataforma Resolva Jato.',
+  description: 'Consulte as regras, responsabilidades e condições aplicáveis ao uso de contas, documentos e ferramentas da plataforma Resolva Jato.',
   alternates: { canonical: '/termos' },
   openGraph: {
     title: 'Termos de uso | Resolva Jato',
-    description: 'Condições de uso da plataforma Resolva Jato.',
+    description: 'Consulte as regras, responsabilidades e condições aplicáveis ao uso de contas, documentos e ferramentas da plataforma Resolva Jato.',
     url: '/termos'
   }
 };

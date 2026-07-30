@@ -635,9 +635,9 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
               <Receipt className="h-5 w-5" />
             </span>
             <div>
-              <h1 className="rj-display text-xl font-extrabold tracking-tight sm:text-2xl">
+              <h2 className="rj-display text-xl font-extrabold tracking-tight sm:text-2xl">
                 Orçamentos com link de aprovação
-              </h1>
+              </h2>
               <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
                 Monte, envie no WhatsApp do cliente e acompanhe o histórico. Na resposta, você recebe
                 alerta no celular, e-mail e WhatsApp.

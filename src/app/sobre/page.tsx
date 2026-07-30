@@ -4,11 +4,11 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Sobre',
-  description: 'O que é o Resolva Jato e quem opera a plataforma.',
+  description: 'Conheça o Resolva Jato, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
   alternates: { canonical: '/sobre' },
   openGraph: {
     title: 'Sobre | Resolva Jato',
-    description: 'O que é o Resolva Jato e quem opera a plataforma.',
+    description: 'Conheça o Resolva Jato, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
     url: '/sobre'
   }
 };

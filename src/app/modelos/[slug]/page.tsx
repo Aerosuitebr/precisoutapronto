@@ -12,7 +12,12 @@ type Props = { params: Promise<{ slug: string }> };
 export function generateStaticParams() { return intentPages.map((page) => ({ slug: page.slug })); }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = getIntentPage((await params).slug);
-  return page ? { title: page.title, description: page.description, alternates: { canonical: `/modelos/${page.slug}` } } : {};
+  if (!page) return {};
+  const description =
+    page.description.length >= 70
+      ? page.description
+      : `${page.description} Veja orientações práticas, perguntas frequentes e a ferramenta indicada.`;
+  return { title: page.title, description, alternates: { canonical: `/modelos/${page.slug}` } };
 }
 export default async function IntentPageRoute({ params }: Props) {
   const page = getIntentPage((await params).slug);

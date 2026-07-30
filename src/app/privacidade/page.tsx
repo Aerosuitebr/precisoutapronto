@@ -3,11 +3,11 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Privacidade',
-  description: 'Como o Resolva Jato trata dados pessoais e cookies.',
+  description: 'Entenda quais dados pessoais o Resolva Jato coleta, por que são tratados, como protegemos suas informações e quais são seus direitos.',
   alternates: { canonical: '/privacidade' },
   openGraph: {
     title: 'Privacidade | Resolva Jato',
-    description: 'Como o Resolva Jato trata dados pessoais e cookies.',
+    description: 'Entenda quais dados pessoais o Resolva Jato coleta, por que são tratados, como protegemos suas informações e quais são seus direitos.',
     url: '/privacidade'
   }
 };

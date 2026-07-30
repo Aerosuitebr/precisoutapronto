@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { AnalyticsScripts } from '@/components/analytics/analytics-scripts';
 import { AppProviders } from '@/components/providers/app-providers';
 import { ReferralCapture } from '@/components/referral/referral-capture';
+import { SiteJsonLd } from '@/components/marketing/site-json-ld';
 import { isStagingEnv, stagingRobots } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import './globals.css';
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: 'Resolva Jato | Orçamento com Pix no WhatsApp',
-    template: '%s | Resolva Jato'
+    template: '%s'
   },
   description:
     'Mande o orçamento, o cliente aprova no celular e você cobra com Pix no WhatsApp. Também currículo, contrato e proposta. Comece grátis.',
@@ -75,6 +76,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pt-BR">
       <body>
+        <SiteJsonLd />
         <AppProviders>
           <Suspense fallback={null}><ReferralCapture /></Suspense>
           {children}

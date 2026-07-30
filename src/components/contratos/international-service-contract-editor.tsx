@@ -276,7 +276,7 @@ export function InternationalServiceContractEditor({ locale }: { locale: Interna
                 <DocumentExportShell branded={!usage.unlimited}>
                   <article className="min-h-[297mm] p-[18mm] font-serif text-[13px] leading-7 text-slate-800">
                     <div className="mb-8 h-1.5 rounded-full bg-gradient-to-r from-slate-900 to-sky-600" />
-                    <h1 className="text-center text-xl font-bold uppercase tracking-wide text-slate-950">{t.contractTitle}</h1>
+                    <p className="text-center text-xl font-bold uppercase tracking-wide text-slate-950">{t.contractTitle}</p>
                     <p className="mt-8 text-justify">{t.preamble} <strong>{describeParty(client, t.client)}</strong>; {t.and} <strong>{describeParty(provider, t.provider)}</strong>, {t.together}</p>
                     <div className="mt-8 space-y-5">{clauses.map(([title, body], index) => <section key={title}><h2 className="font-bold uppercase tracking-wide text-slate-950">{t.clause} {index + 1} · {title}</h2><p className="mt-1 whitespace-pre-wrap text-justify">{body}</p></section>)}</div>
                     {notes ? <p className="mt-6 border-l-2 border-sky-600 pl-4 italic text-slate-600">{notes}</p> : null}

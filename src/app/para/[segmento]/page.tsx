@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { getGrowthSegment, growthSegments } from '@/lib/growth/segments';
 import { intentPages } from '@/lib/growth/intents';
 import { SegmentJourneyLink } from '@/components/growth/segment-journey-link';
+import { getViralBaseUrl } from '@/lib/viral-loop';
 
 type Props = { params: Promise<{ segmento: string }> };
 
@@ -16,9 +17,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const segment = getGrowthSegment((await params).segmento);
   if (!segment) return {};
+  const description =
+    segment.description.length >= 70
+      ? segment.description
+      : `${segment.description} Encontre recursos gratuitos para concluir cada tarefa com mais agilidade.`;
   return {
     title: `${segment.name}: ferramentas e documentos gratuitos`,
-    description: segment.description,
+    description,
     alternates: { canonical: `/para/${segment.slug}` }
   };
 }
@@ -27,8 +32,42 @@ export default async function SegmentPage({ params }: Props) {
   const segment = getGrowthSegment((await params).segmento);
   if (!segment) notFound();
   const relatedIntents = intentPages.filter((item) => item.segmentSlugs.includes(segment.slug));
+  const base = getViralBaseUrl().replace(/\/$/, '');
+  const pageUrl = `${base}/para/${segment.slug}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: `Resolva Jato para ${segment.name}`,
+        headline: segment.headline,
+        description: segment.description,
+        url: pageUrl,
+        inLanguage: 'pt-BR',
+        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+      },
+      {
+        '@type': 'ItemList',
+        name: `Ferramentas para ${segment.name}`,
+        itemListElement: segment.tools.map((tool, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: tool.label,
+          url: `${base}${tool.href}`
+        }))
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Início', item: base },
+          { '@type': 'ListItem', position: 2, name: `Para ${segment.name}`, item: pageUrl }
+        ]
+      }
+    ]
+  };
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteHeader />
       <main>
         <section className="bg-[linear-gradient(145deg,#020617,#0f172a_50%,#064e3b)] text-white">
