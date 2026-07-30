@@ -100,6 +100,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/games/ferramentas/calculadora-edpi',
     '/games/ferramentas/planejador-armazenamento',
     '/games/ferramentas/custo-por-hora',
+    '/games/ferramentas/meu-pc-roda',
     '/games/hardware',
     '/games/consoles',
     '/games/lojas'

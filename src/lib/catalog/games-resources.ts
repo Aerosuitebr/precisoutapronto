@@ -249,5 +249,13 @@ export const gamesResources = [
     description: 'Compara preço, DLCs e horas estimadas para avaliar uma compra gamer.',
     url: 'https://resolvajato.com.br/games/ferramentas/custo-por-hora',
     tags: ['#Preço', '#Promoção', '#Jogos', '#Calculadora']
+  },
+  {
+    name: 'Meu PC roda este jogo?',
+    category: 'games',
+    categoryLabel: 'Games',
+    description: 'Compara CPU, GPU, memória e armazenamento com requisitos de jogos populares.',
+    url: 'https://resolvajato.com.br/games/ferramentas/meu-pc-roda',
+    tags: ['#Requisitos', '#PCGamer', '#GPU', '#MeuPCRoda']
   }
 ] as const;

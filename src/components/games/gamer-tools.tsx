@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Calculator, Copy, Crosshair, HardDrive, Link2, Share2 } from 'lucide-react';
+import { Calculator, Clock3, Copy, Crosshair, HardDrive, Link2, Share2 } from 'lucide-react';
+
+type RecentCalculation = { label: string; url: string; createdAt: number };
 
 function NumberField({
   label,
@@ -48,6 +50,58 @@ function readSharedNumber(query: URLSearchParams, key: string) {
   return Number.isFinite(value) ? value : null;
 }
 
+function useCalculationHistory(tool: string, label: string, params: Record<string, number>) {
+  const [items, setItems] = useState<RecentCalculation[]>([]);
+  const serializedParams = JSON.stringify(params);
+
+  useEffect(() => {
+    const storageKey = `jato-games:${tool}:recent`;
+    const saved = window.localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        setItems(JSON.parse(saved) as RecentCalculation[]);
+      } catch {
+        window.localStorage.removeItem(storageKey);
+      }
+    }
+  }, [tool]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const storageKey = `jato-games:${tool}:recent`;
+      const savedParams = JSON.parse(serializedParams) as Record<string, number>;
+      const nextItem = { label, url: buildShareUrl(savedParams), createdAt: Date.now() };
+      setItems((current) => {
+        const deduplicated = current.filter((item) => item.url !== nextItem.url);
+        const next = [nextItem, ...deduplicated].slice(0, 4);
+        window.localStorage.setItem(storageKey, JSON.stringify(next));
+        return next;
+      });
+    }, 700);
+    return () => window.clearTimeout(timer);
+  }, [label, serializedParams, tool]);
+
+  return items;
+}
+
+function RecentResults({ items }: { items: RecentCalculation[] }) {
+  if (items.length < 2) return null;
+  return (
+    <aside className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-600">
+        <Clock3 className="h-4 w-4" /> Seus cálculos recentes
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {items.map((item) => (
+          <a key={item.url} href={item.url} className="rounded-full border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-teal-400 hover:text-teal-800">
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
 function ResultShare({ text, params }: { text: string; params: Record<string, number> }) {
   const [copied, setCopied] = useState(false);
 
@@ -91,6 +145,7 @@ export function EdpiCalculator() {
   const [sensitivity, setSensitivity] = useState(0.35);
   const edpi = useMemo(() => Math.round(dpi * sensitivity * 100) / 100, [dpi, sensitivity]);
   const result = `Meu eDPI é ${edpi} (${dpi} DPI × ${sensitivity} de sensibilidade).`;
+  const history = useCalculationHistory('edpi', `${edpi} eDPI`, { dpi, sens: sensitivity });
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -108,6 +163,7 @@ export function EdpiCalculator() {
       </div>
       <ResultBox label="Seu eDPI" value={edpi.toLocaleString('pt-BR')} note="eDPI = DPI × sensibilidade. Compare apenas dentro do mesmo jogo; escalas variam entre títulos." />
       <ResultShare text={result} params={{ dpi, sens: sensitivity }} />
+      <RecentResults items={history} />
     </ToolCard>
   );
 }
@@ -124,6 +180,7 @@ export function StoragePlanner() {
   const result = fits
     ? `O jogo cabe no meu armazenamento. Restarão ${freeAfter} GB livres (${usage}% ocupado).`
     : `Faltam ${Math.abs(capacity - system - installed - newGame)} GB para instalar o jogo.`;
+  const history = useCalculationHistory('storage', fits ? `${freeAfter} GB livres` : `Faltam ${Math.abs(rawFreeAfter)} GB`, { cap: capacity, sys: system, used: installed, game: newGame });
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -144,6 +201,7 @@ export function StoragePlanner() {
       </div>
       <ResultBox label={fits ? 'Espaço livre depois da instalação' : 'Espaço insuficiente'} value={fits ? `${freeAfter} GB` : `Faltam ${Math.abs(rawFreeAfter)} GB`} note={fits ? `O disco ficará aproximadamente ${usage}% ocupado.` : 'Considere remover jogos não usados ou escolher outro disco.'} tone={fits ? 'success' : 'warning'} />
       <ResultShare text={result} params={{ cap: capacity, sys: system, used: installed, game: newGame }} />
+      <RecentResults items={history} />
     </ToolCard>
   );
 }
@@ -155,6 +213,7 @@ export function CostPerHourCalculator() {
   const total = price + extra;
   const cost = hours > 0 ? total / hours : 0;
   const result = `Este jogo custará cerca de ${cost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} por hora considerando ${hours} horas jogadas.`;
+  const history = useCalculationHistory('cost', `${cost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}/h`, { preco: price, extras: extra, horas: hours });
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -175,6 +234,7 @@ export function CostPerHourCalculator() {
       </div>
       <ResultBox label="Custo estimado por hora" value={cost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} note={`Investimento total considerado: ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}. Use como comparação pessoal, não como regra de qualidade.`} />
       <ResultShare text={result} params={{ preco: price, extras: extra, horas: hours }} />
+      <RecentResults items={history} />
     </ToolCard>
   );
 }

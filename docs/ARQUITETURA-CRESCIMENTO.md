@@ -189,6 +189,8 @@ O Jato Games evolui de um diretório editorial para uma central de decisão e fe
 - Calculadora de eDPI para comparar configurações dentro do mesmo jogo.
 - Planejador de armazenamento para antecipar espaço livre após uma instalação.
 - Calculadora de custo por hora jogada para apoiar decisões de compra.
+- Comparador “Meu PC roda?” com CPU, GPU, RAM e armazenamento, conectado às fichas do catálogo e com diagnóstico explicitamente orientativo.
+- Histórico local de até quatro cálculos por ferramenta, sem conta e sem envio ao servidor.
 - Resultados copiáveis e compartilháveis, criando um ciclo de distribuição orgânica.
 - Links de resultado preservam os valores do cálculo na URL e restauram a configuração para quem recebe.
 - JSON-LD de `CollectionPage`, `ItemList` e `BreadcrumbList`.
@@ -199,7 +201,6 @@ O Jato Games evolui de um diretório editorial para uma central de decisão e fe
 Próximos incrementos recomendados, condicionados a bases técnicas verificáveis:
 
 1. Comparador de sensibilidade entre jogos.
-2. Checklist “meu PC roda?” por requisitos mínimos e recomendados.
-3. Calculadora de fonte e consumo estimado.
-4. Planejador de upgrade por resolução, taxa de atualização e orçamento.
-5. Histórico local e favoritos para estimular retorno sem exigir cadastro.
+2. Calculadora de fonte e consumo estimado.
+3. Planejador de upgrade por resolução, taxa de atualização e orçamento.
+4. Favoritos e listas pessoais para estimular retorno sem exigir cadastro.

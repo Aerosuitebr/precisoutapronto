@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, ChevronRight, Crosshair, Gamepad2, HardDrive, WalletCards } from 'lucide-react';
+import { ArrowRight, ChevronRight, Cpu, Crosshair, Gamepad2, HardDrive, WalletCards } from 'lucide-react';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
@@ -34,7 +34,8 @@ export default function GamerToolsPage() {
         itemListElement: [
           ['Calculadora de eDPI', '/games/ferramentas/calculadora-edpi'],
           ['Planejador de armazenamento', '/games/ferramentas/planejador-armazenamento'],
-          ['Custo por hora jogada', '/games/ferramentas/custo-por-hora']
+          ['Custo por hora jogada', '/games/ferramentas/custo-por-hora'],
+          ['Meu PC roda este jogo?', '/games/ferramentas/meu-pc-roda']
         ].map(([name, path], index) => ({
           '@type': 'ListItem',
           position: index + 1,
@@ -68,13 +69,14 @@ export default function GamerToolsPage() {
           {[
             ['/games/ferramentas/calculadora-edpi', 'Calcular eDPI'],
             ['/games/ferramentas/planejador-armazenamento', 'Planejar armazenamento'],
-            ['/games/ferramentas/custo-por-hora', 'Calcular custo por hora']
+            ['/games/ferramentas/custo-por-hora', 'Calcular custo por hora'],
+            ['/games/ferramentas/meu-pc-roda', 'Ver se meu PC roda']
           ].map(([href, label]) => <Link key={href} href={href} className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-bold hover:bg-white/20">{label}</Link>)}
         </div>
       </header>
       <section aria-labelledby="tools-title" className="mt-8">
         <h2 id="tools-title" className="sr-only">Escolha uma ferramenta gamer</h2>
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {[
             {
               href: '/games/ferramentas/calculadora-edpi',
@@ -96,6 +98,13 @@ export default function GamerToolsPage() {
               description: 'Compare preço, DLCs e tempo estimado para tomar uma decisão de compra mais consciente.',
               cta: 'Analisar uma compra',
               icon: WalletCards
+            },
+            {
+              href: '/games/ferramentas/meu-pc-roda',
+              title: 'Meu PC roda?',
+              description: 'Compare CPU, GPU, RAM e espaço com as referências mínimas e recomendadas dos jogos.',
+              cta: 'Comparar meu PC',
+              icon: Cpu
             }
           ].map((tool) => {
             const Icon = tool.icon;

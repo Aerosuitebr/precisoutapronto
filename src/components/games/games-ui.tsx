@@ -397,8 +397,15 @@ export function GameNextSteps({ game }: { game: GameEntry }) {
       </p>
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <Link
-          href="/games/hardware/escolher-placa-de-video"
+          href={`/games/ferramentas/meu-pc-roda?jogo=${game.slug}`}
           className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-sm font-bold text-white shadow-lg shadow-teal-600/20 transition hover:bg-teal-500"
+        >
+          Meu PC roda este jogo?
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+        <Link
+          href="/games/hardware/escolher-placa-de-video"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border-2 border-slate-800 bg-white px-5 text-sm font-bold text-slate-900 transition hover:border-teal-700 hover:bg-teal-50"
         >
           Ver guia da GPU
           <ArrowRight className="h-4 w-4" />
