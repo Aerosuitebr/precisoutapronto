@@ -31,6 +31,8 @@ Os eventos `document_share_link_copied`, `document_share_link_failed` e `growth_
 
 Cada acesso válido ao link incrementa `viewCount` e atualiza `lastViewedAt`. Essas métricas são agregadas: o sistema não grava IP, cookie, user-agent ou qualquer identificador do visitante. O proprietário vê o total e a data da última visualização na área da conta.
 
+A página pública apresenta uma ação contextual para a ferramenta que originou o documento. Por exemplo, quem recebe um contrato é encaminhado ao editor de contratos, enquanto uma proposta leva ao editor de propostas. A origem é atribuída por parâmetros UTM e pelos eventos `shared_document_landing_viewed` e `shared_document_cta_clicked`, usando apenas o tipo da ferramenta — nunca o token ou o conteúdo compartilhado.
+
 ## Ponte entre assistente e editores
 
 Ao concluir o assistente, o briefing fica temporariamente na sessão do navegador e é consumido uma única vez pelo editor correspondente. Contratos, currículos, recibos e propostas recebem um novo rascunho, sem sobrescrever documentos existentes. O payload expira em 30 minutos e é removido após leitura.
