@@ -101,3 +101,6 @@ Evergreen hub for games, suggested PC setups, hardware guides, consoles and cura
 - https://resolvajato.com.br/privacidade
 - https://resolvajato.com.br/termos
 - https://resolvajato.com.br/contato
+- Contact email: contato@resolvajato.com.br
+- Security: https://resolvajato.com.br/.well-known/security.txt
+- Product Hunt: https://www.producthunt.com/products/resolva-jato

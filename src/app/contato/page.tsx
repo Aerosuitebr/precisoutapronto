@@ -1,38 +1,56 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage } from '@/components/marketing/legal-page';
+import { BRAND_EMAIL, BRAND_SAME_AS, BRAND_SITE } from '@/lib/brand';
 
 export const metadata: Metadata = {
   title: 'Contato',
-  description: 'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
+  description:
+    'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
   alternates: { canonical: '/contato' },
   openGraph: {
     title: 'Contato | Resolva Jato',
-    description: 'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
+    description:
+      'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
     url: '/contato'
   }
 };
+
+const productHunt = BRAND_SAME_AS[0];
 
 export default function ContatoPage() {
   return (
     <LegalPage title="Contato" subtitle="Estamos em resolvajato.com.br">
       <p>
-        O Resolva Jato é um produto da <strong>Aerosuite</strong>. Para suporte, segurança ou
-        privacidade, escreva para:
+        O Resolva Jato é um produto da <strong>Aerosuite</strong>. Suporte, segurança e
+        privacidade usam a mesma caixa Google Workspace:
       </p>
       <p>
-        <a
-          href="mailto:contato@resolvajato.com.br"
-          className="font-semibold text-sky-700 hover:text-sky-800"
-        >
-          contato@resolvajato.com.br
+        <a href={`mailto:${BRAND_EMAIL}`} className="font-semibold text-sky-700 hover:text-sky-800">
+          {BRAND_EMAIL}
         </a>
       </p>
+      <ul className="list-disc space-y-1 pl-5">
+        <li>Suporte de produto e dúvidas sobre ferramentas</li>
+        <li>Privacidade e solicitações de dados</li>
+        <li>Relatos de segurança (veja também o security.txt)</li>
+      </ul>
       <p>
         Site oficial:{' '}
         <Link href="/" className="font-semibold text-sky-700 hover:text-sky-800">
-          https://resolvajato.com.br
+          {BRAND_SITE}
         </Link>
+      </p>
+      <p>
+        Product Hunt:{' '}
+        <a
+          href={productHunt}
+          className="font-semibold text-sky-700 hover:text-sky-800"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          resolva-jato
+        </a>
       </p>
       <p>
         Relatos de segurança: veja também{' '}

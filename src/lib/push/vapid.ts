@@ -1,3 +1,5 @@
+import { BRAND_EMAIL } from '@/lib/brand';
+
 export function getVapidPublicKey() {
   return process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY?.trim() || '';
 }
@@ -7,7 +9,7 @@ export function getVapidPrivateKey() {
 }
 
 export function getVapidSubject() {
-  return process.env.VAPID_SUBJECT?.trim() || 'mailto:contato@resolvajato.local';
+  return process.env.VAPID_SUBJECT?.trim() || `mailto:${BRAND_EMAIL}`;
 }
 
 export function isPushConfigured() {

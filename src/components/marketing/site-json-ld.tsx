@@ -1,16 +1,23 @@
+import {
+  BRAND_EMAIL,
+  BRAND_NAME,
+  BRAND_SAME_AS,
+  BRAND_SITE
+} from '@/lib/brand';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 /** JSON-LD de Organization e WebSite (rich results / Knowledge Panel). */
 export function SiteJsonLd() {
-  const siteUrl = getViralBaseUrl().replace(/\/$/, '');
+  const siteUrl = getViralBaseUrl().replace(/\/$/, '') || BRAND_SITE;
 
   const organization = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,
-    name: 'Resolva Jato',
+    name: BRAND_NAME,
     alternateName: 'RJ',
     url: siteUrl,
+    email: BRAND_EMAIL,
     logo: {
       '@type': 'ImageObject',
       url: `${siteUrl}/icon-512.png`,
@@ -25,6 +32,22 @@ export function SiteJsonLd() {
       '@type': 'Country',
       name: 'Brazil'
     },
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: BRAND_EMAIL,
+        availableLanguage: ['Portuguese', 'English', 'Spanish'],
+        url: `${siteUrl}/contato`
+      },
+      {
+        '@type': 'ContactPoint',
+        contactType: 'security',
+        email: BRAND_EMAIL,
+        url: `${siteUrl}/.well-known/security.txt`
+      }
+    ],
+    sameAs: [...BRAND_SAME_AS],
     knowsAbout: [
       'documentos profissionais',
       'orçamento com Pix',
@@ -36,7 +59,7 @@ export function SiteJsonLd() {
     ],
     brand: {
       '@type': 'Brand',
-      name: 'Resolva Jato'
+      name: BRAND_NAME
     }
   };
 
@@ -44,7 +67,7 @@ export function SiteJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${siteUrl}/#website`,
-    name: 'Resolva Jato',
+    name: BRAND_NAME,
     url: siteUrl,
     inLanguage: 'pt-BR',
     description:

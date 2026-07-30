@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { BRAND_EMAIL_FROM, BRAND_NAME } from '@/lib/brand';
 
 export type SendEmailInput = {
   to: string | string[];
@@ -17,7 +18,7 @@ function defaultFrom() {
   return (
     env('SMTP_FROM') ||
     env('RESEND_FROM') ||
-    (env('SMTP_USER') ? `Resolva Jato <${env('SMTP_USER')}>` : 'Resolva Jato <onboarding@resend.dev>')
+    (env('SMTP_USER') ? `${BRAND_NAME} <${env('SMTP_USER')}>` : BRAND_EMAIL_FROM)
   );
 }
 
@@ -99,7 +100,8 @@ async function sendViaSmtp(input: SendEmailInput): Promise<SendEmailResult> {
 }
 
 /**
- * Preferência: Resend (se houver API key). Senão SMTP (mesmo do Aerosuite / Gmail).
+ * Preferência: Resend (se houver API key). Senão SMTP Google Workspace
+ * (`contato@resolvajato.com.br` via smtp.gmail.com).
  * Em desenvolvimento, sem nenhum provedor, loga o conteúdo e considera ok.
  */
 export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult> {

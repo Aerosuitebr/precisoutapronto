@@ -18,6 +18,12 @@ Eventos iniciais:
 
 No GA4, marque `purchase` como evento principal. Para comparar aquisição orgânica e resultado, use origem/mídia, landing page e o evento de compra. O Search Console pode ser vinculado à propriedade GA4.
 
+## Google Workspace e e-mail
+
+Caixa oficial e SMTP: `contato@resolvajato.com.br` via `smtp.gmail.com`.  
+Playbook (DNS SPF/DKIM/DMARC, senha de app, `.env` no VPS, testes):  
+[`docs/divulgacao/GOOGLE-WORKSPACE.md`](./divulgacao/GOOGLE-WORKSPACE.md).
+
 ## Microsoft Clarity e Bing
 
 Crie o projeto no Clarity, informe o ID acima e vincule-o ao Bing Webmaster Tools. Conteúdo sensível deve permanecer mascarado nas configurações do Clarity.
@@ -33,7 +39,7 @@ node scripts/seo/submit-indexnow.mjs --url https://resolvajato.com.br/guias
 
 ## Rotina após publicação
 
-1. Conferir `/sitemap.xml`, `/sitemaps/index.xml`, `/robots.txt` e `/llms.txt`.
+1. Conferir `/sitemap.xml`, `/sitemaps/index.xml`, `/robots.txt`, `/llms.txt` e `/.well-known/security.txt`.
 2. Inspecionar as novas URLs no Google Search Console (propriedade de **domínio**).
 3. Rodar Site Scan e URL Inspection no Bing Webmaster Tools.
 4. Acompanhar consultas, páginas de entrada, início de checkout e compra.

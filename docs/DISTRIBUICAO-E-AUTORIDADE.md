@@ -5,12 +5,16 @@ Estas ações dependem de contas externas e relacionamento humano; por isso não
 **Kit operacional pronto (copies, UTMs, Product Hunt, checklist de 14 dias):**  
 [`docs/KIT-DISTRIBUICAO-VIRAL.md`](./KIT-DISTRIBUICAO-VIRAL.md)
 
+**Google Workspace (e-mail `contato@`, SMTP, DNS, GSC):**  
+[`docs/divulgacao/GOOGLE-WORKSPACE.md`](./divulgacao/GOOGLE-WORKSPACE.md)
+
 ## Perfis e diretórios
 
-- Validar se Google Business Profile e Bing Places fazem sentido para a operação.
+- Google Business Profile: ver checklist em [`GOOGLE-WORKSPACE.md`](./divulgacao/GOOGLE-WORKSPACE.md) (área de serviço digital, sem endereço inventado).
 - Preparar perfis em Product Hunt, AlternativeTo e diretórios brasileiros de SaaS.
 - Usar sempre a descrição oficial e os materiais em `/sobre`.
 - Não criar avaliações artificiais nem alegar números sem fonte.
+- Contato oficial: `contato@resolvajato.com.br` (Google Workspace).
 
 ## Conteúdo social
 
