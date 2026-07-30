@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { BarChart3, Copy, ExternalLink, Eye, Link2, Share2, Trophy, Trash2 } from 'lucide-react';
+import { BarChart3, Clock3, Copy, ExternalLink, Eye, Link2, RefreshCw, Share2, Trophy, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import {
@@ -10,13 +10,18 @@ import {
   isShareCancellation
 } from '@/lib/document-sharing';
 import { trackEvent } from '@/lib/analytics';
-import { isActiveSharedLink, summarizeSharePerformance } from '@/lib/share-performance';
+import {
+  getSharedLinkExpiry,
+  isActiveSharedLink,
+  summarizeSharePerformance
+} from '@/lib/share-performance';
 
 type SharedLink = {
   token: string;
   title: string;
   url: string;
   toolId: string;
+  artifactId: string;
   createdAt: string;
   expiresAt: string | null;
   revokedAt: string | null;
@@ -28,6 +33,7 @@ export function SharedLinksPanel() {
   const { toast } = useToast();
   const [links, setLinks] = useState<SharedLink[]>([]);
   const [loading, setLoading] = useState(true);
+  const [renewing, setRenewing] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -82,6 +88,35 @@ export function SharedLinksPanel() {
     }
     setLinks((current) => current.map((item) => item.token === token ? { ...item, revokedAt: new Date().toISOString() } : item));
     toast('Link revogado.');
+  }
+
+  async function renew(item: SharedLink) {
+    if (renewing === item.token) return;
+    setRenewing(item.token);
+    try {
+      const response = await fetch('/api/share', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          toolId: item.toolId,
+          artifactId: item.artifactId,
+          title: item.title,
+          expiresInDays: 30
+        })
+      });
+      const payload = await response.json().catch(() => ({})) as { reused?: boolean };
+      if (!response.ok) throw new Error();
+      await load();
+      trackEvent('document_share_link_renewed', {
+        tool_id: item.toolId,
+        reused: Boolean(payload.reused)
+      });
+      toast('Validade renovada por mais 30 dias.');
+    } catch {
+      toast('Não foi possível renovar o link.');
+    } finally {
+      setRenewing(null);
+    }
   }
 
   const active = links.filter((item) => isActiveSharedLink(item));
@@ -145,7 +180,21 @@ export function SharedLinksPanel() {
             <li key={item.token} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
                 <p className="truncate text-sm font-bold text-slate-950">{item.title}</p>
-                <p className="mt-1 text-xs text-slate-500">{item.toolId} · criado em {new Date(item.createdAt).toLocaleDateString('pt-BR')}{item.expiresAt ? ` · expira em ${new Date(item.expiresAt).toLocaleDateString('pt-BR')}` : ' · sem expiração'}</p>
+                <p className="mt-1 text-xs text-slate-500">{item.toolId} · criado em {new Date(item.createdAt).toLocaleDateString('pt-BR')}</p>
+                {(() => {
+                  const expiry = getSharedLinkExpiry(item);
+                  return (
+                    <p className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${
+                      expiry.expiringSoon
+                        ? 'bg-amber-100 text-amber-800'
+                        : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      <Clock3 className="h-3.5 w-3.5" />
+                      {expiry.label}
+                      {item.expiresAt ? ` · ${new Date(item.expiresAt).toLocaleDateString('pt-BR')}` : ''}
+                    </p>
+                  );
+                })()}
                 <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700">
                   <Eye className="h-3.5 w-3.5" />
                   {item.viewCount} {item.viewCount === 1 ? 'visualização' : 'visualizações'}
@@ -155,6 +204,17 @@ export function SharedLinksPanel() {
               <div className="flex flex-wrap gap-2">
                 <Button size="sm" variant="outline" onClick={() => share(item)}><Share2 className="h-3.5 w-3.5" />Compartilhar</Button>
                 <Button size="sm" variant="outline" onClick={() => copy(item.url)}><Copy className="h-3.5 w-3.5" />Copiar</Button>
+                {item.expiresAt ? (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={renewing === item.token}
+                    onClick={() => void renew(item)}
+                  >
+                    <RefreshCw className={`h-3.5 w-3.5 ${renewing === item.token ? 'animate-spin' : ''}`} />
+                    Renovar 30 dias
+                  </Button>
+                ) : null}
                 <Button size="sm" variant="ghost" asChild><a href={item.url} target="_blank" rel="noreferrer"><ExternalLink className="h-3.5 w-3.5" />Abrir</a></Button>
                 <Button size="sm" variant="outline" className="border-red-200 text-red-700 hover:bg-red-50" onClick={() => revoke(item.token)}><Trash2 className="h-3.5 w-3.5" />Revogar</Button>
               </div>

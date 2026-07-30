@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { isActiveSharedLink, summarizeSharePerformance } from '../src/lib/share-performance';
+import {
+  getSharedLinkExpiry,
+  isActiveSharedLink,
+  summarizeSharePerformance
+} from '../src/lib/share-performance';
 
 const now = Date.parse('2026-07-29T12:00:00.000Z');
 
@@ -54,4 +58,26 @@ test('normaliza contagens inválidas e mantém estado vazio', () => {
   expect(summarizeSharePerformance([
     { title: 'Documento', viewCount: -4, expiresAt: null, revokedAt: null }
   ], now).totalViews).toBe(0);
+});
+
+test('descreve validade e destaca links próximos da expiração', () => {
+  expect(getSharedLinkExpiry({ expiresAt: null }, now)).toEqual({
+    daysRemaining: null,
+    label: 'Sem expiração',
+    expiringSoon: false
+  });
+  expect(getSharedLinkExpiry({
+    expiresAt: '2026-08-08T12:00:00.000Z'
+  }, now)).toEqual({
+    daysRemaining: 10,
+    label: 'Expira em 10 dias',
+    expiringSoon: false
+  });
+  expect(getSharedLinkExpiry({
+    expiresAt: '2026-07-30T12:00:00.000Z'
+  }, now)).toEqual({
+    daysRemaining: 1,
+    label: 'Expira em 1 dia',
+    expiringSoon: true
+  });
 });

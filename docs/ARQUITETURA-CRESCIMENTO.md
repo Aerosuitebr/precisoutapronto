@@ -46,6 +46,8 @@ Após a API confirmar a criação ou reutilização, o cliente emite o sinal int
 
 O painel apresenta um resumo de desempenho calculado no cliente: visualizações acumuladas, quantidade de links ativos e documento mais visto. As métricas usam somente `viewCount`, validade e revogação já retornados pela API; não existem identificação de visitante, endereço IP ou eventos individuais nessa visão.
 
+Cada link com prazo mostra os dias restantes e recebe destaque quando faltam até sete dias. A ação “Renovar 30 dias” chama novamente a API idempotente com o mesmo documento: o token e a URL são preservados, enquanto `expiresAt` passa a contar 30 dias a partir da renovação. Links históricos sem expiração permanecem sem prazo e não exibem essa ação.
+
 ### Acesso às áreas da conta
 
 O topo de `/conta` oferece atalhos para documentos, compartilhamentos, perfil e indicações. Cada área possui uma âncora permanente e margem de rolagem compatível com o cabeçalho:

@@ -12,6 +12,22 @@ export function isActiveSharedLink(link: SharePerformanceLink, now = Date.now())
   return Number.isFinite(expiresAt) && expiresAt > now;
 }
 
+export function getSharedLinkExpiry(link: Pick<SharePerformanceLink, 'expiresAt'>, now = Date.now()) {
+  if (!link.expiresAt) {
+    return { daysRemaining: null, label: 'Sem expiração', expiringSoon: false };
+  }
+  const expiresAt = Date.parse(link.expiresAt);
+  if (!Number.isFinite(expiresAt)) {
+    return { daysRemaining: 0, label: 'Validade indisponível', expiringSoon: true };
+  }
+  const daysRemaining = Math.max(0, Math.ceil((expiresAt - now) / 86_400_000));
+  return {
+    daysRemaining,
+    label: daysRemaining === 1 ? 'Expira em 1 dia' : `Expira em ${daysRemaining} dias`,
+    expiringSoon: daysRemaining <= 7
+  };
+}
+
 export function summarizeSharePerformance(
   links: SharePerformanceLink[],
   now = Date.now()
