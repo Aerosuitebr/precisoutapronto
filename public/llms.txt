@@ -64,11 +64,11 @@ Evergreen hub for games, suggested PC setups, hardware guides, consoles and cura
 - https://resolvajato.com.br/games
 - https://resolvajato.com.br/games/top-jogos
 - https://resolvajato.com.br/games/ferramentas
-- https://resolvajato.com.br/games/ferramentas/calculadora-edpi — free eDPI calculator for FPS sensitivity
-- https://resolvajato.com.br/games/ferramentas/planejador-armazenamento — game storage and SSD space planner
-- https://resolvajato.com.br/games/ferramentas/custo-por-hora — game cost-per-hour calculator
-- https://resolvajato.com.br/games/ferramentas/meu-pc-roda — PC game requirements comparison tool
-- https://resolvajato.com.br/games/diagnostico — native Windows hardware inventory and controlled local benchmark
+- https://resolvajato.com.br/games/ferramentas/calculadora-edpi: free eDPI calculator for FPS sensitivity
+- https://resolvajato.com.br/games/ferramentas/planejador-armazenamento: game storage and SSD space planner
+- https://resolvajato.com.br/games/ferramentas/custo-por-hora: game cost-per-hour calculator
+- https://resolvajato.com.br/games/ferramentas/meu-pc-roda: PC game requirements comparison tool
+- https://resolvajato.com.br/games/diagnostico: native Windows hardware inventory and controlled local benchmark
 - https://resolvajato.com.br/games/diagnostico/privacidade
 - https://resolvajato.com.br/games/diagnostico/termos
 - https://resolvajato.com.br/games/diagnostico/suporte
@@ -78,7 +78,6 @@ Evergreen hub for games, suggested PC setups, hardware guides, consoles and cura
 - https://resolvajato.com.br/games/lojas
 - https://resolvajato.com.br/games/jogos/counter-strike-2
 - https://resolvajato.com.br/games/hardware/escolher-placa-de-video
-- https://resolvajato.com.br/busca?categoria=games
 
 ## Product notes
 - The primary positioning is: free online tools for work, study and everyday practical tasks.
