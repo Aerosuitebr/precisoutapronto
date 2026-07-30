@@ -44,6 +44,8 @@ A biblioteca também aciona o compartilhamento público sem abrir o editor. O fl
 
 Após a API confirmar a criação ou reutilização, o cliente emite o sinal interno tipado `resolva-jato:document-share-updated`. O painel “Links compartilhados” escuta esse sinal e recarrega sua lista imediatamente. A sincronização é local à aba, não usa polling e não inclui título, URL, token ou conteúdo do documento no evento.
 
+O painel apresenta um resumo de desempenho calculado no cliente: visualizações acumuladas, quantidade de links ativos e documento mais visto. As métricas usam somente `viewCount`, validade e revogação já retornados pela API; não existem identificação de visitante, endereço IP ou eventos individuais nessa visão.
+
 Migration correspondente: `20260729234500_add_tool_document_favorites`. Ela adiciona `tool_documents.isFavorite BOOLEAN NOT NULL DEFAULT false` e um índice por usuário, favorito e atualização. O valor padrão mantém todos os registros existentes compatíveis e não exige backfill.
 
 Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:

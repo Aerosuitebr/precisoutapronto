@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Copy, ExternalLink, Eye, Link2, Share2, Trash2 } from 'lucide-react';
+import { BarChart3, Copy, ExternalLink, Eye, Link2, Share2, Trophy, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import {
@@ -10,6 +10,7 @@ import {
   isShareCancellation
 } from '@/lib/document-sharing';
 import { trackEvent } from '@/lib/analytics';
+import { isActiveSharedLink, summarizeSharePerformance } from '@/lib/share-performance';
 
 type SharedLink = {
   token: string;
@@ -83,7 +84,8 @@ export function SharedLinksPanel() {
     toast('Link revogado.');
   }
 
-  const active = links.filter((item) => !item.revokedAt && (!item.expiresAt || Date.parse(item.expiresAt) > Date.now()));
+  const active = links.filter((item) => isActiveSharedLink(item));
+  const performance = summarizeSharePerformance(links);
 
   return (
     <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
@@ -94,6 +96,49 @@ export function SharedLinksPanel() {
         </div>
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">{active.length} ativos</span>
       </div>
+      {!loading && links.length > 0 ? (
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-sky-700">
+              <Eye className="h-3.5 w-3.5" />
+              Visualizações
+            </p>
+            <p className="mt-2 text-2xl font-black text-slate-950">{performance.totalViews}</p>
+            <p className="mt-1 text-xs text-slate-600">
+              em {performance.viewedLinks} {performance.viewedLinks === 1 ? 'link acessado' : 'links acessados'}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-emerald-700">
+              <BarChart3 className="h-3.5 w-3.5" />
+              Alcance ativo
+            </p>
+            <p className="mt-2 text-2xl font-black text-slate-950">{performance.activeLinks}</p>
+            <p className="mt-1 text-xs text-slate-600">
+              de {performance.totalLinks} {performance.totalLinks === 1 ? 'link criado' : 'links criados'}
+            </p>
+          </div>
+          <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4">
+            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-amber-700">
+              <Trophy className="h-3.5 w-3.5" />
+              Mais visto
+            </p>
+            {performance.topLink ? (
+              <>
+                <p className="mt-2 truncate text-sm font-black text-slate-950">{performance.topLink.title}</p>
+                <p className="mt-1 text-xs text-slate-600">
+                  {performance.topLink.viewCount} {performance.topLink.viewCount === 1 ? 'visualização' : 'visualizações'}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="mt-2 text-sm font-black text-slate-950">Aguardando acessos</p>
+                <p className="mt-1 text-xs text-slate-600">Compartilhe um link para começar.</p>
+              </>
+            )}
+          </div>
+        </div>
+      ) : null}
       {loading ? <p className="mt-6 text-sm text-slate-500">Carregando…</p> : active.length === 0 ? <p className="mt-6 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">Nenhum link público ativo. Use “Compartilhar” no histórico de um documento salvo.</p> : (
         <ul className="mt-6 divide-y divide-slate-100 overflow-hidden rounded-2xl border border-slate-200">
           {active.map((item) => (
