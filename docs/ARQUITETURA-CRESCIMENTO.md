@@ -48,6 +48,12 @@ DOCUMENT_AI_API_KEY="segredo-do-servidor"
 
 O endpoint recebe `task`, `locale`, `documentType`, `answers` e `responseSchema`. Deve devolver JSON com `summary`, `suggestions[]` e `alerts[]`. A chave permanece exclusivamente no servidor. Falhas, timeouts ou respostas inválidas retornam automaticamente ao fallback local.
 
+## Telemetria do assistente
+
+O funil registra início, escolha de tipo, conclusão de etapa, briefing concluído, análise iniciada ou concluída, abertura do editor e abandono. Os parâmetros permitidos são somente o tipo do documento, a etapa, o total de etapas e o provedor local ou remoto da revisão.
+
+Respostas, títulos e demais conteúdos do documento nunca são encaminhados ao analytics. O abandono é observado no encerramento da página apenas quando houve progresso e o editor ainda não foi aberto.
+
 ## Compatibilidade
 
 Nada foi removido. A navegação anterior, `/guias`, `/recursos`, `/ferramentas/*`, landings e APIs de documentos permanecem. A personalização usa `localStorage` para visitantes e tenta sincronizar com `/api/profile` apenas quando há sessão.
@@ -102,5 +108,4 @@ COMMIT;
 ## Próximos passos seguros
 
 - Adicionar testes de integração para criação, expiração e revogação de links.
-- Medir início e conclusão do assistente para localizar abandono entre etapas.
 - Expandir intenções somente após medir indexação, cliques para ferramenta e conclusão do documento.

@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Bot, Check, ChevronLeft } from 'lucide-react';
 import { saveAssistantBriefing } from '@/lib/assistant-briefing';
 import type { AssistantReview } from '@/lib/assistant/review';
+import { trackAssistantFunnel } from '@/lib/assistant/analytics';
 
 type AssistantType = 'contrato' | 'curriculo' | 'recibo' | 'proposta';
 const flows: Record<AssistantType, { label: string; editor: string; questions: Array<{ key: string; label: string; placeholder: string }> }> = {
@@ -36,30 +37,93 @@ export function DocumentAssistant({ initialType = 'contrato' }: { initialType?: 
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [review, setReview] = useState<AssistantReview | null>(null);
   const [reviewing, setReviewing] = useState(false);
+  const startedRef = useRef(false);
+  const completedRef = useRef(false);
+  const reviewRequestRef = useRef('');
+  const editorOpenedRef = useRef(false);
+  const progressRef = useRef({ type: initialType, step: 0, totalSteps: flows[initialType].questions.length });
   const flow = flows[type];
   const complete = step >= flow.questions.length;
   const summary = useMemo(() => flow.questions.map((q) => answers[q.key]).filter(Boolean), [answers, flow.questions]);
 
-  function changeType(next: AssistantType) { setType(next); setStep(0); setAnswers({}); setReview(null); }
+  function changeType(next: AssistantType) {
+    trackAssistantFunnel('assistant_type_selected', { type: next, step: 0, totalSteps: flows[next].questions.length });
+    setType(next);
+    setStep(0);
+    setAnswers({});
+    setReview(null);
+    completedRef.current = false;
+    reviewRequestRef.current = '';
+  }
+
+  function continueFlow() {
+    const nextStep = step + 1;
+    trackAssistantFunnel('assistant_step_completed', { type, step: nextStep, totalSteps: flow.questions.length });
+    setStep(nextStep);
+  }
+
+  function openEditor() {
+    editorOpenedRef.current = true;
+    trackAssistantFunnel('assistant_editor_opened', { type, step: flow.questions.length, totalSteps: flow.questions.length });
+    saveAssistantBriefing({ type, answers });
+  }
+
+  useEffect(() => {
+    progressRef.current = { type, step, totalSteps: flow.questions.length };
+  }, [flow.questions.length, step, type]);
+
+  useEffect(() => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackAssistantFunnel('assistant_started', { type: initialType, step: 0, totalSteps: flows[initialType].questions.length });
+    }
+    const onPageHide = () => {
+      const progress = progressRef.current;
+      if (!editorOpenedRef.current && progress.step > 0) {
+        trackAssistantFunnel('assistant_abandoned', progress);
+      }
+    };
+    window.addEventListener('pagehide', onPageHide);
+    return () => window.removeEventListener('pagehide', onPageHide);
+  }, [initialType]);
 
   useEffect(() => {
     if (!complete) return;
+    const requestKey = `${type}:${flow.questions.map((question) => answers[question.key] || '').join('\u001f')}`;
+    if (reviewRequestRef.current === requestKey) return;
+    reviewRequestRef.current = requestKey;
+    if (!completedRef.current) {
+      completedRef.current = true;
+      trackAssistantFunnel('assistant_briefing_completed', { type, step: flow.questions.length, totalSteps: flow.questions.length });
+    }
     setReviewing(true);
+    trackAssistantFunnel('assistant_review_started', { type, step: flow.questions.length, totalSteps: flow.questions.length });
     void fetch('/api/assistant/review', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, answers })
     })
       .then((response) => response.ok ? response.json() : Promise.reject())
-      .then((data) => setReview(data.review))
-      .catch(() => setReview(null))
+      .then((data: { review: AssistantReview }) => {
+        setReview(data.review);
+        trackAssistantFunnel('assistant_review_completed', {
+          type,
+          step: flow.questions.length,
+          totalSteps: flow.questions.length,
+          provider: data.review.provider
+        });
+      })
+      .catch(() => {
+        setReview(null);
+        trackAssistantFunnel('assistant_review_failed', { type, step: flow.questions.length, totalSteps: flow.questions.length });
+      })
       .finally(() => setReviewing(false));
-  }, [complete, type, answers]);
+  }, [complete, type, answers, flow.questions]);
 
   return <div className="mx-auto max-w-3xl rounded-3xl border border-slate-200 bg-white p-5 shadow-xl sm:p-8">
     <div className="flex items-center gap-3"><span className="grid h-11 w-11 place-items-center rounded-2xl bg-emerald-100 text-emerald-700"><Bot /></span><div><p className="font-bold text-slate-950">Assistente Resolva Jato</p><p className="text-sm text-slate-500">Organiza o caso antes de abrir o editor atual</p></div></div>
     <div className="mt-6 flex gap-2 overflow-x-auto">{(Object.keys(flows) as AssistantType[]).map((item) => <button key={item} onClick={() => changeType(item)} className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold ${type === item ? 'bg-slate-950 text-white' : 'bg-slate-100 text-slate-700'}`}>{flows[item].label}</button>)}</div>
-    {!complete ? <div className="mt-8"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Etapa {step + 1} de {flow.questions.length}</p><label className="mt-3 block text-xl font-bold text-slate-950">{flow.questions[step].label}</label><textarea autoFocus value={answers[flow.questions[step].key] || ''} onChange={(e) => setAnswers({ ...answers, [flow.questions[step].key]: e.target.value })} placeholder={flow.questions[step].placeholder} className="mt-4 min-h-32 w-full rounded-2xl border border-slate-300 p-4 outline-none focus:border-emerald-500" /><div className="mt-5 flex justify-between"><button disabled={!step} onClick={() => setStep(step - 1)} className="inline-flex items-center gap-1 text-sm font-bold text-slate-600 disabled:opacity-30"><ChevronLeft className="h-4 w-4" />Voltar</button><button disabled={!answers[flow.questions[step].key]?.trim()} onClick={() => setStep(step + 1)} className="inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-5 font-bold text-white disabled:opacity-40">Continuar<ArrowRight className="h-4 w-4" /></button></div></div> :
-    <div className="mt-8"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Briefing concluído</p><h2 className="mt-3 text-2xl font-extrabold text-slate-950">Sua primeira versão está pronta para o editor</h2><ul className="mt-5 space-y-3">{summary.map((item) => <li key={item} className="flex gap-2 rounded-xl bg-slate-50 p-3 text-sm text-slate-700"><Check className="h-4 w-4 shrink-0 text-emerald-600" />{item}</li>)}</ul>{reviewing ? <div className="mt-5 rounded-2xl bg-sky-50 p-4 text-sm text-sky-900">Analisando cuidados e oportunidades…</div> : review ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4"><p className="text-sm font-bold text-emerald-950">Sugestões</p><ul className="mt-2 space-y-2 text-sm text-emerald-900">{review.suggestions.map((item) => <li key={item}>• {item}</li>)}</ul></div><div className="rounded-2xl border border-amber-200 bg-amber-50 p-4"><p className="text-sm font-bold text-amber-950">Alertas</p><ul className="mt-2 space-y-2 text-sm text-amber-900">{review.alerts.map((item) => <li key={item}>• {item}</li>)}</ul></div></div> : null}<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">Revise nomes, valores, datas e riscos antes de usar. O assistente oferece apoio geral e não substitui aconselhamento profissional.</div><div className="mt-6 flex flex-wrap gap-3"><Link href={`${flow.editor}?assistant=1`} onClick={() => saveAssistantBriefing({ type, answers })} className="inline-flex h-12 items-center gap-2 rounded-xl bg-slate-950 px-6 font-bold text-white">Abrir editor preenchido<ArrowRight className="h-4 w-4" /></Link><button onClick={() => { setStep(0); setReview(null); }} className="h-12 rounded-xl border border-slate-300 px-5 font-bold text-slate-700">Revisar respostas</button></div></div>}
+    {!complete ? <div className="mt-8"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Etapa {step + 1} de {flow.questions.length}</p><label className="mt-3 block text-xl font-bold text-slate-950">{flow.questions[step].label}</label><textarea autoFocus value={answers[flow.questions[step].key] || ''} onChange={(e) => setAnswers({ ...answers, [flow.questions[step].key]: e.target.value })} placeholder={flow.questions[step].placeholder} className="mt-4 min-h-32 w-full rounded-2xl border border-slate-300 p-4 outline-none focus:border-emerald-500" /><div className="mt-5 flex justify-between"><button disabled={!step} onClick={() => setStep(step - 1)} className="inline-flex items-center gap-1 text-sm font-bold text-slate-600 disabled:opacity-30"><ChevronLeft className="h-4 w-4" />Voltar</button><button disabled={!answers[flow.questions[step].key]?.trim()} onClick={continueFlow} className="inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-600 px-5 font-bold text-white disabled:opacity-40">Continuar<ArrowRight className="h-4 w-4" /></button></div></div> :
+    <div className="mt-8"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Briefing concluído</p><h2 className="mt-3 text-2xl font-extrabold text-slate-950">Sua primeira versão está pronta para o editor</h2><ul className="mt-5 space-y-3">{summary.map((item) => <li key={item} className="flex gap-2 rounded-xl bg-slate-50 p-3 text-sm text-slate-700"><Check className="h-4 w-4 shrink-0 text-emerald-600" />{item}</li>)}</ul>{reviewing ? <div className="mt-5 rounded-2xl bg-sky-50 p-4 text-sm text-sky-900">Analisando cuidados e oportunidades…</div> : review ? <div className="mt-5 grid gap-4 sm:grid-cols-2"><div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4"><p className="text-sm font-bold text-emerald-950">Sugestões</p><ul className="mt-2 space-y-2 text-sm text-emerald-900">{review.suggestions.map((item) => <li key={item}>• {item}</li>)}</ul></div><div className="rounded-2xl border border-amber-200 bg-amber-50 p-4"><p className="text-sm font-bold text-amber-950">Alertas</p><ul className="mt-2 space-y-2 text-sm text-amber-900">{review.alerts.map((item) => <li key={item}>• {item}</li>)}</ul></div></div> : null}<div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-950">Revise nomes, valores, datas e riscos antes de usar. O assistente oferece apoio geral e não substitui aconselhamento profissional.</div><div className="mt-6 flex flex-wrap gap-3"><Link href={`${flow.editor}?assistant=1`} onClick={openEditor} className="inline-flex h-12 items-center gap-2 rounded-xl bg-slate-950 px-6 font-bold text-white">Abrir editor preenchido<ArrowRight className="h-4 w-4" /></Link><button onClick={() => { setStep(0); setReview(null); completedRef.current = false; reviewRequestRef.current = ''; }} className="h-12 rounded-xl border border-slate-300 px-5 font-bold text-slate-700">Revisar respostas</button></div></div>}
   </div>;
 }
