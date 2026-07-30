@@ -6,6 +6,7 @@ import {
   Eraser,
   FilePlus2,
   GraduationCap,
+  Link2,
   Plus,
   Save,
   Sparkles,
@@ -28,6 +29,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
+import { useDocumentShare } from '@/hooks/use-document-share';
 import { performBillableAction } from '@/lib/billing';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import {
@@ -78,6 +80,7 @@ export function CurriculoApp() {
   const exportingLockRef = useRef(false);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
+  const { shareDocument, sharing } = useDocumentShare();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [resumes, setResumes] = useState<ResumeData[]>([]);
@@ -365,6 +368,16 @@ export function CurriculoApp() {
             onClick={handleManualSave}
           >
             Salvar
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            icon={sharing ? undefined : Link2}
+            loading={sharing}
+            onClick={() => shareDocument({ toolId: 'curriculo', artifactId: resume.id, title: resume.title })}
+          >
+            Compartilhar
           </Button>
           <Button
             type="button"

@@ -7,6 +7,7 @@ import {
   Droplets,
   Eraser,
   FilePlus2,
+  Link2,
   PenLine,
   Receipt,
   Save,
@@ -31,6 +32,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
+import { useDocumentShare } from '@/hooks/use-document-share';
 import { performBillableAction } from '@/lib/billing';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
@@ -86,6 +88,7 @@ export function RecibosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
+  const { shareDocument, sharing } = useDocumentShare();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [receipts, setReceipts] = useState<ReceiptData[]>([]);
@@ -440,6 +443,16 @@ export function RecibosApp() {
             onClick={handleManualSave}
           >
             Salvar
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            icon={sharing ? undefined : Link2}
+            loading={sharing}
+            onClick={() => shareDocument({ toolId: 'recibos', artifactId: receipt.id, title: receipt.title })}
+          >
+            Compartilhar
           </Button>
           <Button
             type="button"

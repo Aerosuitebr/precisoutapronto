@@ -9,6 +9,7 @@ import {
   FilePlus2,
   ImagePlus,
   Layers,
+  Link2,
   Loader2,
   PackagePlus,
   PenLine,
@@ -31,6 +32,7 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
+import { useDocumentShare } from '@/hooks/use-document-share';
 import { performBillableAction } from '@/lib/billing';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
@@ -93,6 +95,7 @@ export function PropostasApp() {
   const logoInputRef = useRef<HTMLInputElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
+  const { shareDocument, sharing } = useDocumentShare();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [proposals, setProposals] = useState<ProposalData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -395,6 +398,16 @@ export function PropostasApp() {
           <Button type="button" size="sm" onClick={handleManualSave} disabled={saveState === 'saving'}>
             {saveState === 'saving' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Salvar
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => shareDocument({ toolId: 'propostas', artifactId: proposal.id, title: proposal.title })}
+            disabled={sharing}
+          >
+            {sharing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
+            Compartilhar
           </Button>
           <Button type="button" size="sm" onClick={handleExportPdf} disabled={exporting} className="bg-emerald-600 hover:bg-emerald-700">
             {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}

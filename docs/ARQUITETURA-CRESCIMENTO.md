@@ -16,9 +16,9 @@ Esta evolução organiza o Resolva Jato por problemas e perfis sem substituir os
 
 ## Experiência de perfil e compartilhamento
 
-A página `/conta` permite editar segmento, profissão e empresa. A preferência também alimenta a personalização local da homepage.
+A página `/conta` permite editar segmento, profissão e empresa. A homepage usa primeiro a preferência local para responder sem atraso e, quando o usuário está autenticado, sincroniza o segmento salvo no perfil. Assim, a personalização acompanha o usuário entre dispositivos sem prejudicar visitantes anônimos.
 
-Os históricos de contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar**. O link:
+Contratos, documentos jurídicos e documentos contábeis oferecem a ação **Compartilhar** no histórico. Currículos, recibos e propostas também oferecem a ação diretamente na barra do documento ativo. Todas as telas usam a mesma infraestrutura de compartilhamento. O link:
 
 - é criado somente para um documento pertencente ao usuário autenticado;
 - é reutilizado enquanto estiver ativo, evitando links duplicados;
@@ -26,6 +26,8 @@ Os históricos de contratos, documentos jurídicos e documentos contábeis ofere
 - pode ser copiado, aberto e revogado na área **Links compartilhados** da conta;
 - deixa de funcionar imediatamente após revogação ou expiração;
 - nunca é incluído no índice de mecanismos de busca.
+
+Os eventos `document_share_link_copied`, `document_share_link_failed` e `growth_segment_selected` são enviados para as integrações de analytics já configuradas, sempre sem conteúdo do documento ou outros dados pessoais.
 
 ## Ponte entre assistente e editores
 
@@ -91,8 +93,7 @@ COMMIT;
 
 ## Próximos passos seguros
 
-- Integrar o briefing do assistente ao estado inicial de cada editor.
-- Adicionar revogação, validade e visualizações aos links compartilhados.
-- Criar editor de perfil na conta.
-- Conectar um provedor de IA atrás de uma API própria, com moderação, limites, telemetria e fallback local.
+- Registrar visualizações agregadas dos links compartilhados sem identificar o visitante.
+- Adicionar testes de integração para criação, expiração e revogação de links.
+- Medir início e conclusão do assistente para localizar abandono entre etapas.
 - Expandir intenções somente após medir indexação, cliques para ferramenta e conclusão do documento.

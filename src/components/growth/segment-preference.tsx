@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Check, Settings2 } from 'lucide-react';
 import { growthSegments } from '@/lib/growth/segments';
+import { trackEvent } from '@/lib/analytics';
 
 const STORAGE_KEY = 'rj-growth-segment';
 
@@ -11,12 +12,30 @@ export function SegmentPreference() {
   const [selected, setSelected] = useState('');
 
   useEffect(() => {
-    setSelected(localStorage.getItem(STORAGE_KEY) || '');
+    const localSegment = localStorage.getItem(STORAGE_KEY) || '';
+    setSelected(localSegment);
+
+    const controller = new AbortController();
+    void fetch('/api/profile', { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return response.json() as Promise<{ profile?: { segment?: string | null } | null }>;
+      })
+      .then((data) => {
+        const profileSegment = data?.profile?.segment || '';
+        if (!profileSegment || !growthSegments.some((segment) => segment.slug === profileSegment)) return;
+        setSelected(profileSegment);
+        localStorage.setItem(STORAGE_KEY, profileSegment);
+      })
+      .catch(() => undefined);
+
+    return () => controller.abort();
   }, []);
 
   function choose(slug: string) {
     setSelected(slug);
     localStorage.setItem(STORAGE_KEY, slug);
+    trackEvent('growth_segment_selected', { segment: slug });
     void fetch('/api/profile', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
