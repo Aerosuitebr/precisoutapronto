@@ -180,3 +180,22 @@ O evento `referral_invite_shared` registra somente o canal (`native`, `whatsapp`
 
 - Adicionar testes de integração para criação, expiração e revogação de links.
 - Expandir intenções somente após medir indexação, cliques para ferramenta e conclusão do documento.
+## Jato Games: aquisição por utilidade
+
+O Jato Games evolui de um diretório editorial para uma central de decisão e ferramentas do público gamer.
+
+- Landing `/games` organizada por objetivos: competir, montar PC, comprar com segurança e descobrir jogos.
+- Central pública `/games/ferramentas`, incluída na navegação e no sitemap.
+- Calculadora de eDPI para comparar configurações dentro do mesmo jogo.
+- Planejador de armazenamento para antecipar espaço livre após uma instalação.
+- Calculadora de custo por hora jogada para apoiar decisões de compra.
+- Resultados copiáveis e compartilháveis, criando um ciclo de distribuição orgânica.
+- JSON-LD de `CollectionPage`, `ItemList` e `BreadcrumbList`.
+
+Próximos incrementos recomendados, condicionados a bases técnicas verificáveis:
+
+1. Comparador de sensibilidade entre jogos.
+2. Checklist “meu PC roda?” por requisitos mínimos e recomendados.
+3. Calculadora de fonte e consumo estimado.
+4. Planejador de upgrade por resolução, taxa de atualização e orçamento.
+5. Páginas de intenção para cada ferramenta, com FAQs e links para guias relacionados.

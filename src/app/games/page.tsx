@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Cpu, Gamepad2, Joystick, Store } from 'lucide-react';
+import { ArrowRight, Calculator, Cpu, Gamepad2, Gauge, HardDrive, Joystick, ShieldCheck, Store } from 'lucide-react';
 import {
   GameCard,
   GamesHeroArt,
@@ -26,6 +26,13 @@ export const metadata: Metadata = {
 };
 
 const pillars = [
+  {
+    href: '/games/ferramentas',
+    title: 'Ferramentas gamer',
+    text: 'eDPI, armazenamento e custo por hora jogada.',
+    icon: Calculator,
+    chip: 'Grátis'
+  },
   {
     href: '/games/top-jogos',
     title: 'Top jogos',
@@ -98,7 +105,7 @@ export default function GamesHubPage() {
 
       <section className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
         <SectionAccent>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {pillars.map((pillar) => (
               <Link
                 key={pillar.href}
@@ -113,6 +120,57 @@ export default function GamesHubPage() {
                 </div>
                 <h2 className="rj-display mt-3 text-lg font-extrabold text-slate-900">{pillar.title}</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-700 sm:text-base">{pillar.text}</p>
+              </Link>
+            ))}
+          </div>
+        </SectionAccent>
+      </section>
+
+      <section className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
+        <div className="overflow-hidden rounded-[28px] border border-slate-800 bg-slate-950 p-6 text-white shadow-xl sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-300">Não é só notícia gamer</p>
+              <h2 className="rj-display mt-3 text-3xl font-black leading-tight">Resolva uma decisão antes de abrir o jogo</h2>
+              <p className="mt-4 leading-7 text-slate-300">O Jato Games ajuda a configurar, comprar e organizar seu setup com respostas práticas — sem transformar toda dúvida em uma lista de produtos.</p>
+              <Link href="/games/ferramentas" className="mt-6 inline-flex h-12 items-center gap-2 rounded-xl bg-teal-400 px-5 font-bold text-slate-950 hover:bg-teal-300">
+                Abrir ferramentas grátis <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {[
+                { icon: Gauge, title: 'Ajuste a mira', text: 'Calcule o eDPI para comparar configurações no mesmo FPS.' },
+                { icon: HardDrive, title: 'Planeje o SSD', text: 'Veja se o próximo jogo cabe antes de começar o download.' },
+                { icon: Calculator, title: 'Compre melhor', text: 'Compare preço e horas esperadas com custo por hora.' }
+              ].map((item) => (
+                <article key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <item.icon className="h-6 w-6 text-teal-300" />
+                  <h3 className="mt-4 font-extrabold">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6">
+        <SectionAccent>
+          <div className="mb-6 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Escolha seu objetivo</p>
+            <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">Conteúdo para a dúvida que você tem agora</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              { href: '/games/ferramentas#edpi', icon: Gauge, title: 'Jogar competitivo', text: 'eDPI, estabilidade, monitor e decisões que afetam a resposta.' },
+              { href: '/games/hardware/montar-pc-gamer-sem-desperdicar', icon: Cpu, title: 'Montar ou melhorar o PC', text: 'Priorize peças pelo jogo e pela resolução, não pelo marketing.' },
+              { href: '/games/lojas', icon: ShieldCheck, title: 'Comprar com segurança', text: 'Canais confiáveis, alertas de golpe e cuidados antes de pagar.' },
+              { href: '/games/top-jogos', icon: Gamepad2, title: 'Descobrir o que jogar', text: 'Jogos populares, plataformas, dicas e setup sugerido.' }
+            ].map((item) => (
+              <Link key={item.title} href={item.href} className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-teal-400 hover:shadow-md">
+                <item.icon className="h-6 w-6 text-teal-600" />
+                <h3 className="rj-display mt-4 text-lg font-extrabold text-slate-950 group-hover:text-teal-800">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-700">{item.text}</p>
               </Link>
             ))}
           </div>

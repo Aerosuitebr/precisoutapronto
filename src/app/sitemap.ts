@@ -96,6 +96,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const gamesStatic = [
     '/games',
     '/games/top-jogos',
+    '/games/ferramentas',
     '/games/hardware',
     '/games/consoles',
     '/games/lojas'

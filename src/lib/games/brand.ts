@@ -10,6 +10,7 @@ export const JATO_GAMES = {
   nav: [
     { href: '/games', label: 'Início' },
     { href: '/games/top-jogos', label: 'Top jogos' },
+    { href: '/games/ferramentas', label: 'Ferramentas' },
     { href: '/games/hardware', label: 'Hardware' },
     { href: '/games/consoles', label: 'Consoles' },
     { href: '/games/lojas', label: 'Lojas' },
