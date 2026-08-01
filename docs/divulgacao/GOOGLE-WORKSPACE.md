@@ -95,9 +95,8 @@ Copies e UTMs: [`KIT-DISTRIBUICAO-VIRAL.md`](../KIT-DISTRIBUICAO-VIRAL.md) e [`E
 - [x] DKIM `google._domainkey` publicado
 - [ ] SPF TXT no apex: `v=spf1 include:_spf.google.com ~all` (**faltando**)
 - [ ] DMARC TXT em `_dmarc`: `v=DMARC1; p=none; rua=mailto:contato@resolvajato.com.br` (**faltando**)
-- [ ] Senha de app na conta `contato@`
-- [ ] `.env.production` no VPS com `SMTP_USER`/`SMTP_PASS`/`SMTP_FROM` Workspace + recreate do app
-  - Script: `scripts/deploy/patch-smtp-workspace.sh`
+- [ ] Senha de app na conta `contato@` (**local `.env` rejeitou login 535 em 2026-08-01; VPS `.env.production` OK**)
+- [x] `.env.production` no VPS com `SMTP_USER`/`SMTP_PASS`/`SMTP_FROM` Workspace (outreach 10/10 enviado em 2026-08-01)
 - [ ] E-mail de verificação chega na caixa de entrada (From `contato@resolvajato.com.br`)
 - [ ] Sitemaps enviados no GSC (domínio): `/sitemap.xml` + `/sitemaps/index.xml`
 - [ ] GA4 vinculado ao GSC

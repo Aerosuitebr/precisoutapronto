@@ -6,9 +6,17 @@ Lista operacional. Marque ao enviar.
 
 | Site / blog | Contato / URL | Ângulo | Enviado |
 |-------------|---------------|--------|---------|
-| Sebrae (conteúdo / parceria) | https://sebrae.com.br | MEI vs CLT / ferramentas MEI | [ ] |
-| Contábeis / Portal Contábeis | busca "envie seu artigo" | Rescisão / MEI | [ ] |
-| Blog Negócios / Pequenas Empresas | formulário contato | Orçamento + Pix | [ ] |
+| Sebrae SP imprensa | imprensa@sebraesp.com.br | Orçamento + Pix | [x] 2026-08-01 |
+| Sebrae MS jornalismo | jornalismo@ms.sebrae.com.br | MEI vs CLT | [x] 2026-08-01 |
+| Sebrae MT assessoria | assessoriadeimprensa@mt.sebrae.com.br | Checklist cobrança MEI | [x] 2026-08-01 |
+| Sebrae PI ascom | ascom@pi.sebrae.com.br | Recibo MEI | [x] 2026-08-01 |
+| Sebrae SC ascom | julianes@sc.sebrae.com.br | Proposta comercial | [x] 2026-08-01 |
+| Portal Empreendedor | empreendedor@empreendedor.com.br | Checklist MEI | [x] 2026-08-01 |
+| Melhor RH | jussara.goyano@melhorrh.com.br | Rescisão | [x] 2026-08-01 |
+| Melhor RH / projetos | simone.aline@revistacomunicacao.com.br | Embeds | [x] 2026-08-01 |
+| Guia do Estudante | guiadoestudante@abril.com.br | Redação ENEM | [x] 2026-08-01 |
+| Junior Achievement BR | imprensa@jabrasil.org.br | Currículo / ENEM / ABNT | [x] 2026-08-01 |
+| Contábeis / Portal Contábeis | formulário publicações | Rescisão / MEI | [ ] (só formulário) |
 | Comunidades MEI (FB/Telegram) | grupos em que já participa | `colar/04-comunidade-mei.txt` | [ ] |
 | LinkedIn BR | perfil Wellem | `colar/03-linkedin-preco.txt` | [x] https://lnkd.in/dD27Rwpk |
 | LinkedIn BR · lote artes | perfil Wellem | `colar/29-linkedin-lote-artes.txt` + `ph-gallery/` | Post 1 FEITO https://lnkd.in/dSKZEUE3 · resto COLAR |

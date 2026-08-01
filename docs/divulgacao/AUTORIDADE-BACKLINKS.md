@@ -14,11 +14,18 @@ Objetivo: conquistar menções e links editoriais para páginas internas (não s
 
 ## Sequência semanal (humana)
 
-1. Enviar `colar/33-outreach-mei-rh-educacao.txt` para 10 contatos/dia (MEI, RH, educação).
+1. Enviar lote do dia com `node --env-file=.env scripts/seo/send-outreach-day.mjs --send` (lista em `outreach-day-YYYY-MM-DD.json`).
 2. Oferecer guest post com outline (usar também `21-br-outreach-guestpost.txt`).
 3. Pedir menção com link para página interna específica, nunca genérica demais.
 4. Para blogs/cursos: colar badge de `/embed` (gera backlink rastreável via UTM).
 5. Registrar no GSC: links externos → páginas de destino.
+
+### Lote 2026-08-01
+
+**Status:** ENVIADO (10/10 via SMTP `contato@resolvajato.com.br` no VPS)  
+**Log:** `docs/divulgacao/logs/outreach-2026-08-01.json`
+
+Destinos: Melhor RH, Revista Comunicação, Guia do Estudante, Portal Empreendedor, Junior Achievement Brasil, Sebrae SP/MS/MT/PI/SC.
 
 ## Regras
 

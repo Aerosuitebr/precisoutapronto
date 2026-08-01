@@ -1,0 +1,112 @@
+[
+  {
+    "id": "melhor-rh",
+    "org": "Portal Melhor RH",
+    "email": "jussara.goyano@melhorrh.com.br",
+    "subject": "Sugestão de pauta · calculadora educativa de rescisão",
+    "dryRun": false,
+    "at": "2026-08-01T15:42:28.481Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<30ae448d-0dba-1d30-aed5-3e0875ab5980@resolvajato.com.br>"
+  },
+  {
+    "id": "melhor-rh-projetos",
+    "org": "Melhor RH / Revista Comunicação (projetos)",
+    "email": "simone.aline@revistacomunicacao.com.br",
+    "subject": "Badges prontos para linkar ferramentas grátis (MEI, RH, educação)",
+    "dryRun": false,
+    "at": "2026-08-01T15:42:35.620Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<95d467cb-8f54-180d-b795-1b74e2f06238@resolvajato.com.br>"
+  },
+  {
+    "id": "guia-estudante",
+    "org": "Guia do Estudante (Abril)",
+    "email": "guiadoestudante@abril.com.br",
+    "subject": "Recurso gratuito · corretor de redação ENEM (por competência)",
+    "dryRun": false,
+    "at": "2026-08-01T15:42:42.307Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<4f03d891-e4dd-34d0-9d53-2f39739ee420@resolvajato.com.br>"
+  },
+  {
+    "id": "portal-empreendedor",
+    "org": "Portal Empreendedor",
+    "email": "empreendedor@empreendedor.com.br",
+    "subject": "Checklist citável · cobrança para MEI (orçamento → Pix → recibo)",
+    "dryRun": false,
+    "at": "2026-08-01T15:42:48.987Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<ce591b1e-1924-918a-92d9-a9864703e105@resolvajato.com.br>"
+  },
+  {
+    "id": "ja-brasil",
+    "org": "Junior Achievement Brasil",
+    "email": "imprensa@jabrasil.org.br",
+    "subject": "Ferramentas grátis para jovens · currículo, ENEM e ABNT",
+    "dryRun": false,
+    "at": "2026-08-01T15:42:55.900Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<60523ff4-df17-5833-04cf-17182d0bf93a@resolvajato.com.br>"
+  },
+  {
+    "id": "sebrae-sp",
+    "org": "Sebrae SP (imprensa)",
+    "email": "imprensa@sebraesp.com.br",
+    "subject": "Recurso gratuito para MEI · orçamento com Pix no WhatsApp",
+    "dryRun": false,
+    "at": "2026-08-01T15:43:02.535Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<9b5ff45a-86a5-168c-8460-3ebe5e4413f2@resolvajato.com.br>"
+  },
+  {
+    "id": "sebrae-ms",
+    "org": "Sebrae MS (jornalismo)",
+    "email": "jornalismo@ms.sebrae.com.br",
+    "subject": "Simulador gratuito MEI vs CLT (educativo)",
+    "dryRun": false,
+    "at": "2026-08-01T15:43:09.052Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<9c6febed-3adb-1012-0498-39e504031440@resolvajato.com.br>"
+  },
+  {
+    "id": "sebrae-mt",
+    "org": "Sebrae MT (assessoria)",
+    "email": "assessoriadeimprensa@mt.sebrae.com.br",
+    "subject": "Checklist citável · cobrança para MEI (orçamento → Pix → recibo)",
+    "dryRun": false,
+    "at": "2026-08-01T15:43:15.587Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<17979e32-b5a1-47fa-47d8-9e852ac73b1d@resolvajato.com.br>"
+  },
+  {
+    "id": "sebrae-pi",
+    "org": "Sebrae PI (ascom)",
+    "email": "ascom@pi.sebrae.com.br",
+    "subject": "Gerador de recibo grátis para MEI (PDF)",
+    "dryRun": false,
+    "at": "2026-08-01T15:43:22.307Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<cea30096-8b9e-72ba-51f3-b23e39932208@resolvajato.com.br>"
+  },
+  {
+    "id": "sebrae-sc",
+    "org": "Sebrae SC (ascom)",
+    "email": "julianes@sc.sebrae.com.br",
+    "subject": "Gerador de proposta comercial grátis (PDF)",
+    "dryRun": false,
+    "at": "2026-08-01T15:43:28.814Z",
+    "status": "sent",
+    "provider": "smtp",
+    "messageId": "<24576264-3bef-440a-7315-b8e0796fba9c@resolvajato.com.br>"
+  }
+]
