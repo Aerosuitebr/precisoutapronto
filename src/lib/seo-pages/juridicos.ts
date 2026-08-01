@@ -9,7 +9,7 @@ export const juridicosSeoContent: SeoPageContent = {
     'Procuração, contrato de honorários, substabelecimento, notificação extrajudicial e outras peças do dia a dia do escritório, prontas em minutos e em PDF.',
   ctaPrimary: 'Criar documento grátis',
   ctaSecondary: 'Ver modelos disponíveis',
-  ctaHref: '/ferramentas/juridicos',
+  ctaHref: '/documentos-juridicos-online#ferramenta',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -57,19 +57,19 @@ export const juridicosSeoContent: SeoPageContent = {
       title: 'Procuração ad judicia',
       description: 'Outorga poderes ao advogado para atuar em juízo em nome do cliente.',
       image: '',
-      href: '/ferramentas/juridicos'
+      href: '/documentos-juridicos-online#ferramenta'
     },
     {
       title: 'Contrato de honorários',
       description: 'Formaliza o mandato e a forma de remuneração: fixo, êxito ou misto.',
       image: '',
-      href: '/ferramentas/juridicos'
+      href: '/documentos-juridicos-online#ferramenta'
     },
     {
       title: 'Notificação extrajudicial',
       description: 'Comunica formalmente a outra parte antes de uma medida judicial.',
       image: '',
-      href: '/ferramentas/juridicos'
+      href: '/documentos-juridicos-online#ferramenta'
     }
   ],
   faq: [

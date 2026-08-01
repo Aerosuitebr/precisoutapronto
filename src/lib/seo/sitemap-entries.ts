@@ -10,7 +10,7 @@ import { INTERNATIONAL_TOOLS } from '@/lib/international-tools-catalog';
 import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-export const CORE_UPDATED_AT = new Date('2026-07-28T21:00:00.000Z');
+export const CORE_UPDATED_AT = new Date('2026-08-01T15:00:00.000Z');
 export const GUIDES_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
 export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 
@@ -26,6 +26,11 @@ export const PUBLIC_TOOL_LANDINGS = [
   '/calculadora-de-rescisao',
   '/calculadora-de-preco-freelancer',
   '/mei-ou-clt',
+  '/corretor-de-redacao-enem',
+  '/editor-de-pdf-online',
+  '/gerador-de-referencias-abnt',
+  '/agenda-online',
+  '/divisor-de-conta',
   '/contato',
   '/sobre',
   '/privacidade',
@@ -112,8 +117,16 @@ function buildTools(base: string): MetadataRoute.Sitemap {
       !['/contato', '/sobre', '/privacidade', '/termos'].includes(path) && !inGrowth.has(path)
   ).map((path) => {
     let priority = 0.4;
-    if (path.startsWith('/gerador-') || path.startsWith('/documentos-')) priority = 0.9;
-    else if (
+    if (
+      path.startsWith('/gerador-') ||
+      path.startsWith('/documentos-') ||
+      path.startsWith('/corretor-') ||
+      path.startsWith('/editor-') ||
+      path === '/agenda-online' ||
+      path === '/divisor-de-conta'
+    ) {
+      priority = 0.9;
+    } else if (
       path === '/calculadora-de-rescisao' ||
       path === '/calculadora-de-preco-freelancer' ||
       path === '/mei-ou-clt' ||

@@ -9,7 +9,7 @@ export const contratosSeoContent: SeoPageContent = {
     'Monte um contrato profissional de aluguel, serviços, trabalho, compra e venda ou comodato em poucos minutos. Preencha os dados das partes e baixe em PDF pronto para assinar.',
   ctaPrimary: 'Montar contrato grátis',
   ctaSecondary: 'Ver modelos de contrato',
-  ctaHref: '/ferramentas/contratos',
+  ctaHref: '/gerador-de-contrato#ferramenta',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -57,19 +57,19 @@ export const contratosSeoContent: SeoPageContent = {
       title: 'Prestação de serviços',
       description: 'Ideal para freelancers e agências formalizarem um trabalho com cliente.',
       image: '',
-      href: '/ferramentas/contratos'
+      href: '/gerador-de-contrato#ferramenta'
     },
     {
       title: 'Aluguel residencial',
       description: 'Contrato completo entre locador e locatário, com cláusulas de prazo e reajuste.',
       image: '',
-      href: '/ferramentas/contratos'
+      href: '/gerador-de-contrato#ferramenta'
     },
     {
       title: 'Comodato',
       description: 'Formalize o empréstimo gratuito de um bem, com prazo e condições de devolução.',
       image: '',
-      href: '/ferramentas/contratos'
+      href: '/gerador-de-contrato#ferramenta'
     }
   ],
   faq: [
@@ -134,7 +134,7 @@ export const contratosSeoContent: SeoPageContent = {
     {
       name: 'Orçamentos',
       description: 'Envie o orçamento e receba a aprovação do cliente antes de contratar.',
-      href: '/ferramentas/orcamentos'
+      href: '/orcamento-com-pix'
     }
   ],
   seo: {

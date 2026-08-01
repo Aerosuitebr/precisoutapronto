@@ -240,10 +240,10 @@ export function LandingPage() {
               </p>
             </div>
             <Button asChild size="lg" variant="outline" className="h-12 shrink-0 self-start sm:self-auto">
-              <AuthAwareLink href="/ferramentas">
+              <Link href="/recursos">
                 Ver todas as ferramentas
                 <ArrowRight className="h-4 w-4" />
-              </AuthAwareLink>
+              </Link>
             </Button>
           </div>
 
@@ -300,10 +300,10 @@ export function LandingPage() {
                 variant="outline"
                 className="h-12 border-emerald-300 bg-white px-6 font-bold text-emerald-900 hover:bg-emerald-50"
               >
-                <AuthAwareLink href="/ferramentas/pix">
+                <Link href="/gerador-de-qr-code-pix#gerar">
                   <Wallet className="h-4 w-4" />
                   Só gerar Pix
-                </AuthAwareLink>
+                </Link>
               </Button>
             </div>
           </div>
@@ -478,10 +478,10 @@ export function LandingPage() {
             </ul>
             <div className="mt-8 flex flex-col gap-3">
               <Button asChild size="lg" className="w-full bg-white font-bold text-slate-950 hover:bg-emerald-50">
-                <AuthAwareLink href="/ferramentas">
+                <Link href="/recursos">
                   Gerar documento grátis
                   <ArrowRight className="h-4 w-4" />
-                </AuthAwareLink>
+                </Link>
               </Button>
               <p className="text-center text-sm text-emerald-100">
                 Duas gerações livres sem conta. Depois, cadastro para continuar.
@@ -537,9 +537,9 @@ export function LandingPage() {
             </ul>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild size="lg" className={cn('h-12', primaryCtaClass)}>
-                <AuthAwareLink href="/ferramentas/redacao-enem">
+                <Link href="/corretor-de-redacao-enem">
                   Analisar redação
-                </AuthAwareLink>
+                </Link>
               </Button>
               <Button
                 asChild

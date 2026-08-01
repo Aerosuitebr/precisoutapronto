@@ -15,6 +15,11 @@ Language: pt-BR
 - https://resolvajato.com.br/orcamento-com-pix
 - https://resolvajato.com.br/gerador-de-qr-code-pix
 - https://resolvajato.com.br/gerador-de-curriculo
+- https://resolvajato.com.br/corretor-de-redacao-enem
+- https://resolvajato.com.br/editor-de-pdf-online
+- https://resolvajato.com.br/gerador-de-referencias-abnt
+- https://resolvajato.com.br/agenda-online
+- https://resolvajato.com.br/divisor-de-conta
 - https://resolvajato.com.br/gerador-de-contrato
 - https://resolvajato.com.br/gerador-de-recibo
 - https://resolvajato.com.br/gerador-de-proposta-comercial

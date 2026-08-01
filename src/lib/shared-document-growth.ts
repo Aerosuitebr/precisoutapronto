@@ -1,3 +1,5 @@
+import { PUBLIC_TOOL_LANDINGS } from '@/lib/seo/public-tool-landings';
+
 interface SharedDocumentCta {
   href: string;
   label: string;
@@ -6,32 +8,32 @@ interface SharedDocumentCta {
 
 const CTA_BY_TOOL: Record<string, SharedDocumentCta> = {
   contratos: {
-    href: '/ferramentas/contratos',
+    href: PUBLIC_TOOL_LANDINGS.contratos,
     label: 'Criar meu contrato',
     description: 'Monte um contrato personalizado com orientação etapa a etapa.'
   },
   curriculo: {
-    href: '/ferramentas/curriculo',
+    href: PUBLIC_TOOL_LANDINGS.curriculo,
     label: 'Criar meu currículo',
     description: 'Escolha um modelo profissional e gere seu currículo em poucos minutos.'
   },
   recibos: {
-    href: '/ferramentas/recibos',
+    href: PUBLIC_TOOL_LANDINGS.recibos,
     label: 'Criar meu recibo',
     description: 'Gere um recibo personalizado, pronto para enviar ou imprimir.'
   },
   propostas: {
-    href: '/ferramentas/propostas',
+    href: PUBLIC_TOOL_LANDINGS.propostas,
     label: 'Criar minha proposta',
     description: 'Prepare uma proposta comercial com identidade visual e valores organizados.'
   },
   juridicos: {
-    href: '/ferramentas/juridicos',
+    href: PUBLIC_TOOL_LANDINGS.juridicos,
     label: 'Criar documento jurídico',
     description: 'Encontre modelos jurídicos e preencha o documento adequado ao seu caso.'
   },
   contabeis: {
-    href: '/ferramentas/contabeis',
+    href: PUBLIC_TOOL_LANDINGS.contabeis,
     label: 'Criar documento contábil',
     description: 'Gere documentos para rotinas contábeis, fiscais e administrativas.'
   }

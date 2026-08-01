@@ -45,7 +45,7 @@ export interface SeoPageContent {
   subtitle: string;
   ctaPrimary: string;
   ctaSecondary: string;
-  /** Para onde o CTA principal leva (ferramenta pública ou /ferramentas/x). */
+  /** CTA principal: preferir âncora pública (#ferramenta), nunca /ferramentas/* (noindex). */
   ctaHref: string;
   quickBadges: SeoPageQuickBadge[];
   benefits: SeoPageBenefit[];

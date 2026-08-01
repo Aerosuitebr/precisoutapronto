@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, PenLine, QrCode, Wallet } from 'lucide-react';
-import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Button } from '@/components/ui/button';
 import { REDACAO_HOME_DEMO } from '@/lib/redacao-enem/demo-showcase';
 import { cn } from '@/lib/utils';
@@ -109,10 +108,10 @@ export function HeroDualNiche({ className }: { className?: string }) {
           </p>
           <div className="mt-4">
             <Button asChild className={laneCtaClass}>
-              <AuthAwareLink href="/ferramentas/redacao-enem">
+              <Link href="/corretor-de-redacao-enem">
                 Analisar redação
                 <ArrowRight className="h-4 w-4" />
-              </AuthAwareLink>
+              </Link>
             </Button>
           </div>
         </div>

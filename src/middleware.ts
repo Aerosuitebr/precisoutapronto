@@ -21,6 +21,11 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/calculadora-de-decimo-terceiro',
   '/contato',
   '/contrato-de-aluguel',
+  '/corretor-de-redacao-enem',
+  '/editor-de-pdf-online',
+  '/gerador-de-referencias-abnt',
+  '/agenda-online',
+  '/divisor-de-conta',
   '/documentos-contabeis-online',
   '/documentos-juridicos-online',
   '/gerador-de-contrato',
@@ -41,7 +46,7 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/sobre',
   '/termos'
 ]);
-const PUBLIC_CACHEABLE_PREFIXES = ['/guias/', '/para/'];
+const PUBLIC_CACHEABLE_PREFIXES = ['/guias/', '/para/', '/modelos/', '/biblioteca'];
 
 function needsDeviceCookie(pathname: string) {
   const withoutOg = pathname.replace(/\/opengraph-image$/, '') || '/';

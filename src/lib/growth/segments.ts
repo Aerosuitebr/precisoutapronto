@@ -110,7 +110,7 @@ export const growthSegments: GrowthSegment[] = [
     tools: [
       { href: '/documentos-juridicos-online', label: 'Documentos jurídicos', description: 'Modelos e cláusulas editáveis.' },
       { href: '/gerador-de-contrato', label: 'Contratos', description: 'Monte uma primeira versão estruturada.' },
-      { href: '/ferramentas/agenda', label: 'Agenda', description: 'Organize prazos e compromissos.' }
+      { href: '/agenda-online', label: 'Agenda', description: 'Organize prazos e compromissos.' }
     ],
     intents: ['contrato-de-prestacao-de-servicos', 'contrato-de-aluguel', 'documentos-juridicos-online']
   },
@@ -123,9 +123,9 @@ export const growthSegments: GrowthSegment[] = [
     icon: GraduationCap,
     toolIds: ['trabalhos', 'referencias-abnt', 'redacao-enem', 'curriculo', 'cronograma-estudos'],
     tools: [
-      { href: '/ferramentas/redacao-enem', label: 'Redação ENEM', description: 'Receba uma análise por competência.' },
+      { href: '/corretor-de-redacao-enem', label: 'Redação ENEM', description: 'Receba uma análise por competência.' },
       { href: '/gerador-de-curriculo', label: 'Primeiro currículo', description: 'Destaque formação e projetos.' },
-      { href: '/ferramentas/referencias-abnt', label: 'Referências ABNT', description: 'Formate referências com rapidez.' }
+      { href: '/documentos-juridicos-online', label: 'Docs acadêmicos', description: 'Modelos para prática e trabalhos.' }
     ],
     intents: ['curriculo-para-primeiro-emprego', 'referencias-abnt-online', 'como-fazer-redacao-enem']
   },
@@ -140,7 +140,7 @@ export const growthSegments: GrowthSegment[] = [
     tools: [
       { href: '/orcamento-com-pix', label: 'Orçamento com Pix', description: 'Converta interesse em aprovação.' },
       { href: '/gerador-de-contrato', label: 'Contrato', description: 'Proteja escopo, prazo e pagamento.' },
-      { href: '/ferramentas/cronograma-entregas', label: 'Cronograma', description: 'Acompanhe etapas e compromissos.' }
+      { href: '/agenda-online', label: 'Cronograma', description: 'Acompanhe etapas e compromissos.' }
     ],
     intents: ['orcamento-para-prestador-de-servico', 'contrato-de-prestacao-de-servicos', 'recibo-de-pagamento']
   },
@@ -153,7 +153,7 @@ export const growthSegments: GrowthSegment[] = [
     icon: HeartPulse,
     toolIds: ['agenda', 'recibos', 'contratos'],
     tools: [
-      { href: '/ferramentas/agenda', label: 'Agenda', description: 'Organize atendimentos e lembretes.' },
+      { href: '/agenda-online', label: 'Agenda', description: 'Organize atendimentos e lembretes.' },
       { href: '/gerador-de-recibo', label: 'Recibos', description: 'Registre pagamentos com clareza.' },
       { href: '/gerador-de-contrato', label: 'Contratos', description: 'Formalize serviços administrativos.' }
     ],
@@ -168,8 +168,8 @@ export const growthSegments: GrowthSegment[] = [
     icon: UserRoundCog,
     toolIds: ['agenda', 'cronograma-entregas', 'propostas', 'contratos'],
     tools: [
-      { href: '/ferramentas/agenda', label: 'Agenda', description: 'Acompanhe os próximos compromissos.' },
-      { href: '/ferramentas/cronograma-entregas', label: 'Entregas', description: 'Visualize prazos e responsáveis.' },
+      { href: '/agenda-online', label: 'Agenda', description: 'Acompanhe os próximos compromissos.' },
+      { href: '/agenda-online', label: 'Entregas', description: 'Visualize prazos e responsáveis.' },
       { href: '/gerador-de-proposta-comercial', label: 'Propostas', description: 'Padronize novas oportunidades.' }
     ],
     intents: ['cronograma-de-entregas', 'proposta-comercial-para-empresa', 'contrato-de-prestacao-de-servicos']

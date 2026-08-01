@@ -9,7 +9,7 @@ export const recibosSeoContent: SeoPageContent = {
     'Crie um recibo de pagamento profissional em minutos. Preencha valor, quem pagou e quem recebeu, escolha um modelo e baixe em PDF pronto para enviar.',
   ctaPrimary: 'Emitir recibo grátis',
   ctaSecondary: 'Ver modelos de recibo',
-  ctaHref: '/ferramentas/recibos',
+  ctaHref: '/gerador-de-recibo#ferramenta',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em 2 minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -57,19 +57,19 @@ export const recibosSeoContent: SeoPageContent = {
       title: 'Modelo Profissional',
       description: 'Layout completo e formal, indicado para prestadores de serviço e autônomos.',
       image: '',
-      href: '/ferramentas/recibos'
+      href: '/gerador-de-recibo#ferramenta'
     },
     {
       title: 'Modelo Moderno',
       description: 'Visual mais leve e colorido, para negócios com identidade mais informal.',
       image: '',
-      href: '/ferramentas/recibos'
+      href: '/gerador-de-recibo#ferramenta'
     },
     {
       title: 'Modelo Compacto',
       description: 'Direto ao ponto, ideal para recibos rápidos do dia a dia.',
       image: '',
-      href: '/ferramentas/recibos'
+      href: '/gerador-de-recibo#ferramenta'
     }
   ],
   faq: [
@@ -123,12 +123,12 @@ export const recibosSeoContent: SeoPageContent = {
     {
       name: 'Cobrança Pix',
       description: 'Gere o QR Code Pix para receber e depois emita o recibo do pagamento.',
-      href: '/ferramentas/pix'
+      href: '/gerador-de-qr-code-pix'
     },
     {
       name: 'Orçamentos',
       description: 'Envie o orçamento e receba a aprovação do cliente antes da cobrança.',
-      href: '/ferramentas/orcamentos'
+      href: '/orcamento-com-pix'
     },
     {
       name: 'Propostas Comerciais',

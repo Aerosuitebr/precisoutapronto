@@ -245,7 +245,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'agenda',
-    ptPath: '/ferramentas/agenda',
+    ptPath: '/agenda-online',
     icon: CalendarDays,
     category: 'career',
     en: {
@@ -287,7 +287,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'bill-splitter',
-    ptPath: '/ferramentas/divisor-conta',
+    ptPath: '/divisor-de-conta',
     icon: Users,
     category: 'utilities',
     en: {
@@ -315,7 +315,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'pdf-editor',
-    ptPath: '/ferramentas/editor-pdf',
+    ptPath: '/editor-de-pdf-online',
     icon: FileStack,
     category: 'utilities',
     en: {
@@ -344,7 +344,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'enem-essay',
-    ptPath: '/ferramentas/redacao-enem',
+    ptPath: '/corretor-de-redacao-enem',
     icon: PenLine,
     category: 'brazil',
     brazilOnly: true,
@@ -359,7 +359,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'abnt-references',
-    ptPath: '/ferramentas/referencias-abnt',
+    ptPath: '/gerador-de-referencias-abnt',
     icon: BookOpen,
     category: 'brazil',
     brazilOnly: true,

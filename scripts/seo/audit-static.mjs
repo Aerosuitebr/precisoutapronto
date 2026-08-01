@@ -120,6 +120,40 @@ if (!nextConfig.includes("source: '/para/autonomos'")) {
 if (privatePtPaths.includes('/ferramentas/pix') || privatePtPaths.includes('/ferramentas/mei-vs-clt')) {
   failures.push('international-tools-catalog.ts: pix/mei ainda apontam para /ferramentas/*');
 }
+if (privatePtPaths.includes('/ferramentas/redacao-enem')) {
+  failures.push('international-tools-catalog.ts: redação ENEM ainda aponta para /ferramentas/*');
+}
+
+const seoPagesDir = path.join(root, 'src/lib/seo-pages');
+const seoPageFiles = (await readdir(seoPagesDir))
+  .filter((name) => name.endsWith('.ts') && name !== 'types.ts')
+  .map((name) => path.join(seoPagesDir, name));
+for (const file of seoPageFiles) {
+  const source = await readFile(file, 'utf8');
+  if (/ctaHref:\s*'\/ferramentas\//.test(source)) {
+    failures.push(`${path.relative(root, file)}: ctaHref aponta para /ferramentas (noindex)`);
+  }
+}
+
+const publicMap = await readFile(path.join(root, 'src/lib/seo/public-tool-landings.ts'), 'utf8');
+if (!publicMap.includes('/corretor-de-redacao-enem') || !publicMap.includes('redacao-enem')) {
+  failures.push('public-tool-landings.ts: falta mapeamento da redação ENEM');
+}
+for (const path of [
+  '/editor-de-pdf-online',
+  '/gerador-de-referencias-abnt',
+  '/agenda-online',
+  '/divisor-de-conta'
+]) {
+  if (!publicMap.includes(path)) {
+    failures.push(`public-tool-landings.ts: falta mapeamento ${path}`);
+  }
+}
+
+const orphanLandings = await readFile(path.join(root, 'src/lib/seo/orphan-tool-landings.ts'), 'utf8');
+if (!orphanLandings.includes("path: '/editor-de-pdf-online'")) {
+  failures.push('orphan-tool-landings.ts: faltam landings órfãs');
+}
 
 if (failures.length) {
   console.error(`Auditoria SEO falhou (${failures.length}):`);

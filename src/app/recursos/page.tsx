@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
+import { PUBLIC_TOOL_LANDINGS } from '@/lib/seo/public-tool-landings';
 import { toolCategories, toolsCatalog } from '@/lib/tools-catalog';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
@@ -25,18 +26,7 @@ export const metadata: Metadata = {
   }
 };
 
-const publicLandings: Record<string, string> = {
-  contratos: '/gerador-de-contrato',
-  recibos: '/gerador-de-recibo',
-  curriculo: '/gerador-de-curriculo',
-  propostas: '/gerador-de-proposta-comercial',
-  orcamentos: '/orcamento-com-pix',
-  juridicos: '/documentos-juridicos-online',
-  contabeis: '/documentos-contabeis-online',
-  rescisao: '/calculadora-de-rescisao',
-  precificacao: '/calculadora-de-preco-freelancer',
-  'mei-vs-clt': '/mei-ou-clt'
-};
+const publicLandings = PUBLIC_TOOL_LANDINGS;
 
 export default function RecursosPage() {
   const base = getViralBaseUrl().replace(/\/$/, '');

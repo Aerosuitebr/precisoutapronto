@@ -324,7 +324,7 @@ function ContratoMockup() {
 const SHOWCASE_ITEMS: ShowcaseItem[] = [
   {
     id: 'orcamentos',
-    href: '/ferramentas/orcamentos',
+    href: '/orcamento-com-pix#montar',
     tabLabel: 'Orçamentos',
     icon: ClipboardList,
     eyebrow: 'Cobrança no WhatsApp',
@@ -340,7 +340,7 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
   },
   {
     id: 'redacao-enem',
-    href: '/ferramentas/redacao-enem',
+    href: '/corretor-de-redacao-enem',
     tabLabel: 'Redação ENEM',
     icon: PenLine,
     eyebrow: 'Corretor de redação',
@@ -356,7 +356,7 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
   },
   {
     id: 'editor-pdf',
-    href: '/ferramentas/editor-pdf',
+    href: '/editor-de-pdf-online',
     tabLabel: 'Editor de PDF',
     icon: FileStack,
     eyebrow: 'Editor completo',
@@ -372,7 +372,7 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
   },
   {
     id: 'curriculo',
-    href: '/ferramentas/curriculo',
+    href: '/gerador-de-curriculo#ferramenta',
     tabLabel: 'Currículo',
     icon: GraduationCap,
     eyebrow: 'Carreira',
@@ -388,13 +388,13 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
   },
   {
     id: 'trabalhos',
-    href: '/ferramentas/trabalhos',
+    href: '/para/estudantes',
     tabLabel: 'Capa ABNT',
     icon: BookOpen,
     eyebrow: 'Trabalhos acadêmicos',
     headline: 'Capa no padrão ABNT, sem consultar manual.',
     subtext: 'Escolar ou universitária, com margens e fonte já certas para imprimir.',
-    ctaLabel: 'Gerar capa',
+    ctaLabel: 'Ver para estudantes',
     stats: [
       { icon: BookOpen, value: '100%', label: 'Padrão ABNT' },
       { icon: Sparkles, value: 'Automático', label: 'Margens e fonte certas' },
@@ -404,7 +404,7 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
   },
   {
     id: 'contratos',
-    href: '/ferramentas/contratos',
+    href: '/gerador-de-contrato#ferramenta',
     tabLabel: 'Contratos e Petições',
     icon: Scale,
     eyebrow: 'Documentos jurídicos',

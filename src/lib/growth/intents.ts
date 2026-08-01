@@ -199,7 +199,7 @@ export const intentPages: IntentPage[] = [
     description: 'Reúna os dados bibliográficos e padronize livros, sites e artigos.',
     answer: 'A referência depende do tipo de fonte e normalmente usa autoria, título, edição, local, editora, data e informações de acesso.',
     segmentSlugs: ['estudantes'],
-    toolHref: '/ferramentas/referencias-abnt',
+    toolHref: '/gerador-de-referencias-abnt',
     toolLabel: 'Formatar referências',
     steps: ['Identifique o tipo de fonte', 'Reúna os dados bibliográficos', 'Gere a referência', 'Confira com a orientação da instituição'],
     faqs: [
@@ -213,7 +213,7 @@ export const intentPages: IntentPage[] = [
     description: 'Estruture tese, argumentos e proposta de intervenção com clareza.',
     answer: 'Uma redação consistente compreende o tema, apresenta tese, desenvolve argumentos conectados e conclui com proposta de intervenção detalhada.',
     segmentSlugs: ['estudantes'],
-    toolHref: '/ferramentas/redacao-enem',
+    toolHref: '/corretor-de-redacao-enem',
     toolLabel: 'Analisar minha redação',
     steps: ['Leia tema e textos motivadores', 'Defina tese e dois argumentos', 'Desenvolva com repertório pertinente', 'Revise intervenção e linguagem'],
     faqs: [
@@ -269,7 +269,7 @@ export const intentPages: IntentPage[] = [
     description: 'Centralize horários, compromissos e lembretes da rotina profissional.',
     answer: 'Uma agenda profissional eficaz registra horário, duração, tipo de compromisso e observações mínimas, com rotina de confirmação e atualização.',
     segmentSlugs: ['saude'],
-    toolHref: '/ferramentas/agenda',
+    toolHref: '/agenda-online',
     toolLabel: 'Organizar agenda',
     steps: ['Cadastre horários disponíveis', 'Registre compromissos essenciais', 'Revise conflitos e intervalos', 'Acompanhe próximos atendimentos'],
     faqs: [
@@ -283,7 +283,7 @@ export const intentPages: IntentPage[] = [
     description: 'Transforme um projeto em marcos claros, com prazos e acompanhamento.',
     answer: 'Um cronograma útil divide o resultado em entregas verificáveis, define responsáveis, dependências, datas e critérios para considerar cada etapa concluída.',
     segmentSlugs: ['gestores'],
-    toolHref: '/ferramentas/cronograma-entregas',
+    toolHref: '/agenda-online',
     toolLabel: 'Criar cronograma',
     steps: ['Liste resultados esperados', 'Divida em etapas e dependências', 'Defina responsáveis e datas', 'Revise progresso e impedimentos'],
     faqs: [

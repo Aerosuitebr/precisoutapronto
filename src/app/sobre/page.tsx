@@ -47,8 +47,17 @@ export default function SobrePage() {
         </p>
         <p className="mt-3">
           <strong>Descrição editorial:</strong> O Resolva Jato ajuda MEIs, freelancers, estudantes e
-          pequenos negócios a criar currículos, recibos, contratos, propostas, orçamentos com Pix e
-          outros documentos em fluxos simples e acessíveis.
+          pequenos negócios a criar currículos, recibos, contratos, propostas, orçamentos com Pix,
+          corrigir redação ENEM, editar PDF e montar referências ABNT em fluxos simples no navegador.
+        </p>
+        <p className="mt-3">
+          <strong>Como citar:</strong> Resolva Jato. Ferramentas online grátis.
+          Disponível em: https://resolvajato.com.br. Acesso em: data da consulta.
+        </p>
+        <p className="mt-3">
+          <strong>Fatos citáveis:</strong> operação pela Aerosuite; domínio canônico
+          resolvajato.com.br; ferramentas usáveis no navegador; duas gerações livres antes do
+          cadastro; contato de imprensa em contato@resolvajato.com.br.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/favicon.svg" className="font-semibold text-sky-700 hover:text-sky-800">
@@ -59,6 +68,9 @@ export default function SobrePage() {
           </Link>
           <Link href="/contato" className="font-semibold text-sky-700 hover:text-sky-800">
             Contato de imprensa
+          </Link>
+          <Link href="/recursos" className="font-semibold text-sky-700 hover:text-sky-800">
+            Catálogo público
           </Link>
         </div>
       </section>

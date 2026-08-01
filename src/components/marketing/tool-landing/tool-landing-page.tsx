@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -64,17 +63,17 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-14 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-16">
             <div className="max-w-xl">
               <h2 className="rj-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Pronto para salvar e baixar o PDF?
+                Experimente na própria página
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-300 sm:text-base">
-                Crie uma conta gratuita para continuar. Sem cartão. Leva menos de um minuto.
+                Use a demo acima com duas gerações livres. Conta grátis só entra depois, para salvar histórico e PDF sem marca.
               </p>
             </div>
             <Button asChild size="lg" className="h-12 shrink-0 bg-sky-500 px-6 font-bold hover:bg-sky-400">
-              <Link href={content.ctaHref}>
+              <a href="#ferramenta">
                 {content.ctaPrimary}
                 <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
+              </a>
             </Button>
           </div>
         </section>

@@ -9,7 +9,7 @@ export const propostasSeoContent: SeoPageContent = {
     'Crie propostas comerciais com identidade visual profissional em minutos. Adicione itens, valores e condições, e envie um PDF que ajuda a fechar mais negócios.',
   ctaPrimary: 'Montar proposta grátis',
   ctaSecondary: 'Ver modelos de proposta',
-  ctaHref: '/ferramentas/propostas',
+  ctaHref: '/gerador-de-proposta-comercial#ferramenta',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -57,19 +57,19 @@ export const propostasSeoContent: SeoPageContent = {
       title: 'Corporativa',
       description: 'Visual clássico e formal, indicado para propostas B2B e licitações.',
       image: '',
-      href: '/ferramentas/propostas'
+      href: '/gerador-de-proposta-comercial#ferramenta'
     },
     {
       title: 'Executiva',
       description: 'Foco em consultoria e escopo de trabalho (SOW), com linguagem objetiva.',
       image: '',
-      href: '/ferramentas/propostas'
+      href: '/gerador-de-proposta-comercial#ferramenta'
     },
     {
       title: 'Criativa',
       description: 'Visual mais colorido, indicado para agências e freelancers criativos.',
       image: '',
-      href: '/ferramentas/propostas'
+      href: '/gerador-de-proposta-comercial#ferramenta'
     }
   ],
   faq: [
@@ -118,7 +118,7 @@ export const propostasSeoContent: SeoPageContent = {
     {
       name: 'Orçamentos',
       description: 'Envie um orçamento simples com link para aprovação do cliente.',
-      href: '/ferramentas/orcamentos'
+      href: '/orcamento-com-pix'
     },
     {
       name: 'Contratos',
@@ -133,7 +133,7 @@ export const propostasSeoContent: SeoPageContent = {
     {
       name: 'Cobrança Pix',
       description: 'Gere um QR Code Pix para receber o pagamento combinado na proposta.',
-      href: '/ferramentas/pix'
+      href: '/gerador-de-qr-code-pix'
     }
   ],
   seo: {

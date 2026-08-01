@@ -22,8 +22,8 @@ export function ToolLandingEmbed({
           Monte seu {toolName.toLowerCase()} sem precisar sair da página.
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-          Preencha alguns dados abaixo. No celular, o preview fica sob demanda pra digitação fluida. Para salvar e
-          baixar o PDF, crie uma conta gratuita.
+          Preencha alguns dados abaixo. No celular, o preview fica sob demanda pra digitação fluida.
+          Duas gerações livres sem conta; depois o cadastro libera PDF sem marca e histórico.
         </p>
         <div className="mt-8 sm:mt-10">{tool}</div>
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
@@ -33,7 +33,7 @@ export function ToolLandingEmbed({
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </Button>
-          <p className="text-sm font-medium text-slate-500">Conta grátis. Sem cartão.</p>
+          <p className="text-sm font-medium text-slate-500">2 gerações grátis. Sem cartão.</p>
         </div>
       </div>
     </section>

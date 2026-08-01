@@ -228,7 +228,7 @@ export const SEO_LANDINGS = {
   'para-estudantes': {
     id: 'para-estudantes',
     path: '/para/estudantes',
-    toolHref: '/ferramentas/juridicos',
+    toolHref: '/corretor-de-redacao-enem',
     eyebrow: 'Para estudantes',
     title: 'Documentos acadêmicos, ABNT e currículo em um só lugar',
     description:
@@ -238,7 +238,7 @@ export const SEO_LANDINGS = {
       'Capa, referências ABNT e currículo',
       'PDF editável para estudar, entregar ou imprimir'
     ],
-    primaryCta: 'Criar documento acadêmico',
+    primaryCta: 'Analisar redação ENEM',
     secondaryCta: { label: 'Abrir currículo', href: '/gerador-de-curriculo' },
     sections: [
       {
@@ -261,16 +261,16 @@ export const SEO_LANDINGS = {
       }
     ],
     related: [
-      { href: '/ferramentas/juridicos', label: 'Documentos acadêmicos', blurb: 'Direito, estágio e OAB' },
+      { href: '/corretor-de-redacao-enem', label: 'Corretor de redação ENEM', blurb: 'Nota estimada por competência' },
       { href: '/gerador-de-curriculo', label: 'Currículo', blurb: 'PDF profissional' },
-      { href: '/para/mei', label: 'Para MEI', blurb: 'Se você já presta serviço' },
-      { href: '/busca', label: 'Busca grátis', blurb: 'Links úteis sem cadastro' }
+      { href: '/documentos-juridicos-online', label: 'Docs jurídicos', blurb: 'Direito, estágio e OAB' },
+      { href: '/para/mei', label: 'Para MEI', blurb: 'Se você já presta serviço' }
     ]
   },
   'gerador-de-curriculo': {
     id: 'gerador-de-curriculo',
     path: '/gerador-de-curriculo',
-    toolHref: '/ferramentas/curriculo',
+    toolHref: '/gerador-de-curriculo#ferramenta',
     eyebrow: 'Currículo online',
     title: 'Gerador de currículo grátis em PDF',
     description:
@@ -301,7 +301,7 @@ export const SEO_LANDINGS = {
   'gerador-de-contrato': {
     id: 'gerador-de-contrato',
     path: '/gerador-de-contrato',
-    toolHref: '/ferramentas/contratos',
+    toolHref: '/gerador-de-contrato#ferramenta',
     eyebrow: 'Contratos',
     title: 'Gerador de contrato online grátis',
     description:
@@ -328,7 +328,7 @@ export const SEO_LANDINGS = {
   'gerador-de-proposta': {
     id: 'gerador-de-proposta',
     path: '/gerador-de-proposta-comercial',
-    toolHref: '/ferramentas/propostas',
+    toolHref: '/gerador-de-proposta-comercial#ferramenta',
     eyebrow: 'Propostas comerciais',
     title: 'Gerador de proposta comercial grátis',
     description:
@@ -355,7 +355,7 @@ export const SEO_LANDINGS = {
   'gerador-de-recibo': {
     id: 'gerador-de-recibo',
     path: '/gerador-de-recibo',
-    toolHref: '/ferramentas/recibos',
+    toolHref: '/gerador-de-recibo#ferramenta',
     eyebrow: 'Recibos',
     title: 'Gerador de recibo online grátis em PDF',
     description:

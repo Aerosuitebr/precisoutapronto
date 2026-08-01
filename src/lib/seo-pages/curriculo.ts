@@ -20,7 +20,7 @@ export const curriculoSeoContent: SeoPageContent = {
     'Crie um currículo profissional em poucos minutos, direto do navegador. Escolha um modelo, preencha seus dados e baixe em PDF pronto para enviar às vagas.',
   ctaPrimary: 'Montar currículo grátis',
   ctaSecondary: 'Ver modelos prontos',
-  ctaHref: '/ferramentas/curriculo',
+  ctaHref: '/gerador-de-curriculo#ferramenta',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em 5 minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -78,19 +78,19 @@ export const curriculoSeoContent: SeoPageContent = {
       title: 'Modelo Profissional',
       description: 'Layout clássico e elegante, ideal para vagas corporativas e cargos de gestão.',
       image: '',
-      href: '/ferramentas/curriculo'
+      href: '/gerador-de-curriculo#ferramenta'
     },
     {
       title: 'Modelo Moderno',
       description: 'Visual contemporâneo com destaque lateral em azul, indicado para marketing, tech e criativos.',
       image: '',
-      href: '/ferramentas/curriculo'
+      href: '/gerador-de-curriculo#ferramenta'
     },
     {
       title: 'Modelo Universitário',
       description: 'Perfeito para estágios, primeiro emprego e programas acadêmicos.',
       image: '',
-      href: '/ferramentas/curriculo'
+      href: '/gerador-de-curriculo#ferramenta'
     }
   ],
   faq: [
@@ -151,12 +151,12 @@ export const curriculoSeoContent: SeoPageContent = {
     {
       name: 'Lattes Inteligente',
       description: 'Gere seu currículo Lattes formatado para uso acadêmico e programas de pós.',
-      href: '/ferramentas/curriculo-lattes'
+      href: '/gerador-de-curriculo'
     },
     {
       name: 'Capas de Trabalho',
       description: 'Monte capas no padrão ABNT para trabalhos acadêmicos e TCCs.',
-      href: '/ferramentas/trabalhos'
+      href: '/para/estudantes'
     },
     {
       name: 'Contratos',

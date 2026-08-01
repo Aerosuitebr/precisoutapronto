@@ -14,13 +14,18 @@ const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/guias', label: 'Guias' },
   { href: '/recursos', label: 'Catálogo público' },
   { href: '/busca', label: 'Busca grátis' },
-  { href: '/ferramentas', label: 'Ferramentas', authAware: true }
+  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM' }
 ];
 
 const SEO_LINKS = [
   { href: '/calculadora-de-rescisao', label: 'Calculadora de rescisão' },
   { href: '/calculadora-de-preco-freelancer', label: 'Preço para freelancer' },
   { href: '/mei-ou-clt', label: 'MEI ou CLT' },
+  { href: '/corretor-de-redacao-enem', label: 'Corretor de redação ENEM' },
+  { href: '/editor-de-pdf-online', label: 'Editor de PDF' },
+  { href: '/gerador-de-referencias-abnt', label: 'Referências ABNT' },
+  { href: '/divisor-de-conta', label: 'Divisor de conta' },
+  { href: '/agenda-online', label: 'Agenda online' },
   { href: '/guias', label: 'Todos os guias' },
   { href: '/contrato-de-aluguel', label: 'Contrato de aluguel' },
   { href: '/recibo-de-pagamento', label: 'Recibo de pagamento' },
