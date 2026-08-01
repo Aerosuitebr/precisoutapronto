@@ -6,7 +6,8 @@ export function GET() {
   return new Response(buildRobotsBody(), {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600, s-maxage=86400'
+      // Curto no CDN: regras Disallow erradas em cache matam indexação (ex.: /conta → /contato).
+      'Cache-Control': 'public, max-age=300, s-maxage=300, must-revalidate'
     }
   });
 }
