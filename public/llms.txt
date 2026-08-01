@@ -30,7 +30,7 @@ Language: pt-BR
 
 ## Audience pages
 - https://resolvajato.com.br/para/mei
-- https://resolvajato.com.br/para/autonomos
+- https://resolvajato.com.br/para/freelancers
 - https://resolvajato.com.br/para/empresas
 - https://resolvajato.com.br/para/rh
 - https://resolvajato.com.br/para/contadores

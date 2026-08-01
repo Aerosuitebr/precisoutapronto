@@ -41,6 +41,16 @@ Revisão GSC: formulário aberto; confirmar envio manual se o botão ainda disse
 - [ ] Enviar no GSC (domínio): `sitemap.xml` + `sitemaps/index.xml`
 - [ ] Solicitar indexação das URLs restantes do dia 1 (abaixo)
 
+## Diagnóstico 01/ago · por que não há cliques
+
+Bloqueios técnicos encontrados (código corrigido na mesma data; **precisa deploy**):
+
+1. **`Disallow: /conta` bloqueava `/contato`** (prefix match do Google) — página no sitemap + bloqueada no robots.
+2. **Title/canonical streamados depois de `</head>`** — root layout lia `headers()`; GSC via “canônica declarada: nenhuma” (ex.: currículo → canônica spam `747live.bet` no crawl antigo).
+3. **Sitemaps ainda não enviados** na propriedade de domínio GSC (checkbox acima).
+4. **Safe Browsing / páginas enganosas** — confirmar se a revisão GSC já foi aprovada; sem isso o Google suprime impressões/cliques.
+5. IndexNow **não notifica o Google** — só Bing/parceiros.
+
 ## Dia 1 · prioridade comercial · 15 URLs
 
 Arquivo: `gsc-fila-day1.txt`

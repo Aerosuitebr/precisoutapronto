@@ -73,6 +73,15 @@ const robots = results.get('/robots.txt').body;
 if (!robots.includes('Sitemap: https://resolvajato.com.br/sitemaps/index.xml')) {
   failures.push('/robots.txt: índice de sitemaps ausente');
 }
+if (/^Disallow:\s*\/conta\s*$/m.test(robots)) {
+  failures.push('/robots.txt: Disallow /conta sem delimitador (bloqueia /contato)');
+}
+if (!robots.includes('Allow: /contato')) {
+  failures.push('/robots.txt: Allow /contato ausente');
+}
+if (!robots.includes('Disallow: /conta$') && !robots.includes('Disallow: /conta/')) {
+  failures.push('/robots.txt: Disallow /conta$ ou /conta/ ausente');
+}
 
 const sitemap = results.get('/sitemap.xml').body;
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);

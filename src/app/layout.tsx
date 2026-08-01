@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
-import { headers } from 'next/headers';
 import { AnalyticsScripts } from '@/components/analytics/analytics-scripts';
 import { AppProviders } from '@/components/providers/app-providers';
 import { ReferralCapture } from '@/components/referral/referral-capture';
@@ -77,12 +76,15 @@ export const viewport: Viewport = {
   viewportFit: 'cover'
 };
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const headerStore = await headers();
-  const htmlLang = headerStore.get('x-html-lang') || 'pt-BR';
-
+/**
+ * Não chamar `headers()` / `cookies()` aqui.
+ * Isso tornava o root dinâmico e o Next streamava title/canonical DEPOIS de `</head>`,
+ * o que o GSC interpretava como “canônica declarada: nenhuma”.
+ * Idioma EN/ES: scripts nas páginas `[locale]` + Content-Language no middleware.
+ */
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang={htmlLang}>
+    <html lang="pt-BR" suppressHydrationWarning>
       <body>
         <SiteJsonLd />
         <AppProviders>

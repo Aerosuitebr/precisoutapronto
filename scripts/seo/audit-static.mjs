@@ -89,13 +89,27 @@ const i18nSeo = await readFile(path.join(root, 'src/lib/i18n-seo.ts'), 'utf8');
 if (!i18nSeo.includes('isPublicIndexablePath')) {
   failures.push('i18n-seo.ts: falta guarda isPublicIndexablePath para hreflang');
 }
+if (!i18nSeo.includes('includeHreflang') || !i18nSeo.includes('index: false')) {
+  failures.push('i18n-seo.ts: EN/ES órfãs devem ser noindex sem landing PT pública');
+}
 
 const layout = await readFile(path.join(root, 'src/app/layout.tsx'), 'utf8');
 if (!layout.includes("template: '%s | Resolva Jato'")) {
   failures.push('layout.tsx: title template sem marca Resolva Jato');
 }
-if (!layout.includes('x-html-lang')) {
-  failures.push('layout.tsx: html lang dinamico ausente');
+if (!layout.includes('lang="pt-BR"')) {
+  failures.push('layout.tsx: lang pt-BR estático ausente');
+}
+if (layout.includes("from 'next/headers'") || layout.includes('await headers(')) {
+  failures.push('layout.tsx: headers() no root atrasa title/canonical para depois de </head>');
+}
+
+const robotsBody = await readFile(path.join(root, 'src/lib/seo/robots-body.ts'), 'utf8');
+if (/\b'\/conta'\b/.test(robotsBody) || /Disallow:\s*\/conta\s*$/m.test(robotsBody)) {
+  failures.push('robots-body.ts: Disallow /conta sem delimitador bloqueia /contato');
+}
+if (!robotsBody.includes('/conta$') || !robotsBody.includes("'/contato'")) {
+  failures.push('robots-body.ts: falta /conta$ e Allow /contato');
 }
 
 const nextConfig = await readFile(path.join(root, 'next.config.mjs'), 'utf8');

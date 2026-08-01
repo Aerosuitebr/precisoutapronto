@@ -63,7 +63,12 @@ export function internationalSeo(
           }
         : {})
     },
-    robots: isStagingEnv() ? stagingRobots() : { index: true, follow: true },
+    // Sem landing PT pública: não indexar EN/ES órfãs (fora do sitemap / sem hreflang).
+    robots: isStagingEnv()
+      ? stagingRobots()
+      : includeHreflang
+        ? { index: true, follow: true }
+        : { index: false, follow: true },
     openGraph: {
       locale: locale === 'en' ? 'en_US' : 'es_ES',
       alternateLocale: ['pt_BR', locale === 'en' ? 'es_ES' : 'en_US'],

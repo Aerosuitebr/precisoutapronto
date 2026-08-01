@@ -1,33 +1,55 @@
 import { isStagingEnv } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
+/**
+ * Regras Disallow com delimitação explícita.
+ * Google trata Disallow como prefixo: `/conta` bloqueava `/contato`.
+ * `$` = fim da URL (suportado pelo Google); `/` = só descendentes.
+ */
 const PRIVATE_DISALLOWS = [
   '/api/',
-  '/conta',
+  '/conta$',
+  '/conta/',
   '/ferramentas/',
   '/oficina/',
   '/comercial/',
-  '/checkout',
-  '/design-system',
-  '/verificar-email',
-  '/login',
-  '/cadastro',
-  '/busca',
+  '/checkout$',
+  '/checkout/',
+  '/design-system$',
+  '/design-system/',
+  '/verificar-email$',
+  '/login$',
+  '/login/',
+  '/cadastro$',
+  '/cadastro/',
+  '/busca$',
+  '/busca/',
   '/documento/',
   '/orcamento/',
-  '/en/account',
-  '/es/account',
-  '/en/checkout',
-  '/es/checkout',
-  '/en/login',
-  '/es/login',
-  '/en/cadastro',
-  '/es/cadastro',
-  '/en/verify-email',
-  '/es/verify-email',
+  '/en/account$',
+  '/en/account/',
+  '/es/account$',
+  '/es/account/',
+  '/en/checkout$',
+  '/en/checkout/',
+  '/es/checkout$',
+  '/es/checkout/',
+  '/en/login$',
+  '/en/login/',
+  '/es/login$',
+  '/es/login/',
+  '/en/cadastro$',
+  '/en/cadastro/',
+  '/es/cadastro$',
+  '/es/cadastro/',
+  '/en/verify-email$',
+  '/es/verify-email$',
   '/en/quote/',
   '/es/quote/'
 ] as const;
+
+/** Explicitamente público — defesa contra prefix match residual. */
+const PUBLIC_ALLOWS = ['/contato', '/contato/'] as const;
 
 /** Corpo de `/robots.txt` (texto puro, com descoberta de `llms.txt`). */
 export function buildRobotsBody(): string {
@@ -42,6 +64,7 @@ export function buildRobotsBody(): string {
     `# LLM context: ${base}/llms.txt`,
     'User-Agent: *',
     'Allow: /',
+    ...PUBLIC_ALLOWS.map((path) => `Allow: ${path}`),
     ...PRIVATE_DISALLOWS.map((path) => `Disallow: ${path}`),
     '',
     `Sitemap: ${base}/sitemap.xml`,
