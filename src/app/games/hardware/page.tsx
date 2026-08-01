@@ -3,7 +3,7 @@ import { GamesReadablePanel, HardwareCard, SectionAccent } from '@/components/ga
 import { hardwareGuides } from '@/lib/games/hardware';
 
 export const metadata: Metadata = {
-  title: 'Hardware gamer: GPU, CPU e engines',
+  title: { absolute: 'Hardware gamer: GPU, CPU e engines | Jato Games' },
   description:
     'Guias evergreen para escolher placa de vídeo, processador, entender game engines e montar PC sem desperdiçar.',
   alternates: { canonical: '/games/hardware' }

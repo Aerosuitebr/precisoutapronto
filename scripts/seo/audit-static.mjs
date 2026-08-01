@@ -24,10 +24,14 @@ for (const relative of required) {
 
 async function walk(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
-  return (await Promise.all(entries.map(async (entry) => {
-    const target = path.join(directory, entry.name);
-    return entry.isDirectory() ? walk(target) : [target];
-  }))).flat();
+  return (
+    await Promise.all(
+      entries.map(async (entry) => {
+        const target = path.join(directory, entry.name);
+        return entry.isDirectory() ? walk(target) : [target];
+      })
+    )
+  ).flat();
 }
 
 const publicPages = (await walk(path.join(root, 'src/app')))
@@ -56,7 +60,9 @@ for (const segment of ['core', 'tools', 'growth', 'guides', 'games', 'i18n']) {
 
 const selfCanonicalLandings = [
   ['src/app/recibo-de-pagamento/page.tsx', 'content.path'],
-  ['src/app/proposta-comercial-mei/page.tsx', 'content.path']
+  ['src/app/proposta-comercial-mei/page.tsx', 'content.path'],
+  ['src/app/recibo-de-aluguel/page.tsx', 'content.path'],
+  ['src/app/contrato-de-aluguel/page.tsx', 'content.path']
 ];
 
 for (const [relative, canonicalExpression] of selfCanonicalLandings) {
@@ -72,10 +78,41 @@ for (const [relative, canonicalExpression] of selfCanonicalLandings) {
   }
 }
 
+const catalog = await readFile(path.join(root, 'src/lib/international-tools-catalog.ts'), 'utf8');
+const privatePtPaths = [...catalog.matchAll(/ptPath:\s*'([^']+)'/g)]
+  .map((match) => match[1])
+  .filter((ptPath) => ptPath.startsWith('/ferramentas') || ptPath === '/busca');
+
+// Ferramentas sem landing PT pública podem manter ptPath privado para o LocaleSwitcher,
+// mas o hreflang/sitemap precisam bloquear via isPublicIndexablePath.
+const i18nSeo = await readFile(path.join(root, 'src/lib/i18n-seo.ts'), 'utf8');
+if (!i18nSeo.includes('isPublicIndexablePath')) {
+  failures.push('i18n-seo.ts: falta guarda isPublicIndexablePath para hreflang');
+}
+
+const layout = await readFile(path.join(root, 'src/app/layout.tsx'), 'utf8');
+if (!layout.includes("template: '%s | Resolva Jato'")) {
+  failures.push('layout.tsx: title template sem marca Resolva Jato');
+}
+if (!layout.includes('x-html-lang')) {
+  failures.push('layout.tsx: html lang dinamico ausente');
+}
+
+const nextConfig = await readFile(path.join(root, 'next.config.mjs'), 'utf8');
+if (!nextConfig.includes("source: '/para/autonomos'")) {
+  failures.push('next.config.mjs: redirect /para/autonomos ausente');
+}
+
+if (privatePtPaths.includes('/ferramentas/pix') || privatePtPaths.includes('/ferramentas/mei-vs-clt')) {
+  failures.push('international-tools-catalog.ts: pix/mei ainda apontam para /ferramentas/*');
+}
+
 if (failures.length) {
   console.error(`Auditoria SEO falhou (${failures.length}):`);
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
-console.log(`Auditoria SEO concluída: ${required.length} arquivos essenciais e ${publicPages.length} rotas verificadas.`);
+console.log(
+  `Auditoria SEO concluída: ${required.length} arquivos essenciais e ${publicPages.length} rotas verificadas.`
+);

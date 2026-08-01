@@ -3,7 +3,7 @@ import { consoleBlocks } from '@/lib/games/consoles';
 import { GamesReadablePanel, ProductBridge, SectionAccent } from '@/components/games/games-ui';
 
 export const metadata: Metadata = {
-  title: 'Dicas de consoles: PlayStation, Xbox e Nintendo',
+  title: { absolute: 'Dicas de consoles: PlayStation, Xbox e Nintendo | Jato Games' },
   description:
     'Guia evergreen de consoles com dicas práticas, acessórios e cuidados para PlayStation, Xbox e Nintendo.',
   alternates: { canonical: '/games/consoles' }

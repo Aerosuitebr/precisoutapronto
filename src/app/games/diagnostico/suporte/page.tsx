@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Suporte e desinstalação · Jato Games Diagnostic',
+  title: { absolute: 'Suporte e desinstalação · Jato Games Diagnostic' },
   description: 'Ajuda, desinstalação, logs locais e contato de segurança do Jato Games Diagnostic.',
   alternates: { canonical: '/games/diagnostico/suporte' }
 };

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { isStagingEnv, stagingRobots } from '@/lib/app-env';
 import type { InternationalLocale } from '@/lib/i18n';
+import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 
 const descriptionOverrides: Record<InternationalLocale, Record<string, string>> = {
   en: {
@@ -43,18 +44,24 @@ export function internationalSeo(
 ): Pick<Metadata, 'alternates' | 'robots' | 'openGraph' | 'twitter' | 'description'> {
   const suffix = internationalPath ? `/${internationalPath.replace(/^\/+/, '')}` : '';
   const socialImage = `/${locale}/opengraph-image`;
+  const includeHreflang = isPublicIndexablePath(portuguesePath);
+
   return {
     ...(descriptionOverrides[locale][internationalPath]
       ? { description: descriptionOverrides[locale][internationalPath] }
       : {}),
     alternates: {
       canonical: `/${locale}${suffix}`,
-      languages: {
-        'pt-BR': portuguesePath,
-        en: `/en${suffix}`,
-        es: `/es${suffix}`,
-        'x-default': portuguesePath
-      }
+      ...(includeHreflang
+        ? {
+            languages: {
+              'pt-BR': portuguesePath,
+              en: `/en${suffix}`,
+              es: `/es${suffix}`,
+              'x-default': portuguesePath
+            }
+          }
+        : {})
     },
     robots: isStagingEnv() ? stagingRobots() : { index: true, follow: true },
     openGraph: {

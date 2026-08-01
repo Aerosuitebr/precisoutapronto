@@ -24,7 +24,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${segment.name}: ferramentas e documentos gratuitos`,
     description,
-    alternates: { canonical: `/para/${segment.slug}` }
+    alternates: { canonical: `/para/${segment.slug}` },
+    openGraph: {
+      title: `${segment.name}: ferramentas e documentos gratuitos`,
+      description,
+      url: `/para/${segment.slug}`,
+      type: 'website',
+      locale: 'pt_BR',
+      images: [{ url: '/opengraph-image', width: 1200, height: 630 }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${segment.name}: ferramentas e documentos gratuitos`,
+      description,
+      images: ['/opengraph-image']
+    }
   };
 }
 

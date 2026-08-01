@@ -4,7 +4,7 @@ import { listGamesByRank } from '@/lib/games/games';
 import { TopJogosClient } from './top-jogos-client';
 
 export const metadata: Metadata = {
-  title: 'Top 10 jogos com setup sugerido',
+  title: { absolute: 'Top 10 jogos com setup sugerido | Jato Games' },
   description:
     'Ranking evergreen de jogos populares no Brasil com ficha, plataformas e setup mínimo e recomendado.',
   alternates: { canonical: '/games/top-jogos' }

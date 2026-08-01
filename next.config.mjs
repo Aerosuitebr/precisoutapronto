@@ -48,6 +48,16 @@ const nextConfig = {
     };
     return config;
   },
+  async redirects() {
+    return [
+      // Canibalização: landing SEO dedicada em /para/freelancers.
+      {
+        source: '/para/autonomos',
+        destination: '/para/freelancers',
+        permanent: true
+      }
+    ];
+  },
   async headers() {
     return [
       {

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
+import { headers } from 'next/headers';
 import { AnalyticsScripts } from '@/components/analytics/analytics-scripts';
 import { AppProviders } from '@/components/providers/app-providers';
 import { ReferralCapture } from '@/components/referral/referral-capture';
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: 'Resolva Jato | Ferramentas online grátis para o dia a dia',
-    template: '%s'
+    template: '%s | Resolva Jato'
   },
   description:
     'Ferramentas online grátis para trabalho, estudo e tarefas do dia a dia: contratos, recibos, currículo, Pix, cálculos, documentos, IA e Jato Games.',
@@ -76,9 +77,12 @@ export const viewport: Viewport = {
   viewportFit: 'cover'
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const headerStore = await headers();
+  const htmlLang = headerStore.get('x-html-lang') || 'pt-BR';
+
   return (
-    <html lang="pt-BR">
+    <html lang={htmlLang}>
       <body>
         <SiteJsonLd />
         <AppProviders>

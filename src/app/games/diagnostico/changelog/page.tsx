@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Versões · Jato Games Diagnostic',
+  title: { absolute: 'Versões · Jato Games Diagnostic' },
   description: 'Histórico público de versões e mudanças do Jato Games Diagnostic.',
   alternates: { canonical: '/games/diagnostico/changelog' }
 };

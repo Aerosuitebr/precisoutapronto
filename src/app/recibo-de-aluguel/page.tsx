@@ -61,12 +61,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: content.title,
     description: content.description,
-    url: content.path
+    url: content.path,
+    images: [{ url: `${content.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
     title: content.title,
-    description: content.description
+    description: content.description,
+    images: [`${content.path}/opengraph-image`]
   }
 };
 

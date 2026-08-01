@@ -17,6 +17,8 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/busca',
   '/calculadora-de-preco-freelancer',
   '/calculadora-de-rescisao',
+  '/calculadora-de-ferias',
+  '/calculadora-de-decimo-terceiro',
   '/contato',
   '/contrato-de-aluguel',
   '/documentos-contabeis-online',
@@ -25,6 +27,7 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/gerador-de-curriculo',
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
+  '/gerador-de-qr-code-pix',
   '/guias',
   '/llms.txt',
   '/mei-ou-clt',
@@ -33,6 +36,7 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/privacidade',
   '/proposta-comercial-mei',
   '/recibo-de-pagamento',
+  '/recibo-de-aluguel',
   '/recursos',
   '/sobre',
   '/termos'
@@ -75,6 +79,11 @@ function setLocaleCookie(response: NextResponse, locale: Locale) {
 }
 
 function applyCommonHeaders(request: NextRequest, response: NextResponse) {
+  const pathLocale = localeFromPathname(request.nextUrl.pathname);
+  const htmlLang = pathLocale === 'en' || pathLocale === 'es' ? pathLocale : 'pt-BR';
+  response.headers.set('x-html-lang', htmlLang);
+  response.headers.set('Content-Language', htmlLang);
+
   if (isStagingRequest(request)) {
     response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }

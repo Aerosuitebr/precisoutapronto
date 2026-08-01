@@ -76,7 +76,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'pix',
-    ptPath: '/ferramentas/pix',
+    ptPath: '/gerador-de-qr-code-pix',
     icon: Wallet,
     category: 'business',
     en: {
@@ -329,7 +329,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'mei-vs-employment',
-    ptPath: '/ferramentas/mei-vs-clt',
+    ptPath: '/mei-ou-clt',
     icon: Briefcase,
     category: 'brazil',
     brazilOnly: true,

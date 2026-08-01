@@ -1,10 +1,15 @@
 import type { SeoLandingContent } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
-/** JSON-LD (WebPage, SoftwareApplication, BreadcrumbList e FAQPage) para landings SEO. */
+/** JSON-LD (WebPage, SoftwareApplication opcional, BreadcrumbList e FAQPage) para landings SEO. */
 export function SeoLandingJsonLd({ content }: { content: SeoLandingContent }) {
-  const siteUrl = getViralBaseUrl();
+  const siteUrl = getViralBaseUrl().replace(/\/$/, '');
   const pageUrl = `${siteUrl}${content.path}`;
+  const toolUrl = `${siteUrl}${content.toolHref}`;
+  const toolIsSamePage = content.toolHref === content.path;
+  const toolIsPublicLanding =
+    toolIsSamePage ||
+    (!content.toolHref.startsWith('/ferramentas') && content.toolHref !== '/busca');
 
   const webPage = {
     '@context': 'https://schema.org',
@@ -17,30 +22,36 @@ export function SeoLandingJsonLd({ content }: { content: SeoLandingContent }) {
       '@type': 'WebSite',
       name: 'Resolva Jato',
       url: siteUrl
-    }
+    },
+    ...(toolIsPublicLanding && !toolIsSamePage
+      ? { significantLink: toolUrl }
+      : {})
   };
 
-  const softwareApplication = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: `Resolva Jato: ${content.eyebrow}`,
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'Web',
-    url: pageUrl,
-    description: content.description,
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'BRL'
-    }
-  };
+  const softwareApplication = toolIsPublicLanding
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: `Resolva Jato: ${content.eyebrow}`,
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
+        url: toolUrl,
+        description: content.description,
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'BRL'
+        }
+      }
+    : null;
 
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Início', item: siteUrl },
-      { '@type': 'ListItem', position: 2, name: content.title, item: pageUrl }
+      { '@type': 'ListItem', position: 2, name: 'Recursos', item: `${siteUrl}/recursos` },
+      { '@type': 'ListItem', position: 3, name: content.eyebrow, item: pageUrl }
     ]
   };
 

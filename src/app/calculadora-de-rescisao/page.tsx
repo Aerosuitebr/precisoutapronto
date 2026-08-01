@@ -13,7 +13,15 @@ const seo = PUBLIC_CALCULATORS.rescisao;
 export const metadata: Metadata = {
   title: 'Calculadora de rescisão trabalhista grátis',
   description: seo.description,
-  alternates: { canonical: seo.path },
+  alternates: {
+    canonical: seo.path,
+    languages: {
+      'pt-BR': seo.path,
+      en: '/en/tools/severance',
+      es: '/es/tools/severance',
+      'x-default': seo.path
+    }
+  },
   openGraph: {
     title: 'Calculadora de rescisão grátis | Resolva Jato',
     description: 'Faça uma estimativa educativa das principais verbas rescisórias.',

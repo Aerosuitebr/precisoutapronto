@@ -3,7 +3,7 @@ import { SeoLandingPage } from '@/components/marketing/seo-landing-page';
 import type { SeoLandingContent } from '@/lib/seo/landing-content';
 
 const content: SeoLandingContent = {
-  id: 'contrato-de-aluguel', path: '/contrato-de-aluguel', toolHref: '/ferramentas/contratos',
+  id: 'contrato-de-aluguel', path: '/contrato-de-aluguel', toolHref: '/gerador-de-contrato',
   eyebrow: 'Contrato de aluguel', title: 'Crie um contrato de aluguel claro e pronto para revisar',
   description: 'Organize dados do imóvel, prazo, aluguel, garantia, reajuste e responsabilidades em uma estrutura fácil de entender.',
   heroBullets: ['Modelo editável', 'Cláusulas organizadas', 'PDF pronto para revisar e assinar'],
@@ -24,9 +24,20 @@ const content: SeoLandingContent = {
 };
 
 export const metadata: Metadata = {
-  title: 'Contrato de aluguel online: modelo editável', description: content.description,
+  title: 'Contrato de aluguel online: modelo editável',
+  description: content.description,
   alternates: { canonical: content.path },
-  openGraph: { title: content.title, description: content.description, url: content.path },
-  twitter: { card: 'summary_large_image', title: content.title, description: content.description }
+  openGraph: {
+    title: content.title,
+    description: content.description,
+    url: content.path,
+    images: [{ url: `${content.path}/opengraph-image` }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: content.title,
+    description: content.description,
+    images: [`${content.path}/opengraph-image`]
+  }
 };
 export default function Page() { return <SeoLandingPage content={content} />; }

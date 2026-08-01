@@ -7,7 +7,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
-  title: 'Jato Games Diagnostic: diagnóstico local do seu PC',
+  title: { absolute: 'Jato Games Diagnostic: diagnóstico local do seu PC' },
   description: 'Conheça como o Jato Games Diagnostic mede CPU, memória e disco localmente, identifica seu hardware e compara o PC com requisitos versionados de jogos.',
   alternates: { canonical: '/games/diagnostico' }
 };

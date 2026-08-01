@@ -13,6 +13,9 @@ const checks = [
   ['/sitemaps/index.xml', 200, 'application/xml'],
   ['/biblioteca', 200, 'text/html'],
   ['/modelos/contrato-de-prestacao-de-servicos', 200, 'text/html'],
+  ['/recibo-de-pagamento', 200, 'text/html'],
+  ['/proposta-comercial-mei', 200, 'text/html'],
+  ['/para/autonomos', 308, 'text/html'],
   ['/pagina-que-nao-deve-existir-audit', 404, 'text/html']
 ];
 
@@ -24,10 +27,12 @@ for (const [path, expectedStatus, expectedType] of checks) {
   if (result.response.status !== expectedStatus) {
     failures.push(`${path}: status ${result.response.status}, esperado ${expectedStatus}`);
   }
-  if (!type.includes(expectedType)) {
+  const isRedirect = [301, 302, 307, 308].includes(expectedStatus);
+  // Redirects podem omitir Content-Type e alguns cabeçalhos de segurança no hop inicial.
+  if (!isRedirect && !type.includes(expectedType)) {
     failures.push(`${path}: Content-Type ${type || 'ausente'}, esperado ${expectedType}`);
   }
-  if (result.response.headers.get('x-content-type-options') !== 'nosniff') {
+  if (!isRedirect && result.response.headers.get('x-content-type-options') !== 'nosniff') {
     failures.push(`${path}: cabeçalho X-Content-Type-Options ausente`);
   }
 }
@@ -40,6 +45,28 @@ if (!home.includes('rel="canonical" href="https://resolvajato.com.br"')) {
 const library = results.get('/biblioteca').body;
 if (!library.includes('rel="canonical" href="https://resolvajato.com.br/biblioteca"')) {
   failures.push('/biblioteca: canonical incorreto ou ausente');
+}
+
+const recibo = results.get('/recibo-de-pagamento').body;
+if (!recibo.includes('rel="canonical" href="https://resolvajato.com.br/recibo-de-pagamento"')) {
+  failures.push('/recibo-de-pagamento: canonical autorreferente ausente');
+}
+if (recibo.includes('hreflang')) {
+  failures.push('/recibo-de-pagamento: hreflang indevido');
+}
+
+const proposta = results.get('/proposta-comercial-mei').body;
+if (!proposta.includes('rel="canonical" href="https://resolvajato.com.br/proposta-comercial-mei"')) {
+  failures.push('/proposta-comercial-mei: canonical autorreferente ausente');
+}
+if (proposta.includes('hreflang')) {
+  failures.push('/proposta-comercial-mei: hreflang indevido');
+}
+
+const autonomos = results.get('/para/autonomos');
+const autonomosLocation = autonomos.response.headers.get('location') || '';
+if (![301, 308].includes(autonomos.response.status) || !autonomosLocation.includes('/para/freelancers')) {
+  failures.push('/para/autonomos: redirect permanente para /para/freelancers ausente');
 }
 
 const robots = results.get('/robots.txt').body;

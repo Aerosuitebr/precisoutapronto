@@ -3,7 +3,7 @@ import { GamesReadablePanel, ProductBridge, SectionAccent, StoreCard } from '@/c
 import { gameStores, storeSafetyTips } from '@/lib/games/stores';
 
 export const metadata: Metadata = {
-  title: 'Lojas de jogos, skins e hardware',
+  title: { absolute: 'Lojas de jogos, skins e hardware | Jato Games' },
   description:
     'Diretório curado de lojas de jogos, skins, keys, consoles e hardware, com alertas de segurança.',
   alternates: { canonical: '/games/lojas' }

@@ -6,6 +6,8 @@ import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
 import { growthSegments } from '@/lib/growth/segments';
 import { intentPages } from '@/lib/growth/intents';
+import { INTERNATIONAL_TOOLS } from '@/lib/international-tools-catalog';
+import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-07-28T21:00:00.000Z');
@@ -44,29 +46,9 @@ export const INTERNATIONAL_PUBLIC_PATHS = [
   '/contact',
   '/terms',
   '/privacy',
-  '/tools/quote-pix',
-  '/tools/pix',
-  '/tools/receipt',
-  '/tools/proposal',
-  '/tools/resume',
-  '/tools/service-contract',
-  '/tools/freelance-pricing',
-  '/tools/severance',
-  '/tools/agenda',
-  '/tools/academic-cover',
-  '/tools/legal-documents',
-  '/tools/accounting-documents',
-  '/tools/resource-search',
-  '/tools/email-signature',
-  '/tools/delivery-schedule',
-  '/tools/bill-splitter',
-  '/tools/study-schedule',
-  '/tools/background-remover',
-  '/tools/pdf-editor',
-  '/tools/mei-vs-employment',
-  '/tools/enem-essay',
-  '/tools/abnt-references',
-  '/tools/lattes-cv'
+  ...INTERNATIONAL_TOOLS.filter((tool) => isPublicIndexablePath(tool.ptPath)).map(
+    (tool) => `/tools/${tool.slug}`
+  )
 ] as const;
 
 export type SitemapSegment = 'core' | 'tools' | 'growth' | 'guides' | 'games' | 'i18n';
@@ -106,7 +88,10 @@ function buildCore(base: string): MetadataRoute.Sitemap {
 /** Paths já cobertos por `buildGrowth` (evita URL duplicada nos sitemaps segmentados). */
 function growthPaths(): Set<string> {
   return new Set([
-    ...growthSegments.map((segment) => `/para/${segment.slug}`),
+    ...growthSegments
+      .filter((segment) => segment.slug !== 'autonomos')
+      .map((segment) => `/para/${segment.slug}`),
+    '/para/freelancers',
     ...intentPages.map((intent) => `/modelos/${intent.slug}`)
   ]);
 }
@@ -157,12 +142,22 @@ function buildTools(base: string): MetadataRoute.Sitemap {
 
 function buildGrowth(base: string): MetadataRoute.Sitemap {
   return [
-    ...growthSegments.map((segment) => ({
+    ...growthSegments
+      // /para/autonomos redireciona para /para/freelancers (evita canibalização).
+      .filter((segment) => segment.slug !== 'autonomos')
+      .map((segment) => ({
       url: `${base}/para/${segment.slug}`,
       lastModified: CORE_UPDATED_AT,
       changeFrequency: 'weekly' as const,
       priority: 0.85
     })),
+    // Landing SEO dedicada substitui o segmento genérico "autonomos".
+    {
+      url: `${base}/para/freelancers`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'weekly' as const,
+      priority: 0.85
+    },
     ...intentPages.map((intent) => ({
       url: `${base}/modelos/${intent.slug}`,
       lastModified: CORE_UPDATED_AT,
