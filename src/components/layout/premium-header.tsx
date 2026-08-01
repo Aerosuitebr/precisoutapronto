@@ -122,14 +122,9 @@ export function PremiumHeader() {
               </Button>
             </>
           ) : (
-            <>
-              <Button asChild variant="ghost" className="hidden sm:inline-flex">
-                <Link href="/login">Entrar</Link>
-              </Button>
-              <Button asChild className="hidden sm:inline-flex">
-                <Link href="/cadastro">Criar conta grátis</Link>
-              </Button>
-            </>
+            <Button asChild variant="ghost" className="hidden sm:inline-flex">
+              <Link href="/login">Entrar</Link>
+            </Button>
           )}
 
           <button
@@ -203,7 +198,7 @@ export function PremiumHeader() {
                   <Link href="/login">Entrar</Link>
                 </Button>
                 <Button asChild>
-                  <Link href="/cadastro">Criar conta</Link>
+                  <Link href="/recursos">Explorar ferramentas</Link>
                 </Button>
               </div>
             )}

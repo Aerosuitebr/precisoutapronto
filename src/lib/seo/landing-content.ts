@@ -43,7 +43,7 @@ export const SEO_LANDINGS = {
       'Link público para mandar no WhatsApp'
     ],
     primaryCta: 'Experimentar sem cadastro',
-    secondaryCta: { label: 'Criar conta grátis', href: '/cadastro?next=/ferramentas/orcamentos' },
+    secondaryCta: { label: 'Gerador de QR Code Pix', href: '/gerador-de-qr-code-pix' },
     sections: [
       {
         title: 'Do preço à cobrança, no mesmo fluxo',
@@ -66,11 +66,11 @@ export const SEO_LANDINGS = {
       },
       {
         q: 'É grátis?',
-        a: 'Sim. Você experimenta o orçamento sem cadastro. Conta grátis para gerar o link, salvar e enviar no WhatsApp.'
+        a: 'Sim. Você experimenta o orçamento sem cadastro. Conta só entra depois de duas gerações, para salvar e enviar no WhatsApp.'
       },
       {
         q: 'Preciso criar conta para testar?',
-        a: 'Não. Preencha e veja o preview na hora. A conta só entra na hora de gerar o link ou enviar ao cliente.'
+        a: 'Não. Preencha, veja o preview e use duas gerações livres. A conta só entra depois disso, para continuar salvando e enviando.'
       },
       {
         q: 'Serve para qualquer serviço?',
@@ -106,7 +106,7 @@ export const SEO_LANDINGS = {
         bullets: [
           'Valor fixo ou aberto (cliente digita no app)',
           'Copia e Cola para colar no banco',
-          'Mensagem de cobrança com conta grátis'
+          'Mensagem de cobrança pronta para WhatsApp'
         ]
       },
       {
@@ -117,7 +117,7 @@ export const SEO_LANDINGS = {
     faqs: [
       {
         q: 'O gerador de QR Code Pix é gratuito?',
-        a: 'Sim. Você gera o QR e copia o código Pix sem pagar. Conta grátis é opcional e só pedida para enviar pelo WhatsApp.'
+        a: 'Sim. Você gera o QR e copia o código Pix sem pagar. Conta é opcional e só pedida depois de duas gerações ou para enviar pelo WhatsApp.'
       },
       {
         q: 'O QR Code funciona em qualquer banco?',
@@ -280,7 +280,7 @@ export const SEO_LANDINGS = {
       'Layouts com tipografia limpa',
       'PDF com um clique'
     ],
-    primaryCta: 'Criar conta grátis e baixar currículo',
+    primaryCta: 'Montar currículo grátis',
     sections: [
       {
         title: 'Parece emprego, não modelo genérico',
@@ -307,7 +307,7 @@ export const SEO_LANDINGS = {
     description:
       'Contratos de serviços, aluguel, trabalho e mais: editáveis, com assinaturas no PDF.',
     heroBullets: ['Vários tipos prontos', 'Cláusulas com seus dados', 'PDF para assinar'],
-    primaryCta: 'Criar conta grátis e baixar contrato',
+    primaryCta: 'Montar contrato grátis',
     sections: [
       {
         title: 'Sem fila na papelaria',
@@ -334,7 +334,7 @@ export const SEO_LANDINGS = {
     description:
       'Propostas com cara de agência: itens, totais, validade e PDF pronto para enviar ao cliente.',
     heroBullets: ['3 estilos de layout', 'Totais organizados', 'Logo opcional'],
-    primaryCta: 'Criar conta grátis e montar proposta',
+    primaryCta: 'Montar proposta grátis',
     sections: [
       {
         title: 'Pareça grande sem equipe de design',
@@ -361,7 +361,7 @@ export const SEO_LANDINGS = {
     description:
       'Emita recibo profissional com valor por extenso, modelos prontos e assinatura no PDF.',
     heroBullets: ['Valor por extenso automático', '3 modelos', 'PDF com assinatura'],
-    primaryCta: 'Criar conta grátis e emitir recibo',
+    primaryCta: 'Emitir recibo grátis',
     sections: [
       {
         title: 'Recibo limpo em segundos',

@@ -17,7 +17,7 @@ type AuthAwareLinkProps = Omit<ComponentProps<typeof Link>, 'href'> & {
   promptModal?: boolean;
 };
 
-/** Link para ferramentas. Por padrão navega sem pedir conta (1ª geração livre). */
+/** Link para ferramentas. Por padrão navega sem pedir conta (2 gerações livres). */
 export function AuthAwareLink({
   href,
   guestHref,

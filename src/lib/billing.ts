@@ -9,28 +9,31 @@ import { localeFromPathname, type Locale } from './i18n-locale';
 
 const guestCopy = {
   'pt-BR': {
-    trialAvailable: 'Degustação gratuita: uma geração completa sem marca.',
+    trialAvailable: 'Acesso livre: duas gerações completas sem marca.',
     accountRequired:
       'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Resolva Jato.',
-    guestSuccess: 'Documento gerado sem marca. Crie uma conta grátis para continuar.',
+    guestSuccess: 'Documento gerado sem marca. Você ainda pode gerar de novo sem conta.',
+    guestSuccessLast: 'Documento gerado sem marca. Para continuar, crie uma conta grátis.',
     saved: 'Documento salvo com sucesso.',
     downloaded: 'Download concluído.',
     analyzed: 'Análise concluída.'
   },
   en: {
-    trialAvailable: 'Free trial: one full generation without branding.',
+    trialAvailable: 'Free access: two full generations without branding.',
     accountRequired:
       'Create a free account to keep generating documents. Generation stays free, with the Resolva Jato brand.',
-    guestSuccess: 'Document generated without branding. Create a free account to continue.',
+    guestSuccess: 'Document generated without branding. You can generate again without an account.',
+    guestSuccessLast: 'Document generated without branding. Create a free account to continue.',
     saved: 'Document saved successfully.',
     downloaded: 'Download complete.',
     analyzed: 'Analysis complete.'
   },
   es: {
-    trialAvailable: 'Prueba gratuita: una generacion completa sin marca.',
+    trialAvailable: 'Acceso libre: dos generaciones completas sin marca.',
     accountRequired:
       'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con la marca Resolva Jato.',
-    guestSuccess: 'Documento generado sin marca. Crea una cuenta gratis para continuar.',
+    guestSuccess: 'Documento generado sin marca. Todavia puedes generar otra vez sin cuenta.',
+    guestSuccessLast: 'Documento generado sin marca. Para continuar, crea una cuenta gratis.',
     saved: 'Documento guardado con exito.',
     downloaded: 'Descarga concluida.',
     analyzed: 'Analisis concluido.'
@@ -181,7 +184,7 @@ export function getToolUsageProgress(): ToolUsageProgress {
 
 /**
  * Marca Resolva Jato no PDF/WhatsApp?
- * Premium: não. Guest na 1ª geração: não. Conta grátis: sim.
+ * Premium: não. Guest nas gerações livres: não. Conta grátis: sim.
  */
 export function shouldBrandDocuments(): boolean {
   if (cachedProgress.unlimited) return false;
@@ -213,7 +216,7 @@ function billableContextKey(context: BillableContext) {
 
 /**
  * Executa a ação e só registra o consumo no servidor após sucesso.
- * Guest: 1 geração completa sem marca; depois pede conta.
+ * Guest: 2 gerações completas sem marca; depois pede conta.
  */
 export async function performBillableAction<T>(context: BillableContext, effect: () => Promise<T> | T) {
   const access = canUseTool();
@@ -247,10 +250,11 @@ export async function performBillableAction<T>(context: BillableContext, effect:
       });
       if (typeof window !== 'undefined') {
         const copy = guestCopy[billingLocale()];
+        const stillHasTrial = hasGuestTrialAvailable();
         window.dispatchEvent(
           new CustomEvent('rj-billable-success', {
             detail: {
-              message: copy.guestSuccess,
+              message: stillHasTrial ? copy.guestSuccess : copy.guestSuccessLast,
               toolId: context.toolId,
               action: context.action,
               charged: false,

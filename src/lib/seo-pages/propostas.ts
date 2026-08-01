@@ -7,9 +7,9 @@ export const propostasSeoContent: SeoPageContent = {
   h1: 'Gerador de Proposta Comercial Online Gratuito',
   subtitle:
     'Crie propostas comerciais com identidade visual profissional em minutos. Adicione itens, valores e condições, e envie um PDF que ajuda a fechar mais negócios.',
-  ctaPrimary: 'Criar conta grátis e baixar proposta',
+  ctaPrimary: 'Montar proposta grátis',
   ctaSecondary: 'Ver modelos de proposta',
-  ctaHref: '/cadastro?next=/ferramentas/propostas',
+  ctaHref: '/ferramentas/propostas',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -57,19 +57,19 @@ export const propostasSeoContent: SeoPageContent = {
       title: 'Corporativa',
       description: 'Visual clássico e formal, indicado para propostas B2B e licitações.',
       image: '',
-      href: '/cadastro?next=/ferramentas/propostas'
+      href: '/ferramentas/propostas'
     },
     {
       title: 'Executiva',
       description: 'Foco em consultoria e escopo de trabalho (SOW), com linguagem objetiva.',
       image: '',
-      href: '/cadastro?next=/ferramentas/propostas'
+      href: '/ferramentas/propostas'
     },
     {
       title: 'Criativa',
       description: 'Visual mais colorido, indicado para agências e freelancers criativos.',
       image: '',
-      href: '/cadastro?next=/ferramentas/propostas'
+      href: '/ferramentas/propostas'
     }
   ],
   faq: [
@@ -118,7 +118,7 @@ export const propostasSeoContent: SeoPageContent = {
     {
       name: 'Orçamentos',
       description: 'Envie um orçamento simples com link para aprovação do cliente.',
-      href: '/cadastro?next=/ferramentas/orcamentos'
+      href: '/ferramentas/orcamentos'
     },
     {
       name: 'Contratos',
@@ -133,7 +133,7 @@ export const propostasSeoContent: SeoPageContent = {
     {
       name: 'Cobrança Pix',
       description: 'Gere um QR Code Pix para receber o pagamento combinado na proposta.',
-      href: '/cadastro?next=/ferramentas/pix'
+      href: '/ferramentas/pix'
     }
   ],
   seo: {

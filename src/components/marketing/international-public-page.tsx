@@ -121,7 +121,7 @@ export function InternationalPlansPage({ locale }: { locale: InternationalLocale
   const t = en ? {
     title: 'Start free. Remove the brand when you need to.', subtitle: 'Free trial · Optional Premium',
     description: 'Free PDFs include a discreet Resolva Jato footer. Premium removes the logo and footer for 30 days.',
-    free: 'Free', freeNote: 'Try the service with no card', create: 'Create free account',
+    free: 'Free', freeNote: 'Try the service with no card', create: 'Start with free tools',
     premiumNote: 'Clean documents without Resolva Jato references', period: 'for 30 days',
     price: 'US$1.00', payment: 'International checkout securely processed by Stripe.',
     buy: 'Continue securely with Stripe',
@@ -130,7 +130,7 @@ export function InternationalPlansPage({ locale }: { locale: InternationalLocale
   } : {
     title: 'Comienza gratis. Elimina la marca cuando lo necesites.', subtitle: 'Prueba gratis · Premium opcional',
     description: 'Los PDF gratuitos incluyen un pie discreto de Resolva Jato. Premium elimina el logotipo y el pie durante 30 días.',
-    free: 'Gratis', freeNote: 'Prueba el servicio sin tarjeta', create: 'Crear cuenta gratis',
+    free: 'Gratis', freeNote: 'Prueba el servicio sin tarjeta', create: 'Empezar con herramientas gratis',
     premiumNote: 'Documentos limpios sin referencias a Resolva Jato', period: 'por 30 días',
     price: 'US$1,00', payment: 'Checkout internacional procesado de forma segura por Stripe.',
     buy: 'Continuar de forma segura con Stripe',
@@ -143,7 +143,7 @@ export function InternationalPlansPage({ locale }: { locale: InternationalLocale
       <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="mx-auto max-w-2xl text-center"><p className="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">{t.subtitle}</p><h1 className="rj-display mt-3 text-4xl font-extrabold">{t.title}</h1><p className="mt-4 leading-7 text-slate-600">{t.description}</p></div>
         <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <PlanCard title={t.free} note={t.freeNote} price={en ? '$0' : 'US$0'} items={t.freeItems}><Button asChild className="w-full" variant="outline"><Link href={`/${locale}/cadastro`}>{t.create}</Link></Button></PlanCard>
+          <PlanCard title={t.free} note={t.freeNote} price={en ? '$0' : 'US$0'} items={t.freeItems}><Button asChild className="w-full" variant="outline"><Link href={`/${locale}/tools`}>{t.create}</Link></Button></PlanCard>
           <PlanCard dark title="Premium" note={t.premiumNote} price={`${t.price} ${t.period}`} items={t.paidItems}><p className="mb-4 rounded-xl bg-emerald-300/10 p-3 text-xs leading-5 text-emerald-100">{t.payment}</p><Button asChild className="w-full bg-white text-slate-950 hover:bg-slate-100"><Link href={`/${locale}/checkout`}>{t.buy}<ArrowRight className="h-4 w-4" /></Link></Button></PlanCard>
         </div>
         <p className="mt-8 flex items-center justify-center gap-2 text-sm text-slate-500"><ShieldCheck className="h-4 w-4" />{en ? 'No automatic renewal.' : 'Sin renovación automática.'}</p>

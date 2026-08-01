@@ -45,7 +45,7 @@ export function PricingPage() {
             ))}
           </ul>
           <Button asChild className="mt-8 w-full" variant="outline">
-            <Link href="/cadastro">Criar conta grátis</Link>
+            <Link href="/recursos">Começar grátis nas ferramentas</Link>
           </Button>
         </article>
 

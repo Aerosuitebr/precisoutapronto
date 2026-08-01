@@ -14,13 +14,11 @@ import {
   Wallet
 } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
-import { useAuthRequired } from '@/components/auth/auth-required-provider';
 import { SpotlightAnnouncements } from '@/components/busca/spotlight-announcements';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { EmptyState } from '@/components/shared/empty-state';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getSession } from '@/lib/auth';
 import {
   filterSearchResults,
   findCategorySuggestions,
@@ -250,7 +248,6 @@ const toolPromos = [
 export function BuscaClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { requireAuth } = useAuthRequired();
   const initialCategory = searchParams.get('categoria') ?? undefined;
   const initialQuery = searchParams.get('q') ?? '';
   const [query, setQuery] = useState(initialQuery);
@@ -281,10 +278,7 @@ export function BuscaClient() {
   }
 
   function openToolsHub() {
-    if (!getSession()) {
-      requireAuth('/ferramentas');
-      return;
-    }
+    // Ferramentas abertas: guest usa até 2 gerações; cadastro só no gate de geração.
     router.push('/ferramentas');
   }
 

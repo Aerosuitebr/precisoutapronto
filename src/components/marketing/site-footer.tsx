@@ -78,14 +78,6 @@ export function SiteFooter() {
           <p className="mt-3 text-sm leading-6 text-slate-400">
             Documentos profissionais e busca de recursos, totalmente grátis.
           </p>
-          {!isAuthenticated ? (
-            <Link
-              href="/cadastro"
-              className="mt-5 inline-flex h-11 items-center justify-center rounded-xl bg-sky-600 px-5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-sky-500"
-            >
-              Criar conta grátis
-            </Link>
-          ) : null}
         </div>
 
         <FooterDisclosure title="Navegação">

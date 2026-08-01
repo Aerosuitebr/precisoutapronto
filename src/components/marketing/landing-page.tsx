@@ -483,12 +483,9 @@ export function LandingPage() {
                   <ArrowRight className="h-4 w-4" />
                 </AuthAwareLink>
               </Button>
-              <Link
-                href="/cadastro"
-                className="text-center text-sm font-semibold text-emerald-100 underline-offset-4 transition hover:text-white hover:underline"
-              >
-                Criar conta grátis para baixar e salvar PDFs
-              </Link>
+              <p className="text-center text-sm text-emerald-100">
+                Duas gerações livres sem conta. Depois, cadastro para continuar.
+              </p>
             </div>
           </div>
         </div>
@@ -535,7 +532,7 @@ export function LandingPage() {
               </li>
               <li className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                1ª geração grátis sem conta; depois continue com conta grátis
+                2 gerações grátis sem conta; depois continue com cadastro
               </li>
             </ul>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -552,12 +549,6 @@ export function LandingPage() {
               >
                 <Link href="/gerador-de-qr-code-pix">Gerar cobrança Pix</Link>
               </Button>
-              <Link
-                href="/cadastro"
-                className="text-center text-sm font-semibold text-slate-300 underline-offset-4 transition hover:text-white hover:underline sm:text-left"
-              >
-                Criar conta grátis (docs com marca; Premium remove)
-              </Link>
             </div>
             <TrustSeals tone="dark" className="mt-8" />
           </div>

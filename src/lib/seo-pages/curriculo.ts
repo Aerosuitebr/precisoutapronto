@@ -18,9 +18,9 @@ export const curriculoSeoContent: SeoPageContent = {
   h1: 'Gerador de Currículo Online Gratuito',
   subtitle:
     'Crie um currículo profissional em poucos minutos, direto do navegador. Escolha um modelo, preencha seus dados e baixe em PDF pronto para enviar às vagas.',
-  ctaPrimary: 'Criar conta grátis e baixar currículo',
+  ctaPrimary: 'Montar currículo grátis',
   ctaSecondary: 'Ver modelos prontos',
-  ctaHref: '/cadastro?next=/ferramentas/curriculo',
+  ctaHref: '/ferramentas/curriculo',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em 5 minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -78,19 +78,19 @@ export const curriculoSeoContent: SeoPageContent = {
       title: 'Modelo Profissional',
       description: 'Layout clássico e elegante, ideal para vagas corporativas e cargos de gestão.',
       image: '',
-      href: '/cadastro?next=/ferramentas/curriculo'
+      href: '/ferramentas/curriculo'
     },
     {
       title: 'Modelo Moderno',
       description: 'Visual contemporâneo com destaque lateral em azul, indicado para marketing, tech e criativos.',
       image: '',
-      href: '/cadastro?next=/ferramentas/curriculo'
+      href: '/ferramentas/curriculo'
     },
     {
       title: 'Modelo Universitário',
       description: 'Perfeito para estágios, primeiro emprego e programas acadêmicos.',
       image: '',
-      href: '/cadastro?next=/ferramentas/curriculo'
+      href: '/ferramentas/curriculo'
     }
   ],
   faq: [
@@ -151,12 +151,12 @@ export const curriculoSeoContent: SeoPageContent = {
     {
       name: 'Lattes Inteligente',
       description: 'Gere seu currículo Lattes formatado para uso acadêmico e programas de pós.',
-      href: '/cadastro?next=/ferramentas/curriculo-lattes'
+      href: '/ferramentas/curriculo-lattes'
     },
     {
       name: 'Capas de Trabalho',
       description: 'Monte capas no padrão ABNT para trabalhos acadêmicos e TCCs.',
-      href: '/cadastro?next=/ferramentas/trabalhos'
+      href: '/ferramentas/trabalhos'
     },
     {
       name: 'Contratos',

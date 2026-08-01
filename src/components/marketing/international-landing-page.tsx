@@ -43,7 +43,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
               {copy.navigation.signIn}
             </Link>
             <Button asChild className="hidden sm:inline-flex">
-              <Link href={`/${locale}/cadastro`}>{copy.navigation.createAccount}</Link>
+              <Link href={`/${locale}/tools`}>{copy.hero.primaryCta}</Link>
             </Button>
           </div>
         </div>
@@ -189,7 +189,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
             <h2 className="rj-display text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.finalCta.title}</h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-300">{copy.finalCta.description}</p>
             <Button asChild size="lg" className="mt-8 bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
-              <Link href={`/${locale}/cadastro`}>
+              <Link href={`/${locale}/tools`}>
                 {copy.finalCta.button}
                 <ArrowRight className="h-4 w-4" />
               </Link>

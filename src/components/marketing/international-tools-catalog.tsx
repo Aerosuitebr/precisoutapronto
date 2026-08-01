@@ -11,23 +11,23 @@ const pageCopy = {
     eyebrow: 'Public tool catalog',
     title: 'Find the right tool and get it done.',
     description:
-      'Every tool below opens in English. Editing, saving and exporting may require a free account.',
+      'Every tool below opens in English. Use freely in the browser; account is only asked after two generations.',
     notice: 'All editors in this catalog are available in English. Brazil-specific tools keep Brazilian rules with an English interface.',
     back: 'Back to home',
     open: 'Open tool',
-    account: 'Create free account',
+    account: 'Sign in',
     brazilBadge: 'Brazil-specific'
   },
   es: {
     eyebrow: 'Catálogo público de herramientas',
     title: 'Encuentra la herramienta correcta y resuélvelo.',
     description:
-      'Todas las herramientas de abajo se abren en español. Para editar, guardar o exportar puede ser necesaria una cuenta gratuita.',
+      'Todas las herramientas de abajo se abren en español. Úsalas gratis en el navegador; la cuenta solo se pide después de dos generaciones.',
     notice:
       'Todos los editores de este catálogo están disponibles en español. Las herramientas específicas de Brasil mantienen las reglas brasileñas con interfaz en español.',
     back: 'Volver al inicio',
     open: 'Abrir herramienta',
-    account: 'Crear cuenta gratis',
+    account: 'Iniciar sesión',
     brazilBadge: 'Específica de Brasil'
   }
 } as const;
@@ -50,8 +50,8 @@ export function InternationalToolsCatalog({ locale }: { locale: InternationalLoc
               label={nav.language}
               paths={{ 'pt-BR': '/recursos', en: '/en/tools', es: '/es/tools' }}
             />
-            <Button asChild className="hidden sm:inline-flex">
-              <Link href={`/${locale}/cadastro`}>{copy.account}</Link>
+            <Button asChild className="hidden sm:inline-flex" variant="outline">
+              <Link href={`/${locale}/login`}>{nav.signIn}</Link>
             </Button>
           </div>
         </div>

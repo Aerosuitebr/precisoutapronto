@@ -1,7 +1,8 @@
 import { getSession } from '@/lib/auth';
 
 export const GUEST_TRIAL_STORAGE_KEY = 'rj_guest_exports';
-export const GUEST_TRIAL_LIMIT = 1;
+/** Gerações/exportações livres antes de pedir cadastro. */
+export const GUEST_TRIAL_LIMIT = 2;
 export const GUEST_TRIAL_CONSUMED_EVENT = 'rj-guest-trial-consumed';
 export const POST_SIGNUP_PREMIUM_OFFER_KEY = 'rj_post_signup_premium_offer';
 

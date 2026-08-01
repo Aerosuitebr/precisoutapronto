@@ -23,7 +23,7 @@ const modalCopy = {
     bodyDefaultBefore: 'Crie uma conta gratuita ou faça login para continuar usando',
     bodyDefaultAfter: '.',
     tipTrialBefore:
-      "No plano gratuito, PDFs e WhatsApp saem com marca d'água e referências ao Resolva Jato. Para retirar tudo, assine o Premium por",
+      'Você já usou as duas gerações livres. No plano gratuito, PDFs e WhatsApp saem com marca d\'água e referências ao Resolva Jato. Para retirar tudo, assine o Premium por',
     tipDefault: 'Depois do cadastro ou login, você volta para a ferramenta e continua de onde parou.',
     signup: 'Criar conta grátis',
     login: 'Já tenho conta. Fazer login',
@@ -44,7 +44,7 @@ const modalCopy = {
     bodyDefaultBefore: 'Create a free account or sign in to keep using',
     bodyDefaultAfter: '.',
     tipTrialBefore:
-      'On the free plan, PDFs and WhatsApp include a watermark and Resolva Jato references. To remove them, get Premium for',
+      'You already used the two free generations. On the free plan, PDFs and WhatsApp include a watermark and Resolva Jato references. To remove them, get Premium for',
     tipDefault: 'After signup or login, you return to the tool and continue where you left off.',
     signup: 'Create free account',
     login: 'I already have an account. Sign in',
@@ -65,7 +65,7 @@ const modalCopy = {
     bodyDefaultBefore: 'Crea una cuenta gratuita o inicia sesion para seguir usando',
     bodyDefaultAfter: '.',
     tipTrialBefore:
-      'En el plan gratuito, los PDF y WhatsApp salen con marca de agua y referencias a Resolva Jato. Para quitarlas, suscribete al Premium por',
+      'Ya usaste las dos generaciones libres. En el plan gratuito, los PDF y WhatsApp salen con marca de agua y referencias a Resolva Jato. Para quitarlas, suscribete al Premium por',
     tipDefault: 'Despues del registro o inicio de sesion, vuelves a la herramienta y continuas donde lo dejaste.',
     signup: 'Crear cuenta gratis',
     login: 'Ya tengo cuenta. Iniciar sesion',

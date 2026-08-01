@@ -7,9 +7,9 @@ export const contabeisSeoContent: SeoPageContent = {
   h1: 'Gerador de Documentos Contábeis e de Despacho Gratuito',
   subtitle:
     'Contrato de serviços contábeis, procuração para contador, autorização e-CAC/gov.br, termo de entrega de documentos e mais, prontos em minutos e em PDF.',
-  ctaPrimary: 'Criar conta grátis e baixar documento',
+  ctaPrimary: 'Criar documento grátis',
   ctaSecondary: 'Ver modelos disponíveis',
-  ctaHref: '/cadastro?next=/ferramentas/contabeis',
+  ctaHref: '/ferramentas/contabeis',
   quickBadges: [
     { icon: Clock3, label: 'Pronto em minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -57,19 +57,19 @@ export const contabeisSeoContent: SeoPageContent = {
       title: 'Contrato de serviços contábeis',
       description: 'Formaliza escrituração, apuração de impostos e obrigações acessórias mensais.',
       image: '',
-      href: '/cadastro?next=/ferramentas/contabeis'
+      href: '/ferramentas/contabeis'
     },
     {
       title: 'Procuração (contador / despachante)',
       description: 'Outorga poderes ao profissional para representar o cliente em órgãos e portais.',
       image: '',
-      href: '/cadastro?next=/ferramentas/contabeis'
+      href: '/ferramentas/contabeis'
     },
     {
       title: 'Autorização e-CAC / gov.br',
       description: 'Autoriza acesso a serviços digitais da Receita Federal em nome do cliente.',
       image: '',
-      href: '/cadastro?next=/ferramentas/contabeis'
+      href: '/ferramentas/contabeis'
     }
   ],
   faq: [
@@ -133,7 +133,7 @@ export const contabeisSeoContent: SeoPageContent = {
     {
       name: 'Cobrança Pix',
       description: 'Cobre mensalidades e serviços com QR Code Pix, sem taxa de API.',
-      href: '/cadastro?next=/ferramentas/pix'
+      href: '/ferramentas/pix'
     }
   ],
   seo: {

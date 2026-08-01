@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, LockKeyhole } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { toolCategories, toolsCatalog } from '@/lib/tools-catalog';
@@ -84,7 +84,7 @@ export default function RecursosPage() {
               Encontre a ferramenta certa para resolver agora
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-              Conheça cada recurso sem cadastro. Para editar, salvar ou exportar, algumas ferramentas pedem uma conta gratuita.
+              Conheça cada recurso sem cadastro. Use as ferramentas livremente; a conta só aparece depois de duas gerações.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 text-sm font-bold text-slate-700">
               <span className="rounded-full bg-sky-50 px-4 py-2">{availableTools.length} ferramentas disponíveis</span>
@@ -120,8 +120,8 @@ export default function RecursosPage() {
                             Conhecer e experimentar <ArrowRight className="h-4 w-4" />
                           </Link>
                         ) : (
-                          <Link href={`/cadastro?next=${encodeURIComponent(tool.href)}`} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-slate-700">
-                            <LockKeyhole className="h-4 w-4" /> Criar conta grátis para usar
+                          <Link href={tool.href} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-sky-700">
+                            Usar grátis <ArrowRight className="h-4 w-4" />
                           </Link>
                         )}
                       </article>

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -132,12 +132,14 @@ export function ContabilLivePreview() {
         </div>
 
         <Link
-          href="/cadastro?next=/ferramentas/contabeis"
+          href="/ferramentas/contabeis"
           className="block w-full rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
         >
           Continuar e baixar meu documento
         </Link>
-        <p className="text-center text-xs font-medium text-slate-500">Conta grátis para baixar o PDF. Sem cartão.</p>
+        <p className="text-center text-xs font-medium text-slate-500">
+          Use grátis no navegador. Conta só depois de duas gerações.
+        </p>
         </>
       }
       preview={<ContabilPreview data={previewData} />}

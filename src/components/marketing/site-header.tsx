@@ -116,14 +116,9 @@ export function SiteHeader() {
               <Link href="/ferramentas">Minhas ferramentas</Link>
             </Button>
           ) : (
-            <>
-              <Button variant="ghost" asChild className="hidden sm:inline-flex">
-                <Link href="/login">Entrar</Link>
-              </Button>
-              <Button asChild className="hidden sm:inline-flex">
-                <Link href="/cadastro">Criar conta grátis</Link>
-              </Button>
-            </>
+            <Button variant="ghost" asChild className="hidden sm:inline-flex">
+              <Link href="/login">Entrar</Link>
+            </Button>
           )}
           <button
             type="button"
@@ -188,8 +183,8 @@ export function SiteHeader() {
                   </Link>
                 </Button>
                 <Button asChild>
-                  <Link href="/cadastro" onClick={() => setMobileOpen(false)}>
-                    Criar conta
+                  <Link href="/recursos" onClick={() => setMobileOpen(false)}>
+                    Explorar ferramentas
                   </Link>
                 </Button>
               </div>
