@@ -19,9 +19,10 @@ export type BillableToolId =
   | 'juridicos'
   | 'contabeis'
   | 'orcamentos'
-  | 'pix';
+  | 'pix'
+  | 'redacao-enem';
 
-export type BillableAction = 'manual_save' | 'download';
+export type BillableAction = 'manual_save' | 'download' | 'analyze';
 
 export interface BillableContext {
   toolId: BillableToolId;

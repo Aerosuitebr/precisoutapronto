@@ -59,7 +59,9 @@ export function SeoLandingPage({
             <div className="mx-auto flex max-w-6xl items-center gap-1 px-4 py-3 text-xs text-slate-500 sm:px-6">
               <Link href="/">Início</Link>
               <ChevronRight className="h-3.5 w-3.5" aria-hidden />
-              <span>Ferramentas</span>
+              <Link href="/recursos" className="hover:text-slate-700">
+                Recursos
+              </Link>
               <ChevronRight className="h-3.5 w-3.5" aria-hidden />
               <span aria-current="page" className="font-semibold text-slate-700">{content.eyebrow}</span>
             </div>
@@ -172,6 +174,24 @@ export function SeoLandingPage({
                   </CtaLink>
                 </Button>
               </div>
+            </div>
+          </section>
+
+          <section className="border-t border-slate-200 bg-slate-50" aria-label="Informações editoriais">
+            <div className="mx-auto max-w-6xl px-4 py-8 text-sm leading-6 text-slate-600 sm:px-6">
+              <p>
+                Conteúdo educativo do Resolva Jato. Materiais com impacto jurídico, contábil ou trabalhista
+                devem ser validados por profissional habilitado quando a decisão envolver riscos ou
+                particularidades do caso. Conheça a{' '}
+                <Link href="/sobre" className="font-semibold text-emerald-700 hover:underline">
+                  equipe e a política editorial
+                </Link>{' '}
+                ou{' '}
+                <Link href="/contato" className="font-semibold text-emerald-700 hover:underline">
+                  fale conosco
+                </Link>
+                .
+              </p>
             </div>
           </section>
         </main>

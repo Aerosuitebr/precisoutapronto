@@ -25,16 +25,18 @@ const content: SeoLandingContent = {
 export const metadata: Metadata = {
   title: 'Recibo de pagamento online grátis em PDF',
   description: content.description,
-  alternates: {
-    canonical: '/gerador-de-recibo',
-    languages: {
-      'pt-BR': '/gerador-de-recibo',
-      en: '/en/tools/receipt',
-      es: '/es/tools/receipt',
-      'x-default': '/gerador-de-recibo'
-    }
+  alternates: { canonical: content.path },
+  openGraph: {
+    title: content.title,
+    description: content.description,
+    url: content.path,
+    images: [{ url: `${content.path}/opengraph-image` }]
   },
-  openGraph: { title: content.title, description: content.description, url: '/gerador-de-recibo' },
-  twitter: { card: 'summary_large_image', title: content.title, description: content.description }
+  twitter: {
+    card: 'summary_large_image',
+    title: content.title,
+    description: content.description,
+    images: [`${content.path}/opengraph-image`]
+  }
 };
 export default function Page() { return <SeoLandingPage content={content} />; }

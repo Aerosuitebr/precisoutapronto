@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { ToolsHomeButton } from '@/components/layout/tools-home-button';
 
 export const metadata: Metadata = {
-  robots: { index: false, follow: false }
+  robots: { index: false, follow: true }
 };
 
 /** Hub de ferramentas aberto a visitantes (cadastro só na 2ª geração de documento). */

@@ -26,3 +26,11 @@ export function buildReferralWhatsAppUrl(code: string) {
     `Cria sua conta por este link (grátis pra testar):\n${link}`;
   return `https://wa.me/?text=${encodeURIComponent(text)}`;
 }
+
+export function buildReferralSharePayload(code: string): ShareData {
+  return {
+    title: 'Convite Resolva Jato',
+    text: 'Crie sua conta grátis no Resolva Jato e experimente as ferramentas de documentos e negócios.',
+    url: buildReferralSignupUrl(code)
+  };
+}

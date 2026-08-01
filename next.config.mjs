@@ -2,6 +2,8 @@
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
+  { key: 'Origin-Agent-Cluster', value: '?1' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
   {
@@ -46,6 +48,16 @@ const nextConfig = {
     };
     return config;
   },
+  async redirects() {
+    return [
+      // Canibalização: landing SEO dedicada em /para/freelancers.
+      {
+        source: '/para/autonomos',
+        destination: '/para/freelancers',
+        permanent: true
+      }
+    ];
+  },
   async headers() {
     return [
       {
@@ -56,6 +68,10 @@ const nextConfig = {
         // Só X-Robots-Tag: o Cache-Control do Next (via revalidate) já cobre o sitemap.
         // Dois Cache-Control quebram o parse de alguns crawlers (erro HTTP geral no GSC).
         source: '/sitemap.xml',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }]
+      },
+      {
+        source: '/sitemaps/:path*',
         headers: [{ key: 'X-Robots-Tag', value: 'noindex' }]
       }
     ];

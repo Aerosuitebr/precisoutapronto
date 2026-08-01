@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { localeFromPathname, type Locale } from '@/lib/i18n-locale';
 import { toolsCatalog } from '@/lib/tools-catalog';
 import { PLANS } from '@/lib/plans';
+import { markPostSignupPremiumOffer } from '@/lib/guest-trial';
 import { cn } from '@/lib/utils';
 
 const modalCopy = {
@@ -241,7 +242,13 @@ export function AuthRequiredModal({
           </div>
 
           <Button asChild size="lg" className="h-12 w-full text-base">
-            <Link href={signupHref} onClick={onClose}>
+            <Link
+              href={signupHref}
+              onClick={() => {
+                if (trialDone) markPostSignupPremiumOffer(nextHref);
+                onClose();
+              }}
+            >
               {t.signup}
             </Link>
           </Button>

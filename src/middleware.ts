@@ -17,6 +17,8 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/busca',
   '/calculadora-de-preco-freelancer',
   '/calculadora-de-rescisao',
+  '/calculadora-de-ferias',
+  '/calculadora-de-decimo-terceiro',
   '/contato',
   '/contrato-de-aluguel',
   '/documentos-contabeis-online',
@@ -25,6 +27,7 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/gerador-de-curriculo',
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
+  '/gerador-de-qr-code-pix',
   '/guias',
   '/llms.txt',
   '/mei-ou-clt',
@@ -33,6 +36,7 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
   '/privacidade',
   '/proposta-comercial-mei',
   '/recibo-de-pagamento',
+  '/recibo-de-aluguel',
   '/recursos',
   '/sobre',
   '/termos'
@@ -75,6 +79,11 @@ function setLocaleCookie(response: NextResponse, locale: Locale) {
 }
 
 function applyCommonHeaders(request: NextRequest, response: NextResponse) {
+  const pathLocale = localeFromPathname(request.nextUrl.pathname);
+  const htmlLang = pathLocale === 'en' || pathLocale === 'es' ? pathLocale : 'pt-BR';
+  response.headers.set('x-html-lang', htmlLang);
+  response.headers.set('Content-Language', htmlLang);
+
   if (isStagingRequest(request)) {
     response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
   }
@@ -130,6 +139,6 @@ export function middleware(request: NextRequest) {
 export const config = {
   // Sitemap, robots, verificação Google e chave IndexNow não precisam de cookie de device.
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap\\.xml|google[^/]*\\.html|[a-f0-9]{32}\\.txt|videos/|images/).*)'
+    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap\\.xml|sitemaps/|google[^/]*\\.html|[a-f0-9]{32}\\.txt|videos/|images/).*)'
   ]
 };

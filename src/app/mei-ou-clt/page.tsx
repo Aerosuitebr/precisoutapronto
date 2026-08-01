@@ -13,7 +13,15 @@ const seo = PUBLIC_CALCULATORS['mei-clt'];
 export const metadata: Metadata = {
   title: 'MEI ou CLT: simulador gratuito',
   description: seo.description,
-  alternates: { canonical: seo.path },
+  alternates: {
+    canonical: seo.path,
+    languages: {
+      'pt-BR': seo.path,
+      en: '/en/tools/mei-vs-employment',
+      es: '/es/tools/mei-vs-employment',
+      'x-default': seo.path
+    }
+  },
   openGraph: {
     title: 'MEI ou CLT: compare os cenários | Resolva Jato',
     description: 'Simule os dois cenários gratuitamente antes de tomar uma decisão.',

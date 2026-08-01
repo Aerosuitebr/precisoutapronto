@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
+import { REDACAO_HOME_DEMO } from '@/lib/redacao-enem/demo-showcase';
 
 type ShowcaseStat = {
   icon: typeof ClipboardList;
@@ -105,45 +106,65 @@ function OrcamentoMockup() {
 }
 
 function RedacaoMockup() {
-  const competencias = [
-    { label: 'Competência 1 · Norma culta', score: 180 },
-    { label: 'Competência 3 · Argumentação', score: 160 },
-    { label: 'Competência 5 · Proposta de intervenção', score: 160 }
-  ];
+  const demo = REDACAO_HOME_DEMO;
   return (
     <BrowserChrome path="/ferramentas/redacao-enem">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-sky-700">
-          Corretor de Redação ENEM
-        </p>
-        <span className="rounded-full bg-sky-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-          Nota estimada
-        </span>
-      </div>
-      <div className="mt-3 rounded-xl border border-slate-100 bg-slate-50 p-3">
-        <p className="text-xs leading-5 text-slate-500">
-          “Nos últimos anos, o desafio da educação digital no Brasil tem se tornado cada vez mais
-          evidente diante das desigualdades de acesso...”
-        </p>
-      </div>
-      <div className="mt-4 flex items-end justify-between gap-3 border-t border-slate-100 pt-3">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Nota geral</p>
-        <p className="text-3xl font-black tracking-tight text-slate-950">860</p>
-      </div>
-      <div className="mt-3 space-y-2">
-        {competencias.map((item) => (
-          <div key={item.label} className="flex items-center gap-2.5">
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
-              <div className="h-full rounded-full bg-sky-500" style={{ width: `${(item.score / 200) * 100}%` }} />
-            </div>
-            <span className="w-9 shrink-0 text-right text-[11px] font-bold text-slate-700">{item.score}</span>
+      <div className="grid gap-3 sm:grid-cols-[1.05fr_0.95fr]">
+        <div className="min-w-0 space-y-2.5">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">
+              Tema da redação
+            </p>
+            <p className="mt-1 line-clamp-2 text-xs font-semibold leading-5 text-slate-800">
+              {demo.tema}
+            </p>
           </div>
-        ))}
+          <div className="rounded-xl border border-slate-100 bg-slate-50 p-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">
+              Texto da redação
+            </p>
+            <p className="mt-1.5 text-xs leading-5 text-slate-700">“{demo.trecho}”</p>
+            <p className="mt-2 text-[10px] font-medium text-slate-500">{demo.palavras} palavras</p>
+          </div>
+          <div className="flex justify-end">
+            <span className="inline-flex h-8 items-center rounded-lg bg-sky-600 px-3 text-[11px] font-bold text-white">
+              Analisar redação
+            </span>
+          </div>
+        </div>
+
+        <div className="min-w-0 space-y-2.5">
+          <div className="flex items-center justify-between rounded-xl bg-slate-900 px-3 py-2.5 text-white">
+            <span className="text-[11px] font-semibold">Nota total estimada</span>
+            <span className="rj-display text-base font-bold">{demo.notaTotal}/1000</span>
+          </div>
+          <ul className="space-y-1.5">
+            {demo.competencias.map((item) => (
+              <li key={item.id} className="rounded-lg border border-slate-100 px-2.5 py-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="truncate text-[11px] font-semibold text-slate-700">{item.label}</p>
+                  <span className="shrink-0 text-[11px] font-bold text-sky-700">{item.nota}/200</span>
+                </div>
+                <div className="mt-1 h-1 overflow-hidden rounded-full bg-slate-100">
+                  <div
+                    className="h-full rounded-full bg-sky-500"
+                    style={{ width: `${(item.nota / 200) * 100}%` }}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="rounded-lg bg-emerald-50 px-2.5 py-2">
+            <p className="text-[10px] font-bold uppercase tracking-wide text-emerald-800">
+              Pontos fortes
+            </p>
+            <p className="mt-1 flex items-start gap-1 text-[11px] font-medium leading-4 text-emerald-800">
+              <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0" aria-hidden />
+              {demo.pontosFortes[0]}
+            </p>
+          </div>
+        </div>
       </div>
-      <p className="mt-3 flex items-center gap-1.5 text-[11px] text-slate-500">
-        <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-        Pontos fortes e alertas por competência, em segundos.
-      </p>
     </BrowserChrome>
   );
 }

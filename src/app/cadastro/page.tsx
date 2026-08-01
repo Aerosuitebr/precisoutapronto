@@ -14,8 +14,7 @@ import { registerUser } from '@/lib/auth';
 import { evaluatePasswordStrength } from '@/lib/password';
 import {
   clearStoredReferralCode,
-  readStoredReferralCode,
-  ReferralCapture
+  readStoredReferralCode
 } from '@/components/referral/referral-capture';
 import { normalizeReferralCode } from '@/lib/referral-shared';
 
@@ -89,7 +88,6 @@ function CadastroForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <ReferralCapture />
       <AuthReturnBanner nextHref={searchParams.get('next')} />
       <p className="text-center text-sm text-slate-600">
         Sem cartão. Gere documentos grátis. A marca Resolva Jato sai no Premium.

@@ -6,13 +6,13 @@ import {
   Eraser,
   FilePlus2,
   GraduationCap,
+  Link2,
   Plus,
   Save,
   Sparkles,
   Trash2
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { ResumePreview } from '@/components/curriculo/resume-preview';
@@ -29,6 +29,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
+import { useDocumentShare } from '@/hooks/use-document-share';
 import { performBillableAction } from '@/lib/billing';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import {
@@ -48,6 +49,9 @@ import { LANGUAGE_LEVEL_LABELS } from '@/lib/curriculo/types';
 import { formatPhone } from '@/lib/formatters';
 import { isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, resumeFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToResume, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'dados' | 'experiencia' | 'formacao' | 'cursos' | 'extras';
 
@@ -75,9 +79,11 @@ function isLikelyWebsite(value: string) {
 
 export function CurriculoApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const exportingLockRef = useRef(false);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
+  const { shareDocument, sharing } = useDocumentShare();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [resumes, setResumes] = useState<ResumeData[]>([]);
@@ -91,14 +97,29 @@ export function CurriculoApp() {
   const [touchedWebsite, setTouchedWebsite] = useState(false);
 
   useEffect(() => {
-    loadResumes().then((stored) => {
-      if (stored.length > 0) {
-        setResumes(stored);
-        setActiveId(stored[0].id);
-        setResume(stored[0]);
+    Promise.all([loadResumes(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
+      const briefing = consumeAssistantBriefing('curriculo');
+      if (briefing) {
+        const saved = saveResume(resumeFromBriefing(briefing));
+        const next = listResumes();
+        setResumes(next);
+        setActiveId(saved.id);
+        setResume(saved);
+        setTab('dados');
         return;
       }
-      const saved = saveResume(createEmptyResume());
+      if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
+        setResumes(stored);
+        setActiveId(selected.id);
+        setResume(selected);
+        return;
+      }
+      const prepared = applyProfileToResume(createEmptyResume(), profile);
+      const saved = saveResume(prepared.document);
+      trackProfileMemoryApplied('curriculo', prepared.applied);
       setResumes([saved]);
       setActiveId(saved.id);
       setResume(saved);
@@ -143,7 +164,9 @@ export function CurriculoApp() {
   }
 
   function handleNewResume(templateId: ResumeTemplateId = resume.templateId) {
-    const created = saveResume(createEmptyResume(templateId));
+    const prepared = applyProfileToResume(createEmptyResume(templateId), profileMemoryRef.current);
+    const created = saveResume(prepared.document);
+    trackProfileMemoryApplied('curriculo', prepared.applied);
     const next = listResumes();
     setResumes(next);
     setActiveId(created.id);
@@ -281,7 +304,6 @@ export function CurriculoApp() {
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <ToolsWatermark />
           <div className="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -356,6 +378,16 @@ export function CurriculoApp() {
             onClick={handleManualSave}
           >
             Salvar
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            icon={sharing ? undefined : Link2}
+            loading={sharing}
+            onClick={() => shareDocument({ toolId: 'curriculo', artifactId: resume.id, title: resume.title })}
+          >
+            Compartilhar
           </Button>
           <Button
             type="button"

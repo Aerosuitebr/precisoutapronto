@@ -3,7 +3,6 @@
 import { ChangeEvent, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, BookOpen, Bot, Check, ChevronLeft, ChevronRight, Download, FileSearch, GraduationCap, Loader2, Plus, RefreshCw, Sparkles, Trash2, Upload, Wand2 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { ToolsBackButton } from '@/components/shared/tools-back-button';
@@ -596,7 +595,6 @@ export function LattesApp({ locale = 'pt-BR' }: { locale?: Locale } = {}) {
   if (!hydrated) return <div className="grid min-h-[420px] place-items-center"><Loader2 className="h-7 w-7 animate-spin text-teal-700" /></div>;
   return <AuthGate title={t.authTitle} description={t.authDescription}>
     <div className="space-y-5 pb-10">
-      <RemoveBrandingUpsell />
       <section className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-gradient-to-br from-white via-white to-teal-50 p-5 shadow-sm sm:p-7"><ToolsWatermark />
         <div className="relative flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between"><div className="flex gap-4"><span className="grid h-13 w-13 shrink-0 place-items-center rounded-2xl bg-teal-700 text-white shadow-lg shadow-teal-900/10"><GraduationCap className="h-6 w-6" /></span><div><div className="flex flex-wrap items-center gap-2"><h1 className="text-2xl font-bold text-slate-950 sm:text-3xl">{t.headerTitle}</h1><span className="rounded-full bg-teal-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-teal-800">{t.headerBadge}</span></div><p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">{t.headerSubtitle}</p></div></div>
           <div className="flex flex-wrap items-center gap-2">

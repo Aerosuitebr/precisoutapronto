@@ -228,22 +228,22 @@ export const SEO_LANDINGS = {
   'para-estudantes': {
     id: 'para-estudantes',
     path: '/para/estudantes',
-    toolHref: '/gerador-de-curriculo',
+    toolHref: '/ferramentas/juridicos',
     eyebrow: 'Para estudantes',
-    title: 'Capa ABNT e currículo prontos antes do prazo',
+    title: 'Documentos acadêmicos, ABNT e currículo em um só lugar',
     description:
-      'Gere capa de trabalho (escolar e universitária) e currículo profissional em minutos. Grátis para testar.',
+      'Crie fichamentos de jurisprudência, estudos de caso, pareceres acadêmicos, capas ABNT e currículos em minutos.',
     heroBullets: [
-      'Capa e folha de rosto no padrão ABNT',
-      'Currículo com preview ao vivo',
-      'PDF para entregar ou imprimir'
+      'Fichamento, estudo de caso e parecer jurídico',
+      'Capa, referências ABNT e currículo',
+      'PDF editável para estudar, entregar ou imprimir'
     ],
-    primaryCta: 'Gerar currículo agora',
+    primaryCta: 'Criar documento acadêmico',
     secondaryCta: { label: 'Abrir currículo', href: '/gerador-de-curriculo' },
     sections: [
       {
-        title: 'Quando o prazo aperta',
-        body: 'Preencha os dados da disciplina e baixe a capa. Sem brigar com margens no Word.'
+        title: 'Prática jurídica e trabalhos acadêmicos',
+        body: 'Estruture fichamentos, estudos de caso, pareceres, relatórios de audiência e roteiros de peças.'
       },
       {
         title: 'Currículo para estágio e primeiro emprego',
@@ -261,6 +261,7 @@ export const SEO_LANDINGS = {
       }
     ],
     related: [
+      { href: '/ferramentas/juridicos', label: 'Documentos acadêmicos', blurb: 'Direito, estágio e OAB' },
       { href: '/gerador-de-curriculo', label: 'Currículo', blurb: 'PDF profissional' },
       { href: '/para/mei', label: 'Para MEI', blurb: 'Se você já presta serviço' },
       { href: '/busca', label: 'Busca grátis', blurb: 'Links úteis sem cadastro' }

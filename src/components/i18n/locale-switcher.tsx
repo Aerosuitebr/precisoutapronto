@@ -78,6 +78,18 @@ const localeFlag: Record<Locale, (props: { className?: string }) => ReactNode> =
   es: FlagSpain
 };
 
+const localeActiveStyle: Record<Locale, string> = {
+  'pt-BR': 'border-emerald-300 bg-emerald-50 shadow-[0_0_0_1px_rgba(16,185,129,0.18),0_0_14px_rgba(16,185,129,0.5)]',
+  en: 'border-blue-300 bg-blue-50 shadow-[0_0_0_1px_rgba(59,130,246,0.18),0_0_14px_rgba(59,130,246,0.45)]',
+  es: 'border-amber-300 bg-amber-50 shadow-[0_0_0_1px_rgba(245,158,11,0.18),0_0_14px_rgba(245,158,11,0.5)]'
+};
+
+const localeIndicatorStyle: Record<Locale, string> = {
+  'pt-BR': 'bg-emerald-500 shadow-[0_0_7px_rgba(16,185,129,0.9)]',
+  en: 'bg-blue-500 shadow-[0_0_7px_rgba(59,130,246,0.9)]',
+  es: 'bg-amber-500 shadow-[0_0_7px_rgba(245,158,11,0.9)]'
+};
+
 function persistLocalePreference(locale: Locale) {
   const secure = typeof window !== 'undefined' && window.location.protocol === 'https:' ? '; Secure' : '';
   // Valor literal (sem encode) para bater com o Set-Cookie do middleware.
@@ -97,7 +109,7 @@ export function LocaleSwitcher({
     <div
       role="group"
       aria-label={label}
-      className="inline-flex h-10 items-center rounded-full border border-slate-200 bg-slate-50/90 p-1 shadow-sm"
+      className="inline-flex h-9 shrink-0 items-center rounded-xl border border-slate-200 bg-white p-0.5 sm:h-10"
     >
       {locales.map((item) => {
         const active = item === locale;
@@ -115,24 +127,24 @@ export function LocaleSwitcher({
             title={localeLabel[item]}
             onClick={() => persistLocalePreference(item)}
             className={cn(
-              'relative inline-flex h-8 w-9 items-center justify-center rounded-full transition duration-200',
+              'relative inline-flex h-7 w-8 items-center justify-center rounded-lg border border-transparent transition-all duration-200 sm:h-8 sm:w-9',
               active
-                ? 'bg-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.35),0_0_14px_rgba(250,204,21,0.55)]'
-                : 'hover:bg-white'
+                ? localeActiveStyle[item]
+                : 'opacity-60 hover:bg-slate-50 hover:opacity-100'
             )}
           >
             <Flag
               className={cn(
-                'h-[14px] w-[21px] rounded-[2px] transition duration-200',
+                'h-[14px] w-[21px] rounded-[2px] shadow-sm transition-all duration-200',
                 active
-                  ? 'opacity-100 brightness-110 drop-shadow-[0_0_6px_rgba(250,204,21,0.85)]'
-                  : 'opacity-40 grayscale hover:opacity-70 hover:grayscale-0'
+                  ? 'scale-105 opacity-100 saturate-125 drop-shadow-[0_1px_2px_rgba(15,23,42,0.28)]'
+                  : 'saturate-75'
               )}
             />
             {active ? (
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-amber-300/70"
+                className={cn('absolute -bottom-0.5 h-1 w-1 rounded-full', localeIndicatorStyle[item])}
               />
             ) : null}
           </Link>

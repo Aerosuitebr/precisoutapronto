@@ -48,8 +48,7 @@ echo "==> Validar compose staging"
 echo "==> Build + up staging (app em 127.0.0.1:${APP_PORT})"
 "${COMPOSE[@]}" up -d --build --remove-orphans
 
-echo "==> Schema Prisma (staging usa db push no entrypoint; sem pasta prisma/migrations)"
-# Não rodar migrate deploy: o entrypoint já aplica o schema com prisma db push.
+echo "==> Schema Prisma: migrations versionadas aplicadas pelo entrypoint (PRISMA_SCHEMA_MODE=migrate)"
 
 echo "==> Aguardar health do app staging"
 ok=0

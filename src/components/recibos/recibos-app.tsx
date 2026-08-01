@@ -7,6 +7,7 @@ import {
   Droplets,
   Eraser,
   FilePlus2,
+  Link2,
   PenLine,
   Receipt,
   Save,
@@ -31,8 +32,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
+import { useDocumentShare } from '@/hooks/use-document-share';
 import { performBillableAction } from '@/lib/billing';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
@@ -45,6 +46,9 @@ import type { DigitalSignature } from '@/lib/signatures/types';
 import { currencyToWords, formatCpfCnpj, formatCurrencyInput, formatPhone, parseCurrency } from '@/lib/formatters';
 import { isValidCpfCnpj, isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, receiptFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToReceipt, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'valores' | 'recebedor' | 'pagador';
 type TouchedKey =
@@ -84,8 +88,10 @@ const STEPS: { id: EditorTab; label: string }[] = [
 
 export function RecibosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
+  const { shareDocument, sharing } = useDocumentShare();
   const { toast } = useToast();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [receipts, setReceipts] = useState<ReceiptData[]>([]);
@@ -100,14 +106,29 @@ export function RecibosApp() {
   const [showAllErrors, setShowAllErrors] = useState(false);
 
   useEffect(() => {
-    loadReceipts().then((stored) => {
-      if (stored.length > 0) {
-        setReceipts(stored);
-        setActiveId(stored[0].id);
-        setReceipt(stored[0]);
+    Promise.all([loadReceipts(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
+      const briefing = consumeAssistantBriefing('recibo');
+      if (briefing) {
+        const saved = saveReceipt(receiptFromBriefing(briefing));
+        const next = listReceipts();
+        setReceipts(next);
+        setActiveId(saved.id);
+        setReceipt(saved);
+        setTab('valores');
         return;
       }
-      const saved = saveReceipt(createEmptyReceipt());
+      if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
+        setReceipts(stored);
+        setActiveId(selected.id);
+        setReceipt(selected);
+        return;
+      }
+      const prepared = applyProfileToReceipt(createEmptyReceipt(), profile);
+      const saved = saveReceipt(prepared.document);
+      trackProfileMemoryApplied('recibos', prepared.applied);
       setReceipts([saved]);
       setActiveId(saved.id);
       setReceipt(saved);
@@ -174,7 +195,12 @@ export function RecibosApp() {
   }
 
   function handleNew() {
-    const created = saveReceipt(createEmptyReceipt(receipt.templateId));
+    const prepared = applyProfileToReceipt(
+      createEmptyReceipt(receipt.templateId),
+      profileMemoryRef.current
+    );
+    const created = saveReceipt(prepared.document);
+    trackProfileMemoryApplied('recibos', prepared.applied);
     setReceipts(listReceipts());
     setActiveId(created.id);
     setReceipt(created);
@@ -348,7 +374,6 @@ export function RecibosApp() {
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-4">
@@ -431,6 +456,16 @@ export function RecibosApp() {
             onClick={handleManualSave}
           >
             Salvar
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            icon={sharing ? undefined : Link2}
+            loading={sharing}
+            onClick={() => shareDocument({ toolId: 'recibos', artifactId: receipt.id, title: receipt.title })}
+          >
+            Compartilhar
           </Button>
           <Button
             type="button"

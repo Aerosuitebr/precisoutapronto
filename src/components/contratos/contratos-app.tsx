@@ -12,7 +12,6 @@ import {
   Trash2
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { ContratoPreview } from '@/components/contratos/contrato-preview';
@@ -41,6 +40,9 @@ import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/vir
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { DocumentFontId } from '@/lib/documents/fonts';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, contractFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToContract, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'partes' | 'termos' | 'clausulas' | 'assinatura';
 
@@ -55,6 +57,7 @@ const TAB_ORDER = TABS.map((item) => item.id);
 
 export function ContratosApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
@@ -90,14 +93,29 @@ export function ContratosApp() {
   const showDurationFields = contrato.templateId !== 'compra-venda';
 
   useEffect(() => {
-    loadContratos().then((stored) => {
-      if (stored.length > 0) {
-        setItems(stored);
-        setActiveId(stored[0].id);
-        setContrato(stored[0]);
+    Promise.all([loadContratos(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
+      const briefing = consumeAssistantBriefing('contrato');
+      if (briefing) {
+        const saved = saveContrato(contractFromBriefing(briefing));
+        const next = listContratos();
+        setItems(next);
+        setActiveId(saved.id);
+        setContrato(saved);
+        setTab('termos');
         return;
       }
-      const saved = saveContrato(createEmptyContrato());
+      if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
+        setItems(stored);
+        setActiveId(selected.id);
+        setContrato(selected);
+        return;
+      }
+      const prepared = applyProfileToContract(createEmptyContrato(), profile);
+      const saved = saveContrato(prepared.document);
+      trackProfileMemoryApplied('contratos', prepared.applied);
       setItems([saved]);
       setActiveId(saved.id);
       setContrato(saved);
@@ -191,7 +209,12 @@ export function ContratosApp() {
   }
 
   function handleNew() {
-    const created = saveContrato(createEmptyContrato(contrato.templateId));
+    const prepared = applyProfileToContract(
+      createEmptyContrato(contrato.templateId),
+      profileMemoryRef.current
+    );
+    const created = saveContrato(prepared.document);
+    trackProfileMemoryApplied('contratos', prepared.applied);
     setItems(listContratos());
     setActiveId(created.id);
     setContrato(created);
@@ -326,7 +349,6 @@ export function ContratosApp() {
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
       <div className="space-y-6">
-        <RemoveBrandingUpsell />
         <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
           <div className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-r from-slate-950 via-slate-900 to-sky-950 px-5 py-6 text-white sm:px-6">
             <ToolsWatermark />
@@ -434,6 +456,7 @@ export function ContratosApp() {
         </DocumentStickyActions>
 
         <DocumentHistoryPanel
+          toolId="contratos"
           items={historyItems}
           activeId={activeId}
           onEdit={handleSelect}

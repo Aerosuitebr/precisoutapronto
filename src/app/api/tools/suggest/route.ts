@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
+import { BRAND_EMAIL } from '@/lib/brand';
 import { isDatabaseConfigured } from '@/lib/db';
 import { isMailConfigured, sendEmail } from '@/lib/mail/send-email';
 import { consumeRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { getClientIp, getClientUserAgent } from '@/lib/security/request-meta';
 
-const SUGGESTION_TO = process.env.TOOL_SUGGESTION_TO || 'contato@resolvajato.com.br';
+const SUGGESTION_TO = process.env.TOOL_SUGGESTION_TO || BRAND_EMAIL;
 const MAX_MESSAGE_LEN = 1200;
 const MAX_NAME_LEN = 120;
 

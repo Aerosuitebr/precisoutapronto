@@ -281,7 +281,7 @@ export function InternationalResumeEditor({ locale }: { locale: InternationalLoc
                 <DocumentExportShell branded={!usage.unlimited}>
                   <div className="min-h-[297mm] p-[15mm] text-slate-800">
                     <header className="border-b-4 border-sky-600 pb-6">
-                      <h1 className="text-4xl font-extrabold tracking-tight text-slate-950">{personal.name || t.name}</h1>
+                      <p className="text-4xl font-extrabold tracking-tight text-slate-950">{personal.name || t.name}</p>
                       <p className="mt-2 text-xl font-semibold text-sky-700">{personal.headline || t.headline}</p>
                       <p className="mt-3 text-sm text-slate-600">{[personal.email, personal.phone, personal.location, personal.website].filter(Boolean).join('  •  ')}</p>
                     </header>

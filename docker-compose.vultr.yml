@@ -13,5 +13,7 @@ services:
       - never
 
   app:
+    environment:
+      PRISMA_SCHEMA_MODE: migrate
     ports:
       - '127.0.0.1:3000:3000'

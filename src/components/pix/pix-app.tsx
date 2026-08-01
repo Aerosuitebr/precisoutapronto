@@ -139,10 +139,6 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
         );
         return;
       }
-      if (publicAccess) {
-        await effect();
-        return;
-      }
       const outcome = await performBillableAction(
         { toolId: 'pix', artifactId: artifact, action: 'download' },
         async () => {
@@ -237,7 +233,7 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
                     Gere QR e Pix Copia e Cola no navegador, sem API bancária.
                     {publicAccess
-                      ? ' Experimente agora; conta grátis só para enviar pelo WhatsApp.'
+                      ? ' Experimente agora. A 1ª geração é grátis sem conta; depois crie conta para continuar.'
                       : ' No plano gratuito, o envio pode incluir referência ao Resolva Jato.'}
                   </p>
                 </div>

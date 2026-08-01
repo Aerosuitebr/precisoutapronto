@@ -13,7 +13,15 @@ const seo = PUBLIC_CALCULATORS.precificacao;
 export const metadata: Metadata = {
   title: 'Calculadora de preço para freelancer grátis',
   description: seo.description,
-  alternates: { canonical: seo.path },
+  alternates: {
+    canonical: seo.path,
+    languages: {
+      'pt-BR': seo.path,
+      en: '/en/tools/freelance-pricing',
+      es: '/es/tools/freelance-pricing',
+      'x-default': seo.path
+    }
+  },
   openGraph: {
     title: 'Calculadora de preço para freelancer | Resolva Jato',
     description: 'Descubra quanto cobrar considerando custos, tempo, impostos e margem.',

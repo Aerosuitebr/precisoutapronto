@@ -24,6 +24,9 @@ export default async function LattesCvPage({ params }: PageProps) {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: `document.documentElement.lang=${JSON.stringify(locale)};` }} />
+      <h1 className="sr-only">
+        {locale === 'en' ? 'Lattes CV builder for academic profiles' : 'Creador de currículum Lattes para perfiles académicos'}
+      </h1>
       <LattesApp locale={locale} />
     </>
   );

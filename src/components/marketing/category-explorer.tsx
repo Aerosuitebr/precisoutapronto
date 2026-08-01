@@ -11,6 +11,10 @@ const CATEGORY_OVERVIEW = toolCategories.map((category) => ({
   tools: getToolsByCategory(category.id)
 }));
 
+const CATEGORY_HIGHLIGHTS: Partial<Record<ToolCategoryId, string[]>> = {
+  carreira: ['Documentos jurídicos acadêmicos', 'Redação ENEM', 'Referências ABNT']
+};
+
 /** Grid de categorias com filtro rápido por perfil — sem recarregar a página. */
 export function CategoryExplorer() {
   const [active, setActive] = useState<ToolCategoryId | 'todos'>('todos');
@@ -58,6 +62,7 @@ export function CategoryExplorer() {
           const isActive = active === category.id;
           const isDimmed = active !== 'todos' && !isActive;
           const shownTools = active === 'todos' ? category.tools.slice(0, 3) : category.tools;
+          const highlights = active === 'todos' ? CATEGORY_HIGHLIGHTS[category.id] : undefined;
           const extra = active === 'todos' ? category.tools.length - shownTools.length : 0;
 
           return (
@@ -87,12 +92,12 @@ export function CategoryExplorer() {
                 </p>
                 <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{category.description}</p>
                 <ul className="mt-4 flex flex-wrap gap-1.5">
-                  {shownTools.map((tool) => (
+                  {(highlights || shownTools.map((tool) => tool.name)).map((name) => (
                     <li
-                      key={tool.id}
+                      key={name}
                       className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 ring-1 ring-slate-200"
                     >
-                      {tool.name}
+                      {name}
                     </li>
                   ))}
                   {extra > 0 && (

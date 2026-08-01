@@ -79,6 +79,19 @@ const PALAVRAS_FUNCIONAIS = new Set([
   'brasil', 'brasileiro', 'brasileira', 'país', 'governo', 'pessoas', 'vida', 'forma'
 ]);
 
+/** Artigos/conjunções curtos demais para sozinhos “provar” português (aparecem em mash de teclado). */
+const FUNCIONAIS_FRACOS = new Set(['a', 'o', 'e', 'as', 'os', 'um', 'uns', 'é']);
+
+/** Núcleo que quase sempre aparece em redação real. */
+const FUNCIONAIS_NUCLEO = new Set([
+  'de', 'que', 'do', 'da', 'em', 'para', 'com', 'não', 'no', 'na', 'por', 'mais', 'dos', 'das',
+  'como', 'mas', 'ao', 'se', 'ou', 'quando', 'também', 'pelo', 'pela', 'até', 'entre', 'sem',
+  'mesmo', 'porque', 'pois', 'então', 'sobre', 'assim', 'são', 'foi', 'ser', 'estar', 'há',
+  'sociedade', 'brasil', 'governo', 'pessoas', 'uma'
+]);
+
+const TECLADO_HOME = new Set('asdfghjklçqwertyuiopzxcvbnm'.split(''));
+
 function normalize(text: string) {
   return text
     .toLowerCase()
@@ -100,15 +113,14 @@ const VOGAIS = new Set(['a', 'e', 'i', 'o', 'u']);
  */
 function palavraTemFormatoPlausivel(palavraNormalizada: string): boolean {
   const w = palavraNormalizada.replace(/[^a-z]/g, '');
-  if (w.length < 2) return true; // muito curta pra avaliar, não penaliza
+  if (w.length < 2) return true;
 
   const vogaisCount = [...w].filter((c) => VOGAIS.has(c)).length;
-  if (vogaisCount === 0 && w.length > 2) return false; // sem nenhuma vogal = improvável
+  if (vogaisCount === 0 && w.length > 2) return false;
 
   const proporcaoVogais = vogaisCount / w.length;
   if (proporcaoVogais < 0.15 || proporcaoVogais > 0.9) return false;
 
-  // sequência de consoantes maior que 4 é rarissima em português
   let maiorSequenciaConsoantes = 0;
   let atual = 0;
   for (const c of w) {
@@ -121,10 +133,36 @@ function palavraTemFormatoPlausivel(palavraNormalizada: string): boolean {
   }
   if (maiorSequenciaConsoantes > 4) return false;
 
-  // letra repetida 4+ vezes seguidas (ex: "ffff", "dddd")
   if (/([a-z])\1{3,}/.test(w)) return false;
 
+  // Poucas letras distintas em palavra longa: típico de "adasdasdas" / "qweqweqwe"
+  const unicas = new Set(w).size;
+  if (w.length >= 8 && unicas <= 3) return false;
+  if (w.length >= 12 && unicas <= 4) return false;
+  if (w.length >= 6 && unicas / w.length <= 0.28) return false;
+
+  // Ciclo curto repetido (asd asd asd)
+  if (w.length >= 6 && /^(.{2,4})\1+$/.test(w)) return false;
+
   return true;
+}
+
+/** Detecta mash de teclado (asdf, qwer, padrões asd/das). */
+function pareceTecladoBatido(palavraNormalizada: string): boolean {
+  const w = palavraNormalizada.replace(/[^a-z]/g, '');
+  if (w.length < 4) return false;
+
+  const soHomeRow = [...w].every((c) => TECLADO_HOME.has(c));
+  const unicas = new Set(w).size;
+  if (soHomeRow && w.length >= 6 && unicas <= 4) return true;
+
+  if (/(asd|das|sda|ads|qwe|wer|rew|zxc|xcv|cvb){2,}/.test(w)) return true;
+  if (/^([asdf]{2,4})\1+$/.test(w)) return true;
+
+  // Alternância estreita a/d/s (ex.: adasdasdas)
+  if (w.length >= 8 && /^[ads]+$/.test(w) && unicas <= 3) return true;
+
+  return false;
 }
 
 export interface DeteccaoTextoInvalido {
@@ -138,28 +176,108 @@ export interface DeteccaoTextoInvalido {
  * de vocabulário") sobre um texto que não tem palavras reais.
  */
 function detectarTextoInvalido(normalized: string, totalPalavras: number): DeteccaoTextoInvalido {
-  if (totalPalavras < 15) return { invalido: false };
+  if (totalPalavras < 8) return { invalido: false };
 
   const tokens = normalized.match(/[a-zà-ú]+/g) || [];
   if (tokens.length === 0) return { invalido: false };
 
-  const funcionaisEncontradas = tokens.filter((t) => PALAVRAS_FUNCIONAIS.has(t)).length;
-  const proporcaoFuncionais = funcionaisEncontradas / tokens.length;
+  const funcionaisDistintas = new Set(tokens.filter((t) => PALAVRAS_FUNCIONAIS.has(t)));
+  const funcionaisFortesDistintas = [...funcionaisDistintas].filter((t) => !FUNCIONAIS_FRACOS.has(t));
+  const funcionaisNucleoDistintas = [...funcionaisDistintas].filter((t) => FUNCIONAIS_NUCLEO.has(t));
+
+  const funcionaisFortesCount = tokens.filter(
+    (t) => PALAVRAS_FUNCIONAIS.has(t) && !FUNCIONAIS_FRACOS.has(t)
+  ).length;
+  const proporcaoFuncionaisFortes = funcionaisFortesCount / tokens.length;
 
   const plausiveis = tokens.filter((t) => palavraTemFormatoPlausivel(t)).length;
   const proporcaoPlausiveis = plausiveis / tokens.length;
 
-  // Texto real em português quase sempre tem >8% de palavras funcionais (de, a, que, para...)
-  // e a grande maioria das palavras com formato foneticamente plausível.
-  if (proporcaoFuncionais < 0.04 && proporcaoPlausiveis < 0.65) {
+  const mash = tokens.filter((t) => pareceTecladoBatido(t)).length;
+  const proporcaoMash = mash / tokens.length;
+
+  const motivoPadrao =
+    'O texto enviado parece ser uma sequência aleatória de letras (sem português coerente), não uma redação. Escreva frases e parágrafos com sentido para receber uma estimativa confiável.';
+
+  // Núcleo lexical mínimo: redação real quase sempre tem várias palavras-função distintas
+  if (totalPalavras >= 12 && funcionaisNucleoDistintas.length < 2 && funcionaisFortesDistintas.length < 3) {
+    return { invalido: true, motivo: motivoPadrao };
+  }
+
+  if (totalPalavras >= 12 && proporcaoFuncionaisFortes < 0.06) {
+    return { invalido: true, motivo: motivoPadrao };
+  }
+
+  if (proporcaoPlausiveis < 0.55) {
+    return { invalido: true, motivo: motivoPadrao };
+  }
+
+  if (proporcaoMash >= 0.35) {
     return {
       invalido: true,
       motivo:
-        'O texto enviado parece ser uma sequência aleatória de letras (sem palavras reais em português), não uma redação. Escreva frases e parágrafos com sentido para receber uma estimativa de nota confiável.'
+        'O texto parece digitado sem sentido (padrão de teclado / letras repetidas), sem frases em português. Reescreva a redação com introdução, desenvolvimento e conclusão.'
     };
   }
 
   return { invalido: false };
+}
+
+/** Nota baixa e honesta quando o texto não é uma redação válida. */
+function resultadoTextoInvalido(
+  palavras: number,
+  paragrafos: number,
+  frases: number,
+  motivo: string
+): RedacaoAnaliseResult {
+  const competencias: CompetenciaScore[] = [
+    {
+      id: 1,
+      titulo: 'Domínio da norma culta',
+      nota: 40,
+      comentario: 'Não há frases legíveis em português para avaliar ortografia e gramática.'
+    },
+    {
+      id: 2,
+      titulo: 'Compreensão do tema',
+      nota: 40,
+      comentario: 'Sem desenvolvimento do tema: o texto não apresenta ideias compreensíveis.'
+    },
+    {
+      id: 3,
+      titulo: 'Argumentação',
+      nota: 40,
+      comentario: 'Não há ponto de vista nem argumentos identificáveis.'
+    },
+    {
+      id: 4,
+      titulo: 'Coesão textual',
+      nota: 40,
+      comentario: 'Sem encadeamento entre frases ou parágrafos.'
+    },
+    {
+      id: 5,
+      titulo: 'Proposta de intervenção',
+      nota: 40,
+      comentario: 'Não há proposta de intervenção (agente, ação, meio e finalidade).'
+    }
+  ];
+
+  return {
+    palavras,
+    paragrafos,
+    frases,
+    notaTotalEstimada: 200,
+    competencias,
+    alertas: [
+      motivo,
+      'Texto sem sentido ou ilegível: a estimativa fica no piso para não gerar falsa segurança.',
+      'Escreva pelo menos 4 parágrafos em português, com tema claro, argumentos e conclusão com proposta.'
+    ],
+    pontosFortes: [],
+    textoInvalido: true,
+    avisoCritico: motivo
+  };
 }
 
 export function analisarRedacao(texto: string): RedacaoAnaliseResult {
@@ -174,24 +292,7 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
 
   const deteccaoInvalido = detectarTextoInvalido(normalized, palavras);
   if (deteccaoInvalido.invalido) {
-    const competenciasInvalidas: CompetenciaScore[] = [
-      { id: 1, titulo: 'Domínio da norma culta', nota: 0, comentario: 'Ortografia, gramática e formalidade.' },
-      { id: 2, titulo: 'Compreensão do tema', nota: 0, comentario: 'Desenvolvimento e repertório sobre o tema proposto.' },
-      { id: 3, titulo: 'Argumentação', nota: 0, comentario: 'Organização das ideias e defesa de ponto de vista.' },
-      { id: 4, titulo: 'Coesão textual', nota: 0, comentario: 'Conectivos e articulação entre parágrafos.' },
-      { id: 5, titulo: 'Proposta de intervenção', nota: 0, comentario: 'Agente, ação, meio, finalidade e detalhamento.' }
-    ];
-    return {
-      palavras,
-      paragrafos,
-      frases,
-      notaTotalEstimada: 0,
-      competencias: competenciasInvalidas,
-      alertas: [deteccaoInvalido.motivo as string],
-      pontosFortes: [],
-      textoInvalido: true,
-      avisoCritico: deteccaoInvalido.motivo
-    };
+    return resultadoTextoInvalido(palavras, paragrafos, frases, deteccaoInvalido.motivo as string);
   }
 
   // Competência 1: norma culta (heurística: repetição excessiva de palavras, gírias, tamanho de frases)
@@ -212,18 +313,25 @@ export function analisarRedacao(texto: string): RedacaoAnaliseResult {
   nota1 = Math.max(0, Math.min(200, nota1));
 
   // Competência 2: compreensão do tema e uso de repertório (proxy: tamanho do texto e diversidade lexical)
-  const palavrasUnicas = new Set(normalized.match(/[a-zà-ú]+/g) || []).size;
+  const tokens = normalized.match(/[a-zà-ú]+/g) || [];
+  const palavrasUnicas = new Set(tokens).size;
   const diversidadeLexical = palavras > 0 ? palavrasUnicas / palavras : 0;
+  const funcionaisFortes = tokens.filter((t) => PALAVRAS_FUNCIONAIS.has(t) && !FUNCIONAIS_FRACOS.has(t));
+  const temPortuguesMinimo = funcionaisFortes.length >= 4;
+
   let nota2 = 120;
   if (palavras >= 250) nota2 += 40;
   if (palavras >= 350) nota2 += 20;
-  if (diversidadeLexical > 0.55) nota2 += 20;
+  // Diversidade só conta se o texto tem português mínimo (evita elogiar mash de teclado)
+  if (diversidadeLexical > 0.55 && temPortuguesMinimo && palavras >= 120) nota2 += 20;
   if (palavras < 150) {
     alertas.push('Texto curto (menos de 150 palavras) dificulta desenvolver bem o tema.');
     nota2 -= 40;
   }
   nota2 = Math.max(0, Math.min(200, nota2));
-  if (diversidadeLexical > 0.55) pontosFortes.push('Boa variedade de vocabulário.');
+  if (diversidadeLexical > 0.55 && temPortuguesMinimo && palavras >= 120) {
+    pontosFortes.push('Boa variedade de vocabulário.');
+  }
 
   // Competência 3: argumentação (proxy: presença de dados/repertório e nº de parágrafos)
   let nota3 = 120;

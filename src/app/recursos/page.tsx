@@ -4,6 +4,7 @@ import { ArrowRight, LockKeyhole } from 'lucide-react';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { toolCategories, toolsCatalog } from '@/lib/tools-catalog';
+import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
   title: 'Ferramentas online grátis para trabalho e estudos',
@@ -38,8 +39,42 @@ const publicLandings: Record<string, string> = {
 };
 
 export default function RecursosPage() {
+  const base = getViralBaseUrl().replace(/\/$/, '');
+  const availableTools = toolsCatalog.filter((tool) => tool.status !== 'soon');
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: 'Ferramentas online grátis',
+        description: metadata.description,
+        url: `${base}/recursos`,
+        inLanguage: 'pt-BR',
+        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+      },
+      {
+        '@type': 'ItemList',
+        name: 'Catálogo de ferramentas do Resolva Jato',
+        numberOfItems: availableTools.length,
+        itemListElement: availableTools.map((tool, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: tool.name,
+          url: `${base}${publicLandings[tool.id] || tool.href}`
+        }))
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Início', item: base },
+          { '@type': 'ListItem', position: 2, name: 'Ferramentas', item: `${base}/recursos` }
+        ]
+      }
+    ]
+  };
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteHeader />
       <main className="bg-slate-50">
         <header className="border-b border-slate-200 bg-white">
@@ -51,6 +86,11 @@ export default function RecursosPage() {
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
               Conheça cada recurso sem cadastro. Para editar, salvar ou exportar, algumas ferramentas pedem uma conta gratuita.
             </p>
+            <div className="mt-8 flex flex-wrap gap-3 text-sm font-bold text-slate-700">
+              <span className="rounded-full bg-sky-50 px-4 py-2">{availableTools.length} ferramentas disponíveis</span>
+              <span className="rounded-full bg-emerald-50 px-4 py-2">{toolCategories.length} categorias práticas</span>
+              <span className="rounded-full bg-amber-50 px-4 py-2">Uso direto no navegador</span>
+            </div>
           </div>
         </header>
         <div className="mx-auto max-w-6xl space-y-12 px-4 py-12 sm:px-6">

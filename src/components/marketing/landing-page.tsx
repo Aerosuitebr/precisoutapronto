@@ -5,6 +5,7 @@ import {
   Check,
   ClipboardList,
   FileText,
+  Gamepad2,
   GraduationCap,
   Scale,
   Search,
@@ -13,51 +14,51 @@ import {
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Logo } from '@/components/brand/logo';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
-import { HeroToolsShowcase } from '@/components/marketing/hero-tools-showcase';
+import { HeroDualNiche } from '@/components/marketing/hero-dual-niche';
 import { PromoVideoPlayer } from '@/components/marketing/promo-video-section';
 import { TestimonialsSection } from '@/components/marketing/testimonials-section';
 import { TrustSeals } from '@/components/marketing/trust-seals';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { toolIntentOptions } from '@/lib/tools-catalog';
+import { SegmentPreference } from '@/components/growth/segment-preference';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
 
 const OTHER_TOOLS = [
   {
-    href: '/ferramentas/curriculo',
+    href: '/gerador-de-curriculo',
     title: 'Currículo',
     text: 'Layouts profissionais e PDF em um clique.',
     icon: GraduationCap
   },
   {
-    href: '/ferramentas/propostas',
+    href: '/gerador-de-proposta-comercial',
     title: 'Proposta comercial',
     text: 'Cara de agência, totais e validade claros.',
     icon: FileText
   },
   {
-    href: '/ferramentas/contratos',
+    href: '/gerador-de-contrato',
     title: 'Contrato',
     text: 'Modelos editáveis sem fila na papelaria.',
     icon: Scale
   },
   {
-    href: '/ferramentas/trabalhos',
+    href: '/para/estudantes',
     title: 'Capa ABNT',
     text: 'Escolar e universitária prontas em minutos.',
     icon: BookOpen
   },
   {
-    href: '/ferramentas/recibos',
+    href: '/gerador-de-recibo',
     title: 'Recibo',
     text: 'Valor por extenso e assinatura no PDF.',
     icon: Wallet
   },
   {
-    href: '/ferramentas/pix',
+    href: '/gerador-de-qr-code-pix',
     title: 'Pix avulso',
     text: 'QR Code e Copia e Cola para cobrar rápido.',
     icon: ClipboardList
@@ -90,7 +91,7 @@ export function LandingPage() {
     <div className="bg-[image:var(--rj-page-bg)]">
       <section className="relative overflow-hidden bg-[linear-gradient(145deg,#020617_0%,#0f172a_42%,#064e3b_100%)] text-white">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl rj-animate-drift" />
+          <div className="pointer-events-none absolute -left-24 top-10 hidden h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl rj-animate-drift sm:block" />
           <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-amber-400/10 blur-3xl" />
           <div className="absolute inset-0 bg-[linear-gradient(rgba(52,211,153,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(52,211,153,0.06)_1px,transparent_1px)] bg-[size:40px_40px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
           <ToolsWatermark className="opacity-70" />
@@ -102,20 +103,20 @@ export function LandingPage() {
               <Logo variant="hero" />
             </div>
             <p className="rj-animate-fade-up mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
-              O escritório digital que resolve tudo
+              Ferramentas para trabalho, estudo e vida prática
             </p>
             <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(1.9rem,4.2vw,3.35rem)] font-extrabold leading-[1.08] tracking-tight text-white">
-              Orçamento, redação, PDF, currículo e contrato. Prontos em minutos.
+              Ferramentas online grátis para resolver o dia a dia.
             </h1>
             <p className="rj-animate-fade-up-delay-2 mt-4 max-w-lg text-base leading-7 text-slate-200 sm:text-lg">
-              Mande o orçamento e receba o Pix aprovado no WhatsApp, corrija sua redação do ENEM,
-              edite um PDF ou monte currículo e contrato — tudo grátis, no mesmo lugar.
+              Crie documentos, faça cálculos, organize tarefas, estude melhor e cuide do seu PC.
+              Recursos práticos, organizados por objetivo e disponíveis no navegador.
             </p>
             <ul className="rj-animate-fade-up-delay-2 mt-5 space-y-2 text-sm text-slate-200">
               {[
-                'Aprovação no celular, sem instalar nada',
-                'QR Pix e Copia e Cola prontos',
-                'PDF profissional, totalmente grátis'
+                'Mais de 20 ferramentas em um único catálogo',
+                'Conteúdo organizado para 10 perfis profissionais',
+                'Modelos, guias e respostas para concluir cada tarefa'
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 shrink-0 text-amber-300" />
@@ -125,8 +126,8 @@ export function LandingPage() {
             </ul>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
-                <Link href="/orcamento-com-pix#montar">
-                  Montar orçamento e gerar Pix
+                <Link href="/recursos">
+                  Explorar ferramentas
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -136,47 +137,90 @@ export function LandingPage() {
                 variant="outline"
                 className="h-12 w-full border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10 sm:w-auto"
               >
-                <Link href="#demo-60s">Ver o fluxo em 60s</Link>
+                <Link href="/biblioteca">Consultar a biblioteca</Link>
               </Button>
             </div>
 
             <div className="rj-animate-fade-up-delay-2 mt-6">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                Ou vá direto ao ponto
+                Também no hub
               </p>
               <ul className="mt-3 flex flex-wrap gap-2.5">
-                {toolIntentOptions.map((option) => {
-                  const href =
-                    option.toolId === 'orcamentos'
-                      ? '/orcamento-com-pix#montar'
-                      : `/ferramentas/${option.toolId}`;
-                  const className =
-                    'inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md';
-                  return (
-                    <li key={option.id}>
-                      {option.toolId === 'orcamentos' ? (
-                        <Link href={href} className={className}>
-                          {option.label}
-                        </Link>
-                      ) : (
-                        <AuthAwareLink href={href} className={className}>
-                          {option.label}
-                        </AuthAwareLink>
-                      )}
-                    </li>
-                  );
-                })}
+                <li>
+                  <Link
+                    href="/games"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-teal-300/50 bg-teal-400/15 px-4 py-2 text-sm font-semibold text-teal-100 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:bg-teal-300/25 hover:text-white hover:shadow-md"
+                  >
+                    <Gamepad2 className="h-3.5 w-3.5" />
+                    Jato Games
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/orcamento-com-pix#montar"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    Orçamento com Pix
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/gerador-de-curriculo"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    Currículo
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#demo-60s"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    Ver o fluxo em 60s
+                  </Link>
+                </li>
               </ul>
             </div>
             <p className="mt-4 text-xs text-slate-400">
-              E se não for isso: editor de PDF, remoção de fundo e mais de 15 ferramentas grátis,
-              tudo no mesmo lugar.
+              Contratos, currículo, recibos, Pix, cálculos, produtividade, estudos e Jato Games:
+              encontre o próximo passo sem precisar conhecer o nome da ferramenta.
             </p>
           </div>
 
-          <div className="relative flex h-full flex-col rj-animate-fade-up-delay-2">
+          <div className="relative flex h-full min-w-0 flex-col">
             <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-emerald-400/20 via-transparent to-amber-300/10 blur-2xl" />
-            <HeroToolsShowcase className="relative h-full" />
+            <HeroDualNiche className="relative h-full" />
+          </div>
+        </div>
+      </section>
+
+      <SegmentPreference />
+
+      <section className="border-b border-slate-200 bg-[linear-gradient(135deg,#f0fdfa_0%,#ffffff_45%,#fff7ed_100%)]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-12">
+          <div className="max-w-2xl">
+            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
+              <Gamepad2 className="h-3.5 w-3.5" />
+              Jato Games
+            </p>
+            <h2 className="rj-display mt-2 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">
+              Calcule seu eDPI, planeje o SSD e escolha o próximo jogo sem chute.
+            </h2>
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              Ferramentas gamer grátis, requisitos de PC, guias de GPU e CPU, setups sugeridos,
+              consoles e lojas confiáveis em uma central feita para decisões rápidas.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-3">
+            <Button asChild size="lg" className="h-12 bg-teal-600 px-6 font-bold text-white shadow-lg shadow-teal-600/20 hover:bg-teal-500">
+              <Link href="/games/ferramentas/calculadora-edpi">
+                Calcular meu eDPI
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="h-12 border-teal-200 bg-white px-6 font-bold text-teal-800 hover:bg-teal-50">
+              <Link href="/games">Explorar Jato Games</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -314,7 +358,7 @@ export function LandingPage() {
               {
                 href: '/para/estudantes',
                 title: 'Estudantes',
-                text: 'Capa ABNT e currículo antes do prazo acabar.'
+                text: 'Peças acadêmicas, fichamentos, estudos de caso, redação, ABNT e currículo.'
               }
             ].map((persona) => (
               <li key={persona.href}>
@@ -483,22 +527,30 @@ export function LandingPage() {
             <ul className="mt-5 space-y-2 text-sm text-slate-300">
               <li className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Monte o orçamento em minutos
+                Analise a redação do ENEM ou gere cobrança Pix
               </li>
               <li className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Cliente aprova no celular e você gera o Pix
+                Monte orçamento, currículo, recibo e contrato no mesmo lugar
               </li>
               <li className="flex gap-2">
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Currículo, recibo e contrato no mesmo lugar
+                1ª geração grátis sem conta; depois continue com conta grátis
               </li>
             </ul>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild size="lg" className={cn('h-12', primaryCtaClass)}>
-                <Link href="/orcamento-com-pix#montar">
-                  Montar orçamento e gerar Pix
-                </Link>
+                <AuthAwareLink href="/ferramentas/redacao-enem">
+                  Analisar redação
+                </AuthAwareLink>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-12 border-white/25 bg-white/5 text-white hover:bg-white/10"
+              >
+                <Link href="/gerador-de-qr-code-pix">Gerar cobrança Pix</Link>
               </Button>
               <Link
                 href="/cadastro"

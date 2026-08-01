@@ -83,7 +83,7 @@ export const toolCategories: ToolCategory[] = [
     id: "carreira",
     label: "Estudantes e carreira",
     shortLabel: "Estudantes",
-    description: "Currículos e capas no padrão acadêmico.",
+    description: "Documentos jurídicos acadêmicos, redação, referências, currículos e capas.",
     icon: GraduationCap,
     iconClass: "bg-teal-100 text-teal-800",
     accentBar: "bg-teal-500",

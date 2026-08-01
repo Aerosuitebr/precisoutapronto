@@ -26,7 +26,6 @@ import {
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
 import { useAuthRequired } from '@/components/auth/auth-required-provider';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { OrcamentoItemsEditor } from '@/components/orcamentos/orcamento-items-editor';
 import { ViralInviteShareRow } from '@/components/marketing/viral-recruit-cta';
@@ -636,9 +635,9 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
               <Receipt className="h-5 w-5" />
             </span>
             <div>
-              <h1 className="rj-display text-xl font-extrabold tracking-tight sm:text-2xl">
+              <h2 className="rj-display text-xl font-extrabold tracking-tight sm:text-2xl">
                 Orçamentos com link de aprovação
-              </h1>
+              </h2>
               <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
                 Monte, envie no WhatsApp do cliente e acompanhe o histórico. Na resposta, você recebe
                 alerta no celular, e-mail e WhatsApp.
@@ -647,7 +646,6 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
           </div>
         </section>
 
-        {showAccountExtras ? <RemoveBrandingUpsell /> : null}
 
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(280px,0.85fr)]">
           <div className="space-y-5">

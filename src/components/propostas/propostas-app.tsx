@@ -9,6 +9,7 @@ import {
   FilePlus2,
   ImagePlus,
   Layers,
+  Link2,
   Loader2,
   PackagePlus,
   PenLine,
@@ -31,8 +32,8 @@ import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/use-auth';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
+import { useDocumentShare } from '@/hooks/use-document-share';
 import { performBillableAction } from '@/lib/billing';
-import { RemoveBrandingUpsell } from '@/components/billing/remove-branding-upsell';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
@@ -49,6 +50,9 @@ import { PROPOSAL_TEMPLATES } from '@/lib/propostas/templates';
 import type { ProposalCompany, ProposalData, ProposalItem } from '@/lib/propostas/types';
 import type { DigitalSignature } from '@/lib/signatures/types';
 import { cn } from '@/lib/utils';
+import { consumeAssistantBriefing, proposalFromBriefing } from '@/lib/assistant-briefing';
+import { applyProfileToProposal, type ProfileMemory } from '@/lib/profile-memory';
+import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 
 type EditorTab = 'empresa' | 'cliente' | 'itens' | 'condicoes';
 
@@ -90,9 +94,11 @@ async function optimizeLogo(file: File): Promise<string> {
 
 export function PropostasApp() {
   const previewRef = useRef<HTMLDivElement>(null);
+  const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
+  const { shareDocument, sharing } = useDocumentShare();
   const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
   const [proposals, setProposals] = useState<ProposalData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -105,14 +111,29 @@ export function PropostasApp() {
   const [logoError, setLogoError] = useState('');
 
   useEffect(() => {
-    loadProposals().then((stored) => {
-      if (stored.length > 0) {
-        setProposals(stored);
-        setActiveId(stored[0].id);
-        setProposal(stored[0]);
+    Promise.all([loadProposals(), loadProfileMemory()]).then(([stored, profile]) => {
+      profileMemoryRef.current = profile;
+      const briefing = consumeAssistantBriefing('proposta');
+      if (briefing) {
+        const saved = saveProposal(proposalFromBriefing(briefing));
+        const next = listProposals();
+        setProposals(next);
+        setActiveId(saved.id);
+        setProposal(saved);
+        setTab('itens');
         return;
       }
-      const saved = saveProposal(createEmptyProposal());
+      if (stored.length > 0) {
+        const requestedId = new URLSearchParams(window.location.search).get('document');
+        const selected = stored.find((item) => item.id === requestedId) ?? stored[0];
+        setProposals(stored);
+        setActiveId(selected.id);
+        setProposal(selected);
+        return;
+      }
+      const prepared = applyProfileToProposal(createEmptyProposal(), profile);
+      const saved = saveProposal(prepared.document);
+      trackProfileMemoryApplied('propostas', prepared.applied);
       setProposals([saved]);
       setActiveId(saved.id);
       setProposal(saved);
@@ -312,7 +333,6 @@ export function PropostasApp() {
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
       <div className="space-y-5">
-        <RemoveBrandingUpsell />
         <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-4">
@@ -386,6 +406,16 @@ export function PropostasApp() {
           <Button type="button" size="sm" onClick={handleManualSave} disabled={saveState === 'saving'}>
             {saveState === 'saving' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Salvar
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => shareDocument({ toolId: 'propostas', artifactId: proposal.id, title: proposal.title })}
+            disabled={sharing}
+          >
+            {sharing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
+            Compartilhar
           </Button>
           <Button type="button" size="sm" onClick={handleExportPdf} disabled={exporting} className="bg-emerald-600 hover:bg-emerald-700">
             {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
