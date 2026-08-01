@@ -54,6 +54,24 @@ for (const segment of ['core', 'tools', 'growth', 'guides', 'games', 'i18n']) {
   if (!sitemapSource.includes(`'${segment}'`)) failures.push(`sitemap: segmento ${segment} ausente`);
 }
 
+const selfCanonicalLandings = [
+  ['src/app/recibo-de-pagamento/page.tsx', 'content.path'],
+  ['src/app/proposta-comercial-mei/page.tsx', 'content.path']
+];
+
+for (const [relative, canonicalExpression] of selfCanonicalLandings) {
+  const source = await readFile(path.join(root, relative), 'utf8');
+  if (!source.includes(`canonical: ${canonicalExpression}`)) {
+    failures.push(`${relative}: canonical nao e autorreferente`);
+  }
+  if (!source.includes(`url: ${canonicalExpression}`)) {
+    failures.push(`${relative}: URL de Open Graph nao corresponde a pagina`);
+  }
+  if (/languages\s*:/.test(source)) {
+    failures.push(`${relative}: hreflang indevido para conteudo sem traducao equivalente`);
+  }
+}
+
 if (failures.length) {
   console.error(`Auditoria SEO falhou (${failures.length}):`);
   for (const failure of failures) console.error(`- ${failure}`);

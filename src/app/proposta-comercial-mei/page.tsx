@@ -25,19 +25,11 @@ const content: SeoLandingContent = {
 export const metadata: Metadata = {
   title: 'Proposta comercial para MEI: modelo em PDF',
   description: content.description,
-  alternates: {
-    canonical: '/gerador-de-proposta-comercial',
-    languages: {
-      'pt-BR': '/gerador-de-proposta-comercial',
-      en: '/en/tools/proposal',
-      es: '/es/tools/proposal',
-      'x-default': '/gerador-de-proposta-comercial'
-    }
-  },
+  alternates: { canonical: content.path },
   openGraph: {
     title: content.title,
     description: content.description,
-    url: '/gerador-de-proposta-comercial'
+    url: content.path
   },
   twitter: { card: 'summary_large_image', title: content.title, description: content.description }
 };
