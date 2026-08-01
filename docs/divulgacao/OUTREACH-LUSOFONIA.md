@@ -11,6 +11,7 @@ Lista operacional. Marque ao enviar.
 | Blog Negócios / Pequenas Empresas | formulário contato | Orçamento + Pix | [ ] |
 | Comunidades MEI (FB/Telegram) | grupos em que já participa | `colar/04-comunidade-mei.txt` | [ ] |
 | LinkedIn BR | perfil Wellem | `colar/03-linkedin-preco.txt` | [x] https://lnkd.in/dD27Rwpk |
+| LinkedIn BR · lote artes | perfil Wellem | `colar/29-linkedin-lote-artes.txt` + `ph-gallery/` | Post 1 FEITO https://lnkd.in/dSKZEUE3 · resto COLAR |
 | LinkedIn DM | conexões 1º grau | `colar/23-linkedin-dm-conexoes.txt` | COLAR (lista curta) |
 | TabNews | https://www.tabnews.com.br/resolvajato/... | `colar/20-br-tabnews.txt` | [x] |
 

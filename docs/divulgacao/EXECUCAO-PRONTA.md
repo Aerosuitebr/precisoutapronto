@@ -54,6 +54,15 @@ Stories MEI vs CLT: `colar/02b-instagram-stories-mei.txt` + `assets/05-preco-og.
 **LinkedIn PT (currículo):** FEITO · `colar/18-pt-linkedin-curriculo.txt`  
 **DM conexões:** `colar/23-linkedin-dm-conexoes.txt` (COLAR · lista curta 5 a 15/dia)
 
+### 3b) LinkedIn · lote com artes novas (navy / gold)
+
+**Status:** COLAR (1 post por dia)  
+**Arquivo:** `colar/29-linkedin-lote-artes.txt`  
+**Artes feed (recomendado):** `ph-gallery/ph-gallery-*.png` (1536×1024)  
+**Artes verticais:** `assets/promo-*-stories.png` (1024×1536)
+
+Fila: orçamento Pix → currículo → recibo → proposta → marca → celular.
+
 ---
 
 ## 4) Facebook · Página Resolva Jato + grupo MEI

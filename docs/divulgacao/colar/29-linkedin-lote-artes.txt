@@ -1,0 +1,103 @@
+LinkedIn · lote com artes novas (navy / gold / sky)
+Publicar 1 por dia no perfil Wellem (e compartilhar como página Aero Suite se quiser).
+Arte principal = landscape da ph-gallery (melhor no feed). Stories 9:16 = opcional.
+
+Legenda de status: COLAR até publicar · depois marcar FEITO + link lnkd.in
+
+================================================================================
+POST 1 · Orçamento com Pix
+Status: FEITO · https://lnkd.in/dSKZEUE3 (31 jul 2026 · texto + card OG do site; arte ph-gallery não anexada: upload de arquivo bloqueado no browser Cursor)
+Arte: docs/divulgacao/ph-gallery/ph-gallery-orcamento-pix.png
+Alt: docs/divulgacao/assets/promo-orcamento-pix-stories.png
+--------------------------------------------------------------------------------
+Cliente some depois do orçamento? Ou aprova e some na hora de pagar?
+
+No Resolva Jato o orçamento vai no celular, o cliente aprova e paga com Pix.
+Sem app. Sem maquininha.
+
+https://resolvajato.com.br/orcamento-com-pix?utm_source=linkedin&utm_medium=organic_social&utm_campaign=li_orcamento_pix
+
+Ferramenta grátis. Feita pro fluxo real de MEI e freelancer.
+================================================================================
+
+POST 2 · Currículo em PDF (estudantes / 1º emprego)
+Status: FEITO · arte ph-gallery anexada · texto ok (usuário: "ficou ótimo") · ~31 jul 2026
+Boost: Aero Suite repost FEITO · comentário próprio FEITO
+Arte: docs/divulgacao/ph-gallery/ph-gallery-curriculo.png
+Alt: docs/divulgacao/assets/promo-curriculo-stories.png
+Nota: no feed a arte saiu completa (preview do composer cortava; publicação final ok)
+--------------------------------------------------------------------------------
+Currículo travado no Word ainda é o padrão. Não precisava ser.
+
+Monte um PDF limpo, com preview ao vivo, em minutos.
+Bom pra primeiro emprego, estágio e troca de área.
+
+https://resolvajato.com.br/gerador-de-curriculo?utm_source=linkedin&utm_medium=organic_social&utm_campaign=li_curriculo
+
+Grátis no Resolva Jato. Sem brigar com formatação.
+================================================================================
+
+POST 3 · Recibo em PDF
+Status: FEITO · https://www.linkedin.com/feed/update/urn:li:activity:7488976268164763648/ · arte ph-gallery · 31 jul 2026
+Arte: docs/divulgacao/ph-gallery/ph-gallery-recibo.png
+Alt: docs/divulgacao/assets/promo-recibo-stories.png
+--------------------------------------------------------------------------------
+Prestou o serviço. Falta o recibo com valor por extenso, pronto pra WhatsApp ou e-mail.
+
+Gere o PDF online, com dados do cliente e forma de pagamento.
+
+https://resolvajato.com.br/gerador-de-recibo?utm_source=linkedin&utm_medium=organic_social&utm_campaign=li_recibo
+
+Online e grátis no Resolva Jato. Ideal pra MEI, freela e controle simples.
+================================================================================
+
+POST 4 · Proposta comercial (bom pra prestadores e escritórios)
+Status: FEITO · https://www.linkedin.com/feed/update/urn:li:activity:7488977563759992833/ · arte ph-gallery · 31 jul 2026
+Arte: docs/divulgacao/ph-gallery/ph-gallery-proposta.png
+Alt: docs/divulgacao/assets/promo-proposta-stories.png
+--------------------------------------------------------------------------------
+Proposta no Word genérico perde cliente antes da leitura.
+
+Monte uma proposta com cara de agência, itens, valores e total, e envie em minutos.
+
+https://resolvajato.com.br/gerador-de-proposta-comercial?utm_source=linkedin&utm_medium=organic_social&utm_campaign=li_proposta
+
+Grátis pra começar no Resolva Jato.
+================================================================================
+
+POST 5 · Marca · hub de ferramentas
+Status: FEITO · https://www.linkedin.com/feed/update/urn:li:activity:7488978234076938240/ · arte ph-gallery · 31 jul 2026
+Arte: docs/divulgacao/ph-gallery/ph-gallery-marca.png
+Alt: docs/divulgacao/assets/promo-marca-site-stories.png
+--------------------------------------------------------------------------------
+Orçamento com Pix. Currículo. Recibo. Proposta.
+Tudo no mesmo lugar, grátis pra começar.
+
+Resolva Jato: ferramentas pro dia a dia de MEI, freelancer e quem vive de serviço.
+
+https://resolvajato.com.br/?utm_source=linkedin&utm_medium=organic_social&utm_campaign=li_marca
+
+Sem enrolação. Entra, usa, resolve.
+================================================================================
+
+POST 6 · Ferramentas no celular
+Status: FEITO · https://www.linkedin.com/feed/update/urn:li:activity:7488979367080099840/ · arte stories 9:16 · 31 jul 2026
+Boost: Aero Suite repost FEITO · comentário próprio FEITO
+Arte: docs/divulgacao/assets/promo-ferramentas-vivo-stories.png
+(só existe em 9:16; no LinkedIn funciona como imagem única alta)
+--------------------------------------------------------------------------------
+Você resolve orçamento, currículo, recibo e proposta no celular?
+Dá. Sem instalar app de cada coisa.
+
+https://resolvajato.com.br/?utm_source=linkedin&utm_medium=organic_social&utm_campaign=li_celular
+
+Resolva Jato no browser. Rápido o bastante pro dia corrido.
+================================================================================
+
+Como publicar
+1. Abrir LinkedIn → Início → Começar uma publicação
+2. Anexar a ARTE do post do dia (ph-gallery primeiro)
+3. Colar o texto (com o link UTM)
+4. Publicar → copiar link do post → marcar FEITO neste arquivo e em OUTREACH-LUSOFONIA.md
+
+Ordem sugerida esta semana: 1 → 2 → 3 → 4 → 5 (6 se sobrar slot)

@@ -49,12 +49,23 @@ async function resolveFile(urlPath) {
   if (await fileExists(withHtml)) return withHtml;
   const nestedIndex = safeJoin(staticDir, path.join(cleanPath, 'index.html'));
   if (await fileExists(nestedIndex)) return nestedIndex;
-  return safeJoin(staticDir, 'index.html');
+  return null;
 }
 
 const server = http.createServer(async (request, response) => {
   try {
     const filePath = await resolveFile(request.url || '/');
+    if (!filePath) {
+      const notFoundPath = path.join(staticDir, '404.html');
+      const body = await fs.readFile(notFoundPath);
+      response.writeHead(404, {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'X-Robots-Tag': 'noindex, follow'
+      });
+      response.end(body);
+      return;
+    }
     const body = await fs.readFile(filePath);
     response.writeHead(200, {
       'Content-Type': contentType(filePath),

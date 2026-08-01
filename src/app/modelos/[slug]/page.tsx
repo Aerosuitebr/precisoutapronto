@@ -17,7 +17,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     page.description.length >= 70
       ? page.description
       : `${page.description} Veja orientações práticas, perguntas frequentes e a ferramenta indicada.`;
-  return { title: page.title, description, alternates: { canonical: `/modelos/${page.slug}` } };
+  const url = `/modelos/${page.slug}`;
+  return {
+    title: page.title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: page.title,
+      description,
+      type: 'article',
+      url,
+      images: [{ url: '/opengraph-image' }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: page.title,
+      description,
+      images: ['/opengraph-image']
+    }
+  };
 }
 export default async function IntentPageRoute({ params }: Props) {
   const page = getIntentPage((await params).slug);
@@ -32,7 +50,21 @@ export default async function IntentPageRoute({ params }: Props) {
         name: page.title,
         description: page.description,
         url: `${base}/modelos/${page.slug}`,
-        inLanguage: 'pt-BR'
+        inLanguage: 'pt-BR',
+        dateModified: '2026-08-01',
+        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+      },
+      {
+        '@type': 'HowTo',
+        name: page.title,
+        description: page.description,
+        inLanguage: 'pt-BR',
+        step: page.steps.map((step, index) => ({
+          '@type': 'HowToStep',
+          position: index + 1,
+          name: `Passo ${index + 1}`,
+          text: step
+        }))
       },
       {
         '@type': 'BreadcrumbList',
