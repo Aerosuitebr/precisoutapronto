@@ -38,18 +38,19 @@ Revisão GSC: formulário aberto; confirmar envio manual se o botão ainda disse
 - [x] Deploy SEO no ar (robots, sitemaps segmentados, JSON-LD)
 - [x] IndexNow completo: **159 URLs** aceitas (HTTP 200)
 - [x] Audit live das URLs pendentes do dia 1: 200 + canônica correta + sem spam
-- [ ] Enviar no GSC (domínio): `sitemap.xml` + `sitemaps/index.xml`
+- [x] Enviar no GSC (domínio): `sitemap.xml` + `sitemaps/index.xml` (já processados; reenviados 01/ago)
 - [ ] Solicitar indexação das URLs restantes do dia 1 (abaixo)
 
 ## Diagnóstico 01/ago · por que não há cliques
 
-Bloqueios técnicos encontrados (código corrigido na mesma data; **precisa deploy**):
+Bloqueios técnicos encontrados (código corrigido na mesma data; **deploy feito**):
 
-1. **`Disallow: /conta` bloqueava `/contato`** (prefix match do Google) — página no sitemap + bloqueada no robots.
-2. **Title/canonical streamados depois de `</head>`** — root layout lia `headers()`; GSC via “canônica declarada: nenhuma” (ex.: currículo → canônica spam `747live.bet` no crawl antigo).
-3. **Sitemaps ainda não enviados** na propriedade de domínio GSC (checkbox acima).
-4. **Safe Browsing / páginas enganosas** — confirmar se a revisão GSC já foi aprovada; sem isso o Google suprime impressões/cliques.
-5. IndexNow **não notifica o Google** — só Bing/parceiros.
+1. **`Disallow: /conta` bloqueava `/contato`** (prefix match do Google) — **confirmado no GSC live**: “Bloqueada pelo robots.txt”.
+2. **Cloudflare cacheava `robots.txt` por 24h (`s-maxage=86400`)** — Googlebot via regra antiga mesmo após o fix; **Purge Everything** feito no CF.
+3. **Cache próprio do Google do robots.txt** (até ~24h) — teste live de `/contato` ainda pode falhar até o Google refrescar; pedir indexação mesmo assim.
+4. **Title/canonical streamados depois de `</head>`** — corrigido (metadata agora no head inicial).
+5. **Safe Browsing** — GSC “Problemas de segurança”: **nenhum problema detectado** (01/ago).
+6. IndexNow **não notifica o Google** — só Bing/parceiros.
 
 ## Dia 1 · prioridade comercial · 15 URLs
 
