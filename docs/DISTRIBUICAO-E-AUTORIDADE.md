@@ -8,6 +8,9 @@ Estas ações dependem de contas externas e relacionamento humano; por isso não
 **Google Workspace (e-mail `contato@`, SMTP, DNS, GSC):**  
 [`docs/divulgacao/GOOGLE-WORKSPACE.md`](./divulgacao/GOOGLE-WORKSPACE.md)
 
+**Sala de imprensa e embeds (backlinks):**  
+[`docs/divulgacao/AUTORIDADE-BACKLINKS.md`](./divulgacao/AUTORIDADE-BACKLINKS.md) · páginas `/imprensa`, `/embed`, `/checklist-cobranca-mei`
+
 ## Perfis e diretórios
 
 - Google Business Profile: ver checklist em [`GOOGLE-WORKSPACE.md`](./divulgacao/GOOGLE-WORKSPACE.md) (área de serviço digital, sem endereço inventado).

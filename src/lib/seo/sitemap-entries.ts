@@ -85,6 +85,9 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/assistente/documentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${base}/contato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/sobre`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${base}/imprensa`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/embed`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.65 },
+    { url: `${base}/checklist-cobranca-mei`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/privacidade`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${base}/termos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 }
   ];

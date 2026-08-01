@@ -20,6 +20,9 @@ Language: pt-BR
 - https://resolvajato.com.br/gerador-de-referencias-abnt
 - https://resolvajato.com.br/agenda-online
 - https://resolvajato.com.br/divisor-de-conta
+- https://resolvajato.com.br/imprensa
+- https://resolvajato.com.br/embed
+- https://resolvajato.com.br/checklist-cobranca-mei
 - https://resolvajato.com.br/gerador-de-contrato
 - https://resolvajato.com.br/gerador-de-recibo
 - https://resolvajato.com.br/gerador-de-proposta-comercial

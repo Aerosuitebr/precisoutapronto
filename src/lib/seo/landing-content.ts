@@ -175,6 +175,7 @@ export const SEO_LANDINGS = {
       }
     ],
     related: [
+      { href: '/checklist-cobranca-mei', label: 'Checklist de cobrança', blurb: 'Do orçamento ao recibo' },
       { href: '/orcamento-com-pix', label: 'Orçamento + Pix', blurb: 'Fluxo completo de cobrança' },
       { href: '/gerador-de-recibo', label: 'Recibo', blurb: 'PDF profissional' },
       { href: '/para/freelancers', label: 'Freelancers', blurb: 'Mesmo stack, outro ângulo' }

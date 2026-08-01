@@ -177,3 +177,20 @@ Painel no produto: `/conta` (Indique e ganhe).
 - https://resolvajato.com.br/
 
 **Nota:** a landing e o preview são públicos. Baixar/salvar PDF pede conta grátis (`/cadastro?next=/ferramentas/...`).
+
+---
+
+## Autoridade / backlinks (COLAR)
+
+**Status:** COLAR  
+**Playbook:** `AUTORIDADE-BACKLINKS.md`  
+**E-mail pronto:** `colar/33-outreach-mei-rh-educacao.txt`
+
+Páginas para pedir menção (sempre internas, não só a home):
+- https://resolvajato.com.br/imprensa
+- https://resolvajato.com.br/embed
+- https://resolvajato.com.br/checklist-cobranca-mei
+- https://resolvajato.com.br/calculadora-de-rescisao
+- https://resolvajato.com.br/corretor-de-redacao-enem
+
+Meta: 10 e-mails/dia · pedir link para URL específica · oferecer badge de `/embed`.

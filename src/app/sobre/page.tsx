@@ -66,11 +66,17 @@ export default function SobrePage() {
           <Link href="/opengraph-image" className="font-semibold text-sky-700 hover:text-sky-800">
             Imagem institucional
           </Link>
-          <Link href="/contato" className="font-semibold text-sky-700 hover:text-sky-800">
+          <Link href="/embed" className="font-semibold text-sky-700 hover:text-sky-800">
+            Badges e embeds
+          </Link>
+          <Link href="/imprensa" className="font-semibold text-sky-700 hover:text-sky-800">
             Contato de imprensa
           </Link>
           <Link href="/recursos" className="font-semibold text-sky-700 hover:text-sky-800">
             Catálogo público
+          </Link>
+          <Link href="/checklist-cobranca-mei" className="font-semibold text-sky-700 hover:text-sky-800">
+            Checklist MEI
           </Link>
         </div>
       </section>

@@ -55,6 +55,9 @@ export function SiteJsonLd() {
       'trabalho e estudo',
       'cálculos trabalhistas',
       'MEI e freelancers',
+      'cobrança para MEI',
+      'redação ENEM',
+      'referências ABNT',
       'ferramentas para games'
     ],
     brand: {
