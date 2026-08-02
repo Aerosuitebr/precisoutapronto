@@ -6,6 +6,8 @@
  *   node --env-file=.env scripts/seo/send-outreach-day.mjs --dry-run
  *   node --env-file=.env scripts/seo/send-outreach-day.mjs --send
  *   node --env-file=.env scripts/seo/send-outreach-day.mjs --send --self-test
+ *   node --env-file=.env scripts/seo/send-outreach-day.mjs --day=docs/divulgacao/outreach-followup-2026-08-04.json --dry-run
+ *   node --env-file=.env scripts/seo/send-outreach-day.mjs --day=docs/divulgacao/outreach-followup-2026-08-04.json --send
  */
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
@@ -32,6 +34,41 @@ function pitchFor(contact) {
   const link = contact.primaryUrl;
   const embed = 'https://resolvajato.com.br/embed?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
   const press = 'https://resolvajato.com.br/imprensa?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
+
+  if (contact.angle === 'followup') {
+    const askLabel = contact.askLabel || 'recurso gratuito';
+    const prev = contact.previousSubject || 'mensagem anterior';
+    const secondary = contact.secondaryUrl
+      ? `\nSe preferir outra URL da mesma linha: ${contact.secondaryUrl}`
+      : '';
+    const subject = prev.startsWith('Re:') ? prev : `Re: ${prev}`;
+    const body = stripDashes(
+      [
+        `Olá, equipe ${contact.org},`,
+        '',
+        'Complementando o e-mail de 1º de agosto: o pedido concreto é um link ou menção para a página interna abaixo (não só a home).',
+        '',
+        `Recurso: ${askLabel}`,
+        `URL para linkar: ${link}${secondary}`,
+        '',
+        `Badges HTML prontos: ${embed}`,
+        `Press kit / como citar: ${press}`,
+        '',
+        'Se não for o momento, tudo bem. Se couber numa matéria, guia ou lista de ferramentas, esse link interno ajuda o público a achar o recurso certo.',
+        '',
+        'Abraço,',
+        'Wellem Lyra',
+        'contato@resolvajato.com.br',
+        'https://resolvajato.com.br/?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_fu_2026_08'
+      ].join('\n')
+    );
+    return {
+      subject: stripDashes(subject),
+      text: body,
+      inReplyTo: contact.previousMessageId || null,
+      references: contact.previousMessageId || null
+    };
+  }
 
   const byAngle = {
     rescisao: {
@@ -99,10 +136,10 @@ function pitchFor(contact) {
     ].join('\n')
   );
 
-  return { subject: stripDashes(pack.subject), text: body };
+  return { subject: stripDashes(pack.subject), text: body, inReplyTo: null, references: null };
 }
 
-async function sendViaResend({ from, to, subject, text }) {
+async function sendViaResend({ from, to, subject, text, headers }) {
   const key = env('RESEND_API_KEY');
   if (!key) return null;
   const res = await fetch('https://api.resend.com/emails', {
@@ -111,7 +148,13 @@ async function sendViaResend({ from, to, subject, text }) {
       Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ from, to: [to], subject, text })
+    body: JSON.stringify({
+      from,
+      to: [to],
+      subject,
+      text,
+      ...(headers ? { headers } : {})
+    })
   });
   if (!res.ok) {
     const body = await res.text();
@@ -121,14 +164,18 @@ async function sendViaResend({ from, to, subject, text }) {
   return { messageId: json.id || 'resend', provider: 'resend' };
 }
 
-async function sendViaSmtp({ from, to, subject, text, transporter }) {
+async function sendViaSmtp({ from, to, subject, text, transporter, inReplyTo, references }) {
+  const headers = { 'Content-Language': 'pt-BR' };
+  if (inReplyTo) headers['In-Reply-To'] = inReplyTo;
+  if (references) headers.References = references;
   const info = await transporter.sendMail({
     from,
     to,
     replyTo: env('SMTP_USER'),
     subject,
     text,
-    headers: { 'Content-Language': 'pt-BR' }
+    headers,
+    ...(inReplyTo ? { inReplyTo, references: references || inReplyTo } : {})
   });
   return { messageId: info.messageId, provider: 'smtp' };
 }
@@ -184,12 +231,20 @@ async function main() {
     : contacts;
 
   for (const contact of queue) {
-    const { subject, text } = pitchFor(contact);
+    const { subject, text, inReplyTo, references } = pitchFor(contact);
+    const threadHeaders =
+      inReplyTo || references
+        ? {
+            ...(inReplyTo ? { 'In-Reply-To': inReplyTo } : {}),
+            ...(references ? { References: references } : {})
+          }
+        : null;
     const entry = {
       id: contact.id,
       org: contact.org,
       email: contact.email,
       subject,
+      primaryUrl: contact.primaryUrl || null,
       dryRun,
       at: new Date().toISOString()
     };
@@ -197,6 +252,7 @@ async function main() {
     if (dryRun) {
       entry.status = 'dry-run';
       console.log(`[dry-run] ${contact.email} · ${subject}`);
+      console.log(`         → ${contact.primaryUrl || '(sem URL)'}`);
       results.push(entry);
       continue;
     }
@@ -205,7 +261,13 @@ async function main() {
       let sent;
       if (hasResend) {
         try {
-          sent = await sendViaResend({ from, to: contact.email, subject, text });
+          sent = await sendViaResend({
+            from,
+            to: contact.email,
+            subject,
+            text,
+            headers: threadHeaders
+          });
         } catch (resendError) {
           if (!hasSmtp) throw resendError;
           console.warn(`Resend falhou (${contact.email}), tentando SMTP...`);
@@ -218,10 +280,26 @@ async function main() {
               auth: { user, pass }
             });
           }
-          sent = await sendViaSmtp({ from, to: contact.email, subject, text, transporter });
+          sent = await sendViaSmtp({
+            from,
+            to: contact.email,
+            subject,
+            text,
+            transporter,
+            inReplyTo,
+            references
+          });
         }
       } else {
-        sent = await sendViaSmtp({ from, to: contact.email, subject, text, transporter });
+        sent = await sendViaSmtp({
+          from,
+          to: contact.email,
+          subject,
+          text,
+          transporter,
+          inReplyTo,
+          references
+        });
       }
       entry.status = 'sent';
       entry.provider = sent.provider;
@@ -239,9 +317,10 @@ async function main() {
   const logDir = path.join(path.dirname(listPath), 'logs');
   if (!existsSync(logDir)) mkdirSync(logDir, { recursive: true });
   const stamp = new Date().toISOString().slice(0, 10);
+  const kind = /followup/i.test(path.basename(listPath)) ? '-followup' : '';
   const logPath = path.join(
     logDir,
-    `outreach-${stamp}${selfTest ? '-selftest' : ''}${dryRun ? '-dry' : ''}.json`
+    `outreach-${stamp}${kind}${selfTest ? '-selftest' : ''}${dryRun ? '-dry' : ''}.json`
   );
   writeFileSync(logPath, JSON.stringify(results, null, 2));
   console.log(`Log: ${logPath}`);

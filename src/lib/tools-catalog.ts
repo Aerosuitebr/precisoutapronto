@@ -11,6 +11,7 @@ import {
   ImageOff,
   GraduationCap,
   Mail,
+  MapPin,
   PenLine,
   Receipt,
   Scale,
@@ -100,6 +101,20 @@ export const toolCategories: ToolCategory[] = [
 ];
 
 export const toolsCatalog: ToolDefinition[] = [
+  {
+    id: "mira",
+    name: "MIRA",
+    description: "Encontre empresas para prospectar ou profissionais próximos do local do serviço.",
+    tip: "Escolha entre a busca empresarial e a busca de profissionais por proximidade.",
+    href: process.env.NEXT_PUBLIC_MIRA_URL || (process.env.NODE_ENV === "development"
+      ? "http://localhost:4201/escolher-busca?origem=resolva-jato"
+      : "https://search.aerosuite.com.br/escolher-busca?origem=resolva-jato"),
+    icon: MapPin,
+    categoryId: "negocios",
+    actionLabel: "Abrir o MIRA",
+    keywords: ["mira", "empresas", "prospecção", "profissionais", "serviços", "perto", "localização"],
+    status: "available",
+  },
   {
     id: "juridicos",
     name: "Documentos Jurídicos",

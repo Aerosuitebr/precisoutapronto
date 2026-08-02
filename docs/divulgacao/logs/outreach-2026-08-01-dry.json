@@ -1,0 +1,92 @@
+[
+  {
+    "id": "melhor-rh",
+    "org": "Portal Melhor RH",
+    "email": "jussara.goyano@melhorrh.com.br",
+    "subject": "Sugestão de pauta · calculadora educativa de rescisão",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.381Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "melhor-rh-projetos",
+    "org": "Melhor RH / Revista Comunicação (projetos)",
+    "email": "simone.aline@revistacomunicacao.com.br",
+    "subject": "Badges prontos para linkar ferramentas grátis (MEI, RH, educação)",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "guia-estudante",
+    "org": "Guia do Estudante (Abril)",
+    "email": "guiadoestudante@abril.com.br",
+    "subject": "Recurso gratuito · corretor de redação ENEM (por competência)",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "portal-empreendedor",
+    "org": "Portal Empreendedor",
+    "email": "empreendedor@empreendedor.com.br",
+    "subject": "Checklist citável · cobrança para MEI (orçamento → Pix → recibo)",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "ja-brasil",
+    "org": "Junior Achievement Brasil",
+    "email": "imprensa@jabrasil.org.br",
+    "subject": "Ferramentas grátis para jovens · currículo, ENEM e ABNT",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "sebrae-sp",
+    "org": "Sebrae SP (imprensa)",
+    "email": "imprensa@sebraesp.com.br",
+    "subject": "Recurso gratuito para MEI · orçamento com Pix no WhatsApp",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "sebrae-ms",
+    "org": "Sebrae MS (jornalismo)",
+    "email": "jornalismo@ms.sebrae.com.br",
+    "subject": "Simulador gratuito MEI vs CLT (educativo)",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "sebrae-mt",
+    "org": "Sebrae MT (assessoria)",
+    "email": "assessoriadeimprensa@mt.sebrae.com.br",
+    "subject": "Checklist citável · cobrança para MEI (orçamento → Pix → recibo)",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "sebrae-pi",
+    "org": "Sebrae PI (ascom)",
+    "email": "ascom@pi.sebrae.com.br",
+    "subject": "Gerador de recibo grátis para MEI (PDF)",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  },
+  {
+    "id": "sebrae-sc",
+    "org": "Sebrae SC (ascom)",
+    "email": "julianes@sc.sebrae.com.br",
+    "subject": "Gerador de proposta comercial grátis (PDF)",
+    "dryRun": true,
+    "at": "2026-08-01T15:41:20.384Z",
+    "status": "dry-run"
+  }
+]

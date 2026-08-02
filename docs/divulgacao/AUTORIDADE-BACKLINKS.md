@@ -27,6 +27,40 @@ Objetivo: conquistar menções e links editoriais para páginas internas (não s
 
 Destinos: Melhor RH, Revista Comunicação, Guia do Estudante, Portal Empreendedor, Junior Achievement Brasil, Sebrae SP/MS/MT/PI/SC.
 
+### Follow-up 2026-08-01 (enviado)
+
+**Status:** ENVIADO 10/10 via SMTP no container `resolva-jato-app`  
+**Lista:** `docs/divulgacao/outreach-followup-2026-08-04.json`  
+**Log:** `docs/divulgacao/logs/outreach-2026-08-01-followup.json`  
+**Pedido:** link para página interna (não a home), com `Re:` + `In-Reply-To`
+
+| Destino | URL pedida |
+|---|---|
+| Melhor RH | `/calculadora-de-rescisao` |
+| Revista Comunicação | `/checklist-cobranca-mei` |
+| Guia do Estudante | `/corretor-de-redacao-enem` (+ currículo) |
+| Portal Empreendedor | `/checklist-cobranca-mei` |
+| JA Brasil | `/gerador-de-curriculo` |
+| Sebrae SP | `/checklist-cobranca-mei` |
+| Sebrae MS | `/calculadora-de-rescisao` |
+| Sebrae MT | `/checklist-cobranca-mei` |
+| Sebrae PI | `/gerador-de-recibo` |
+| Sebrae SC | `/gerador-de-recibo` |
+
+Disparo (VPS, SMTP do host):
+
+```bash
+node --env-file=.env.production scripts/seo/send-outreach-day.mjs \
+  --day=docs/divulgacao/outreach-followup-2026-08-04.json --send
+```
+
+Local (dry-run):
+
+```bash
+node --env-file=.env scripts/seo/send-outreach-day.mjs \
+  --day=docs/divulgacao/outreach-followup-2026-08-04.json --dry-run
+```
+
 ## Regras
 
 - Não comprar backlinks disfarçados.

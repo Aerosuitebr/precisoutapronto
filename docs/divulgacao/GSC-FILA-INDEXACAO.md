@@ -39,7 +39,7 @@ Revisão GSC: formulário aberto; confirmar envio manual se o botão ainda disse
 - [x] IndexNow completo: **159 URLs** aceitas (HTTP 200)
 - [x] Audit live das URLs pendentes do dia 1: 200 + canônica correta + sem spam
 - [x] Enviar no GSC (domínio): `sitemap.xml` + `sitemaps/index.xml` (já processados; reenviados 01/ago)
-- [ ] Solicitar indexação das URLs restantes do dia 1 (abaixo)
+- [x] Solicitar indexação do lote 1 (dia 1 restante + landings novas + autoridade) · 01/ago
 
 ## Diagnóstico 01/ago · por que não há cliques
 
@@ -59,34 +59,75 @@ Arquivo: `gsc-fila-day1.txt`
 1. `/` (feito · indexada)
 2. `/gerador-de-contrato` (feito · indexada)
 3. `/gerador-de-recibo` (feito · indexada)
-4. `/gerador-de-curriculo` (**pedir agora** · canônica live OK; crawl antigo tinha spam)
+4. `/gerador-de-curriculo` (feito · pedido 01/ago)
 5. `/gerador-de-proposta-comercial` (feito · indexada)
 6. `/calculadora-de-rescisao` (feito · indexada)
 7. `/para/mei` (feito · indexada)
 8. `/biblioteca` (feito · indexada)
 9. `/orcamento-com-pix` (feito · indexada)
-10. `/gerador-de-qr-code-pix` (**pedir agora**)
-11. `/calculadora-de-ferias` (**pedir agora**)
-12. `/calculadora-de-decimo-terceiro` (**pedir agora**)
-13. `/calculadora-de-preco-freelancer` (**pedir agora**)
-14. `/mei-ou-clt` (**pedir agora**)
-15. `/assistente/documentos` (**pedir agora** · live OK)
+10. `/gerador-de-qr-code-pix` (feito · pedido 01/ago)
+11. `/calculadora-de-ferias` (feito · pedido 01/ago)
+12. `/calculadora-de-decimo-terceiro` (feito · pedido 01/ago)
+13. `/calculadora-de-preco-freelancer` (feito · pedido 01/ago)
+14. `/mei-ou-clt` (feito · pedido 01/ago)
+15. `/assistente/documentos` (feito · pedido 01/ago)
 
-### Colar no GSC agora (7 URLs)
+### Lote 1 · feito (01/ago)
+
+Arquivo: `gsc-fila-hoje-2026-08-01.txt`  
+Pedidos feitos nas URLs que não estavam indexadas (landings novas + autoridade inclusas).
+
+Sitemaps: `sitemap.xml` + `sitemaps/index.xml` · Processado.
+
+### Colar no GSC agora · lote 2 (20 URLs)
+
+Arquivo: `gsc-fila-lote2-2026-08-01.txt`  
+`/para/*` + `/guias/*`. Se a cota acabar, pare e peça o lote 3 amanhã.
+
+**Status 01/ago:** cota excedida no meio do lote 2.  
+Pedidas até `guias/aviso-previo-proporcional-como-calcular` (e anteriores do lote).  
+**Faltam 9** → arquivo `gsc-fila-amanha-2026-08-02.txt` (primeiro amanhã, antes do dia 3).
 
 ```
-https://resolvajato.com.br/gerador-de-curriculo
-https://resolvajato.com.br/gerador-de-qr-code-pix
-https://resolvajato.com.br/calculadora-de-ferias
-https://resolvajato.com.br/calculadora-de-decimo-terceiro
-https://resolvajato.com.br/calculadora-de-preco-freelancer
-https://resolvajato.com.br/mei-ou-clt
-https://resolvajato.com.br/assistente/documentos
+https://resolvajato.com.br/guias/quanto-cobrar-por-hora-freelancer
+https://resolvajato.com.br/guias/custos-fixos-do-freelancer-como-ratear
+https://resolvajato.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
+https://resolvajato.com.br/para/autonomos
+https://resolvajato.com.br/para/empresas
+https://resolvajato.com.br/para/rh
+https://resolvajato.com.br/para/contadores
+https://resolvajato.com.br/para/advogados
+https://resolvajato.com.br/para/prestadores
 ```
 
-## Dia 2 · segmentos, modelos e guias · 20 URLs
+Lista completa do lote 2 (referência):
 
-Arquivo: `gsc-fila-day2.txt` (paths `/para/*`, `/modelos/*`, `/guias/*` restantes)
+```
+https://resolvajato.com.br/para/freelancers
+https://resolvajato.com.br/para/estudantes
+https://resolvajato.com.br/guias/modelo-de-recibo-mei
+https://resolvajato.com.br/guias/contrato-de-prestacao-de-servicos-gratis
+https://resolvajato.com.br/guias/como-calcular-rescisao
+https://resolvajato.com.br/guias/curriculo-pronto-para-baixar
+https://resolvajato.com.br/guias/como-fazer-orcamento-com-pix
+https://resolvajato.com.br/guias/proposta-comercial-para-mei
+https://resolvajato.com.br/guias/como-precificar-servico-freelancer
+https://resolvajato.com.br/guias/mei-ou-clt-como-comparar
+https://resolvajato.com.br/guias/aviso-previo-proporcional-como-calcular
+https://resolvajato.com.br/guias/quanto-cobrar-por-hora-freelancer
+https://resolvajato.com.br/guias/custos-fixos-do-freelancer-como-ratear
+https://resolvajato.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
+https://resolvajato.com.br/para/autonomos
+https://resolvajato.com.br/para/empresas
+https://resolvajato.com.br/para/rh
+https://resolvajato.com.br/para/contadores
+https://resolvajato.com.br/para/advogados
+https://resolvajato.com.br/para/prestadores
+```
+
+## Dia 2 · segmentos e guias · 20 URLs
+
+Arquivo: `gsc-fila-day2.txt` (mesmo conteúdo do lote 2 acima)
 
 ## Dia 3 · demais landings de ferramenta · ~19 URLs
 

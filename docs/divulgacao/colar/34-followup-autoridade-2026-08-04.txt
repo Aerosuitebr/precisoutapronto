@@ -1,0 +1,42 @@
+# Follow-up outreach · 04/ago/2026
+
+Pedido: link para página interna (não a home).
+Disparo: terça 04/ago (3 dias após o lote de 01/ago).
+
+## Exemplo de corpo (Sebrae PI → recibo)
+
+```
+Olá, equipe Sebrae PI (ascom),
+
+Complementando o e-mail de 1º de agosto: o pedido concreto é um link ou menção para a página interna abaixo (não só a home).
+
+Recurso: gerador de recibo grátis (PDF)
+URL para linkar: https://resolvajato.com.br/gerador-de-recibo?utm_source=sebraepi&utm_medium=partner&utm_campaign=autoridade_fu_2026_08
+
+Badges HTML prontos: https://resolvajato.com.br/embed?...
+Press kit / como citar: https://resolvajato.com.br/imprensa?...
+
+Se não for o momento, tudo bem. Se couber numa matéria, guia ou lista de ferramentas, esse link interno ajuda o público a achar o recurso certo.
+
+Abraço,
+Wellem Lyra
+```
+
+## Mapa URL pedida
+
+- Melhor RH → /calculadora-de-rescisao
+- Revista Comunicação → /checklist-cobranca-mei
+- Guia do Estudante → /corretor-de-redacao-enem (+ currículo)
+- Portal Empreendedor → /checklist-cobranca-mei
+- JA Brasil → /gerador-de-curriculo
+- Sebrae SP / MT → /checklist-cobranca-mei
+- Sebrae MS → /calculadora-de-rescisao
+- Sebrae PI / SC → /gerador-de-recibo
+
+## Comando (VPS)
+
+```bash
+cd /opt/resolva-jato
+node --env-file=.env.production scripts/seo/send-outreach-day.mjs \
+  --day=docs/divulgacao/outreach-followup-2026-08-04.json --send
+```

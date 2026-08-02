@@ -22,6 +22,7 @@ import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { SegmentPreference } from '@/components/growth/segment-preference';
+import { MiraFeaturedCta } from '@/components/marketing/mira-featured-cta';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
@@ -195,6 +196,8 @@ export function LandingPage() {
       </section>
 
       <SegmentPreference />
+
+      <MiraFeaturedCta />
 
       <section className="border-b border-slate-200 bg-[linear-gradient(135deg,#f0fdfa_0%,#ffffff_45%,#fff7ed_100%)]">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-12">

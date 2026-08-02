@@ -6,6 +6,7 @@ import { SiteHeader } from '@/components/marketing/site-header';
 import { PUBLIC_TOOL_LANDINGS } from '@/lib/seo/public-tool-landings';
 import { toolCategories, toolsCatalog } from '@/lib/tools-catalog';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { MiraFeaturedCta } from '@/components/marketing/mira-featured-cta';
 
 export const metadata: Metadata = {
   title: 'Ferramentas online grátis para trabalho e estudos',
@@ -84,6 +85,8 @@ export default function RecursosPage() {
           </div>
         </header>
         <div className="mx-auto max-w-6xl space-y-12 px-4 py-12 sm:px-6">
+          <MiraFeaturedCta compact />
+
           {toolCategories.map((category) => {
             const items = toolsCatalog.filter((tool) => tool.categoryId === category.id && tool.status !== 'soon');
             return (
