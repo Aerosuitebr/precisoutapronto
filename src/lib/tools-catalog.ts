@@ -21,6 +21,7 @@ import {
   Wallet,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { getAppEnv } from "@/lib/app-env";
 
 export type ToolCategoryId =
   "juridico" | "contabeis" | "negocios" | "carreira" | "organizacao";
@@ -113,7 +114,8 @@ export const toolsCatalog: ToolDefinition[] = [
     categoryId: "negocios",
     actionLabel: "Abrir o MIRA",
     keywords: ["mira", "empresas", "prospecção", "profissionais", "serviços", "perto", "localização"],
-    status: "available",
+    // Em produção fica oculto (status soon); staging/dev mostram normalmente.
+    status: getAppEnv() === "production" ? "soon" : "available",
   },
   {
     id: "juridicos",

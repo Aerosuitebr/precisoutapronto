@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import { ArrowRight, Building2, MapPin, Radar, Search } from 'lucide-react';
+import { getAppEnv } from '@/lib/app-env';
 import { getToolById } from '@/lib/tools-catalog';
 import { cn } from '@/lib/utils';
 
+/** Escondido em produção até ajustes finais; código permanece para staging/dev. */
 export function MiraFeaturedCta({ compact = false }: { compact?: boolean }) {
+  if (getAppEnv() === 'production') return null;
+
   const href = getToolById('mira')?.href || 'https://search.aerosuite.com.br/escolher-busca?origem=resolva-jato';
   return (
     <section className={cn('relative overflow-hidden bg-slate-950 text-white', compact ? 'rounded-[2rem]' : 'border-b border-slate-800')}>
