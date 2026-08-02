@@ -3,7 +3,7 @@ import { getSharedDocumentCta } from '../src/lib/shared-document-growth';
 
 test('shared contract points to its editor with referral attribution', () => {
   const cta = getSharedDocumentCta('contratos');
-  expect(cta.href).toContain('/ferramentas/contratos?');
+  expect(cta.href).toContain('/gerador-de-contrato?');
   expect(cta.href).toContain('utm_source=shared_document');
   expect(cta.href).toContain('utm_content=contratos');
 });
