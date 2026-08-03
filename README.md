@@ -1,10 +1,24 @@
-# RJ Resolva Jato
+# Resolva Jato
 
-Aplicacao Next.js para layout, identidade visual e estrutura de componentes reutilizaveis do RJ Resolva Jato, uma plataforma de gestao para manutencao de jatos executivos.
+Hub de ferramentas gratuitas e freemium — orçamentos, contratos, currículo, Pix, documentos jurídicos e mais.
 
-## Documentacao de arquitetura
+| Item | Valor |
+|------|--------|
+| Produto | Resolva Jato (hub) |
+| Domínio | https://resolvajato.com.br |
+| Staging | https://staging.resolvajato.com.br |
+| Org | [Aerosuitebr](https://github.com/Aerosuitebr) |
+| Stack | Next.js 15 · Prisma · PostgreSQL · Docker · Evolution WhatsApp |
 
-- [Arquitetura incremental de crescimento](docs/ARQUITETURA-CRESCIMENTO.md)
+## Ecossistema
+
+| Repo | Papel |
+|------|--------|
+| **resolva-jato** (este) | Hub de ferramentas |
+| [mira](https://github.com/Aerosuitebr/mira) | Busca B2B (empresas / profissionais) |
+| [aerosuite](https://github.com/Aerosuitebr/aerosuite) | Marca + ops da plataforma |
+
+O MIRA é integrado via `NEXT_PUBLIC_MIRA_URL` (produção: `https://search.aerosuite.com.br/escolher-busca?origem=resolva-jato`).
 
 ## Como rodar
 
@@ -13,42 +27,11 @@ npm install
 npm run dev
 ```
 
-Depois acesse `http://localhost:3000`.
+Acesse http://localhost:3000.
 
-Para abrir a versao estatica validada:
+Produção Docker: veja [DOCKER.md](DOCKER.md).
 
-```bash
-npm run build
-npm start
-```
+## Documentação
 
-Depois acesse `http://localhost:5173`.
-
-No Windows, tambem pode executar `abrir-rj-resolva-jato.cmd`.
-
-## Estrutura
-
-- `src/app`: rotas do Next App Router, incluindo dashboard, login, propostas e ordens de servico.
-- `src/components/layout`: AppShell, sidebar, busca de modulos, usuario, banner e footer.
-- `src/components/shared`: componentes reutilizaveis de pagina, filtros, tabela, status, acoes, empty state e KPIs.
-- `src/components/ui`: componentes base no padrao shadcn/ui usados pela interface.
-- `src/components/brand`: logo, icone e watermark SVG inline.
-- `src/lib`: dados mock, tipos, menu e helpers.
-- `src/hooks`: estado de collapse da sidebar e rota ativa.
-
-## Componentes principais
-
-- `PageHero`: `title`, `subtitle`, `icon`, `actions`.
-- `SearchFilterBar`: `searchValue`, `onSearchChange`, `statusFilter`, `onStatusChange`, `statusOptions`, `metadata`, `placeholder`.
-- `DataTable`: `columns`, `data`, `totalRecords`, `page`, `pageSize`.
-- `StatusBadge`: `status`.
-- `ActionIconButton`: `icon`, `label`, `onClick`, `variant`.
-- `KpiCard`: `item`.
-
-## Proximos passos
-
-- Conectar autenticacao real.
-- Integrar API/backend.
-- Adicionar i18n.
-- Expandir modulos de estoque, cadastros e oficina.
-- Substituir mocks por dados persistidos.
+- [Arquitetura de crescimento](docs/ARQUITETURA-CRESCIMENTO.md)
+- [Ecossistema](docs/ECOSYSTEM.md)
