@@ -49,6 +49,7 @@ import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, receiptFromBriefing } from '@/lib/assistant-briefing';
 import { applyProfileToReceipt, type ProfileMemory } from '@/lib/profile-memory';
 import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
+import { trackEvent } from '@/lib/analytics';
 
 type EditorTab = 'valores' | 'recebedor' | 'pagador';
 type TouchedKey =
@@ -351,6 +352,7 @@ export function RecibosApp() {
         return;
       }
       refreshAuth();
+      trackEvent('document_completed', { tool_name: 'recibos', output: 'pdf' });
       afterPdfExport('recibo');
     } catch {
       setError('Não foi possível gerar o PDF. Tente novamente.');

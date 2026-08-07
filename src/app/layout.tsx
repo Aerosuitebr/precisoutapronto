@@ -18,11 +18,11 @@ const bingVerification = process.env.BING_SITE_VERIFICATION;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Resolva Jato | Ferramentas online grátis para o dia a dia',
+    default: 'Ferramentas para MEI: orçamento, Pix, recibo e contrato | Resolva Jato',
     template: '%s | Resolva Jato'
   },
   description:
-    'Ferramentas online grátis para trabalho, estudo e tarefas do dia a dia: contratos, recibos, currículo, Pix, cálculos, documentos, IA e Jato Games.',
+    'Crie orçamento com Pix, recibo, proposta e contrato para enviar ao cliente pelo WhatsApp. Ferramentas online para MEI e autônomos.',
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   ...(staging ? { robots: stagingRobots() } : {}),
   openGraph: {
-    title: 'Resolva Jato | Ferramentas online grátis para o dia a dia',
-    description: 'Documentos, cálculos, estudo, produtividade e games em ferramentas práticas que funcionam no navegador.',
+    title: 'Ferramentas para MEI: orçamento, Pix, recibo e contrato | Resolva Jato',
+    description: 'Crie orçamento com Pix, recibo, proposta e contrato para enviar ao cliente pelo WhatsApp. Ferramentas online para MEI e autônomos.',
     locale: 'pt_BR',
     type: 'website',
     url: siteUrl,
@@ -43,21 +43,19 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Resolva Jato | Ferramentas online grátis',
-    description: 'Resolva trabalho, estudo e tarefas práticas com ferramentas gratuitas no navegador.'
+    title: 'Ferramentas para MEI | Resolva Jato',
+    description: 'Orçamento com Pix, recibo, proposta e contrato para MEI, autônomos e prestadores.'
   },
   keywords: [
     'orçamento com pix',
     'orçamento online grátis',
     'gerador de recibo',
     'gerador de contrato',
-    'gerador de currículo',
     'proposta comercial',
     'ferramentas grátis para MEI',
     'ferramentas online grátis',
-    'ferramentas para o dia a dia',
-    'calculadoras online',
-    'ferramentas para estudantes'
+    'cobrança para autônomos',
+    'documentos para prestadores de serviço'
   ],
   ...(!staging && (googleVerification || bingVerification)
     ? {

@@ -57,6 +57,7 @@ import {
 } from '@/lib/orcamentos/types';
 import { isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 interface GeneratedLink {
   id: string;
@@ -442,6 +443,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
       };
       setGenerated(entry);
       refreshAuth();
+      trackEvent('document_completed', { tool_name: 'orcamentos', output: 'share_link' });
       await loadHistory();
       toast('Link gerado. Conecte seu WhatsApp para enviar ao cliente (escaneia → envia → desconecta).');
     } catch (submitError) {
@@ -487,6 +489,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
   async function copyText(value: string, successMessage: string) {
     try {
       await navigator.clipboard.writeText(value);
+      trackEvent('document_shared', { tool_name: 'orcamentos', output: 'copied_link' });
       toast(successMessage);
     } catch {
       setBannerError('Não foi possível copiar. Selecione o texto manualmente.');

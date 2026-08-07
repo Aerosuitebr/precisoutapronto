@@ -43,6 +43,7 @@ import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, contractFromBriefing } from '@/lib/assistant-briefing';
 import { applyProfileToContract, type ProfileMemory } from '@/lib/profile-memory';
 import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
+import { trackEvent } from '@/lib/analytics';
 
 type EditorTab = 'partes' | 'termos' | 'clausulas' | 'assinatura';
 
@@ -334,6 +335,7 @@ export function ContratosApp() {
         return;
       }
       refreshAuth();
+      trackEvent('document_completed', { tool_name: 'contratos', output: 'pdf' });
       afterPdfExport('contrato');
     } catch {
       setError('Não foi possível gerar o PDF. Tente novamente.');

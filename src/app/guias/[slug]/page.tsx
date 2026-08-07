@@ -6,9 +6,38 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { getGuide, guides } from '@/lib/guides';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { GuideConversionLink } from '@/components/analytics/guide-conversion-link';
+import { GuideViewTracker } from '@/components/analytics/guide-view-tracker';
 
 type Props = { params: Promise<{ slug: string }> };
 const PUBLISHED_AT = '2026-07-26';
+
+const OFFICIAL_SOURCES: Record<string, Array<{ label: string; href: string }>> = {
+  Financeiro: [
+    { label: 'Portal do Empreendedor — serviços para MEI', href: 'https://www.gov.br/empresas-e-negocios/pt-br/empreendedor' },
+    { label: 'Banco Central — Pix', href: 'https://www.bcb.gov.br/estabilidadefinanceira/pix' }
+  ],
+  Trabalho: [
+    { label: 'Ministério do Trabalho e Emprego', href: 'https://www.gov.br/trabalho-e-emprego/pt-br' },
+    { label: 'Tribunal Superior do Trabalho', href: 'https://www.tst.jus.br/' }
+  ],
+  Jurídico: [
+    { label: 'Portal da Legislação — Presidência da República', href: 'https://www4.planalto.gov.br/legislacao/' }
+  ],
+  Negócios: [
+    { label: 'Sebrae — gestão de pequenos negócios', href: 'https://sebrae.com.br/' }
+  ],
+  'Cobrança e vendas': [
+    { label: 'Banco Central — Pix', href: 'https://www.bcb.gov.br/estabilidadefinanceira/pix' },
+    { label: 'Sebrae — gestão de pequenos negócios', href: 'https://sebrae.com.br/' }
+  ],
+  'Gestão autônoma': [
+    { label: 'Sebrae — gestão de pequenos negócios', href: 'https://sebrae.com.br/' }
+  ],
+  'Documentos profissionais': [
+    { label: 'Portal do Empreendedor — serviços para MEI', href: 'https://www.gov.br/empresas-e-negocios/pt-br/empreendedor' }
+  ]
+};
 
 export function generateStaticParams() {
   return guides.map(({ slug }) => ({ slug }));
@@ -47,6 +76,8 @@ export default async function GuidePage({ params }: Props) {
   const updatedAt = guide.updatedAt ?? publishedAt;
   const author = guide.author ?? 'Equipe editorial Resolva Jato';
   const reviewer = guide.reviewer ?? 'Revisão editorial interna';
+  const sources = [...(guide.sources ?? []), ...(OFFICIAL_SOURCES[guide.category] ?? [])]
+    .filter((source, index, all) => all.findIndex((item) => item.href === source.href) === index);
   const relatedGuides = (guide.relatedGuides ?? [])
     .map((relatedSlug) => getGuide(relatedSlug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
@@ -61,7 +92,7 @@ export default async function GuidePage({ params }: Props) {
         datePublished: publishedAt,
         dateModified: updatedAt,
         mainEntityOfPage: `${base}/guias/${guide.slug}`,
-        author: { '@type': 'Organization', name: author, url: `${base}/sobre` },
+        author: { '@type': 'Organization', name: author, url: `${base}/autores/equipe-resolva-jato` },
         publisher: {
           '@type': 'Organization',
           name: 'Resolva Jato',
@@ -103,6 +134,7 @@ export default async function GuidePage({ params }: Props) {
 
   return (
     <>
+      <GuideViewTracker guideSlug={guide.slug} cluster={guide.category} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteHeader />
       <main className="bg-white">
@@ -146,15 +178,24 @@ export default async function GuidePage({ params }: Props) {
                   </div>
                 </section>
               ) : null}
-              {guide.sources?.length ? (
+              {sources.length ? (
                 <section>
                   <h2 className="rj-display text-2xl font-bold text-slate-950">Fontes e critérios</h2>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">Consultamos fontes oficiais e registramos a data real da revisão. O conteúdo é informativo e não substitui análise profissional do caso concreto.</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">Estas referências oficiais ajudam a conferir regras e conceitos. O conteúdo é informativo e não substitui análise profissional do caso concreto.</p>
                   <ul className="mt-4 space-y-2">
-                    {guide.sources.map((source) => <li key={source.href}><a href={source.href} rel="noopener noreferrer" className="text-sm font-semibold text-sky-700 hover:underline">{source.label}</a></li>)}
+                    {sources.map((source) => <li key={source.href}><a href={source.href} rel="noopener noreferrer" className="text-sm font-semibold text-sky-700 hover:underline">{source.label}</a></li>)}
                   </ul>
                 </section>
               ) : null}
+              <section className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                <h2 className="rj-display text-xl font-bold text-slate-950">Autoria e histórico editorial</h2>
+                <p className="mt-3 text-sm leading-6 text-slate-600"><Link href="/autores/equipe-resolva-jato" className="font-semibold text-sky-700 hover:underline">{author}</Link> produz e mantém este guia. {reviewer} descreve uma conferência de clareza, coerência, fontes e funcionamento — não uma revisão profissional especializada.</p>
+                <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+                  <div><dt className="font-semibold text-slate-900">Publicado</dt><dd className="text-slate-600">{publishedAt}</dd></div>
+                  <div><dt className="font-semibold text-slate-900">Última revisão material</dt><dd className="text-slate-600">{updatedAt}</dd></div>
+                </dl>
+                <p className="mt-4 text-sm"><Link href="/politica-de-correcoes" className="font-semibold text-sky-700 hover:underline">Consultar política de correções</Link></p>
+              </section>
               {relatedGuides.length ? (
                 <section>
                   <h2 className="rj-display text-2xl font-bold text-slate-950">Continue por aqui</h2>
@@ -174,9 +215,9 @@ export default async function GuidePage({ params }: Props) {
               <div className="sticky top-6 rounded-3xl bg-slate-950 p-5 text-white">
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-300">Coloque em prática</p>
                 <p className="mt-3 text-sm leading-6 text-slate-300">Use a ferramenta relacionada para começar com uma estrutura organizada.</p>
-                <Link href={guide.toolHref} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300">
+                <GuideConversionLink guideSlug={guide.slug} cluster={guide.category} placement="sidebar" href={guide.toolHref} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300">
                   {guide.toolLabel}<ArrowRight className="h-4 w-4" />
-                </Link>
+                </GuideConversionLink>
               </div>
             </aside>
           </div>

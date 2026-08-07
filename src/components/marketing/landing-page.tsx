@@ -1,14 +1,10 @@
 import Link from 'next/link';
 import {
   ArrowRight,
-  BookOpen,
   Check,
   ClipboardList,
   FileText,
-  Gamepad2,
-  GraduationCap,
   Scale,
-  Search,
   Wallet
 } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
@@ -21,19 +17,11 @@ import { TrustSeals } from '@/components/marketing/trust-seals';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { SegmentPreference } from '@/components/growth/segment-preference';
-import { MiraFeaturedCta } from '@/components/marketing/mira-featured-cta';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
 
 const OTHER_TOOLS = [
-  {
-    href: '/gerador-de-curriculo',
-    title: 'Currículo',
-    text: 'Layouts profissionais e PDF em um clique.',
-    icon: GraduationCap
-  },
   {
     href: '/gerador-de-proposta-comercial',
     title: 'Proposta comercial',
@@ -45,12 +33,6 @@ const OTHER_TOOLS = [
     title: 'Contrato',
     text: 'Modelos editáveis sem fila na papelaria.',
     icon: Scale
-  },
-  {
-    href: '/para/estudantes',
-    title: 'Capa ABNT',
-    text: 'Escolar e universitária prontas em minutos.',
-    icon: BookOpen
   },
   {
     href: '/gerador-de-recibo',
@@ -195,39 +177,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      <SegmentPreference />
-
-      <MiraFeaturedCta />
-
-      <section className="border-b border-slate-200 bg-[linear-gradient(135deg,#f0fdfa_0%,#ffffff_45%,#fff7ed_100%)]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-12">
-          <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
-              <Gamepad2 className="h-3.5 w-3.5" />
-              Jato Games
-            </p>
-            <h2 className="rj-display mt-2 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">
-              Calcule seu eDPI, planeje o SSD e escolha o próximo jogo sem chute.
-            </h2>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              Ferramentas gamer grátis, requisitos de PC, guias de GPU e CPU, setups sugeridos,
-              consoles e lojas confiáveis em uma central feita para decisões rápidas.
-            </p>
-          </div>
-          <div className="flex shrink-0 flex-wrap gap-3">
-            <Button asChild size="lg" className="h-12 bg-teal-600 px-6 font-bold text-white shadow-lg shadow-teal-600/20 hover:bg-teal-500">
-              <Link href="/games/ferramentas/calculadora-edpi">
-                Calcular meu eDPI
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="h-12 border-teal-200 bg-white px-6 font-bold text-teal-800 hover:bg-teal-50">
-              <Link href="/games">Explorar Jato Games</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -346,7 +295,7 @@ export function LandingPage() {
           <h2 className="rj-display mt-3 max-w-2xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
             Uma entrada clara por perfil.
           </h2>
-          <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          <ul className="mt-10 grid gap-4 md:grid-cols-2">
             {[
               {
                 href: '/para/mei',
@@ -358,11 +307,6 @@ export function LandingPage() {
                 title: 'Freelancers',
                 text: 'Proposta, contrato e cobrança com cara de agência.'
               },
-              {
-                href: '/para/estudantes',
-                title: 'Estudantes',
-                text: 'Peças acadêmicas, fichamentos, estudos de caso, redação, ABNT e currículo.'
-              }
             ].map((persona) => (
               <li key={persona.href}>
                 <Link
@@ -494,69 +438,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-16 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-20">
-          <div className="max-w-2xl">
-            <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
-              Busca gratuita
-            </p>
-            <h2 className="rj-display mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Centenas de links úteis, sem cadastro.
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              A busca continua 100% grátis. E as ferramentas de documentos também: use quando
-              precisar gerar um PDF profissional.
-            </p>
-          </div>
-          <Button asChild size="lg" variant="outline" className="h-12 shrink-0">
-            <Link href="/busca">
-              Abrir busca gratuita
-              <Search className="h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-        <div className="relative overflow-hidden rounded-[32px] bg-slate-950 px-6 py-12 text-white sm:px-12">
-          <div className="pointer-events-none absolute -right-10 top-0 h-56 w-56 rounded-full bg-emerald-500/20 blur-3xl" />
-          <div className="relative max-w-2xl">
-            <h2 className="rj-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Pronto para gerar documentos profissionais grátis?
-            </h2>
-            <ul className="mt-5 space-y-2 text-sm text-slate-300">
-              <li className="flex gap-2">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Analise a redação do ENEM ou gere cobrança Pix
-              </li>
-              <li className="flex gap-2">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                Monte orçamento, currículo, recibo e contrato no mesmo lugar
-              </li>
-              <li className="flex gap-2">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-                2 gerações grátis sem conta; depois continue com cadastro
-              </li>
-            </ul>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button asChild size="lg" className={cn('h-12', primaryCtaClass)}>
-                <Link href="/corretor-de-redacao-enem">
-                  Analisar redação
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-12 border-white/25 bg-white/5 text-white hover:bg-white/10"
-              >
-                <Link href="/gerador-de-qr-code-pix">Gerar cobrança Pix</Link>
-              </Button>
-            </div>
-            <TrustSeals tone="dark" className="mt-8" />
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

@@ -85,6 +85,7 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/assistente/documentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${base}/contato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/sobre`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${base}/autores/equipe-resolva-jato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/criterios-editoriais`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/politica-de-correcoes`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/metodologia-calculadoras`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.6 },

@@ -69,6 +69,10 @@ export function createEmptyProposal(templateId: ProposalTemplateId = 'corporativ
 
 export const SAMPLE_PROPOSAL: ProposalData = {
   ...createEmptyProposal(),
+  id: 'prop_exemplo_publico',
+  number: 'PROP-2026-001',
+  issueDate: '2026-08-07',
+  updatedAt: '2026-08-07T12:00:00.000Z',
   title: 'Proposta de identidade visual',
   company: {
     name: 'Ana Lima Design',
@@ -104,7 +108,7 @@ export const SAMPLE_PROPOSAL: ProposalData = {
   },
   items: [
     {
-      id: createId('item'),
+      id: 'item_identidade_visual',
       name: 'Criação de identidade visual',
       description: 'Logotipo, paleta de cores, tipografia e manual resumido da marca.',
       quantity: 1,
@@ -112,7 +116,7 @@ export const SAMPLE_PROPOSAL: ProposalData = {
       unitPriceInput: formatCurrencyInput('250000')
     },
     {
-      id: createId('item'),
+      id: 'item_redes_sociais',
       name: 'Kit para redes sociais',
       description: 'Dez templates editáveis para publicações e stories.',
       quantity: 1,

@@ -26,7 +26,7 @@ export function SiteJsonLd() {
     },
     image: `${siteUrl}/opengraph-image`,
     description:
-      'Plataforma brasileira de ferramentas online grátis para trabalho, estudo, documentos, cálculos e games.',
+      'Plataforma brasileira de orçamento com Pix, recibos, propostas e contratos para MEI, autônomos e prestadores de serviço.',
     foundingDate: '2025',
     areaServed: {
       '@type': 'Country',
@@ -51,14 +51,13 @@ export function SiteJsonLd() {
     knowsAbout: [
       'documentos profissionais',
       'orçamento com Pix',
-      'produtividade',
-      'trabalho e estudo',
-      'cálculos trabalhistas',
       'MEI e freelancers',
       'cobrança para MEI',
-      'redação ENEM',
-      'referências ABNT',
-      'ferramentas para games'
+      'recibo de pagamento',
+      'proposta comercial',
+      'contrato de prestação de serviços',
+      'precificação de serviços',
+      'gestão do trabalho autônomo'
     ],
     brand: {
       '@type': 'Brand',
@@ -74,7 +73,7 @@ export function SiteJsonLd() {
     url: siteUrl,
     inLanguage: 'pt-BR',
     description:
-      'Ferramentas online grátis para trabalho, estudo e tarefas do dia a dia, com documentos, cálculos, IA e Jato Games.',
+      'Ferramentas online para MEI e autônomos criarem orçamento com Pix, recibo, proposta e contrato para seus clientes.',
     publisher: { '@id': `${siteUrl}/#organization` },
     about: { '@id': `${siteUrl}/#organization` }
   };
@@ -85,16 +84,15 @@ export function SiteJsonLd() {
     '@id': `${siteUrl}/#top-tools`,
     name: 'Ferramentas em destaque',
     itemListOrder: 'https://schema.org/ItemListOrderAscending',
-    numberOfItems: 8,
+    numberOfItems: 7,
     itemListElement: [
       { name: 'Orçamento com Pix', path: '/orcamento-com-pix' },
       { name: 'Gerador de contrato', path: '/gerador-de-contrato' },
       { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
-      { name: 'Gerador de currículo', path: '/gerador-de-curriculo' },
       { name: 'Proposta comercial', path: '/gerador-de-proposta-comercial' },
       { name: 'Calculadora de rescisão', path: '/calculadora-de-rescisao' },
       { name: 'Para MEI', path: '/para/mei' },
-      { name: 'Biblioteca', path: '/biblioteca' }
+      { name: 'Calculadora de preço freelancer', path: '/calculadora-de-preco-freelancer' }
     ].map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,

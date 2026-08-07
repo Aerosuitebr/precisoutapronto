@@ -53,6 +53,7 @@ import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, proposalFromBriefing } from '@/lib/assistant-briefing';
 import { applyProfileToProposal, type ProfileMemory } from '@/lib/profile-memory';
 import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
+import { trackEvent } from '@/lib/analytics';
 
 type EditorTab = 'empresa' | 'cliente' | 'itens' | 'condicoes';
 
@@ -314,6 +315,7 @@ export function PropostasApp() {
         return;
       }
       refreshAuth();
+      trackEvent('document_completed', { tool_name: 'propostas', output: 'pdf' });
       afterPdfExport('proposta');
     } catch {
       setError('Não foi possível gerar o PDF. Tente novamente.');

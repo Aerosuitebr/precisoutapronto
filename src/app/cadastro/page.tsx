@@ -17,6 +17,7 @@ import {
   readStoredReferralCode
 } from '@/components/referral/referral-capture';
 import { normalizeReferralCode } from '@/lib/referral-shared';
+import { trackEvent } from '@/lib/analytics';
 
 function safeNext(raw: string | null) {
   if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return '/ferramentas';
@@ -58,6 +59,7 @@ function CadastroForm() {
         referralCode: referralCode || undefined
       });
       clearStoredReferralCode();
+      trackEvent('signup_completed', { signup_origin: 'web' });
       setDoneEmail(result.email);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Não foi possível criar a conta.');

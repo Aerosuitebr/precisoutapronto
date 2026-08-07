@@ -29,6 +29,7 @@ import { buildPixBrCode, buildPixWhatsAppMessage, normalizePixKey } from '@/lib/
 import type { PixKeyType } from '@/lib/pix/types';
 import { isValidCnpj, isValidCpf, isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 const KEY_TYPES: { id: PixKeyType; label: string }[] = [
   { id: 'cpf', label: 'CPF' },
@@ -161,6 +162,7 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
   async function handleCopyCode() {
     await chargeAndRun(async () => {
       await navigator.clipboard.writeText(brCode);
+      trackEvent('pix_copied', { tool_name: 'pix', output: 'copy_paste' });
       toast('Código Pix copiado!');
     }, `pix_copy_${Date.now()}`);
   }

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ToolStartBoundary } from '@/components/analytics/tool-start-boundary';
 
 export function ToolLandingEmbed({
   toolName,
@@ -25,7 +26,7 @@ export function ToolLandingEmbed({
           Preencha alguns dados abaixo. No celular, o preview fica sob demanda pra digitação fluida.
           Duas gerações livres sem conta; depois o cadastro libera PDF sem marca e histórico.
         </p>
-        <div className="mt-8 sm:mt-10">{tool}</div>
+        <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName}>{tool}</ToolStartBoundary></div>
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
           <Button asChild size="lg" className="h-12 w-full bg-sky-600 px-6 font-bold hover:bg-sky-500 sm:w-auto">
             <Link href={ctaHref}>

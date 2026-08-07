@@ -42,15 +42,15 @@ export function createEmptyReceipt(templateId: ReceiptTemplateId = 'profissional
 }
 
 export const SAMPLE_RECEIPT: ReceiptData = {
-  id: createId(),
+  id: 'rec_exemplo_publico',
   title: 'Recibo de exemplo',
-  number: nextNumber(),
+  number: '2026-001',
   amount: 1500,
   amountInput: 'R$ 1.500,00',
   reference: 'Serviços de design gráfico e identidade visual',
   paymentMethod: 'Pix',
   city: 'São Paulo',
-  date: todayIso(),
+  date: '2026-08-07',
   receiver: {
     name: 'Ana Lima Design',
     document: '123.456.789-09',
@@ -77,7 +77,7 @@ export const SAMPLE_RECEIPT: ReceiptData = {
   fontId: 'arial',
   inkSaver: false,
   signature: createDefaultSignature('Ana Lima Design'),
-  updatedAt: new Date().toISOString()
+  updatedAt: '2026-08-07T12:00:00.000Z'
 };
 
 export const PAYMENT_METHODS = ['Pix', 'Dinheiro', 'Transferência bancária', 'Cartão de crédito', 'Cartão de débito', 'Boleto', 'Cheque'];
