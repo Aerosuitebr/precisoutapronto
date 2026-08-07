@@ -1,3 +1,5 @@
+import { clusterGuides } from '@/lib/guide-clusters';
+
 export type Guide = {
   slug: string;
   title: string;
@@ -9,9 +11,16 @@ export type Guide = {
   toolLabel: string;
   sections: Array<{ title: string; paragraphs: string[]; bullets?: string[] }>;
   faq: Array<{ question: string; answer: string }>;
+  publishedAt?: string;
+  updatedAt?: string;
+  author?: string;
+  reviewer?: string;
+  example?: { title: string; lines: string[] };
+  sources?: Array<{ label: string; href: string }>;
+  relatedGuides?: string[];
 };
 
-export const guides: Guide[] = [
+const existingGuides: Guide[] = [
   {
     slug: 'modelo-de-recibo-mei',
     title: 'Modelo de recibo para MEI: o que incluir e como preencher',
@@ -521,6 +530,8 @@ export const guides: Guide[] = [
     ]
   }
 ];
+
+export const guides: Guide[] = [...clusterGuides, ...existingGuides];
 
 export function getGuide(slug: string) {
   return guides.find((guide) => guide.slug === slug);

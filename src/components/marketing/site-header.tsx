@@ -13,9 +13,10 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
 
 const links = [
-  { href: '/biblioteca', label: 'Biblioteca', auth: false },
-  { href: '/assistente/documentos', label: 'Assistente IA', auth: false },
-  { href: '/recursos', label: 'Ferramentas', auth: false }
+  { href: '/orcamento-com-pix', label: 'Orçamento + Pix', auth: false },
+  { href: '/gerador-de-recibo', label: 'Recibo', auth: false },
+  { href: '/gerador-de-contrato', label: 'Contrato', auth: false },
+  { href: '/guias', label: 'Guias', auth: false }
 ] as const;
 
 export function SiteHeader() {

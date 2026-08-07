@@ -104,20 +104,20 @@ export function LandingPage() {
               <Logo variant="hero" />
             </div>
             <p className="rj-animate-fade-up mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
-              Ferramentas para trabalho, estudo e vida prática
+              Escritório digital para MEI e autônomos
             </p>
             <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(1.9rem,4.2vw,3.35rem)] font-extrabold leading-[1.08] tracking-tight text-white">
-              Ferramentas online grátis para resolver o dia a dia.
+              Orçamento, cobrança e documentos para quem trabalha por conta.
             </h1>
             <p className="rj-animate-fade-up-delay-2 mt-4 max-w-lg text-base leading-7 text-slate-200 sm:text-lg">
-              Crie documentos, faça cálculos, organize tarefas, estude melhor e cuide do seu PC.
-              Recursos práticos, organizados por objetivo e disponíveis no navegador.
+              Monte orçamentos com Pix, emita recibos, prepare propostas e contratos profissionais.
+              Tudo no navegador, pronto para enviar ao cliente pelo WhatsApp.
             </p>
             <ul className="rj-animate-fade-up-delay-2 mt-5 space-y-2 text-sm text-slate-200">
               {[
-                'Mais de 20 ferramentas em um único catálogo',
-                'Conteúdo organizado para 10 perfis profissionais',
-                'Modelos, guias e respostas para concluir cada tarefa'
+                'Orçamento com aprovação e cobrança Pix',
+                'Recibo, proposta e contrato em PDF',
+                'Guias práticos para MEI, freelancers e prestadores'
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 shrink-0 text-amber-300" />
@@ -127,8 +127,8 @@ export function LandingPage() {
             </ul>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
-                <Link href="/recursos">
-                  Explorar ferramentas
+                <Link href="/orcamento-com-pix">
+                  Criar orçamento com Pix
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -138,22 +138,22 @@ export function LandingPage() {
                 variant="outline"
                 className="h-12 w-full border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10 sm:w-auto"
               >
-                <Link href="/biblioteca">Consultar a biblioteca</Link>
+                <Link href="/para/mei">Ver soluções para MEI</Link>
               </Button>
             </div>
 
             <div className="rj-animate-fade-up-delay-2 mt-6">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                Também no hub
+                Acesso rápido
               </p>
               <ul className="mt-3 flex flex-wrap gap-2.5">
                 <li>
                   <Link
-                    href="/games"
+                    href="/gerador-de-recibo"
                     className="inline-flex items-center gap-1.5 rounded-full border border-teal-300/50 bg-teal-400/15 px-4 py-2 text-sm font-semibold text-teal-100 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:bg-teal-300/25 hover:text-white hover:shadow-md"
                   >
-                    <Gamepad2 className="h-3.5 w-3.5" />
-                    Jato Games
+                    <Wallet className="h-3.5 w-3.5" />
+                    Gerador de recibo
                   </Link>
                 </li>
                 <li>
@@ -166,10 +166,10 @@ export function LandingPage() {
                 </li>
                 <li>
                   <Link
-                    href="/gerador-de-curriculo"
+                    href="/gerador-de-contrato"
                     className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
                   >
-                    Currículo
+                    Contrato de serviço
                   </Link>
                 </li>
                 <li>
@@ -183,8 +183,8 @@ export function LandingPage() {
               </ul>
             </div>
             <p className="mt-4 text-xs text-slate-400">
-              Contratos, currículo, recibos, Pix, cálculos, produtividade, estudos e Jato Games:
-              encontre o próximo passo sem precisar conhecer o nome da ferramenta.
+              Para cobrar melhor, formalizar o combinado e manter um histórico profissional sem
+              depender de planilhas e documentos espalhados.
             </p>
           </div>
 

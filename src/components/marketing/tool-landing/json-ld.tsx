@@ -4,8 +4,6 @@ import { getViralBaseUrl } from '@/lib/viral-loop';
 export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
   const siteUrl = getViralBaseUrl().replace(/\/$/, '');
   const pageUrl = `${siteUrl}/${content.slug}`;
-  const orgLogo = `${siteUrl}/icon-512.png`;
-
   const webPage = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -44,14 +42,6 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
     }
   };
 
-  const organization = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Resolva Jato',
-    url: siteUrl,
-    logo: orgLogo
-  };
-
   const faqPage =
     content.faq.length > 0
       ? {
@@ -68,18 +58,28 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
         }
       : null;
 
-  const blocks = [webPage, breadcrumb, softwareApplication, organization, faqPage].filter(Boolean);
+  // Organization e WebSite já são declarados uma vez no layout raiz. Aqui usamos
+  // referências por @id e um único @graph para não repetir entidades em cada landing.
+  const blocks = [webPage, breadcrumb, softwareApplication, faqPage].filter(Boolean).map((block) => {
+    if (block === webPage) {
+      return {
+        ...block,
+        isPartOf: { '@id': `${siteUrl}/#website` },
+        publisher: { '@id': `${siteUrl}/#organization` }
+      };
+    }
+    if (block === softwareApplication) {
+      return { ...block, provider: { '@id': `${siteUrl}/#organization` } };
+    }
+    return block;
+  });
 
   return (
-    <>
-      {blocks.map((block, index) => (
-        // eslint-disable-next-line react/no-danger
-        <script
-          key={index}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}
-        />
-      ))}
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({ '@context': 'https://schema.org', '@graph': blocks })
+      }}
+    />
   );
 }

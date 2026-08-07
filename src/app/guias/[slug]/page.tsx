@@ -43,6 +43,13 @@ export default async function GuidePage({ params }: Props) {
   const guide = getGuide(slug);
   if (!guide) notFound();
   const base = getViralBaseUrl().replace(/\/$/, '');
+  const publishedAt = guide.publishedAt ?? PUBLISHED_AT;
+  const updatedAt = guide.updatedAt ?? publishedAt;
+  const author = guide.author ?? 'Equipe editorial Resolva Jato';
+  const reviewer = guide.reviewer ?? 'Revisão editorial interna';
+  const relatedGuides = (guide.relatedGuides ?? [])
+    .map((relatedSlug) => getGuide(relatedSlug))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item));
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -51,10 +58,10 @@ export default async function GuidePage({ params }: Props) {
         headline: guide.title,
         description: guide.description,
         inLanguage: 'pt-BR',
-        datePublished: PUBLISHED_AT,
-        dateModified: PUBLISHED_AT,
+        datePublished: publishedAt,
+        dateModified: updatedAt,
         mainEntityOfPage: `${base}/guias/${guide.slug}`,
-        author: { '@type': 'Organization', name: 'Resolva Jato', url: base },
+        author: { '@type': 'Organization', name: author, url: `${base}/sobre` },
         publisher: {
           '@type': 'Organization',
           name: 'Resolva Jato',
@@ -111,7 +118,7 @@ export default async function GuidePage({ params }: Props) {
                 {guide.category}<span className="h-1 w-1 rounded-full bg-slate-300" /><Clock className="h-3.5 w-3.5" />{guide.readTime}
               </div>
               <p className="mt-3 text-sm text-slate-500">
-                Publicado e revisado pela equipe Resolva Jato em 26 de julho de 2026.
+                Por {author} · {reviewer} · atualizado em {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${updatedAt}T12:00:00Z`))}.
               </p>
               <h1 className="rj-display mt-4 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">{guide.title}</h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">{guide.description}</p>
@@ -130,6 +137,32 @@ export default async function GuidePage({ params }: Props) {
                   {section.bullets ? <ul className="mt-5 space-y-2">{section.bullets.map((item) => <li key={item} className="flex gap-3 text-sm text-slate-700"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />{item}</li>)}</ul> : null}
                 </section>
               ))}
+              {guide.example ? (
+                <section className="rounded-3xl border border-amber-200 bg-amber-50 p-6">
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Exemplo preenchido</p>
+                  <h2 className="rj-display mt-2 text-2xl font-bold text-slate-950">{guide.example.title}</h2>
+                  <div className="mt-4 rounded-2xl border border-amber-200 bg-white p-5">
+                    {guide.example.lines.map((line) => <p key={line} className="text-sm leading-7 text-slate-700">{line}</p>)}
+                  </div>
+                </section>
+              ) : null}
+              {guide.sources?.length ? (
+                <section>
+                  <h2 className="rj-display text-2xl font-bold text-slate-950">Fontes e critérios</h2>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">Consultamos fontes oficiais e registramos a data real da revisão. O conteúdo é informativo e não substitui análise profissional do caso concreto.</p>
+                  <ul className="mt-4 space-y-2">
+                    {guide.sources.map((source) => <li key={source.href}><a href={source.href} rel="noopener noreferrer" className="text-sm font-semibold text-sky-700 hover:underline">{source.label}</a></li>)}
+                  </ul>
+                </section>
+              ) : null}
+              {relatedGuides.length ? (
+                <section>
+                  <h2 className="rj-display text-2xl font-bold text-slate-950">Continue por aqui</h2>
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    {relatedGuides.map((related) => <Link key={related.slug} href={`/guias/${related.slug}`} className="rounded-2xl border border-slate-200 p-4 text-sm font-bold text-slate-800 hover:border-sky-300 hover:text-sky-700">{related.title}</Link>)}
+                  </div>
+                </section>
+              ) : null}
               <section>
                 <h2 className="rj-display text-2xl font-bold text-slate-950">Perguntas frequentes</h2>
                 <div className="mt-5 divide-y divide-slate-200 rounded-3xl border border-slate-200">

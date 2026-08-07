@@ -12,6 +12,8 @@ const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/', label: 'Início' },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
   { href: '/guias', label: 'Guias' },
+  { href: '/sobre', label: 'Sobre e equipe' },
+  { href: '/criterios-editoriais', label: 'Critérios editoriais' },
   { href: '/recursos', label: 'Catálogo público' },
   { href: '/busca', label: 'Busca grátis' },
   { href: '/corretor-de-redacao-enem', label: 'Redação ENEM' }
@@ -29,6 +31,8 @@ const SEO_LINKS = [
   { href: '/checklist-cobranca-mei', label: 'Checklist cobrança MEI' },
   { href: '/imprensa', label: 'Imprensa' },
   { href: '/embed', label: 'Badges e embeds' },
+  { href: '/politica-de-correcoes', label: 'Política de correções' },
+  { href: '/metodologia-calculadoras', label: 'Metodologia das calculadoras' },
   { href: '/guias', label: 'Todos os guias' },
   { href: '/contrato-de-aluguel', label: 'Contrato de aluguel' },
   { href: '/recibo-de-pagamento', label: 'Recibo de pagamento' },

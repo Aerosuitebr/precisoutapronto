@@ -60,6 +60,15 @@ export default function SobrePage() {
           cadastro; contato de imprensa em contato@resolvajato.com.br.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
+          <Link href="/criterios-editoriais" className="font-semibold text-sky-700 hover:text-sky-800">
+            Critérios editoriais
+          </Link>
+          <Link href="/politica-de-correcoes" className="font-semibold text-sky-700 hover:text-sky-800">
+            Política de correções
+          </Link>
+          <Link href="/metodologia-calculadoras" className="font-semibold text-sky-700 hover:text-sky-800">
+            Metodologia das calculadoras
+          </Link>
           <Link href="/favicon.svg" className="font-semibold text-sky-700 hover:text-sky-800">
             Baixar símbolo em SVG
           </Link>

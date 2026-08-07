@@ -10,8 +10,8 @@ import { INTERNATIONAL_TOOLS } from '@/lib/international-tools-catalog';
 import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-export const CORE_UPDATED_AT = new Date('2026-08-01T15:00:00.000Z');
-export const GUIDES_UPDATED_AT = new Date('2026-07-26T18:00:00.000Z');
+export const CORE_UPDATED_AT = new Date('2026-08-07T15:00:00.000Z');
+export const GUIDES_UPDATED_AT = new Date('2026-08-07T15:00:00.000Z');
 export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
@@ -85,6 +85,9 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/assistente/documentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${base}/contato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/sobre`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${base}/criterios-editoriais`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/politica-de-correcoes`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${base}/metodologia-calculadoras`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/imprensa`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/embed`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.65 },
     { url: `${base}/checklist-cobranca-mei`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
