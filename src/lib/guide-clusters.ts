@@ -13,6 +13,82 @@ const SEBRAE_FINANCAS = { label: 'Sebrae — organização financeira', href: 'h
 
 export const clusterGuides: Guide[] = [
   {
+    slug: 'modelo-de-orcamento-para-eletricista',
+    title: 'Modelo de orçamento para eletricista: itens, materiais e validade',
+    description: 'Monte um orçamento elétrico claro, separando visita, mão de obra, materiais, prazo e condições de pagamento.',
+    answer: 'Um orçamento para eletricista deve descrever o serviço por ambiente ou ponto elétrico, indicar se materiais estão incluídos, informar mão de obra, prazo, validade e condições de pagamento. Quando houver diagnóstico ou risco de serviço adicional, isso precisa constar antes do início.',
+    category: 'Cobrança e vendas', readTime: '7 min', toolHref: '/orcamento-com-pix', toolLabel: 'Montar orçamento para eletricista', ...EDITORIAL,
+    sections: [
+      { title: 'Separe visita, serviço e material', paragraphs: ['Explique se a visita técnica está incluída ou é cobrada à parte. Liste pontos, circuitos ou ambientes atendidos e separe materiais da mão de obra quando isso ajudar o cliente a entender o total.'], bullets: ['Visita ou diagnóstico', 'Serviços por ambiente ou ponto', 'Materiais incluídos ou estimados', 'Prazo, garantia e condições'] },
+      { title: 'Registre o que depende de inspeção', paragraphs: ['Problemas internos na instalação podem aparecer apenas depois da abertura ou do teste. Indique quais valores são estimativos e que serviços adicionais exigem nova aprovação antes de serem executados.'] },
+      { title: 'Envie um próximo passo simples', paragraphs: ['Informe validade, data disponível e como o cliente aprova. Um link de orçamento com Pix ajuda a registrar o aceite e a cobrar entrada, quando aplicável.'] }
+    ],
+    example: { title: 'Orçamento elétrico residencial', lines: ['Troca de 8 tomadas e revisão de 2 circuitos', 'Mão de obra: R$ 680,00 · Materiais: R$ 210,00', 'Total: R$ 890,00 · 50% na aprovação e saldo na conclusão', 'Execução: 1 dia útil · Validade: 7 dias'] },
+    faq: [
+      { question: 'Devo incluir material no orçamento?', answer: 'Informe claramente se o material está incluso, estimado ou será fornecido pelo cliente.' },
+      { question: 'Posso cobrar visita técnica?', answer: 'Sim, desde que o valor e a condição sejam informados antes do deslocamento ou diagnóstico.' },
+      { question: 'E se aparecer outro defeito?', answer: 'Explique a situação e envie uma nova aprovação para o item adicional antes de executar.' }
+    ],
+    relatedGuides: ['modelo-de-orcamento-para-prestacao-de-servico', 'como-fazer-orcamento-com-pix', 'orcamento-aprovado-tem-validade']
+  },
+  {
+    slug: 'modelo-de-orcamento-para-manicure',
+    title: 'Modelo de orçamento para manicure: pacote, sinal e confirmação',
+    description: 'Organize serviços de manicure, adicionais, políticas de agenda e sinal em um orçamento fácil de enviar no WhatsApp.',
+    answer: 'Um orçamento para manicure deve informar o serviço ou pacote, adicionais, data e horário quando já definidos, valor do sinal, saldo e condições de cancelamento ou remarcação. O objetivo é deixar o combinado compreensível antes de reservar a agenda.',
+    category: 'Cobrança e vendas', readTime: '6 min', toolHref: '/orcamento-com-pix', toolLabel: 'Criar orçamento com sinal', ...EDITORIAL,
+    sections: [
+      { title: 'Mostre o que está incluso', paragraphs: ['Diferencie manutenção, esmaltação, alongamento, decoração e remoção. Se houver preço variável por tamanho, técnica ou reparo, explique a regra antes do agendamento.'] },
+      { title: 'Use sinal com finalidade clara', paragraphs: ['Se cobrar sinal para reservar o horário, informe o valor, se ele será abatido do total e o que acontece em cancelamento ou remarcação. Evite regras escondidas em mensagens antigas.'] },
+      { title: 'Confirme pelo mesmo link', paragraphs: ['Envie o orçamento com valor e Pix no WhatsApp. Depois da aprovação, mantenha uma confirmação com data, horário e serviço para reduzir desencontros.'] }
+    ],
+    example: { title: 'Reserva de horário', lines: ['Serviço: alongamento em gel + esmaltação', 'Data: 16/08 às 14h · Duração prevista: 2h', 'Total: R$ 180,00 · Sinal: R$ 50,00 para reserva', 'Saldo: R$ 130,00 no atendimento · Remarcação conforme disponibilidade'] },
+    faq: [
+      { question: 'Sinal é a mesma coisa que pagamento total?', answer: 'Não. O orçamento deve indicar quanto é sinal, quanto resta pagar e quando o saldo vence.' },
+      { question: 'Posso cobrar adicional por reparo?', answer: 'Sim, desde que a regra e o valor ou critério sejam informados antes do atendimento.' },
+      { question: 'Como enviar sem parecer cobrança fria?', answer: 'Contextualize a mensagem com serviço, data e reserva; não envie apenas a chave Pix.' }
+    ],
+    relatedGuides: ['como-cobrar-cliente-pelo-whatsapp', 'como-reduzir-inadimplencia', 'como-fazer-orcamento-com-pix']
+  },
+  {
+    slug: 'modelo-de-orcamento-para-designer',
+    title: 'Modelo de orçamento para designer: escopo, revisões e entrada',
+    description: 'Saiba como apresentar entregas, rodadas de revisão, cronograma e pagamento em um orçamento de design.',
+    answer: 'Um orçamento para designer deve definir entregáveis, formatos de arquivo, quantidade de opções e revisões, prazo, investimento e forma de pagamento. A clareza sobre escopo e alterações evita que uma demanda aberta vire trabalho adicional sem remuneração.',
+    category: 'Cobrança e vendas', readTime: '7 min', toolHref: '/orcamento-com-pix', toolLabel: 'Criar orçamento de design', ...EDITORIAL,
+    sections: [
+      { title: 'Transforme pedido em entregáveis', paragraphs: ['Em vez de escrever apenas “criação de identidade visual”, especifique peças, formatos, versões e arquivos finais. Registre o que não está incluído para alinhar expectativa desde o início.'] },
+      { title: 'Defina o limite de revisões', paragraphs: ['Informe quantas rodadas de ajuste fazem parte do valor e como revisões extras serão cobradas. Centralize o feedback para evitar pedidos conflitantes ou espalhados em mensagens.'] },
+      { title: 'Conecte cronograma ao material do cliente', paragraphs: ['Explique quando o prazo começa e quais informações, textos ou aprovações o cliente precisa fornecer. Se trabalhar com entrada, deixe o marco de pagamento no orçamento.'] }
+    ],
+    example: { title: 'Identidade visual enxuta', lines: ['Entrega: logotipo principal, variações e paleta de cores', 'Inclui: 2 caminhos criativos e 2 rodadas de ajustes', 'Investimento: R$ 1.500,00 · Entrada: R$ 750,00', 'Prazo: 12 dias úteis após briefing e confirmação da entrada'] },
+    faq: [
+      { question: 'Quantas revisões devo incluir?', answer: 'A quantidade depende do serviço, mas precisa ser explícita para que ajustes extras possam ser combinados antes da execução.' },
+      { question: 'Devo entregar arquivo editável?', answer: 'Informe no escopo quais formatos serão entregues e se arquivos-fonte fazem parte da proposta.' },
+      { question: 'Quando cobrar entrada?', answer: 'Antes de reservar capacidade ou iniciar etapa que gera custo; descreva o valor e o efeito no cronograma.' }
+    ],
+    relatedGuides: ['como-precificar-servico-freelancer', 'proposta-comercial-para-mei', 'como-reduzir-inadimplencia']
+  },
+  {
+    slug: 'como-cobrar-sinal-antes-de-comecar-servico',
+    title: 'Como cobrar sinal antes de começar um serviço',
+    description: 'Defina valor, finalidade, vencimento e mensagem de cobrança para pedir entrada com clareza e profissionalismo.',
+    answer: 'Para cobrar sinal, apresente o valor como parte do orçamento, informe sua finalidade — como reservar agenda ou cobrir custo inicial —, defina vencimento e diga quanto será abatido do total. Só comece a etapa combinada após registrar a aprovação e o pagamento conforme sua política.',
+    category: 'Cobrança e vendas', readTime: '6 min', toolHref: '/orcamento-com-pix', toolLabel: 'Criar orçamento com sinal', ...EDITORIAL,
+    sections: [
+      { title: 'Explique por que existe entrada', paragraphs: ['O sinal pode reservar agenda, viabilizar compra de material ou distribuir o risco de um projeto longo. Ele funciona melhor quando a finalidade é informada antes da decisão do cliente.'] },
+      { title: 'Escreva valores e marcos no orçamento', paragraphs: ['Informe percentual ou valor fixo, data de vencimento, saldo, forma de pagamento e o marco de início. Se houver condição de cancelamento ou remarcação, descreva-a de modo objetivo e proporcional.'] },
+      { title: 'Envie uma mensagem curta e contextualizada', paragraphs: ['Depois do aceite, compartilhe um link com o orçamento e o Pix. Diga qual serviço está sendo reservado e o que acontecerá após a confirmação, sem pressionar ou enviar apenas uma chave solta.'] }
+    ],
+    example: { title: 'Mensagem para cobrar entrada', lines: ['Olá, Ana! Para reservar sua data de 20/08 para o projeto de catálogo, a entrada é de R$ 400,00.', 'Esse valor será abatido do total de R$ 1.200,00. Após a confirmação, envio o briefing e inicio a primeira etapa.', 'Segue o orçamento com Pix: [link].'] },
+    faq: [
+      { question: 'Quanto pedir de sinal?', answer: 'Não existe percentual universal. Considere custo inicial, duração, risco e capacidade de absorver cancelamentos.' },
+      { question: 'Sinal deve ser abatido do total?', answer: 'Deixe explícito no orçamento como o valor será tratado e qual saldo restará pagar.' },
+      { question: 'Posso começar antes do pagamento?', answer: 'Defina uma política consistente. Se o sinal existe para reservar agenda ou cobrir custo inicial, o início deve seguir a confirmação prevista.' }
+    ],
+    relatedGuides: ['como-reduzir-inadimplencia', 'como-cobrar-cliente-pelo-whatsapp', 'modelo-de-orcamento-para-prestacao-de-servico']
+  },
+  {
     slug: 'modelo-de-orcamento-para-prestacao-de-servico',
     title: 'Modelo de orçamento para prestação de serviço: exemplo preenchido',
     description: 'Veja um orçamento de serviço preenchido e aprenda a organizar escopo, preço, prazo, validade e condições de pagamento.',
