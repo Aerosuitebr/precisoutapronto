@@ -180,7 +180,13 @@ const COPY: Record<
   },
 };
 
-export function RemoverFundoApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
+export function RemoverFundoApp({
+  locale = "pt-BR",
+  publicLanding = false,
+}: {
+  locale?: Locale;
+  publicLanding?: boolean;
+} = {}) {
   const t = COPY[locale];
   const { toast } = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -309,13 +315,14 @@ export function RemoverFundoApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
     >
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
-          <ToolsBackButton />
+          <ToolsBackButton href={publicLanding ? "/recursos" : undefined} />
         </div>
 
         <PageHero
           title={t.heroTitle}
           subtitle={t.heroSubtitle}
           icon={ImageOff}
+          headingLevel={publicLanding ? "h2" : "h1"}
         />
 
         <div className="grid gap-2 sm:grid-cols-3">

@@ -336,7 +336,13 @@ const COPY: Record<
   }
 };
 
-export function EditorPdfApp({ locale = 'pt-BR' }: { locale?: Locale } = {}) {
+export function EditorPdfApp({
+  locale = 'pt-BR',
+  publicLanding = false
+}: {
+  locale?: Locale;
+  publicLanding?: boolean;
+} = {}) {
   const t = COPY[locale];
   const { toast } = useToast();
   const [sources, setSources] = useState<Map<string, SourceFile>>(new Map());
@@ -565,10 +571,15 @@ export function EditorPdfApp({ locale = 'pt-BR' }: { locale?: Locale } = {}) {
     <AuthGate title={t.authTitle} description={t.authDescription}>
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-3">
-          <ToolsBackButton />
+          <ToolsBackButton href={publicLanding ? '/recursos' : undefined} />
         </div>
 
-        <PageHero title={t.heroTitle} subtitle={t.heroSubtitle} icon={FileStack} />
+        <PageHero
+          title={t.heroTitle}
+          subtitle={t.heroSubtitle}
+          icon={FileStack}
+          headingLevel={publicLanding ? 'h2' : 'h1'}
+        />
 
         <div className="grid gap-2 sm:grid-cols-3">
           <Insight icon={Type} text={t.insightEdit} />

@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 export default function EditorDePdfOnlinePage() {
   return (
     <OrphanToolLandingPage landing={landing}>
-      <EditorPdfApp />
+      <EditorPdfApp publicLanding />
     </OrphanToolLandingPage>
   );
 }

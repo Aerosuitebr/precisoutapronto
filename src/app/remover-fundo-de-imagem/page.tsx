@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 export default function RemoverFundoDeImagemPage() {
   return (
     <OrphanToolLandingPage landing={landing}>
-      <RemoverFundoApp />
+      <RemoverFundoApp publicLanding />
     </OrphanToolLandingPage>
   );
 }
