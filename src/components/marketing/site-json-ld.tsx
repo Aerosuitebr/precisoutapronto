@@ -1,6 +1,8 @@
 import {
   BRAND_EMAIL,
+  BRAND_DESCRIPTION,
   BRAND_NAME,
+  BRAND_TAGLINE,
   BRAND_SAME_AS,
   BRAND_SITE
 } from '@/lib/brand';
@@ -15,7 +17,7 @@ export function SiteJsonLd() {
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,
     name: BRAND_NAME,
-    alternateName: 'RJ',
+    alternateName: ['RJ', 'ResolvaJato'],
     url: siteUrl,
     email: BRAND_EMAIL,
     logo: {
@@ -25,8 +27,8 @@ export function SiteJsonLd() {
       height: 512
     },
     image: `${siteUrl}/opengraph-image`,
-    description:
-      'Plataforma brasileira de orçamento com Pix, recibos, propostas e contratos para MEI, autônomos e prestadores de serviço.',
+    description: BRAND_DESCRIPTION,
+    slogan: BRAND_TAGLINE,
     foundingDate: '2025',
     areaServed: {
       '@type': 'Country',
@@ -57,7 +59,10 @@ export function SiteJsonLd() {
       'proposta comercial',
       'contrato de prestação de serviços',
       'precificação de serviços',
-      'gestão do trabalho autônomo'
+      'gestão do trabalho autônomo',
+      'edição e organização de PDF',
+      'compressão e conversão de imagens',
+      'ferramentas online com processamento local'
     ],
     brand: {
       '@type': 'Brand',
@@ -70,10 +75,10 @@ export function SiteJsonLd() {
     '@type': 'WebSite',
     '@id': `${siteUrl}/#website`,
     name: BRAND_NAME,
+    alternateName: 'ResolvaJato',
     url: siteUrl,
     inLanguage: 'pt-BR',
-    description:
-      'Ferramentas online para MEI e autônomos criarem orçamento com Pix, recibo, proposta e contrato para seus clientes.',
+    description: BRAND_DESCRIPTION,
     publisher: { '@id': `${siteUrl}/#organization` },
     about: { '@id': `${siteUrl}/#organization` }
   };

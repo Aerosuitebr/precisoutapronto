@@ -16,7 +16,7 @@ export function Logo({ collapsed = false, variant = 'marketing', className }: Lo
   return (
     <Image
       src={src}
-      alt="Resolva Jato, recursos e ferramentas"
+      alt="Resolva Jato — ferramentas online que resolvem de verdade"
       priority
       className={cn(
         'w-auto object-contain object-left',

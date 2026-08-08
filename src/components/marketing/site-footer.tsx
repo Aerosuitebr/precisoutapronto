@@ -13,6 +13,8 @@ const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
   { href: '/guias', label: 'Guias' },
   { href: '/sobre', label: 'Sobre e equipe' },
+  { href: '/resolva-jato', label: 'Site oficial Resolva Jato' },
+  { href: '/qualidade-e-seguranca', label: 'Qualidade e segurança' },
   { href: '/criterios-editoriais', label: 'Critérios editoriais' },
   { href: '/recursos', label: 'Catálogo público' },
   { href: '/busca', label: 'Busca grátis' },
@@ -39,6 +41,8 @@ const SEO_LINKS = [
   { href: '/embed', label: 'Badges e embeds' },
   { href: '/politica-de-correcoes', label: 'Política de correções' },
   { href: '/metodologia-calculadoras', label: 'Metodologia das calculadoras' },
+  { href: '/resolva-jato', label: 'Marca Resolva Jato' },
+  { href: '/qualidade-e-seguranca', label: 'Qualidade Jato' },
   { href: '/guias', label: 'Todos os guias' },
   { href: '/contrato-de-aluguel', label: 'Contrato de aluguel' },
   { href: '/recibo-de-pagamento', label: 'Recibo de pagamento' },
@@ -94,10 +98,10 @@ export function SiteFooter() {
             <Logo variant="footer" />
           </Link>
           <p className="mt-3 text-[15px] leading-7 text-slate-300">
-            Ferramentas para autônomos, estudantes e pequenos negócios, sem burocracia.
+            Ferramentas online que resolvem de verdade.
           </p>
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            Documentos profissionais e busca de recursos, totalmente grátis.
+            PDFs, imagens, documentos e cálculos com Qualidade Jato: privacidade, clareza e resultados verificáveis.
           </p>
         </div>
 

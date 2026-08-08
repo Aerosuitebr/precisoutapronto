@@ -18,11 +18,11 @@ const bingVerification = process.env.BING_SITE_VERIFICATION;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Ferramentas para MEI: orçamento, Pix, recibo e contrato | Resolva Jato',
+    default: 'Ferramentas online que resolvem de verdade | Resolva Jato',
     template: '%s | Resolva Jato'
   },
   description:
-    'Crie orçamento com Pix, recibo, proposta e contrato para enviar ao cliente pelo WhatsApp. Ferramentas online para MEI e autônomos.',
+    'Ferramentas gratuitas e confiáveis para PDFs, imagens, documentos, cálculos e rotina profissional. Resolva online com qualidade e privacidade.',
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   ...(staging ? { robots: stagingRobots() } : {}),
   openGraph: {
-    title: 'Ferramentas para MEI: orçamento, Pix, recibo e contrato | Resolva Jato',
-    description: 'Crie orçamento com Pix, recibo, proposta e contrato para enviar ao cliente pelo WhatsApp. Ferramentas online para MEI e autônomos.',
+    title: 'Ferramentas online que resolvem de verdade | Resolva Jato',
+    description: 'Ferramentas gratuitas e confiáveis para PDFs, imagens, documentos, cálculos e rotina profissional.',
     locale: 'pt_BR',
     type: 'website',
     url: siteUrl,
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ferramentas para MEI | Resolva Jato',
-    description: 'Orçamento com Pix, recibo, proposta e contrato para MEI, autônomos e prestadores.'
+    title: 'Resolva Jato | Ferramentas online confiáveis',
+    description: 'PDFs, imagens, documentos e cálculos com qualidade, privacidade e resultados verificáveis.'
   },
   keywords: [
     'orçamento com pix',
@@ -54,6 +54,9 @@ export const metadata: Metadata = {
     'proposta comercial',
     'ferramentas grátis para MEI',
     'ferramentas online grátis',
+    'Resolva Jato',
+    'ferramentas para PDF',
+    'ferramentas para imagens',
     'cobrança para autônomos',
     'documentos para prestadores de serviço'
   ],
