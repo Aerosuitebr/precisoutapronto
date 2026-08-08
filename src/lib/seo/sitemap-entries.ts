@@ -29,6 +29,11 @@ export const PUBLIC_TOOL_LANDINGS = [
   '/corretor-de-redacao-enem',
   '/editor-de-pdf-online',
   '/remover-fundo-de-imagem',
+  '/juntar-pdf-online',
+  '/dividir-pdf-online',
+  '/comprimir-pdf-online',
+  '/comprimir-redimensionar-imagem',
+  '/converter-imagem-online',
   '/gerador-de-referencias-abnt',
   '/agenda-online',
   '/divisor-de-conta',
@@ -131,6 +136,10 @@ function buildTools(base: string): MetadataRoute.Sitemap {
       path.startsWith('/corretor-') ||
       path.startsWith('/editor-') ||
       path.startsWith('/remover-') ||
+      path.startsWith('/juntar-') ||
+      path.startsWith('/dividir-') ||
+      path.startsWith('/comprimir-') ||
+      path.startsWith('/converter-') ||
       path === '/agenda-online' ||
       path === '/divisor-de-conta'
     ) {

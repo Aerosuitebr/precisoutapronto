@@ -26,6 +26,11 @@ const SEO_LINKS = [
   { href: '/corretor-de-redacao-enem', label: 'Corretor de redação ENEM' },
   { href: '/editor-de-pdf-online', label: 'Editor de PDF' },
   { href: '/remover-fundo-de-imagem', label: 'Remover fundo de imagem' },
+  { href: '/juntar-pdf-online', label: 'Juntar PDF' },
+  { href: '/dividir-pdf-online', label: 'Dividir PDF' },
+  { href: '/comprimir-pdf-online', label: 'Comprimir PDF' },
+  { href: '/comprimir-redimensionar-imagem', label: 'Comprimir imagem' },
+  { href: '/converter-imagem-online', label: 'Converter imagem' },
   { href: '/gerador-de-referencias-abnt', label: 'Referências ABNT' },
   { href: '/divisor-de-conta', label: 'Divisor de conta' },
   { href: '/agenda-online', label: 'Agenda online' },
@@ -57,6 +62,8 @@ const PUBLIC_TOOL_LINKS = [
   { href: '/gerador-de-curriculo', label: 'Currículo' },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
   { href: '/remover-fundo-de-imagem', label: 'Remover fundo' },
+  { href: '/juntar-pdf-online', label: 'Juntar PDF' },
+  { href: '/comprimir-redimensionar-imagem', label: 'Otimizar imagem' },
   { href: '/recursos', label: 'Ver catálogo completo' }
 ] as const;
 

@@ -8,6 +8,8 @@ import {
   ClipboardList,
   FileStack,
   FileText,
+  FileArchive,
+  Images,
   Gavel,
   GraduationCap,
   ImageOff,
@@ -42,6 +44,11 @@ export type InternationalToolSlug =
   | 'study-schedule'
   | 'background-remover'
   | 'pdf-editor'
+  | 'merge-pdf'
+  | 'split-pdf'
+  | 'compress-pdf'
+  | 'image-optimizer'
+  | 'image-converter'
   | 'mei-vs-employment'
   | 'enem-essay'
   | 'abnt-references'
@@ -326,6 +333,46 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
       name: 'Editor de PDF',
       description: 'Une, reordena, rota y anota páginas PDF en el navegador.'
     }
+  },
+  {
+    slug: 'merge-pdf',
+    ptPath: '/juntar-pdf-online',
+    icon: FileStack,
+    category: 'utilities',
+    en: { name: 'Merge PDF', description: 'Combine PDF files locally while preserving page size and order.' },
+    es: { name: 'Unir PDF', description: 'Combina archivos PDF localmente conservando el tamaño y el orden.' }
+  },
+  {
+    slug: 'split-pdf',
+    ptPath: '/dividir-pdf-online',
+    icon: FileStack,
+    category: 'utilities',
+    en: { name: 'Split PDF', description: 'Extract selected pages into a new PDF without uploading files.' },
+    es: { name: 'Dividir PDF', description: 'Extrae páginas seleccionadas en un PDF nuevo sin subir archivos.' }
+  },
+  {
+    slug: 'compress-pdf',
+    ptPath: '/comprimir-pdf-online',
+    icon: FileArchive,
+    category: 'utilities',
+    en: { name: 'Compress PDF', description: 'Choose safe optimization or stronger compression for scanned PDFs.' },
+    es: { name: 'Comprimir PDF', description: 'Elige optimización segura o compresión intensa para PDF escaneados.' }
+  },
+  {
+    slug: 'image-optimizer',
+    ptPath: '/comprimir-redimensionar-imagem',
+    icon: Images,
+    category: 'utilities',
+    en: { name: 'Compress and resize image', description: 'Control image dimensions, format and quality directly in the browser.' },
+    es: { name: 'Comprimir y redimensionar imagen', description: 'Controla dimensiones, formato y calidad directamente en el navegador.' }
+  },
+  {
+    slug: 'image-converter',
+    ptPath: '/converter-imagem-online',
+    icon: Images,
+    category: 'utilities',
+    en: { name: 'Image converter', description: 'Convert JPG, PNG and WebP images, including image-to-PDF output.' },
+    es: { name: 'Convertidor de imágenes', description: 'Convierte JPG, PNG y WebP, incluso de imagen a PDF.' }
   },
   {
     slug: 'mei-vs-employment',
