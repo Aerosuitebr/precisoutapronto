@@ -20,6 +20,58 @@ export type OrphanPublicLanding = {
 /** Landings públicas para ferramentas que antes só existiam em /ferramentas (noindex). */
 export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
   {
+    toolId: 'remover-fundo',
+    path: '/remover-fundo-de-imagem',
+    toolName: 'Removedor de fundo',
+    metaTitle: 'Remover fundo de imagem online grátis (PNG transparente)',
+    metaDescription:
+      'Remova o fundo de fotos, produtos e objetos online grátis. Baixe em PNG transparente com processamento local, sem enviar a imagem ao servidor.',
+    keywords: [
+      'remover fundo de imagem',
+      'removedor de fundo online',
+      'tirar fundo de foto',
+      'criar png transparente',
+      'remover fundo de produto'
+    ],
+    h1: 'Remover fundo de imagem online grátis',
+    subtitle:
+      'Recorte pessoas, produtos e objetos automaticamente. Baixe em PNG transparente sem instalar programa e sem enviar sua imagem ao servidor.',
+    howToTitle: 'Como remover o fundo de uma imagem',
+    howToSteps: [
+      'Selecione ou arraste uma imagem JPG, PNG ou WEBP.',
+      'Aguarde o recorte automático feito pela ferramenta no navegador.',
+      'Mantenha o fundo transparente ou escolha uma cor de fundo.',
+      'Baixe o resultado em PNG para usar em catálogos, redes sociais ou apresentações.'
+    ],
+    faqs: [
+      {
+        q: 'A imagem é enviada para algum servidor?',
+        a: 'Não. O processamento acontece localmente no navegador, e a imagem permanece no seu dispositivo.'
+      },
+      {
+        q: 'O removedor de fundo é grátis?',
+        a: 'Sim. Você pode experimentar sem cadastro e baixar o resultado em PNG.'
+      },
+      {
+        q: 'Serve para fotos de produtos?',
+        a: 'Sim. A ferramenta recorta pessoas, produtos e objetos e é útil para catálogos, marketplaces e redes sociais.'
+      },
+      {
+        q: 'O arquivo fica com fundo transparente?',
+        a: 'Sim. O resultado pode ser baixado em PNG transparente ou receber uma cor de fundo antes do download.'
+      }
+    ],
+    related: [
+      { href: '/editor-de-pdf-online', label: 'Editor de PDF' },
+      { href: '/gerador-de-curriculo', label: 'Gerador de currículo' },
+      { href: '/recursos', label: 'Catálogo de ferramentas' }
+    ],
+    ogEyebrow: 'RESOLVA JATO · IMAGENS',
+    ogTitle: 'Remova o fundo em segundos.',
+    ogSubtitle: 'PNG transparente · processamento no navegador',
+    applicationCategory: 'MultimediaApplication'
+  },
+  {
     toolId: 'editor-pdf',
     path: '/editor-de-pdf-online',
     toolName: 'Editor de PDF',

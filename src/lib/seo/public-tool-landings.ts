@@ -19,6 +19,7 @@ export const PUBLIC_TOOL_LANDINGS: Record<string, string> = {
   ferias: '/calculadora-de-ferias',
   'decimo-terceiro': '/calculadora-de-decimo-terceiro',
   'editor-pdf': '/editor-de-pdf-online',
+  'remover-fundo': '/remover-fundo-de-imagem',
   'referencias-abnt': '/gerador-de-referencias-abnt',
   agenda: '/agenda-online',
   'divisor-conta': '/divisor-de-conta'
@@ -39,6 +40,7 @@ const PRIVATE_TO_PUBLIC: Record<string, string> = {
   '/ferramentas/pix': '/gerador-de-qr-code-pix',
   '/ferramentas/redacao-enem': '/corretor-de-redacao-enem',
   '/ferramentas/editor-pdf': '/editor-de-pdf-online',
+  '/ferramentas/remover-fundo': '/remover-fundo-de-imagem',
   '/ferramentas/referencias-abnt': '/gerador-de-referencias-abnt',
   '/ferramentas/agenda': '/agenda-online',
   '/ferramentas/divisor-conta': '/divisor-de-conta',

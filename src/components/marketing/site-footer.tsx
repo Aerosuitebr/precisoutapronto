@@ -25,6 +25,7 @@ const SEO_LINKS = [
   { href: '/mei-ou-clt', label: 'MEI ou CLT' },
   { href: '/corretor-de-redacao-enem', label: 'Corretor de redação ENEM' },
   { href: '/editor-de-pdf-online', label: 'Editor de PDF' },
+  { href: '/remover-fundo-de-imagem', label: 'Remover fundo de imagem' },
   { href: '/gerador-de-referencias-abnt', label: 'Referências ABNT' },
   { href: '/divisor-de-conta', label: 'Divisor de conta' },
   { href: '/agenda-online', label: 'Agenda online' },
@@ -55,6 +56,7 @@ const PUBLIC_TOOL_LINKS = [
   { href: '/mei-ou-clt', label: 'MEI ou CLT' },
   { href: '/gerador-de-curriculo', label: 'Currículo' },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
+  { href: '/remover-fundo-de-imagem', label: 'Remover fundo' },
   { href: '/recursos', label: 'Ver catálogo completo' }
 ] as const;
 

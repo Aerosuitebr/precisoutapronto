@@ -141,6 +141,7 @@ if (!publicMap.includes('/corretor-de-redacao-enem') || !publicMap.includes('red
 }
 for (const path of [
   '/editor-de-pdf-online',
+  '/remover-fundo-de-imagem',
   '/gerador-de-referencias-abnt',
   '/agenda-online',
   '/divisor-de-conta'
@@ -153,6 +154,9 @@ for (const path of [
 const orphanLandings = await readFile(path.join(root, 'src/lib/seo/orphan-tool-landings.ts'), 'utf8');
 if (!orphanLandings.includes("path: '/editor-de-pdf-online'")) {
   failures.push('orphan-tool-landings.ts: faltam landings órfãs');
+}
+if (!orphanLandings.includes("path: '/remover-fundo-de-imagem'")) {
+  failures.push('orphan-tool-landings.ts: falta landing pública do removedor de fundo');
 }
 
 if (failures.length) {

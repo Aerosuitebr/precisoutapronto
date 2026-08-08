@@ -28,6 +28,7 @@ export const PUBLIC_TOOL_LANDINGS = [
   '/mei-ou-clt',
   '/corretor-de-redacao-enem',
   '/editor-de-pdf-online',
+  '/remover-fundo-de-imagem',
   '/gerador-de-referencias-abnt',
   '/agenda-online',
   '/divisor-de-conta',
@@ -129,6 +130,7 @@ function buildTools(base: string): MetadataRoute.Sitemap {
       path.startsWith('/documentos-') ||
       path.startsWith('/corretor-') ||
       path.startsWith('/editor-') ||
+      path.startsWith('/remover-') ||
       path === '/agenda-online' ||
       path === '/divisor-de-conta'
     ) {

@@ -301,7 +301,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'background-remover',
-    ptPath: '/ferramentas/remover-fundo',
+    ptPath: '/remover-fundo-de-imagem',
     icon: ImageOff,
     category: 'utilities',
     en: {
