@@ -19,10 +19,10 @@ for (const path of LANDINGS) {
 
 test('home metadata and primary topic stay aligned', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveTitle('Ferramentas para MEI: orçamento, Pix, recibo e contrato | Resolva Jato');
+  await expect(page).toHaveTitle('Ferramentas online que resolvem de verdade | Resolva Jato');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
-    'Crie orçamento com Pix, recibo, proposta e contrato para enviar ao cliente pelo WhatsApp. Ferramentas online para MEI e autônomos.'
+    'Ferramentas gratuitas e confiáveis para PDFs, imagens, documentos, cálculos e rotina profissional. Resolva online com qualidade e privacidade.'
   );
   await expect(page.locator('main a[href="/games"]')).toHaveCount(0);
 });
