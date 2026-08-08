@@ -10,7 +10,7 @@ import { INTERNATIONAL_TOOLS } from '@/lib/international-tools-catalog';
 import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-export const CORE_UPDATED_AT = new Date('2026-08-07T15:00:00.000Z');
+export const CORE_UPDATED_AT = new Date('2026-08-08T15:00:00.000Z');
 export const GUIDES_UPDATED_AT = new Date('2026-08-07T15:00:00.000Z');
 export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 

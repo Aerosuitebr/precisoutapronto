@@ -20,11 +20,17 @@ mkdir -p "${INSTALL_DIR}"
 if [[ -f "${INSTALL_DIR}/.env.production" ]]; then
   cp -a "${INSTALL_DIR}/.env.production" /tmp/resolva-jato.env.production.bak
 fi
+if [[ -f "${INSTALL_DIR}/.indexnow-sitemap.sha256" ]]; then
+  cp -a "${INSTALL_DIR}/.indexnow-sitemap.sha256" /tmp/resolva-jato.indexnow-sitemap.sha256.bak
+fi
 find "${INSTALL_DIR}" -mindepth 1 -maxdepth 1 ! -name '.env.production' -exec rm -rf {} +
 tar -xzf "${TARBALL}" -C "${INSTALL_DIR}"
 if [[ ! -f "${INSTALL_DIR}/.env.production" && -f /tmp/resolva-jato.env.production.bak ]]; then
   cp -a /tmp/resolva-jato.env.production.bak "${INSTALL_DIR}/.env.production"
   chmod 600 "${INSTALL_DIR}/.env.production"
+fi
+if [[ ! -f "${INSTALL_DIR}/.indexnow-sitemap.sha256" && -f /tmp/resolva-jato.indexnow-sitemap.sha256.bak ]]; then
+  cp -a /tmp/resolva-jato.indexnow-sitemap.sha256.bak "${INSTALL_DIR}/.indexnow-sitemap.sha256"
 fi
 
 cd "${INSTALL_DIR}"
@@ -68,15 +74,25 @@ fi
 curl -sfI http://127.0.0.1:3000/ | head -1
 "${COMPOSE[@]}" ps
 echo "==> Notificar mecanismos de busca via IndexNow"
-# Host nao tem node no PATH; usa a imagem do app (Node embutido) com o script montado.
-if docker run --rm \
-  -v "${INSTALL_DIR}/scripts/seo/submit-indexnow.mjs:/tmp/submit-indexnow.mjs:ro" \
-  --entrypoint node \
-  resolva-jato-app:latest \
-  /tmp/submit-indexnow.mjs
-then
-  echo "IndexNow: lote enviado."
+SITEMAP_HASH_FILE="${INSTALL_DIR}/.indexnow-sitemap.sha256"
+CURRENT_SITEMAP_HASH="$(curl -sf https://resolvajato.com.br/sitemap.xml | sha256sum | awk '{print $1}' || true)"
+PREVIOUS_SITEMAP_HASH="$(cat "${SITEMAP_HASH_FILE}" 2>/dev/null || true)"
+if [[ -n "${CURRENT_SITEMAP_HASH}" && "${CURRENT_SITEMAP_HASH}" == "${PREVIOUS_SITEMAP_HASH}" ]]; then
+  echo "IndexNow: sitemap sem mudancas; envio completo ignorado."
 else
-  echo "AVISO: IndexNow nao respondeu; o deploy permanece ativo."
+  # Host nao tem node no PATH; usa a imagem do app (Node embutido) com o script montado.
+  if docker run --rm \
+    -v "${INSTALL_DIR}/scripts/seo/submit-indexnow.mjs:/tmp/submit-indexnow.mjs:ro" \
+    --entrypoint node \
+    resolva-jato-app:latest \
+    /tmp/submit-indexnow.mjs
+  then
+    echo "IndexNow: lote enviado."
+    if [[ -n "${CURRENT_SITEMAP_HASH}" ]]; then
+      printf '%s\n' "${CURRENT_SITEMAP_HASH}" > "${SITEMAP_HASH_FILE}"
+    fi
+  else
+    echo "AVISO: IndexNow nao respondeu; o deploy permanece ativo."
+  fi
 fi
 echo "OK - Resolva Jato em ${INSTALL_DIR} (localhost:3000)"

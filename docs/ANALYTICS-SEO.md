@@ -6,7 +6,7 @@ Defina no ambiente de build:
 
 ```env
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
-NEXT_PUBLIC_CLARITY_PROJECT_ID=xxxxxxxxxx
+NEXT_PUBLIC_CLARITY_PROJECT_ID=xsknm22mhw
 ```
 
 As integrações são opcionais: sem os IDs, nenhum script externo é carregado. Os eventos implementados não enviam CPF, e-mail, telefone, nomes nem conteúdo de documentos.
@@ -26,7 +26,7 @@ Playbook (DNS SPF/DKIM/DMARC, senha de app, `.env` no VPS, testes):
 
 ## Microsoft Clarity e Bing
 
-Crie o projeto no Clarity, informe o ID acima e vincule-o ao Bing Webmaster Tools. Conteúdo sensível deve permanecer mascarado nas configurações do Clarity.
+O projeto de produção usa o ID acima e deve permanecer vinculado ao Bing Webmaster Tools. O compose de produção adota esse ID como padrão; o staging continua explicitamente sem rastreamento. Conteúdo sensível deve permanecer mascarado nas configurações do Clarity.
 
 ## IndexNow
 

@@ -7,13 +7,13 @@ const content: SeoLandingContent = {
   path: '/recibo-de-aluguel',
   toolHref: '/gerador-de-recibo',
   eyebrow: 'Recibo de aluguel',
-  title: 'Emita um recibo de aluguel claro em PDF',
+  title: 'Recibo de aluguel grátis: faça online e baixe em PDF',
   description:
-    'Registre locador, locatário, imóvel, competência, valor e forma de pagamento. Gere um recibo organizado para guardar ou enviar.',
+    'Crie seu recibo de aluguel online grátis. Preencha locador, inquilino, imóvel e valor, depois baixe o modelo em PDF para imprimir ou enviar.',
   heroBullets: [
     'Valor por extenso automático',
-    'Pronto para WhatsApp ou impressão',
-    'Modelo limpo para locação residencial ou comercial'
+    'Modelo em PDF pronto para imprimir',
+    'Para aluguel residencial ou comercial'
   ],
   primaryCta: 'Gerar recibo de aluguel',
   secondaryCta: { label: 'Ver contrato de aluguel', href: '/contrato-de-aluguel' },
@@ -31,6 +31,10 @@ const content: SeoLandingContent = {
         'Mês/competência e valor pago',
         'Forma de pagamento e data'
       ]
+    },
+    {
+      title: 'Modelo de recibo de aluguel para imprimir',
+      body: 'Preencha os dados online e gere um PDF organizado para imprimir, assinar ou enviar pelo WhatsApp. O mesmo modelo atende aluguel de casa, apartamento, sala comercial e outros imóveis.'
     }
   ],
   faqs: [
@@ -41,6 +45,14 @@ const content: SeoLandingContent = {
     {
       q: 'Posso emitir recibo de aluguel pago via Pix?',
       a: 'Sim. Informe Pix como forma de pagamento e descreva o mês quitado.'
+    },
+    {
+      q: 'Como fazer um recibo de aluguel simples para imprimir?',
+      a: 'Informe locador, inquilino, imóvel, mês de referência, valor, data e forma de pagamento. Depois gere o PDF para imprimir e assinar.'
+    },
+    {
+      q: 'O modelo serve para recibo de aluguel de casa?',
+      a: 'Sim. Identifique o endereço da casa, o período pago e as partes envolvidas antes de baixar o recibo em PDF.'
     },
     {
       q: 'Preciso de cadastro?',
@@ -55,7 +67,7 @@ const content: SeoLandingContent = {
 };
 
 export const metadata: Metadata = {
-  title: 'Recibo de aluguel online grátis em PDF',
+  title: { absolute: 'Recibo de Aluguel Grátis Online em PDF | Resolva Jato' },
   description: content.description,
   alternates: { canonical: content.path },
   openGraph: {
