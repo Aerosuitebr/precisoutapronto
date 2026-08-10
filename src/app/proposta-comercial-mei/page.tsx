@@ -23,8 +23,8 @@ const content: SeoLandingContent = {
   ]
 };
 export const metadata: Metadata = {
-  title: 'Proposta comercial para MEI: modelo em PDF',
-  description: content.description,
+  title: 'Proposta Comercial para MEI: Modelo Grátis em PDF',
+  description: 'Crie uma proposta comercial para MEI com escopo, prazo e investimento claros. Use o modelo grátis e baixe o PDF para enviar ao cliente.',
   alternates: { canonical: content.path },
   openGraph: {
     title: content.title,

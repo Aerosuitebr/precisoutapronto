@@ -137,9 +137,9 @@ export const propostasSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Proposta Comercial Online Gratuito',
+    metaTitle: 'Gerador de Proposta Comercial Grátis em PDF',
     metaDescription:
-      'Crie propostas comerciais grátis, online, com sua logo, itens e valores organizados. Baixe em PDF profissional em minutos.',
+      'Crie uma proposta comercial grátis com sua logo, escopo, itens e valores. Baixe o PDF profissional pronto para enviar ao cliente.',
     keywords: [
       'gerador de proposta comercial',
       'modelo de proposta comercial',

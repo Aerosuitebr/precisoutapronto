@@ -137,9 +137,9 @@ export const recibosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Recibo Online Gratuito',
+    metaTitle: 'Gerador de Recibo Grátis em PDF',
     metaDescription:
-      'Crie recibos de pagamento grátis, online, com valor por extenso automático e assinatura digital. Baixe em PDF em minutos.',
+      'Crie um recibo de pagamento grátis, com valor por extenso e assinatura digital. Preencha online e baixe o PDF em minutos.',
     keywords: [
       'gerador de recibo',
       'recibo online',

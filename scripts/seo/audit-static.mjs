@@ -116,6 +116,18 @@ const nextConfig = await readFile(path.join(root, 'next.config.mjs'), 'utf8');
 if (!nextConfig.includes("source: '/para/autonomos'")) {
   failures.push('next.config.mjs: redirect /para/autonomos ausente');
 }
+if (
+  !nextConfig.includes("source: '/ferramentas/redacao-enem'") ||
+  !nextConfig.includes("destination: '/corretor-de-redacao-enem'") ||
+  !nextConfig.includes('permanent: true')
+) {
+  failures.push('next.config.mjs: redirect permanente da redacao ENEM ausente');
+}
+
+const toolsCatalog = await readFile(path.join(root, 'src/lib/tools-catalog.ts'), 'utf8');
+if (toolsCatalog.includes('href: "/ferramentas/redacao-enem"')) {
+  failures.push('tools-catalog.ts: redacao ENEM ainda cria links para a URL privada');
+}
 
 if (privatePtPaths.includes('/ferramentas/pix') || privatePtPaths.includes('/ferramentas/mei-vs-clt')) {
   failures.push('international-tools-catalog.ts: pix/mei ainda apontam para /ferramentas/*');

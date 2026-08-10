@@ -338,6 +338,14 @@ export function LandingPage() {
             <Link href="/gerador-de-contrato" className="font-semibold text-sky-700 hover:underline">
               contrato
             </Link>
+            ,{' '}
+            <Link href="/calculadora-de-rescisao" className="font-semibold text-sky-700 hover:underline">
+              calcular rescisão CLT
+            </Link>
+            {' e '}
+            <Link href="/corretor-de-redacao-enem" className="font-semibold text-sky-700 hover:underline">
+              corrigir redação ENEM
+            </Link>
             .
           </p>
         </div>

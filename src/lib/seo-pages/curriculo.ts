@@ -170,9 +170,9 @@ export const curriculoSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Currículo Online Gratuito',
+    metaTitle: 'Gerador de Currículo Grátis em PDF',
     metaDescription:
-      'Crie seu currículo profissional grátis, online, sem instalar nada. Escolha um modelo, preencha seus dados e baixe em PDF em minutos.',
+      'Crie seu currículo profissional grátis e sem cadastro. Escolha um modelo, preencha seus dados e baixe o PDF pronto em minutos.',
     keywords: [
       'gerador de currículo',
       'currículo online',

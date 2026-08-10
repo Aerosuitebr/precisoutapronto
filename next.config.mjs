@@ -50,6 +50,12 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Consolida a URL privada que acumulou impressões no Google na landing pública.
+      {
+        source: '/ferramentas/redacao-enem',
+        destination: '/corretor-de-redacao-enem',
+        permanent: true
+      },
       // Canibalização: landing SEO dedicada em /para/freelancers.
       {
         source: '/para/autonomos',

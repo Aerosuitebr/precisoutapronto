@@ -9,7 +9,7 @@ const PATH = '/corretor-de-redacao-enem';
 const SITE_URL = getViralBaseUrl().replace(/\/$/, '');
 
 export const metadata: Metadata = {
-  title: 'Corretor de redação ENEM grátis (nota por competência)',
+  title: 'Corretor de Redação ENEM Grátis por Competência',
   description:
     'Cole sua redação e receba estimativa de nota por competência (C1 a C5), pontos fortes e alertas. Duas análises livres sem cadastro.',
   keywords: [

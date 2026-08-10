@@ -351,7 +351,7 @@ export const toolsCatalog: ToolDefinition[] = [
     description:
       "Estimativa de nota por competência, com pontos fortes e alertas.",
     tip: "Estimativa automática por heurísticas. Não substitui a correção humana.",
-    href: "/ferramentas/redacao-enem",
+    href: "/corretor-de-redacao-enem",
     icon: PenLine,
     categoryId: "carreira",
     actionLabel: "Corrigir redação",
