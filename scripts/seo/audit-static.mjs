@@ -111,6 +111,9 @@ if (/\b'\/conta'\b/.test(robotsBody) || /Disallow:\s*\/conta\s*$/m.test(robotsBo
 if (!robotsBody.includes('/conta$') || !robotsBody.includes("'/contato'")) {
   failures.push('robots-body.ts: falta /conta$ e Allow /contato');
 }
+if (!robotsBody.includes("'/ferramentas/redacao-enem$'")) {
+  failures.push('robots-body.ts: Googlebot nao consegue processar o redirect antigo da redacao');
+}
 
 const nextConfig = await readFile(path.join(root, 'next.config.mjs'), 'utf8');
 if (!nextConfig.includes("source: '/para/autonomos'")) {
