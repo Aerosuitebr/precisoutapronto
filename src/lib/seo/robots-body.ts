@@ -53,7 +53,7 @@ const PUBLIC_ALLOWS = [
   '/contato',
   '/contato/',
   // Permite que buscadores processem o redirect 308 e consolidem a URL antiga.
-  '/ferramentas/redacao-enem$'
+  '/ferramentas/redacao-enem'
 ] as const;
 
 /** Corpo de `/robots.txt` (texto puro, com descoberta de `llms.txt`). */
