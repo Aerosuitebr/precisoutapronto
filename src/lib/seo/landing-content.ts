@@ -34,15 +34,15 @@ export const SEO_LANDINGS = {
     path: '/orcamento-com-pix',
     toolHref: '/orcamento-com-pix#montar',
     eyebrow: 'Orçamento digital + Pix',
-    title: 'Gerador de orçamento com aprovação e Pix no WhatsApp',
+    title: 'Gerador de orçamento grátis com Pix e WhatsApp',
     description:
-      'Monte o orçamento, envie o link, o cliente aprova no celular e você cobra com QR Code Pix. Experimente sem cadastro.',
+      'Crie um orçamento profissional grátis, envie pelo WhatsApp e receba a aprovação do cliente. Teste 2 vezes sem cadastro.',
     heroBullets: [
       'Cliente aprova sem instalar app',
       'QR Pix e Copia e Cola prontos',
       'Link público para mandar no WhatsApp'
     ],
-    primaryCta: 'Experimentar sem cadastro',
+    primaryCta: 'Criar e enviar orçamento grátis',
     secondaryCta: { label: 'Gerador de QR Code Pix', href: '/gerador-de-qr-code-pix' },
     sections: [
       {

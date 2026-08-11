@@ -157,7 +157,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
   const total = useMemo(() => calcOrcamentoTotal(items), [items]);
   const ownerEmail = (profissionalEmail || session?.user.email || '').trim().toLowerCase();
   const professionalComplete = Boolean(
-    profissionalNome.trim() && profissionalWhatsapp.replace(/\D+/g, '').length >= 10 && profissionalEmail.trim()
+    profissionalNome.trim() && profissionalWhatsapp.replace(/\D+/g, '').length >= 10
   );
 
   const hasValidItem = useMemo(
@@ -263,9 +263,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
       hasHydratedProfissionalRef.current = true;
       setProfissionalCollapsed(
         Boolean(
-          prefs.profissionalNome.trim() &&
-            prefs.profissionalWhatsapp.trim() &&
-            (prefs.profissionalEmail || session?.user.email || '').trim()
+          prefs.profissionalNome.trim() && prefs.profissionalWhatsapp.trim()
         )
       );
     }
@@ -754,15 +752,14 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
                   </FormField>
                   <FormField
                     className="sm:col-span-2"
-                    label="Seu e-mail de alertas"
-                    required
+                    label="Seu e-mail de alertas (opcional)"
                     htmlFor="orc-profissional-email"
                     error={
                       profissionalEmail.trim() && !isValidEmail(profissionalEmail)
                         ? 'E-mail inválido.'
                         : undefined
                     }
-                    hint="Recebe e-mail quando o cliente aprovar ou pedir ajuste."
+                    hint="Se informar, você recebe um alerta quando o cliente responder."
                   >
                     <Input
                       id="orc-profissional-email"
@@ -1198,7 +1195,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
                   onClick={editingId ? handleUpdatePending : handleGenerate}
                   disabled={generating || updating || !readyToGenerate}
                 >
-                  {editingId ? 'Salvar alterações' : brandDocuments ? 'Gerar link' : session ? 'Gerar link' : 'Gerar link (experiência completa)'}
+                  {editingId ? 'Salvar alterações' : 'Gerar orçamento e enviar'}
                 </Button>
                 {!readyToGenerate ? (
                   <p className="mt-2 text-xs font-medium leading-5 text-amber-800">{blockedHint}</p>

@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 
 const SEALS = [
   { icon: FileText, label: 'Documentos profissionais', detail: 'PDF pronto para enviar' },
-  { icon: Sparkles, label: 'Totalmente grátis', detail: 'Sem cartão' },
+  { icon: Sparkles, label: 'Comece grátis', detail: '2 gerações sem conta' },
   { icon: Search, label: 'Busca gratuita', detail: 'Links úteis sem cadastro' },
   { icon: Lock, label: 'Dados protegidos', detail: 'HTTPS / SSL' }
 ] as const;

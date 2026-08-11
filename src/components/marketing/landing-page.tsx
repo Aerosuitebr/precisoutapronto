@@ -8,7 +8,6 @@ import {
   Wallet
 } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
-import { Logo } from '@/components/brand/logo';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
 import { HeroOrcamentoDemo } from '@/components/marketing/hero-orcamento-demo';
 import { PromoVideoPlayer } from '@/components/marketing/promo-video-section';
@@ -17,6 +16,7 @@ import { TrustSeals } from '@/components/marketing/trust-seals';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { HomeConversionLink } from '@/components/analytics/home-conversion-link';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
@@ -80,22 +80,39 @@ export function LandingPage() {
           <ToolsWatermark className="opacity-70" />
         </div>
 
-        <div className="relative mx-auto grid max-w-6xl items-stretch gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-12 lg:py-16">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-4 py-8 sm:px-6 sm:py-10 lg:min-h-[610px] lg:grid-cols-[1.08fr_0.92fr] lg:gap-10 lg:py-10">
           <div className="flex h-full max-w-xl flex-col">
-            <div className="rj-animate-fade-up">
-              <Logo variant="hero" />
-            </div>
-            <p className="rj-animate-fade-up mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
+            <p className="mt-0 text-xs font-bold uppercase tracking-[0.18em] text-amber-300 lg:text-sm">
               Escritório digital para MEI e autônomos
             </p>
-            <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(2rem,4.4vw,3.5rem)] font-extrabold leading-[1.06] tracking-tight text-white">
-              Faça o orçamento. Cliente aprova. Você recebe no Pix.
+            <h1 className="rj-display mt-3 text-[clamp(2.15rem,4vw,3.35rem)] font-extrabold leading-[1.03] tracking-tight text-white">
+              Envie um orçamento profissional pelo WhatsApp em 2 minutos.
             </h1>
-            <p className="rj-animate-fade-up-delay-2 mt-4 max-w-lg text-base leading-7 text-slate-200 sm:text-lg">
-              Crie um orçamento profissional, envie pelo WhatsApp e receba a aprovação do cliente
-              pelo celular.
+            <p className="mt-4 max-w-lg text-base leading-7 text-slate-100 sm:text-lg">
+              Seu cliente aprova pelo celular e você cobra no Pix, sem instalar aplicativo.
             </p>
-            <ul className="rj-animate-fade-up-delay-2 mt-5 space-y-2 text-sm text-slate-200">
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
+                <HomeConversionLink href="/orcamento-com-pix#montar" placement="hero_primary">
+                  Criar e enviar orçamento grátis
+                  <ArrowRight className="h-4 w-4" />
+                </HomeConversionLink>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-12 w-full border-white/35 bg-white/10 px-6 text-base text-white hover:bg-white/15 sm:w-auto"
+              >
+                <HomeConversionLink href="#como-funciona" placement="hero_secondary">
+                  Ver como funciona
+                </HomeConversionLink>
+              </Button>
+            </div>
+            <p className="mt-3 text-sm font-semibold text-emerald-100">
+              2 orçamentos grátis sem cadastro <span aria-hidden>•</span> cliente sem conta
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-slate-100">
               {[
                 'PDF profissional pronto para enviar',
                 'Aprovação do cliente pelo celular',
@@ -107,29 +124,7 @@ export function LandingPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-              <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
-                <Link href="/orcamento-com-pix">
-                  Criar orçamento grátis
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-12 w-full border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10 sm:w-auto"
-              >
-                <Link href="#como-funciona">Ver como funciona</Link>
-              </Button>
-            </div>
-
-            <p className="rj-animate-fade-up-delay-2 mt-4 text-sm font-medium text-emerald-100">
-              Sem cartão <span aria-hidden>•</span> PDF profissional <span aria-hidden>•</span> Pix{' '}
-              <span aria-hidden>•</span> WhatsApp
-            </p>
-
-            <div className="rj-animate-fade-up-delay-2 mt-6">
+            <div className="mt-5 hidden lg:block">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
                 Acesso rápido
               </p>
@@ -414,16 +409,16 @@ export function LandingPage() {
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
           <div className="flex flex-col justify-center">
             <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
-              Totalmente grátis
+              Comece grátis
             </p>
             <h2 className="rj-display mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Gere documentos profissionais sem pagar nada.
+              Crie documentos profissionais antes de fazer cadastro.
             </h2>
             <ul className="mt-5 space-y-2.5 text-sm text-slate-700">
               {[
                 'Orçamento, recibo, contrato, currículo e mais',
                 'PDF limpo, pronto para imprimir ou enviar',
-                'Sem cartão e sem burocracia'
+                '2 gerações sem conta e sem cartão'
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 shrink-0 text-sky-600" />
@@ -440,8 +435,8 @@ export function LandingPage() {
               Escritório digital gratuito
             </h3>
             <p className="mt-4 text-sm leading-7 text-slate-200">
-              Crie a conta, preencha e baixe. Orçamento com Pix, recibo, proposta, contrato e capa
-              ABNT, com cara profissional, de graça.
+              Teste sem cadastro. Depois, uma conta gratuita guarda seu histórico e permite
+              continuar criando orçamentos, recibos, propostas e contratos.
             </p>
             <ul className="mt-6 space-y-3 text-sm text-slate-100">
               {[
@@ -463,7 +458,7 @@ export function LandingPage() {
                 </Link>
               </Button>
               <p className="text-center text-sm text-emerald-100">
-                Duas gerações livres sem conta. Depois, cadastro para continuar.
+                2 gerações grátis sem conta. Depois, crie sua conta gratuita para continuar.
               </p>
             </div>
           </div>
