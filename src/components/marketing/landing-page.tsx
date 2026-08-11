@@ -10,7 +10,7 @@ import {
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { Logo } from '@/components/brand/logo';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
-import { HeroDualNiche } from '@/components/marketing/hero-dual-niche';
+import { HeroOrcamentoDemo } from '@/components/marketing/hero-orcamento-demo';
 import { PromoVideoPlayer } from '@/components/marketing/promo-video-section';
 import { TestimonialsSection } from '@/components/marketing/testimonials-section';
 import { TrustSeals } from '@/components/marketing/trust-seals';
@@ -88,18 +88,18 @@ export function LandingPage() {
             <p className="rj-animate-fade-up mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
               Escritório digital para MEI e autônomos
             </p>
-            <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(1.9rem,4.2vw,3.35rem)] font-extrabold leading-[1.08] tracking-tight text-white">
-              Orçamento, cobrança e documentos para quem trabalha por conta.
+            <h1 className="rj-display rj-animate-fade-up-delay mt-3 text-[clamp(2rem,4.4vw,3.5rem)] font-extrabold leading-[1.06] tracking-tight text-white">
+              Faça o orçamento. Cliente aprova. Você recebe no Pix.
             </h1>
             <p className="rj-animate-fade-up-delay-2 mt-4 max-w-lg text-base leading-7 text-slate-200 sm:text-lg">
-              Monte orçamentos com Pix, emita recibos, prepare propostas e contratos profissionais.
-              Tudo no navegador, pronto para enviar ao cliente pelo WhatsApp.
+              Crie um orçamento profissional, envie pelo WhatsApp e receba a aprovação do cliente
+              pelo celular.
             </p>
             <ul className="rj-animate-fade-up-delay-2 mt-5 space-y-2 text-sm text-slate-200">
               {[
-                'Orçamento com aprovação e cobrança Pix',
-                'Recibo, proposta e contrato em PDF',
-                'Guias práticos para MEI, freelancers e prestadores'
+                'PDF profissional pronto para enviar',
+                'Aprovação do cliente pelo celular',
+                'Cobrança Pix no mesmo fluxo'
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 shrink-0 text-amber-300" />
@@ -110,7 +110,7 @@ export function LandingPage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
                 <Link href="/orcamento-com-pix">
-                  Criar orçamento com Pix
+                  Criar orçamento grátis
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -120,9 +120,14 @@ export function LandingPage() {
                 variant="outline"
                 className="h-12 w-full border-white/25 bg-white/5 px-6 text-base text-white hover:bg-white/10 sm:w-auto"
               >
-                <Link href="/para/mei">Ver soluções para MEI</Link>
+                <Link href="#como-funciona">Ver como funciona</Link>
               </Button>
             </div>
+
+            <p className="rj-animate-fade-up-delay-2 mt-4 text-sm font-medium text-emerald-100">
+              Sem cartão <span aria-hidden>•</span> PDF profissional <span aria-hidden>•</span> Pix{' '}
+              <span aria-hidden>•</span> WhatsApp
+            </p>
 
             <div className="rj-animate-fade-up-delay-2 mt-6">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
@@ -164,16 +169,35 @@ export function LandingPage() {
                 </li>
               </ul>
             </div>
-            <p className="mt-4 text-xs text-slate-400">
-              Para cobrar melhor, formalizar o combinado e manter um histórico profissional sem
-              depender de planilhas e documentos espalhados.
-            </p>
           </div>
 
           <div className="relative flex h-full min-w-0 flex-col">
             <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-emerald-400/20 via-transparent to-amber-300/10 blur-2xl" />
-            <HeroDualNiche className="relative h-full" />
+            <HeroOrcamentoDemo className="relative h-full" />
           </div>
+        </div>
+      </section>
+
+      <section id="como-funciona" className="scroll-mt-20 border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+          <ol className="grid gap-3 sm:grid-cols-4">
+            {[
+              ['1', 'Orçamento', 'Preencha serviço e valor.'],
+              ['2', 'Aprovação', 'Cliente aprova pelo celular.'],
+              ['3', 'Pix', 'Envie a cobrança na hora.'],
+              ['4', 'Recibo', 'Registre o pagamento.']
+            ].map(([number, title, text]) => (
+              <li key={number} className="flex gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald-700 text-xs font-bold text-white">
+                  {number}
+                </span>
+                <div>
+                  <p className="font-bold text-slate-900">{title}</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-600">{text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
