@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       locale === 'en'
         ? 'Organize meetings, deliveries and deadlines in a secure synchronized agenda.'
         : 'Organiza reuniones, entregas y plazos en una agenda segura y sincronizada.',
-    ...internationalSeo(locale, 'tools/agenda', '/ferramentas/agenda')
+    ...internationalSeo(locale, 'tools/agenda', '/agenda-online')
   };
 }
 

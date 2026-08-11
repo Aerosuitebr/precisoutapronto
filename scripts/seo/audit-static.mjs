@@ -139,6 +139,14 @@ if (privatePtPaths.includes('/ferramentas/redacao-enem')) {
   failures.push('international-tools-catalog.ts: redação ENEM ainda aponta para /ferramentas/*');
 }
 
+const internationalAgendaPage = await readFile(
+  path.join(root, 'src/app/[locale]/tools/agenda/page.tsx'),
+  'utf8'
+);
+if (!internationalAgendaPage.includes("internationalSeo(locale, 'tools/agenda', '/agenda-online')")) {
+  failures.push('agenda internacional: canonical/hreflang deve apontar para /agenda-online');
+}
+
 const seoPagesDir = path.join(root, 'src/lib/seo-pages');
 const seoPageFiles = (await readdir(seoPagesDir))
   .filter((name) => name.endsWith('.ts') && name !== 'types.ts')
