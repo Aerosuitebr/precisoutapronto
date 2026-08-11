@@ -41,6 +41,15 @@ export function PdfTaskLandingPage({ landing, children }: { landing: PdfTaskLand
           <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-6 text-slate-600">{landing.steps.map((step) => <li key={step}>{step}</li>)}</ol>
           <h2 className="mt-8 text-xl font-bold text-slate-950">{labels.faq}</h2>
           <dl className="mt-4 space-y-4">{landing.faqs.map((item) => <div key={item.q}><dt className="font-semibold text-slate-900">{item.q}</dt><dd className="mt-1 text-sm leading-6 text-slate-600">{item.a}</dd></div>)}</dl>
+          {landing.locale === 'pt-BR' ? (
+            <p className="mt-8 rounded-2xl bg-sky-50 px-4 py-3 text-sm leading-6 text-slate-700">
+              Precisa fazer outra tarefa com o arquivo? Veja a{' '}
+              <Link href="/pdf" className="font-bold text-sky-700 hover:underline">
+                central de ferramentas para PDF
+              </Link>{' '}
+              para juntar, dividir, comprimir e editar documentos.
+            </p>
+          ) : null}
         </section>
       </div>
     </main>

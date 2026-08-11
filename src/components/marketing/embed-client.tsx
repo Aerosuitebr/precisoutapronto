@@ -25,6 +25,11 @@ const EMBEDS = [
     html: `<p><strong>Calculadora de rescisão grátis:</strong> estime saldo, férias, 13º, aviso e FGTS no navegador. <a href="${partnerUtm('/calculadora-de-rescisao', 'embed', 'rescisao')}" rel="noopener noreferrer">Abrir no Resolva Jato</a>.</p>`
   },
   {
+    id: 'recibos',
+    title: 'Bloco · gerador de recibos',
+    html: `<p><strong>Gerador de recibo online grátis:</strong> crie recibos de pagamento, serviço, Pix e aluguel e baixe em PDF. <a href="${partnerUtm('/recibos', 'embed', 'recibos')}" rel="noopener noreferrer">Criar recibo no Resolva Jato</a>.</p>`
+  },
+  {
     id: 'mei-pix',
     title: 'Bloco · orçamento com Pix',
     html: `<p><strong>Orçamento com Pix no WhatsApp:</strong> o cliente aprova no celular e você cobra na hora. <a href="${partnerUtm('/orcamento-com-pix', 'embed', 'mei_pix')}" rel="noopener noreferrer">Montar orçamento grátis</a>.</p>`
@@ -33,6 +38,11 @@ const EMBEDS = [
     id: 'enem',
     title: 'Bloco · redação ENEM',
     html: `<p><strong>Corretor de redação ENEM:</strong> estimativa por competência para treinar antes da prova. <a href="${partnerUtm('/corretor-de-redacao-enem', 'embed', 'enem')}" rel="noopener noreferrer">Analisar redação</a>.</p>`
+  },
+  {
+    id: 'pdf',
+    title: 'Bloco · ferramentas para PDF',
+    html: `<p><strong>Ferramentas grátis para PDF:</strong> junte, divida, comprima e edite arquivos diretamente no navegador. <a href="${partnerUtm('/pdf', 'embed', 'pdf')}" rel="noopener noreferrer">Abrir ferramentas para PDF</a>.</p>`
   },
   {
     id: 'abnt',
