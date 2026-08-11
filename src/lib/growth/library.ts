@@ -6,7 +6,7 @@ export interface LibraryIntentItem {
 }
 
 const LIBRARY_SEGMENTS = new Set([
-  'mei', 'autonomos', 'empresas', 'rh', 'contadores',
+  'mei', 'freelancers', 'empresas', 'rh', 'contadores',
   'advogados', 'estudantes', 'prestadores', 'saude', 'gestores'
 ]);
 
