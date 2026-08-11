@@ -78,6 +78,7 @@ export const SEO_LANDINGS = {
       }
     ],
     related: [
+      { href: '/pix', label: 'Central Pix', blurb: 'Cobrança, orçamento e recibo' },
       { href: '/para/mei', label: 'Para MEI', blurb: 'Cobrar e organizar o dia a dia' },
       { href: '/para/freelancers', label: 'Para freelancers', blurb: 'Proposta + contrato + Pix' },
       { href: '/gerador-de-qr-code-pix', label: 'Gerador de QR Code Pix', blurb: 'QR e Copia e Cola grátis' },
@@ -133,6 +134,7 @@ export const SEO_LANDINGS = {
       }
     ],
     related: [
+      { href: '/pix', label: 'Central Pix', blurb: 'Do QR Code ao recibo' },
       { href: '/orcamento-com-pix', label: 'Orçamento + Pix', blurb: 'Aprovação + cobrança' },
       { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'Comprovante em PDF' },
       { href: '/para/mei', label: 'Para MEI', blurb: 'Rotina de cobrança' }

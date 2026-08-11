@@ -126,6 +126,10 @@ export default function CorretorDeRedacaoEnemPage() {
             </dl>
             <p className="mt-8 text-sm text-slate-500">
               Também útil:{' '}
+              <Link href="/redacao-enem" className="font-semibold text-sky-700 hover:underline">
+                central de redação ENEM
+              </Link>
+              {' · '}
               <Link href="/gerador-de-curriculo" className="font-semibold text-sky-700 hover:underline">
                 gerador de currículo
               </Link>

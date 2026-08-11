@@ -61,6 +61,17 @@ const nextConfig = {
         source: '/para/autonomos',
         destination: '/para/freelancers',
         permanent: true
+      },
+      // Consolida intenções antigas de recibo nas páginas editoriais canônicas.
+      {
+        source: '/modelos/recibo-para-mei',
+        destination: '/guias/modelo-de-recibo-mei',
+        permanent: true
+      },
+      {
+        source: '/modelos/recibo-de-pagamento',
+        destination: '/recibo-de-pagamento',
+        permanent: true
       }
     ];
   },

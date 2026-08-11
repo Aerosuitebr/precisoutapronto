@@ -22,6 +22,11 @@ const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
 ];
 
 const SEO_LINKS = [
+  { href: '/recibos', label: 'Central de recibos' },
+  { href: '/rescisao', label: 'Central de rescisão' },
+  { href: '/redacao-enem', label: 'Central de redação ENEM' },
+  { href: '/pix', label: 'Central Pix' },
+  { href: '/pdf', label: 'Central PDF' },
   { href: '/calculadora-de-rescisao', label: 'Calculadora de rescisão' },
   { href: '/calculadora-de-preco-freelancer', label: 'Preço para freelancer' },
   { href: '/mei-ou-clt', label: 'MEI ou CLT' },

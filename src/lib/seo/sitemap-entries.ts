@@ -8,6 +8,8 @@ import { growthSegments } from '@/lib/growth/segments';
 import { intentPages } from '@/lib/growth/intents';
 import { INTERNATIONAL_TOOLS } from '@/lib/international-tools-catalog';
 import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
+import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
+import { viralClusters } from '@/lib/seo/viral-clusters';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-08-08T15:00:00.000Z');
@@ -170,7 +172,29 @@ function buildTools(base: string): MetadataRoute.Sitemap {
     };
   });
 
-  return dedupe([...seoRoutes, ...toolLandingRoutes]);
+  const receiptClusterRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${base}/recibos`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'weekly',
+      priority: 0.9
+    },
+    ...receiptClusterPages.map((page) => ({
+      url: `${base}/recibos/${page.slug}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8
+    }))
+  ];
+
+  const viralClusterRoutes: MetadataRoute.Sitemap = viralClusters.map((cluster) => ({
+    url: `${base}${cluster.path}`,
+    lastModified: CORE_UPDATED_AT,
+    changeFrequency: 'weekly' as const,
+    priority: 0.9
+  }));
+
+  return dedupe([...seoRoutes, ...toolLandingRoutes, ...receiptClusterRoutes, ...viralClusterRoutes]);
 }
 
 function buildGrowth(base: string): MetadataRoute.Sitemap {
@@ -191,7 +215,9 @@ function buildGrowth(base: string): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.85
     },
-    ...intentPages.map((intent) => ({
+    ...intentPages
+      .filter((intent) => !['recibo-para-mei', 'recibo-de-pagamento'].includes(intent.slug))
+      .map((intent) => ({
       url: `${base}/modelos/${intent.slug}`,
       lastModified: CORE_UPDATED_AT,
       changeFrequency: 'monthly' as const,

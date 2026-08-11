@@ -116,6 +116,11 @@ export const recibosSeoContent: SeoPageContent = {
   },
   relatedTools: [
     {
+      name: 'Modelos e tipos de recibo',
+      description: 'Escolha o recibo certo para serviço, autônomo, Pix, aluguel e outros pagamentos.',
+      href: '/recibos'
+    },
+    {
       name: 'Contratos',
       description: 'Formalize o serviço ou negociação antes de emitir o recibo.',
       href: '/gerador-de-contrato'

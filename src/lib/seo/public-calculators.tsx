@@ -43,6 +43,11 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     guideLabel: 'guia de cálculo de rescisão',
     related: [
       {
+        href: '/rescisao',
+        label: 'Central de rescisão',
+        description: 'Calculadora, verbas e guias em um só cluster.'
+      },
+      {
         href: '/guias/aviso-previo-proporcional-como-calcular',
         label: 'Aviso-prévio proporcional',
         description: 'Entenda como o tempo de casa altera o aviso.'
