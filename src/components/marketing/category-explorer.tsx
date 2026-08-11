@@ -68,7 +68,7 @@ export function CategoryExplorer() {
           return (
             <li key={category.id} className="relative w-[260px] shrink-0 snap-start sm:w-auto">
               <AuthAwareLink
-                href={`/ferramentas#cat-${category.id}`}
+                href={`/recursos#category-${category.id}`}
                 onMouseEnter={() => setActive(category.id)}
                 className={cn(
                   'group flex h-full flex-col overflow-hidden rounded-2xl border bg-slate-50/80 p-5 transition hover:-translate-y-0.5 hover:shadow-md',

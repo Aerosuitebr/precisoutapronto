@@ -42,6 +42,17 @@ $StagingUrl = 'https://staging.resolvajato.com.br/'
 $RepoRoot = $PSScriptRoot
 $script:RepoSlug = $null
 
+# Git porcelain com acentos (Gráfico.csv etc.) precisa de UTF-8 no console,
+# senao o DeployMaster tenta git add com path literal tipo Gr\303\241fico.csv.
+try {
+  [Console]::InputEncoding = [System.Text.UTF8Encoding]::new($false)
+  [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+  $OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+  if ($PSVersionTable.PSVersion.Major -ge 6) {
+    $PSDefaultParameterValues['*:Encoding'] = 'utf8'
+  }
+} catch { }
+
 Set-Location $RepoRoot
 try {
   $Host.UI.RawUI.WindowTitle = 'DeployMaster - Resolva Jato'
@@ -131,8 +142,66 @@ function Test-IgnoredDeployPath {
   return $false
 }
 
+function ConvertFrom-GitStatusPath {
+  param([Parameter(Mandatory)][string]$Raw)
+  $path = $Raw.Trim()
+  $quoted = $false
+  if ($path.Length -ge 2 -and $path[0] -eq [char]0x22 -and $path[$path.Length - 1] -eq [char]0x22) {
+    $path = $path.Substring(1, $path.Length - 2)
+    $quoted = $true
+  }
+  # Com core.quotepath=false os acentos ja vem UTF-8; ainda assim decodifica
+  # escapes C-style (\303\241) se o Git/quotepath voltar a citar o path.
+  if (-not $quoted -and $path -notmatch '\\[0-7]{3}') {
+    return $path
+  }
+  if ($path -notmatch '\\') {
+    return $path
+  }
+
+  $ms = [System.IO.MemoryStream]::new()
+  $i = 0
+  $len = $path.Length
+  while ($i -lt $len) {
+    $ch = $path[$i]
+    if ($ch -eq '\' -and ($i + 3) -lt $len) {
+      $oct = $path.Substring($i + 1, 3)
+      if ($oct -match '^[0-7]{3}$') {
+        $ms.WriteByte([Convert]::ToByte($oct, 8))
+        $i += 4
+        continue
+      }
+    }
+    if ($ch -eq '\' -and ($i + 1) -lt $len) {
+      $esc = $path[$i + 1]
+      $byte = switch ($esc) {
+        '"' { [byte]34 }
+        '\' { [byte]92 }
+        'n' { [byte]10 }
+        't' { [byte]9 }
+        'r' { [byte]13 }
+        'b' { [byte]8 }
+        'f' { [byte]12 }
+        'a' { [byte]7 }
+        'v' { [byte]11 }
+        default { $null }
+      }
+      if ($null -ne $byte) {
+        $ms.WriteByte($byte)
+        $i += 2
+        continue
+      }
+    }
+    $charBytes = [System.Text.Encoding]::UTF8.GetBytes([string]$ch)
+    $ms.Write($charBytes, 0, $charBytes.Length)
+    $i++
+  }
+  return [System.Text.Encoding]::UTF8.GetString($ms.ToArray())
+}
+
 function Get-WorkingTreeEntries {
-  $res = Invoke-Git -GitArgs @('status', '--porcelain', '-uall')
+  # quotepath=false evita Gr\303\241fico.csv no porcelain (quebra o git add no Windows).
+  $res = Invoke-Git -GitArgs @('-c', 'core.quotepath=false', 'status', '--porcelain', '-uall')
   $entries = @()
   foreach ($line in $res.Lines) {
     if ([string]::IsNullOrWhiteSpace($line)) { continue }
@@ -141,7 +210,7 @@ function Get-WorkingTreeEntries {
     if ($rest -match ' -> ') {
       $rest = ($rest -split ' -> ', 2)[1]
     }
-    $path = $rest.Trim('"')
+    $path = ConvertFrom-GitStatusPath -Raw $rest
     $entries += [pscustomobject]@{
       Xy   = $xy
       Path = $path

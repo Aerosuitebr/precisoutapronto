@@ -1,6 +1,14 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('brand distinctiveness', () => {
+  test('homepage sends public discovery links to indexable destinations', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('main a[href^="/ferramentas"]')).toHaveCount(0);
+    await expect(page.locator('a[href="/para/autonomos"]')).toHaveCount(0);
+    await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(5);
+    await expect(page.locator('a[href="/para/freelancers"]')).toHaveCount(3);
+  });
+
   test('official brand page has unique entity signals', async ({ page }) => {
     await page.goto('/resolva-jato');
     await expect(page.locator('h1')).toHaveText('Resolva Jato: site oficial');

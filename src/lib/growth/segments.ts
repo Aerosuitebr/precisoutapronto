@@ -40,8 +40,8 @@ export const growthSegments: GrowthSegment[] = [
     intents: ['recibo-para-mei', 'contrato-de-prestacao-de-servicos', 'proposta-comercial-para-mei']
   },
   {
-    slug: 'autonomos',
-    name: 'Autônomos',
+    slug: 'freelancers',
+    name: 'Freelancers',
     shortDescription: 'Preço, proposta, contrato e recebimento.',
     headline: 'Um escritório digital para profissionais autônomos',
     description: 'Organize a jornada do primeiro orçamento até o comprovante de pagamento.',

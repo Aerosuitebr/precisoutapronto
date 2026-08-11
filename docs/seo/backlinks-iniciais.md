@@ -44,3 +44,30 @@ Olá, [nome]. Vi o conteúdo de vocês sobre [assunto específico]. O Resolva Ja
 - Domínios de referência novos no Search Console.
 - Cliques com `utm_medium=partner`.
 - Impressões orgânicas das páginas apoiadas após 30 e 60 dias.
+
+## Primeira fila de prospecção
+
+Páginas encontradas em 11/08/2026. Antes do contato, localizar o responsável editorial ou a biblioteca responsável e confirmar que a página continua ativa.
+
+| Prioridade | Organização/página | URL de contexto | Recurso a apresentar | Abordagem |
+| --- | --- | --- | --- | --- |
+| Alta | Biblioteca UEPB - guia ABNT | `https://biblioteca.uepb.edu.br/abnt-guia-de-normalizacao/` | `/gerador-de-referencias-abnt` | Complemento prático ao guia de normalização. |
+| Alta | Sistema de Bibliotecas UFJ - NBR 6023:2025 | `https://sibi.ufj.edu.br/elaboracao-de-referencias-abnt-nbr-60232025/` | `/gerador-de-referencias-abnt` | Ferramenta gratuita para aplicar os exemplos do guia. |
+| Alta | UFFS - normalização de trabalhos | `https://www.uffs.edu.br/uffs/biblioteca/normalizacao-de-trabalhos-5` | `/gerador-de-referencias-abnt` | Alternativa adicional na seção de mecanismos online. |
+| Média | UFSJ Bibliotecas - manual de normalização | `https://dibib.ufsj.edu.br/guia-de-normalizacao-2/` | `/gerador-de-referencias-abnt` | Recurso complementar para estudantes. |
+| Média | IFSC - manual de trabalhos acadêmicos | `https://ifsc.edu.br/web/noticias/w/sistema-de-bibliotecas-do-ifsc-publica-manual-de-normalizacao-de-trabalhos-academicos` | `/gerador-de-referencias-abnt` | Atualização editorial com ferramenta prática. |
+| Média | Portal Contábeis - editoria MEI | `https://www.contabeis.com.br/noticias/72756/mei-como-emitir-nota-fiscal-e-evitar-erros/` | `/recibos` | Sugerir pauta complementar sobre nota fiscal, comprovante e recibo. |
+
+Não abordar páginas que operam calculadora concorrente direta pedindo substituição de link. Para RH e rescisão, priorizar matérias informativas sem ferramenta própria, universidades, sindicatos e portais de carreira.
+
+## Rascunhos preparados em 11/08/2026
+
+| Organização | Contato público qualificado | Estado |
+| --- | --- | --- |
+| SIBI/UFJ | `atendimento.sibi@ufj.edu.br` | Enviado em 11/08/2026. |
+| Biblioteca UEPB | `linc.bc@setor.uepb.edu.br` | Enviado em 11/08/2026. |
+| Biblioteca UFFS | `biblio.ls@uffs.edu.br` | Enviado em 11/08/2026. |
+
+As três mensagens apresentam `/gerador-de-referencias-abnt` como complemento prático aos guias institucionais, sem sugerir substituição das normas ou materiais das bibliotecas.
+
+Em 11/08/2026, foram reenviadas pela conta oficial `contato@resolvajato.com.br` como correção de remetente. Os textos não usam travessões; apenas hífens indispensáveis permanecem nas URLs.
