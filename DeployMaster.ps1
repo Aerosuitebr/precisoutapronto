@@ -207,14 +207,36 @@ function Sync-WorkingTreeForDeploy {
 }
 
 function Invoke-GhJson {
-  param([Parameter(Mandatory)][string[]]$GhArgs)
-  $raw = & gh @GhArgs 2>&1
-  if ($LASTEXITCODE -ne 0) {
-    throw ("gh falhou ({0}): {1}" -f ($GhArgs -join ' '), ($raw | Out-String))
+  param(
+    [Parameter(Mandatory)][string[]]$GhArgs,
+    [int]$Retries = 6
+  )
+  # gh escreve erros em stderr; com $ErrorActionPreference=Stop o 2>&1 vira NativeCommandError
+  # e aborta o DeployMaster mesmo em blip transitório de api.github.com.
+  $prev = $ErrorActionPreference
+  $attempt = 0
+  $lastText = ''
+  while ($attempt -lt $Retries) {
+    $attempt++
+    $ErrorActionPreference = 'Continue'
+    try {
+      $raw = & gh @GhArgs 2>&1
+      $code = $LASTEXITCODE
+    } finally {
+      $ErrorActionPreference = $prev
+    }
+    $lastText = (@($raw | ForEach-Object { "$_" }) -join "`n").Trim()
+    if ($code -eq 0) {
+      if ([string]::IsNullOrWhiteSpace($lastText) -or $lastText -eq 'null') { return $null }
+      return ($lastText | ConvertFrom-Json)
+    }
+    $transient = $lastText -match '(?i)error connecting to api\.github\.com|connection reset|timeout|TLS handshake|i/o timeout|temporary failure|EOF|502 Bad Gateway|503 Service Unavailable'
+    if (-not $transient -or $attempt -ge $Retries) {
+      throw ("gh falhou ({0}): {1}" -f ($GhArgs -join ' '), $lastText)
+    }
+    Start-Sleep -Seconds ([Math]::Min(20, 2 * $attempt))
   }
-  $text = ($raw | Out-String).Trim()
-  if ([string]::IsNullOrWhiteSpace($text) -or $text -eq 'null') { return $null }
-  return ($text | ConvertFrom-Json)
+  throw ("gh falhou ({0}): {1}" -f ($GhArgs -join ' '), $lastText)
 }
 
 function Get-LatestRunId {
