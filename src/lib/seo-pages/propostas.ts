@@ -4,7 +4,7 @@ import type { SeoPageContent } from './types';
 export const propostasSeoContent: SeoPageContent = {
   slug: 'gerador-de-proposta-comercial',
   toolName: 'Proposta Comercial',
-  h1: 'Gerador de Proposta Comercial Online Gratuito',
+  h1: 'Gerador de Proposta Comercial Online Grátis em PDF',
   subtitle:
     'Crie propostas comerciais com identidade visual profissional em minutos. Adicione itens, valores e condições, e envie um PDF que ajuda a fechar mais negócios.',
   ctaPrimary: 'Montar proposta grátis',
@@ -137,7 +137,7 @@ export const propostasSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Proposta Comercial Grátis em PDF',
+    metaTitle: 'Gerador de Proposta Comercial Online Grátis em PDF',
     metaDescription:
       'Crie uma proposta comercial grátis com sua logo, escopo, itens e valores. Baixe o PDF profissional pronto para enviar ao cliente.',
     keywords: [

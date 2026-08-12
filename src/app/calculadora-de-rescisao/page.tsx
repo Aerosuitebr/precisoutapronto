@@ -11,7 +11,7 @@ import {
 const seo = PUBLIC_CALCULATORS.rescisao;
 
 export const metadata: Metadata = {
-  title: 'Calculadora de Rescisão CLT Grátis com FGTS',
+  title: 'Calculadora de Rescisão Trabalhista Grátis com FGTS',
   description: seo.description,
   alternates: {
     canonical: seo.path,
