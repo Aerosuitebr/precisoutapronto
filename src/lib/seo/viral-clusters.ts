@@ -21,6 +21,10 @@ export const viralClusters: ViralCluster[] = [
     resources: [
       { href: '/calculadora-de-rescisao', title: 'Calculadora de rescisão', description: 'Estime as principais verbas sem cadastro.', intent: 'Ferramenta' },
       { href: '/guias/como-calcular-rescisao', title: 'Como calcular rescisão', description: 'Entenda a composição do cálculo.', intent: 'Passo a passo' },
+      { href: '/guias/calculo-rescisao-pedido-de-demissao', title: 'Pedido de demissão', description: 'Confira verbas, aviso e o que não é liberado.', intent: 'Modalidade' },
+      { href: '/guias/calculo-rescisao-sem-justa-causa', title: 'Demissão sem justa causa', description: 'Organize verbas, aviso e efeitos no FGTS.', intent: 'Modalidade' },
+      { href: '/guias/calculo-rescisao-comum-acordo', title: 'Rescisão por comum acordo', description: 'Veja o tratamento específico de aviso e FGTS.', intent: 'Modalidade' },
+      { href: '/guias/calculo-rescisao-com-fgts', title: 'Rescisão com FGTS', description: 'Separe saldo, depósitos, multa e saque.', intent: 'Verba específica' },
       { href: '/modelos/como-calcular-rescisao', title: 'Informações para calcular', description: 'Organize datas, salário e modalidade.', intent: 'Checklist' },
       { href: '/guias/aviso-previo-proporcional-como-calcular', title: 'Aviso-prévio na rescisão', description: 'Veja base de 30 dias e acréscimos.', intent: 'Verba específica' },
       { href: '/calculadora-de-ferias', title: 'Calculadora de férias', description: 'Confira férias e adicional de um terço.', intent: 'Cálculo relacionado' },

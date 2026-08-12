@@ -528,6 +528,187 @@ const existingGuides: Guide[] = [
         answer: 'Não. Ela organiza números. A escolha final depende do seu contexto e de aconselhamento profissional.'
       }
     ]
+  },
+  {
+    slug: 'calculo-rescisao-pedido-de-demissao',
+    title: 'Cálculo de rescisão no pedido de demissão: o que entra',
+    description:
+      'Entenda saldo de salário, 13º e férias no pedido de demissão, além do aviso-prévio e dos itens que não são liberados nessa modalidade.',
+    answer:
+      'No pedido de demissão, a conferência normalmente considera saldo de salário, 13º proporcional e férias vencidas e proporcionais com um terço. Em regra, não há multa rescisória, saque do FGTS por esse motivo nem seguro-desemprego, e o aviso-prévio não cumprido pode gerar desconto.',
+    category: 'Trabalho',
+    readTime: '7 min',
+    toolHref: '/calculadora-de-rescisao',
+    toolLabel: 'Simular pedido de demissão',
+    sections: [
+      {
+        title: 'Verbas que devem ser conferidas',
+        paragraphs: [
+          'Comece pelos dias trabalhados no mês do desligamento. Depois, confira os avos de 13º e de férias proporcionais, além de eventuais férias vencidas acrescidas de um terço.',
+          'Médias de adicionais, horas extras e comissões podem alterar a base. Convenções coletivas também podem prever condições específicas.'
+        ],
+        bullets: ['Saldo de salário', '13º proporcional', 'Férias vencidas e proporcionais + 1/3', 'Descontos autorizados e aviso-prévio']
+      },
+      {
+        title: 'FGTS e aviso-prévio',
+        paragraphs: [
+          'O pedido de demissão não libera, por si só, saque do FGTS, multa rescisória ou seguro-desemprego. O saldo permanece na conta para hipóteses legais de movimentação.',
+          'Quando o aviso devido não é cumprido e não há dispensa pelo empregador, o período faltante pode ser descontado. Formalize por escrito datas e condições combinadas.'
+        ]
+      },
+      {
+        title: 'Prazo e documentos',
+        paragraphs: [
+          'Confira o Termo de Rescisão do Contrato de Trabalho e cada parcela discriminada. Segundo orientação do Ministério do Trabalho e Emprego, o prazo máximo para pagamento é de dez dias corridos contados do término do contrato.',
+          'Use a calculadora como estimativa e procure sindicato, contador ou advogado trabalhista se houver divergência relevante.'
+        ]
+      }
+    ],
+    faq: [
+      { question: 'Quem pede demissão recebe férias proporcionais?', answer: 'Em regra, sim, com o adicional de um terço, além de férias vencidas quando existirem.' },
+      { question: 'Posso sacar o FGTS ao pedir demissão?', answer: 'O pedido de demissão não é, por si só, hipótese de saque do saldo do FGTS.' },
+      { question: 'O aviso pode ser descontado?', answer: 'Pode haver desconto do período não cumprido quando o empregador não dispensa o trabalhador do aviso.' }
+    ],
+    sources: [
+      { label: 'Ministério do Trabalho e Emprego — dúvidas sobre rescisão', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/acoes-e-programas/programas-projetos-acoes-obras-e-atividades/proteja/duvidas-frequentes' }
+    ],
+    relatedGuides: ['como-calcular-rescisao', 'aviso-previo-proporcional-como-calcular', 'calculo-rescisao-sem-justa-causa']
+  },
+  {
+    slug: 'calculo-rescisao-sem-justa-causa',
+    title: 'Cálculo de rescisão sem justa causa: verbas e FGTS',
+    description:
+      'Veja quais parcelas conferir na demissão sem justa causa, incluindo saldo, férias, 13º, aviso-prévio e efeitos sobre o FGTS.',
+    answer:
+      'Na dispensa sem justa causa, a conferência costuma incluir saldo de salário, 13º proporcional, férias vencidas e proporcionais com um terço, aviso-prévio e valores relacionados ao FGTS. A situação do saque depende também da modalidade escolhida pelo trabalhador no Fundo.',
+    category: 'Trabalho',
+    readTime: '8 min',
+    toolHref: '/calculadora-de-rescisao',
+    toolLabel: 'Calcular demissão sem justa causa',
+    sections: [
+      {
+        title: 'Monte a conferência por parcelas',
+        paragraphs: [
+          'Separe cada verba em vez de olhar apenas o total. Datas de admissão e saída, salário-base, médias remuneratórias, férias e forma do aviso influenciam a estimativa.',
+          'O TRCT deve discriminar as parcelas. Compare seus dados com holerites, aviso e extrato do FGTS.'
+        ],
+        bullets: ['Saldo do mês', '13º proporcional', 'Férias + 1/3', 'Aviso-prévio', 'FGTS e indenização quando devidos']
+      },
+      {
+        title: 'Saque-rescisão e saque-aniversário',
+        paragraphs: [
+          'Na sistemática saque-rescisão, a Caixa informa que a demissão sem justa causa permite sacar integralmente a conta vinculada, incluindo a multa quando devida.',
+          'Quem está no saque-aniversário pode receber a multa rescisória, mas não necessariamente sacar o saldo total por motivo da demissão. Consulte a situação atual diretamente no aplicativo FGTS.'
+        ]
+      },
+      {
+        title: 'Não trate a estimativa como valor líquido final',
+        paragraphs: [
+          'Descontos, médias e regras coletivas podem alterar o pagamento. A calculadora organiza uma estimativa educacional, não substitui o cálculo oficial nem uma análise profissional.'
+        ]
+      }
+    ],
+    faq: [
+      { question: 'A multa do FGTS aparece junto do saldo?', answer: 'A indenização e o saldo da conta têm tratamento próprio. Confira o TRCT e o aplicativo FGTS.' },
+      { question: 'Saque-aniversário muda a demissão?', answer: 'Ele pode limitar o saque do saldo por motivo da rescisão, embora a multa rescisória continue disponível quando devida.' },
+      { question: 'O aviso-prévio entra no tempo de serviço?', answer: 'O aviso indenizado pode projetar efeitos no contrato; confirme datas e reflexos no cálculo oficial.' }
+    ],
+    sources: [
+      { label: 'Caixa — modalidades e saques do FGTS', href: 'https://www.caixa.gov.br/beneficios-trabalhador/fgts/saque-FGTS/Paginas/default.aspx' },
+      { label: 'FGTS — procedimentos de rescisão', href: 'https://www.fgts.gov.br/Paginas/subpaginas/rescisao-empregado.aspx' }
+    ],
+    relatedGuides: ['como-calcular-rescisao', 'calculo-rescisao-com-fgts', 'aviso-previo-proporcional-como-calcular']
+  },
+  {
+    slug: 'calculo-rescisao-comum-acordo',
+    title: 'Cálculo de rescisão por comum acordo: como conferir',
+    description:
+      'Entenda o que muda na rescisão por acordo entre empregado e empregador e organize as parcelas para fazer uma estimativa.',
+    answer:
+      'A extinção por acordo é uma modalidade própria e não deve ser tratada como pedido de demissão informal. Saldo, férias e 13º continuam sendo conferidos; aviso indenizado e indenização do FGTS têm tratamento reduzido, e não há seguro-desemprego.',
+    category: 'Trabalho',
+    readTime: '7 min',
+    toolHref: '/calculadora-de-rescisao',
+    toolLabel: 'Simular rescisão por acordo',
+    sections: [
+      {
+        title: 'Registre a modalidade corretamente',
+        paragraphs: [
+          'O acordo deve representar a vontade das duas partes e aparecer corretamente nos documentos de desligamento. Evite combinações paralelas para devolver valores ou simular outra modalidade.',
+          'Separe saldo de salário, férias, 13º, aviso e FGTS para entender como cada item foi tratado.'
+        ]
+      },
+      {
+        title: 'O que muda em relação à dispensa sem justa causa',
+        paragraphs: [
+          'Na rescisão por acordo, aviso-prévio indenizado e indenização sobre o FGTS seguem regras próprias, diferentes da dispensa sem justa causa. O saque da conta também é limitado pela modalidade legal e pela situação individual.',
+          'A calculadora ajuda a comparar cenários, mas o TRCT e os dados do FGTS prevalecem na conferência.'
+        ],
+        bullets: ['Confirme a modalidade no TRCT', 'Confira a forma do aviso', 'Compare a base do FGTS', 'Não conte com seguro-desemprego']
+      },
+      {
+        title: 'Quando buscar ajuda',
+        paragraphs: [
+          'Procure orientação se houver pressão para aceitar o acordo, divergência no saldo do FGTS ou dúvida sobre estabilidade e convenção coletiva. Situações individuais podem mudar substancialmente o resultado.'
+        ]
+      }
+    ],
+    faq: [
+      { question: 'Acordo é igual a pedido de demissão?', answer: 'Não. São modalidades distintas, com efeitos diferentes sobre aviso e FGTS.' },
+      { question: 'Há seguro-desemprego no comum acordo?', answer: 'A extinção por acordo não dá direito ao seguro-desemprego.' },
+      { question: 'Posso comparar com a demissão sem justa causa?', answer: 'Sim. Simule os dois cenários, mas use apenas a modalidade que corresponde ao encerramento real.' }
+    ],
+    sources: [
+      { label: 'Ministério do Trabalho e Emprego — modalidades de rescisão', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/acoes-e-programas/programas-projetos-acoes-obras-e-atividades/proteja/duvidas-frequentes' },
+      { label: 'FGTS — procedimentos de rescisão por acordo', href: 'https://www.fgts.gov.br/Paginas/subpaginas/rescisao-empregado.aspx' }
+    ],
+    relatedGuides: ['como-calcular-rescisao', 'calculo-rescisao-sem-justa-causa', 'calculo-rescisao-com-fgts']
+  },
+  {
+    slug: 'calculo-rescisao-com-fgts',
+    title: 'Cálculo de rescisão com FGTS: saldo, multa e saque',
+    description:
+      'Aprenda a separar saldo da conta, depósitos rescisórios, multa e saque do FGTS ao conferir uma rescisão de trabalho.',
+    answer:
+      'No cálculo de rescisão, saldo da conta, depósitos do período, indenização rescisória e valor disponível para saque não são necessariamente a mesma coisa. A modalidade do desligamento e a opção entre saque-rescisão e saque-aniversário afetam a movimentação.',
+    category: 'Trabalho',
+    readTime: '8 min',
+    toolHref: '/calculadora-de-rescisao',
+    toolLabel: 'Estimar rescisão com FGTS',
+    sections: [
+      {
+        title: 'Separe os quatro conceitos',
+        paragraphs: [
+          'O extrato mostra depósitos acumulados na conta vinculada. No desligamento podem existir recolhimentos referentes ao mês, ao mês anterior ainda não recolhido e ao aviso indenizado, além da indenização quando aplicável.',
+          'O valor liberado para saque depende da hipótese legal e da sistemática escolhida pelo trabalhador.'
+        ],
+        bullets: ['Saldo da conta vinculada', 'Depósitos pendentes do desligamento', 'Multa rescisória quando devida', 'Valor efetivamente liberado para saque']
+      },
+      {
+        title: 'Confira o extrato, não apenas a estimativa',
+        paragraphs: [
+          'Compare os vínculos e depósitos no aplicativo FGTS. Divergências antigas não desaparecem porque o contrato terminou e podem exigir regularização pelo empregador.',
+          'Na dispensa sem justa causa, o manual operacional do FGTS informa indenização de 40% sobre a base para fins rescisórios. Outras modalidades têm regras diferentes.'
+        ]
+      },
+      {
+        title: 'Saque-aniversário exige atenção',
+        paragraphs: [
+          'Segundo a Caixa, quem permanece no saque-aniversário e é demitido durante sua vigência pode sacar a multa rescisória, mas não o saldo total da conta por motivo da rescisão.',
+          'Consulte a modalidade vigente e eventuais antecipações contratadas antes de planejar o uso do dinheiro.'
+        ]
+      }
+    ],
+    faq: [
+      { question: 'A multa é calculada apenas sobre o saldo visível?', answer: 'A base rescisória considera os depósitos devidos durante o contrato e suas atualizações, não simplesmente o número mostrado como saldo disponível.' },
+      { question: 'Pedido de demissão tem multa do FGTS?', answer: 'Em regra, não há indenização compensatória nessa modalidade.' },
+      { question: 'Saque-aniversário impede receber a multa?', answer: 'A Caixa informa que a multa pode ser sacada quando devida, mas o saldo restante segue as regras do saque-aniversário.' }
+    ],
+    sources: [
+      { label: 'Caixa — saques e modalidades do FGTS', href: 'https://www.caixa.gov.br/beneficios-trabalhador/fgts/saque-FGTS/Paginas/default.aspx' },
+      { label: 'FGTS — perguntas frequentes para empregadores', href: 'https://www.fgts.gov.br/Paginas/empregador/perguntas-frequentes-empregador.aspx' }
+    ],
+    relatedGuides: ['como-calcular-rescisao', 'calculo-rescisao-sem-justa-causa', 'calculo-rescisao-comum-acordo']
   }
 ];
 

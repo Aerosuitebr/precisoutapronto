@@ -53,6 +53,16 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
         description: 'Entenda como o tempo de casa altera o aviso.'
       },
       {
+        href: '/guias/calculo-rescisao-sem-justa-causa',
+        label: 'Demissão sem justa causa',
+        description: 'Confira verbas, aviso e efeitos no FGTS.'
+      },
+      {
+        href: '/guias/calculo-rescisao-pedido-de-demissao',
+        label: 'Pedido de demissão',
+        description: 'Veja verbas, aviso e descontos possíveis.'
+      },
+      {
         href: '/mei-ou-clt',
         label: 'MEI ou CLT',
         description: 'Compare cenários de remuneração líquida.'
