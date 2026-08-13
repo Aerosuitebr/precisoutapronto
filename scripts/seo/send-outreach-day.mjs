@@ -111,6 +111,11 @@ function pitchFor(contact) {
       intro:
         `Recurso gratuito para MEI emitir recibo em PDF com valor por extenso, no navegador.\n\nLink: ${link}`
     },
+    'recibo-aluguel': {
+      subject: `Recurso gratuito para o guia de recibo de aluguel`,
+      intro:
+        `Vi o conteúdo de vocês sobre como preencher recibo de aluguel. Mantemos uma página gratuita que ajuda o leitor a organizar locador, inquilino, imóvel, competência e valor e seguir para a geração do PDF.\n\nLink: ${link}`
+    },
     proposta: {
       subject: `Gerador de proposta comercial grátis (PDF)`,
       intro:

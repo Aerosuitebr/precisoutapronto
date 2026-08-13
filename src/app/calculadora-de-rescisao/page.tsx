@@ -11,8 +11,9 @@ import {
 const seo = PUBLIC_CALCULATORS.rescisao;
 
 export const metadata: Metadata = {
-  title: 'Calculadora de Rescisão Trabalhista Grátis com FGTS',
-  description: seo.description,
+  title: 'Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026',
+  description:
+    'Calcule saldo de salário, férias, 13º, aviso-prévio e FGTS. Simulação grátis, detalhada e sem cadastro.',
   alternates: {
     canonical: seo.path,
     languages: {
@@ -23,15 +24,15 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: 'Calculadora de rescisão grátis | Resolva Jato',
-    description: 'Faça uma estimativa educativa das principais verbas rescisórias.',
+    title: 'Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026',
+    description: 'Calcule saldo de salário, férias, 13º, aviso-prévio e FGTS sem cadastro.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculadora de rescisão grátis | Resolva Jato',
-    description: 'Faça uma estimativa educativa das principais verbas rescisórias.',
+    title: 'Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026',
+    description: 'Calcule saldo de salário, férias, 13º, aviso-prévio e FGTS sem cadastro.',
     images: [`${seo.path}/opengraph-image`]
   }
 };

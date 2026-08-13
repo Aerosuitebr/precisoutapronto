@@ -16,7 +16,7 @@ const SITE = getViralBaseUrl().replace(/\/$/, '') || BRAND_SITE;
 export const metadata: Metadata = {
   title: 'Imprensa e press kit',
   description:
-    'Sala de imprensa do Resolva Jato: fatos citáveis, ângulos de pauta, logos, boilerplates e contato de mídia.',
+    'Informações oficiais sobre o Resolva Jato, fatos citáveis, materiais da marca e contato para imprensa e parceiros.',
   alternates: { canonical: PATH },
   openGraph: {
     title: 'Imprensa | Resolva Jato',
@@ -90,9 +90,9 @@ export default function ImprensaPage() {
 
         <div className="mx-auto max-w-3xl space-y-10 px-4 py-12 sm:px-6">
           <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <h2 className="text-xl font-bold text-slate-950">Boilerplate curto</h2>
+            <h2 className="text-xl font-bold text-slate-950">Sobre o Resolva Jato</h2>
             <p className="mt-3 text-sm leading-7 text-slate-700">{shortBoiler}</p>
-            <h2 className="mt-8 text-xl font-bold text-slate-950">Boilerplate longo</h2>
+            <h2 className="mt-8 text-xl font-bold text-slate-950">Apresentação institucional</h2>
             <p className="mt-3 text-sm leading-7 text-slate-700">{longBoiler}</p>
           </section>
 

@@ -108,7 +108,7 @@ function OrcamentoMockup() {
 function RedacaoMockup() {
   const demo = REDACAO_HOME_DEMO;
   return (
-    <BrowserChrome path="/ferramentas/redacao-enem">
+    <BrowserChrome path="/corretor-de-redacao-enem">
       <div className="grid gap-3 sm:grid-cols-[1.05fr_0.95fr]">
         <div className="min-w-0 space-y-2.5">
           <div>

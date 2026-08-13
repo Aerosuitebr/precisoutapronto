@@ -132,6 +132,32 @@ if (toolsCatalog.includes('href: "/ferramentas/redacao-enem"')) {
   failures.push('tools-catalog.ts: redacao ENEM ainda cria links para a URL privada');
 }
 
+const heroShowcase = await readFile(
+  path.join(root, 'src/components/marketing/hero-tools-showcase.tsx'),
+  'utf8'
+);
+if (heroShowcase.includes('path="/ferramentas/redacao-enem"')) {
+  failures.push('hero-tools-showcase.tsx: mockup ainda exibe a URL antiga da redacao');
+}
+
+const rescisaoPage = await readFile(
+  path.join(root, 'src/app/calculadora-de-rescisao/page.tsx'),
+  'utf8'
+);
+if (!rescisaoPage.includes('Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026')) {
+  failures.push('calculadora-de-rescisao: title de CTR prioritario ausente');
+}
+
+const recibosContent = await readFile(path.join(root, 'src/lib/seo-pages/recibos.ts'), 'utf8');
+if (!recibosContent.includes('Gerador de Recibo Online Grátis — Baixe em PDF')) {
+  failures.push('gerador-de-recibo: title de CTR prioritario ausente');
+}
+
+const imprensaPage = await readFile(path.join(root, 'src/app/imprensa/page.tsx'), 'utf8');
+if (imprensaPage.includes('>Boilerplate longo<') || imprensaPage.includes('>Boilerplate curto<')) {
+  failures.push('imprensa: rotulos tecnicos podem vazar para o snippet do Google');
+}
+
 if (privatePtPaths.includes('/ferramentas/pix') || privatePtPaths.includes('/ferramentas/mei-vs-clt')) {
   failures.push('international-tools-catalog.ts: pix/mei ainda apontam para /ferramentas/*');
 }

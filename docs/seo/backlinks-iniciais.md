@@ -71,3 +71,13 @@ Não abordar páginas que operam calculadora concorrente direta pedindo substitu
 As três mensagens apresentam `/gerador-de-referencias-abnt` como complemento prático aos guias institucionais, sem sugerir substituição das normas ou materiais das bibliotecas.
 
 Em 11/08/2026, foram reenviadas pela conta oficial `contato@resolvajato.com.br` como correção de remetente. Os textos não usam travessões; apenas hífens indispensáveis permanecem nas URLs.
+
+## Onda prioritária enviada em 13/08/2026
+
+| Organização | Página qualificada | Destino proposto | Estado |
+| --- | --- | --- | --- |
+| CASA+ | Artigo “Como preencher um recibo de aluguel?” | `/recibo-de-aluguel` | Enviado para `contato@admcasa.com.br` |
+| Oliveira & Teixeira Advogados | Conteúdos recentes sobre desligamento e rescisão | `/rescisao` | Enviado para `atendimento@oliveiraeteixeira.adv.br` |
+| Kohl Advogados | Página editorial sobre Direito Trabalhista e verbas rescisórias | `/rescisao` | Enviado para `contato@kohladvogados.com.br` |
+
+As mensagens foram enviadas pelo alias oficial `contato@resolvajato.com.br`, com UTMs individuais por parceiro. Não repetir contato antes de 20/08/2026. Se não houver resposta, fazer no máximo um follow-up curto, mantendo o mesmo assunto.
