@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Check, ChevronRight } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 import { SeoLandingJsonLd } from '@/components/marketing/seo-landing-json-ld';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
@@ -20,10 +21,14 @@ function isAuthGatedHref(href: string) {
 
 function CtaLink({
   href,
+  landingPath,
+  placement,
   className,
   children
 }: {
   href: string;
+  landingPath: string;
+  placement: 'hero_primary' | 'hero_secondary' | 'footer_primary';
   className?: string;
   children: ReactNode;
 }) {
@@ -35,9 +40,9 @@ function CtaLink({
     );
   }
   return (
-    <Link href={href} className={className}>
+    <LandingConversionLink href={href} landingPath={landingPath} placement={placement} className={className}>
       {children}
-    </Link>
+    </LandingConversionLink>
   );
 }
 
@@ -87,7 +92,7 @@ export function SeoLandingPage({
               </ul>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Button asChild size="lg" className={`${primaryCtaClass} w-full sm:w-auto`}>
-                  <CtaLink href={content.toolHref}>
+                  <CtaLink href={content.toolHref} landingPath={content.path} placement="hero_primary">
                     {content.primaryCta}
                     <ArrowRight className="h-4 w-4" />
                   </CtaLink>
@@ -99,7 +104,9 @@ export function SeoLandingPage({
                     variant="outline"
                     className="h-12 w-full border-white/25 bg-white/5 px-6 text-white hover:bg-white/10 sm:w-auto"
                   >
-                    <CtaLink href={content.secondaryCta.href}>{content.secondaryCta.label}</CtaLink>
+                    <CtaLink href={content.secondaryCta.href} landingPath={content.path} placement="hero_secondary">
+                      {content.secondaryCta.label}
+                    </CtaLink>
                   </Button>
                 ) : null}
               </div>
@@ -168,7 +175,7 @@ export function SeoLandingPage({
               </ul>
               <div className="mt-10">
                 <Button asChild size="lg" className={primaryCtaClass}>
-                  <CtaLink href={content.toolHref}>
+                  <CtaLink href={content.toolHref} landingPath={content.path} placement="footer_primary">
                     {content.primaryCta}
                     <ArrowRight className="h-4 w-4" />
                   </CtaLink>

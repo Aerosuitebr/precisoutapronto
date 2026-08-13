@@ -182,6 +182,16 @@ if (!orphanLandings.includes("path: '/remover-fundo-de-imagem'")) {
   failures.push('orphan-tool-landings.ts: falta landing pública do removedor de fundo');
 }
 
+const weeklyDashboard = await readFile(path.join(root, 'scripts/seo/build-weekly-dashboard.mjs'), 'utf8');
+for (const target of ['/recibo-de-aluguel', '/ferramentas/redacao-enem', '/corretor-de-redacao-enem', '/rescisao']) {
+  if (!weeklyDashboard.includes(`'${target}'`)) failures.push(`painel semanal: falta URL prioritária ${target}`);
+}
+
+const seoLandingPage = await readFile(path.join(root, 'src/components/marketing/seo-landing-page.tsx'), 'utf8');
+if (!seoLandingPage.includes('LandingConversionLink') || !seoLandingPage.includes('footer_primary')) {
+  failures.push('seo-landing-page: CTAs primárias sem medição de conversão');
+}
+
 if (failures.length) {
   console.error(`Auditoria SEO falhou (${failures.length}):`);
   for (const failure of failures) console.error(`- ${failure}`);

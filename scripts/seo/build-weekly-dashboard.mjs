@@ -2,9 +2,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const TARGET_PATHS = [
+  '/recibo-de-aluguel',
+  '/ferramentas/redacao-enem',
   '/corretor-de-redacao-enem',
+  '/rescisao',
   '/calculadora-de-rescisao',
   '/guias/como-calcular-rescisao',
+  '/guias/calculo-rescisao-pedido-de-demissao',
+  '/guias/calculo-rescisao-sem-justa-causa',
+  '/guias/calculo-rescisao-comum-acordo',
+  '/guias/calculo-rescisao-com-fgts',
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
   '/gerador-de-qr-code-pix',
@@ -89,7 +96,21 @@ for (const target of TARGET_PATHS) {
   );
 }
 
-lines.push('', '## Definição de conversão', '', '- Guias: evento `guide_tool_click`.', '- Ferramentas comerciais: `begin_checkout` e `purchase` devem ser exportados separadamente no GA4 por landing page.', '');
+lines.push(
+  '',
+  '## Leitura das URLs prioritárias',
+  '',
+  '- `/ferramentas/redacao-enem` é a URL antiga. Suas impressões devem cair enquanto `/corretor-de-redacao-enem` absorve a demanda.',
+  '- `/recibo-de-aluguel` mede aquisição orgânica; `/gerador-de-recibo` mede a ferramenta de destino.',
+  '- `/rescisao` e os guias medem a autoridade temática que deve sustentar a calculadora.',
+  '',
+  '## Definição de conversão',
+  '',
+  '- Landings: evento `landing_cta_click`, segmentado por `landing_path` e `placement`.',
+  '- Guias: evento `guide_tool_click`.',
+  '- Ferramentas comerciais: `begin_checkout` e `purchase` devem ser exportados separadamente no GA4 por landing page.',
+  ''
+);
 fs.mkdirSync(path.dirname(outputFile), { recursive: true });
 fs.writeFileSync(outputFile, `${lines.join('\n')}\n`);
 console.log(`Painel gerado em ${outputFile}`);
