@@ -19,7 +19,7 @@ for (const path of LANDINGS) {
 
 test('home metadata and primary topic stay aligned', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveTitle('Resolva Jato: Orçamentos, Recibos e Pix Grátis');
+  await expect(page).toHaveTitle('Orçamento com Aprovação e Pix no WhatsApp | Resolva Jato');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
     'Crie um orçamento profissional grátis, envie pelo WhatsApp, receba a aprovação do cliente e cobre por Pix. Teste sem cadastro.'

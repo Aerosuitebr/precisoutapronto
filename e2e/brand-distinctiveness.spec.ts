@@ -1,11 +1,15 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('brand distinctiveness', () => {
-  test('homepage sends public discovery links to indexable destinations', async ({ page }) => {
+  test('homepage keeps the quote wedge focused on priority professions', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('main a[href^="/ferramentas"]')).toHaveCount(0);
     await expect(page.locator('a[href="/para/autonomos"]')).toHaveCount(0);
-    await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(5);
+    await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(0);
+    await expect(page.locator('main a[href^="/orcamento-com-pix?profissao="]')).toHaveCount(6);
+    await expect(page.getByText('Eletricista', { exact: true })).toBeVisible();
+    await expect(page.getByText('Pintor', { exact: true })).toBeVisible();
+    await expect(page.getByText('Designer / freelancer', { exact: true })).toBeVisible();
     await expect(page.locator('a[href="/para/freelancers"]')).toHaveCount(3);
   });
 
