@@ -36,12 +36,12 @@ export function LiveStatsBar({
     {
       value: formatCount(stats.orcamentosToday),
       label: 'Orçamentos hoje',
-      show: true
+      show: stats.orcamentosToday > 0
     },
     {
       value: formatCount(stats.orcamentosApprovedWeek),
       label: 'Aprovados na semana',
-      show: true
+      show: stats.orcamentosApprovedWeek > 0
     },
     {
       value: formatCount(stats.docsGeneratedApprox),

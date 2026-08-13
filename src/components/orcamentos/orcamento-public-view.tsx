@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CheckCircle2,
   Loader2,
@@ -22,6 +22,7 @@ import { formatCurrency } from '@/lib/formatters';
 import type { OrcamentoPublic } from '@/lib/orcamentos/types';
 import { viralOrcamentoSignupPath } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 interface OrcamentoPublicViewProps {
   initial: OrcamentoPublic;
@@ -53,6 +54,13 @@ export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
   const pending = orcamento.status === 'pending';
   const needsWhatsAppGate = !pending && !whatsappOpened;
 
+  useEffect(() => {
+    trackEvent('quote_recipient_view', {
+      source_document: orcamento.id,
+      quote_status: orcamento.status
+    });
+  }, [orcamento.id, orcamento.status]);
+
   async function submitStatus(status: 'approved' | 'declined') {
     setError('');
     setSubmitting(true);
@@ -76,6 +84,10 @@ export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
       setNotify(notifications || null);
       setShowDecline(false);
       setWhatsappOpened(false);
+      trackEvent(status === 'approved' ? 'quote_approved' : 'quote_adjustment_requested', {
+        source_document: orcamento.id,
+        quote_value: orcamento.total
+      });
       toast(
         status === 'approved'
           ? 'Aprovado! Abrindo seu WhatsApp para avisar o profissional…'
@@ -113,6 +125,10 @@ export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
 
     window.location.href = url;
     setWhatsappOpened(true);
+    trackEvent('quote_professional_whatsapp_opened', {
+      source_document: orcamento.id,
+      quote_status: orcamento.status
+    });
   }
 
   return (
@@ -266,7 +282,7 @@ export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
 
         {error ? <p className="mt-4 text-sm font-medium text-rose-600">{error}</p> : null}
 
-        <ViralRecruitCard className="mt-6" />
+        <ViralRecruitCard className="mt-6" sourceDocumentId={orcamento.id} />
 
         <p className="mt-6 text-center text-[11px] text-slate-400">
           Powered by{' '}
@@ -324,7 +340,7 @@ export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
           </div>
         </div>
       ) : (
-        <ViralRecruitSticky />
+        <ViralRecruitSticky sourceDocumentId={orcamento.id} />
       )}
     </div>
   );

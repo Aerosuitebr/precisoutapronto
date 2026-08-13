@@ -59,7 +59,11 @@ function CadastroForm() {
         referralCode: referralCode || undefined
       });
       clearStoredReferralCode();
-      trackEvent('signup_completed', { signup_origin: 'web' });
+      trackEvent('signup_completed', {
+        signup_origin: searchParams.get('source_document') ? 'quote_recipient' : 'web',
+        source_document: searchParams.get('source_document') || undefined,
+        source_occupation: searchParams.get('source_occupation') || undefined
+      });
       setDoneEmail(result.email);
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Não foi possível criar a conta.');

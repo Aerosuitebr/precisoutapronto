@@ -9,9 +9,25 @@ import {
   viralOrcamentoToolPath
 } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
+
+type RecruitProps = {
+  className?: string;
+  sourceDocumentId?: string;
+  sourceOccupation?: string;
+};
+
+function trackRecruitClick(placement: string, sourceDocumentId?: string, sourceOccupation?: string) {
+  trackEvent('quote_recipient_recruit_click', {
+    placement,
+    source_document: sourceDocumentId,
+    source_occupation: sourceOccupation
+  });
+}
 
 /** CTA para quem recebeu o orçamento: recruta o próximo profissional. */
-export function ViralRecruitCard({ className }: { className?: string }) {
+export function ViralRecruitCard({ className, sourceDocumentId, sourceOccupation }: RecruitProps) {
+  const attribution = { sourceDocumentId, sourceOccupation };
   return (
     <section
       className={cn(
@@ -30,13 +46,21 @@ export function ViralRecruitCard({ className }: { className?: string }) {
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <Button asChild className="h-11 bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
-              <Link href={viralOrcamentoSignupPath()}>
+              <Link
+                href={viralOrcamentoSignupPath(attribution)}
+                onClick={() => trackRecruitClick('card', sourceDocumentId, sourceOccupation)}
+              >
                 Quero cobrar assim
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" className="h-11">
-              <Link href={viralOrcamentoToolPath()}>Já tenho conta</Link>
+              <Link
+                href={viralOrcamentoToolPath(attribution)}
+                onClick={() => trackRecruitClick('card_existing', sourceDocumentId, sourceOccupation)}
+              >
+                Já tenho conta
+              </Link>
             </Button>
           </div>
         </div>
@@ -45,7 +69,8 @@ export function ViralRecruitCard({ className }: { className?: string }) {
   );
 }
 
-export function ViralRecruitSticky() {
+export function ViralRecruitSticky({ sourceDocumentId, sourceOccupation }: RecruitProps = {}) {
+  const attribution = { sourceDocumentId, sourceOccupation };
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-amber-200 bg-slate-950 p-4 text-white">
       <div className="mx-auto flex max-w-lg flex-col gap-2 sm:flex-row sm:items-center">
@@ -53,7 +78,10 @@ export function ViralRecruitSticky() {
           Quer cobrar assim no WhatsApp? Monte seu orçamento grátis.
         </p>
         <Button asChild className="h-11 shrink-0 bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
-          <Link href={viralOrcamentoSignupPath()}>
+          <Link
+            href={viralOrcamentoSignupPath(attribution)}
+            onClick={() => trackRecruitClick('sticky', sourceDocumentId, sourceOccupation)}
+          >
             Quero cobrar assim
             <ArrowRight className="h-4 w-4" />
           </Link>

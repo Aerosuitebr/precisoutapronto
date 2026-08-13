@@ -22,13 +22,33 @@ export function viralHomeUrl(utmCampaign: string) {
   return `${base}/?${params.toString()}`;
 }
 
-export function viralOrcamentoSignupPath() {
-  const next = encodeURIComponent('/ferramentas/orcamentos');
-  return `/cadastro?next=${next}&utm_source=share&utm_medium=orcamento_publico&utm_campaign=quero_cobrar`;
+export type OrcamentoViralAttribution = {
+  sourceDocumentId?: string;
+  sourceOccupation?: string;
+};
+
+function withOrcamentoAttribution(path: string, attribution: OrcamentoViralAttribution = {}) {
+  const [pathname, query = ''] = path.split('?');
+  const params = new URLSearchParams(query);
+  if (attribution.sourceDocumentId) params.set('source_document', attribution.sourceDocumentId);
+  if (attribution.sourceOccupation) params.set('source_occupation', attribution.sourceOccupation);
+  return `${pathname}?${params.toString()}`;
 }
 
-export function viralOrcamentoToolPath() {
-  return `/ferramentas/orcamentos?utm_source=share&utm_medium=orcamento_publico&utm_campaign=quero_cobrar`;
+export function viralOrcamentoSignupPath(attribution: OrcamentoViralAttribution = {}) {
+  const attributedTool = withOrcamentoAttribution('/ferramentas/orcamentos', attribution);
+  const next = encodeURIComponent(attributedTool);
+  return withOrcamentoAttribution(
+    `/cadastro?next=${next}&utm_source=share&utm_medium=orcamento_publico&utm_campaign=quero_cobrar`,
+    attribution
+  );
+}
+
+export function viralOrcamentoToolPath(attribution: OrcamentoViralAttribution = {}) {
+  return withOrcamentoAttribution(
+    `/ferramentas/orcamentos?utm_source=share&utm_medium=orcamento_publico&utm_campaign=quero_cobrar`,
+    attribution
+  );
 }
 
 export function viralOrcamentoSignupUrl() {

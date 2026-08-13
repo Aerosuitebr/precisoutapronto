@@ -153,6 +153,8 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
     profissionalNome: string;
     total: number;
   } | null>(null);
+  const funnelStartedRef = useRef(false);
+  const previewTrackedRef = useRef(false);
 
   const total = useMemo(() => calcOrcamentoTotal(items), [items]);
   const ownerEmail = (profissionalEmail || session?.user.email || '').trim().toLowerCase();
@@ -241,6 +243,32 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
             .map((label) => label.toLowerCase())
             .join(', ')} e ${missingLabels[missingLabels.length - 1].toLowerCase()} para continuar.`)
     : '';
+
+  useEffect(() => {
+    if (funnelStartedRef.current) return;
+    const started = Boolean(
+      profissionalNome.trim() ||
+        clienteNome.trim() ||
+        items.some((item) => item.nome.trim() || item.valorUnitario > 0)
+    );
+    if (!started) return;
+    funnelStartedRef.current = true;
+    trackEvent('quote_started', {
+      public_access: publicAccess,
+      source_occupation:
+        typeof window !== 'undefined'
+          ? new URLSearchParams(window.location.search).get('profissao') ||
+            new URLSearchParams(window.location.search).get('source_occupation') ||
+            undefined
+          : undefined
+    });
+  }, [profissionalNome, clienteNome, items, publicAccess]);
+
+  useEffect(() => {
+    if (!readyToGenerate || previewTrackedRef.current) return;
+    previewTrackedRef.current = true;
+    trackEvent('quote_preview_ready', { quote_value: total, item_count: items.length });
+  }, [readyToGenerate, total, items.length]);
 
   function focusChecklistItem(key: ChecklistKey) {
     if (key === 'profissional') setProfissionalCollapsed(false);
@@ -442,6 +470,19 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
       setGenerated(entry);
       refreshAuth();
       trackEvent('document_completed', { tool_name: 'orcamentos', output: 'share_link' });
+      trackEvent('quote_link_created', {
+        source_document: result.id,
+        quote_value: result.total,
+        public_access: publicAccess,
+        recruited_from_document:
+          typeof window !== 'undefined'
+            ? new URLSearchParams(window.location.search).get('source_document') || undefined
+            : undefined,
+        source_occupation:
+          typeof window !== 'undefined'
+            ? new URLSearchParams(window.location.search).get('source_occupation') || undefined
+            : undefined
+      });
       await loadHistory();
       toast('Link gerado. Conecte seu WhatsApp para enviar ao cliente (escaneia → envia → desconecta).');
     } catch (submitError) {
@@ -502,6 +543,11 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
     total: number;
     profissionalNome?: string;
   }) {
+    trackEvent('quote_whatsapp_send_started', {
+      source_document: link.id,
+      quote_value: link.total,
+      send_mode: 'ephemeral'
+    });
     if (!ownerEmail) {
       setBannerError('Informe seu e-mail de alertas antes de enviar pelo WhatsApp.');
       return;
@@ -547,6 +593,11 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
       url: link.url,
       total: link.total,
       branded: false
+    });
+    trackEvent('quote_whatsapp_send_completed', {
+      source_document: link.id,
+      quote_value: link.total,
+      send_mode: 'manual'
     });
     window.open(href, '_blank', 'noopener,noreferrer');
   }
@@ -1535,6 +1586,11 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
           allowWaMeFallback={!brandDocuments}
           brandLocked={brandDocuments}
           onSent={() => {
+            trackEvent('quote_whatsapp_send_completed', {
+              source_document: sendModal.id,
+              quote_value: sendModal.total,
+              send_mode: 'ephemeral'
+            });
             setGenerated((current) =>
               current && current.id === sendModal.id
                 ? {

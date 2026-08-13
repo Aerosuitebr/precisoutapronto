@@ -8,7 +8,7 @@ import {
   Wallet
 } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
-import { CategoryExplorer } from '@/components/marketing/category-explorer';
+import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
 import { HeroOrcamentoDemo } from '@/components/marketing/hero-orcamento-demo';
 import { PromoVideoPlayer } from '@/components/marketing/promo-video-section';
 import { TestimonialsSection } from '@/components/marketing/testimonials-section';
@@ -48,6 +48,15 @@ const OTHER_TOOLS = [
   }
 ] as const;
 
+const PRIORITY_PROFESSIONS = [
+  ['Eletricista', 'Materiais, mão de obra, prazo e entrada em um link profissional.'],
+  ['Pintor', 'Ambientes, metragem, preparação, materiais e validade sem preço solto no chat.'],
+  ['Instalador', 'Equipamentos, deslocamento e instalação organizados para o cliente aprovar.'],
+  ['Técnico', 'Diagnóstico, peças e serviço separados antes de começar o atendimento.'],
+  ['Designer / freelancer', 'Escopo, revisões, cronograma e Pix com apresentação de agência.'],
+  ['Oficina e prestador local', 'Serviços e peças com total claro e resposta pelo celular.']
+] as const;
+
 function FeatureChecks({
   items,
   iconClass = 'text-emerald-600',
@@ -83,7 +92,7 @@ export function LandingPage() {
         <div className="relative mx-auto grid max-w-6xl items-center gap-8 px-4 py-8 sm:px-6 sm:py-10 lg:min-h-[610px] lg:grid-cols-[1.08fr_0.92fr] lg:gap-10 lg:py-10">
           <div className="flex h-full max-w-xl flex-col">
             <p className="mt-0 text-xs font-bold uppercase tracking-[0.18em] text-amber-300 lg:text-sm">
-              Escritório digital para MEI e autônomos
+              Orçamento com aprovação e Pix para prestadores
             </p>
             <h1 className="rj-display mt-3 text-[clamp(2.15rem,4vw,3.35rem)] font-extrabold leading-[1.03] tracking-tight text-white">
               Envie um orçamento profissional pelo WhatsApp em 2 minutos.
@@ -196,18 +205,27 @@ export function LandingPage() {
         </div>
       </section>
 
+      <section className="border-b border-emerald-100 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+          <LiveStatsBar />
+          <p className="mt-3 text-center text-[11px] leading-5 text-slate-500">
+            Números exibidos são dados reais do produto; quando não há volume público suficiente, mostramos apenas capacidades verificáveis.
+          </p>
+        </div>
+      </section>
+
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">
-                Um lugar só
+                Feito para quem vende serviços
               </p>
               <h2 className="rj-display mt-3 max-w-2xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Ache a ferramenta certa em segundos, não em abas.
+                Um fluxo simples para mandar o preço e fechar o serviço.
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-                Filtre pela sua área e veja o arsenal completo abrir na hora, sem sair da página.
+                Eletricistas, pintores, instaladores, técnicos e freelancers criam, enviam e acompanham o orçamento no mesmo lugar.
               </p>
             </div>
             <Button asChild size="lg" variant="outline" className="h-12 shrink-0 self-start sm:self-auto">
@@ -218,9 +236,23 @@ export function LandingPage() {
             </Button>
           </div>
 
-          <div className="mt-10">
-            <CategoryExplorer />
-          </div>
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {PRIORITY_PROFESSIONS.map(([profession, description]) => (
+              <li key={profession}>
+                <HomeConversionLink
+                  href={`/orcamento-com-pix?profissao=${encodeURIComponent(profession)}#montar`}
+                  placement={`profession_${profession.toLowerCase().replaceAll(' ', '_')}`}
+                  className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-white hover:shadow-md"
+                >
+                  <p className="text-base font-extrabold text-slate-900 group-hover:text-emerald-800">{profession}</p>
+                  <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{description}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-700">
+                    Criar orçamento <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </HomeConversionLink>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

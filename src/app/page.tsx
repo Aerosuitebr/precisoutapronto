@@ -6,7 +6,7 @@ import { LandingPage } from '@/components/marketing/landing-page';
 import { StrategicHubs } from '@/components/marketing/strategic-hubs';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Resolva Jato: Orçamentos, Recibos e Pix Grátis' },
+  title: { absolute: 'Orçamento com Aprovação e Pix no WhatsApp | Resolva Jato' },
   description:
     'Crie um orçamento profissional grátis, envie pelo WhatsApp, receba a aprovação do cliente e cobre por Pix. Teste sem cadastro.',
   alternates: {
