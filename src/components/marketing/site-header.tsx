@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
 
 const links = [
+  { href: '/ferramentas', label: 'Todas as ferramentas', auth: false },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix', auth: false },
   { href: '/gerador-de-recibo', label: 'Recibo', auth: false },
   { href: '/gerador-de-contrato', label: 'Contrato', auth: false },

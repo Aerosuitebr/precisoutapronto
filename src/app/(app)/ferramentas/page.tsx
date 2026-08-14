@@ -9,21 +9,18 @@ import {
   MessageSquarePlus,
   Pin,
   Search,
-  Sparkles,
   Star
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
 import { PageHero } from '@/components/shared/page-hero';
 import { SuggestToolModal } from '@/components/tools/suggest-tool-modal';
 import {
-  ToolsEngagementStrip,
   ToolsIntentWizard,
   ToolTipButton
 } from '@/components/tools/tools-hub-extras';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import { useAuth } from '@/hooks/use-auth';
-import { getToolsEngagement } from '@/lib/tools-engagement';
 import {
   getToolById,
   getToolCategory,
@@ -53,10 +50,10 @@ import {
 } from '@/lib/tools-prefs';
 import { cn } from '@/lib/utils';
 
-const POPULAR_SEARCHES = ['Recibo', 'Contrato', 'Currículo', 'Orçamento', 'Agenda', 'PDF'];
+const POPULAR_SEARCHES = ['Assinatura de e-mail', 'Recibo', 'Contrato', 'Currículo', 'Orçamento', 'PDF'];
 
 export default function FerramentasPage() {
-  const { usage, plan, session } = useAuth();
+  const { session } = useAuth();
   const { toast } = useToast();
   const [query, setQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
@@ -69,7 +66,6 @@ export default function FerramentasPage() {
   const [collapsed, setCollapsed] = useState<ToolCategoryId[]>([]);
   const [showWizard, setShowWizard] = useState(false);
   const [showSuggestModal, setShowSuggestModal] = useState(false);
-  const [engagement, setEngagement] = useState(() => getToolsEngagement());
   const [prefsReady, setPrefsReady] = useState(false);
   const sectionRefs = useRef<Partial<Record<ToolCategoryId, HTMLElement | null>>>({});
   const ignoreSpyUntil = useRef(0);
@@ -99,7 +95,6 @@ export default function FerramentasPage() {
     setPinnedCategory(localPinned);
     setCollapsed(localCollapsed);
     setShowWizard(!isToolsWizardDismissed());
-    setEngagement(getToolsEngagement());
     setPrefsReady(true);
 
     // Sincroniza com a conta do usuário (fonte de verdade entre dispositivos).
@@ -243,49 +238,10 @@ export default function FerramentasPage() {
     >
       <div className="space-y-5">
         <PageHero
-          title="O que você precisa resolver hoje?"
-          subtitle="Busque por nome, escolha um atalho ou continue de onde parou."
-          icon={Sparkles}
-          actions={
-            <div className="flex flex-col items-start gap-2 sm:items-end">
-              <p className="rj-display text-base font-bold text-sky-100">Plano {plan.name}</p>
-              <p className="text-xs font-medium leading-5 text-slate-300">
-                {usage.unlimited
-                  ? usage.premiumExpiresAt
-                    ? `Documentos sem marca até ${new Date(usage.premiumExpiresAt).toLocaleDateString('pt-BR')}`
-                    : 'Documentos sem marca Resolva Jato'
-                  : 'Crie e baixe documentos com qualidade profissional'}
-              </p>
-              {usage.unlimited ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/20 px-2.5 py-1 text-[11px] font-bold text-emerald-200">
-                  Premium ativo
-                </span>
-              ) : null}
-              <Button asChild size="sm" className="bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
-                <Link href="/conta">Ver meu plano</Link>
-              </Button>
-            </div>
-          }
+          title="Encontre a ferramenta certa"
+          subtitle="Digite o que você quer fazer. A ferramenta aparece na hora."
+          icon={Search}
         />
-
-        {prefsReady && showWizard ? (
-          <ToolsIntentWizard onPick={handleOpenTool} onDismiss={handleDismissWizard} />
-        ) : prefsReady ? (
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={() => {
-                reopenToolsWizard();
-                setShowWizard(true);
-              }}
-              className="text-xs font-semibold text-sky-700 underline-offset-2 hover:underline"
-            >
-              Mostrar atalhos rápidos
-            </button>
-          </div>
-        ) : null}
-
-        {prefsReady ? <ToolsEngagementStrip engagement={engagement} /> : null}
 
         <div ref={searchBoxRef} className="relative">
           <Search
@@ -299,9 +255,10 @@ export default function FerramentasPage() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onFocus={() => setSearchFocused(true)}
-            placeholder="Buscar contrato, recibo, orçamento ou ferramenta..."
-            className="h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-base font-medium text-slate-900 shadow-sm outline-none ring-sky-200 placeholder:text-slate-400 focus:border-sky-400 focus:ring-4"
+            placeholder="Ex.: assinatura de e-mail, recibo, contrato ou PDF"
+            className="h-16 w-full rounded-2xl border-2 border-sky-300 bg-white pl-12 pr-4 text-base font-semibold text-slate-900 shadow-md outline-none ring-sky-200 placeholder:font-medium placeholder:text-slate-400 focus:border-sky-500 focus:ring-4"
             aria-label="Buscar ferramentas"
+            autoFocus
           />
 
           {searchFocused && !isSearching ? (
@@ -363,6 +320,23 @@ export default function FerramentasPage() {
             </div>
           ) : null}
         </div>
+
+        {prefsReady && showWizard ? (
+          <ToolsIntentWizard onPick={handleOpenTool} onDismiss={handleDismissWizard} />
+        ) : prefsReady ? (
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => {
+                reopenToolsWizard();
+                setShowWizard(true);
+              }}
+              className="text-xs font-semibold text-sky-700 underline-offset-2 hover:underline"
+            >
+              Mostrar atalhos rápidos
+            </button>
+          </div>
+        ) : null}
 
         {prefsReady && (recentTools.length > 0 || mostUsedTools.length > 0 || favoriteTools.length > 0) ? (
           <section className="space-y-4" aria-label="Atalhos personalizados">

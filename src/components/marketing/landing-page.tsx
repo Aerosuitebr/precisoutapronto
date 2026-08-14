@@ -4,6 +4,7 @@ import {
   Check,
   ClipboardList,
   FileText,
+  LayoutGrid,
   Scale,
   Wallet
 } from 'lucide-react';
@@ -111,13 +112,21 @@ export function LandingPage() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 w-full border-white/35 bg-white/10 px-6 text-base text-white hover:bg-white/15 sm:w-auto"
+                className="h-12 w-full border-white/50 bg-white/15 px-6 text-base font-bold text-white hover:bg-white/25 sm:w-auto"
               >
-                <HomeConversionLink href="#como-funciona" placement="hero_secondary">
-                  Ver como funciona
+                <HomeConversionLink href="/ferramentas" placement="hero_all_tools">
+                  <LayoutGrid className="h-4 w-4" />
+                  Ver todas as ferramentas
                 </HomeConversionLink>
               </Button>
             </div>
+            <Link
+              href="#como-funciona"
+              className="mt-3 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-emerald-100 underline decoration-emerald-300/50 underline-offset-4 transition hover:text-white"
+            >
+              Ver como funciona o orçamento
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
             <p className="mt-3 text-sm font-semibold text-emerald-100">
               2 orçamentos grátis sem cadastro <span aria-hidden>•</span> cliente sem conta
             </p>
