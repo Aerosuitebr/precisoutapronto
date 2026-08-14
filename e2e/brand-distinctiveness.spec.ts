@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('brand distinctiveness', () => {
-  test('homepage keeps the quote wedge focused on priority professions', async ({ page }) => {
+  test('homepage keeps the quote wedge focused and exposes the tools hub', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('main a[href^="/ferramentas"]')).toHaveCount(0);
+    const toolsHubLink = page.locator('main a[href="/ferramentas"]');
+    await expect(toolsHubLink).toHaveCount(1);
+    await expect(toolsHubLink).toContainText('Ver todas as ferramentas');
     await expect(page.locator('a[href="/para/autonomos"]')).toHaveCount(0);
     await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(0);
     await expect(page.locator('main a[href^="/orcamento-com-pix?profissao="]')).toHaveCount(6);
