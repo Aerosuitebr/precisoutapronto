@@ -3,15 +3,16 @@ import { expect, test } from '@playwright/test';
 test.describe('brand distinctiveness', () => {
   test('homepage keeps the quote wedge focused and exposes the tools hub', async ({ page }) => {
     await page.goto('/');
-    const toolsHubLink = page.locator('main a[href="/ferramentas"]');
+    const toolsHubLink = page.locator('main a[href="/recursos"]', { hasText: 'Ver todas as ferramentas' });
     await expect(toolsHubLink).toHaveCount(1);
     await expect(toolsHubLink).toContainText('Ver todas as ferramentas');
     await expect(page.locator('a[href="/para/autonomos"]')).toHaveCount(0);
     await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(0);
-    await expect(page.locator('main a[href^="/orcamento-com-pix?profissao="]')).toHaveCount(6);
+    await expect(page.locator('main a[href^="/orcamento-para/"]')).toHaveCount(5);
     await expect(page.getByText('Eletricista', { exact: true })).toBeVisible();
     await expect(page.getByText('Pintor', { exact: true })).toBeVisible();
-    await expect(page.getByText('Designer / freelancer', { exact: true })).toBeVisible();
+    await expect(page.getByText('Designer', { exact: true })).toBeVisible();
+    await expect(page.getByText('Instalador de ar-condicionado', { exact: true })).toBeVisible();
     await expect(page.locator('a[href="/para/freelancers"]')).toHaveCount(3);
   });
 

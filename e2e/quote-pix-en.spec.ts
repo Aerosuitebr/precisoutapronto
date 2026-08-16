@@ -11,8 +11,8 @@ test.describe('EN quote + Pix gate', () => {
     const price = page.getByLabel('Unit price (BRL)');
     await price.click();
     await price.fill('');
-    await price.pressSequentially('1000', { delay: 30 });
-    await price.blur();
+    await price.fill('1000');
+    await price.press('Tab');
 
     const total = page.getByText('Quote total', { exact: false }).locator('xpath=following-sibling::p[1]');
     await expect(total).toContainText(/R\$\s*1[,.]000/, { timeout: 20_000 });
