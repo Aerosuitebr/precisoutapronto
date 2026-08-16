@@ -9,6 +9,10 @@ test('home keeps quote + Pix as the only primary promise', async ({ page }) => {
     'href',
     '/orcamento-com-pix#montar'
   );
+  await expect(page.getByRole('link', { name: 'Acessar ferramentas' })).toHaveAttribute(
+    'href',
+    '/recursos'
+  );
   await expect(page.locator('main')).not.toContainText('Jato Games');
 });
 

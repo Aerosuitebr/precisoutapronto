@@ -113,6 +113,17 @@ export function LandingPage() {
                   <ArrowRight className="h-4 w-4" />
                 </HomeConversionLink>
               </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-12 w-full border-white/35 bg-white/10 px-6 text-base font-bold text-white backdrop-blur-sm transition hover:border-white/60 hover:bg-white/20 hover:text-white sm:w-auto"
+              >
+                <Link href="/recursos">
+                  Acessar ferramentas
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
             </div>
             <Link
               href="#como-funciona"
@@ -443,7 +454,7 @@ export function LandingPage() {
       <section className="border-b border-slate-200 bg-slate-50">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Feitas para compartilhar</p>
-          <h2 className="rj-display mt-3 max-w-3xl text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">Ferramentas úteis viram conversa — e terminam em uma ação.</h2>
+          <h2 className="rj-display mt-3 max-w-3xl text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">Ferramentas úteis viram conversa e terminam em uma ação.</h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">Calcule, gere um resultado visual e compartilhe no WhatsApp ou nas redes. Cada conteúdo leva de volta a uma ferramenta interativa.</p>
           <ul className="mt-8 grid gap-4 md:grid-cols-3">
             {[
