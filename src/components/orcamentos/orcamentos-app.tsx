@@ -79,6 +79,12 @@ interface FieldErrors {
   profissionalWhatsapp?: string;
 }
 
+export interface OrcamentoPreset {
+  occupation: string;
+  items: Array<{ nome: string; quantidade?: number; valorUnitario?: number }>;
+  observacoes: string;
+}
+
 const QUICK_NOTES = ['50% na entrada', 'Pagamento via Pix', 'Prazo de 7 dias úteis', 'Materiais inclusos'];
 const PERIOD_OPTIONS = ['7', '15', '30'];
 
@@ -117,7 +123,10 @@ function detectValidadeMode(value: string): 'period' | 'date' {
   return /^\d{2}\/\d{2}\/\d{4}$/.test(value.trim()) ? 'date' : 'period';
 }
 
-export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean } = {}) {
+export function OrcamentosApp({
+  publicAccess = false,
+  preset
+}: { publicAccess?: boolean; preset?: OrcamentoPreset } = {}) {
   const { toast } = useToast();
   const { session, usage, refresh: refreshAuth } = useAuth();
   const brandDocuments = useDocumentBranding();
@@ -133,8 +142,17 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
   const [clienteEmail, setClienteEmail] = useState('');
   const [validade, setValidade] = useState('');
   const [validadeMode, setValidadeMode] = useState<'period' | 'date'>('period');
-  const [observacoes, setObservacoes] = useState('');
-  const [items, setItems] = useState<OrcamentoItem[]>([createEmptyItem()]);
+  const [observacoes, setObservacoes] = useState(preset?.observacoes || '');
+  const [items, setItems] = useState<OrcamentoItem[]>(() =>
+    preset?.items.length
+      ? preset.items.map((item) => ({
+          ...createEmptyItem(),
+          nome: item.nome,
+          quantidade: item.quantidade ?? 1,
+          valorUnitario: item.valorUnitario ?? 0
+        }))
+      : [createEmptyItem()]
+  );
   const [generating, setGenerating] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -456,9 +474,19 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
       }
 
       const result = outcome.result!;
+      const sourceOccupation =
+        preset?.occupation ||
+        (typeof window !== 'undefined'
+          ? new URLSearchParams(window.location.search).get('profissao') ||
+            new URLSearchParams(window.location.search).get('source_occupation') ||
+            ''
+          : '');
+      const attributedUrl = sourceOccupation
+        ? `${result.url}?source_occupation=${encodeURIComponent(sourceOccupation)}`
+        : result.url;
       const entry: GeneratedLink = {
         id: result.id,
-        url: result.url,
+        url: attributedUrl,
         clienteNome,
         clienteWhatsapp,
         clienteEmail,
@@ -478,10 +506,7 @@ export function OrcamentosApp({ publicAccess = false }: { publicAccess?: boolean
           typeof window !== 'undefined'
             ? new URLSearchParams(window.location.search).get('source_document') || undefined
             : undefined,
-        source_occupation:
-          typeof window !== 'undefined'
-            ? new URLSearchParams(window.location.search).get('source_occupation') || undefined
-            : undefined
+        source_occupation: sourceOccupation || undefined
       });
       await loadHistory();
       toast('Link gerado. Conecte seu WhatsApp para enviar ao cliente (escaneia → envia → desconecta).');

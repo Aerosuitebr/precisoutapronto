@@ -4,7 +4,7 @@ import {
   Check,
   ClipboardList,
   FileText,
-  LayoutGrid,
+  Mail,
   Scale,
   Wallet
 } from 'lucide-react';
@@ -23,6 +23,12 @@ const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
 
 const OTHER_TOOLS = [
+  {
+    href: '/assinatura-de-email',
+    title: 'Assinatura de e-mail',
+    text: 'Logo, contatos e redes prontos para Gmail e Outlook.',
+    icon: Mail
+  },
   {
     href: '/gerador-de-proposta-comercial',
     title: 'Proposta comercial',
@@ -50,12 +56,11 @@ const OTHER_TOOLS = [
 ] as const;
 
 const PRIORITY_PROFESSIONS = [
-  ['Eletricista', 'Materiais, mão de obra, prazo e entrada em um link profissional.'],
-  ['Pintor', 'Ambientes, metragem, preparação, materiais e validade sem preço solto no chat.'],
-  ['Instalador', 'Equipamentos, deslocamento e instalação organizados para o cliente aprovar.'],
-  ['Técnico', 'Diagnóstico, peças e serviço separados antes de começar o atendimento.'],
-  ['Designer / freelancer', 'Escopo, revisões, cronograma e Pix com apresentação de agência.'],
-  ['Oficina e prestador local', 'Serviços e peças com total claro e resposta pelo celular.']
+  ['Eletricista', 'eletricista', 'Materiais, mão de obra, prazo e entrada em um link profissional.'],
+  ['Pintor', 'pintor', 'Ambientes, metragem, preparação, materiais e validade sem preço solto no chat.'],
+  ['Instalador de ar-condicionado', 'instalacao-ar-condicionado', 'Equipamento, tubulação, deslocamento e instalação organizados.'],
+  ['Designer', 'designer', 'Escopo, revisões, cronograma e Pix com apresentação de agência.'],
+  ['Manutenção residencial', 'manutencao-residencial', 'Visita, reparos, peças e mão de obra com aprovação clara.']
 ] as const;
 
 function FeatureChecks({
@@ -96,27 +101,16 @@ export function LandingPage() {
               Orçamento com aprovação e Pix para prestadores
             </p>
             <h1 className="rj-display mt-3 text-[clamp(2.15rem,4vw,3.35rem)] font-extrabold leading-[1.03] tracking-tight text-white">
-              Envie um orçamento profissional pelo WhatsApp em 2 minutos.
+              A forma mais rápida de enviar orçamento, conseguir aprovação e cobrar por Pix no WhatsApp.
             </h1>
             <p className="mt-4 max-w-lg text-base leading-7 text-slate-100 sm:text-lg">
-              Seu cliente aprova pelo celular e você cobra no Pix, sem instalar aplicativo.
+              Comece antes do cadastro, envie um link profissional e acompanhe orçamento, aprovação, Pix e recibo no mesmo fluxo.
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
                 <HomeConversionLink href="/orcamento-com-pix#montar" placement="hero_primary">
                   Criar e enviar orçamento grátis
                   <ArrowRight className="h-4 w-4" />
-                </HomeConversionLink>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-12 w-full border-white/50 bg-white/15 px-6 text-base font-bold text-white hover:bg-white/25 sm:w-auto"
-              >
-                <HomeConversionLink href="/ferramentas" placement="hero_all_tools">
-                  <LayoutGrid className="h-4 w-4" />
-                  Ver todas as ferramentas
                 </HomeConversionLink>
               </Button>
             </div>
@@ -246,10 +240,10 @@ export function LandingPage() {
           </div>
 
           <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {PRIORITY_PROFESSIONS.map(([profession, description]) => (
+            {PRIORITY_PROFESSIONS.map(([profession, slug, description]) => (
               <li key={profession}>
                 <HomeConversionLink
-                  href={`/orcamento-com-pix?profissao=${encodeURIComponent(profession)}#montar`}
+                  href={`/orcamento-para/${slug}`}
                   placement={`profession_${profession.toLowerCase().replaceAll(' ', '_')}`}
                   className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-white hover:shadow-md"
                 >
@@ -385,8 +379,8 @@ export function LandingPage() {
               </li>
             ))}
           </ul>
-          <p className="mt-6 text-sm text-slate-500">
-            Também:{' '}
+          <p className="mt-6 text-xs text-slate-500">
+            Verticais secundárias:{' '}
             <Link href="/orcamento-com-pix" className="font-semibold text-sky-700 hover:underline">
               orçamento com Pix
             </Link>
@@ -443,6 +437,24 @@ export function LandingPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+          <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">Feitas para compartilhar</p>
+          <h2 className="rj-display mt-3 max-w-3xl text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">Ferramentas úteis viram conversa — e terminam em uma ação.</h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">Calcule, gere um resultado visual e compartilhe no WhatsApp ou nas redes. Cada conteúdo leva de volta a uma ferramenta interativa.</p>
+          <ul className="mt-8 grid gap-4 md:grid-cols-3">
+            {[
+              { href: '/calculadora-de-preco-freelancer', title: 'Quanto cobrar por hora?', text: 'Custos, horas, taxas e margem em um preço de referência compartilhável.' },
+              { href: '/mei-ou-clt', title: 'MEI ou CLT?', text: 'Compare cenários e transforme uma dúvida comum em simulação.' },
+              { href: '/checklist-cobranca-mei', title: 'Checklist de cobrança MEI', text: 'Do orçamento ao recibo, com um roteiro que pode ser citado e compartilhado.' }
+            ].map((item) => (
+              <li key={item.href}><Link href={item.href} className="group block h-full rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"><p className="font-extrabold text-slate-900 group-hover:text-emerald-800">{item.title}</p><p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-700">Abrir ferramenta <ArrowRight className="h-3.5 w-3.5" /></span></Link></li>
+            ))}
+          </ul>
+          <p className="mt-7 text-sm text-slate-600"><Link href="/conteudos-para-compartilhar" className="font-bold text-emerald-700 hover:underline">Veja a biblioteca completa de pautas e campanhas sazonais</Link>. Publica conteúdo para MEI, imóveis ou prestadores? Use nossos <Link href="/embed" className="font-bold text-emerald-700 hover:underline">widgets e badges para parceiros</Link> ou consulte o <Link href="/imprensa" className="font-bold text-emerald-700 hover:underline">press kit</Link>.</p>
         </div>
       </section>
 

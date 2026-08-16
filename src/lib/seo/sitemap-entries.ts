@@ -10,6 +10,7 @@ import { INTERNATIONAL_TOOLS } from '@/lib/international-tools-catalog';
 import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
 import { viralClusters } from '@/lib/seo/viral-clusters';
+import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-08-08T15:00:00.000Z');
@@ -37,6 +38,7 @@ export const PUBLIC_TOOL_LANDINGS = [
   '/comprimir-redimensionar-imagem',
   '/converter-imagem-online',
   '/gerador-de-referencias-abnt',
+  '/assinatura-de-email',
   '/agenda-online',
   '/divisor-de-conta',
   '/contato',
@@ -102,6 +104,13 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/imprensa`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/embed`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.65 },
     { url: `${base}/checklist-cobranca-mei`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${base}/conteudos-para-compartilhar`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.8 },
+    ...PROFESSION_LANDINGS.map((page) => ({
+      url: `${base}/orcamento-para/${page.slug}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'monthly' as const,
+      priority: 0.9
+    })),
     { url: `${base}/privacidade`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${base}/termos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 }
   ];
@@ -187,6 +196,13 @@ function buildTools(base: string): MetadataRoute.Sitemap {
     }))
   ];
 
+  const rentalReceiptRoutes: MetadataRoute.Sitemap = ['residencial', 'comercial', 'pix'].map((slug) => ({
+    url: `${base}/recibo-de-aluguel/${slug}`,
+    lastModified: CORE_UPDATED_AT,
+    changeFrequency: 'monthly' as const,
+    priority: 0.82
+  }));
+
   const viralClusterRoutes: MetadataRoute.Sitemap = viralClusters.map((cluster) => ({
     url: `${base}${cluster.path}`,
     lastModified: CORE_UPDATED_AT,
@@ -194,7 +210,7 @@ function buildTools(base: string): MetadataRoute.Sitemap {
     priority: 0.9
   }));
 
-  return dedupe([...seoRoutes, ...toolLandingRoutes, ...receiptClusterRoutes, ...viralClusterRoutes]);
+  return dedupe([...seoRoutes, ...toolLandingRoutes, ...receiptClusterRoutes, ...rentalReceiptRoutes, ...viralClusterRoutes]);
 }
 
 function buildGrowth(base: string): MetadataRoute.Sitemap {

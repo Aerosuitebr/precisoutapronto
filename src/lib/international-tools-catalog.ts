@@ -139,7 +139,7 @@ export const INTERNATIONAL_TOOLS: InternationalToolDefinition[] = [
   },
   {
     slug: 'email-signature',
-    ptPath: '/ferramentas/assinatura-email',
+    ptPath: '/assinatura-de-email',
     icon: Mail,
     category: 'business',
     en: {

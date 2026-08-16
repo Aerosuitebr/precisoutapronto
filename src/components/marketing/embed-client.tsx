@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Check, Copy } from 'lucide-react';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
@@ -38,6 +39,31 @@ const EMBEDS = [
     id: 'enem',
     title: 'Bloco · redação ENEM',
     html: `<p><strong>Corretor de redação ENEM:</strong> estimativa por competência para treinar antes da prova. <a href="${partnerUtm('/corretor-de-redacao-enem', 'embed', 'enem')}" rel="noopener noreferrer">Analisar redação</a>.</p>`
+  },
+  {
+    id: 'orcamento-eletricista',
+    title: 'Bloco · orçamento para eletricista',
+    html: `<p><strong>Modelo de orçamento para eletricista:</strong> organize visita, materiais e mão de obra em um link com aprovação e Pix. <a href="${partnerUtm('/orcamento-para/eletricista', 'embed', 'eletricista')}" rel="noopener noreferrer">Usar modelo grátis</a>.</p>`
+  },
+  {
+    id: 'orcamento-pintor',
+    title: 'Bloco · orçamento para pintor',
+    html: `<p><strong>Modelo de orçamento para pintor:</strong> descreva ambientes, metragem, preparação, materiais e prazo. <a href="${partnerUtm('/orcamento-para/pintor', 'embed', 'pintor')}" rel="noopener noreferrer">Criar orçamento</a>.</p>`
+  },
+  {
+    id: 'orcamento-ar',
+    title: 'Bloco · instalação de ar-condicionado',
+    html: `<p><strong>Orçamento para instalação de ar-condicionado:</strong> separe equipamento, tubulação, instalação e deslocamento. <a href="${partnerUtm('/orcamento-para/instalacao-ar-condicionado', 'embed', 'ar_condicionado')}" rel="noopener noreferrer">Abrir modelo</a>.</p>`
+  },
+  {
+    id: 'recibo-aluguel',
+    title: 'Bloco · recibo de aluguel',
+    html: `<p><strong>Recibo de aluguel online grátis:</strong> identifique locador, inquilino, imóvel e competência e baixe o PDF. <a href="${partnerUtm('/recibo-de-aluguel', 'embed', 'imobiliarias')}" rel="noopener noreferrer">Gerar recibo</a>.</p>`
+  },
+  {
+    id: 'assinatura-email',
+    title: 'Bloco · assinatura de e-mail',
+    html: `<p><strong>Gerador de assinatura de e-mail grátis:</strong> adicione logo, cargo, WhatsApp e redes e copie pronta para Gmail ou Outlook. <a href="${partnerUtm('/assinatura-de-email', 'embed', 'assinatura_email')}" rel="noopener noreferrer">Criar assinatura</a>.</p>`
   },
   {
     id: 'pdf',
@@ -115,8 +141,8 @@ export function EmbedClient() {
           <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5">
             <p className="text-sm font-bold text-emerald-950">Prévia dos badges</p>
             <div className="mt-4 flex flex-wrap gap-4">
-              <img src="/badges/ferramentas-gratis.svg" alt="Ferramentas grátis" width={220} height={40} />
-              <img src="/badges/feito-com-resolva-jato.svg" alt="Feito com Resolva Jato" width={200} height={40} />
+              <Image src="/badges/ferramentas-gratis.svg" alt="Ferramentas grátis" width={220} height={40} />
+              <Image src="/badges/feito-com-resolva-jato.svg" alt="Feito com Resolva Jato" width={200} height={40} />
             </div>
           </div>
           {EMBEDS.map((item) => (

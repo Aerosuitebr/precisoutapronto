@@ -26,6 +26,7 @@ import { trackEvent } from '@/lib/analytics';
 
 interface OrcamentoPublicViewProps {
   initial: OrcamentoPublic;
+  sourceOccupation?: string;
 }
 
 interface NotifyPayload {
@@ -41,7 +42,7 @@ interface NotifyPayload {
   pushConfigured?: boolean;
 }
 
-export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
+export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPublicViewProps) {
   const { toast } = useToast();
   const [orcamento, setOrcamento] = useState(initial);
   const [showDecline, setShowDecline] = useState(false);
@@ -282,7 +283,13 @@ export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
 
         {error ? <p className="mt-4 text-sm font-medium text-rose-600">{error}</p> : null}
 
-        <ViralRecruitCard className="mt-6" sourceDocumentId={orcamento.id} />
+        {!pending ? (
+          <ViralRecruitCard
+            className="mt-6"
+            sourceDocumentId={orcamento.id}
+            sourceOccupation={sourceOccupation}
+          />
+        ) : null}
 
         <p className="mt-6 text-center text-[11px] text-slate-400">
           Powered by{' '}
@@ -340,7 +347,7 @@ export function OrcamentoPublicView({ initial }: OrcamentoPublicViewProps) {
           </div>
         </div>
       ) : (
-        <ViralRecruitSticky sourceDocumentId={orcamento.id} />
+        <ViralRecruitSticky sourceDocumentId={orcamento.id} sourceOccupation={sourceOccupation} />
       )}
     </div>
   );

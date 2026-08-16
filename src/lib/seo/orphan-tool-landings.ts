@@ -20,6 +20,63 @@ export type OrphanPublicLanding = {
 /** Landings públicas para ferramentas que antes só existiam em /ferramentas (noindex). */
 export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
   {
+    toolId: 'assinatura-email',
+    path: '/assinatura-de-email',
+    toolName: 'Assinatura de e-mail',
+    metaTitle: 'Criar assinatura de e-mail profissional grátis (Gmail e Outlook)',
+    metaDescription:
+      'Crie uma assinatura de e-mail profissional com logo, cores, WhatsApp e redes sociais. Copie pronta para usar no Gmail ou Outlook.',
+    keywords: [
+      'assinatura de email',
+      'criar assinatura de email',
+      'assinatura gmail',
+      'assinatura outlook',
+      'gerador de assinatura de email',
+      'assinatura profissional com logo'
+    ],
+    h1: 'Crie sua assinatura de e-mail profissional grátis',
+    subtitle:
+      'Adicione logo ou foto, cargo, empresa, WhatsApp e redes sociais. Veja o resultado ao vivo e copie pronto para colar no Gmail ou Outlook.',
+    howToTitle: 'Como criar e instalar sua assinatura de e-mail',
+    howToSteps: [
+      'Preencha nome, cargo, empresa e formas de contato.',
+      'Adicione seu logo ou foto e escolha a cor da marca.',
+      'Revise a assinatura na pré-visualização em tempo real.',
+      'Copie a assinatura e cole nas configurações do Gmail ou Outlook.'
+    ],
+    faqs: [
+      {
+        q: 'Como colocar a assinatura no Gmail?',
+        a: 'Copie a assinatura pronta, abra Configurações no Gmail, escolha Ver todas as configurações e cole no campo Assinatura.'
+      },
+      {
+        q: 'Funciona no Outlook?',
+        a: 'Sim. Crie uma nova assinatura no Outlook e cole o conteúdo copiado no editor.'
+      },
+      {
+        q: 'Posso usar logo, foto e WhatsApp?',
+        a: 'Sim. A ferramenta aceita imagem, telefone, WhatsApp, site, LinkedIn e Instagram.'
+      },
+      {
+        q: 'A assinatura é responsiva?',
+        a: 'O HTML usa estrutura de tabela e estilos inline, abordagem compatível com os principais clientes de e-mail.'
+      },
+      {
+        q: 'É grátis e precisa de cadastro?',
+        a: 'É grátis para começar e você pode montar e copiar a assinatura diretamente pelo navegador.'
+      }
+    ],
+    related: [
+      { href: '/gerador-de-proposta-comercial', label: 'Proposta comercial' },
+      { href: '/gerador-de-curriculo', label: 'Gerador de currículo' },
+      { href: '/para/freelancers', label: 'Ferramentas para freelancers' }
+    ],
+    ogEyebrow: 'RESOLVA JATO · IDENTIDADE PROFISSIONAL',
+    ogTitle: 'Seu e-mail com cara profissional.',
+    ogSubtitle: 'Logo, contatos e redes · pronto para copiar',
+    applicationCategory: 'BusinessApplication'
+  },
+  {
     toolId: 'remover-fundo',
     path: '/remover-fundo-de-imagem',
     toolName: 'Removedor de fundo',

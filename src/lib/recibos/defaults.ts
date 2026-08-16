@@ -81,3 +81,25 @@ export const SAMPLE_RECEIPT: ReceiptData = {
 };
 
 export const PAYMENT_METHODS = ['Pix', 'Dinheiro', 'Transferência bancária', 'Cartão de crédito', 'Cartão de débito', 'Boleto', 'Cheque'];
+
+export type RentalReceiptPreset = 'aluguel-residencial' | 'aluguel-comercial' | 'aluguel-pix';
+
+export function createRentalReceipt(preset: RentalReceiptPreset): ReceiptData {
+  const receipt = createEmptyReceipt(preset === 'aluguel-comercial' ? 'compacto' : 'profissional');
+  const commercial = preset === 'aluguel-comercial';
+  const pix = preset === 'aluguel-pix';
+  return {
+    ...receipt,
+    title: commercial ? 'Recibo de aluguel comercial' : 'Recibo de aluguel residencial',
+    reference: commercial
+      ? 'Aluguel comercial do imóvel [endereço], competência [mês/ano]'
+      : 'Aluguel residencial do imóvel [endereço], competência [mês/ano]',
+    paymentMethod: pix ? 'Pix' : receipt.paymentMethod,
+    notes: pix
+      ? 'Pagamento recebido via Pix. Anexe ou guarde o comprovante da transação junto deste recibo.'
+      : commercial
+        ? 'Identifique razão social, CNPJ e unidade/sala comercial quando aplicável.'
+        : 'Identifique o endereço completo do imóvel e o mês de referência.',
+    updatedAt: new Date().toISOString()
+  };
+}

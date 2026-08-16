@@ -40,9 +40,9 @@ export function ViralRecruitCard({ className, sourceDocumentId, sourceOccupation
           <Sparkles className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-extrabold text-slate-900">Gostou de receber assim?</p>
+          <p className="text-sm font-extrabold text-slate-900">Também trabalha por conta própria?</p>
           <p className="mt-1.5 text-sm leading-6 text-slate-600">
-            Cobrar com orçamento + Pix no WhatsApp é grátis para testar. Monte o seu em minutos.
+            Crie seu orçamento grátis, envie no WhatsApp e cobre por Pix no mesmo fluxo.
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <Button asChild className="h-11 bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
@@ -50,7 +50,7 @@ export function ViralRecruitCard({ className, sourceDocumentId, sourceOccupation
                 href={viralOrcamentoSignupPath(attribution)}
                 onClick={() => trackRecruitClick('card', sourceDocumentId, sourceOccupation)}
               >
-                Quero cobrar assim
+                Criar meu orçamento grátis
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>

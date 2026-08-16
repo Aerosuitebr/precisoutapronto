@@ -21,6 +21,7 @@ export const PUBLIC_TOOL_LANDINGS: Record<string, string> = {
   'editor-pdf': '/editor-de-pdf-online',
   'remover-fundo': '/remover-fundo-de-imagem',
   'referencias-abnt': '/gerador-de-referencias-abnt',
+  'assinatura-email': '/assinatura-de-email',
   agenda: '/agenda-online',
   'divisor-conta': '/divisor-de-conta'
 };
@@ -42,6 +43,7 @@ const PRIVATE_TO_PUBLIC: Record<string, string> = {
   '/ferramentas/editor-pdf': '/editor-de-pdf-online',
   '/ferramentas/remover-fundo': '/remover-fundo-de-imagem',
   '/ferramentas/referencias-abnt': '/gerador-de-referencias-abnt',
+  '/ferramentas/assinatura-email': '/assinatura-de-email',
   '/ferramentas/agenda': '/agenda-online',
   '/ferramentas/divisor-conta': '/divisor-de-conta',
   '/ferramentas': '/recursos'

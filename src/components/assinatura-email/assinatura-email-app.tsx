@@ -1,6 +1,6 @@
 'use client';
 
-import { type ChangeEvent, useMemo, useRef, useState } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Code2, ImagePlus, Mail, Wand2 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
 import { PageHero } from '@/components/shared/page-hero';
@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast';
 import { buildAssinaturaHtml, type AssinaturaEmailData } from '@/lib/assinatura-email/build';
 import { cn } from '@/lib/utils';
+import { trackEvent } from '@/lib/analytics';
 
 type Locale = 'pt-BR' | 'en' | 'es';
 
@@ -197,7 +198,10 @@ async function readImageAsDataUrl(
   });
 }
 
-export function AssinaturaEmailApp({ locale = 'pt-BR' }: { locale?: Locale } = {}) {
+export function AssinaturaEmailApp({
+  locale = 'pt-BR',
+  publicLanding = false
+}: { locale?: Locale; publicLanding?: boolean } = {}) {
   const t = COPY[locale];
   const { toast } = useToast();
   const logoInputRef = useRef<HTMLInputElement>(null);
@@ -216,9 +220,15 @@ export function AssinaturaEmailApp({ locale = 'pt-BR' }: { locale?: Locale } = {
     logoDataUrl: '',
     layout: 'moderno'
   });
+  const startedRef = useRef(false);
+  const previewRef = useRef(false);
 
   function update<K extends keyof AssinaturaEmailData>(key: K, value: AssinaturaEmailData[K]) {
     setData((prev) => ({ ...prev, [key]: value }));
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackEvent('email_signature_started', { locale, public_landing: publicLanding });
+    }
   }
 
   async function handleLogoChange(event: ChangeEvent<HTMLInputElement>) {
@@ -241,6 +251,12 @@ export function AssinaturaEmailApp({ locale = 'pt-BR' }: { locale?: Locale } = {
   const html = useMemo(() => buildAssinaturaHtml(data), [data]);
   const podeGerar = data.nome.trim().length > 0;
 
+  useEffect(() => {
+    if (!podeGerar || previewRef.current) return;
+    previewRef.current = true;
+    trackEvent('email_signature_preview_ready', { locale, public_landing: publicLanding });
+  }, [locale, podeGerar, publicLanding]);
+
   async function copiarRico() {
     if (!podeGerar) return;
     try {
@@ -248,26 +264,32 @@ export function AssinaturaEmailApp({ locale = 'pt-BR' }: { locale?: Locale } = {
       const blobText = new Blob([html], { type: 'text/plain' });
       // eslint-disable-next-line no-undef
       await navigator.clipboard.write([new ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })]);
+      trackEvent('email_signature_copied', { format: 'rich', layout: data.layout, has_logo: Boolean(data.logoDataUrl) });
       toast(t.toastCopiedRich);
     } catch {
       await navigator.clipboard.writeText(html);
+      trackEvent('email_signature_copied', { format: 'html_fallback', layout: data.layout, has_logo: Boolean(data.logoDataUrl) });
       toast(t.toastCopiedText);
     }
   }
 
   function copiarCodigo() {
     navigator.clipboard.writeText(html);
+    trackEvent('email_signature_copied', { format: 'html_code', layout: data.layout, has_logo: Boolean(data.logoDataUrl) });
     toast(t.toastCopiedCode);
   }
 
   return (
     <AuthGate title={t.authTitle} description={t.authDescription}>
       <div className="space-y-5">
-        <div className="flex items-center justify-between gap-3">
-          <ToolsBackButton />
-        </div>
-
-        <PageHero title={t.heroTitle} subtitle={t.heroSubtitle} icon={Mail} />
+        {!publicLanding ? (
+          <>
+            <div className="flex items-center justify-between gap-3">
+              <ToolsBackButton />
+            </div>
+            <PageHero title={t.heroTitle} subtitle={t.heroSubtitle} icon={Mail} />
+          </>
+        ) : null}
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]">
           <section className="space-y-4 rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white p-4 shadow-sm sm:p-5">
