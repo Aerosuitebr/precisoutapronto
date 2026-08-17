@@ -309,7 +309,8 @@ function Sync-WorkingTreeForDeploy {
 function Invoke-GhJson {
   param(
     [Parameter(Mandatory)][string[]]$GhArgs,
-    [int]$Retries = 6
+    [int]$Retries = 6,
+    [switch]$NoJson
   )
   # gh escreve erros em stderr; com $ErrorActionPreference=Stop o 2>&1 vira NativeCommandError
   # e aborta o DeployMaster mesmo em blip transitório de api.github.com.
@@ -327,6 +328,7 @@ function Invoke-GhJson {
     }
     $lastText = (@($raw | ForEach-Object { "$_" }) -join "`n").Trim()
     if ($code -eq 0) {
+      if ($NoJson) { return $lastText }
       if ([string]::IsNullOrWhiteSpace($lastText) -or $lastText -eq 'null') { return $null }
       return ($lastText | ConvertFrom-Json)
     }
@@ -529,6 +531,38 @@ if ([string]::IsNullOrWhiteSpace($script:RepoSlug)) {
   Complete-ProgressLine
   throw 'Nao foi possivel resolver o repositorio. Configure GH_REPO=owner/repo ou o remote origin do GitHub.'
 }
+
+function Get-ReusableStagingRunId {
+  param(
+    [Parameter(Mandatory)][string]$BranchName,
+    [Parameter(Mandatory)][string]$Sha
+  )
+  $runs = Invoke-GhJson @(
+    'run', 'list',
+    '--workflow', $WorkflowName,
+    '--branch', $BranchName,
+    '--limit', '8',
+    '--json', 'databaseId,status,conclusion,headSha,createdAt,event'
+  )
+  $candidates = @($runs) |
+    Where-Object {
+      $_.headSha -eq $Sha -and
+      $_.event -eq 'workflow_dispatch' -and
+      ($_.status -ne 'completed' -or $_.conclusion -eq 'success') -and
+      ([datetime]$_.createdAt).ToUniversalTime() -ge (Get-Date).ToUniversalTime().AddHours(-6)
+    } |
+    Sort-Object { [datetime]$_.createdAt } -Descending
+
+  foreach ($candidate in $candidates) {
+    $snap = Get-RunSnapshot -RunId ([long]$candidate.databaseId)
+    $stagingMarker = @($snap.jobs) |
+      ForEach-Object { @($_.steps) } |
+      Where-Object { $_.name -eq 'Skip check on staging' -and $_.conclusion -eq 'success' } |
+      Select-Object -First 1
+    if ($stagingMarker) { return [long]$candidate.databaseId }
+  }
+  return $null
+}
 Write-Host ("  Repositorio: {0}" -f $script:RepoSlug) -ForegroundColor DarkGray
 
 if (-not $Branch) {
@@ -613,16 +647,21 @@ if ($DryRun) {
 
 # --- STAGING -----------------------------------------------------------------
 Write-Step 'Disparando deploy de STAGING...' 'Cyan'
-$stagingNotBefore = (Get-Date).ToUniversalTime()
-try {
-  [void](Invoke-GhJson @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=staging'))
-} catch {
-  Complete-ProgressLine
-  throw ("Falha ao disparar workflow de staging apos retentativas: {0}" -f $_.Exception.Message)
-}
+$stagingRunId = Get-ReusableStagingRunId -BranchName $Branch -Sha $sha
+if ($stagingRunId) {
+  Write-Host ("  Retomando staging existente: {0}" -f $stagingRunId) -ForegroundColor Yellow
+} else {
+  $stagingNotBefore = (Get-Date).ToUniversalTime()
+  try {
+    [void](Invoke-GhJson -GhArgs @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=staging') -NoJson)
+  } catch {
+    Complete-ProgressLine
+    throw ("Falha ao disparar workflow de staging apos retentativas: {0}" -f $_.Exception.Message)
+  }
 
-Show-ProgressBar -Percent 12 -Label 'localizando run de staging'
-$stagingRunId = Get-LatestRunId -BranchName $Branch -Sha $sha -NotBefore $stagingNotBefore
+  Show-ProgressBar -Percent 12 -Label 'localizando run de staging'
+  $stagingRunId = Get-LatestRunId -BranchName $Branch -Sha $sha -NotBefore $stagingNotBefore
+}
 Write-Host ("  Staging run: https://github.com/{0}/actions/runs/{1}" -f $script:RepoSlug, $stagingRunId)
 
 $stagingSnap = Wait-WorkflowRun `
@@ -657,7 +696,7 @@ Write-Step 'Staging OK. Promovendo automaticamente para PRODUCAO...' 'Cyan'
 Show-ProgressBar -Percent 65 -Label 'disparando producao'
 $prodNotBefore = (Get-Date).ToUniversalTime()
 try {
-  [void](Invoke-GhJson @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=production'))
+  [void](Invoke-GhJson -GhArgs @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=production') -NoJson)
 } catch {
   Complete-ProgressLine
   throw ("Falha ao disparar workflow de producao apos retentativas: {0}" -f $_.Exception.Message)
