@@ -330,11 +330,14 @@ function Invoke-GhJson {
       if ([string]::IsNullOrWhiteSpace($lastText) -or $lastText -eq 'null') { return $null }
       return ($lastText | ConvertFrom-Json)
     }
-    $transient = $lastText -match '(?i)error connecting to api\.github\.com|connection reset|timeout|TLS handshake|i/o timeout|temporary failure|EOF|502 Bad Gateway|503 Service Unavailable'
+    $transient = $lastText -match '(?i)error connecting to api\.github\.com|connection reset|timeout|TLS handshake|i/o timeout|temporary failure|EOF|HTTP 50[234]|502 Bad Gateway|503 Service Unavailable'
     if (-not $transient -or $attempt -ge $Retries) {
       throw ("gh falhou ({0}): {1}" -f ($GhArgs -join ' '), $lastText)
     }
-    Start-Sleep -Seconds ([Math]::Min(20, 2 * $attempt))
+    $delay = [Math]::Min(20, 2 * $attempt)
+    Complete-ProgressLine
+    Write-Host ("  GitHub API indisponivel (tentativa {0}/{1}). Nova tentativa em {2}s..." -f $attempt, $Retries, $delay) -ForegroundColor Yellow
+    Start-Sleep -Seconds $delay
   }
   throw ("gh falhou ({0}): {1}" -f ($GhArgs -join ' '), $lastText)
 }
@@ -611,10 +614,11 @@ if ($DryRun) {
 # --- STAGING -----------------------------------------------------------------
 Write-Step 'Disparando deploy de STAGING...' 'Cyan'
 $stagingNotBefore = (Get-Date).ToUniversalTime()
-& gh workflow run $WorkflowName --ref $Branch -f target=staging
-if ($LASTEXITCODE -ne 0) {
+try {
+  [void](Invoke-GhJson @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=staging'))
+} catch {
   Complete-ProgressLine
-  throw 'Falha ao disparar workflow de staging.'
+  throw ("Falha ao disparar workflow de staging apos retentativas: {0}" -f $_.Exception.Message)
 }
 
 Show-ProgressBar -Percent 12 -Label 'localizando run de staging'
@@ -652,10 +656,11 @@ if ($StagingOnly) {
 Write-Step 'Staging OK. Promovendo automaticamente para PRODUCAO...' 'Cyan'
 Show-ProgressBar -Percent 65 -Label 'disparando producao'
 $prodNotBefore = (Get-Date).ToUniversalTime()
-& gh workflow run $WorkflowName --ref $Branch -f target=production
-if ($LASTEXITCODE -ne 0) {
+try {
+  [void](Invoke-GhJson @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=production'))
+} catch {
   Complete-ProgressLine
-  throw 'Falha ao disparar workflow de producao.'
+  throw ("Falha ao disparar workflow de producao apos retentativas: {0}" -f $_.Exception.Message)
 }
 
 Show-ProgressBar -Percent 68 -Label 'localizando run de producao'
