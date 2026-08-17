@@ -4,7 +4,7 @@ import type { SeoPageContent } from './types';
 export const recibosSeoContent: SeoPageContent = {
   slug: 'gerador-de-recibo',
   toolName: 'Recibo',
-  h1: 'Gerador de Recibo Online Grátis em PDF',
+  h1: 'Gerador de Recibo Online em PDF com Extenso e Assinatura',
   subtitle:
     'Crie um recibo de pagamento profissional em minutos. Preencha valor, quem pagou e quem recebeu, escolha um modelo e baixe em PDF pronto para enviar.',
   ctaPrimary: 'Emitir recibo grátis',
@@ -142,9 +142,9 @@ export const recibosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Recibo Online Grátis — Baixe em PDF',
+    metaTitle: 'Gerador de Recibo Online em PDF (Com Extenso e Assinatura) — Grátis',
     metaDescription:
-      'Crie recibos de pagamento e prestação de serviço com valor por extenso. Preencha online, assine e baixe o PDF gratuitamente.',
+      'Crie recibos com valor por extenso e assinatura. 100% grátis para começar, compatível com celular e pronto para baixar em PDF.',
     keywords: [
       'gerador de recibo',
       'recibo online',

@@ -12,6 +12,7 @@ import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
 import { viralClusters } from '@/lib/seo/viral-clusters';
 import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
 import { CONTRACT_PROFESSION_CONTEXTS } from '@/lib/contratos/profession-contexts';
+import { RECEIPT_PROFESSION_CONTEXTS } from '@/lib/recibos/profession-contexts';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-08-08T15:00:00.000Z');
@@ -117,6 +118,12 @@ function buildCore(base: string): MetadataRoute.Sitemap {
       lastModified: CORE_UPDATED_AT,
       changeFrequency: 'monthly' as const,
       priority: 0.88
+    })),
+    ...RECEIPT_PROFESSION_CONTEXTS.map((page) => ({
+      url: `${base}/recibo/${page.slug}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'monthly' as const,
+      priority: 0.9
     })),
     { url: `${base}/privacidade`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${base}/termos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 }

@@ -82,7 +82,15 @@ export const SAMPLE_RECEIPT: ReceiptData = {
 
 export const PAYMENT_METHODS = ['Pix', 'Dinheiro', 'Transferência bancária', 'Cartão de crédito', 'Cartão de débito', 'Boleto', 'Cheque'];
 
-export type RentalReceiptPreset = 'aluguel-residencial' | 'aluguel-comercial' | 'aluguel-pix';
+export type ReceiptPreset =
+  | 'prestacao-de-servicos'
+  | 'aluguel-residencial'
+  | 'aluguel-comercial'
+  | 'aluguel-pix'
+  | 'diarista-e-domestica'
+  | 'psicologo-e-terapia';
+
+export type RentalReceiptPreset = Extract<ReceiptPreset, `aluguel-${string}`>;
 
 export function createRentalReceipt(preset: RentalReceiptPreset): ReceiptData {
   const receipt = createEmptyReceipt(preset === 'aluguel-comercial' ? 'compacto' : 'profissional');
@@ -102,4 +110,28 @@ export function createRentalReceipt(preset: RentalReceiptPreset): ReceiptData {
         : 'Identifique o endereço completo do imóvel e o mês de referência.',
     updatedAt: new Date().toISOString()
   };
+}
+
+export function createPresetReceipt(preset: ReceiptPreset): ReceiptData {
+  if (preset.startsWith('aluguel-')) return createRentalReceipt(preset as RentalReceiptPreset);
+  const receipt = createEmptyReceipt();
+  const presets: Record<Exclude<ReceiptPreset, RentalReceiptPreset>, Pick<ReceiptData, 'title' | 'reference' | 'notes'>> = {
+    'prestacao-de-servicos': {
+      title: 'Recibo de prestação de serviços',
+      reference: 'Prestação do serviço [descreva o serviço], referente ao período [data/período]',
+      notes: 'Informe se o pagamento é integral ou parcial e identifique contrato, proposta ou parcela quando houver.'
+    },
+    'diarista-e-domestica': {
+      title: 'Recibo de diarista e serviço doméstico',
+      reference: 'Serviços de limpeza e organização realizados em [data/período]',
+      notes: 'Registre as datas trabalhadas, o valor da diária e eventuais adicionais ou reembolsos.'
+    },
+    'psicologo-e-terapia': {
+      title: 'Recibo de psicólogo e terapia',
+      reference: 'Atendimento profissional realizado em [data/período]',
+      notes: 'Evite inserir diagnóstico ou informações clínicas. Inclua apenas os dados necessários ao comprovante.'
+    }
+  };
+  const contextualPreset = preset as Exclude<ReceiptPreset, RentalReceiptPreset>;
+  return { ...receipt, ...presets[contextualPreset], updatedAt: new Date().toISOString() };
 }

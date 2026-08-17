@@ -2,6 +2,9 @@ import { expect, test } from '@playwright/test';
 import { receiptClusterPages } from '../src/lib/seo/receipt-cluster';
 import { viralClusters } from '../src/lib/seo/viral-clusters';
 import { viralPublicResultUrl } from '../src/lib/viral-loop';
+import { RECEIPT_PROFESSION_CONTEXTS } from '../src/lib/recibos/profession-contexts';
+import { CONTRACT_PROFESSION_CONTEXTS } from '../src/lib/contratos/profession-contexts';
+import { PROFESSION_LANDINGS } from '../src/lib/orcamentos/profession-presets';
 
 test('receipt cluster has unique, substantial and connected intent pages', () => {
   expect(receiptClusterPages).toHaveLength(8);
@@ -47,4 +50,16 @@ test('public Result Jato URL carries a bounded snapshot and safe tool destinatio
   expect(url.searchParams.get('ferramenta')).toBe('/calculadora-de-rescisao');
   expect(url.searchParams.get('valor')).toBe('R$ 8.742,31');
   expect(url.searchParams.get('utm_medium')).toBe('resultado_jato');
+});
+
+test('priority long-tail pages cover receipts, contracts and quotes', () => {
+  expect(RECEIPT_PROFESSION_CONTEXTS.map((item) => item.slug)).toEqual(expect.arrayContaining([
+    'prestacao-de-servicos', 'aluguel-residencial', 'diarista-e-domestica', 'psicologo-e-terapia'
+  ]));
+  expect(CONTRACT_PROFESSION_CONTEXTS.map((item) => item.slug)).toEqual(expect.arrayContaining([
+    'social-media', 'desenvolvimento-de-software'
+  ]));
+  expect(PROFESSION_LANDINGS.map((item) => item.slug)).toEqual(expect.arrayContaining([
+    'pintura-residencial', 'eletricista'
+  ]));
 });

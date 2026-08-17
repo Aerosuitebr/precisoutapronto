@@ -55,6 +55,20 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
     ]
   },
   {
+    slug: 'pintura-residencial',
+    name: 'Pintura residencial',
+    title: 'Orçamento de pintura residencial por ambiente e metragem',
+    description: 'Monte um orçamento de pintura residencial com preparação, metragem, demãos, materiais, prazo, aprovação e Pix.',
+    promise: 'Modelo preparado para apartamentos, casas, paredes, tetos e pequenos reparos.',
+    preset: {
+      occupation: 'pintor residencial',
+      items: [{ nome: 'Preparação e proteção dos ambientes' }, { nome: 'Pintura de paredes e tetos' }, { nome: 'Tintas e materiais' }],
+      observacoes: 'Informe ambientes, metragem aproximada, número de demãos e estado das superfícies.\nProteção de móveis e correções profundas devem ser descritas no escopo.\nDefina entrada, prazo e pagamento via Pix.'
+    },
+    checklist: ['Ambientes e metragem descritos', 'Demãos e preparação informadas', 'Tintas, prazo e limpeza definidos'],
+    faqs: [{ q: 'Como calcular a pintura residencial?', a: 'Meça as superfícies, desconte aberturas quando relevante e considere preparação, quantidade de demãos e rendimento da tinta.' }, { q: 'O orçamento deve incluir a tinta?', a: 'Deixe explícito se materiais estão inclusos, quais linhas foram consideradas e quem fará a compra.' }]
+  },
+  {
     slug: 'instalacao-ar-condicionado',
     name: 'Instalador de ar-condicionado',
     title: 'Orçamento para instalação de ar-condicionado',

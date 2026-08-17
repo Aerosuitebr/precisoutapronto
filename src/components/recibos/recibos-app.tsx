@@ -38,7 +38,7 @@ import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import { ViralPdfShareModal, useViralPdfShare } from '@/components/marketing/viral-pdf-share';
 import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import type { DocumentFontId } from '@/lib/documents/fonts';
-import { createEmptyReceipt, createRentalReceipt, PAYMENT_METHODS, SAMPLE_RECEIPT, type RentalReceiptPreset } from '@/lib/recibos/defaults';
+import { createEmptyReceipt, createPresetReceipt, PAYMENT_METHODS, SAMPLE_RECEIPT, type ReceiptPreset } from '@/lib/recibos/defaults';
 import { listReceipts, loadReceipts, persistReceipt, removeReceipt, saveReceipt } from '@/lib/recibos/storage';
 import type { ReceiptData, ReceiptParty, ReceiptTemplateId } from '@/lib/recibos/types';
 import { getSignatureTemplate } from '@/lib/signatures/templates';
@@ -109,9 +109,10 @@ export function RecibosApp() {
   useEffect(() => {
     Promise.all([loadReceipts(), loadProfileMemory()]).then(([stored, profile]) => {
       profileMemoryRef.current = profile;
-      const requestedPreset = new URLSearchParams(window.location.search).get('modelo') as RentalReceiptPreset | null;
-      if (requestedPreset && ['aluguel-residencial', 'aluguel-comercial', 'aluguel-pix'].includes(requestedPreset)) {
-        const prepared = applyProfileToReceipt(createRentalReceipt(requestedPreset), profile);
+      const requestedPreset = new URLSearchParams(window.location.search).get('modelo') as ReceiptPreset | null;
+      const validPresets: ReceiptPreset[] = ['prestacao-de-servicos', 'aluguel-residencial', 'aluguel-comercial', 'aluguel-pix', 'diarista-e-domestica', 'psicologo-e-terapia'];
+      if (requestedPreset && validPresets.includes(requestedPreset)) {
+        const prepared = applyProfileToReceipt(createPresetReceipt(requestedPreset), profile);
         const saved = saveReceipt(prepared.document);
         trackProfileMemoryApplied('recibos', prepared.applied);
         setReceipts(listReceipts());
