@@ -48,6 +48,18 @@ const faqs = [
   {
     q: 'O que o corretor avalia?',
     a: 'Estrutura, tese, argumentação, coesão e proposta de intervenção, alinhadas às competências C1 a C5.'
+  },
+  {
+    q: 'Preciso me cadastrar para corrigir a redação?',
+    a: 'Não nas duas primeiras análises. Cole o texto, receba a nota por competência e só crie conta se quiser guardar o histórico.'
+  },
+  {
+    q: 'Serve para treinar redação do ENEM no celular?',
+    a: 'Sim. A página funciona no navegador do celular. Cole o texto, analise e revise os alertas antes de reescrever.'
+  },
+  {
+    q: 'Qual site corrige redação do ENEM de graça?',
+    a: 'O Resolva Jato analisa a redação no navegador, com nota estimada de C1 a C5. As duas primeiras correções são livres, sem cadastro e sem cartão.'
   }
 ];
 
@@ -65,6 +77,17 @@ export default function CorretorDeRedacaoEnemPage() {
         description: metadata.description,
         inLanguage: 'pt-BR',
         isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: SITE_URL }
+      },
+      {
+        '@type': 'HowTo',
+        name: 'Como usar o corretor de redação ENEM',
+        description: metadata.description,
+        step: [
+          { '@type': 'HowToStep', position: 1, name: 'Cole o texto', text: 'Cole o tema (opcional) e o texto completo da redação.' },
+          { '@type': 'HowToStep', position: 2, name: 'Analise', text: 'Clique em analisar para ver a estimativa por competência.' },
+          { '@type': 'HowToStep', position: 3, name: 'Revise', text: 'Revise pontos fortes e alertas antes de reescrever trechos fracos.' },
+          { '@type': 'HowToStep', position: 4, name: 'Treine de novo', text: 'Treine com novos temas. A conta grátis guarda o histórico depois das duas análises livres.' }
+        ]
       },
       {
         '@type': 'FAQPage',

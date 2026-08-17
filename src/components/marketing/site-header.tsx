@@ -13,11 +13,10 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
 
 const links = [
-  { href: '/ferramentas', label: 'Todas as ferramentas', auth: false },
-  { href: '/orcamento-com-pix', label: 'Orçamento + Pix', auth: false },
+  { href: '/calculadora-de-rescisao', label: 'Rescisão', auth: false },
   { href: '/gerador-de-recibo', label: 'Recibo', auth: false },
-  { href: '/gerador-de-contrato', label: 'Contrato', auth: false },
-  { href: '/guias', label: 'Guias', auth: false }
+  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM', auth: false },
+  { href: '/biblioteca', label: 'Biblioteca', auth: false }
 ] as const;
 
 export function SiteHeader() {
@@ -29,7 +28,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:px-6 lg:gap-5">
-        <Link href="/" className="min-w-0 shrink" aria-label="Resolva Jato — ferramentas online que resolvem de verdade">
+        <Link href="/" className="min-w-0 shrink" aria-label="Resolva Jato, ferramentas online que resolvem de verdade">
           <Logo
             variant="marketing"
             className="h-10 max-w-[7.5rem] sm:h-12 sm:max-w-none lg:h-14"

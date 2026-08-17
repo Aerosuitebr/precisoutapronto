@@ -51,11 +51,13 @@ export function SiteJsonLd() {
     ],
     sameAs: [...BRAND_SAME_AS],
     knowsAbout: [
+      'calculadora de rescisão trabalhista',
+      'corretor de redação ENEM',
+      'recibo de pagamento',
       'documentos profissionais',
       'orçamento com Pix',
       'MEI e freelancers',
       'cobrança para MEI',
-      'recibo de pagamento',
       'proposta comercial',
       'contrato de prestação de serviços',
       'precificação de serviços',
@@ -89,15 +91,14 @@ export function SiteJsonLd() {
     '@id': `${siteUrl}/#top-tools`,
     name: 'Ferramentas em destaque',
     itemListOrder: 'https://schema.org/ItemListOrderAscending',
-    numberOfItems: 7,
+    numberOfItems: 6,
     itemListElement: [
-      { name: 'Orçamento com Pix', path: '/orcamento-com-pix' },
-      { name: 'Gerador de contrato', path: '/gerador-de-contrato' },
-      { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
-      { name: 'Proposta comercial', path: '/gerador-de-proposta-comercial' },
       { name: 'Calculadora de rescisão', path: '/calculadora-de-rescisao' },
-      { name: 'Para MEI', path: '/para/mei' },
-      { name: 'Calculadora de preço freelancer', path: '/calculadora-de-preco-freelancer' }
+      { name: 'Corretor de redação ENEM', path: '/corretor-de-redacao-enem' },
+      { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
+      { name: 'Orçamento com Pix', path: '/orcamento-com-pix' },
+      { name: 'Gerador de currículo', path: '/gerador-de-curriculo' },
+      { name: 'Para MEI', path: '/para/mei' }
     ].map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,

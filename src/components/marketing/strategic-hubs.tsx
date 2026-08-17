@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BriefcaseBusiness, FileCheck2, FileText, Scale, ScanText } from 'lucide-react';
+import { ArrowRight, BriefcaseBusiness, FileText, PenLine, Scale, Wallet } from 'lucide-react';
 import { HomeConversionLink } from '@/components/analytics/home-conversion-link';
 
 const HUBS = [
@@ -31,11 +31,11 @@ const HUBS = [
 ] as const;
 
 const HERO_PRODUCTS = [
+  { href: '/calculadora-de-rescisao', title: 'Calcular rescisão', description: 'Saldo, aviso, férias, 13º e FGTS por modalidade, com exemplo 2026.', action: 'Calcular agora', icon: Scale, placement: 'hero_product_severance' },
+  { href: '/corretor-de-redacao-enem', title: 'Corrigir redação ENEM', description: 'Nota estimada por competência C1 a C5, sem cadastro nas duas primeiras análises.', action: 'Analisar redação', icon: PenLine, placement: 'hero_product_essay' },
+  { href: '/gerador-de-recibo#ferramenta', title: 'Criar recibo', description: 'Valor por extenso, assinatura e PDF pronto para enviar.', action: 'Emitir recibo', icon: Wallet, placement: 'hero_product_receipt' },
   { href: '/orcamento-com-pix#montar', title: 'Mandar orçamento', description: 'Aprovação do cliente e cobrança Pix no WhatsApp.', action: 'Criar orçamento', icon: BriefcaseBusiness, placement: 'hero_product_quote' },
-  { href: '/gerador-de-curriculo#ferramenta', title: 'Fazer currículo', description: 'Modelos profissionais em PDF para enviar hoje.', action: 'Montar currículo', icon: FileText, placement: 'hero_product_resume' },
-  { href: '/calculadora-de-rescisao', title: 'Calcular rescisão', description: 'Estimativa clara de verbas, férias, 13º e FGTS.', action: 'Calcular agora', icon: Scale, placement: 'hero_product_severance' },
-  { href: '/pdf', title: 'Editar PDF', description: 'Junte, divida, comprima e organize sem upload.', action: 'Abrir Jato PDF', icon: ScanText, placement: 'hero_product_pdf' },
-  { href: '/recibos', title: 'Criar recibo ou contrato', description: 'Documentos prontos para baixar, assinar e enviar.', action: 'Criar documento', icon: FileCheck2, placement: 'hero_product_documents' }
+  { href: '/gerador-de-curriculo#ferramenta', title: 'Fazer currículo', description: 'Modelos profissionais em PDF para enviar hoje.', action: 'Montar currículo', icon: FileText, placement: 'hero_product_resume' }
 ] as const;
 
 export function StrategicHubs({ compact = false }: { compact?: boolean }) {

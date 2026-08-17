@@ -47,9 +47,11 @@ export const metadata: Metadata = {
     description: 'PDFs, imagens, documentos e cálculos com qualidade, privacidade e resultados verificáveis.'
   },
   keywords: [
+    'calculadora de rescisão',
+    'corretor de redação enem',
+    'gerador de recibo',
     'orçamento com pix',
     'orçamento online grátis',
-    'gerador de recibo',
     'gerador de contrato',
     'proposta comercial',
     'ferramentas grátis para MEI',

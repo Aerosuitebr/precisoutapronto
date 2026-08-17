@@ -11,9 +11,16 @@ import {
 const seo = PUBLIC_CALCULATORS.rescisao;
 
 export const metadata: Metadata = {
-  title: 'Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026',
+  title: 'Calculadora de Rescisão CLT Grátis: Cálculo 2026',
   description:
-    'Calcule saldo de salário, férias, 13º, aviso-prévio e FGTS. Simulação grátis, detalhada e sem cadastro.',
+    'Calcule saldo de salário, férias, 13º, aviso prévio e FGTS por modalidade. Simulação grátis 2026, sem cadastro.',
+  keywords: [
+    'calculadora de rescisão',
+    'calcular rescisão CLT',
+    'rescisão comum acordo',
+    'cálculo rescisão 2026',
+    'simulador de rescisão'
+  ],
   alternates: {
     canonical: seo.path,
     languages: {
@@ -24,15 +31,15 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: 'Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026',
-    description: 'Calcule saldo de salário, férias, 13º, aviso-prévio e FGTS sem cadastro.',
+    title: 'Calculadora de Rescisão CLT Grátis: Cálculo 2026',
+    description: 'Calcule saldo de salário, férias, 13º, aviso prévio e FGTS sem cadastro.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026',
-    description: 'Calcule saldo de salário, férias, 13º, aviso-prévio e FGTS sem cadastro.',
+    title: 'Calculadora de Rescisão CLT Grátis: Cálculo 2026',
+    description: 'Calcule saldo de salário, férias, 13º, aviso prévio e FGTS sem cadastro.',
     images: [`${seo.path}/opengraph-image`]
   }
 };

@@ -126,6 +126,37 @@ function Invoke-Git {
   }
 }
 
+function Resolve-RepoSlug {
+  # Evita depender do endpoint GraphQL apenas para descobrir owner/repo.
+  # O remote local continua disponivel mesmo durante indisponibilidade da API.
+  if (-not [string]::IsNullOrWhiteSpace($env:GH_REPO) -and $env:GH_REPO -match '^[^/\s]+/[^/\s]+$') {
+    return $env:GH_REPO.Trim()
+  }
+
+  $remote = Invoke-Git -GitArgs @('config', '--get', 'remote.origin.url') -AllowFail
+  if ($remote.ExitCode -eq 0) {
+    $url = $remote.Output.Trim()
+    $match = [regex]::Match(
+      $url,
+      '(?i)(?:https?://github\.com/|ssh://git@github\.com/|git@github\.com:)(?<slug>[^/\s]+/[^/\s]+?)(?:\.git)?/?$'
+    )
+    if ($match.Success) {
+      return $match.Groups['slug'].Value
+    }
+  }
+
+  # Ultimo recurso para repositorios sem origin GitHub reconhecivel.
+  try {
+    $repo = Invoke-GhJson @('repo', 'view', '--json', 'nameWithOwner')
+    if ($repo -and -not [string]::IsNullOrWhiteSpace($repo.nameWithOwner)) {
+      return "$($repo.nameWithOwner)".Trim()
+    }
+  } catch {
+    Write-Host ("  Aviso: nao foi possivel consultar o repositorio via gh: {0}" -f $_.Exception.Message) -ForegroundColor Yellow
+  }
+  return $null
+}
+
 function Test-IgnoredDeployPath {
   param([Parameter(Mandatory)][string]$Path)
   $p = $Path -replace '\\', '/'
@@ -490,11 +521,12 @@ if ($LASTEXITCODE -ne 0) {
   throw "gh nao autenticado. Rode: gh auth login"
 }
 
-$script:RepoSlug = ((& gh repo view --json nameWithOwner -q .nameWithOwner) | Out-String).Trim()
+$script:RepoSlug = Resolve-RepoSlug
 if ([string]::IsNullOrWhiteSpace($script:RepoSlug)) {
   Complete-ProgressLine
-  throw 'Nao foi possivel resolver o repositorio via gh repo view.'
+  throw 'Nao foi possivel resolver o repositorio. Configure GH_REPO=owner/repo ou o remote origin do GitHub.'
 }
+Write-Host ("  Repositorio: {0}" -f $script:RepoSlug) -ForegroundColor DarkGray
 
 if (-not $Branch) {
   $Branch = (git branch --show-current).Trim()

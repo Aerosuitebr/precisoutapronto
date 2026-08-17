@@ -74,6 +74,34 @@ export default function LibraryPage() {
           </div>
         </section>
         <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+          <div className="mb-12 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                href: '/calculadora-de-rescisao',
+                label: 'Calculadora de rescisão',
+                text: 'Estime verbas CLT por modalidade, com tabela e exemplo de 2026.'
+              },
+              {
+                href: '/corretor-de-redacao-enem',
+                label: 'Corretor de redação ENEM',
+                text: 'Nota estimada por competência C1 a C5, sem cadastro nas duas primeiras análises.'
+              },
+              {
+                href: '/gerador-de-recibo',
+                label: 'Gerador de recibo',
+                text: 'Valor por extenso, assinatura e PDF para enviar agora.'
+              }
+            ].map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-300"
+              >
+                <p className="font-bold text-slate-950">{tool.label}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{tool.text}</p>
+              </Link>
+            ))}
+          </div>
           <div className="mb-12 flex flex-col gap-4 rounded-3xl bg-slate-950 p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.16em] text-emerald-300">Precisa de ajuda para começar?</p>

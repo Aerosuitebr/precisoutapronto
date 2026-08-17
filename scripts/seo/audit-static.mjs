@@ -144,13 +144,33 @@ const rescisaoPage = await readFile(
   path.join(root, 'src/app/calculadora-de-rescisao/page.tsx'),
   'utf8'
 );
-if (!rescisaoPage.includes('Calculadora de Rescisão CLT Grátis — Cálculo Completo 2026')) {
+if (!rescisaoPage.includes('Calculadora de Rescisão CLT Grátis: Cálculo 2026')) {
   failures.push('calculadora-de-rescisao: title de CTR prioritario ausente');
+}
+if (/[—–]/.test(rescisaoPage)) {
+  failures.push('calculadora-de-rescisao: title ainda usa travessao');
 }
 
 const recibosContent = await readFile(path.join(root, 'src/lib/seo-pages/recibos.ts'), 'utf8');
-if (!recibosContent.includes('Gerador de Recibo Online Grátis — Baixe em PDF')) {
+if (!recibosContent.includes("metaTitle: 'Gerador de Recibo Online Grátis em PDF'")) {
   failures.push('gerador-de-recibo: title de CTR prioritario ausente');
+}
+if (/metaTitle:.*[—–]/.test(recibosContent)) {
+  failures.push('gerador-de-recibo: title ainda usa travessao');
+}
+
+const calculatorsSeo = await readFile(
+  path.join(root, 'src/lib/seo/public-calculators.tsx'),
+  'utf8'
+);
+if (!calculatorsSeo.includes('O que entra em cada modalidade de rescisão')) {
+  failures.push('public-calculators: falta tabela de modalidades da rescisao');
+}
+if (!calculatorsSeo.includes('Exemplo numérico 2026: dispensa sem justa causa')) {
+  failures.push('public-calculators: falta exemplo numerico 2026 da rescisao');
+}
+if (!calculatorsSeo.includes('leadWithFaq: true')) {
+  failures.push('public-calculators: FAQ da rescisao precisa aparecer antes da dobra editorial');
 }
 
 const imprensaPage = await readFile(path.join(root, 'src/app/imprensa/page.tsx'), 'utf8');

@@ -5,6 +5,7 @@ import {
   ClipboardList,
   FileText,
   Mail,
+  PenLine,
   Scale,
   Wallet
 } from 'lucide-react';
@@ -18,6 +19,8 @@ import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { HomeConversionLink } from '@/components/analytics/home-conversion-link';
+import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
+import { StrategicHubs } from '@/components/marketing/strategic-hubs';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 shadow-lg shadow-amber-500/30 ring-1 ring-amber-300/50 transition hover:bg-amber-300 hover:shadow-xl hover:shadow-amber-400/40';
@@ -106,6 +109,7 @@ export function LandingPage() {
             <p className="mt-4 max-w-lg text-base leading-7 text-slate-100 sm:text-lg">
               Comece antes do cadastro, envie um link profissional e acompanhe orçamento, aprovação, Pix e recibo no mesmo fluxo.
             </p>
+            <HomeQuickSearch />
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button asChild size="lg" className={cn(primaryCtaClass, 'w-full sm:w-auto')}>
                 <HomeConversionLink href="/orcamento-com-pix#montar" placement="hero_primary">
@@ -147,58 +151,6 @@ export function LandingPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                Acesso direto às ferramentas
-              </p>
-              <ul className="mt-3 flex flex-wrap gap-2.5">
-                <li>
-                  <Link
-                    href="/orcamento-com-pix#montar"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-teal-300/50 bg-teal-400/15 px-4 py-2 text-sm font-semibold text-teal-100 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:bg-teal-300/25 hover:text-white hover:shadow-md"
-                  >
-                    <ClipboardList className="h-3.5 w-3.5" />
-                    Orçamento + Pix
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/gerador-de-curriculo#ferramenta"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                  >
-                    <FileText className="h-3.5 w-3.5" />
-                    Fazer currículo
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/calculadora-de-rescisao"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                  >
-                    <Scale className="h-3.5 w-3.5" />
-                    Calcular rescisão
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/pdf"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                  >
-                    <FileText className="h-3.5 w-3.5" />
-                    Editar PDF
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/gerador-de-recibo#ferramenta"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                  >
-                    <Wallet className="h-3.5 w-3.5" />
-                    Criar recibo
-                  </Link>
-                </li>
-              </ul>
-            </div>
           </div>
 
           <div className="relative flex h-full min-w-0 flex-col">
@@ -207,6 +159,8 @@ export function LandingPage() {
           </div>
         </div>
       </section>
+
+      <StrategicHubs />
 
       <section id="como-funciona" className="scroll-mt-20 border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
@@ -470,9 +424,9 @@ export function LandingPage() {
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">Calcule, gere um resultado visual e compartilhe no WhatsApp ou nas redes. Cada conteúdo leva de volta a uma ferramenta interativa.</p>
           <ul className="mt-8 grid gap-4 md:grid-cols-3">
             {[
-              { href: '/calculadora-de-preco-freelancer', title: 'Quanto cobrar por hora?', text: 'Custos, horas, taxas e margem em um preço de referência compartilhável.' },
-              { href: '/mei-ou-clt', title: 'MEI ou CLT?', text: 'Compare cenários e transforme uma dúvida comum em simulação.' },
-              { href: '/checklist-cobranca-mei', title: 'Checklist de cobrança MEI', text: 'Do orçamento ao recibo, com um roteiro que pode ser citado e compartilhado.' }
+              { href: '/calculadora-de-rescisao', title: 'Quanto vou receber na rescisão?', text: 'Saldo, aviso, férias, 13º e FGTS por modalidade, com exemplo numérico de 2026.' },
+              { href: '/corretor-de-redacao-enem', title: 'Qual a nota da minha redação?', text: 'Estimativa por competência C1 a C5, pontos fortes e alertas para treinar antes da prova.' },
+              { href: '/gerador-de-recibo', title: 'Como emitir um recibo agora?', text: 'Valor por extenso, assinatura e PDF pronto para enviar no WhatsApp.' }
             ].map((item) => (
               <li key={item.href}><Link href={item.href} className="group block h-full rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"><p className="font-extrabold text-slate-900 group-hover:text-emerald-800">{item.title}</p><p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-700">Abrir ferramenta <ArrowRight className="h-3.5 w-3.5" /></span></Link></li>
             ))}

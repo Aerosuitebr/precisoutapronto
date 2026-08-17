@@ -2,6 +2,21 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
+export type CalculatorScenarioTable = {
+  title: string;
+  caption: string;
+  headers: string[];
+  rows: string[][];
+};
+
+export type CalculatorNumericExample = {
+  title: string;
+  setup: string;
+  lines: Array<{ label: string; value: string; note?: string }>;
+  total: string;
+  note: string;
+};
+
 export type PublicCalculatorSeo = {
   path: string;
   name: string;
@@ -16,6 +31,9 @@ export type PublicCalculatorSeo = {
   guideLabel: string;
   related: Array<{ href: string; label: string; description: string }>;
   faq: Array<{ question: string; answer: string }>;
+  scenarioTable?: CalculatorScenarioTable;
+  numericExample?: CalculatorNumericExample;
+  leadWithFaq?: boolean;
 };
 
 export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
@@ -63,16 +81,48 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
         description: 'Veja verbas, aviso e descontos possíveis.'
       },
       {
-        href: '/mei-ou-clt',
-        label: 'MEI ou CLT',
-        description: 'Compare cenários de remuneração líquida.'
+        href: '/calculadora-de-ferias',
+        label: 'Calculadora de férias',
+        description: 'Estime férias, 1/3 e abono pecuniário.'
       },
       {
-        href: '/orcamento-com-pix',
-        label: 'Orçamento com Pix',
-        description: 'Cobrança profissional no WhatsApp.'
+        href: '/calculadora-de-decimo-terceiro',
+        label: 'Calculadora de 13º',
+        description: 'Confira os avos do décimo terceiro.'
       }
     ],
+    leadWithFaq: true,
+    scenarioTable: {
+      title: 'O que entra em cada modalidade de rescisão',
+      caption:
+        'Resumo educativo das verbas mais comuns na CLT em 2026. Convenção coletiva e o caso concreto podem alterar o direito.',
+      headers: ['Verba', 'Sem justa causa', 'Pedido de demissão', 'Acordo (art. 484-A)', 'Justa causa'],
+      rows: [
+        ['Saldo de salário', 'Sim', 'Sim', 'Sim', 'Sim'],
+        ['Aviso prévio indenizado', 'Sim', 'Não', 'Metade', 'Não'],
+        ['13º proporcional', 'Sim', 'Sim', 'Sim', 'Não'],
+        ['Férias proporcionais + 1/3', 'Sim', 'Sim', 'Sim', 'Não'],
+        ['Férias vencidas + 1/3', 'Sim', 'Sim', 'Sim', 'Sim'],
+        ['Multa do FGTS', '40%', 'Não', '20%', 'Não'],
+        ['Saque do FGTS', 'Integral', 'Não', 'Até 80%', 'Não'],
+        ['Seguro-desemprego', 'Se elegível', 'Não', 'Não', 'Não']
+      ]
+    },
+    numericExample: {
+      title: 'Exemplo numérico 2026: dispensa sem justa causa',
+      setup:
+        'Salário bruto de R$ 3.000,00, admissão em 10/03/2024, desligamento em 09/07/2026, aviso indenizado, saldo de FGTS informado de R$ 10.000,00 e sem férias vencidas. A calculadora projeta o aviso de 36 dias (2 anos completos) e usa 7/12 avos no 13º e nas férias.',
+      lines: [
+        { label: 'Saldo de salário', value: 'R$ 1.400,00', note: '14 dias no mês projetado' },
+        { label: 'Aviso prévio indenizado', value: 'R$ 3.600,00', note: '36 dias' },
+        { label: '13º proporcional', value: 'R$ 1.750,00', note: '7/12 avos' },
+        { label: 'Férias proporcionais', value: 'R$ 1.750,00', note: '7/12 avos' },
+        { label: '1/3 sobre férias proporcionais', value: 'R$ 583,33' },
+        { label: 'Multa FGTS (40%)', value: 'R$ 4.000,00', note: 'Sobre o saldo informado' }
+      ],
+      total: 'R$ 13.083,33',
+      note: 'Total bruto estimado, sem INSS nem IRRF. O saque do FGTS e o seguro-desemprego ficam fora desse total. Rode os mesmos dados na calculadora para conferir o detalhamento.'
+    },
     faq: [
       {
         question: 'A calculadora de rescisão substitui a homologação?',
@@ -82,7 +132,17 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
       {
         question: 'Quais verbas entram no cálculo?',
         answer:
-          'A simulação organiza saldo de salário, 13º proporcional, férias proporcionais e vencidas, aviso-prévio e estimativas relacionadas ao FGTS, conforme a modalidade informada.'
+          'A simulação organiza saldo de salário, 13º proporcional, férias proporcionais e vencidas, aviso prévio e estimativas relacionadas ao FGTS, conforme a modalidade informada.'
+      },
+      {
+        question: 'Como fica a rescisão por comum acordo?',
+        answer:
+          'No acordo do art. 484-A, a estimativa usa metade do aviso indenizado e multa de 20% do FGTS. O saque do FGTS fica limitado a 80% e não há seguro-desemprego. Escolha a modalidade “Acordo entre as partes” na calculadora.'
+      },
+      {
+        question: 'A calculadora já usa as regras de 2026?',
+        answer:
+          'Sim. Aviso proporcional, avos de 13º e férias, multa de 40% ou 20% e as demais verbas seguem a CLT vigente. Descontos de INSS e IRRF não entram no total bruto. Confirme tabelas e convenção com um profissional.'
       },
       {
         question: 'Preciso me cadastrar para usar?',
@@ -95,7 +155,7 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
           'Os valores são estimados e brutos, sem descontos de INSS ou IRRF. Confirme o cálculo com um contador ou advogado trabalhista antes de homologar.'
       },
       {
-        question: 'Aviso-prévio indenizado e trabalhado são iguais?',
+        question: 'Aviso prévio indenizado e trabalhado são iguais?',
         answer:
           'Não. No indenizado o empregador paga o período sem exigir trabalho. No trabalhado, a pessoa continua na função durante o aviso. A calculadora usa a modalidade que você informar.'
       },
@@ -450,10 +510,90 @@ export function CalculatorJsonLd({ calculator }: { calculator: PublicCalculatorS
   );
 }
 
+function CalculatorFaqSection({ faq }: { faq: PublicCalculatorSeo['faq'] }) {
+  return (
+    <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
+      <h2 className="text-2xl font-bold text-slate-950">Perguntas frequentes</h2>
+      <div className="mt-5 divide-y divide-slate-200">
+        {faq.map((item) => (
+          <div key={item.question} className="py-4">
+            <h3 className="font-bold text-slate-900">{item.question}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /** Blocos editoriais compartilhados pelas landings das calculadoras. */
 export function CalculatorContentSections({ calculator }: { calculator: PublicCalculatorSeo }) {
+  const faqSection = <CalculatorFaqSection faq={calculator.faq} />;
+
   return (
     <div className="mx-auto mt-10 max-w-4xl space-y-6">
+      {calculator.scenarioTable ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 className="text-2xl font-bold text-slate-950">{calculator.scenarioTable.title}</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">{calculator.scenarioTable.caption}</p>
+          <div className="mt-5 overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <caption className="sr-only">{calculator.scenarioTable.caption}</caption>
+              <thead>
+                <tr className="border-b border-slate-200 text-slate-700">
+                  {calculator.scenarioTable.headers.map((header) => (
+                    <th key={header} scope="col" className="whitespace-nowrap px-3 py-2 font-bold">
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {calculator.scenarioTable.rows.map((row) => (
+                  <tr key={row[0]} className="border-b border-slate-100 text-slate-700">
+                    {row.map((cell, index) => (
+                      <td
+                        key={`${row[0]}-${index}`}
+                        className={index === 0 ? 'px-3 py-2 font-semibold text-slate-900' : 'px-3 py-2'}
+                      >
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+
+      {calculator.numericExample ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 className="text-2xl font-bold text-slate-950">{calculator.numericExample.title}</h2>
+          <p className="mt-3 leading-7 text-slate-600">{calculator.numericExample.setup}</p>
+          <dl className="mt-5 divide-y divide-slate-100">
+            {calculator.numericExample.lines.map((line) => (
+              <div key={line.label} className="flex items-baseline justify-between gap-4 py-2.5">
+                <dt className="text-sm text-slate-700">
+                  {line.label}
+                  {line.note ? <span className="mt-0.5 block text-xs text-slate-500">{line.note}</span> : null}
+                </dt>
+                <dd className="shrink-0 font-bold tabular-nums text-slate-950">{line.value}</dd>
+              </div>
+            ))}
+            <div className="flex items-baseline justify-between gap-4 py-3">
+              <dt className="font-bold text-slate-950">Total bruto estimado</dt>
+              <dd className="text-lg font-extrabold tabular-nums text-slate-950">{calculator.numericExample.total}</dd>
+            </div>
+          </dl>
+          <p className="mt-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-600">
+            {calculator.numericExample.note}
+          </p>
+        </section>
+      ) : null}
+
+      {calculator.leadWithFaq ? faqSection : null}
+
       <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-slate-950">{calculator.interpretTitle}</h2>
         {calculator.interpretBody.map((paragraph) => (
@@ -487,17 +627,7 @@ export function CalculatorContentSections({ calculator }: { calculator: PublicCa
         </p>
       </section>
 
-      <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
-        <h2 className="text-2xl font-bold text-slate-950">Perguntas frequentes</h2>
-        <div className="mt-5 divide-y divide-slate-200">
-          {calculator.faq.map((item) => (
-            <div key={item.question} className="py-4">
-              <h3 className="font-bold text-slate-900">{item.question}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {calculator.leadWithFaq ? null : faqSection}
 
       <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-slate-950">Continue explorando</h2>

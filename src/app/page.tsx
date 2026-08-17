@@ -3,7 +3,6 @@ import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { LandingPage } from '@/components/marketing/landing-page';
-import { StrategicHubs } from '@/components/marketing/strategic-hubs';
 
 export const metadata: Metadata = {
   title: { absolute: 'Orçamento com Aprovação e Pix no WhatsApp | Resolva Jato' },
@@ -28,7 +27,6 @@ export default function HomePage() {
         <SiteHeader />
         <main>
           <LandingPage />
-          <StrategicHubs />
         </main>
         <SiteFooter />
       </div>

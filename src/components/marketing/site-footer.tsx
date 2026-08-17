@@ -10,15 +10,18 @@ const YEAR = new Date().getFullYear();
 
 const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/', label: 'Início' },
+  { href: '/calculadora-de-rescisao', label: 'Calculadora de rescisão' },
+  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM' },
+  { href: '/gerador-de-recibo', label: 'Recibo' },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
+  { href: '/biblioteca', label: 'Biblioteca' },
   { href: '/guias', label: 'Guias' },
   { href: '/sobre', label: 'Sobre e equipe' },
   { href: '/resolva-jato', label: 'Site oficial Resolva Jato' },
   { href: '/qualidade-e-seguranca', label: 'Qualidade e segurança' },
   { href: '/criterios-editoriais', label: 'Critérios editoriais' },
   { href: '/recursos', label: 'Catálogo público' },
-  { href: '/busca', label: 'Busca grátis' },
-  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM' }
+  { href: '/busca', label: 'Busca grátis' }
 ];
 
 const SEO_LINKS = [
@@ -66,13 +69,12 @@ const SEO_LINKS = [
 /** Links públicos no bloco Ferramentas (evita empurrar só rotas autenticadas). */
 const PUBLIC_TOOL_LINKS = [
   { href: '/calculadora-de-rescisao', label: 'Rescisão' },
+  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM' },
+  { href: '/gerador-de-recibo', label: 'Recibo' },
+  { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
+  { href: '/gerador-de-curriculo', label: 'Currículo' },
   { href: '/calculadora-de-preco-freelancer', label: 'Precificação' },
   { href: '/mei-ou-clt', label: 'MEI ou CLT' },
-  { href: '/gerador-de-curriculo', label: 'Currículo' },
-  { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
-  { href: '/remover-fundo-de-imagem', label: 'Remover fundo' },
-  { href: '/juntar-pdf-online', label: 'Juntar PDF' },
-  { href: '/comprimir-redimensionar-imagem', label: 'Otimizar imagem' },
   { href: '/recursos', label: 'Ver catálogo completo' }
 ] as const;
 
