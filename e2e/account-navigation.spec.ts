@@ -6,6 +6,7 @@ test('atalhos da conta usam âncoras únicas e permanentes', () => {
   expect(ACCOUNT_SECTIONS.map((section) => section.id)).toEqual([
     'documentos',
     'compartilhamentos',
+    'resultados',
     'perfil',
     'indicacoes'
   ]);

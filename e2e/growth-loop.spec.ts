@@ -14,8 +14,9 @@ test('home keeps quote + Pix as the only primary promise', async ({ page }) => {
     '/recursos'
   );
   await expect(page.getByText('Acesso direto às ferramentas')).toBeVisible();
+  const main = page.locator('main');
   for (const label of ['Orçamento + Pix', 'Fazer currículo', 'Calcular rescisão', 'Editar PDF', 'Criar recibo']) {
-    await expect(page.getByRole('link', { name: label, exact: true })).toBeVisible();
+    await expect(main.getByRole('link', { name: label, exact: true })).toBeVisible();
   }
   await expect(page.getByRole('heading', { name: 'Resolva em segundos aquilo que normalmente dá trabalho.' })).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Jato Games');
