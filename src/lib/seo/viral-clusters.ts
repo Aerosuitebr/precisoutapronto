@@ -89,14 +89,18 @@ export const viralClusters: ViralCluster[] = [
   {
     path: '/pdf', title: 'Ferramentas PDF Online: Juntar, Dividir, Comprimir e Editar',
     description: 'Junte, divida, comprima e edite PDF online com processamento local no navegador e sem enviar seus documentos ao servidor.',
-    eyebrow: 'Central de ferramentas PDF', h1: 'Resolva tarefas de PDF sem expor seus arquivos.',
-    answer: 'Escolha a tarefa: juntar arquivos, extrair páginas, reduzir tamanho ou editar a organização do documento. As ferramentas processam o PDF localmente no navegador.',
+    eyebrow: 'Jato PDF', h1: 'Edite e organize seu PDF sem enviar documentos para nenhum servidor.',
+    answer: 'Escolha a tarefa: juntar arquivos, extrair ou remover páginas, reduzir tamanho, girar ou reorganizar o documento. O processamento acontece localmente no seu navegador.',
     primary: { href: '/editor-de-pdf-online', label: 'Abrir editor de PDF' },
     resources: [
       { href: '/juntar-pdf-online', title: 'Juntar PDF online', description: 'Combine arquivos e reorganize páginas.', intent: 'Unir documentos' },
       { href: '/dividir-pdf-online', title: 'Dividir PDF online', description: 'Extraia, remova ou reorganize páginas.', intent: 'Separar páginas' },
       { href: '/comprimir-pdf-online', title: 'Comprimir PDF online', description: 'Reduza o tamanho com controle de qualidade.', intent: 'Diminuir arquivo' },
       { href: '/editor-de-pdf-online', title: 'Editor de PDF online', description: 'Gire, reorganize e prepare documentos.', intent: 'Editar páginas' },
+      { href: '/dividir-pdf-online?acao=extrair', title: 'Extrair páginas do PDF', description: 'Selecione somente as páginas necessárias e gere um novo arquivo.', intent: 'Extrair páginas' },
+      { href: '/dividir-pdf-online?acao=remover', title: 'Remover páginas do PDF', description: 'Exclua páginas sem alterar o documento original.', intent: 'Limpar documento' },
+      { href: '/editor-de-pdf-online?acao=girar', title: 'Girar páginas do PDF', description: 'Corrija a orientação de páginas individuais ou em lote.', intent: 'Corrigir orientação' },
+      { href: '/editor-de-pdf-online?acao=organizar', title: 'Organizar páginas do PDF', description: 'Reordene páginas visualmente antes de baixar.', intent: 'Reorganizar documento' },
       { href: '/converter-imagem-online', title: 'Converter imagem para PDF', description: 'Exporte JPG, PNG ou WEBP como PDF.', intent: 'Conversão' }
     ],
     sections: [

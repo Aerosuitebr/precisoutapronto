@@ -147,42 +147,54 @@ export function LandingPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-5 hidden lg:block">
+            <div className="mt-5">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
-                Acesso rápido
+                Acesso direto às ferramentas
               </p>
               <ul className="mt-3 flex flex-wrap gap-2.5">
                 <li>
                   <Link
-                    href="/gerador-de-recibo"
+                    href="/orcamento-com-pix#montar"
                     className="inline-flex items-center gap-1.5 rounded-full border border-teal-300/50 bg-teal-400/15 px-4 py-2 text-sm font-semibold text-teal-100 shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:bg-teal-300/25 hover:text-white hover:shadow-md"
                   >
+                    <ClipboardList className="h-3.5 w-3.5" />
+                    Orçamento + Pix
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/gerador-de-curriculo#ferramenta"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    <FileText className="h-3.5 w-3.5" />
+                    Fazer currículo
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/calculadora-de-rescisao"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    <Scale className="h-3.5 w-3.5" />
+                    Calcular rescisão
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pdf"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
+                    <FileText className="h-3.5 w-3.5" />
+                    Editar PDF
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/gerador-de-recibo#ferramenta"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
+                  >
                     <Wallet className="h-3.5 w-3.5" />
-                    Gerador de recibo
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/orcamento-com-pix#montar"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                  >
-                    Orçamento com Pix
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/gerador-de-contrato"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                  >
-                    Contrato de serviço
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#demo-60s"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-amber-300/70 hover:bg-amber-300/20 hover:text-amber-100 hover:shadow-md"
-                  >
-                    Ver o fluxo em 60s
+                    Criar recibo
                   </Link>
                 </li>
               </ul>

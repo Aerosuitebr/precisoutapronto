@@ -12,6 +12,12 @@ export const ACCOUNT_SECTIONS = [
     href: '/conta#compartilhamentos'
   },
   {
+    id: 'resultados',
+    label: 'Resultados Jato',
+    description: 'Cálculos salvos neste aparelho',
+    href: '/conta#resultados'
+  },
+  {
     id: 'perfil',
     label: 'Perfil profissional',
     description: 'Segmento e memória',

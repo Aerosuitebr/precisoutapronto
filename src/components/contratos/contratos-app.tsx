@@ -44,6 +44,7 @@ import { consumeAssistantBriefing, contractFromBriefing } from '@/lib/assistant-
 import { applyProfileToContract, type ProfileMemory } from '@/lib/profile-memory';
 import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 import { trackEvent } from '@/lib/analytics';
+import { createContextualContract, findContractProfessionContext } from '@/lib/contratos/profession-contexts';
 
 type EditorTab = 'partes' | 'termos' | 'clausulas' | 'assinatura';
 
@@ -96,6 +97,19 @@ export function ContratosApp() {
   useEffect(() => {
     Promise.all([loadContratos(), loadProfileMemory()]).then(([stored, profile]) => {
       profileMemoryRef.current = profile;
+      const contextSlug = new URLSearchParams(window.location.search).get('contexto');
+      const context = contextSlug ? findContractProfessionContext(contextSlug) : undefined;
+      if (context) {
+        const existing = stored.find((item) => item.title === context.title);
+        const contextual = existing ?? saveContrato(applyProfileToContract(createContextualContract(context), profile).document);
+        const next = listContratos();
+        setItems(next);
+        setActiveId(contextual.id);
+        setContrato(contextual);
+        setTab('termos');
+        trackEvent('contract_context_loaded', { context: context.slug, reused: Boolean(existing) });
+        return;
+      }
       const briefing = consumeAssistantBriefing('contrato');
       if (briefing) {
         const saved = saveContrato(contractFromBriefing(briefing));

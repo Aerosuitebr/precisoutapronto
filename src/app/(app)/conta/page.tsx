@@ -12,6 +12,7 @@ import {
   Link2,
   Mail,
   Search,
+  Calculator,
   ShieldCheck,
   Sparkles,
   UserRound,
@@ -31,6 +32,7 @@ import { PLANS } from '@/lib/plans';
 import { ProfileSettings } from '@/components/account/profile-settings';
 import { SharedLinksPanel } from '@/components/account/shared-links-panel';
 import { RecentDocumentsPanel } from '@/components/account/recent-documents-panel';
+import { SavedResultsPanel } from '@/components/account/saved-results-panel';
 import { ACCOUNT_SECTIONS, type AccountSectionId } from '@/lib/account-sections';
 import { trackEvent } from '@/lib/analytics';
 
@@ -38,6 +40,7 @@ const ASAAS_CHECKOUT = '/checkout?method=asaas';
 const ACCOUNT_SECTION_ICONS = {
   documentos: Files,
   compartilhamentos: Link2,
+  resultados: Calculator,
   perfil: UserRoundCog,
   indicacoes: Gift
 } satisfies Record<AccountSectionId, typeof Files>;
@@ -85,7 +88,7 @@ function ContaContent() {
           icon={Sparkles}
         />
 
-        <nav aria-label="Atalhos da conta" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <nav aria-label="Atalhos da conta" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
           {ACCOUNT_SECTIONS.map((section) => {
             const Icon = ACCOUNT_SECTION_ICONS[section.id];
             return (
@@ -276,6 +279,7 @@ function ContaContent() {
 
         <ProfileSettings />
         <RecentDocumentsPanel />
+        <SavedResultsPanel />
         <SharedLinksPanel />
 
         <div id="indicacoes" className="scroll-mt-24">

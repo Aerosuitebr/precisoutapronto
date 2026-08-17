@@ -1,11 +1,12 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Download, Share2 } from 'lucide-react';
+import { Copy, Download, MessageCircle, RotateCcw, Save, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
-import { viralToolShareUrl } from '@/lib/viral-loop';
+import { viralPublicResultUrl, viralToolShareUrl } from '@/lib/viral-loop';
+import { saveToolResult } from '@/lib/result-history';
 
 interface ResultShareCardLine {
   label: string;
@@ -50,8 +51,9 @@ export function ResultShareCard({
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
 
-  const shareUrl = viralToolShareUrl(toolPath, utmCampaign);
-  const shareHost = shareUrl.replace(/^https?:\/\//, '');
+  const toolShareUrl = viralToolShareUrl(toolPath, utmCampaign);
+  const shareUrl = viralPublicResultUrl({ title, highlightLabel, highlightValue, lines, toolPath, campaign: utmCampaign });
+  const shareHost = toolShareUrl.replace(/^https?:\/\//, '');
 
   async function renderToBlob(): Promise<Blob | null> {
     if (!cardRef.current) return null;
@@ -88,6 +90,44 @@ export function ResultShareCard({
     } finally {
       setGenerating(false);
     }
+  }
+
+  async function handleCopyLink() {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      trackEvent('share_result', {
+        method: 'copy_link',
+        tool_path: toolPath,
+        campaign: utmCampaign
+      });
+      toast('Link copiado!');
+    } catch {
+      toast('Não foi possível copiar o link agora.');
+    }
+  }
+
+  function handleWhatsApp() {
+    const text = `${title} · ${highlightLabel}: ${highlightValue}\n\nVeja o resultado e crie o seu grátis no Resolva Jato:\n${shareUrl}`;
+    trackEvent('share_result', {
+      method: 'whatsapp_link',
+      tool_path: toolPath,
+      campaign: utmCampaign
+    });
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+  }
+
+  function handleCreateAnother() {
+    trackEvent('share_result', {
+      method: 'create_another',
+      tool_path: toolPath,
+      campaign: utmCampaign
+    });
+  }
+
+  function handleSave() {
+    saveToolResult({ title, highlightLabel, highlightValue, toolPath });
+    trackEvent('result_saved', { tool_path: toolPath, campaign: utmCampaign });
+    toast('Resultado salvo neste dispositivo!');
   }
 
   async function handleShare() {
@@ -142,22 +182,48 @@ export function ResultShareCard({
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex flex-wrap gap-2">
+    <div className="space-y-3 rounded-2xl border border-sky-200 bg-sky-50/70 p-3">
+      <div>
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">Resultado Jato</p>
+        <p className="mt-1 text-sm font-semibold text-slate-800">Seu resultado está pronto para compartilhar.</p>
+      </div>
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+        <Button
+          variant="success"
+          size="sm"
+          className="w-full"
+          onClick={handleWhatsApp}
+          icon={MessageCircle}
+        >
+          WhatsApp
+        </Button>
+        <Button variant="outline" size="sm" className="w-full" onClick={handleCopyLink} icon={Copy}>
+          Copiar link
+        </Button>
         <Button
           variant="outline"
           size="sm"
-          className="flex-1 sm:flex-none"
+          className="w-full"
           onClick={handleShare}
           icon={Share2}
           disabled={generating}
         >
-          {generating ? 'Gerando…' : 'Compartilhar imagem'}
+          {generating ? 'Gerando…' : 'Enviar resultado'}
         </Button>
+        <Button asChild variant="outline" size="sm" className="w-full">
+          <a href={toolPath} onClick={handleCreateAnother}>
+            <RotateCcw className="h-4 w-4 shrink-0" aria-hidden />
+            Criar outro igual
+          </a>
+        </Button>
+        <Button variant="outline" size="sm" className="col-span-2 w-full sm:col-span-1" onClick={handleSave} icon={Save}>
+          Salvar resultado
+        </Button>
+      </div>
+      <div className="flex justify-end">
         <Button
           variant="ghost"
           size="sm"
-          className="flex-1 sm:flex-none"
           onClick={handleDownload}
           icon={Download}
           disabled={generating}

@@ -116,6 +116,57 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       { q: 'Como evitar discussão sobre serviços extras?', a: 'Liste o que está incluído e informe que problemas ocultos ou novos pedidos exigem aprovação adicional.' },
       { q: 'Posso juntar vários reparos?', a: 'Sim. Use um item para cada reparo para o cliente aprovar o escopo com clareza.' }
     ]
+  },
+  {
+    slug: 'fotografo',
+    name: 'Fotógrafo',
+    title: 'Orçamento para fotógrafo com pacote e prazo de entrega',
+    description: 'Organize cobertura, quantidade de fotos, tratamento e entrega em um orçamento profissional com aprovação e entrada por Pix.',
+    promise: 'Modelo preparado para eventos, ensaios e fotografia comercial.',
+    preset: {
+      occupation: 'fotógrafo',
+      items: [{ nome: 'Cobertura fotográfica' }, { nome: 'Seleção e tratamento das fotos' }, { nome: 'Galeria e entrega digital' }],
+      observacoes: 'Informe duração da cobertura, quantidade estimada de fotos e prazo de entrega.\nDeslocamento e horas adicionais serão cobrados separadamente.\nReserva da data mediante entrada via Pix.'
+    },
+    checklist: ['Duração e local definidos', 'Quantidade e formato das fotos', 'Prazo, entrada e uso de imagem claros'],
+    faqs: [
+      { q: 'Como cobrar horas adicionais?', a: 'Inclua o valor por hora nas observações e registre que a extensão da cobertura depende de disponibilidade.' },
+      { q: 'Preciso informar a quantidade de fotos?', a: 'Sim. Use uma faixa estimada e deixe claro o formato e o canal de entrega.' }
+    ]
+  },
+  {
+    slug: 'mecanico',
+    name: 'Mecânico',
+    title: 'Orçamento para mecânico com peças e mão de obra',
+    description: 'Separe diagnóstico, peças e serviços em um orçamento claro para o cliente aprovar antes do reparo.',
+    promise: 'Modelo preparado para manutenção preventiva e reparos automotivos.',
+    preset: {
+      occupation: 'mecânico',
+      items: [{ nome: 'Diagnóstico do veículo' }, { nome: 'Peças e componentes' }, { nome: 'Mão de obra do reparo' }],
+      observacoes: 'Valores consideram o diagnóstico inicial e as peças descritas.\nDefeitos adicionais exigem nova aprovação antes da execução.\nInforme prazo e garantia dos serviços.'
+    },
+    checklist: ['Veículo e diagnóstico identificados', 'Peças separadas da mão de obra', 'Prazo e garantia registrados'],
+    faqs: [
+      { q: 'Posso alterar o orçamento após desmontar o veículo?', a: 'Sim, desde que explique o novo diagnóstico e obtenha nova aprovação antes de executar serviços extras.' },
+      { q: 'Como apresentar peças opcionais?', a: 'Crie itens separados e informe marca, condição e garantia para o cliente comparar.' }
+    ]
+  },
+  {
+    slug: 'pedreiro',
+    name: 'Pedreiro',
+    title: 'Orçamento para pedreiro por etapa da obra',
+    description: 'Detalhe preparação, execução, materiais e acabamento em um orçamento profissional com cronograma e Pix.',
+    promise: 'Modelo preparado para reformas, alvenaria e pequenos serviços de obra.',
+    preset: {
+      occupation: 'pedreiro',
+      items: [{ nome: 'Preparação e proteção da área' }, { nome: 'Mão de obra de alvenaria' }, { nome: 'Materiais e acabamento' }],
+      observacoes: 'Descreva metragem, etapas e condições atuais do local.\nServiços não visíveis na vistoria serão orçados à parte.\nDefina entrada, pagamentos por etapa e prazo estimado.'
+    },
+    checklist: ['Metragem e etapas descritas', 'Materiais e mão de obra separados', 'Pagamentos e prazo por etapa'],
+    faqs: [
+      { q: 'É melhor cobrar por diária ou empreitada?', a: 'Depende do escopo. Para serviço definido, a empreitada facilita a aprovação; para atividade incerta, registre diária e estimativa.' },
+      { q: 'Como prever imprevistos da obra?', a: 'Informe que condições ocultas exigem orçamento complementar e aprovação antes da continuidade.' }
+    ]
   }
 ];
 

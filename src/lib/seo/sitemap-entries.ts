@@ -11,6 +11,7 @@ import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
 import { viralClusters } from '@/lib/seo/viral-clusters';
 import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
+import { CONTRACT_PROFESSION_CONTEXTS } from '@/lib/contratos/profession-contexts';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-08-08T15:00:00.000Z');
@@ -110,6 +111,12 @@ function buildCore(base: string): MetadataRoute.Sitemap {
       lastModified: CORE_UPDATED_AT,
       changeFrequency: 'monthly' as const,
       priority: 0.9
+    })),
+    ...CONTRACT_PROFESSION_CONTEXTS.map((page) => ({
+      url: `${base}/contrato/${page.slug}`,
+      lastModified: CORE_UPDATED_AT,
+      changeFrequency: 'monthly' as const,
+      priority: 0.88
     })),
     { url: `${base}/privacidade`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${base}/termos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'yearly', priority: 0.2 }

@@ -137,6 +137,27 @@ export function viralToolShareUrl(toolPath: string, utmCampaign: string) {
   return `${base}${toolPath}?${params.toString()}`;
 }
 
+export function viralPublicResultUrl(input: {
+  title: string;
+  highlightLabel: string;
+  highlightValue: string;
+  lines: Array<{ label: string; value: string }>;
+  toolPath: string;
+  campaign: string;
+}) {
+  const params = new URLSearchParams({
+    titulo: input.title.slice(0, 100),
+    rotulo: input.highlightLabel.slice(0, 80),
+    valor: input.highlightValue.slice(0, 80),
+    ferramenta: input.toolPath.startsWith('/') ? input.toolPath : '/',
+    linhas: JSON.stringify(input.lines.slice(0, 5).map((line) => ({ label: line.label.slice(0, 60), value: line.value.slice(0, 60) }))),
+    utm_source: 'share',
+    utm_medium: 'resultado_jato',
+    utm_campaign: input.campaign
+  });
+  return `${getViralBaseUrl()}/resultado-jato?${params.toString()}`;
+}
+
 /** Rodapé padrão anexado aos resumos de calculadoras compartilhados. */
 export function viralToolShareFooter(toolPath: string, utmCampaign: string) {
   return `\n\n*CALCULE TAMBÉM*\nAcesse grátis, sem cadastro:\n${viralToolShareUrl(toolPath, utmCampaign)}`;

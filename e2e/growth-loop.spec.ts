@@ -13,6 +13,11 @@ test('home keeps quote + Pix as the only primary promise', async ({ page }) => {
     'href',
     '/recursos'
   );
+  await expect(page.getByText('Acesso direto às ferramentas')).toBeVisible();
+  for (const label of ['Orçamento + Pix', 'Fazer currículo', 'Calcular rescisão', 'Editar PDF', 'Criar recibo']) {
+    await expect(page.getByRole('link', { name: label, exact: true })).toBeVisible();
+  }
+  await expect(page.getByRole('heading', { name: 'Resolva em segundos aquilo que normalmente dá trabalho.' })).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Jato Games');
 });
 
@@ -22,6 +27,14 @@ test('profession landing loads an adapted quote instead of generic copy', async 
   await expect(page.locator('input[value="Visita técnica e diagnóstico"]')).toBeVisible();
   await expect(page.locator('input[value="Materiais elétricos"]')).toBeVisible();
   await expect(page.locator('input[value="Mão de obra de instalação"]')).toBeVisible();
+});
+
+test('priority profession cluster covers high-intent local services', async ({ page }) => {
+  for (const slug of ['fotografo', 'mecanico', 'pedreiro']) {
+    await page.goto(`/orcamento-para/${slug}`, { waitUntil: 'domcontentloaded' });
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Orçamento para');
+    await expect(page.locator('input[value]').first()).toBeVisible();
+  }
 });
 
 test('rental receipt landing aligns title, visible example and CTA', async ({ page }) => {

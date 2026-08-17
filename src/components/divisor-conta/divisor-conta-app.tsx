@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { AuthGate } from "@/components/auth/auth-gate";
 import { PageHero } from "@/components/shared/page-hero";
+import { ResultShareCard } from "@/components/shared/result-share-card";
 import { ToolsBackButton } from "@/components/shared/tools-back-button";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
@@ -20,6 +21,8 @@ import { parseCurrency } from "@/lib/formatters";
 import { calcularDivisao } from "@/lib/divisor-conta/calc";
 import { cn } from "@/lib/utils";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
+import { trackEvent } from "@/lib/analytics";
+import { viralToolShareFooter } from "@/lib/viral-loop";
 
 type Locale = "pt-BR" | "en" | "es";
 
@@ -273,7 +276,7 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
     const linhas = resultado.porPessoa
       .map((p) => `• ${p.nome}: ${formatCurrency(p.total)}`)
       .join("\n");
-    return [
+    const summary = [
       t.resumoTitulo,
       t.resumoSubtitulo,
       "",
@@ -285,14 +288,26 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
       "",
       t.resumoRodape,
     ].join("\n");
+    if (locale !== "pt-BR") return summary;
+    return summary + viralToolShareFooter("/divisor-de-conta", "divisor_conta_whatsapp");
   }
 
   function handleCopy() {
     navigator.clipboard.writeText(resumoTexto());
+    trackEvent("share_result", {
+      method: "copy",
+      tool_path: locale === "pt-BR" ? "/divisor-de-conta" : `/${locale}/tools/bill-splitter`,
+      campaign: "divisor_conta_whatsapp",
+    });
     toast(t.toastCopiado);
   }
 
   function handleWhatsApp() {
+    trackEvent("share_result", {
+      method: "whatsapp",
+      tool_path: locale === "pt-BR" ? "/divisor-de-conta" : `/${locale}/tools/bill-splitter`,
+      campaign: "divisor_conta_whatsapp",
+    });
     setWhatsAppOpen(true);
   }
 
@@ -481,6 +496,22 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
                     {t.enviarWhatsApp}
                   </Button>
                 </div>
+
+                {locale === "pt-BR" ? (
+                  <ResultShareCard
+                    eyebrow="Divisão de conta"
+                    title="Quanto cada um paga"
+                    highlightLabel="Total com taxa"
+                    highlightValue={formatCurrency(resultado.totalComTaxa)}
+                    lines={resultado.porPessoa.map((p) => ({
+                      label: p.nome,
+                      value: formatCurrency(p.total),
+                    }))}
+                    toolPath="/divisor-de-conta"
+                    utmCampaign="divisor_conta_card"
+                    fileNameHint="divisao-da-conta"
+                  />
+                ) : null}
               </div>
             )}
           </div>

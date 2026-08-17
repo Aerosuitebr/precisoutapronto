@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { receiptClusterPages } from '../src/lib/seo/receipt-cluster';
 import { viralClusters } from '../src/lib/seo/viral-clusters';
+import { viralPublicResultUrl } from '../src/lib/viral-loop';
 
 test('receipt cluster has unique, substantial and connected intent pages', () => {
   expect(receiptClusterPages).toHaveLength(8);
@@ -23,4 +24,27 @@ test('viral hubs cover the priority engines with unique resources', () => {
     expect(cluster.faqs.length).toBeGreaterThanOrEqual(3);
     expect(cluster.primary.href.startsWith('/')).toBe(true);
   }
+});
+
+test('Jato PDF exposes local processing and all supported page operations', () => {
+  const pdf = viralClusters.find((cluster) => cluster.path === '/pdf');
+  expect(pdf?.h1).toContain('sem enviar documentos');
+  expect(pdf?.resources.map((item) => item.title)).toEqual(expect.arrayContaining([
+    'Juntar PDF online',
+    'Dividir PDF online',
+    'Comprimir PDF online',
+    'Editor de PDF online',
+    'Extrair páginas do PDF',
+    'Remover páginas do PDF',
+    'Girar páginas do PDF',
+    'Organizar páginas do PDF'
+  ]));
+});
+
+test('public Result Jato URL carries a bounded snapshot and safe tool destination', () => {
+  const url = new URL(viralPublicResultUrl({ title: 'Rescisão estimada', highlightLabel: 'Total', highlightValue: 'R$ 8.742,31', lines: [{ label: 'Saldo', value: 'R$ 1.200,00' }], toolPath: '/calculadora-de-rescisao', campaign: 'test' }));
+  expect(url.pathname).toBe('/resultado-jato');
+  expect(url.searchParams.get('ferramenta')).toBe('/calculadora-de-rescisao');
+  expect(url.searchParams.get('valor')).toBe('R$ 8.742,31');
+  expect(url.searchParams.get('utm_medium')).toBe('resultado_jato');
 });
