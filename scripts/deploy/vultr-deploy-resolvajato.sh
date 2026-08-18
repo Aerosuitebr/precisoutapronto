@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Deploy Resolva Jato no Vultr (mesmo host do Aerosuite).
-# Não altera .env.production do servidor.
+# Preserva segredos e aplica somente as variáveis públicas do corte de domínio.
 # Uso: INSTALL_DIR=/opt/resolva-jato bash vultr-deploy-resolvajato.sh
 
 set -euo pipefail
@@ -43,6 +43,27 @@ if [[ ! -f .env.production ]]; then
   echo "ERRO: .env.production ausente em ${INSTALL_DIR}."
   echo "Envie o arquivo uma vez (setup) antes do deploy incremental."
   exit 1
+fi
+
+upsert_env() {
+  local key="$1"
+  local value="$2"
+  if grep -qE "^${key}=" .env.production; then
+    sed -i "s#^${key}=.*#${key}=${value}#" .env.production
+  else
+    printf '%s=%s\n' "${key}" "${value}" >> .env.production
+  fi
+}
+
+# Corte canônico: o domínio antigo continua atendido pelo middleware e pelas APIs.
+upsert_env DOMAIN precisoutapronto.com.br
+upsert_env NEXT_PUBLIC_APP_URL https://precisoutapronto.com.br
+
+# Publica os novos hostnames no mesmo túnel, sem remover os anteriores.
+if [[ -d /etc/cloudflared-resolvajato ]] && command -v systemctl >/dev/null 2>&1; then
+  bash "${INSTALL_DIR}/scripts/deploy/apply-cloudflared-resolvajato.sh"
+else
+  echo "AVISO: cloudflared local não encontrado; config do túnel não foi reaplicada."
 fi
 
 PUBLIC_APP_URL="$(sed -n 's/^NEXT_PUBLIC_APP_URL=//p' .env.production | tail -1 | tr -d '\r' | sed 's#/$##')"

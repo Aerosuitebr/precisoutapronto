@@ -38,7 +38,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://resolvajato.com.br}
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://precisoutapronto.com.br}
         NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: ${NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY:-}
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
         NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${NEXT_PUBLIC_VAPID_PUBLIC_KEY:-}
@@ -58,7 +58,7 @@ services:
       PORT: '3000'
       PRISMA_SCHEMA_MODE: ${PRISMA_SCHEMA_MODE:-push}
       DATABASE_URL: postgresql://${POSTGRES_USER:-resolvajato}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-resolvajato}?schema=public
-      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://resolvajato.com.br}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://precisoutapronto.com.br}
       DOCUMENT_AI_ENDPOINT: ${DOCUMENT_AI_ENDPOINT:-}
       DOCUMENT_AI_API_KEY: ${DOCUMENT_AI_API_KEY:-}
       NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: ${NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY:-}
