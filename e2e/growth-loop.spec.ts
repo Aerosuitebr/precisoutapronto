@@ -1,24 +1,15 @@
 import { expect, test } from '@playwright/test';
 
-test('home keeps quote + Pix as the only primary promise', async ({ page }) => {
+test('home leads with a task-first promise and popular outcomes', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'A forma mais rápida de enviar orçamento, conseguir aprovação e cobrar por Pix no WhatsApp.'
-  );
-  await expect(page.getByRole('link', { name: 'Criar e enviar orçamento grátis' })).toHaveAttribute(
-    'href',
-    '/orcamento-com-pix#montar'
-  );
-  await expect(page.getByRole('link', { name: 'Acessar ferramentas' })).toHaveAttribute(
-    'href',
-    '/recursos'
-  );
-  await expect(page.getByText('Acesso direto às ferramentas')).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Resolva agora. Saia com algo pronto.');
+  await expect(page.getByRole('link', { name: 'Encontrar uma solução' })).toHaveAttribute('href', '/recursos');
+  await expect(page.getByText('Escolha pelo que precisa fazer')).toBeVisible();
   const main = page.locator('main');
-  for (const label of ['Calcular rescisão', 'Corrigir redação ENEM', 'Criar recibo', 'Orçamento + Pix', 'Fazer currículo']) {
-    await expect(main.getByRole('link', { name: label, exact: true })).toBeVisible();
+  for (const label of ['Recibo de aluguel', 'Calcular rescisão', 'Gerar QR Code Pix', 'Referência ABNT']) {
+    await expect(main.getByText(label, { exact: true }).first()).toBeVisible();
   }
-  await expect(page.getByRole('heading', { name: 'Resolva em segundos aquilo que normalmente dá trabalho.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Não é uma lista de ferramentas. É um caminho até o resultado.' })).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Jato Games');
 });
 
@@ -40,10 +31,10 @@ test('priority profession cluster covers high-intent local services', async ({ p
 
 test('rental receipt landing aligns title, visible example and CTA', async ({ page }) => {
   await page.goto('/recibo-de-aluguel', { waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveTitle('Recibo de Aluguel Online Grátis: Gere PDF e Imprima | Resolva Jato');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Recibo de Aluguel Online Grátis: Gere PDF e Imprima');
-  await expect(page.getByText('RECIBO Nº 2026-008')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Criar meu recibo agora' })).toHaveAttribute(
+  await expect(page).toHaveTitle('Recibo de Aluguel Grátis para Imprimir e Baixar PDF | Resolva Jato');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Um recibo claro para quem paga e para quem recebe.');
+  await expect(page.getByText('RECIBO Nº 008')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Criar meu recibo grátis' })).toHaveAttribute(
     'href',
     '/gerador-de-recibo?modelo=aluguel-residencial'
   );

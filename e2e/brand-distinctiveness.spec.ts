@@ -1,19 +1,17 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('brand distinctiveness', () => {
-  test('homepage keeps the quote wedge focused and exposes the tools hub', async ({ page }) => {
+  test('homepage presents task-first journeys and exposes the tools hub', async ({ page }) => {
     await page.goto('/');
-    const toolsHubLink = page.locator('main a[href="/recursos"]', { hasText: 'Ver todas as ferramentas' });
+    const toolsHubLink = page.locator('main a[href="/recursos"]', { hasText: 'Encontrar uma solução' });
     await expect(toolsHubLink).toHaveCount(1);
-    await expect(toolsHubLink).toContainText('Ver todas as ferramentas');
+    await expect(toolsHubLink).toContainText('Encontrar uma solução');
     await expect(page.locator('a[href="/para/autonomos"]')).toHaveCount(0);
     await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(0);
-    await expect(page.locator('main a[href^="/orcamento-para/"]')).toHaveCount(5);
-    await expect(page.getByText('Eletricista', { exact: true })).toBeVisible();
-    await expect(page.getByText('Pintor', { exact: true })).toBeVisible();
-    await expect(page.getByText('Designer', { exact: true })).toBeVisible();
-    await expect(page.getByText('Instalador de ar-condicionado', { exact: true })).toBeVisible();
-    await expect(page.locator('a[href="/para/freelancers"]')).toHaveCount(3);
+    await expect(page.getByRole('heading', { name: 'Não é uma lista de ferramentas. É um caminho até o resultado.' })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Encontrar meu recibo/ })).toHaveAttribute('href', '/recibos');
+    await expect(page.getByRole('link', { name: /Montar um orçamento/ })).toHaveAttribute('href', '/orcamento-com-pix');
+    await expect(page.getByRole('link', { name: /Ver calculadoras/ })).toHaveAttribute('href', '/calculadora-de-rescisao');
   });
 
   test('official brand page has unique entity signals', async ({ page }) => {

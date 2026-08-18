@@ -19,10 +19,10 @@ for (const path of LANDINGS) {
 
 test('home metadata and primary topic stay aligned', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveTitle('Orçamento com Aprovação e Pix no WhatsApp | Resolva Jato');
+  await expect(page).toHaveTitle('Resolva Jato: Recibos, Cálculos e Documentos Online');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
-    'Crie um orçamento profissional grátis, envie pelo WhatsApp, receba a aprovação do cliente e cobre por Pix. Teste sem cadastro.'
+    'Resolva tarefas práticas com recibos, calculadoras, documentos e ferramentas online. Encontre o que precisa e saia com o resultado pronto.'
   );
   await expect(page.locator('main a[href="/games"]')).toHaveCount(0);
 });
