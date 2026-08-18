@@ -3,9 +3,9 @@ import { expect, test } from '@playwright/test';
 test.describe('brand distinctiveness', () => {
   test('homepage presents task-first journeys and exposes the tools hub', async ({ page }) => {
     await page.goto('/');
-    const toolsHubLink = page.locator('main a[href="/recursos"]', { hasText: 'Encontrar uma solução' });
-    await expect(toolsHubLink).toHaveCount(1);
-    await expect(toolsHubLink).toContainText('Encontrar uma solução');
+    await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'recibo', exact: true })).toBeVisible();
     await expect(page.locator('a[href="/para/autonomos"]')).toHaveCount(0);
     await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(0);
     await expect(page.getByRole('heading', { name: 'Não é uma lista de ferramentas. É um caminho até o resultado.' })).toBeVisible();

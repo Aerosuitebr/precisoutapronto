@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, BadgeCheck, Calculator, Check, FileCheck2, FileText, GraduationCap, ImageIcon, Receipt, Search, ShieldCheck, Sparkles, Wallet } from 'lucide-react';
-import { HomeConversionLink } from '@/components/analytics/home-conversion-link';
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
-import { Button } from '@/components/ui/button';
 
 const paths = [
   { href: '/recibo-de-aluguel', label: 'Recibo de aluguel', note: 'Preencha, baixe e imprima', icon: Receipt, tone: 'bg-emerald-50 text-emerald-800' },
@@ -24,16 +22,12 @@ export function LandingPage() {
     <div className="bg-[#f7f8f5] text-slate-950">
       <section className="relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-14 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-20">
+        <div className="mx-auto grid max-w-[1440px] gap-12 px-4 pb-14 pt-12 sm:px-8 sm:pb-20 sm:pt-16 lg:grid-cols-[minmax(0,1.02fr)_minmax(520px,0.98fr)] lg:items-center lg:gap-20 lg:px-10 lg:pb-24 lg:pt-20 2xl:px-12">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 shadow-sm"><Sparkles className="h-3.5 w-3.5" /> Ferramentas úteis, sem enrolação</div>
             <h1 className="rj-display mt-6 max-w-3xl text-[clamp(2.7rem,6vw,5.2rem)] font-black leading-[0.94] tracking-[-0.05em]">Resolva agora. <span className="text-emerald-700">Saia com algo pronto.</span></h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600 sm:text-xl">Recibos, cálculos, documentos e ferramentas para tarefas que não deveriam tomar a sua tarde inteira.</p>
-            <div className="mt-7 max-w-xl"><HomeQuickSearch /></div>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" className="h-[52px] rounded-full bg-slate-950 px-7 font-bold text-white hover:bg-emerald-800"><HomeConversionLink href="/recursos" placement="hero_primary">Encontrar uma solução <ArrowRight className="h-4 w-4" /></HomeConversionLink></Button>
-              <Link href="#tarefas" className="inline-flex h-[52px] items-center justify-center rounded-full px-6 text-sm font-bold text-slate-700 transition hover:bg-white">Ver tarefas populares</Link>
-            </div>
+            <div className="mt-7 max-w-2xl"><HomeQuickSearch /></div>
             <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">{['Sem instalar nada', 'Comece grátis', 'Funciona no celular'].map((item) => <li key={item} className="flex items-center gap-1.5"><Check className="h-4 w-4 text-emerald-700" />{item}</li>)}</ul>
           </div>
           <div className="relative">

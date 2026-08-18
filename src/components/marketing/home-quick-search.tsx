@@ -46,10 +46,10 @@ export function HomeQuickSearch() {
   }
 
   return (
-    <div className="relative mt-6 max-w-xl">
+    <div className="relative max-w-2xl">
       <form onSubmit={submit} role="search" aria-label="Buscar ferramenta">
         <label htmlFor="home-tool-search" className="sr-only">O que você precisa resolver hoje?</label>
-        <div className="flex rounded-2xl bg-white p-1.5 shadow-xl shadow-slate-950/25 ring-1 ring-white/30 focus-within:ring-2 focus-within:ring-amber-300">
+        <div className="flex rounded-2xl bg-white p-1.5 shadow-[0_18px_55px_-24px_rgba(15,23,42,0.35)] ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-emerald-500">
           <Search className="ml-3 mt-3 h-5 w-5 shrink-0 text-slate-500" aria-hidden />
           <input
             id="home-tool-search"
@@ -59,15 +59,15 @@ export function HomeQuickSearch() {
             autoComplete="off"
             className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-base font-medium text-slate-950 outline-none placeholder:text-slate-500"
           />
-          <button type="submit" className="grid min-h-11 min-w-11 place-items-center rounded-xl bg-amber-400 px-3 font-bold text-slate-950 transition hover:bg-amber-300" aria-label="Buscar">
+          <button type="submit" className="grid min-h-11 min-w-11 place-items-center rounded-xl bg-emerald-800 px-3 font-bold text-white transition hover:bg-emerald-700" aria-label="Buscar">
             <ArrowRight className="h-5 w-5" aria-hidden />
           </button>
         </div>
       </form>
-      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-300">
-        <span>Exemplos:</span>
-        {INTENTS.slice(0, 3).map((item) => (
-          <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="font-semibold text-white underline decoration-white/40 underline-offset-2 hover:decoration-amber-300">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+        <span className="mr-1 font-semibold">Buscas rápidas:</span>
+        {INTENTS.slice(0, 4).map((item) => (
+          <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 font-bold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800">
             {item.label.replace(/^(Criar|Calcular|Gerar) /, '')}
           </button>
         ))}

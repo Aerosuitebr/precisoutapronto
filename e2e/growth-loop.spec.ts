@@ -3,7 +3,8 @@ import { expect, test } from '@playwright/test';
 test('home leads with a task-first promise and popular outcomes', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Resolva agora. Saia com algo pronto.');
-  await expect(page.getByRole('link', { name: 'Encontrar uma solução' })).toHaveAttribute('href', '/recursos');
+  await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
   await expect(page.getByText('Escolha pelo que precisa fazer')).toBeVisible();
   const main = page.locator('main');
   for (const label of ['Recibo de aluguel', 'Calcular rescisão', 'Gerar QR Code Pix', 'Referência ABNT']) {
