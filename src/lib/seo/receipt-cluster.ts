@@ -55,8 +55,8 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'recibo-pagamento-pix',
-    title: 'Recibo de pagamento Pix: modelo grátis em PDF',
-    description: 'Gere um recibo para pagamento recebido por Pix, com valor, finalidade, data e identificação das partes.',
+    title: 'Recibo de pagamento Pix grátis: faça e baixe em PDF',
+    description: 'Crie um recibo de pagamento Pix online grátis, informe valor, finalidade, data e partes, e baixe o PDF para imprimir ou enviar.',
     eyebrow: 'Pagamento via Pix',
     answer: 'O comprovante bancário mostra a transferência; o recibo explica qual obrigação aquele Pix quitou. Os dois documentos se complementam quando o motivo do pagamento precisa ficar claro.',
     fields: ['Pagador e recebedor', 'Valor transferido', 'Serviço, produto ou parcela quitada', 'Data do recebimento', 'Indicação “pago via Pix”'],

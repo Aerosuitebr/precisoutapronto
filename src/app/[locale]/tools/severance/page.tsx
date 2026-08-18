@@ -11,10 +11,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!isInternationalLocale(locale)) return {};
   return {
     ...internationalSeo(locale, 'tools/severance', '/calculadora-de-rescisao'),
-    title: locale === 'en' ? 'Brazilian employment termination calculator' : 'Calculadora de liquidación laboral de Brasil',
+    title: locale === 'en'
+      ? 'Free Brazilian severance calculator (CLT)'
+      : 'Calculadora de liquidación laboral de Brasil gratis',
     description: locale === 'en'
-      ? 'Estimate gross Brazilian CLT termination amounts including salary, vacation, 13th salary, notice and FGTS penalty.'
-      : 'Estima valores brutos de liquidación CLT brasileña, incluyendo salario, vacaciones, 13.º, preaviso y multa FGTS.'
+      ? 'Calculate an estimated Brazilian CLT termination online, including salary balance, vacation, 13th salary, notice and the FGTS penalty.'
+      : 'Calcula gratis una liquidación laboral CLT de Brasil con saldo salarial, vacaciones, aguinaldo, preaviso y multa del FGTS.'
   };
 }
 

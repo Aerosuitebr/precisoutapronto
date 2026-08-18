@@ -20,18 +20,22 @@ mkdir -p "${INSTALL_DIR}"
 if [[ -f "${INSTALL_DIR}/.env.production" ]]; then
   cp -a "${INSTALL_DIR}/.env.production" /tmp/resolva-jato.env.production.bak
 fi
-if [[ -f "${INSTALL_DIR}/.indexnow-sitemap.sha256" ]]; then
-  cp -a "${INSTALL_DIR}/.indexnow-sitemap.sha256" /tmp/resolva-jato.indexnow-sitemap.sha256.bak
-fi
+for state_file in .indexnow-sitemap.xml .indexnow-updated-urls.sha256; do
+  if [[ -f "${INSTALL_DIR}/${state_file}" ]]; then
+    cp -a "${INSTALL_DIR}/${state_file}" "/tmp/resolva-jato.${state_file}.bak"
+  fi
+done
 find "${INSTALL_DIR}" -mindepth 1 -maxdepth 1 ! -name '.env.production' -exec rm -rf {} +
 tar -xzf "${TARBALL}" -C "${INSTALL_DIR}"
 if [[ ! -f "${INSTALL_DIR}/.env.production" && -f /tmp/resolva-jato.env.production.bak ]]; then
   cp -a /tmp/resolva-jato.env.production.bak "${INSTALL_DIR}/.env.production"
   chmod 600 "${INSTALL_DIR}/.env.production"
 fi
-if [[ ! -f "${INSTALL_DIR}/.indexnow-sitemap.sha256" && -f /tmp/resolva-jato.indexnow-sitemap.sha256.bak ]]; then
-  cp -a /tmp/resolva-jato.indexnow-sitemap.sha256.bak "${INSTALL_DIR}/.indexnow-sitemap.sha256"
-fi
+for state_file in .indexnow-sitemap.xml .indexnow-updated-urls.sha256; do
+  if [[ ! -f "${INSTALL_DIR}/${state_file}" && -f "/tmp/resolva-jato.${state_file}.bak" ]]; then
+    cp -a "/tmp/resolva-jato.${state_file}.bak" "${INSTALL_DIR}/${state_file}"
+  fi
+done
 
 cd "${INSTALL_DIR}"
 
@@ -74,25 +78,45 @@ fi
 curl -sfI http://127.0.0.1:3000/ | head -1
 "${COMPOSE[@]}" ps
 echo "==> Notificar mecanismos de busca via IndexNow"
-SITEMAP_HASH_FILE="${INSTALL_DIR}/.indexnow-sitemap.sha256"
-CURRENT_SITEMAP_HASH="$(curl -sf https://resolvajato.com.br/sitemap.xml | sha256sum | awk '{print $1}' || true)"
-PREVIOUS_SITEMAP_HASH="$(cat "${SITEMAP_HASH_FILE}" 2>/dev/null || true)"
-if [[ -n "${CURRENT_SITEMAP_HASH}" && "${CURRENT_SITEMAP_HASH}" == "${PREVIOUS_SITEMAP_HASH}" ]]; then
-  echo "IndexNow: sitemap sem mudancas; envio completo ignorado."
-else
-  # Host nao tem node no PATH; usa a imagem do app (Node embutido) com o script montado.
+PREVIOUS_SITEMAP_FILE="${INSTALL_DIR}/.indexnow-sitemap.xml"
+CURRENT_SITEMAP_FILE="$(mktemp)"
+INDEXNOW_URL_FILE="$(mktemp)"
+UPDATED_URLS_FILE="${INSTALL_DIR}/scripts/seo/indexnow-updated-urls.txt"
+UPDATED_HASH_FILE="${INSTALL_DIR}/.indexnow-updated-urls.sha256"
+
+curl -sf https://resolvajato.com.br/sitemap.xml -o "${CURRENT_SITEMAP_FILE}" || true
+if [[ -s "${CURRENT_SITEMAP_FILE}" ]]; then
+  grep -oE '<loc>[^<]+</loc>' "${CURRENT_SITEMAP_FILE}" | sed -E 's#</?loc>##g' | sort -u > "${CURRENT_SITEMAP_FILE}.urls"
+  if [[ -s "${PREVIOUS_SITEMAP_FILE}" ]]; then
+    grep -oE '<loc>[^<]+</loc>' "${PREVIOUS_SITEMAP_FILE}" | sed -E 's#</?loc>##g' | sort -u > "${PREVIOUS_SITEMAP_FILE}.urls"
+    comm -13 "${PREVIOUS_SITEMAP_FILE}.urls" "${CURRENT_SITEMAP_FILE}.urls" >> "${INDEXNOW_URL_FILE}"
+  fi
+fi
+
+CURRENT_UPDATED_HASH="$(sha256sum "${UPDATED_URLS_FILE}" 2>/dev/null | awk '{print $1}' || true)"
+PREVIOUS_UPDATED_HASH="$(cat "${UPDATED_HASH_FILE}" 2>/dev/null || true)"
+if [[ -n "${CURRENT_UPDATED_HASH}" && "${CURRENT_UPDATED_HASH}" != "${PREVIOUS_UPDATED_HASH}" ]]; then
+  grep -vE '^[[:space:]]*(#|$)' "${UPDATED_URLS_FILE}" >> "${INDEXNOW_URL_FILE}"
+fi
+
+sort -u -o "${INDEXNOW_URL_FILE}" "${INDEXNOW_URL_FILE}"
+if [[ -s "${INDEXNOW_URL_FILE}" ]]; then
   if docker run --rm \
     -v "${INSTALL_DIR}/scripts/seo/submit-indexnow.mjs:/tmp/submit-indexnow.mjs:ro" \
+    -v "${INDEXNOW_URL_FILE}:/tmp/indexnow-urls.txt:ro" \
     --entrypoint node \
     resolva-jato-app:latest \
-    /tmp/submit-indexnow.mjs
+    /tmp/submit-indexnow.mjs --file /tmp/indexnow-urls.txt
   then
-    echo "IndexNow: lote enviado."
-    if [[ -n "${CURRENT_SITEMAP_HASH}" ]]; then
-      printf '%s\n' "${CURRENT_SITEMAP_HASH}" > "${SITEMAP_HASH_FILE}"
-    fi
+    echo "IndexNow: apenas URLs novas ou atualizadas foram enviadas."
+    [[ -n "${CURRENT_UPDATED_HASH}" ]] && printf '%s\n' "${CURRENT_UPDATED_HASH}" > "${UPDATED_HASH_FILE}"
   else
     echo "AVISO: IndexNow nao respondeu; o deploy permanece ativo."
   fi
+else
+  echo "IndexNow: nenhuma URL nova ou atualizada; envio ignorado."
 fi
+
+[[ -s "${CURRENT_SITEMAP_FILE}" ]] && cp "${CURRENT_SITEMAP_FILE}" "${PREVIOUS_SITEMAP_FILE}"
+rm -f "${CURRENT_SITEMAP_FILE}" "${CURRENT_SITEMAP_FILE}.urls" "${INDEXNOW_URL_FILE}" "${PREVIOUS_SITEMAP_FILE}.urls"
 echo "OK - Resolva Jato em ${INSTALL_DIR} (localhost:3000)"

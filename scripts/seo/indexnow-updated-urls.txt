@@ -1,0 +1,5 @@
+# URLs cujo conteúdo ou snippet mudou nesta versão.
+# O deploy envia este arquivo somente quando seu conteúdo muda.
+/recibo-de-aluguel
+/recibos/recibo-pagamento-pix
+/es/tools/severance
