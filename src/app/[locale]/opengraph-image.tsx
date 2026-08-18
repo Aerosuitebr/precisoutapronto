@@ -98,7 +98,7 @@ export default async function InternationalOpenGraphImage({ params }: ImageProps
               >
                 RJ
               </div>
-              <div style={{ display: 'flex', fontSize: 30, fontWeight: 800 }}>Resolva Jato</div>
+              <div style={{ display: 'flex', fontSize: 30, fontWeight: 800 }}>Precisou, Tá Pronto</div>
             </div>
             <div
               style={{

@@ -524,7 +524,7 @@ export async function cancelPremiumServer(userId: string) {
 }
 
 /**
- * Plano grátis = mensagens WhatsApp/e-mail com referência Resolva Jato.
+ * Plano grátis = mensagens WhatsApp/e-mail com referência Precisou, Tá Pronto.
  * Premium (subscription ativa) = sem marca.
  */
 export async function shouldBrandOutboundMessagesByEmail(email: string): Promise<boolean> {

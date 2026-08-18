@@ -16,7 +16,7 @@ test('referral links carry attribution and a normalized code', () => {
 
 test('native referral payload contains no account identity', () => {
   const payload = buildReferralSharePayload('RJABC123');
-  expect(payload.title).toBe('Convite Resolva Jato');
+  expect(payload.title).toBe('Convite Precisou, Tá Pronto');
   expect(payload.url).toContain('ref=RJABC123');
   expect(JSON.stringify(payload)).not.toMatch(/email|userId|name/);
 });

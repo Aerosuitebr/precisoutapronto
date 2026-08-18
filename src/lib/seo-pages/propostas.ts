@@ -75,7 +75,7 @@ export const propostasSeoContent: SeoPageContent = {
   faq: [
     {
       question: 'O gerador de proposta comercial é gratuito?',
-      answer: 'Sim. Você pode criar, editar e baixar propostas em PDF gratuitamente pelo Resolva Jato.'
+      answer: 'Sim. Você pode criar, editar e baixar propostas em PDF gratuitamente pelo Precisou, Tá Pronto.'
     },
     {
       question: 'Posso adicionar a logo da minha empresa?',
@@ -111,7 +111,7 @@ export const propostasSeoContent: SeoPageContent = {
       <h2>Facilite a aprovação</h2>
       <p>Deixe claras as condições de pagamento, prazo de validade da proposta e prazo de entrega. Isso evita que a negociação trave por falta de informação.</p>
 
-      <p>Com o gerador de proposta comercial do Resolva Jato, você preenche os dados da empresa e do cliente, adiciona os itens com valores calculados automaticamente e baixa um PDF com identidade visual profissional, pronto para enviar.</p>
+      <p>Com o gerador de proposta comercial do Precisou, Tá Pronto, você preenche os dados da empresa e do cliente, adiciona os itens com valores calculados automaticamente e baixa um PDF com identidade visual profissional, pronto para enviar.</p>
     `
   },
   relatedTools: [

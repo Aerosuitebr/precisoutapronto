@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: curriculoSeoContent.seo.metaTitle,
     description: curriculoSeoContent.seo.metaDescription,
     url: `${SITE_URL}/${curriculoSeoContent.slug}`,
-    siteName: 'Resolva Jato',
+    siteName: 'Precisou, Tá Pronto',
     locale: 'pt_BR',
     type: 'website',
     images: [{ url: `/${curriculoSeoContent.slug}/opengraph-image` }]

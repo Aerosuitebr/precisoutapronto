@@ -75,7 +75,7 @@ export const contabeisSeoContent: SeoPageContent = {
   faq: [
     {
       question: 'O gerador de documentos contábeis é gratuito?',
-      answer: 'Sim. Você pode criar, editar e baixar seus documentos em PDF gratuitamente pelo Resolva Jato.'
+      answer: 'Sim. Você pode criar, editar e baixar seus documentos em PDF gratuitamente pelo Precisou, Tá Pronto.'
     },
     {
       question: 'Serve para despachantes também?',
@@ -111,7 +111,7 @@ export const contabeisSeoContent: SeoPageContent = {
       <h2>Termo de entrega de documentos</h2>
       <p>Registra quais documentos foram entregues pelo cliente e em qual data, protegendo o escritório em caso de dúvidas futuras sobre o que foi ou não recebido.</p>
 
-      <p>Com o gerador de documentos contábeis do Resolva Jato, você preenche os dados do cliente uma vez, escolhe o modelo certo e baixa um PDF organizado, pronto para assinatura.</p>
+      <p>Com o gerador de documentos contábeis do Precisou, Tá Pronto, você preenche os dados do cliente uma vez, escolhe o modelo certo e baixa um PDF organizado, pronto para assinatura.</p>
     `
   },
   relatedTools: [

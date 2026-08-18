@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ profissao
   const page = findContractProfessionContext((await params).profissao);
   if (!page) return {};
   const path = `/contrato/${page.slug}`;
-  return { title: { absolute: `${page.title} | Resolva Jato` }, description: page.description, alternates: { canonical: path }, openGraph: { title: page.title, description: page.description, url: path } };
+  return { title: { absolute: `${page.title} | Precisou, Tá Pronto` }, description: page.description, alternates: { canonical: path }, openGraph: { title: page.title, description: page.description, url: path } };
 }
 
 export default async function ContractProfessionPage({ params }: { params: Promise<{ profissao: string }> }) {

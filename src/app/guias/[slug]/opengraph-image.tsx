@@ -16,7 +16,7 @@ export default async function GuideOpenGraphImage({
     (
       <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 70, color: '#f8fafc', background: 'linear-gradient(135deg,#020617,#0f3d4c)' }}>
         <div style={{ display: 'flex', fontSize: 24, fontWeight: 700, color: '#6ee7b7' }}>RESOLVA JATO · GUIAS</div>
-        <div style={{ display: 'flex', maxWidth: 1020, fontSize: 60, lineHeight: 1.08, fontWeight: 800 }}>{guide?.title ?? 'Guia prático Resolva Jato'}</div>
+        <div style={{ display: 'flex', maxWidth: 1020, fontSize: 60, lineHeight: 1.08, fontWeight: 800 }}>{guide?.title ?? 'Guia prático Precisou, Tá Pronto'}</div>
         <div style={{ display: 'flex', fontSize: 24, color: '#cbd5e1' }}>Resposta direta + ferramenta para colocar em prática</div>
       </div>
     ),

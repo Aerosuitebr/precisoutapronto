@@ -1208,9 +1208,9 @@ export function OrcamentosApp({
                 </div>
                 <div className="mt-3 rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">
                   {usage.unlimited
-                    ? 'Premium: documentos sem marca Resolva Jato'
+                    ? 'Premium: documentos sem marca Precisou, Tá Pronto'
                     : brandDocuments
-                      ? 'Grátis: PDF e WhatsApp com marca Resolva Jato. Premium remove tudo.'
+                      ? 'Grátis: PDF e WhatsApp com marca Precisou, Tá Pronto. Premium remove tudo.'
                       : 'Pronto para gerar o link de aprovação'}
                 </div>
 

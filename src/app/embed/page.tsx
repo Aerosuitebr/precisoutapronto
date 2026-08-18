@@ -8,17 +8,17 @@ const SITE = getViralBaseUrl().replace(/\/$/, '');
 export const metadata: Metadata = {
   title: 'Badges e embeds para parceiros',
   description:
-    'HTML e Markdown prontos para blogs, cursos e portais linkarem as ferramentas grátis do Resolva Jato.',
+    'HTML e Markdown prontos para blogs, cursos e portais linkarem as ferramentas grátis do Precisou, Tá Pronto.',
   alternates: { canonical: PATH },
   openGraph: {
-    title: 'Embeds | Resolva Jato',
+    title: 'Embeds | Precisou, Tá Pronto',
     description: 'Badges e blocos HTML com UTM para parcerias.',
     url: `${SITE}${PATH}`,
     images: [{ url: `${PATH}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Embeds | Resolva Jato',
+    title: 'Embeds | Precisou, Tá Pronto',
     description: 'Badges e blocos HTML com UTM para parcerias.',
     images: [`${PATH}/opengraph-image`]
   }

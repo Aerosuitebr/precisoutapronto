@@ -21,7 +21,7 @@ interface WhatsAppSendModalProps {
    * Premium: permite abrir no WhatsApp Web/app.
    */
   allowWaMeFallback?: boolean;
-  /** Exibe aviso de que a referência Resolva Jato não pode ser removida. */
+  /** Exibe aviso de que a referência Precisou, Tá Pronto não pode ser removida. */
   brandLocked?: boolean;
 }
 
@@ -242,7 +242,7 @@ export function WhatsAppSendModal({
             </pre>
             {brandLocked ? (
               <p className="mt-3 text-[11px] leading-4 text-slate-500">
-                A referência Resolva Jato vai no envio pelo servidor e não pode ser removida neste
+                A referência Precisou, Tá Pronto vai no envio pelo servidor e não pode ser removida neste
                 plano. No Premium as mensagens saem sem essa marca.
               </p>
             ) : null}

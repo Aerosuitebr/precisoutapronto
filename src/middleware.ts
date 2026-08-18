@@ -12,6 +12,7 @@ import {
 } from '@/lib/i18n-locale';
 
 const DEVICE_COOKIE = 'rj_device';
+const LEGACY_PUBLIC_HOSTS = new Set(['resolvajato.com.br', 'www.resolvajato.com.br']);
 const PUBLIC_CACHEABLE_PATHS = new Set([
   '/',
   '/busca',
@@ -109,6 +110,25 @@ function applyCommonHeaders(request: NextRequest, response: NextResponse) {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const requestHost = (request.headers.get('host') || request.nextUrl.hostname || '')
+    .split(':')[0]
+    .toLowerCase();
+  const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL;
+
+  // O redirect de domínio é ativado pelo próprio corte de NEXT_PUBLIC_APP_URL.
+  // APIs continuam respondendo no host antigo para não interromper webhooks.
+  if (configuredOrigin && !pathname.startsWith('/api/')) {
+    const canonical = new URL(configuredOrigin);
+    const canonicalHost = canonical.hostname.toLowerCase();
+    const shouldNormalizeWww = requestHost === `www.${canonicalHost}`;
+    if ((LEGACY_PUBLIC_HOSTS.has(requestHost) || shouldNormalizeWww) && requestHost !== canonicalHost) {
+      const destination = request.nextUrl.clone();
+      destination.protocol = canonical.protocol;
+      destination.host = canonical.host;
+      return NextResponse.redirect(destination, 308);
+    }
+  }
+
   const pathLocale = localeFromPathname(pathname);
   const forcedLocale = parseLocale(request.nextUrl.searchParams.get(LOCALE_QUERY));
   const userAgent = request.headers.get('user-agent');

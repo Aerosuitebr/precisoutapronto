@@ -20,7 +20,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
     <div className="min-h-screen bg-slate-50 text-slate-950">
       <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <Link href={`/${locale}`} aria-label="Resolva Jato">
+          <Link href={`/${locale}`} aria-label="Precisou, Tá Pronto">
             <Logo variant="marketing" className="h-12 sm:h-14" />
           </Link>
           <nav className="hidden items-center gap-1 md:flex">
@@ -90,7 +90,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
-                      Resolva Jato
+                      Precisou, Tá Pronto
                     </p>
                     <p className="mt-1 text-lg font-extrabold">{copy.tools.items[0][0]}</p>
                   </div>
@@ -200,7 +200,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
 
       <footer className="border-t border-slate-800 bg-slate-950 text-slate-400">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© {new Date().getFullYear()} Resolva Jato</p>
+          <p>© {new Date().getFullYear()} Precisou, Tá Pronto</p>
           <p>{copy.footer}</p>
         </div>
       </footer>

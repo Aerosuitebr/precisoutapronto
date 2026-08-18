@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'Gerador de orçamento com Pix no Resolva Jato';
+export const alt = 'Gerador de orçamento com Pix no Precisou, Tá Pronto';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -32,7 +32,7 @@ export default function OpenGraphImage() {
             Link público · WhatsApp · grátis para testar
           </div>
         </div>
-        <div style={{ display: 'flex', fontSize: 24, color: '#a7f3d0' }}>resolvajato.com.br</div>
+        <div style={{ display: 'flex', fontSize: 24, color: '#a7f3d0' }}>precisoutapronto.com.br</div>
       </div>
     ),
     { ...size }

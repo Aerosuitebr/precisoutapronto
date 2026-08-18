@@ -13,14 +13,14 @@ export const metadata: Metadata = {
   description: 'Respostas práticas, modelos, perguntas frequentes e ferramentas para concluir tarefas.',
   alternates: { canonical: '/biblioteca' },
   openGraph: {
-    title: 'Biblioteca de documentos, trabalho e negócios | Resolva Jato',
+    title: 'Biblioteca de documentos, trabalho e negócios | Precisou, Tá Pronto',
     description: 'Respostas práticas, modelos, perguntas frequentes e ferramentas para concluir tarefas.',
     url: '/biblioteca',
     type: 'website'
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Biblioteca | Resolva Jato',
+    title: 'Biblioteca | Precisou, Tá Pronto',
     description: 'Respostas práticas, modelos e ferramentas para concluir tarefas.'
   }
 };
@@ -32,13 +32,13 @@ export default function LibraryPage() {
     '@graph': [
       {
         '@type': 'CollectionPage',
-        name: 'Biblioteca Resolva Jato',
+        name: 'Biblioteca Precisou, Tá Pronto',
         headline: 'Respostas práticas para concluir tarefas do dia a dia',
         description: metadata.description,
         url: `${base}/biblioteca`,
         inLanguage: 'pt-BR',
         dateModified: '2026-07-30',
-        publisher: { '@type': 'Organization', name: 'Resolva Jato', url: base }
+        publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base }
       },
       {
         '@type': 'ItemList',
@@ -125,7 +125,7 @@ export default function LibraryPage() {
               Conteúdos jurídicos, trabalhistas e contábeis são educativos, recebem revisão editorial e não substituem
               a avaliação de um profissional habilitado para o caso concreto.
             </p>
-            <Link href="/sobre" className="mt-4 inline-flex font-bold text-sky-700">Conheça o Resolva Jato e nossos critérios editoriais</Link>
+            <Link href="/sobre" className="mt-4 inline-flex font-bold text-sky-700">Conheça o Precisou, Tá Pronto e nossos critérios editoriais</Link>
           </aside>
         </section>
       </main>

@@ -4,7 +4,7 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Política de correções',
-  description: 'Como comunicar erros e como o Resolva Jato avalia, corrige e registra atualizações de conteúdo e ferramentas.',
+  description: 'Como comunicar erros e como o Precisou, Tá Pronto avalia, corrige e registra atualizações de conteúdo e ferramentas.',
   alternates: { canonical: '/politica-de-correcoes' }
 };
 

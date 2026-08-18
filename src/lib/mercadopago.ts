@@ -311,7 +311,7 @@ export async function createCardPayment(input: CreateCardPaymentInput) {
     body: JSON.stringify({
       transaction_amount: amount,
       token: input.token,
-      description: 'Resolva Jato Premium · 30 dias',
+      description: 'Precisou, Tá Pronto Premium · 30 dias',
       installments: input.installments || 1,
       payment_method_id: input.paymentMethodId,
       issuer_id: input.issuerId,

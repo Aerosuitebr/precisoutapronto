@@ -26,10 +26,10 @@ export async function sendVerificationEmail(input: {
   locale?: EmailLocale;
 }): Promise<{ sent: boolean; error?: string }> {
   const copy = input.locale === 'en'
-    ? { title: 'Confirm your email', hello: 'Hello', intro: 'Confirm your email to activate your Resolva Jato account and access the tools:', action: 'Confirm email', expiry: 'This link expires in 24 hours. If you did not create this account, ignore this message.', subject: 'Confirm your email · Resolva Jato', text: 'Confirm your Resolva Jato email' }
+    ? { title: 'Confirm your email', hello: 'Hello', intro: 'Confirm your email to activate your Precisou, Tá Pronto account and access the tools:', action: 'Confirm email', expiry: 'This link expires in 24 hours. If you did not create this account, ignore this message.', subject: 'Confirm your email · Precisou, Tá Pronto', text: 'Confirm your Precisou, Tá Pronto email' }
     : input.locale === 'es'
-      ? { title: 'Confirma tu correo', hello: 'Hola', intro: 'Confirma tu correo para activar tu cuenta de Resolva Jato y acceder a las herramientas:', action: 'Confirmar correo', expiry: 'Este enlace caduca en 24 horas. Si no creaste esta cuenta, ignora este mensaje.', subject: 'Confirma tu correo · Resolva Jato', text: 'Confirma tu correo de Resolva Jato' }
-      : { title: 'Confirme seu e-mail', hello: 'Olá', intro: 'Para ativar sua conta no Resolva Jato e liberar as ferramentas, confirme seu e-mail:', action: 'Confirmar e-mail', expiry: 'O link expira em 24 horas. Se você não criou esta conta, ignore este e-mail.', subject: 'Confirme seu e-mail · Resolva Jato', text: 'Confirme seu e-mail no Resolva Jato' };
+      ? { title: 'Confirma tu correo', hello: 'Hola', intro: 'Confirma tu correo para activar tu cuenta de Precisou, Tá Pronto y acceder a las herramientas:', action: 'Confirmar correo', expiry: 'Este enlace caduca en 24 horas. Si no creaste esta cuenta, ignora este mensaje.', subject: 'Confirma tu correo · Precisou, Tá Pronto', text: 'Confirma tu correo de Precisou, Tá Pronto' }
+      : { title: 'Confirme seu e-mail', hello: 'Olá', intro: 'Para ativar sua conta no Precisou, Tá Pronto e liberar as ferramentas, confirme seu e-mail:', action: 'Confirmar e-mail', expiry: 'O link expira em 24 horas. Se você não criou esta conta, ignore este e-mail.', subject: 'Confirme seu e-mail · Precisou, Tá Pronto', text: 'Confirme seu e-mail no Precisou, Tá Pronto' };
   const html = `
     <div style="font-family:Arial,sans-serif;line-height:1.5;color:#0f172a;max-width:560px">
       <h2 style="margin:0 0 12px">${copy.title}</h2>
@@ -37,7 +37,7 @@ export async function sendVerificationEmail(input: {
       <p>${copy.intro}</p>
       <p style="margin:24px 0"><a href="${input.verifyUrl}" style="display:inline-block;background:#0284c7;color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;font-weight:700">${copy.action}</a></p>
       <p style="color:#64748b;font-size:13px">${copy.expiry}</p>
-      <p style="color:#94a3b8;font-size:12px;margin-top:24px">Resolva Jato</p>
+      <p style="color:#94a3b8;font-size:12px;margin-top:24px">Precisou, Tá Pronto</p>
     </div>`;
   const result = await sendEmail({ to: input.to, subject: copy.subject, html, text: `${copy.text}: ${input.verifyUrl}` });
   if (!result.sent && process.env.NODE_ENV !== 'production') {

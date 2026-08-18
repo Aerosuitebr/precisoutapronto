@@ -1,4 +1,4 @@
-﻿import { formatCurrency } from '@/lib/formatters';
+import { formatCurrency } from '@/lib/formatters';
 import { withViralMessageBrand } from '@/lib/viral-loop';
 import { buildStructuredWhatsAppMessage } from '@/lib/whatsapp/message-format';
 
@@ -15,7 +15,7 @@ export function buildProfissionalWhatsAppNotifyText(input: {
   status: 'approved' | 'declined';
   feedbackCliente?: string | null;
   publicUrl: string;
-  /** Inclui marca Resolva Jato (plano grátis do profissional). */
+  /** Inclui marca Precisou, Tá Pronto (plano grátis do profissional). */
   branded?: boolean;
 }) {
   const base = buildStructuredWhatsAppMessage({

@@ -4,7 +4,7 @@ export const JATO_GAMES = {
   description:
     'Top jogos com setup sugerido, guias de hardware, consoles e lojas confiáveis. Conteúdo evergreen para a rapaziada gamer.',
   path: '/games',
-  poweredBy: 'Resolva Jato',
+  poweredBy: 'Precisou, Tá Pronto',
   poweredByHref: '/',
   publishedAt: '2026-07-29',
   nav: [

@@ -13,7 +13,7 @@ function evolutionHeaders(apiKey: string) {
   };
 }
 
-/** Status + QR da Evolution própria do Resolva Jato. */
+/** Status + QR da Evolution própria do Precisou, Tá Pronto. */
 export async function GET() {
   const provider = getWhatsAppProvider();
   const evolution = getEvolutionConfig();
@@ -81,7 +81,7 @@ export async function GET() {
   }
 }
 
-/** Cria a instância Evolution do Resolva Jato se ainda não existir. */
+/** Cria a instância Evolution do Precisou, Tá Pronto se ainda não existir. */
 export async function POST() {
   const evolution = getEvolutionConfig();
   if (!evolution.enabled || !evolution.baseUrl || !evolution.apiKey) {

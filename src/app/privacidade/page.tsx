@@ -3,20 +3,20 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Privacidade',
-  description: 'Entenda quais dados pessoais o Resolva Jato coleta, por que são tratados, como protegemos suas informações e quais são seus direitos.',
+  description: 'Entenda quais dados pessoais o Precisou, Tá Pronto coleta, por que são tratados, como protegemos suas informações e quais são seus direitos.',
   alternates: { canonical: '/privacidade' },
   openGraph: {
-    title: 'Privacidade | Resolva Jato',
-    description: 'Entenda quais dados pessoais o Resolva Jato coleta, por que são tratados, como protegemos suas informações e quais são seus direitos.',
+    title: 'Privacidade | Precisou, Tá Pronto',
+    description: 'Entenda quais dados pessoais o Precisou, Tá Pronto coleta, por que são tratados, como protegemos suas informações e quais são seus direitos.',
     url: '/privacidade'
   }
 };
 
 export default function PrivacidadePage() {
   return (
-    <LegalPage title="Privacidade" subtitle="Transparência sobre dados no Resolva Jato">
+    <LegalPage title="Privacidade" subtitle="Transparência sobre dados no Precisou, Tá Pronto">
       <p>
-        O Resolva Jato (<strong>resolvajato.com.br</strong>) é operado pela Aerosuite. Coletamos apenas
+        O Precisou, Tá Pronto (<strong>resolvajato.com.br</strong>) é operado pela Aerosuite. Coletamos apenas
         os dados necessários para criar e proteger sua conta: nome, e-mail, senha (armazenada com hash),
         e sinais de segurança (IP, dispositivo e logs de auditoria) para prevenir abuso.
       </p>

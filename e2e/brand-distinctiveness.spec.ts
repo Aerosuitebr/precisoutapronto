@@ -15,15 +15,14 @@ test.describe('brand distinctiveness', () => {
   });
 
   test('official brand page has unique entity signals', async ({ page }) => {
-    await page.goto('/resolva-jato');
-    await expect(page.locator('h1')).toHaveText('Resolva Jato: site oficial');
+    await page.goto('/precisou-ta-pronto');
+    await expect(page.locator('h1')).toHaveText('Precisou? Tá Pronto! Site oficial');
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/resolva-jato$/);
-    await expect(page.getByText('Não somos uma empresa de cobrança de dívidas')).toBeVisible();
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/precisou-ta-pronto$/);
+    await expect(page.getByText(/resolvajato\.com\.br permanece válido/)).toBeVisible();
     const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
     expect(schemas.join('\n')).toContain('AboutPage');
-    expect(schemas.join('\n')).toContain('ResolvaJato');
-    expect(schemas.join('\n')).toContain('Ferramentas online que resolvem de verdade');
+    expect(schemas.join('\n')).toContain('Precisou? Tá Pronto!');
   });
 
   test('quality page documents test and privacy commitments', async ({ page }) => {

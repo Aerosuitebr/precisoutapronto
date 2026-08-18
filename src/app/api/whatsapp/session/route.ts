@@ -79,7 +79,7 @@ export async function POST(request: Request) {
 
 /**
  * Envia mensagem com a sessão do profissional e desconecta.
- * No plano grátis a referência Resolva Jato é forçada no servidor (não editável no Zap).
+ * No plano grátis a referência Precisou, Tá Pronto é forçada no servidor (não editável no Zap).
  */
 export async function PUT(request: Request) {
   try {

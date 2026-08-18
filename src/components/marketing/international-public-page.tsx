@@ -15,9 +15,9 @@ const shared = {
 const content = {
   en: {
     about: {
-      title: 'About Resolva Jato', subtitle: 'Practical tools without bureaucracy',
+      title: 'About Precisou, Tá Pronto', subtitle: 'Practical tools without bureaucracy',
       paragraphs: [
-        'Resolva Jato is a Brazilian platform operated by Aerosuite. It brings together tools for independent professionals, students and small businesses, including résumés, receipts, contracts, proposals and more.',
+        'Precisou, Tá Pronto is a Brazilian platform operated by Aerosuite. It brings together tools for independent professionals, students and small businesses, including résumés, receipts, contracts, proposals and more.',
         'You can start without providing a credit card. International tools are adapted to their language and clearly identify features or standards that are specific to Brazil.',
         'Our guides and templates are written for practical use and reviewed before publication. Legal, employment, tax and accounting materials include limitations whenever individual professional advice may be required.'
       ]
@@ -25,23 +25,23 @@ const content = {
     contact: {
       title: 'Contact', subtitle: 'Support, security and privacy',
       paragraphs: [
-        'Resolva Jato is a product operated by Aerosuite.',
+        'Precisou, Tá Pronto is a product operated by Aerosuite.',
         'For product support, security reports, privacy requests or corrections, email contato@resolvajato.com.br.',
         'Official website: https://resolvajato.com.br'
       ]
     },
     terms: {
-      title: 'Terms of use', subtitle: 'Clear rules for using Resolva Jato',
+      title: 'Terms of use', subtitle: 'Clear rules for using Precisou, Tá Pronto',
       paragraphs: [
         'By creating an account, you agree to use the platform in good faith and not for spam, fraud, social engineering or attempts to bypass security limits.',
-        'Free tools may have usage allowances. Documents and information you generate remain your legal and professional responsibility. Resolva Jato provides templates and productivity tools, not individualized legal, tax, accounting or employment advice.',
+        'Free tools may have usage allowances. Documents and information you generate remain your legal and professional responsibility. Precisou, Tá Pronto provides templates and productivity tools, not individualized legal, tax, accounting or employment advice.',
         'We may suspend accounts that violate these terms or put other users at risk. The service may evolve, and we will communicate material changes whenever reasonably possible.'
       ]
     },
     privacy: {
       title: 'Privacy', subtitle: 'Transparency about your data',
       paragraphs: [
-        'Resolva Jato is operated by Aerosuite. We collect the data needed to create and protect your account, including name, email, password hash and security signals such as IP address, device and audit logs.',
+        'Precisou, Tá Pronto is operated by Aerosuite. We collect the data needed to create and protect your account, including name, email, password hash and security signals such as IP address, device and audit logs.',
         'We do not sell personal data. Content created in our tools may be associated with your account so the service can save and restore it. You may request account deletion through our contact email.',
         'We use essential session and device cookies and Cloudflare Turnstile to protect against automated abuse. Optional analytics are used only with consent. We do not use third-party advertising pixels on this site.'
       ]
@@ -49,9 +49,9 @@ const content = {
   },
   es: {
     about: {
-      title: 'Acerca de Resolva Jato', subtitle: 'Herramientas prácticas sin burocracia',
+      title: 'Acerca de Precisou, Tá Pronto', subtitle: 'Herramientas prácticas sin burocracia',
       paragraphs: [
-        'Resolva Jato es una plataforma brasileña operada por Aerosuite. Reúne herramientas para profesionales independientes, estudiantes y pequeños negocios, como currículums, recibos, contratos y propuestas.',
+        'Precisou, Tá Pronto es una plataforma brasileña operada por Aerosuite. Reúne herramientas para profesionales independientes, estudiantes y pequeños negocios, como currículums, recibos, contratos y propuestas.',
         'Puedes comenzar sin proporcionar una tarjeta. Las herramientas internacionales se adaptan a su idioma e identifican claramente las funciones o normas específicas de Brasil.',
         'Nuestros contenidos y modelos se preparan para un uso práctico y se revisan antes de publicarse. Los materiales jurídicos, laborales, fiscales y contables indican sus límites cuando puede ser necesaria una consulta profesional individual.'
       ]
@@ -59,23 +59,23 @@ const content = {
     contact: {
       title: 'Contacto', subtitle: 'Soporte, seguridad y privacidad',
       paragraphs: [
-        'Resolva Jato es un producto operado por Aerosuite.',
+        'Precisou, Tá Pronto es un producto operado por Aerosuite.',
         'Para soporte, informes de seguridad, solicitudes de privacidad o correcciones, escribe a contato@resolvajato.com.br.',
         'Sitio oficial: https://resolvajato.com.br'
       ]
     },
     terms: {
-      title: 'Términos de uso', subtitle: 'Reglas claras para utilizar Resolva Jato',
+      title: 'Términos de uso', subtitle: 'Reglas claras para utilizar Precisou, Tá Pronto',
       paragraphs: [
         'Al crear una cuenta, aceptas utilizar la plataforma de buena fe y no emplearla para spam, fraude, ingeniería social ni intentos de eludir límites de seguridad.',
-        'Las herramientas gratuitas pueden tener límites de uso. Los documentos y datos que generes son de tu responsabilidad jurídica y profesional. Resolva Jato ofrece modelos y productividad, no asesoramiento jurídico, fiscal, contable o laboral individual.',
+        'Las herramientas gratuitas pueden tener límites de uso. Los documentos y datos que generes son de tu responsabilidad jurídica y profesional. Precisou, Tá Pronto ofrece modelos y productividad, no asesoramiento jurídico, fiscal, contable o laboral individual.',
         'Podemos suspender cuentas que incumplan estos términos o pongan en riesgo a otros usuarios. El servicio puede evolucionar y comunicaremos los cambios importantes cuando sea razonablemente posible.'
       ]
     },
     privacy: {
       title: 'Privacidad', subtitle: 'Transparencia sobre tus datos',
       paragraphs: [
-        'Resolva Jato es operado por Aerosuite. Recopilamos los datos necesarios para crear y proteger tu cuenta, como nombre, correo, hash de contraseña y señales de seguridad como dirección IP, dispositivo y registros de auditoría.',
+        'Precisou, Tá Pronto es operado por Aerosuite. Recopilamos los datos necesarios para crear y proteger tu cuenta, como nombre, correo, hash de contraseña y señales de seguridad como dirección IP, dispositivo y registros de auditoría.',
         'No vendemos datos personales. El contenido creado en las herramientas puede asociarse a tu cuenta para guardarlo y restaurarlo. Puedes solicitar la eliminación de tu cuenta mediante nuestro correo de contacto.',
         'Utilizamos cookies esenciales de sesión y dispositivo y Cloudflare Turnstile para evitar abusos automatizados. Los análisis opcionales solo se utilizan con consentimiento. No usamos píxeles publicitarios de terceros.'
       ]
@@ -120,21 +120,21 @@ export function InternationalPlansPage({ locale }: { locale: InternationalLocale
   const en = locale === 'en';
   const t = en ? {
     title: 'Start free. Remove the brand when you need to.', subtitle: 'Free trial · Optional Premium',
-    description: 'Free PDFs include a discreet Resolva Jato footer. Premium removes the logo and footer for 30 days.',
+    description: 'Free PDFs include a discreet Precisou, Tá Pronto footer. Premium removes the logo and footer for 30 days.',
     free: 'Free', freeNote: 'Try the service with no card', create: 'Start with free tools',
-    premiumNote: 'Clean documents without Resolva Jato references', period: 'for 30 days',
+    premiumNote: 'Clean documents without Precisou, Tá Pronto references', period: 'for 30 days',
     price: 'US$1.00', payment: 'International checkout securely processed by Stripe.',
     buy: 'Continue securely with Stripe',
-    freeItems: ['Professional PDF documents', 'Save and download without a usage limit', 'Resolva Jato footer and logo', 'Public resource search'],
+    freeItems: ['Professional PDF documents', 'Save and download without a usage limit', 'Precisou, Tá Pronto footer and logo', 'Public resource search'],
     paidItems: ['PDF without footer or logo', 'WhatsApp and email without brand references', '30 days of Premium access', 'One-time payment without automatic renewal']
   } : {
     title: 'Comienza gratis. Elimina la marca cuando lo necesites.', subtitle: 'Prueba gratis · Premium opcional',
-    description: 'Los PDF gratuitos incluyen un pie discreto de Resolva Jato. Premium elimina el logotipo y el pie durante 30 días.',
+    description: 'Los PDF gratuitos incluyen un pie discreto de Precisou, Tá Pronto. Premium elimina el logotipo y el pie durante 30 días.',
     free: 'Gratis', freeNote: 'Prueba el servicio sin tarjeta', create: 'Empezar con herramientas gratis',
-    premiumNote: 'Documentos limpios sin referencias a Resolva Jato', period: 'por 30 días',
+    premiumNote: 'Documentos limpios sin referencias a Precisou, Tá Pronto', period: 'por 30 días',
     price: 'US$1,00', payment: 'Checkout internacional procesado de forma segura por Stripe.',
     buy: 'Continuar de forma segura con Stripe',
-    freeItems: ['Documentos profesionales en PDF', 'Guardado y descargas sin límite de uso', 'Pie y logotipo de Resolva Jato', 'Buscador público de recursos'],
+    freeItems: ['Documentos profesionales en PDF', 'Guardado y descargas sin límite de uso', 'Pie y logotipo de Precisou, Tá Pronto', 'Buscador público de recursos'],
     paidItems: ['PDF sin pie ni logotipo', 'WhatsApp y correo sin referencias de marca', '30 días de acceso Premium', 'Pago único sin renovación automática']
   };
   return (

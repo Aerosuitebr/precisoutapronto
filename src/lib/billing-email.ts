@@ -12,15 +12,15 @@ export async function sendPremiumConfirmationEmail(input: {
   }).format(input.expiresAt);
   const copy = input.locale === 'es'
     ? {
-        subject: 'Tu acceso Premium está activo · Resolva Jato',
+        subject: 'Tu acceso Premium está activo · Precisou, Tá Pronto',
         title: '¡Pago confirmado!',
-        text: `Tu acceso Premium está activo hasta el ${expires}. Ya puedes crear documentos sin la marca Resolva Jato.`,
+        text: `Tu acceso Premium está activo hasta el ${expires}. Ya puedes crear documentos sin la marca Precisou, Tá Pronto.`,
         action: 'Abrir mi cuenta'
       }
     : {
-        subject: 'Your Premium access is active · Resolva Jato',
+        subject: 'Your Premium access is active · Precisou, Tá Pronto',
         title: 'Payment confirmed!',
-        text: `Your Premium access is active until ${expires}. You can now create documents without Resolva Jato branding.`,
+        text: `Your Premium access is active until ${expires}. You can now create documents without Precisou, Tá Pronto branding.`,
         action: 'Open my account'
       };
   return sendEmail({
@@ -31,7 +31,7 @@ export async function sendPremiumConfirmationEmail(input: {
       <h2 style="margin:0 0 12px">${copy.title}</h2>
       <p>${copy.text}</p>
       <p style="margin:24px 0"><a href="${accountUrl}" style="display:inline-block;background:#0284c7;color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;font-weight:700">${copy.action}</a></p>
-      <p style="color:#94a3b8;font-size:12px;margin-top:24px">Resolva Jato</p>
+      <p style="color:#94a3b8;font-size:12px;margin-top:24px">Precisou, Tá Pronto</p>
     </div>`
   });
 }

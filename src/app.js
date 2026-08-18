@@ -256,7 +256,7 @@ function normalize(value) {
 }
 
 function getInitials(name) {
-  return String(name || 'Resolva Jato')
+  return String(name || 'Precisou, Tá Pronto')
     .trim()
     .split(/\s+/)
     .slice(0, 2)
@@ -539,7 +539,7 @@ function openAuth() {
 function setAuthenticated(payload = {}) {
   state.authenticated = true;
   state.user = {
-    name: payload.name || document.querySelector('#auth-name')?.value || 'Usuário Resolva Jato',
+    name: payload.name || document.querySelector('#auth-name')?.value || 'Usuário Precisou, Tá Pronto',
     email: payload.email || document.querySelector('#auth-email')?.value || 'demo@resolvajato.local',
     planId: payload.planId || 'free'
   };
@@ -618,9 +618,9 @@ function landingTemplate() {
   return `
     <div class="landing-shell">
       <header class="landing-header">
-        <a class="brand" href="#topo" aria-label="Resolva Jato">
+        <a class="brand" href="#topo" aria-label="Precisou, Tá Pronto">
           <span class="brand-mark">RJ</span>
-          <span><strong>Resolva Jato</strong><small>Busca, documentos e execução em segundos</small></span>
+          <span><strong>Precisou, Tá Pronto</strong><small>Busca, documentos e execução em segundos</small></span>
         </a>
         <nav aria-label="Navegação comercial">
           <a href="#previews">Previews</a>
@@ -633,7 +633,7 @@ function landingTemplate() {
       <main>
         <section class="hero-sales" id="topo">
           <div class="hero-sales__copy">
-            <p class="eyebrow">Resolva Jato OS</p>
+            <p class="eyebrow">Precisou, Tá Pronto OS</p>
             <h1>Uma central bonita, rápida e pronta para transformar tarefas soltas em entregas reais.</h1>
             <p>
               Home pública para vender a solução, login para acessar o ambiente e um workspace interno com menu lateral,
@@ -644,7 +644,7 @@ function landingTemplate() {
               <a class="secondary-action" href="#previews">Ver prévias</a>
             </div>
           </div>
-          <div class="hero-product-preview" aria-label="Preview do produto Resolva Jato">
+          <div class="hero-product-preview" aria-label="Preview do produto Precisou, Tá Pronto">
             <div class="mini-sidebar">
               <span class="brand-mark">RJ</span>
               <strong>Workspace</strong>
@@ -699,7 +699,7 @@ function landingTemplate() {
       </main>
 
       <footer class="landing-footer">
-        <strong>Resolva Jato</strong>
+        <strong>Precisou, Tá Pronto</strong>
         <span>Performance, clareza e conversão em uma experiência só.</span>
       </footer>
     </div>
@@ -712,7 +712,7 @@ function appTemplate() {
       <aside class="sidebar" aria-label="Menu principal">
         <div class="sidebar-brand">
           <span class="brand-mark">RJ</span>
-          <div><strong>Resolva Jato</strong><small>Suite operacional</small></div>
+          <div><strong>Precisou, Tá Pronto</strong><small>Suite operacional</small></div>
         </div>
         <div class="sidebar-profile">
           <span class="user-avatar">${getInitials(state.user.name)}</span>
@@ -883,7 +883,7 @@ function documentPage() {
         </div>
         <div class="preview-stage">
           <article class="document-preview" style="transform: scale(${state.zoom / 100}) rotate(${state.rotation}deg)">
-            ${proposal.logo ? `<img class="proposal-logo-preview" src="${proposal.logo}" alt="Logo da proposta" />` : '<span>Resolva Jato</span>'}
+            ${proposal.logo ? `<img class="proposal-logo-preview" src="${proposal.logo}" alt="Logo da proposta" />` : '<span>Precisou, Tá Pronto</span>'}
             <h3>${state.document.title}</h3>
             <p>Cliente: <strong>${state.document.client}</strong></p>
             <p>Valor: <strong>${state.document.value}</strong></p>

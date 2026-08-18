@@ -107,7 +107,7 @@ export function ResultShareCard({
   }
 
   function handleWhatsApp() {
-    const text = `${title} · ${highlightLabel}: ${highlightValue}\n\nVeja o resultado e crie o seu grátis no Resolva Jato:\n${shareUrl}`;
+    const text = `${title} · ${highlightLabel}: ${highlightValue}\n\nVeja o resultado e crie o seu grátis no Precisou, Tá Pronto:\n${shareUrl}`;
     trackEvent('share_result', {
       method: 'whatsapp_link',
       tool_path: toolPath,
@@ -136,7 +136,7 @@ export function ResultShareCard({
       const blob = await renderToBlob();
       if (!blob) throw new Error('sem blob');
       const file = new File([blob], `${fileNameHint}-resolvajato.png`, { type: 'image/png' });
-      const shareText = `${title} · Resolva Jato\nCalcule o seu grátis: ${shareUrl}`;
+      const shareText = `${title} · Precisou, Tá Pronto\nCalcule o seu grátis: ${shareUrl}`;
       const nav = navigator as Navigator & {
         canShare?: (data: { files?: File[]; text?: string }) => boolean;
         share?: (data: {
@@ -267,7 +267,7 @@ export function ResultShareCard({
             >
               RJ
             </div>
-            <span style={{ fontSize: 34, fontWeight: 800, letterSpacing: -0.5 }}>Resolva Jato</span>
+            <span style={{ fontSize: 34, fontWeight: 800, letterSpacing: -0.5 }}>Precisou, Tá Pronto</span>
           </div>
 
           <div style={{ marginTop: 64 }}>

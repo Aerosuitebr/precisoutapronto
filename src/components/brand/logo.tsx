@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import rjClaro from '@/assets/RJ_claro.png';
-import rjEscuro from '@/assets/RJ_escuro.png';
+import { BRAND_DISPLAY_NAME, BRAND_LOGO_DARK, BRAND_LOGO_LIGHT } from '@/lib/brand';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
@@ -11,12 +10,14 @@ interface LogoProps {
 
 export function Logo({ collapsed = false, variant = 'marketing', className }: LogoProps) {
   const isHero = variant === 'hero' || variant === 'footer';
-  const src = isHero ? rjClaro : rjEscuro;
+  const src = isHero ? BRAND_LOGO_DARK : BRAND_LOGO_LIGHT;
 
   return (
     <Image
       src={src}
-      alt="Resolva Jato — ferramentas online que resolvem de verdade"
+      alt={`${BRAND_DISPLAY_NAME} — documentos, cálculos e ferramentas online`}
+      width={2048}
+      height={768}
       priority
       className={cn(
         'w-auto object-contain object-left',

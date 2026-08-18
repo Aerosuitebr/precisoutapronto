@@ -17,7 +17,7 @@ import { cn } from '@/lib/utils';
 const ASAAS_CHECKOUT = '/checkout?method=asaas';
 
 const BENEFITS = [
-  'PDF sem rodapé e sem logo Resolva Jato',
+  'PDF sem rodapé e sem logo Precisou, Tá Pronto',
   'WhatsApp e e-mail sem referências',
   '30 dias de vigência claros na conta'
 ] as const;
@@ -32,12 +32,12 @@ function BrandComparison() {
         </div>
         <p className="mt-2 text-sm font-bold text-white">Com referência</p>
         <p className="mt-1 text-xs leading-5 text-slate-300">
-          PDF, WhatsApp e e-mail saem com a marca Resolva Jato no rodapé.
+          PDF, WhatsApp e e-mail saem com a marca Precisou, Tá Pronto no rodapé.
         </p>
         <div className="mt-3 rounded-xl border border-dashed border-white/15 bg-slate-950/40 px-3 py-2.5">
           <p className="truncate text-[10px] font-semibold text-slate-400">Seu documento · cliente</p>
           <p className="mt-1.5 text-[10px] leading-4 text-slate-500">
-            Gerado com Resolva Jato · resolvajato.com.br
+            Gerado com Precisou? Tá Pronto! · precisoutapronto.com.br
           </p>
         </div>
       </div>
@@ -49,7 +49,7 @@ function BrandComparison() {
         </div>
         <p className="mt-2 text-sm font-bold text-white">Sem referência</p>
         <p className="mt-1 text-xs leading-5 text-emerald-50/90">
-          Documento limpo: só a sua marca profissional, sem menção ao Resolva Jato.
+          Documento limpo: só a sua marca profissional, sem menção ao Precisou, Tá Pronto.
         </p>
         <div className="mt-3 rounded-xl border border-emerald-300/20 bg-slate-950/40 px-3 py-2.5">
           <p className="truncate text-[10px] font-semibold text-slate-300">Seu documento · cliente</p>
@@ -153,7 +153,7 @@ export function RemoveBrandingUpsell({
           Premium ativo
         </span>
         <h2 className="mt-4 text-xl font-black tracking-tight sm:text-2xl">
-          Documentos sem marca Resolva Jato.
+          Documentos sem marca Precisou, Tá Pronto.
         </h2>
         <p className="mt-2 text-sm leading-6 text-slate-300">
           Vigência até{' '}
@@ -234,7 +234,7 @@ export function RemoveBrandingUpsell({
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300">
             Por {premium.priceLabel}
-            {premium.period}, gere documentos profissionais sem rodapé nem logo do Resolva Jato.
+            {premium.period}, gere documentos profissionais sem rodapé nem logo do Precisou, Tá Pronto.
           </p>
           <div className="mt-5">
             <BrandComparison />

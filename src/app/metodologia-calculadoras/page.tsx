@@ -4,7 +4,7 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Metodologia das calculadoras',
-  description: 'Hipóteses, limites e critérios usados nas calculadoras públicas do Resolva Jato.',
+  description: 'Hipóteses, limites e critérios usados nas calculadoras públicas do Precisou, Tá Pronto.',
   alternates: { canonical: '/metodologia-calculadoras' }
 };
 

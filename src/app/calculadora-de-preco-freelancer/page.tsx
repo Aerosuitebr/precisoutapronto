@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: 'Calculadora de preço para freelancer | Resolva Jato',
+    title: 'Calculadora de preço para freelancer | Precisou, Tá Pronto',
     description: 'Descubra quanto cobrar considerando custos, tempo, impostos e margem.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculadora de preço para freelancer | Resolva Jato',
+    title: 'Calculadora de preço para freelancer | Precisou, Tá Pronto',
     description: 'Descubra quanto cobrar considerando custos, tempo, impostos e margem.',
     images: [`${seo.path}/opengraph-image`]
   }

@@ -236,7 +236,7 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
                     Gere QR e Pix Copia e Cola no navegador, sem API bancária.
                     {publicAccess
                       ? ' Experimente agora. A 1ª geração é grátis sem conta; depois crie conta para continuar.'
-                      : ' No plano gratuito, o envio pode incluir referência ao Resolva Jato.'}
+                      : ' No plano gratuito, o envio pode incluir referência ao Precisou, Tá Pronto.'}
                   </p>
                 </div>
               </div>

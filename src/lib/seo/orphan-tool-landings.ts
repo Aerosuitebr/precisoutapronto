@@ -155,7 +155,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
     faqs: [
       {
         q: 'O PDF é enviado para um servidor?',
-        a: 'Não. O processamento acontece no seu navegador. O arquivo não sobe para a nuvem do Resolva Jato.'
+        a: 'Não. O processamento acontece no seu navegador. O arquivo não sobe para a nuvem do Precisou, Tá Pronto.'
       },
       {
         q: 'É grátis?',

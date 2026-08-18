@@ -23,14 +23,14 @@ const modalCopy = {
     bodyDefaultBefore: 'Crie uma conta gratuita ou faça login para continuar usando',
     bodyDefaultAfter: '.',
     tipTrialBefore:
-      'Você já usou as duas gerações livres. No plano gratuito, PDFs e WhatsApp saem com marca d\'água e referências ao Resolva Jato. Para retirar tudo, assine o Premium por',
+      'Você já usou as duas gerações livres. No plano gratuito, PDFs e WhatsApp saem com marca d\'água e referências ao Precisou, Tá Pronto. Para retirar tudo, assine o Premium por',
     tipDefault: 'Depois do cadastro ou login, você volta para a ferramenta e continua de onde parou.',
     signup: 'Criar conta grátis',
     login: 'Já tenho conta. Fazer login',
     dismissTrial: 'Fechar por agora',
     dismissDefault: 'Continuar navegando',
     fallbackTool: 'o recurso que você escolheu',
-    fallbackTools: 'as ferramentas do Resolva Jato',
+    fallbackTools: 'as ferramentas do Precisou, Tá Pronto',
     fallbackAccount: 'sua conta'
   },
   en: {
@@ -44,14 +44,14 @@ const modalCopy = {
     bodyDefaultBefore: 'Create a free account or sign in to keep using',
     bodyDefaultAfter: '.',
     tipTrialBefore:
-      'You already used the two free generations. On the free plan, PDFs and WhatsApp include a watermark and Resolva Jato references. To remove them, get Premium for',
+      'You already used the two free generations. On the free plan, PDFs and WhatsApp include a watermark and Precisou, Tá Pronto references. To remove them, get Premium for',
     tipDefault: 'After signup or login, you return to the tool and continue where you left off.',
     signup: 'Create free account',
     login: 'I already have an account. Sign in',
     dismissTrial: 'Close for now',
     dismissDefault: 'Keep browsing',
     fallbackTool: 'the tool you chose',
-    fallbackTools: 'Resolva Jato tools',
+    fallbackTools: 'Precisou, Tá Pronto tools',
     fallbackAccount: 'your account'
   },
   es: {
@@ -65,14 +65,14 @@ const modalCopy = {
     bodyDefaultBefore: 'Crea una cuenta gratuita o inicia sesion para seguir usando',
     bodyDefaultAfter: '.',
     tipTrialBefore:
-      'Ya usaste las dos generaciones libres. En el plan gratuito, los PDF y WhatsApp salen con marca de agua y referencias a Resolva Jato. Para quitarlas, suscribete al Premium por',
+      'Ya usaste las dos generaciones libres. En el plan gratuito, los PDF y WhatsApp salen con marca de agua y referencias a Precisou, Tá Pronto. Para quitarlas, suscribete al Premium por',
     tipDefault: 'Despues del registro o inicio de sesion, vuelves a la herramienta y continuas donde lo dejaste.',
     signup: 'Crear cuenta gratis',
     login: 'Ya tengo cuenta. Iniciar sesion',
     dismissTrial: 'Cerrar por ahora',
     dismissDefault: 'Seguir navegando',
     fallbackTool: 'el recurso que elegiste',
-    fallbackTools: 'las herramientas de Resolva Jato',
+    fallbackTools: 'las herramientas de Precisou, Tá Pronto',
     fallbackAccount: 'tu cuenta'
   }
 } as const;

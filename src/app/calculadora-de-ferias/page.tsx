@@ -15,14 +15,14 @@ export const metadata: Metadata = {
   description: seo.description,
   alternates: { canonical: seo.path },
   openGraph: {
-    title: 'Calculadora de férias grátis | Resolva Jato',
+    title: 'Calculadora de férias grátis | Precisou, Tá Pronto',
     description: 'Estime férias, 1/3 constitucional e abono pecuniário sem cadastro.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculadora de férias grátis | Resolva Jato',
+    title: 'Calculadora de férias grátis | Precisou, Tá Pronto',
     description: 'Estime férias, 1/3 constitucional e abono pecuniário sem cadastro.',
     images: [`${seo.path}/opengraph-image`]
   }

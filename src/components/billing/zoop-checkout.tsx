@@ -352,7 +352,7 @@ export function ZoopCheckout({ onApproved }: ZoopCheckoutProps) {
             )}
           </button>
           <p className="text-[11px] leading-4 text-slate-500">
-            Os dados do cartão são enviados criptografados direto para a Zoop. O Resolva Jato não
+            Os dados do cartão são enviados criptografados direto para a Zoop. O Precisou, Tá Pronto não
             armazena o número do cartão.
           </p>
         </div>

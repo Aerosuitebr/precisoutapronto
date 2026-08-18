@@ -13,22 +13,22 @@ const EMBEDS = [
   {
     id: 'badge-geral',
     title: 'Badge geral',
-    html: `<a href="${partnerUtm('/', 'embed', 'badge_geral')}" rel="noopener noreferrer"><img src="https://resolvajato.com.br/badges/ferramentas-gratis.svg" alt="Ferramentas grátis · Resolva Jato" width="220" height="40" /></a>`
+    html: `<a href="${partnerUtm('/', 'embed', 'badge_geral')}" rel="noopener noreferrer"><img src="https://resolvajato.com.br/badges/ferramentas-gratis.svg" alt="Ferramentas grátis · Precisou, Tá Pronto" width="220" height="40" /></a>`
   },
   {
     id: 'badge-feito',
     title: 'Badge “feito com”',
-    html: `<a href="${partnerUtm('/', 'embed', 'badge_feito')}" rel="noopener noreferrer"><img src="https://resolvajato.com.br/badges/feito-com-resolva-jato.svg" alt="Feito com Resolva Jato" width="200" height="40" /></a>`
+    html: `<a href="${partnerUtm('/', 'embed', 'badge_feito')}" rel="noopener noreferrer"><img src="https://resolvajato.com.br/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width="200" height="40" /></a>`
   },
   {
     id: 'rescisao',
     title: 'Bloco · calculadora de rescisão',
-    html: `<p><strong>Calculadora de rescisão grátis:</strong> estime saldo, férias, 13º, aviso e FGTS no navegador. <a href="${partnerUtm('/calculadora-de-rescisao', 'embed', 'rescisao')}" rel="noopener noreferrer">Abrir no Resolva Jato</a>.</p>`
+    html: `<p><strong>Calculadora de rescisão grátis:</strong> estime saldo, férias, 13º, aviso e FGTS no navegador. <a href="${partnerUtm('/calculadora-de-rescisao', 'embed', 'rescisao')}" rel="noopener noreferrer">Abrir no Precisou, Tá Pronto</a>.</p>`
   },
   {
     id: 'recibos',
     title: 'Bloco · gerador de recibos',
-    html: `<p><strong>Gerador de recibo online grátis:</strong> crie recibos de pagamento, serviço, Pix e aluguel e baixe em PDF. <a href="${partnerUtm('/recibos', 'embed', 'recibos')}" rel="noopener noreferrer">Criar recibo no Resolva Jato</a>.</p>`
+    html: `<p><strong>Gerador de recibo online grátis:</strong> crie recibos de pagamento, serviço, Pix e aluguel e baixe em PDF. <a href="${partnerUtm('/recibos', 'embed', 'recibos')}" rel="noopener noreferrer">Criar recibo no Precisou, Tá Pronto</a>.</p>`
   },
   {
     id: 'mei-pix',
@@ -83,7 +83,7 @@ const EMBEDS = [
   {
     id: 'markdown',
     title: 'Markdown (README / fóruns)',
-    html: `[![Ferramentas grátis · Resolva Jato](https://resolvajato.com.br/badges/ferramentas-gratis.svg)](${partnerUtm('/', 'embed', 'markdown')})`
+    html: `[![Ferramentas grátis · Precisou, Tá Pronto](https://resolvajato.com.br/badges/ferramentas-gratis.svg)](${partnerUtm('/', 'embed', 'markdown')})`
   }
 ] as const;
 
@@ -132,7 +132,7 @@ export function EmbedClient() {
               medirmos o impacto da parceria.
             </p>
             <p className="mt-4 text-sm text-slate-500">
-              Regras: use o link canônico, não altere o destino, e não apresente o Resolva Jato como serviço pago
+              Regras: use o link canônico, não altere o destino, e não apresente o Precisou, Tá Pronto como serviço pago
               obrigatório. Dúvidas: <Link href="/imprensa" className="font-semibold text-sky-700">imprensa</Link>.
             </p>
           </div>
@@ -142,7 +142,7 @@ export function EmbedClient() {
             <p className="text-sm font-bold text-emerald-950">Prévia dos badges</p>
             <div className="mt-4 flex flex-wrap gap-4">
               <Image src="/badges/ferramentas-gratis.svg" alt="Ferramentas grátis" width={220} height={40} />
-              <Image src="/badges/feito-com-resolva-jato.svg" alt="Feito com Resolva Jato" width={200} height={40} />
+              <Image src="/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width={200} height={40} />
             </div>
           </div>
           {EMBEDS.map((item) => (

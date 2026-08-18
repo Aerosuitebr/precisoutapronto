@@ -41,7 +41,7 @@ export function toWhatsAppNumber(phone: string) {
  * - Instância: WHATSAPP_INSTANCE (padrão: default)
  */
 export function getEvolutionConfig() {
-  // Preferência: stack próprio do Resolva Jato (não depende do Aerosuite).
+  // Preferência: stack próprio do Precisou, Tá Pronto (não depende do Aerosuite).
   const baseUrl = firstEnv('EVOLUTION_API_URL', 'WHATSAPP_API_URL').replace(/\/$/, '');
 
   const apiKey = firstEnv('WHATSAPP_API_TOKEN', 'EVOLUTION_API_KEY', 'WHATSAPP_API_KEY');

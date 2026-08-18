@@ -52,12 +52,12 @@ export async function createStripePremiumCheckout(input: {
     Number.isFinite(configuredAmount) && configuredAmount > 0 ? Math.round(configuredAmount) : 100;
   const localized = locale === 'es'
     ? {
-        name: 'Resolva Jato Premium: documentos sin marca · 30 días',
-        description: 'PDF, WhatsApp y correo sin la marca Resolva Jato durante 30 días'
+        name: 'Precisou, Tá Pronto Premium: documentos sin marca · 30 días',
+        description: 'PDF, WhatsApp y correo sin la marca Precisou, Tá Pronto durante 30 días'
       }
     : locale === 'en' ? {
-        name: 'Resolva Jato Premium: brand-free documents · 30 days',
-        description: 'PDFs, WhatsApp and email without Resolva Jato branding for 30 days'
+        name: 'Precisou, Tá Pronto Premium: brand-free documents · 30 days',
+        description: 'PDFs, WhatsApp and email without Precisou, Tá Pronto branding for 30 days'
       }
     : {
         name: product.title,

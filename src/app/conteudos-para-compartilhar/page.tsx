@@ -8,7 +8,7 @@ import { CopyContentScriptButton } from '@/components/marketing/copy-content-scr
 const PATH = '/conteudos-para-compartilhar';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Ferramentas e conteúdos para compartilhar | Resolva Jato' },
+  title: { absolute: 'Ferramentas e conteúdos para compartilhar | Precisou, Tá Pronto' },
   description: 'Simuladores, checklists e modelos úteis para compartilhar no WhatsApp, Instagram, TikTok e LinkedIn.',
   alternates: { canonical: PATH },
   openGraph: { title: 'Conteúdos úteis que terminam em uma ferramenta', description: 'Calcule, gere, compartilhe e leve a pessoa para uma ação prática.', url: PATH }
@@ -32,7 +32,7 @@ const seasonal = [
 ] as const;
 
 const videoScripts = [
-  { title: 'Quanto recebe se for demitido hoje?', hook: 'Se você ganha R$ 3.500 e for demitido hoje, sabe quanto recebe?', body: 'Mostre salário, datas e modalidade entrando na calculadora. Revele o total e duas verbas que mais surpreendem.', href: '/calculadora-de-rescisao?utm_source=content_hub&utm_medium=video_script&utm_campaign=rescisao_3500', cta: 'Calcule o seu no Resolva Jato.', campaign: 'rescisao_3500' },
+  { title: 'Quanto recebe se for demitido hoje?', hook: 'Se você ganha R$ 3.500 e for demitido hoje, sabe quanto recebe?', body: 'Mostre salário, datas e modalidade entrando na calculadora. Revele o total e duas verbas que mais surpreendem.', href: '/calculadora-de-rescisao?utm_source=content_hub&utm_medium=video_script&utm_campaign=rescisao_3500', cta: 'Calcule o seu no Precisou, Tá Pronto.', campaign: 'rescisao_3500' },
   { title: 'Quanto cobrar para ganhar R$ 8 mil?', hook: 'Freelancer: faturar R$ 8 mil não significa ganhar R$ 8 mil.', body: 'Preencha custos, horas faturáveis e margem. Mostre o preço mínimo por hora no Resultado Jato.', href: '/calculadora-de-preco-freelancer?utm_source=content_hub&utm_medium=video_script&utm_campaign=freela_8k', cta: 'Descubra seu preço mínimo.', campaign: 'freela_8k' },
   { title: 'Orçamento profissional no WhatsApp', hook: 'Seu cliente pediu preço no WhatsApp? Não mande só um número.', body: 'Mostre itens, validade, aprovação no celular e Pix no mesmo fluxo.', href: '/orcamento-com-pix?utm_source=content_hub&utm_medium=video_script&utm_campaign=orcamento_whatsapp', cta: 'Monte o orçamento grátis.', campaign: 'orcamento_whatsapp' },
   { title: 'MEI ou CLT no seu cenário', hook: 'R$ 6 mil como PJ vale mais que R$ 4 mil CLT?', body: 'Compare remuneração, benefícios, impostos e custos. Mostre a equivalência mensal do resultado.', href: '/mei-ou-clt?utm_source=content_hub&utm_medium=video_script&utm_campaign=mei_clt_6k', cta: 'Compare o seu cenário.', campaign: 'mei_clt_6k' },

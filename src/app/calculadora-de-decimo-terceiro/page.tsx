@@ -15,14 +15,14 @@ export const metadata: Metadata = {
   description: seo.description,
   alternates: { canonical: seo.path },
   openGraph: {
-    title: 'Calculadora de 13º salário grátis | Resolva Jato',
+    title: 'Calculadora de 13º salário grátis | Precisou, Tá Pronto',
     description: 'Estime o 13º proporcional por avos e as duas parcelas sem cadastro.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculadora de 13º salário grátis | Resolva Jato',
+    title: 'Calculadora de 13º salário grátis | Precisou, Tá Pronto',
     description: 'Estime o 13º proporcional por avos e as duas parcelas sem cadastro.',
     images: [`${seo.path}/opengraph-image`]
   }

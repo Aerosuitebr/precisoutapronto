@@ -15,8 +15,8 @@ const copy = {
     language: 'Language', title: 'My account', subtitle: 'Manage your access and Premium plan.',
     connected: 'Connected account', current: 'Current plan', free: 'Free', premium: 'Premium',
     verified: 'Email confirmed', pending: 'Email confirmation pending', tools: 'Open tools',
-    plans: 'View plans', premiumUntil: 'Premium access until', clean: 'Documents without the Resolva Jato brand.',
-    freeText: 'Your documents include a discreet Resolva Jato footer. Premium removes it for 30 days.',
+    plans: 'View plans', premiumUntil: 'Premium access until', clean: 'Documents without the Precisou, Tá Pronto brand.',
+    freeText: 'Your documents include a discreet Precisou, Tá Pronto footer. Premium removes it for 30 days.',
     payment: 'International Premium checkout is securely processed by Stripe.',
     checkout: 'Continue securely with Stripe · US$1.00'
   },
@@ -24,8 +24,8 @@ const copy = {
     language: 'Idioma', title: 'Mi cuenta', subtitle: 'Administra tu acceso y el plan Premium.',
     connected: 'Cuenta conectada', current: 'Plan actual', free: 'Gratis', premium: 'Premium',
     verified: 'Correo confirmado', pending: 'Confirmación de correo pendiente', tools: 'Abrir herramientas',
-    plans: 'Ver planes', premiumUntil: 'Acceso Premium hasta', clean: 'Documentos sin la marca Resolva Jato.',
-    freeText: 'Tus documentos incluyen un pie discreto de Resolva Jato. Premium lo elimina durante 30 días.',
+    plans: 'Ver planes', premiumUntil: 'Acceso Premium hasta', clean: 'Documentos sin la marca Precisou, Tá Pronto.',
+    freeText: 'Tus documentos incluyen un pie discreto de Precisou, Tá Pronto. Premium lo elimina durante 30 días.',
     payment: 'El checkout Premium internacional se procesa de forma segura con Stripe.',
     checkout: 'Continuar de forma segura con Stripe · US$1,00'
   }

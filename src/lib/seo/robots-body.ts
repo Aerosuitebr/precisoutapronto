@@ -65,7 +65,7 @@ export function buildRobotsBody(): string {
   }
 
   const lines = [
-    '# Resolva Jato · crawlers de busca e IA',
+    '# Precisou, Tá Pronto · crawlers de busca e IA',
     `# LLM context: ${base}/llms.txt`,
     'User-Agent: *',
     'Allow: /',

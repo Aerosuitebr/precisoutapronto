@@ -22,7 +22,7 @@ function appBaseUrl(request: Request) {
 /**
  * Envia o link ao cliente usando a sessão efêmera do profissional.
  * Requer WhatsApp já conectado (QR). Desconecta após o envio.
- * Marca Resolva Jato é aplicada no servidor conforme o plano.
+ * Marca Precisou, Tá Pronto é aplicada no servidor conforme o plano.
  */
 export async function POST(request: Request, context: RouteContext) {
   try {

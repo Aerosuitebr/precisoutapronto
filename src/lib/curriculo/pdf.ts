@@ -68,7 +68,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-/** Logo Resolva Jato no centro da página (marca d’água). */
+/** Logo Precisou, Tá Pronto no centro da página (marca d’água). */
 async function getWatermarkDataUrl(): Promise<{ dataUrl: string; aspect: number } | null> {
   if (cachedWatermark !== undefined) return cachedWatermark;
   if (typeof window === 'undefined') {

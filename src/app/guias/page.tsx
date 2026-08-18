@@ -11,14 +11,14 @@ export const metadata: Metadata = {
     'Conteúdo direto sobre recibos, contratos, currículos, rescisão, propostas, precificação e ferramentas digitais.',
   alternates: { canonical: '/guias' },
   openGraph: {
-    title: 'Guias práticos | Resolva Jato',
+    title: 'Guias práticos | Precisou, Tá Pronto',
     description: 'Respostas claras e ferramentas gratuitas para resolver tarefas do dia a dia.',
     url: '/guias',
     images: [{ url: '/guias/opengraph-image' }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Guias práticos | Resolva Jato',
+    title: 'Guias práticos | Precisou, Tá Pronto',
     description: 'Respostas claras e ferramentas gratuitas para resolver tarefas do dia a dia.',
     images: ['/guias/opengraph-image']
   }
@@ -34,7 +34,7 @@ export default function GuidesPage() {
         <section className="border-b border-slate-200 bg-white">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
             <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-sky-700">
-              <BookOpen className="h-4 w-4" /> Guias Resolva Jato
+              <BookOpen className="h-4 w-4" /> Guias Precisou, Tá Pronto
             </span>
             <h1 className="rj-display mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
               Orçamento, cobrança e Pix para quem presta serviços

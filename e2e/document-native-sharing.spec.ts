@@ -14,7 +14,7 @@ test('native share payload contains the public URL and no document body', () => 
 
   expect(payload).toEqual({
     title: 'Contrato de exemplo',
-    text: 'Veja este documento criado no Resolva Jato.',
+    text: 'Veja este documento criado no Precisou, Tá Pronto.',
     url: 'https://resolvajato.com.br/documento/public-token'
   });
   expect(JSON.stringify(payload)).not.toContain('answers');

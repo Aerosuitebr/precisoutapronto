@@ -1,7 +1,7 @@
 import { createOgImage, ogContentType, ogSize } from '@/lib/seo/og-image';
 
 export const runtime = 'edge';
-export const alt = 'Guias práticos do Resolva Jato';
+export const alt = 'Guias práticos do Precisou, Tá Pronto';
 export const size = ogSize;
 export const contentType = ogContentType;
 

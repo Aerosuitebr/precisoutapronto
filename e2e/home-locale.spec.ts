@@ -21,6 +21,6 @@ test.describe('Home locale gate', () => {
     expect(page.url()).not.toMatch(/\/en(\/|$)/);
 
     await expect(page.locator('html')).toHaveAttribute('lang', /pt/i);
-    await expect(page.getByText(/ferrament|orçamento|gratis|grátis|Resolva Jato/i).first()).toBeVisible();
+    await expect(page.getByText(/ferrament|orçamento|gratis|grátis|Precisou/i).first()).toBeVisible();
   });
 });

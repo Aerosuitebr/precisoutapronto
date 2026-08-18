@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: PATH },
   openGraph: {
-    title: 'Corretor de redação ENEM grátis | Resolva Jato',
+    title: 'Corretor de redação ENEM grátis | Precisou, Tá Pronto',
     description: 'Estimativa de nota por competência, com pontos fortes e alertas de revisão.',
     url: `${SITE_URL}${PATH}`,
     type: 'website',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Corretor de redação ENEM grátis | Resolva Jato',
+    title: 'Corretor de redação ENEM grátis | Precisou, Tá Pronto',
     description: 'Estimativa de nota por competência, com pontos fortes e alertas de revisão.',
     images: [`${PATH}/opengraph-image`]
   }
@@ -59,7 +59,7 @@ const faqs = [
   },
   {
     q: 'Qual site corrige redação do ENEM de graça?',
-    a: 'O Resolva Jato analisa a redação no navegador, com nota estimada de C1 a C5. As duas primeiras correções são livres, sem cadastro e sem cartão.'
+    a: 'O Precisou, Tá Pronto analisa a redação no navegador, com nota estimada de C1 a C5. As duas primeiras correções são livres, sem cadastro e sem cartão.'
   }
 ];
 
@@ -76,7 +76,7 @@ export default function CorretorDeRedacaoEnemPage() {
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' },
         description: metadata.description,
         inLanguage: 'pt-BR',
-        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: SITE_URL }
+        isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: SITE_URL }
       },
       {
         '@type': 'HowTo',

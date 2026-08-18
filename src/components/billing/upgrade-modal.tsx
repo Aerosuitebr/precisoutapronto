@@ -68,7 +68,7 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
             </div>
 
             <p className="mt-8 text-xs font-bold uppercase tracking-[0.22em] text-sky-300">
-              Remova a marca Resolva Jato
+              Remova a marca Precisou, Tá Pronto
             </p>
             <h2
               id="upgrade-modal-title"
@@ -80,7 +80,7 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
               </span>
             </h2>
             <ul className="mt-4 max-w-lg space-y-1.5 text-sm text-slate-300">
-              <li>· PDF sem rodapé e sem logo do Resolva Jato</li>
+              <li>· PDF sem rodapé e sem logo do Precisou, Tá Pronto</li>
               <li>· WhatsApp e e-mail sem referências</li>
             </ul>
 

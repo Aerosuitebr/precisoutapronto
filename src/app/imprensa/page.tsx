@@ -16,17 +16,17 @@ const SITE = getViralBaseUrl().replace(/\/$/, '') || BRAND_SITE;
 export const metadata: Metadata = {
   title: 'Imprensa e press kit',
   description:
-    'Informações oficiais sobre o Resolva Jato, fatos citáveis, materiais da marca e contato para imprensa e parceiros.',
+    'Informações oficiais sobre o Precisou, Tá Pronto, fatos citáveis, materiais da marca e contato para imprensa e parceiros.',
   alternates: { canonical: PATH },
   openGraph: {
-    title: 'Imprensa | Resolva Jato',
+    title: 'Imprensa | Precisou, Tá Pronto',
     description: 'Press kit, fatos citáveis e contato de mídia.',
     url: `${SITE}${PATH}`,
     images: [{ url: `${PATH}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Imprensa | Resolva Jato',
+    title: 'Imprensa | Precisou, Tá Pronto',
     description: 'Press kit, fatos citáveis e contato de mídia.',
     images: [`${PATH}/opengraph-image`]
   }
@@ -38,7 +38,7 @@ export default function ImprensaPage() {
     '@graph': [
       {
         '@type': 'AboutPage',
-        name: 'Imprensa · Resolva Jato',
+        name: 'Imprensa · Precisou, Tá Pronto',
         url: `${SITE}${PATH}`,
         description: metadata.description,
         isPartOf: { '@type': 'WebSite', name: BRAND_NAME, url: SITE },
@@ -55,9 +55,9 @@ export default function ImprensaPage() {
   };
 
   const shortBoiler =
-    'Resolva Jato é uma plataforma brasileira de ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador.';
+    'Precisou, Tá Pronto é uma plataforma brasileira de ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador.';
   const longBoiler =
-    'O Resolva Jato (resolvajato.com.br), operado pela Aerosuite, oferece ferramentas práticas para MEIs, freelancers, estudantes e pequenos negócios: orçamento com Pix, currículo, recibo, proposta, contrato, calculadoras trabalhistas, corretor de redação ENEM, editor de PDF e referências ABNT. O uso começa com duas gerações livres, sem cartão.';
+    'O Precisou, Tá Pronto (resolvajato.com.br), operado pela Aerosuite, oferece ferramentas práticas para MEIs, freelancers, estudantes e pequenos negócios: orçamento com Pix, currículo, recibo, proposta, contrato, calculadoras trabalhistas, corretor de redação ENEM, editor de PDF e referências ABNT. O uso começa com duas gerações livres, sem cartão.';
 
   return (
     <>
@@ -90,7 +90,7 @@ export default function ImprensaPage() {
 
         <div className="mx-auto max-w-3xl space-y-10 px-4 py-12 sm:px-6">
           <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-            <h2 className="text-xl font-bold text-slate-950">Sobre o Resolva Jato</h2>
+            <h2 className="text-xl font-bold text-slate-950">Sobre o Precisou, Tá Pronto</h2>
             <p className="mt-3 text-sm leading-7 text-slate-700">{shortBoiler}</p>
             <h2 className="mt-8 text-xl font-bold text-slate-950">Apresentação institucional</h2>
             <p className="mt-3 text-sm leading-7 text-slate-700">{longBoiler}</p>
@@ -104,7 +104,7 @@ export default function ImprensaPage() {
               ))}
             </ul>
             <p className="mt-6 text-sm text-slate-500">
-              <strong>Como citar:</strong> Resolva Jato. Ferramentas online grátis. Disponível em:{' '}
+              <strong>Como citar:</strong> Precisou, Tá Pronto. Ferramentas online grátis. Disponível em:{' '}
               {SITE}. Acesso em: [data].
             </p>
           </section>
@@ -144,7 +144,7 @@ export default function ImprensaPage() {
               </li>
               <li>
                 <Link href="/badges/feito-com-resolva-jato.svg" className="hover:underline">
-                  Badge “Feito com Resolva Jato”
+                  Badge “Feito com Precisou, Tá Pronto”
                 </Link>
               </li>
               <li>

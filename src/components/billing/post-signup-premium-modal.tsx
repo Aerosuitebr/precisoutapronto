@@ -62,7 +62,7 @@ export function PostSignupPremiumModal({ open, onClose }: PostSignupPremiumModal
           </h2>
           <p className="relative mt-3 text-sm leading-6 text-slate-300">
             Sua conta gratuita já permite continuar criando. Se quiser PDFs e links sem a marca
-            Resolva Jato, o Premium é opcional.
+            Precisou, Tá Pronto, o Premium é opcional.
           </p>
 
           <ul className="relative mt-6 grid gap-3 text-sm text-slate-200 sm:grid-cols-2">

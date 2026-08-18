@@ -174,7 +174,7 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
         merchantName: pixReceiver,
         merchantCity: pixCity,
         amount: total,
-        description: clientName || 'Resolva Jato',
+        description: clientName || 'Precisou, Tá Pronto',
         txid: '***'
       });
     } catch {
@@ -269,7 +269,7 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <Link href={`/${locale}`} aria-label="Resolva Jato">
+          <Link href={`/${locale}`} aria-label="Precisou, Tá Pronto">
             <Logo variant="marketing" className="h-12 sm:h-14" />
           </Link>
           <LocaleSwitcher

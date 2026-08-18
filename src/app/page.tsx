@@ -3,9 +3,10 @@ import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { LandingPage } from '@/components/marketing/landing-page';
+import { BRAND_DISPLAY_NAME } from '@/lib/brand';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Resolva Jato: Recibos, Cálculos e Documentos Online' },
+  title: { absolute: `${BRAND_DISPLAY_NAME} Recibos, cálculos e documentos online` },
   description:
     'Resolva tarefas práticas com recibos, calculadoras, documentos e ferramentas online. Encontre o que precisa e saia com o resultado pronto.',
   alternates: {

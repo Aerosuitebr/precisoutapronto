@@ -119,7 +119,7 @@ export async function createNuPayPremiumSession(input: {
       currency: 'BRL',
       reference,
       amount,
-      merchant: { displayName: 'Resolva Jato' },
+      merchant: { displayName: 'Precisou, Tá Pronto' },
       shopper: {
         identification: { type: 'CPF', value: cpf }
       },
@@ -127,7 +127,7 @@ export async function createNuPayPremiumSession(input: {
       lineItems: [
         {
           id: 'premium-30-dias',
-          description: 'Resolva Jato Premium: documentos sem marca · 30 dias',
+          description: 'Precisou, Tá Pronto Premium: documentos sem marca · 30 dias',
           quantity: 1,
           price: amount
         }
@@ -184,7 +184,7 @@ export async function createNuPayPaymentFromSession(input: {
     selectedPaymentOption: session.selectedPaymentOption,
     merchantOrderReference: session.reference,
     referenceId,
-    merchantName: 'Resolva Jato',
+    merchantName: 'Precisou, Tá Pronto',
     amount: { value: amount, currency: 'BRL' },
     delayToAutoCancel: 30,
     paymentMethod: {
@@ -207,7 +207,7 @@ export async function createNuPayPaymentFromSession(input: {
     items: [
       {
         id: 'premium-30-dias',
-        description: 'Resolva Jato Premium · 30 dias',
+        description: 'Precisou, Tá Pronto Premium · 30 dias',
         value: amount,
         quantity: 1,
         discount: 0,

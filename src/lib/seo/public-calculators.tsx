@@ -473,7 +473,7 @@ export function CalculatorJsonLd({ calculator }: { calculator: PublicCalculatorS
         operatingSystem: 'Web',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' },
         inLanguage: 'pt-BR',
-        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: siteUrl }
+        isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: siteUrl }
       },
       {
         '@type': 'HowTo',

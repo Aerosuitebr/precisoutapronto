@@ -117,7 +117,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'O cartão fica guardado aqui?',
-    a: 'Não. O cartão é informado no checkout hospedado da Asaas. O Resolva Jato não armazena o número.'
+    a: 'Não. O cartão é informado no checkout hospedado da Asaas. O Precisou, Tá Pronto não armazena o número.'
   }
 ] as const;
 
@@ -216,7 +216,7 @@ function CheckoutContent() {
         label: phase === 'failure' ? 'Não concluído' : 'Premium liberado',
         detail:
           phase === 'success'
-            ? 'Documentos sem marca Resolva Jato por 30 dias.'
+            ? 'Documentos sem marca Precisou, Tá Pronto por 30 dias.'
             : phase === 'failure'
               ? 'Tente novamente com Pix ou cartão.'
               : 'Aguardando confirmação do pagamento.',
@@ -330,7 +330,7 @@ function CheckoutContent() {
             <CheckCircle2 className="mx-auto h-10 w-10 text-emerald-600" />
             <h1 className="mt-4 text-2xl font-semibold text-slate-900">Premium já ativo</h1>
             <p className="mt-2 text-sm text-slate-600">
-              Sua conta já tem documentos sem marca Resolva Jato.
+              Sua conta já tem documentos sem marca Precisou, Tá Pronto.
             </p>
             <Link
               href="/conta"
@@ -378,7 +378,7 @@ function CheckoutContent() {
                 Checkout seguro
               </div>
               <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-                Resolva Jato Premium
+                Precisou, Tá Pronto Premium
               </h1>
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 {PLANS.premium.priceLabel}
@@ -486,7 +486,7 @@ function CheckoutContent() {
               </div>
 
               <p className="mt-6 text-xs leading-5 text-slate-500">
-                Conexão criptografada. O Resolva Jato não armazena dados do cartão. A Asaas processa
+                Conexão criptografada. O Precisou, Tá Pronto não armazena dados do cartão. A Asaas processa
                 o pagamento e notifica a liberação do Premium.
               </p>
             </aside>

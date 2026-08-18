@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: recibosSeoContent.seo.metaTitle,
     description: recibosSeoContent.seo.metaDescription,
     url: `${SITE_URL}/${recibosSeoContent.slug}`,
-    siteName: 'Resolva Jato',
+    siteName: 'Precisou, Tá Pronto',
     locale: 'pt_BR',
     type: 'website',
     images: [{ url: `/${recibosSeoContent.slug}/opengraph-image` }]

@@ -5,8 +5,8 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 
 export const metadata: Metadata = {
-  title: 'Página não encontrada | Resolva Jato',
-  description: 'A página solicitada não existe. Encontre ferramentas, modelos e guias no Resolva Jato.',
+  title: 'Página não encontrada | Precisou, Tá Pronto',
+  description: 'A página solicitada não existe. Encontre ferramentas, modelos e guias no Precisou, Tá Pronto.',
   robots: { index: false, follow: true }
 };
 

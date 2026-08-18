@@ -15,14 +15,14 @@ export const metadata: Metadata = {
     'Explore ferramentas para contratos, recibos, currículos, propostas, Pix, cálculos e organização.',
   alternates: { canonical: '/recursos' },
   openGraph: {
-    title: 'Ferramentas online grátis | Resolva Jato',
+    title: 'Ferramentas online grátis | Precisou, Tá Pronto',
     description: 'Documentos, cálculos e recursos práticos organizados em um só lugar.',
     url: '/recursos',
     images: [{ url: '/recursos/opengraph-image' }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ferramentas online grátis | Resolva Jato',
+    title: 'Ferramentas online grátis | Precisou, Tá Pronto',
     description: 'Documentos, cálculos e recursos práticos organizados em um só lugar.',
     images: ['/recursos/opengraph-image']
   }
@@ -42,11 +42,11 @@ export default function RecursosPage() {
         description: metadata.description,
         url: `${base}/recursos`,
         inLanguage: 'pt-BR',
-        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+        isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: base }
       },
       {
         '@type': 'ItemList',
-        name: 'Catálogo de ferramentas do Resolva Jato',
+        name: 'Catálogo de ferramentas do Precisou, Tá Pronto',
         numberOfItems: availableTools.length,
         itemListElement: availableTools.map((tool, index) => ({
           '@type': 'ListItem',

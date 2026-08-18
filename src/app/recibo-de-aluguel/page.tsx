@@ -28,7 +28,7 @@ const content: SeoLandingContent = {
     { q: 'Serve para aluguel comercial?', a: 'Sim. Use razão social e CNPJ quando aplicável, identifique a sala ou imóvel comercial e descreva a competência paga.' },
     { q: 'Como fazer um recibo de aluguel simples para imprimir?', a: 'Informe locador, inquilino, imóvel, mês de referência, valor, data e forma de pagamento. Depois gere o PDF para imprimir e assinar.' },
     { q: 'O modelo serve para recibo de aluguel de casa?', a: 'Sim. Identifique o endereço da casa, o período pago e as partes envolvidas antes de baixar o recibo em PDF.' },
-    { q: 'Preciso de cadastro?', a: 'Para gerar e baixar o PDF no gerador, use a conta gratuita do Resolva Jato.' }
+    { q: 'Preciso de cadastro?', a: 'Para gerar e baixar o PDF no gerador, use a conta gratuita do Precisou, Tá Pronto.' }
   ],
   related: [
     { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'Outros modelos de recibo' },
@@ -40,7 +40,7 @@ const content: SeoLandingContent = {
 };
 
 export const metadata: Metadata = {
-  title: { absolute: 'Recibo de Aluguel Grátis para Imprimir e Baixar PDF | Resolva Jato' },
+  title: { absolute: 'Recibo de Aluguel Grátis para Imprimir e Baixar PDF | Precisou, Tá Pronto' },
   description: content.description,
   alternates: { canonical: content.path },
   openGraph: { title: content.title, description: content.description, url: content.path, images: [{ url: `${content.path}/opengraph-image` }] },

@@ -10,8 +10,8 @@ import { useAuth } from '@/hooks/use-auth';
 import type { InternationalLocale } from '@/lib/i18n';
 
 const copy = {
-  en: { subtitle: 'Email confirmation', success: 'Email confirmed', successText: 'Your account is active and the tools are now available.', tools: 'Open tools', failure: 'We couldn’t confirm your email', missing: 'The link is incomplete.', db: 'The service is temporarily unavailable.', invalid: 'The link is invalid or has expired.', login: 'Back to sign in', home: 'Resolva Jato home' },
-  es: { subtitle: 'Confirmación de correo', success: 'Correo confirmado', successText: 'Tu cuenta está activa y las herramientas ya están disponibles.', tools: 'Abrir herramientas', failure: 'No pudimos confirmar tu correo', missing: 'El enlace está incompleto.', db: 'El servicio no está disponible temporalmente.', invalid: 'El enlace no es válido o ha caducado.', login: 'Volver al acceso', home: 'Inicio de Resolva Jato' }
+  en: { subtitle: 'Email confirmation', success: 'Email confirmed', successText: 'Your account is active and the tools are now available.', tools: 'Open tools', failure: 'We couldn’t confirm your email', missing: 'The link is incomplete.', db: 'The service is temporarily unavailable.', invalid: 'The link is invalid or has expired.', login: 'Back to sign in', home: 'Precisou, Tá Pronto home' },
+  es: { subtitle: 'Confirmación de correo', success: 'Correo confirmado', successText: 'Tu cuenta está activa y las herramientas ya están disponibles.', tools: 'Abrir herramientas', failure: 'No pudimos confirmar tu correo', missing: 'El enlace está incompleto.', db: 'El servicio no está disponible temporalmente.', invalid: 'El enlace no es válido o ha caducado.', login: 'Volver al acceso', home: 'Inicio de Precisou, Tá Pronto' }
 } as const;
 
 export function InternationalVerifyEmail({ locale }: { locale: InternationalLocale }) {

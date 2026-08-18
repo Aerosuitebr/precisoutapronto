@@ -32,7 +32,7 @@ test('priority profession cluster covers high-intent local services', async ({ p
 
 test('rental receipt landing aligns title, visible example and CTA', async ({ page }) => {
   await page.goto('/recibo-de-aluguel', { waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveTitle('Recibo de Aluguel Grátis para Imprimir e Baixar PDF | Resolva Jato');
+  await expect(page).toHaveTitle('Recibo de Aluguel Grátis para Imprimir e Baixar PDF | Precisou, Tá Pronto');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Um recibo claro para quem paga e para quem recebe.');
   await expect(page.getByText('RECIBO Nº 008')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Criar meu recibo grátis' })).toHaveAttribute(
@@ -51,7 +51,7 @@ test('shareable content always points to interactive destinations', async ({ pag
 
 test('public email signature landing is indexable and exposes the live editor', async ({ page }) => {
   await page.goto('/assinatura-de-email', { waitUntil: 'networkidle' });
-  await expect(page).toHaveTitle('Criar assinatura de e-mail profissional grátis (Gmail e Outlook) | Resolva Jato');
+  await expect(page).toHaveTitle('Criar assinatura de e-mail profissional grátis (Gmail e Outlook) | Precisou, Tá Pronto');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Crie sua assinatura de e-mail profissional grátis');
   await page.locator('#nome').fill('Ana Lima');
   await page.locator('#cargo').fill('Designer');

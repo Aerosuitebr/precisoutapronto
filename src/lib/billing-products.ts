@@ -19,8 +19,8 @@ export const BILLING_PRODUCTS: Record<BillingProductId, BillingProduct> = {
     priceLabel: PLANS.premium.priceLabel,
     days: 30,
     itemId: 'premium-30-dias',
-    title: 'Resolva Jato Premium: documentos sem marca · 30 dias',
-    description: 'PDF, WhatsApp e e-mail sem marca Resolva Jato por 30 dias'
+    title: 'Precisou, Tá Pronto Premium: documentos sem marca · 30 dias',
+    description: 'PDF, WhatsApp e e-mail sem marca Precisou, Tá Pronto por 30 dias'
   },
   'acesso-especial': {
     id: 'acesso-especial',
@@ -28,8 +28,8 @@ export const BILLING_PRODUCTS: Record<BillingProductId, BillingProduct> = {
     priceLabel: 'R$ 135,00',
     days: 365,
     itemId: 'acesso-especial-365-dias',
-    title: 'Resolva Jato: Acesso especial · 1 ano sem marca',
-    description: 'PDF, WhatsApp e e-mail sem marca Resolva Jato por 365 dias'
+    title: 'Precisou, Tá Pronto: Acesso especial · 1 ano sem marca',
+    description: 'PDF, WhatsApp e e-mail sem marca Precisou, Tá Pronto por 365 dias'
   }
 };
 

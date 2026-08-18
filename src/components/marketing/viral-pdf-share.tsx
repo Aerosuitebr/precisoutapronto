@@ -24,7 +24,7 @@ export function ViralPdfShareModal({
       open={open}
       onClose={onClose}
       title="PDF pronto. Espalhe o link"
-      description={`Seu ${docLabel} já baixou. Um toque no WhatsApp ajuda o Resolva Jato a crescer.`}
+      description={`Seu ${docLabel} já baixou. Um toque no WhatsApp ajuda o Precisou, Tá Pronto a crescer.`}
       size="md"
       footer={
         <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-end">
@@ -48,7 +48,7 @@ export function ViralPdfShareModal({
       <p className="flex items-start gap-2 rounded-xl bg-slate-50 px-3 py-3 text-sm text-slate-600">
         <Share2 className="mt-0.5 h-4 w-4 shrink-0 text-sky-700" />
         <span>
-          O PDF leva a marca Resolva Jato no rodapé (e um logo discreto). Quem receber pode criar o
+          O PDF leva a marca Precisou, Tá Pronto no rodapé (e um logo discreto). Quem receber pode criar o
           dele em{' '}
           <a
             className="font-semibold text-sky-700 underline-offset-2 hover:underline"
@@ -56,7 +56,7 @@ export function ViralPdfShareModal({
             target="_blank"
             rel="noreferrer"
           >
-            resolvajato.com.br
+            precisoutapronto.com.br
           </a>
           . Remova a marca por R$ 5,00 por 30 dias na sua conta.
         </span>
@@ -73,7 +73,7 @@ export function useViralPdfShare() {
   function afterPdfExport(label = 'documento') {
     setDocLabel(label);
     setOpen(true);
-    toast('PDF baixado. Compartilhe e divulgue o Resolva Jato!');
+    toast('PDF baixado. Compartilhe e divulgue o Precisou, Tá Pronto!');
   }
 
   return {

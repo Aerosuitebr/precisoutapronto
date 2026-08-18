@@ -95,7 +95,7 @@ export function ViralRecruitSticky({ sourceDocumentId, sourceOccupation }: Recru
 export function ViralInviteShareRow({ className }: { className?: string }) {
   return (
     <div className={cn('rounded-xl border border-slate-200 bg-slate-50 p-3', className)}>
-      <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Indicar Resolva Jato</p>
+      <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Indicar Precisou, Tá Pronto</p>
       <p className="mt-1 text-sm leading-5 text-slate-600">
         Mande para um colega que também cobra no WhatsApp.
       </p>

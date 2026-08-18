@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'Resolva Jato: orçamento com Pix no WhatsApp';
+export const alt = 'Precisou, Tá Pronto: orçamento com Pix no WhatsApp';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -31,7 +31,7 @@ export default function OpenGraphImage() {
             color: '#fbbf24'
           }}
         >
-          Resolva Jato
+          Precisou, Tá Pronto
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.05, maxWidth: 980 }}>
@@ -41,7 +41,7 @@ export default function OpenGraphImage() {
             Sem app, sem cartão. Cobrança profissional no WhatsApp.
           </div>
         </div>
-        <div style={{ display: 'flex', fontSize: 24, color: '#86efac' }}>resolvajato.com.br</div>
+        <div style={{ display: 'flex', fontSize: 24, color: '#86efac' }}>precisoutapronto.com.br</div>
       </div>
     ),
     { ...size }

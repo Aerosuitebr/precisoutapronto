@@ -15,7 +15,7 @@ export function AuthShell({
   children,
   subtitle,
   homeHref = '/',
-  homeLabel = 'Página inicial Resolva Jato'
+  homeLabel = 'Página inicial Precisou, Tá Pronto'
 }: AuthShellProps) {
   return (
     <main className="rj-auth-ambient relative isolate min-h-screen overflow-x-hidden px-4 py-8 sm:py-10">

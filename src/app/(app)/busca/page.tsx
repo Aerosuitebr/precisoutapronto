@@ -5,10 +5,10 @@ import { BuscaClient } from './search-client';
 export const metadata: Metadata = {
   title: 'Busca de ferramentas e recursos',
   description:
-    'Encontre geradores de currículo, contrato, recibo, proposta, orçamento com Pix e guias práticos do Resolva Jato.',
+    'Encontre geradores de currículo, contrato, recibo, proposta, orçamento com Pix e guias práticos do Precisou, Tá Pronto.',
   alternates: { canonical: '/busca' },
   openGraph: {
-    title: 'Busca | Resolva Jato',
+    title: 'Busca | Precisou, Tá Pronto',
     description: 'Encontre a ferramenta ou o guia certo para resolver agora.',
     url: '/busca'
   },

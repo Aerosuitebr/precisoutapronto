@@ -13,7 +13,7 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
     inLanguage: 'pt-BR',
     isPartOf: {
       '@type': 'WebSite',
-      name: 'Resolva Jato',
+      name: 'Precisou, Tá Pronto',
       url: siteUrl
     }
   };
@@ -31,7 +31,7 @@ export function ToolLandingJsonLd({ content }: { content: SeoPageContent }) {
   const softwareApplication = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: `Resolva Jato: ${content.toolName}`,
+    name: `Precisou, Tá Pronto: ${content.toolName}`,
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: pageUrl,

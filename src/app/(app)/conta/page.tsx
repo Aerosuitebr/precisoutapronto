@@ -169,7 +169,7 @@ function ContaContent() {
                 <div className="mt-6">
                   <p className="text-sm leading-6 text-slate-600">
                     Crie e baixe currículos, contratos, recibos e outros documentos com qualidade profissional.
-                    No plano gratuito o PDF inclui a marca Resolva Jato. Remova por {PLANS.premium.priceLabel}
+                    No plano gratuito o PDF inclui a marca Precisou, Tá Pronto. Remova por {PLANS.premium.priceLabel}
                     {PLANS.premium.period}.
                   </p>
                 </div>
@@ -180,7 +180,7 @@ function ContaContent() {
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
                       <div>
                         <p className="text-sm font-bold text-emerald-950">
-                          Premium ativo: documentos sem marca Resolva Jato
+                          Premium ativo: documentos sem marca Precisou, Tá Pronto
                         </p>
                         <p className="mt-1 text-sm text-emerald-900">
                           PDFs limpos (sem rodapé e sem logo) ate{' '}
@@ -198,7 +198,7 @@ function ContaContent() {
                       <p className="text-sm font-bold text-amber-950">Vigência sem referências</p>
                       <p className="mt-1 text-sm text-amber-900">
                         {usage.premiumExpiresAt
-                          ? `Documentos sem marca Resolva Jato até ${formatDate(usage.premiumExpiresAt)} (${formatDateTime(usage.premiumExpiresAt)})`
+                          ? `Documentos sem marca Precisou, Tá Pronto até ${formatDate(usage.premiumExpiresAt)} (${formatDateTime(usage.premiumExpiresAt)})`
                           : 'Período de 30 dias a partir da ativação.'}
                       </p>
                     </div>
@@ -231,17 +231,17 @@ function ContaContent() {
             </span>
             <h2 className="mt-5 text-2xl font-black">
               {plan.id === 'premium'
-                ? 'Documentos sem marca Resolva Jato.'
+                ? 'Documentos sem marca Precisou, Tá Pronto.'
                 : 'Remova as referências do PDF.'}
             </h2>
             <p className="mt-3 text-sm leading-7 text-slate-300">
               {plan.id === 'premium' && usage.premiumExpiresAt
-                ? `Vigência até ${formatDate(usage.premiumExpiresAt)}: PDFs limpos, sem marca Resolva Jato.`
-                : `Por ${PLANS.premium.priceLabel}${PLANS.premium.period}, gere documentos profissionais sem rodapé nem logo do Resolva Jato.`}
+                ? `Vigência até ${formatDate(usage.premiumExpiresAt)}: PDFs limpos, sem marca Precisou, Tá Pronto.`
+                : `Por ${PLANS.premium.priceLabel}${PLANS.premium.period}, gere documentos profissionais sem rodapé nem logo do Precisou, Tá Pronto.`}
             </p>
             <ul className="mt-6 space-y-3">
               {[
-                'PDF sem rodapé e sem logo Resolva Jato',
+                'PDF sem rodapé e sem logo Precisou, Tá Pronto',
                 'WhatsApp e e-mail sem referências',
                 '30 dias de vigência claros na conta'
               ].map((benefit) => (

@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: 'MEI ou CLT: compare os cenários | Resolva Jato',
+    title: 'MEI ou CLT: compare os cenários | Precisou, Tá Pronto',
     description: 'Simule os dois cenários gratuitamente antes de tomar uma decisão.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MEI ou CLT: compare os cenários | Resolva Jato',
+    title: 'MEI ou CLT: compare os cenários | Precisou, Tá Pronto',
     description: 'Simule os dois cenários gratuitamente antes de tomar uma decisão.',
     images: [`${seo.path}/opengraph-image`]
   }

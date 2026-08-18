@@ -217,7 +217,7 @@ function ResourceCard({
 const toolPromos = [
   {
     id: 'orcamentos',
-    eyebrow: 'Ferramenta Resolva Jato',
+    eyebrow: 'Ferramenta Precisou, Tá Pronto',
     title: 'Orçamento com link de aprovação',
     description: 'Envie ao cliente. Ele aprova ou pede ajuste no celular, sem criar conta.',
     href: '/ferramentas/orcamentos',
@@ -226,7 +226,7 @@ const toolPromos = [
   },
   {
     id: 'pix',
-    eyebrow: 'Ferramenta Resolva Jato',
+    eyebrow: 'Ferramenta Precisou, Tá Pronto',
     title: 'Cobrança Pix com QR Code',
     description: 'Gere Copia e Cola e QR no navegador. Sem API bancária e sem burocracia.',
     href: '/ferramentas/pix',
@@ -236,7 +236,7 @@ const toolPromos = [
   },
   {
     id: 'contratos',
-    eyebrow: 'Ferramenta Resolva Jato',
+    eyebrow: 'Ferramenta Precisou, Tá Pronto',
     title: 'Contratos sob medida',
     description: 'Aluguel, serviços, trabalho e mais. Suas cláusulas, seu PDF.',
     href: '/ferramentas/contratos',
@@ -516,7 +516,7 @@ export function BuscaClient() {
         <section className="mx-auto max-w-[1400px]">
           <div className="mb-4">
             <h2 className="rj-display text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
-              Ferramentas Resolva Jato
+              Ferramentas Precisou, Tá Pronto
             </h2>
             <p className="mt-1 text-sm text-slate-600">
               Soluções criadas na plataforma para gerar documentos profissionais, totalmente grátis.
@@ -560,7 +560,7 @@ export function BuscaClient() {
             <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
                 <h2 className="rj-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                  Encontrou o caminho? Agora conclua no Resolva Jato.
+                  Encontrou o caminho? Agora conclua no Precisou, Tá Pronto.
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">
                   A busca de links continua grátis e sem limite. Contratos, orçamentos, recibos e cobranças

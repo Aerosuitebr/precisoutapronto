@@ -40,7 +40,7 @@ export default function DiagnosticPage() {
         description: metadata.description,
         url: pageUrl,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL', availability: 'https://schema.org/PreOrder' },
-        publisher: { '@type': 'Organization', name: 'Resolva Jato', url: base }
+        publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base }
       },
       {
         '@type': 'WebPage',
@@ -48,7 +48,7 @@ export default function DiagnosticPage() {
         url: pageUrl,
         inLanguage: 'pt-BR',
         dateModified: '2026-07-30',
-        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+        isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: base }
       },
       {
         '@type': 'BreadcrumbList',

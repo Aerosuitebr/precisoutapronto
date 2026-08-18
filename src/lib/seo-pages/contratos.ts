@@ -75,7 +75,7 @@ export const contratosSeoContent: SeoPageContent = {
   faq: [
     {
       question: 'O gerador de contrato é gratuito?',
-      answer: 'Sim. Você pode criar, editar e baixar seu contrato em PDF gratuitamente pelo Resolva Jato.'
+      answer: 'Sim. Você pode criar, editar e baixar seu contrato em PDF gratuitamente pelo Precisou, Tá Pronto.'
     },
     {
       question: 'O contrato tem validade jurídica?',
@@ -112,7 +112,7 @@ export const contratosSeoContent: SeoPageContent = {
       <h2>Revise antes de assinar</h2>
       <p>Confira nomes, documentos e endereços das partes, datas de início e fim, e se todas as cláusulas fazem sentido para o seu caso. Para contratos de maior valor ou complexidade, vale a revisão de um advogado antes da assinatura final.</p>
 
-      <p>Com o gerador de contrato do Resolva Jato, você preenche os dados uma vez, escolhe o modelo certo e baixa um PDF organizado e pronto para assinar, sem precisar montar o documento do zero.</p>
+      <p>Com o gerador de contrato do Precisou, Tá Pronto, você preenche os dados uma vez, escolhe o modelo certo e baixa um PDF organizado e pronto para assinar, sem precisar montar o documento do zero.</p>
     `
   },
   relatedTools: [

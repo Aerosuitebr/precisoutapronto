@@ -50,7 +50,7 @@ function BrowserChrome({ path, children }: { path: string; children: ReactNode }
         <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
         <span className="h-2.5 w-2.5 rounded-full bg-emerald-300" />
         <span className="ml-2 truncate rounded-full bg-white px-3 py-1 text-[11px] font-medium text-slate-400 ring-1 ring-slate-200">
-          resolvajato.com.br{path}
+          precisoutapronto.com.br{path}
         </span>
       </div>
       <div className="p-4 sm:p-5">{children}</div>
@@ -366,7 +366,7 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
     stats: [
       { icon: FileStack, value: '5+', label: 'Ferramentas de edição' },
       { icon: Wand2, value: 'Navegador', label: 'Sem instalar nada' },
-      { icon: CheckCircle2, value: 'Grátis', label: 'Com marca Resolva Jato' }
+      { icon: CheckCircle2, value: 'Grátis', label: 'Com marca Precisou, Tá Pronto' }
     ],
     mockup: <EditorPdfMockup />
   },

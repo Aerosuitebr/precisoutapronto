@@ -219,7 +219,7 @@ export const gamesResources = [
     tags: ['#Games', '#Roblox', '#UGC']
   },
   {
-    name: 'Jato Games (Resolva Jato)',
+    name: 'Jato Games (Precisou, Tá Pronto)',
     category: 'games',
     categoryLabel: 'Games',
     description: 'Hub evergreen com top jogos, setups, hardware, consoles e lojas curadas.',

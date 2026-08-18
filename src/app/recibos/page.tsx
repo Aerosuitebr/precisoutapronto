@@ -7,7 +7,7 @@ import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Modelos de Recibo Online Grátis em PDF | Resolva Jato' },
+  title: { absolute: 'Modelos de Recibo Online Grátis em PDF | Precisou, Tá Pronto' },
   description: 'Escolha o recibo certo para pagamento, serviço, autônomo, MEI, aluguel ou Pix. Preencha online e gere um PDF profissional.',
   alternates: { canonical: '/recibos' },
   openGraph: { title: 'Modelos de recibo online grátis', description: 'Guias, exemplos e gerador de recibo em PDF.', url: '/recibos', type: 'website' }

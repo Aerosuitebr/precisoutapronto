@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       alternateLocale: ['pt_BR', locale === 'en' ? 'es_ES' : 'en_US'],
       type: 'website',
       url: `/${locale}`,
-      siteName: 'Resolva Jato',
+      siteName: 'Precisou, Tá Pronto',
       images: [{ url: `/${locale}/opengraph-image`, width: 1200, height: 630 }]
     },
     twitter: {

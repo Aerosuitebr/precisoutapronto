@@ -17,7 +17,7 @@ const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/biblioteca', label: 'Biblioteca' },
   { href: '/guias', label: 'Guias' },
   { href: '/sobre', label: 'Sobre e equipe' },
-  { href: '/resolva-jato', label: 'Site oficial Resolva Jato' },
+  { href: '/precisou-ta-pronto', label: 'Site oficial Precisou, Tá Pronto' },
   { href: '/qualidade-e-seguranca', label: 'Qualidade e segurança' },
   { href: '/criterios-editoriais', label: 'Critérios editoriais' },
   { href: '/recursos', label: 'Catálogo público' },
@@ -49,7 +49,7 @@ const SEO_LINKS = [
   { href: '/embed', label: 'Badges e embeds' },
   { href: '/politica-de-correcoes', label: 'Política de correções' },
   { href: '/metodologia-calculadoras', label: 'Metodologia das calculadoras' },
-  { href: '/resolva-jato', label: 'Marca Resolva Jato' },
+  { href: '/precisou-ta-pronto', label: 'Marca Precisou, Tá Pronto' },
   { href: '/qualidade-e-seguranca', label: 'Qualidade Jato' },
   { href: '/guias', label: 'Todos os guias' },
   { href: '/contrato-de-aluguel', label: 'Contrato de aluguel' },
@@ -101,7 +101,7 @@ export function SiteFooter() {
       <div className="h-1 bg-gradient-to-r from-sky-600 via-sky-500 to-emerald-500" aria-hidden />
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:px-6 sm:py-12 lg:grid-cols-[1.3fr_0.7fr_0.9fr] lg:gap-10">
         <div className="max-w-md">
-          <Link href="/" className="inline-block" aria-label="Página inicial Resolva Jato">
+          <Link href="/" className="inline-block" aria-label="Página inicial Precisou, Tá Pronto">
             <Logo variant="footer" />
           </Link>
           <p className="mt-3 text-[15px] leading-7 text-slate-300">
@@ -193,7 +193,7 @@ export function SiteFooter() {
 
       <div className="border-t border-slate-800/80">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-sm leading-6 text-slate-400 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© {YEAR} Resolva Jato</p>
+          <p>© {YEAR} Precisou, Tá Pronto</p>
           <p className="sm:text-right">Links de terceiros são de responsabilidade de seus autores.</p>
         </div>
       </div>

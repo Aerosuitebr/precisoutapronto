@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: contabeisSeoContent.seo.metaTitle,
     description: contabeisSeoContent.seo.metaDescription,
     url: `${SITE_URL}/${contabeisSeoContent.slug}`,
-    siteName: 'Resolva Jato',
+    siteName: 'Precisou, Tá Pronto',
     locale: 'pt_BR',
     type: 'website',
     images: [{ url: `/${contabeisSeoContent.slug}/opengraph-image` }]

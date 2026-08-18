@@ -78,7 +78,7 @@ function CadastroForm() {
         <p className="text-lg font-bold text-slate-900">Conta criada. Confirme seu e-mail</p>
         <p className="text-sm leading-6 text-slate-600">
           Enviamos um link para <strong>{doneEmail}</strong>. Você já pode entrar e gerar documentos
-          grátis (com a marca Resolva Jato). No Premium, remove qualquer referência.
+          grátis (com a marca Precisou, Tá Pronto). No Premium, remove qualquer referência.
         </p>
         <Button asChild className="w-full">
           <Link href={`/login?next=${encodeURIComponent(next)}&email=${encodeURIComponent(doneEmail)}`}>
@@ -96,7 +96,7 @@ function CadastroForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
       <AuthReturnBanner nextHref={searchParams.get('next')} />
       <p className="text-center text-sm text-slate-600">
-        Sem cartão. Gere documentos grátis. A marca Resolva Jato sai no Premium.
+        Sem cartão. Gere documentos grátis. A marca Precisou, Tá Pronto sai no Premium.
       </p>
       {referralCode ? (
         <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-center text-xs font-semibold text-emerald-900">
@@ -167,7 +167,7 @@ function CadastroForm() {
 
 export default function CadastroPage() {
   return (
-    <AuthShell subtitle="Conta grátis: documentos ilimitados com a marca Resolva Jato. Premium remove tudo.">
+    <AuthShell subtitle="Conta grátis: documentos ilimitados com a marca Precisou, Tá Pronto. Premium remove tudo.">
       <Suspense>
         <CadastroForm />
       </Suspense>

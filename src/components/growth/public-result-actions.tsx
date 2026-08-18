@@ -21,7 +21,7 @@ export function PublicResultActions({ title, value, toolPath, campaign }: { titl
   }
 
   async function share() {
-    const data = { title: `${title} · Resolva Jato`, text: `${title}: ${value}`, url: window.location.href };
+    const data = { title: `${title} · Precisou, Tá Pronto`, text: `${title}: ${value}`, url: window.location.href };
     try {
       if (navigator.share) {
         await navigator.share(data);

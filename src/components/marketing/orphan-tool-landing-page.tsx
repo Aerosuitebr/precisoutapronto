@@ -25,7 +25,7 @@ export function OrphanToolLandingPage({
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' },
         description: landing.metaDescription,
         inLanguage: 'pt-BR',
-        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+        isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: base }
       },
       {
         '@type': 'HowTo',
@@ -84,7 +84,7 @@ export function OrphanToolLandingPage({
 
           <header className="mb-6 max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
-              Resolva Jato · {landing.toolName}
+              Precisou, Tá Pronto · {landing.toolName}
             </p>
             <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
               {landing.h1}

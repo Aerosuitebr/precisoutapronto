@@ -8,7 +8,7 @@ const landing = getOrphanLanding('assinatura-email')!;
 const site = getViralBaseUrl().replace(/\/$/, '');
 
 export const metadata: Metadata = {
-  title: { absolute: `${landing.metaTitle} | Resolva Jato` },
+  title: { absolute: `${landing.metaTitle} | Precisou, Tá Pronto` },
   description: landing.metaDescription,
   keywords: landing.keywords,
   alternates: {

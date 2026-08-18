@@ -4,14 +4,14 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Critérios editoriais',
-  description: 'Como o Resolva Jato pesquisa, escreve, revisa, atualiza e referencia seus guias e ferramentas.',
+  description: 'Como o Precisou, Tá Pronto pesquisa, escreve, revisa, atualiza e referencia seus guias e ferramentas.',
   alternates: { canonical: '/criterios-editoriais' }
 };
 
 export default function CriteriosEditoriaisPage() {
   return (
     <LegalPage title="Critérios editoriais" subtitle="Como produzimos conteúdo útil e verificável">
-      <p>Os conteúdos do Resolva Jato são produzidos para responder uma dúvida prática antes de apresentar uma ferramenta. Não publicamos textos apenas para atingir uma quantidade de palavras ou variações artificiais de uma mesma busca.</p>
+      <p>Os conteúdos do Precisou, Tá Pronto são produzidos para responder uma dúvida prática antes de apresentar uma ferramenta. Não publicamos textos apenas para atingir uma quantidade de palavras ou variações artificiais de uma mesma busca.</p>
       <h2>Pesquisa e fontes</h2>
       <p>Priorizamos fontes oficiais, normas, legislação e materiais de órgãos responsáveis. Quando uma afirmação depende de contexto, deixamos o limite explícito e indicamos validação com profissional habilitado.</p>
       <h2>Autoria e revisão</h2>

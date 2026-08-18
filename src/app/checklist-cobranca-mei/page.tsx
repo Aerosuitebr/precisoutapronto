@@ -20,14 +20,14 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: PATH },
   openGraph: {
-    title: 'Checklist de cobrança para MEI | Resolva Jato',
+    title: 'Checklist de cobrança para MEI | Precisou, Tá Pronto',
     description: 'Do orçamento ao recibo, com ferramentas grátis no navegador.',
     url: `${SITE}${PATH}`,
     images: [{ url: `${PATH}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Checklist de cobrança para MEI | Resolva Jato',
+    title: 'Checklist de cobrança para MEI | Precisou, Tá Pronto',
     description: 'Do orçamento ao recibo, com ferramentas grátis no navegador.',
     images: [`${PATH}/opengraph-image`]
   }
@@ -92,8 +92,8 @@ export default function ChecklistCobrancaMeiPage() {
         url: `${SITE}${PATH}`,
         inLanguage: 'pt-BR',
         dateModified: '2026-08-01',
-        author: { '@type': 'Organization', name: 'Resolva Jato', url: SITE },
-        publisher: { '@type': 'Organization', name: 'Resolva Jato', url: SITE },
+        author: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: SITE },
+        publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: SITE },
         mainEntityOfPage: `${SITE}${PATH}`
       },
       {

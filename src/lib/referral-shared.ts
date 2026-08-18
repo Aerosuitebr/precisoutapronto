@@ -22,15 +22,15 @@ export function buildReferralSignupUrl(code: string) {
 export function buildReferralWhatsAppUrl(code: string) {
   const link = buildReferralSignupUrl(code);
   const text =
-    `Estou usando o Resolva Jato pra orçamento + Pix no WhatsApp.\n` +
+    `Estou usando o Precisou, Tá Pronto pra orçamento + Pix no WhatsApp.\n` +
     `Cria sua conta por este link (grátis pra testar):\n${link}`;
   return `https://wa.me/?text=${encodeURIComponent(text)}`;
 }
 
 export function buildReferralSharePayload(code: string): ShareData {
   return {
-    title: 'Convite Resolva Jato',
-    text: 'Crie sua conta grátis no Resolva Jato e experimente as ferramentas de documentos e negócios.',
+    title: 'Convite Precisou, Tá Pronto',
+    text: 'Crie sua conta grátis no Precisou, Tá Pronto e experimente as ferramentas de documentos e negócios.',
     url: buildReferralSignupUrl(code)
   };
 }

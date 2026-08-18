@@ -6,6 +6,7 @@ import { ReferralCapture } from '@/components/referral/referral-capture';
 import { SiteJsonLd } from '@/components/marketing/site-json-ld';
 import { isStagingEnv, stagingRobots } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { BRAND_DESCRIPTION, BRAND_DISPLAY_NAME, BRAND_TAGLINE } from '@/lib/brand';
 import './globals.css';
 
 const siteUrl = getViralBaseUrl();
@@ -18,32 +19,31 @@ const bingVerification = process.env.BING_SITE_VERIFICATION;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Ferramentas online que resolvem de verdade | Resolva Jato',
-    template: '%s | Resolva Jato'
+    default: `${BRAND_TAGLINE} | ${BRAND_DISPLAY_NAME}`,
+    template: `%s | ${BRAND_DISPLAY_NAME}`
   },
-  description:
-    'Ferramentas gratuitas e confiáveis para PDFs, imagens, documentos, cálculos e rotina profissional. Resolva online com qualidade e privacidade.',
+  description: BRAND_DESCRIPTION,
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Resolva Jato'
+    title: BRAND_DISPLAY_NAME
   },
   icons: {
     icon: '/favicon.svg'
   },
   ...(staging ? { robots: stagingRobots() } : {}),
   openGraph: {
-    title: 'Ferramentas online que resolvem de verdade | Resolva Jato',
-    description: 'Ferramentas gratuitas e confiáveis para PDFs, imagens, documentos, cálculos e rotina profissional.',
+    title: `${BRAND_TAGLINE} | ${BRAND_DISPLAY_NAME}`,
+    description: BRAND_DESCRIPTION,
     locale: 'pt_BR',
     type: 'website',
     url: siteUrl,
-    siteName: 'Resolva Jato'
+    siteName: BRAND_DISPLAY_NAME
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Resolva Jato | Ferramentas online confiáveis',
+    title: `${BRAND_DISPLAY_NAME} | Ferramentas online confiáveis`,
     description: 'PDFs, imagens, documentos e cálculos com qualidade, privacidade e resultados verificáveis.'
   },
   keywords: [
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     'proposta comercial',
     'ferramentas grátis para MEI',
     'ferramentas online grátis',
-    'Resolva Jato',
+    'Precisou, Tá Pronto',
     'ferramentas para PDF',
     'ferramentas para imagens',
     'cobrança para autônomos',

@@ -74,7 +74,7 @@ export default async function GuidePage({ params }: Props) {
   const base = getViralBaseUrl().replace(/\/$/, '');
   const publishedAt = guide.publishedAt ?? PUBLISHED_AT;
   const updatedAt = guide.updatedAt ?? publishedAt;
-  const author = guide.author ?? 'Equipe editorial Resolva Jato';
+  const author = guide.author ?? 'Equipe editorial Precisou, Tá Pronto';
   const reviewer = guide.reviewer ?? 'Revisão editorial interna';
   const sources = [...(guide.sources ?? []), ...(OFFICIAL_SOURCES[guide.category] ?? [])]
     .filter((source, index, all) => all.findIndex((item) => item.href === source.href) === index);
@@ -95,7 +95,7 @@ export default async function GuidePage({ params }: Props) {
         author: { '@type': 'Organization', name: author, url: `${base}/autores/equipe-resolva-jato` },
         publisher: {
           '@type': 'Organization',
-          name: 'Resolva Jato',
+          name: 'Precisou, Tá Pronto',
           url: base,
           logo: { '@type': 'ImageObject', url: `${base}/icon-512.png` }
         }

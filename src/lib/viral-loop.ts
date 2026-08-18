@@ -1,6 +1,8 @@
 /** Loops de viralização: links e textos compartilháveis. */
 
-export const VIRAL_SITE_HOST = 'resolvajato.com.br';
+import { BRAND_DISPLAY_NAME, BRAND_LEGACY_HOST } from '@/lib/brand';
+
+export const VIRAL_SITE_HOST = BRAND_LEGACY_HOST;
 
 export function getViralBaseUrl() {
   if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_APP_URL) {
@@ -60,7 +62,7 @@ export function viralOrcamentoToolUrl() {
 }
 
 export function viralPdfFooterLabel() {
-  return `Documento gerado pelo Resolva Jato - documentos profissionais totalmente gratuitos. ${VIRAL_SITE_HOST}`;
+  return `Documento gerado com ${BRAND_DISPLAY_NAME} Documentos profissionais gratuitos. ${VIRAL_SITE_HOST}`;
 }
 
 export function viralPdfFooterUrl() {
@@ -71,20 +73,20 @@ export function viralPdfFooterUrl() {
 export function viralMessageBrandBlock(utmCampaign = 'whatsapp_message') {
   return (
     `\n\n` +
-    `Enviado pelo Resolva Jato. Cobranças e documentos profissionais gratuitos.\n` +
+    `Enviado com ${BRAND_DISPLAY_NAME} Cobranças e documentos profissionais gratuitos.\n` +
     viralHomeUrl(utmCampaign)
   );
 }
 
 const VIRAL_MESSAGE_BRAND_RE =
-  /\n\n(?:[—–-]{1,3}\n)?Enviado pelo Resolva Jato[^\n]*\nhttps?:\/\/[^\n]+$/i;
+  /\n\n(?:[—–-]{1,3}\n)?Enviado (?:pelo Precisou, Tá Pronto|com Precisou\? Tá Pronto!)[^\n]*\nhttps?:\/\/[^\n]+$/i;
 
 export function stripViralMessageBrand(text: string) {
   return text.replace(VIRAL_MESSAGE_BRAND_RE, '').trimEnd();
 }
 
 /**
- * Garante (ou remove) a referência Resolva Jato no final da mensagem.
+ * Garante (ou remove) a referência Precisou, Tá Pronto no final da mensagem.
  * No plano pago (`branded=false`) a marca é retirada; no grátis é forçada no servidor.
  */
 export function withViralMessageBrand(
@@ -97,10 +99,10 @@ export function withViralMessageBrand(
   return `${base}${viralMessageBrandBlock(utmCampaign)}`;
 }
 
-/** Mensagem para o profissional indicar o Resolva Jato a um colega. */
+/** Mensagem para o profissional indicar o Precisou, Tá Pronto a um colega. */
 export function buildViralInviteWhatsAppText() {
   return (
-    `Estou cobrando com orçamento + Pix no WhatsApp pelo Resolva Jato.\n` +
+    `Estou cobrando com orçamento + Pix no WhatsApp usando ${BRAND_DISPLAY_NAME}\n` +
     `Cliente aprova no celular e paga na hora. Grátis pra testar:\n` +
     viralHomeUrl('whatsapp_invite')
   );
@@ -113,7 +115,7 @@ export function buildViralInviteWhatsAppUrl() {
 /** Texto sugerido após baixar um PDF (currículo, proposta, etc.). */
 export function buildViralPdfShareWhatsAppText(docLabel: string) {
   return (
-    `Gerei meu ${docLabel} no Resolva Jato. Ficou profissional em minutos.\n` +
+    `Gerei meu ${docLabel} com ${BRAND_DISPLAY_NAME} Ficou profissional em minutos.\n` +
     `Faça o seu grátis: ${viralHomeUrl('pdf_whatsapp')}`
   );
 }

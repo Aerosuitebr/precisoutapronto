@@ -21,7 +21,7 @@ export function PricingPage() {
           Gere grátis. Remova a marca quando quiser.
         </h1>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          No gratuito, o PDF leva o logo discreto e o rodapé do Resolva Jato, assim você avalia a
+          No gratuito, o PDF leva o logo discreto e o rodapé do Precisou, Tá Pronto, assim você avalia a
           qualidade. Com o Premium, documentos limpos, sem rodapé nem logo, por 30 dias.
         </p>
       </div>
@@ -35,7 +35,7 @@ export function PricingPage() {
             {[
               'Documentos profissionais em PDF',
               'Salve e baixe sem limite de usos',
-              'Rodapé + logo Resolva Jato no arquivo',
+              'Rodapé + logo Precisou, Tá Pronto no arquivo',
               'Busca de recursos sempre aberta'
             ].map((item) => (
               <li key={item} className="flex items-start gap-2.5">
@@ -55,7 +55,7 @@ export function PricingPage() {
           </div>
           <div className="p-8">
             <h2 className="text-2xl font-bold">Premium</h2>
-            <p className="mt-1 text-sm text-emerald-100">Documentos sem referências ao Resolva Jato</p>
+            <p className="mt-1 text-sm text-emerald-100">Documentos sem referências ao Precisou, Tá Pronto</p>
             <div className="mt-6 flex items-end gap-2">
               <span className="rj-display text-4xl font-extrabold">{premium.priceLabel}</span>
               <span className="pb-1 text-sm text-slate-300">{premium.period}</span>

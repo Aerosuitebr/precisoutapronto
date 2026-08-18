@@ -16,7 +16,7 @@ export function MiraFeaturedCta({ compact = false }: { compact?: boolean }) {
       <div className={cn('relative mx-auto grid max-w-6xl items-center gap-8 px-5 sm:px-7 lg:grid-cols-[1fr_.82fr]', compact ? 'py-9 lg:px-10' : 'py-14 sm:py-16')}>
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-xs font-extrabold uppercase tracking-[.16em] text-cyan-200">
-            <Radar className="h-3.5 w-3.5" /> Novo no Resolva Jato
+            <Radar className="h-3.5 w-3.5" /> Novo no Precisou, Tá Pronto
           </div>
           <h2 className="rj-display mt-5 max-w-2xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
             Sua próxima oportunidade pode estar mais perto do que você imagina.

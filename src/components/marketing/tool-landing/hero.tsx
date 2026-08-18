@@ -16,7 +16,7 @@ export function ToolLandingHero({
       <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:py-24">
         <div>
           <p className="rj-display text-xs font-bold uppercase tracking-[0.25em] text-sky-300">
-            Resolva Jato · {content.toolName}
+            Precisou, Tá Pronto · {content.toolName}
           </p>
           <h1 className="rj-display mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             {content.h1}

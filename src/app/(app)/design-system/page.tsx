@@ -91,13 +91,13 @@ export default function DesignSystemPage() {
   return (
     <AuthGate
       title="Guia de componentes"
-      description="Entre para ver o guia interativo de UI do Resolva Jato."
+      description="Entre para ver o guia interativo de UI do Precisou, Tá Pronto."
       enforceUsageLimit={false}
     >
     <div className="space-y-5 pb-10">
       <PageHero
         title="Guia de componentes"
-        subtitle="Padrões interativos do Resolva Jato: botões, formulários, modais, tooltips e feedback."
+        subtitle="Padrões interativos do Precisou, Tá Pronto: botões, formulários, modais, tooltips e feedback."
         icon={FileText}
       />
 

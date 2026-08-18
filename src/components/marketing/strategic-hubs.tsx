@@ -43,12 +43,12 @@ export function StrategicHubs({ compact = false }: { compact?: boolean }) {
     return (
       <section className="border-y border-slate-200 bg-slate-50" aria-labelledby="hero-products-title">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Resolva Jato</p>
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Precisou, Tá Pronto</p>
           <h2 id="hero-products-title" className="rj-display mt-3 max-w-3xl text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Resolva em segundos aquilo que normalmente dá trabalho.
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
-            Comece por uma das cinco tarefas pelas quais o Resolva Jato é conhecido.
+            Comece por uma das cinco tarefas pelas quais o Precisou, Tá Pronto é conhecido.
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {HERO_PRODUCTS.map((product) => {

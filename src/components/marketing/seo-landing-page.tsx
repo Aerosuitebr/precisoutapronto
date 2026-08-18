@@ -187,7 +187,7 @@ export function SeoLandingPage({
           <section className="border-t border-slate-200 bg-slate-50" aria-label="Informações editoriais">
             <div className="mx-auto max-w-6xl px-4 py-8 text-sm leading-6 text-slate-600 sm:px-6">
               <p>
-                Conteúdo educativo do Resolva Jato. Materiais com impacto jurídico, contábil ou trabalhista
+                Conteúdo educativo do Precisou, Tá Pronto. Materiais com impacto jurídico, contábil ou trabalhista
                 devem ser validados por profissional habilitado quando a decisão envolver riscos ou
                 particularidades do caso. Conheça a{' '}
                 <Link href="/sobre" className="font-semibold text-emerald-700 hover:underline">

@@ -6,12 +6,12 @@ import { BRAND_EMAIL, BRAND_SAME_AS, BRAND_SITE } from '@/lib/brand';
 export const metadata: Metadata = {
   title: 'Contato',
   description:
-    'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
+    'Fale com a equipe do Precisou, Tá Pronto para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
   alternates: { canonical: '/contato' },
   openGraph: {
-    title: 'Contato | Resolva Jato',
+    title: 'Contato | Precisou, Tá Pronto',
     description:
-      'Fale com a equipe do Resolva Jato para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
+      'Fale com a equipe do Precisou, Tá Pronto para suporte, segurança, privacidade, correções ou dúvidas sobre nossas ferramentas online.',
     url: '/contato'
   }
 };
@@ -22,7 +22,7 @@ export default function ContatoPage() {
   return (
     <LegalPage title="Contato" subtitle="Estamos em resolvajato.com.br">
       <p>
-        O Resolva Jato é um produto da <strong>Aerosuite</strong>. Suporte, segurança e
+        O Precisou, Tá Pronto é um produto da <strong>Aerosuite</strong>. Suporte, segurança e
         privacidade usam a mesma caixa Google Workspace:
       </p>
       <p>

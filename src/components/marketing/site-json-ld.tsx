@@ -1,6 +1,7 @@
 import {
   BRAND_EMAIL,
   BRAND_DESCRIPTION,
+  BRAND_DISPLAY_NAME,
   BRAND_NAME,
   BRAND_TAGLINE,
   BRAND_SAME_AS,
@@ -17,7 +18,7 @@ export function SiteJsonLd() {
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,
     name: BRAND_NAME,
-    alternateName: ['RJ', 'ResolvaJato'],
+    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto', 'Resolva Jato', 'ResolvaJato'],
     url: siteUrl,
     email: BRAND_EMAIL,
     logo: {
@@ -77,7 +78,7 @@ export function SiteJsonLd() {
     '@type': 'WebSite',
     '@id': `${siteUrl}/#website`,
     name: BRAND_NAME,
-    alternateName: 'ResolvaJato',
+    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto', 'Resolva Jato'],
     url: siteUrl,
     inLanguage: 'pt-BR',
     description: BRAND_DESCRIPTION,

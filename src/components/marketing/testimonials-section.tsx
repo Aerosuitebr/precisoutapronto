@@ -40,7 +40,7 @@ export function TestimonialsSection({ className }: { className?: string }) {
             id="depoimentos-title"
             className="rj-display mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl"
           >
-            O Resolva Jato na voz de quem vive a rotina.
+            O Precisou, Tá Pronto na voz de quem vive a rotina.
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-600">
             Comentários reais publicados pela comunidade depois de conhecer o produto.
@@ -104,7 +104,7 @@ export function TestimonialsSection({ className }: { className?: string }) {
                 </span>
                 <div>
                   <p className="text-sm font-bold text-slate-900">{item.name}</p>
-                  <p className="text-xs text-slate-500">Comentário público sobre o Resolva Jato</p>
+                  <p className="text-xs text-slate-500">Comentário público sobre o Precisou, Tá Pronto</p>
                 </div>
               </div>
             </li>

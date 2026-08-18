@@ -52,7 +52,7 @@ export default async function IntentPageRoute({ params }: Props) {
         url: `${base}/modelos/${page.slug}`,
         inLanguage: 'pt-BR',
         dateModified: '2026-08-01',
-        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+        isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: base }
       },
       {
         '@type': 'HowTo',

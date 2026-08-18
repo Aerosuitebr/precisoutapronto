@@ -213,7 +213,7 @@ export function renderCloudPanel() {
   panel.innerHTML = `
     <div class="cloud-panel__copy">
       <p class="eyebrow">Conta e controle de uso</p>
-      <h3>${cloudEnabled ? 'Sua nuvem Resolva Jato' : session ? 'Conta gratuita conectada' : 'Crie uma conta gratuita para usar o painel'}</h3>
+      <h3>${cloudEnabled ? 'Sua nuvem Precisou, Tá Pronto' : session ? 'Conta gratuita conectada' : 'Crie uma conta gratuita para usar o painel'}</h3>
       <p>${cloudEnabled
     ? 'Seus clientes, agenda, propostas e contador de uso ficam salvos na nuvem. Mesmo limpando o histórico ou trocando de dispositivo, tudo volta.'
     : session

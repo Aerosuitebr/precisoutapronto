@@ -47,7 +47,7 @@ export const SEO_LANDINGS = {
     sections: [
       {
         title: 'Do preço à cobrança, no mesmo fluxo',
-        body: 'Pare de mandar tabela no Word e Pix solto. O Resolva Jato une orçamento, aprovação e cobrança.',
+        body: 'Pare de mandar tabela no Word e Pix solto. O Precisou, Tá Pronto une orçamento, aprovação e cobrança.',
         bullets: [
           'Página limpa para o cliente no celular',
           'Status aprovado ou pedido de ajuste',
@@ -103,7 +103,7 @@ export const SEO_LANDINGS = {
     sections: [
       {
         title: 'Cobrança Pix pronta para WhatsApp',
-        body: 'Preencha a chave, o nome e a cidade. O Resolva Jato monta o BR Code (padrão EMV do Banco Central) e mostra o QR na tela.',
+        body: 'Preencha a chave, o nome e a cidade. O Precisou, Tá Pronto monta o BR Code (padrão EMV do Banco Central) e mostra o QR na tela.',
         bullets: [
           'Valor fixo ou aberto (cliente digita no app)',
           'Copia e Cola para colar no banco',
@@ -201,7 +201,7 @@ export const SEO_LANDINGS = {
     sections: [
       {
         title: 'Do briefing ao pagamento',
-        body: 'Envie a proposta, alinhe o contrato e cobre com link de orçamento + Pix, tudo no Resolva Jato.'
+        body: 'Envie a proposta, alinhe o contrato e cobre com link de orçamento + Pix, tudo no Precisou, Tá Pronto.'
       },
       {
         title: 'Menos Word, mais fechamento',

@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import rjEscuro from '@/assets/RJ_escuro.png';
 import { cn } from '@/lib/utils';
+import { BRAND_WATERMARK } from '@/lib/brand';
 import { viralPdfFooterLabel } from '@/lib/viral-loop';
 
-/** Marca d’água central com o logo Resolva Jato: destaque moderado. */
+/** Marca d’água central da marca: discreta e legível em documentos. */
 export function DocumentBrandWatermark({ className }: { className?: string }) {
   return (
     <div
@@ -12,7 +12,14 @@ export function DocumentBrandWatermark({ className }: { className?: string }) {
       aria-hidden
     >
       <div className="absolute left-1/2 top-1/2 w-[50%] max-w-[320px] -translate-x-1/2 -translate-y-1/2 -rotate-[18deg] opacity-[0.16]">
-        <Image src={rjEscuro} alt="" className="h-auto w-full object-contain" priority={false} />
+        <Image
+          src={BRAND_WATERMARK}
+          alt=""
+          width={1024}
+          height={1024}
+          className="h-auto w-full object-contain"
+          priority={false}
+        />
       </div>
     </div>
   );

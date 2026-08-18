@@ -9,8 +9,8 @@
  */
 
 const KEY = '2251b69074c73278c321f4313c84fe76';
-const HOST = 'resolvajato.com.br';
-const BASE = `https://${HOST}`;
+const BASE = (process.env.INDEXNOW_BASE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://precisoutapronto.com.br').replace(/\/$/, '');
+const HOST = new URL(BASE).host;
 const ENDPOINT = 'https://api.indexnow.org/indexnow';
 const BATCH_SIZE = 100;
 

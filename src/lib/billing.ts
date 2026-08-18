@@ -11,7 +11,7 @@ const guestCopy = {
   'pt-BR': {
     trialAvailable: 'Acesso livre: duas gerações completas sem marca.',
     accountRequired:
-      'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Resolva Jato.',
+      'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Precisou, Tá Pronto.',
     guestSuccess: 'Documento gerado sem marca. Você ainda pode gerar de novo sem conta.',
     guestSuccessLast: 'Documento gerado sem marca. Para continuar, crie uma conta grátis.',
     saved: 'Documento salvo com sucesso.',
@@ -21,7 +21,7 @@ const guestCopy = {
   en: {
     trialAvailable: 'Free access: two full generations without branding.',
     accountRequired:
-      'Create a free account to keep generating documents. Generation stays free, with the Resolva Jato brand.',
+      'Create a free account to keep generating documents. Generation stays free, with the Precisou, Tá Pronto brand.',
     guestSuccess: 'Document generated without branding. You can generate again without an account.',
     guestSuccessLast: 'Document generated without branding. Create a free account to continue.',
     saved: 'Document saved successfully.',
@@ -31,7 +31,7 @@ const guestCopy = {
   es: {
     trialAvailable: 'Acceso libre: dos generaciones completas sin marca.',
     accountRequired:
-      'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con la marca Resolva Jato.',
+      'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con la marca Precisou, Tá Pronto.',
     guestSuccess: 'Documento generado sin marca. Todavia puedes generar otra vez sin cuenta.',
     guestSuccessLast: 'Documento generado sin marca. Para continuar, crea una cuenta gratis.',
     saved: 'Documento guardado con exito.',
@@ -183,7 +183,7 @@ export function getToolUsageProgress(): ToolUsageProgress {
 }
 
 /**
- * Marca Resolva Jato no PDF/WhatsApp?
+ * Marca Precisou, Tá Pronto no PDF/WhatsApp?
  * Premium: não. Guest nas gerações livres: não. Conta grátis: sim.
  */
 export function shouldBrandDocuments(): boolean {

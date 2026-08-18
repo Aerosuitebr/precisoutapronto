@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = getReceiptClusterPage((await params).slug);
   if (!page) return {};
   const url = `/recibos/${page.slug}`;
-  return { title: { absolute: `${page.title} | Resolva Jato` }, description: page.description, alternates: { canonical: url }, openGraph: { title: page.title, description: page.description, url, type: 'article', images: [{ url: '/gerador-de-recibo/opengraph-image' }] }, twitter: { card: 'summary_large_image', title: page.title, description: page.description, images: ['/gerador-de-recibo/opengraph-image'] } };
+  return { title: { absolute: `${page.title} | Precisou, Tá Pronto` }, description: page.description, alternates: { canonical: url }, openGraph: { title: page.title, description: page.description, url, type: 'article', images: [{ url: '/gerador-de-recibo/opengraph-image' }] }, twitter: { card: 'summary_large_image', title: page.title, description: page.description, images: ['/gerador-de-recibo/opengraph-image'] } };
 }
 
 export default async function ReceiptClusterRoute({ params }: Props) {
@@ -22,7 +22,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
   const base = getViralBaseUrl().replace(/\/$/, '');
   const related = page.related.map(getReceiptClusterPage).filter((item): item is NonNullable<typeof item> => Boolean(item));
   const jsonLd = { '@context': 'https://schema.org', '@graph': [
-    { '@type': 'Article', headline: page.title, description: page.description, inLanguage: 'pt-BR', datePublished: '2026-08-10', dateModified: '2026-08-10', mainEntityOfPage: `${base}/recibos/${page.slug}`, author: { '@type': 'Organization', name: 'Equipe editorial Resolva Jato', url: `${base}/autores/equipe-resolva-jato` }, publisher: { '@type': 'Organization', name: 'Resolva Jato', url: base } },
+    { '@type': 'Article', headline: page.title, description: page.description, inLanguage: 'pt-BR', datePublished: '2026-08-10', dateModified: '2026-08-10', mainEntityOfPage: `${base}/recibos/${page.slug}`, author: { '@type': 'Organization', name: 'Equipe editorial Precisou, Tá Pronto', url: `${base}/autores/equipe-resolva-jato` }, publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base } },
     { '@type': 'HowTo', name: page.title, step: page.steps.map((text, index) => ({ '@type': 'HowToStep', position: index + 1, name: `Passo ${index + 1}`, text })) },
     { '@type': 'FAQPage', mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
     { '@type': 'BreadcrumbList', itemListElement: [

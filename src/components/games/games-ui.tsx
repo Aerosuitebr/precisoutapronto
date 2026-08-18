@@ -277,7 +277,7 @@ export function ProductBridge({ context = 'default' }: { context?: 'default' | '
         </span>
         <div className="min-w-0">
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal-800">
-            {isGame ? 'Ferramentas para a galera' : 'Também no Resolva Jato'}
+            {isGame ? 'Ferramentas para a galera' : 'Também no Precisou, Tá Pronto'}
           </p>
           <p className="mt-1 text-sm leading-6 text-slate-800 sm:text-base">
             {isGame

@@ -45,7 +45,7 @@ export function AuthGate({
       releaseHard: 'As ferramentas só são liberadas após a confirmação.',
       resend: 'Reenviar confirmação no login',
       freeBrand:
-        'Documentos grátis saem com a marca Resolva Jato. No Premium você remove qualquer referência.'
+        'Documentos grátis saem com a marca Precisou, Tá Pronto. No Premium você remove qualquer referência.'
     },
     en: {
       loading: 'Loading your account...',
@@ -59,7 +59,7 @@ export function AuthGate({
       releaseHard: 'The tools are available after email confirmation.',
       resend: 'Resend confirmation from sign in',
       freeBrand:
-        'Free documents include the Resolva Jato mark. Premium removes every reference.'
+        'Free documents include the Precisou, Tá Pronto mark. Premium removes every reference.'
     },
     es: {
       loading: 'Cargando tu cuenta...',
@@ -73,7 +73,7 @@ export function AuthGate({
       releaseHard: 'Las herramientas estarán disponibles después de confirmar el correo.',
       resend: 'Reenviar confirmación desde el acceso',
       freeBrand:
-        'Los documentos gratis llevan la marca Resolva Jato. Con Premium quitas cualquier referencia.'
+        'Los documentos gratis llevan la marca Precisou, Tá Pronto. Con Premium quitas cualquier referencia.'
     }
   }[locale];
   const loginPath = locale === 'pt-BR' ? '/login' : `/${locale}/login`;

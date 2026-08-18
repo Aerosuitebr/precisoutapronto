@@ -70,7 +70,7 @@ export function WhatsAppConnectionCard() {
             WhatsApp independente
           </p>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Evolution própria do Resolva Jato (porta 18083). Não usa o Aerosuite.
+            Evolution própria do Precisou, Tá Pronto (porta 18083). Não usa o Aerosuite.
           </p>
         </div>
         <Button variant="ghost" size="sm" className="h-8 px-2" onClick={refresh} disabled={loading}>

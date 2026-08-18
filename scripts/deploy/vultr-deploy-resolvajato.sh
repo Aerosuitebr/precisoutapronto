@@ -45,6 +45,9 @@ if [[ ! -f .env.production ]]; then
   exit 1
 fi
 
+PUBLIC_APP_URL="$(sed -n 's/^NEXT_PUBLIC_APP_URL=//p' .env.production | tail -1 | tr -d '\r' | sed 's#/$##')"
+PUBLIC_APP_URL="${PUBLIC_APP_URL:-https://precisoutapronto.com.br}"
+
 COMPOSE=(
   docker compose
   --env-file .env.production
@@ -84,7 +87,7 @@ INDEXNOW_URL_FILE="$(mktemp)"
 UPDATED_URLS_FILE="${INSTALL_DIR}/scripts/seo/indexnow-updated-urls.txt"
 UPDATED_HASH_FILE="${INSTALL_DIR}/.indexnow-updated-urls.sha256"
 
-curl -sf https://resolvajato.com.br/sitemap.xml -o "${CURRENT_SITEMAP_FILE}" || true
+curl -sf "${PUBLIC_APP_URL}/sitemap.xml" -o "${CURRENT_SITEMAP_FILE}" || true
 if [[ -s "${CURRENT_SITEMAP_FILE}" ]]; then
   grep -oE '<loc>[^<]+</loc>' "${CURRENT_SITEMAP_FILE}" | sed -E 's#</?loc>##g' | sort -u > "${CURRENT_SITEMAP_FILE}.urls"
   if [[ -s "${PREVIOUS_SITEMAP_FILE}" ]]; then
@@ -119,4 +122,4 @@ fi
 
 [[ -s "${CURRENT_SITEMAP_FILE}" ]] && cp "${CURRENT_SITEMAP_FILE}" "${PREVIOUS_SITEMAP_FILE}"
 rm -f "${CURRENT_SITEMAP_FILE}" "${CURRENT_SITEMAP_FILE}.urls" "${INDEXNOW_URL_FILE}" "${PREVIOUS_SITEMAP_FILE}.urls"
-echo "OK - Resolva Jato em ${INSTALL_DIR} (localhost:3000)"
+echo "OK - Precisou? Ta Pronto! em ${INSTALL_DIR} (localhost:3000; publico: ${PUBLIC_APP_URL})"

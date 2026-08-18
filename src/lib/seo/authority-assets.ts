@@ -3,6 +3,8 @@
  * Páginas públicas devem ser indexáveis e úteis o bastante para merecer o link.
  */
 
+import { BRAND_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
+
 export type AuthorityAsset = {
   path: string;
   title: string;
@@ -20,7 +22,7 @@ export const AUTHORITY_ASSETS: AuthorityAsset[] = [
   {
     path: '/embed',
     title: 'Badges e embeds',
-    pitch: 'HTML pronto para blogs e portais linkarem o Resolva Jato.',
+    pitch: 'HTML pronto para blogs e portais linkarem o Precisou, Tá Pronto.',
     audiences: ['parceiros', 'educacao', 'mei']
   },
   {
@@ -62,10 +64,10 @@ export const AUTHORITY_ASSETS: AuthorityAsset[] = [
 ];
 
 export const PRESS_FACTS = [
-  'Nome: Resolva Jato',
-  'Domínio canônico: https://resolvajato.com.br',
+  `Nome: ${BRAND_NAME}`,
+  `Domínio canônico: ${BRAND_SITE}`,
   'Operação: Aerosuite',
-  'Contato de imprensa: contato@resolvajato.com.br',
+  `Contato de imprensa: ${BRAND_EMAIL}`,
   'Proposta: ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador',
   'Acesso: duas gerações livres sem cadastro; conta grátis para continuar',
   'Idiomas da interface pública: português (principal), inglês e espanhol em rotas dedicadas'
@@ -95,7 +97,7 @@ export const PRESS_STORY_ANGLES = [
 ] as const;
 
 export function partnerUtm(path: string, source: string, campaign: string) {
-  const base = path.startsWith('http') ? path : `https://resolvajato.com.br${path}`;
+  const base = path.startsWith('http') ? path : `${BRAND_SITE}${path}`;
   const url = new URL(base);
   url.searchParams.set('utm_source', source);
   url.searchParams.set('utm_medium', 'partner');

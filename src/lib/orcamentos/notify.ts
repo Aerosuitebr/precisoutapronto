@@ -1,4 +1,4 @@
-﻿import { shouldBrandOutboundMessagesByEmail } from '@/lib/billing-server';
+import { shouldBrandOutboundMessagesByEmail } from '@/lib/billing-server';
 import { formatCurrency } from '@/lib/formatters';
 import { isMailConfigured, sendEmail } from '@/lib/mail/send-email';
 import { sendSmsAlert } from '@/lib/orcamentos/sms';
@@ -41,8 +41,8 @@ function alertText(input: NotifyOrcamentoInput, branded: boolean) {
       : `${input.clienteNome} pediu AJUSTE no orçamento (${formatCurrency(input.total)}).\nMotivo: ${input.feedbackCliente || '-'}\n\nAbrir: ${input.publicUrl}`;
   }
   return approved
-    ? `Resolva Jato: ${input.clienteNome} APROVOU o orçamento de ${formatCurrency(input.total)}.\n\nAbrir: ${input.publicUrl}`
-    : `Resolva Jato: ${input.clienteNome} pediu AJUSTE no orçamento (${formatCurrency(input.total)}).\nMotivo: ${input.feedbackCliente || '-'}\n\nAbrir: ${input.publicUrl}`;
+    ? `Precisou, Tá Pronto: ${input.clienteNome} APROVOU o orçamento de ${formatCurrency(input.total)}.\n\nAbrir: ${input.publicUrl}`
+    : `Precisou, Tá Pronto: ${input.clienteNome} pediu AJUSTE no orçamento (${formatCurrency(input.total)}).\nMotivo: ${input.feedbackCliente || '-'}\n\nAbrir: ${input.publicUrl}`;
 }
 
 /**
@@ -70,7 +70,7 @@ export async function notifyProfissional(input: NotifyOrcamentoInput): Promise<N
       : `Ajuste solicitado por ${input.clienteNome}`;
     const brandFooter = branded
       ? `<p style="color:#64748b;font-size:12px;margin-top:24px">
-           Aviso automático do Resolva Jato. Cobranças e documentos profissionais gratuitos.<br/>
+           Aviso automático do Precisou, Tá Pronto. Cobranças e documentos profissionais gratuitos.<br/>
            <a href="${viralHomeUrl('email_notify')}">${VIRAL_SITE_HOST}</a>
          </p>`
       : `<p style="color:#64748b;font-size:12px;margin-top:24px">Aviso automático</p>`;
@@ -91,7 +91,7 @@ export async function notifyProfissional(input: NotifyOrcamentoInput): Promise<N
 
     const mail = await sendEmail({
       to: email,
-      subject: branded ? `[Resolva Jato] ${subject}` : subject,
+      subject: branded ? `[Precisou, Tá Pronto] ${subject}` : subject,
       html,
       text
     });
@@ -105,7 +105,7 @@ export async function notifyProfissional(input: NotifyOrcamentoInput): Promise<N
   let pushConfigured = false;
   if (email) {
     const push = await sendPushToOwner(email, {
-      title: branded ? 'Resolva Jato' : 'Orçamento',
+      title: branded ? 'Precisou, Tá Pronto' : 'Orçamento',
       body: approved
         ? `Orçamento APROVADO por ${input.clienteNome} · ${formatCurrency(input.total)}`
         : `Ajuste pedido por ${input.clienteNome} · ${formatCurrency(input.total)}`,

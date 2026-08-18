@@ -97,7 +97,7 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/assistente/documentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${base}/contato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/sobre`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
-    { url: `${base}/resolva-jato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/precisou-ta-pronto`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/qualidade-e-seguranca`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.65 },
     { url: `${base}/autores/equipe-resolva-jato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/criterios-editoriais`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },

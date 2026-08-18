@@ -5,10 +5,10 @@ import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
 
 const descriptionOverrides: Record<InternationalLocale, Record<string, string>> = {
   en: {
-    about: 'Learn how Resolva Jato creates practical online tools for documents, independent professionals, students and small businesses.',
-    contact: 'Contact Resolva Jato for product support, security reports, privacy requests, corrections or questions about our online tools.',
-    terms: 'Read the rules, responsibilities and acceptable-use conditions for accounts, documents and online tools provided by Resolva Jato.',
-    privacy: 'Understand what personal data Resolva Jato collects, why it is processed and how to request access, correction or deletion.',
+    about: 'Learn how Precisou, Tá Pronto creates practical online tools for documents, independent professionals, students and small businesses.',
+    contact: 'Contact Precisou, Tá Pronto for product support, security reports, privacy requests, corrections or questions about our online tools.',
+    terms: 'Read the rules, responsibilities and acceptable-use conditions for accounts, documents and online tools provided by Precisou, Tá Pronto.',
+    privacy: 'Understand what personal data Precisou, Tá Pronto collects, why it is processed and how to request access, correction or deletion.',
     'tools/email-signature': 'Create a professional email signature with contact details, social links and a clean layout ready to copy and use.',
     'tools/delivery-schedule': 'Build a delivery schedule with milestones, owners and deadlines to organize projects and monitor progress online.',
     'tools/bill-splitter': 'Split a shared bill fairly, calculate each participant’s amount and organize payments quickly in your browser.',
@@ -20,10 +20,10 @@ const descriptionOverrides: Record<InternationalLocale, Record<string, string>> 
     'tools/lattes-cv': 'Create and organize an academic Lattes-style CV with education, publications, projects and professional experience.'
   },
   es: {
-    about: 'Conoce cómo Resolva Jato crea herramientas prácticas para documentos, profesionales independientes, estudiantes y pequeñas empresas.',
-    contact: 'Contacta con Resolva Jato para soporte, seguridad, privacidad, correcciones o preguntas sobre nuestras herramientas en línea.',
-    terms: 'Consulta las reglas, responsabilidades y condiciones de uso de cuentas, documentos y herramientas ofrecidas por Resolva Jato.',
-    privacy: 'Conoce qué datos personales recopila Resolva Jato, por qué los trata y cómo solicitar acceso, corrección o eliminación.',
+    about: 'Conoce cómo Precisou, Tá Pronto crea herramientas prácticas para documentos, profesionales independientes, estudiantes y pequeñas empresas.',
+    contact: 'Contacta con Precisou, Tá Pronto para soporte, seguridad, privacidad, correcciones o preguntas sobre nuestras herramientas en línea.',
+    terms: 'Consulta las reglas, responsabilidades y condiciones de uso de cuentas, documentos y herramientas ofrecidas por Precisou, Tá Pronto.',
+    privacy: 'Conoce qué datos personales recopila Precisou, Tá Pronto, por qué los trata y cómo solicitar acceso, corrección o eliminación.',
     'tools/receipt': 'Crea un recibo profesional con pagador, beneficiario, importe, concepto y fecha, listo para exportar y compartir.',
     'tools/email-signature': 'Crea una firma de correo profesional con datos de contacto, enlaces sociales y un diseño limpio listo para usar.',
     'tools/delivery-schedule': 'Crea un cronograma de entregas con etapas, responsables y fechas para organizar proyectos y seguir su avance.',
@@ -74,7 +74,7 @@ export function internationalSeo(
       alternateLocale: ['pt_BR', locale === 'en' ? 'es_ES' : 'en_US'],
       type: 'website',
       url: `/${locale}${suffix}`,
-      siteName: 'Resolva Jato',
+      siteName: 'Precisou, Tá Pronto',
       images: [{ url: socialImage, width: 1200, height: 630 }]
     },
     twitter: {

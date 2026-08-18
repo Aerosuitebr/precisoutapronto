@@ -31,7 +31,7 @@ export function PdfTaskLandingPage({ landing, children }: { landing: PdfTaskLand
           <Link href={toolsPath}>{labels.tools}</Link><span className="mx-1.5">/</span><span>{landing.h1}</span>
         </nav>
         <header className="mb-6 max-w-3xl">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">{landing.eyebrow || 'Resolva Jato · PDF'}</p>
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">{landing.eyebrow || 'Precisou, Tá Pronto · PDF'}</p>
           <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">{landing.h1}</h1>
           <p className="mt-3 text-base leading-7 text-slate-600 sm:text-lg">{landing.subtitle}</p>
         </header>

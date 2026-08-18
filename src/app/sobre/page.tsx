@@ -4,20 +4,20 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Sobre',
-  description: 'Conheça o Resolva Jato, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
+  description: 'Conheça o Precisou, Tá Pronto, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
   alternates: { canonical: '/sobre' },
   openGraph: {
-    title: 'Sobre | Resolva Jato',
-    description: 'Conheça o Resolva Jato, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
+    title: 'Sobre | Precisou, Tá Pronto',
+    description: 'Conheça o Precisou, Tá Pronto, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
     url: '/sobre'
   }
 };
 
 export default function SobrePage() {
   return (
-    <LegalPage title="Sobre o Resolva Jato" subtitle="Ferramentas práticas, sem burocracia">
+    <LegalPage title="Sobre o Precisou, Tá Pronto" subtitle="Ferramentas práticas, sem burocracia">
       <p>
-        O <strong>Resolva Jato</strong> (resolvajato.com.br) reúne ferramentas para autônomos,
+        O <strong>Precisou, Tá Pronto</strong> (resolvajato.com.br) reúne ferramentas para autônomos,
         estudantes e pequenos negócios: currículos, recibos, contratos, propostas e mais, com uso
         gratuito e confirmação de e-mail.
       </p>
@@ -29,7 +29,7 @@ export default function SobrePage() {
         <h2 className="text-xl font-bold text-slate-950">Como produzimos nossos conteúdos</h2>
         <p className="mt-3">
           Os guias são escritos para responder primeiro à dúvida prática do leitor e revisados pela
-          equipe Resolva Jato antes da publicação. Em temas jurídicos, trabalhistas, tributários ou
+          equipe Precisou, Tá Pronto antes da publicação. Em temas jurídicos, trabalhistas, tributários ou
           contábeis, indicamos os limites da ferramenta e recomendamos validação com um profissional
           habilitado quando a situação exigir análise individual.
         </p>
@@ -41,17 +41,17 @@ export default function SobrePage() {
       <section className="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-6">
         <h2 className="text-xl font-bold text-slate-950">Press kit</h2>
         <p className="mt-3">
-          <strong>Descrição curta:</strong> Resolva Jato é uma plataforma brasileira de ferramentas
+          <strong>Descrição curta:</strong> Precisou, Tá Pronto é uma plataforma brasileira de ferramentas
           online para criar documentos, organizar cobranças e resolver tarefas práticas de trabalho
           e estudos.
         </p>
         <p className="mt-3">
-          <strong>Descrição editorial:</strong> O Resolva Jato ajuda MEIs, freelancers, estudantes e
+          <strong>Descrição editorial:</strong> O Precisou, Tá Pronto ajuda MEIs, freelancers, estudantes e
           pequenos negócios a criar currículos, recibos, contratos, propostas, orçamentos com Pix,
           corrigir redação ENEM, editar PDF e montar referências ABNT em fluxos simples no navegador.
         </p>
         <p className="mt-3">
-          <strong>Como citar:</strong> Resolva Jato. Ferramentas online grátis.
+          <strong>Como citar:</strong> Precisou, Tá Pronto. Ferramentas online grátis.
           Disponível em: https://resolvajato.com.br. Acesso em: data da consulta.
         </p>
         <p className="mt-3">

@@ -4,7 +4,7 @@ const UPDATED_AT = '2026-08-07';
 const EDITORIAL = {
   publishedAt: UPDATED_AT,
   updatedAt: UPDATED_AT,
-  author: 'Equipe editorial Resolva Jato',
+  author: 'Equipe editorial Precisou, Tá Pronto',
   reviewer: 'Revisão editorial interna'
 } as const;
 

@@ -56,7 +56,7 @@ export function ToolWorkspace({ toolId, bullets }: ToolWorkspaceProps) {
             </div>
             <h2 className="text-xl font-bold text-slate-900">Workspace em evolução</h2>
             <p className="mt-3 text-sm leading-7 text-slate-700">
-              Esta ferramenta já está posicionada no produto e pronta para receber o editor completo. No plano gratuito, documentos e mensagens podem incluir a marca Resolva Jato.
+              Esta ferramenta já está posicionada no produto e pronta para receber o editor completo. No plano gratuito, documentos e mensagens podem incluir a marca Precisou, Tá Pronto.
             </p>
             <ul className="mt-5 space-y-3">
               {bullets.map((bullet) => (

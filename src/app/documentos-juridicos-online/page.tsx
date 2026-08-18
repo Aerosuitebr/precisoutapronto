@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: juridicosSeoContent.seo.metaTitle,
     description: juridicosSeoContent.seo.metaDescription,
     url: `${SITE_URL}/${juridicosSeoContent.slug}`,
-    siteName: 'Resolva Jato',
+    siteName: 'Precisou, Tá Pronto',
     locale: 'pt_BR',
     type: 'website',
     images: [{ url: `/${juridicosSeoContent.slug}/opengraph-image` }]

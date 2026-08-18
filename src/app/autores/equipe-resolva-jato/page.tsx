@@ -3,15 +3,15 @@ import Link from 'next/link';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Equipe editorial Resolva Jato',
-  description: 'Conheça a equipe responsável pela pesquisa, redação, testes e manutenção dos guias do Resolva Jato.',
+  title: 'Equipe editorial Precisou, Tá Pronto',
+  description: 'Conheça a equipe responsável pela pesquisa, redação, testes e manutenção dos guias do Precisou, Tá Pronto.',
   alternates: { canonical: '/autores/equipe-resolva-jato' }
 };
 
 export default function EquipeResolvaJatoPage() {
   return (
-    <LegalPage title="Equipe editorial Resolva Jato" subtitle="Pesquisa, exemplos e ferramentas testadas na prática">
-      <p>A Equipe editorial Resolva Jato é o responsável coletivo pelos guias publicados na plataforma. O trabalho inclui pesquisar fontes oficiais, escrever respostas diretas, criar exemplos fictícios, testar as ferramentas relacionadas e revisar links e datas.</p>
+    <LegalPage title="Equipe editorial Precisou, Tá Pronto" subtitle="Pesquisa, exemplos e ferramentas testadas na prática">
+      <p>A Equipe editorial Precisou, Tá Pronto é o responsável coletivo pelos guias publicados na plataforma. O trabalho inclui pesquisar fontes oficiais, escrever respostas diretas, criar exemplos fictícios, testar as ferramentas relacionadas e revisar links e datas.</p>
       <h2>O que a revisão interna cobre</h2>
       <p>Conferimos clareza, coerência, funcionamento dos fluxos e correspondência entre o texto e as fontes indicadas. A revisão interna não deve ser interpretada como parecer jurídico, contábil ou trabalhista.</p>
       <h2>Como tratamos temas sensíveis</h2>

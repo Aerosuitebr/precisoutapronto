@@ -7,7 +7,7 @@ test.describe('PT quote smoke', () => {
     expect(response!.status()).toBeLessThan(500);
 
     await expect(page.locator('body')).toBeVisible();
-    await expect(page.locator('h1, h2').filter({ hasText: /orçamento|orcamento|Pix|Resolva Jato/i }).first()).toBeVisible();
+    await expect(page.locator('h1, h2').filter({ hasText: /orçamento|orcamento|Pix|Precisou/i }).first()).toBeVisible();
     await expect(page.locator('body')).not.toContainText(/Application error|Internal Server Error/i);
   });
 

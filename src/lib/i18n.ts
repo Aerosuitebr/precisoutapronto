@@ -21,7 +21,7 @@ export const localeLabel: Record<Locale, string> = {
 export const internationalCopy = {
   en: {
     metadata: {
-      title: 'Resolva Jato | Professional documents and Pix payments',
+      title: 'Precisou, Tá Pronto | Professional documents and Pix payments',
       description:
         'Create quotes, collect Pix payments on WhatsApp and generate professional PDFs in minutes.'
     },
@@ -69,7 +69,7 @@ export const internationalCopy = {
       },
       email: 'Email address',
       privacy: 'Protected access. Your password is never displayed or shared.',
-      backHome: 'Back to the Resolva Jato home page'
+      backHome: 'Back to the Precisou, Tá Pronto home page'
     },
     hero: {
       eyebrow: 'The digital office that gets things done',
@@ -111,7 +111,7 @@ export const internationalCopy = {
     socialProof: {
       eyebrow: 'What the community says',
       title: 'Built for the way professionals actually work.',
-      source: 'Public comment about Resolva Jato',
+      source: 'Public comment about Precisou, Tá Pronto',
       translated: 'Translated from Portuguese',
       caleb:
         'I loved how you made Pix on WhatsApp the starting point — very practical for the MEI audience. The focused tool selection is also spot on.',
@@ -121,13 +121,13 @@ export const internationalCopy = {
     finalCta: {
       title: 'Ready to make your next job look more professional?',
       description: 'Start free. Create the document, send it and move on with your day.',
-      button: 'Start with Resolva Jato'
+      button: 'Start with Precisou, Tá Pronto'
     },
     footer: 'Professional documents and practical tools for everyday work.'
   },
   es: {
     metadata: {
-      title: 'Resolva Jato | Documentos profesionales y cobros con Pix',
+      title: 'Precisou, Tá Pronto | Documentos profesionales y cobros con Pix',
       description:
         'Crea presupuestos, cobra con Pix por WhatsApp y genera documentos profesionales en PDF en minutos.'
     },
@@ -175,7 +175,7 @@ export const internationalCopy = {
       },
       email: 'Correo electrónico',
       privacy: 'Acceso protegido. Tu contraseña nunca se muestra ni se comparte.',
-      backHome: 'Volver a la página inicial de Resolva Jato'
+      backHome: 'Volver a la página inicial de Precisou, Tá Pronto'
     },
     hero: {
       eyebrow: 'La oficina digital que resuelve',
@@ -217,7 +217,7 @@ export const internationalCopy = {
     socialProof: {
       eyebrow: 'Lo que dice la comunidad',
       title: 'Creado para la forma real de trabajar.',
-      source: 'Comentario público sobre Resolva Jato',
+      source: 'Comentario público sobre Precisou, Tá Pronto',
       translated: 'Traducido al español',
       caleb:
         'Me encantó que pusieran Pix en WhatsApp como punto de partida: es muy práctico para el público MEI. La selección de herramientas también está muy bien enfocada.',
@@ -227,7 +227,7 @@ export const internationalCopy = {
     finalCta: {
       title: '¿Listo para presentar tu próximo trabajo de forma profesional?',
       description: 'Comienza gratis. Crea el documento, envíalo y continúa con tu día.',
-      button: 'Comenzar con Resolva Jato'
+      button: 'Comenzar con Precisou, Tá Pronto'
     },
     footer: 'Documentos profesionales y herramientas prácticas para el trabajo diario.'
   }

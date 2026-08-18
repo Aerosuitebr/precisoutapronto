@@ -11,8 +11,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: locale === 'en' ? 'Plans and pricing' : 'Planes y precios',
     description:
       locale === 'en'
-        ? 'Compare the free and Premium plans for creating professional documents, exporting clean PDFs and using Resolva Jato online tools.'
-        : 'Compara los planes Gratis y Premium para crear documentos profesionales, exportar PDF sin marca y utilizar las herramientas de Resolva Jato.',
+        ? 'Compare the free and Premium plans for creating professional documents, exporting clean PDFs and using Precisou, Tá Pronto online tools.'
+        : 'Compara los planes Gratis y Premium para crear documentos profesionales, exportar PDF sin marca y utilizar las herramientas de Precisou, Tá Pronto.',
     ...internationalSeo(locale, 'plans', '/planos')
   };
 }

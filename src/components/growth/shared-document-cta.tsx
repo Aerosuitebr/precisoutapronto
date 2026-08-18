@@ -16,7 +16,7 @@ export function SharedDocumentCta({ toolId }: { toolId: string }) {
   return (
     <div className="mt-8 rounded-2xl bg-emerald-950 p-6 text-white">
       <Sparkles className="h-5 w-5 text-amber-300" />
-      <h2 className="mt-3 text-xl font-bold">Crie o seu no Resolva Jato</h2>
+      <h2 className="mt-3 text-xl font-bold">Crie o seu no Precisou, Tá Pronto</h2>
       <p className="mt-2 text-sm text-emerald-100">{cta.description}</p>
       <Link
         href={cta.href}

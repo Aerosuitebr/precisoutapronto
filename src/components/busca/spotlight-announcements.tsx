@@ -225,13 +225,13 @@ export function SpotlightAnnouncements() {
     <section id="ferramentas-destaque" className="mx-auto max-w-[1400px] scroll-mt-[var(--rj-section-scroll-mt)]">
       <div className="mb-3 sm:mb-4">
         <p className="rj-display text-sm font-bold uppercase tracking-[0.18em] text-sky-700">
-          Ferramentas Resolva Jato
+          Ferramentas Precisou, Tá Pronto
         </p>
         <h2 className="rj-display mt-1 text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
           Resolva tarefas profissionais em poucos cliques
         </h2>
         <p className="mt-2 max-w-2xl text-[15px] leading-6 text-slate-700 sm:text-base sm:leading-7">
-          Ferramentas criadas pelo Resolva Jato para gerar documentos profissionais: orçamento,
+          Ferramentas criadas pelo Precisou, Tá Pronto para gerar documentos profissionais: orçamento,
           recibo, contrato, currículo e mais, totalmente grátis.
         </p>
       </div>

@@ -20,7 +20,7 @@ export function SeoLandingJsonLd({ content }: { content: SeoLandingContent }) {
     inLanguage: 'pt-BR',
     isPartOf: {
       '@type': 'WebSite',
-      name: 'Resolva Jato',
+      name: 'Precisou, Tá Pronto',
       url: siteUrl
     },
     ...(toolIsPublicLanding && !toolIsSamePage
@@ -32,7 +32,7 @@ export function SeoLandingJsonLd({ content }: { content: SeoLandingContent }) {
     ? {
         '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
-        name: `Resolva Jato: ${content.eyebrow}`,
+        name: `Precisou, Tá Pronto: ${content.eyebrow}`,
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         url: toolUrl,

@@ -53,12 +53,12 @@ export default async function SegmentPage({ params }: Props) {
     '@graph': [
       {
         '@type': 'CollectionPage',
-        name: `Resolva Jato para ${segment.name}`,
+        name: `Precisou, Tá Pronto para ${segment.name}`,
         headline: segment.headline,
         description: segment.description,
         url: pageUrl,
         inLanguage: 'pt-BR',
-        isPartOf: { '@type': 'WebSite', name: 'Resolva Jato', url: base }
+        isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: base }
       },
       {
         '@type': 'ItemList',
@@ -82,7 +82,7 @@ export default async function SegmentPage({ params }: Props) {
         mainEntity: [
           {
             '@type': 'Question',
-            name: `Quais ferramentas o Resolva Jato oferece para ${segment.name}?`,
+            name: `Quais ferramentas o Precisou, Tá Pronto oferece para ${segment.name}?`,
             acceptedAnswer: {
               '@type': 'Answer',
               text: `A seleção para ${segment.name} reúne ${segment.tools.map((tool) => tool.label).join(', ')} e conteúdos relacionados a tarefas frequentes.`
@@ -107,7 +107,7 @@ export default async function SegmentPage({ params }: Props) {
       <main>
         <section className="bg-[linear-gradient(145deg,#020617,#0f172a_50%,#064e3b)] text-white">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-300">Resolva Jato para {segment.name}</p>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-300">Precisou, Tá Pronto para {segment.name}</p>
             <h1 className="rj-display mt-4 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{segment.headline}</h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-200">{segment.description}</p>
             <SegmentJourneyLink segment={segment.slug} destination="tool" href={segment.tools[0].href} className="mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">

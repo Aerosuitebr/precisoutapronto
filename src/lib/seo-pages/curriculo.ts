@@ -126,7 +126,7 @@ export const curriculoSeoContent: SeoPageContent = {
 
       <h2>Por que a estrutura do currículo importa tanto</h2>
       <p>Antes de qualquer avaliação humana, boa parte das empresas usa sistemas de triagem automática (os chamados ATS, de Applicant Tracking Systems) para filtrar currículos por palavras-chave, cargos e formação. Um currículo com estrutura confusa, tabelas complexas ou textos dentro de imagens pode simplesmente não ser lido corretamente por essas ferramentas, mesmo que o candidato tenha um perfil excelente.</p>
-      <p>Por isso, a recomendação é sempre usar um modelo com hierarquia clara: nome e contato no topo, seguido de resumo profissional, experiências em ordem cronológica reversa (mais recente primeiro), formação, cursos e habilidades. Essa é exatamente a lógica seguida pelos modelos do gerador de currículo do Resolva Jato.</p>
+      <p>Por isso, a recomendação é sempre usar um modelo com hierarquia clara: nome e contato no topo, seguido de resumo profissional, experiências em ordem cronológica reversa (mais recente primeiro), formação, cursos e habilidades. Essa é exatamente a lógica seguida pelos modelos do gerador de currículo do Precisou, Tá Pronto.</p>
 
       <h2>O que não pode faltar</h2>
       <p>Um bom currículo brasileiro em 2026 costuma conter: nome completo e forma de contato (e-mail e telefone), um resumo curto de 2 a 3 linhas destacando sua principal força profissional, experiências com cargo, empresa, período e 2 a 4 linhas de resultados (não apenas tarefas), formação acadêmica, cursos relevantes para a vaga e, quando fizer sentido, idiomas e habilidades técnicas.</p>
@@ -144,7 +144,7 @@ export const curriculoSeoContent: SeoPageContent = {
       <h2>Revise antes de enviar</h2>
       <p>Erros de português, datas inconsistentes e informações de contato desatualizadas são motivos comuns de descarte de currículos. Depois de finalizar, releia com calma (ou peça para alguém revisar) e confira se todos os links, e-mail e telefone estão corretos e atualizados.</p>
 
-      <p>Com o gerador de currículo do Resolva Jato, você preenche seus dados uma única vez, visualiza o resultado em tempo real e pode ajustar o modelo e o conteúdo até chegar num documento que realmente representa sua trajetória, e baixa em PDF pronto para enviar.</p>
+      <p>Com o gerador de currículo do Precisou, Tá Pronto, você preenche seus dados uma única vez, visualiza o resultado em tempo real e pode ajustar o modelo e o conteúdo até chegar num documento que realmente representa sua trajetória, e baixa em PDF pronto para enviar.</p>
     `
   },
   relatedTools: [

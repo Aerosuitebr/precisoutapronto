@@ -15,14 +15,14 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: path },
   openGraph: {
-    title: `${title} | Resolva Jato`,
+    title: `${title} | Precisou, Tá Pronto`,
     description,
     type: 'website',
     url: path
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${title} | Resolva Jato`,
+    title: `${title} | Precisou, Tá Pronto`,
     description
   }
 };
@@ -44,14 +44,14 @@ export default async function AssistantPage({ searchParams }: Props) {
       inLanguage: 'pt-BR',
       isPartOf: {
         '@type': 'WebSite',
-        name: 'Resolva Jato',
+        name: 'Precisou, Tá Pronto',
         url: siteUrl
       }
     },
     {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      name: 'Assistente de documentos Resolva Jato',
+      name: 'Assistente de documentos Precisou, Tá Pronto',
       description,
       url: pageUrl,
       applicationCategory: 'BusinessApplication',

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ profissao
   if (!page) return {};
   const path = `/orcamento-para/${page.slug}`;
   return {
-    title: { absolute: `${page.title} | Resolva Jato` },
+    title: { absolute: `${page.title} | Precisou, Tá Pronto` },
     description: page.description,
     alternates: { canonical: path },
     openGraph: { title: page.title, description: page.description, url: path, type: 'website' }

@@ -297,7 +297,7 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
             href={viralOrcamentoSignupPath()}
             className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
           >
-            Resolva Jato
+            Precisou, Tá Pronto
           </a>
           {' · '}
           Documento gerado para análise do cliente

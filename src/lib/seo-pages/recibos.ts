@@ -75,7 +75,7 @@ export const recibosSeoContent: SeoPageContent = {
   faq: [
     {
       question: 'O gerador de recibo é gratuito?',
-      answer: 'Sim. Você pode criar, editar e baixar seu recibo em PDF gratuitamente pelo Resolva Jato.'
+      answer: 'Sim. Você pode criar, editar e baixar seu recibo em PDF gratuitamente pelo Precisou, Tá Pronto.'
     },
     {
       question: 'O recibo tem validade como comprovante de pagamento?',
@@ -111,7 +111,7 @@ export const recibosSeoContent: SeoPageContent = {
       <h2>Guarde uma cópia</h2>
       <p>Tanto quem emite quanto quem recebe o recibo devem guardar uma cópia. Isso facilita eventuais consultas futuras, seja para controle financeiro pessoal, comprovação para terceiros ou questões fiscais.</p>
 
-      <p>Com o gerador de recibo do Resolva Jato, você preenche os dados, escolhe o modelo visual e baixa um PDF organizado, com valor por extenso automático e opção de assinatura digital.</p>
+      <p>Com o gerador de recibo do Precisou, Tá Pronto, você preenche os dados, escolhe o modelo visual e baixa um PDF organizado, com valor por extenso automático e opção de assinatura digital.</p>
     `
   },
   relatedTools: [

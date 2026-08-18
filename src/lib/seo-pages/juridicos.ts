@@ -75,7 +75,7 @@ export const juridicosSeoContent: SeoPageContent = {
   faq: [
     {
       question: 'O gerador de documentos jurídicos é gratuito?',
-      answer: 'Sim. Você pode criar, editar e baixar seus documentos em PDF gratuitamente pelo Resolva Jato.'
+      answer: 'Sim. Você pode criar, editar e baixar seus documentos em PDF gratuitamente pelo Precisou, Tá Pronto.'
     },
     {
       question: 'Os modelos substituem a revisão de um advogado?',
@@ -113,7 +113,7 @@ export const juridicosSeoContent: SeoPageContent = {
       <h2>Documentos acadêmicos de Direito</h2>
       <p>Estudantes e pesquisadores também usam modelos estruturados para fichamento de jurisprudência, estudo de caso e pareceres acadêmicos, documentos que seguem uma lógica de organização parecida com as peças profissionais, mas voltados para produção acadêmica.</p>
 
-      <p>Com o gerador de documentos jurídicos do Resolva Jato, você escolhe o tipo de peça, preenche os dados guiados e baixa um PDF organizado, pronto para revisão e assinatura.</p>
+      <p>Com o gerador de documentos jurídicos do Precisou, Tá Pronto, você escolhe o tipo de peça, preenche os dados guiados e baixa um PDF organizado, pronto para revisão e assinatura.</p>
     `
   },
   relatedTools: [
