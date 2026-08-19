@@ -45,8 +45,11 @@ COMPOSE=(
 echo "==> Validar compose staging"
 "${COMPOSE[@]}" config -q
 
-echo "==> Build + up staging (app em 127.0.0.1:${APP_PORT})"
-"${COMPOSE[@]}" up -d --build --remove-orphans
+echo "==> Build incremental apenas da aplicação staging"
+"${COMPOSE[@]}" build app
+
+echo "==> Subir staging sem reconstrução adicional (app em 127.0.0.1:${APP_PORT})"
+"${COMPOSE[@]}" up -d --no-build --remove-orphans
 
 echo "==> Schema Prisma: migrations versionadas aplicadas pelo entrypoint (PRISMA_SCHEMA_MODE=migrate)"
 

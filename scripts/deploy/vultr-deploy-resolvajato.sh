@@ -79,8 +79,11 @@ COMPOSE=(
 echo "==> Validar compose"
 "${COMPOSE[@]}" config -q
 
-echo "==> Build + up (sem Caddy; app em 127.0.0.1:3000)"
-"${COMPOSE[@]}" up -d --build --remove-orphans
+echo "==> Build incremental apenas da aplicação"
+"${COMPOSE[@]}" build app
+
+echo "==> Subir serviços sem reconstrução adicional"
+"${COMPOSE[@]}" up -d --no-build --remove-orphans
 
 echo "==> Aguardar health do app"
 ok=0
@@ -100,6 +103,8 @@ if [[ "${ok}" -ne 1 ]]; then
 fi
 
 curl -sfI http://127.0.0.1:3000/ | head -1
+curl -sfI http://127.0.0.1:3000/robots.txt | head -1
+curl -sfI http://127.0.0.1:3000/sitemap.xml | head -1
 "${COMPOSE[@]}" ps
 echo "==> Notificar mecanismos de busca via IndexNow"
 PREVIOUS_SITEMAP_FILE="${INSTALL_DIR}/.indexnow-sitemap.xml"

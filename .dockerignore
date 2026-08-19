@@ -26,5 +26,6 @@ tmp
 agent-transcripts
 terminals
 assets
+scripts/deploy
 *.pack
 *.pack.old
