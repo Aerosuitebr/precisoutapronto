@@ -13,10 +13,9 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
 
 const links = [
-  { href: '/calculadora-de-rescisao', label: 'Rescisão', auth: false },
-  { href: '/gerador-de-recibo', label: 'Recibo', auth: false },
-  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM', auth: false },
-  { href: '/biblioteca', label: 'Biblioteca', auth: false }
+  { href: '/recursos', label: 'Ferramentas', auth: false },
+  { href: '/biblioteca', label: 'Biblioteca', auth: false },
+  { href: '/guias', label: 'Guias', auth: false }
 ] as const;
 
 export function SiteHeader() {
