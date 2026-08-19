@@ -25,6 +25,16 @@ on:
         required: false
         default: false
         type: boolean
+      auto_promote:
+        description: 'Promover automaticamente para produção após staging/E2E'
+        required: false
+        default: true
+        type: boolean
+      expected_sha:
+        description: 'Interno: SHA aprovado no staging para proteger a promoção'
+        required: false
+        default: ''
+        type: string
 
 # Um único deploy por vez. Evita concorrência no Docker e nos arquivos do VPS.
 concurrency:
@@ -32,6 +42,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
+  actions: write
   contents: read
   statuses: write
 
@@ -50,6 +61,13 @@ jobs:
         with:
           script: |
             const sha = context.sha;
+            const expectedSha = '${{ inputs.expected_sha }}';
+            if (expectedSha && sha !== expectedSha) {
+              core.setFailed(
+                `A master avançou após o staging: esperado ${expectedSha}, recebido ${sha}. Rode staging novamente.`
+              );
+              return;
+            }
             const maxAgeMs = 24 * 60 * 60 * 1000;
             const { data: statuses } = await github.rest.repos.listCommitStatusesForRef({
               owner: context.repo.owner,
@@ -212,3 +230,22 @@ jobs:
               description: gate === 'success' ? 'Playwright staging gate passed' : 'Playwright staging gate failed',
               target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
+
+  promote-production:
+    name: Promote tested commit to production
+    needs: [playwright-gate, mark-e2e-status]
+    if: inputs.target == 'staging' && inputs.auto_promote == true && needs.playwright-gate.result == 'success' && needs.mark-e2e-status.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch protected production deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TESTED_SHA: ${{ github.sha }}
+        run: |
+          gh workflow run deploy-vultr.yml \
+            --repo "${GITHUB_REPOSITORY}" \
+            --ref "${GITHUB_REF_NAME}" \
+            -f target=production \
+            -f skip_e2e_gate=false \
+            -f auto_promote=false \
+            -f expected_sha="${TESTED_SHA}"
