@@ -20,6 +20,16 @@ on:
         required: false
         default: false
         type: boolean
+      run_ux_report:
+        description: 'Opcional: executar relatório UX com IA após staging'
+        required: false
+        default: false
+        type: boolean
+
+# Um único deploy por vez. Evita concorrência no Docker e nos arquivos do VPS.
+concurrency:
+  group: deploy-vultr
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -75,6 +85,8 @@ jobs:
       VULTR_HOST: ${{ secrets.VULTR_HOST }}
       VULTR_SSH_USER: ${{ secrets.VULTR_SSH_USER }}
       DEPLOY_TARGET: ${{ inputs.target }}
+      DEPLOY_ARCHIVE: resolva-jato-${{ github.run_id }}-${{ github.run_attempt }}.tgz
+      DEPLOY_SCRIPT: resolva-jato-deploy-${{ github.run_id }}-${{ github.run_attempt }}.sh
     steps:
       - uses: actions/checkout@v4
 
@@ -84,7 +96,7 @@ jobs:
             --exclude='*.pack' --exclude='.env' --exclude='.env.local' \
             --exclude='.env.production' --exclude='.env.staging' \
             --exclude='test-results' --exclude='playwright-report' --exclude='e2e-agent/artifacts' \
-            -czf /tmp/resolva-jato-repo.tgz .
+            -czf "/tmp/${DEPLOY_ARCHIVE}" .
 
       - name: Deploy via SSH
         env:
@@ -97,18 +109,18 @@ jobs:
           printf '%s\n' "${SSH_PRIVATE_KEY}" > ~/.ssh/vultr_deploy
           chmod 600 ~/.ssh/vultr_deploy
           SSH_OPTS="-i ~/.ssh/vultr_deploy -o StrictHostKeyChecking=accept-new -o BatchMode=yes"
-          scp ${SSH_OPTS} /tmp/resolva-jato-repo.tgz "${USER}@${HOST}:/tmp/resolva-jato-repo.tgz"
+          scp ${SSH_OPTS} "/tmp/${DEPLOY_ARCHIVE}" "${USER}@${HOST}:/tmp/${DEPLOY_ARCHIVE}"
 
           if [[ "${DEPLOY_TARGET}" == "staging" ]]; then
             scp ${SSH_OPTS} scripts/deploy/vultr-deploy-resolvajato-staging.sh \
-              "${USER}@${HOST}:/tmp/vultr-deploy-resolvajato-staging.sh"
+              "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
             ssh ${SSH_OPTS} "${USER}@${HOST}" \
-              "chmod +x /tmp/vultr-deploy-resolvajato-staging.sh && INSTALL_DIR=/opt/resolva-jato-staging TARBALL=/tmp/resolva-jato-repo.tgz bash /tmp/vultr-deploy-resolvajato-staging.sh"
+              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/resolva-jato-staging TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
           else
             scp ${SSH_OPTS} scripts/deploy/vultr-deploy-resolvajato.sh \
-              "${USER}@${HOST}:/tmp/vultr-deploy-resolvajato.sh"
+              "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
             ssh ${SSH_OPTS} "${USER}@${HOST}" \
-              "chmod +x /tmp/vultr-deploy-resolvajato.sh && INSTALL_DIR=/opt/resolva-jato TARBALL=/tmp/resolva-jato-repo.tgz bash /tmp/vultr-deploy-resolvajato.sh"
+              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/resolva-jato TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
           fi
 
   playwright-gate:
@@ -116,7 +128,9 @@ jobs:
     needs: deploy
     if: inputs.target == 'staging'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.0-noble
     env:
       E2E_BASE_URL: https://staging.resolvajato.com.br
       E2E_CF_ACCESS_CLIENT_ID: ${{ secrets.E2E_CF_ACCESS_CLIENT_ID }}
@@ -128,7 +142,6 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - run: npx playwright install chromium --with-deps
       - name: Wait for staging
         run: |
           set -euo pipefail
@@ -151,8 +164,8 @@ jobs:
 
   browser-use-ux:
     name: Browser Use UX report
-    needs: playwright-gate
-    if: inputs.target == 'staging'
+    needs: deploy
+    if: inputs.target == 'staging' && inputs.run_ux_report == true
     runs-on: ubuntu-latest
     timeout-minutes: 30
     continue-on-error: true

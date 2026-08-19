@@ -4,7 +4,7 @@ FROM node:20-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat openssl
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm npm ci
 
 FROM node:20-alpine AS builder
 WORKDIR /app
@@ -34,7 +34,7 @@ ENV NEXT_PUBLIC_CLARITY_PROJECT_ID=$NEXT_PUBLIC_CLARITY_PROJECT_ID
 ENV GOOGLE_SITE_VERIFICATION=$GOOGLE_SITE_VERIFICATION
 ENV BING_SITE_VERIFICATION=$BING_SITE_VERIFICATION
 
-RUN npx prisma generate && npx next build
+RUN --mount=type=cache,target=/app/.next/cache npx prisma generate && npx next build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
