@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · CURRÍCULO',
+    eyebrow: 'PRECISOU, TÁ PRONTO · CURRÍCULO',
     title: 'Currículo em PDF pronto para enviar.',
     subtitle: 'Modelos profissionais · edição online · download grátis'
   });

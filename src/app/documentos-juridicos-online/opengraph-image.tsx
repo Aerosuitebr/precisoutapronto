@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · JURÍDICO',
+    eyebrow: 'PRECISOU, TÁ PRONTO · JURÍDICO',
     title: 'Documentos jurídicos organizados em PDF.',
     subtitle: 'Modelos guiados · edição online · exportação grátis'
   });

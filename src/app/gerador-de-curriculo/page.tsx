@@ -5,7 +5,7 @@ import { SAMPLE_RESUME } from '@/lib/curriculo/defaults';
 import { curriculoSeoContent } from '@/lib/seo-pages/curriculo';
 import { CurriculoLivePreview } from './curriculo-live-preview';
 
-const SITE_URL = 'https://resolvajato.com.br';
+const SITE_URL = 'https://precisoutapronto.com.br';
 
 export const metadata: Metadata = {
   title: curriculoSeoContent.seo.metaTitle,

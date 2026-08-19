@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · FÉRIAS',
+    eyebrow: 'PRECISOU, TÁ PRONTO · FÉRIAS',
     title: 'Calcule suas férias em minutos.',
     subtitle: '1/3 constitucional e abono · grátis, sem cadastro'
   });

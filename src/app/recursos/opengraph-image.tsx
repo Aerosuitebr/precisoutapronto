@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · RECURSOS',
+    eyebrow: 'PRECISOU, TÁ PRONTO · RECURSOS',
     title: 'Todas as ferramentas em um só lugar.',
     subtitle: 'Documentos, cálculos e organização para o dia a dia'
   });

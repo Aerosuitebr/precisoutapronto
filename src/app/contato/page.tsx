@@ -20,7 +20,7 @@ const productHunt = BRAND_SAME_AS[0];
 
 export default function ContatoPage() {
   return (
-    <LegalPage title="Contato" subtitle="Estamos em resolvajato.com.br">
+    <LegalPage title="Contato" subtitle="Estamos em precisoutapronto.com.br">
       <p>
         O Precisou, Tá Pronto é um produto da <strong>Aerosuite</strong>. Suporte, segurança e
         privacidade usam a mesma caixa Google Workspace:

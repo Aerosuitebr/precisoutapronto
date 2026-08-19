@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · CONTRATO',
+    eyebrow: 'PRECISOU, TÁ PRONTO · CONTRATO',
     title: 'Contrato claro, pronto para assinar.',
     subtitle: 'Escopo, prazo e pagamento organizados em PDF'
   });

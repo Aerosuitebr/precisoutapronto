@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · 13º',
+    eyebrow: 'PRECISOU, TÁ PRONTO · 13º',
     title: 'Calcule o 13º salário em minutos.',
     subtitle: 'Avos, 1ª e 2ª parcela · grátis, sem cadastro'
   });

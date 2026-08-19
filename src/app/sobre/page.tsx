@@ -17,7 +17,7 @@ export default function SobrePage() {
   return (
     <LegalPage title="Sobre o Precisou, Tá Pronto" subtitle="Ferramentas práticas, sem burocracia">
       <p>
-        O <strong>Precisou, Tá Pronto</strong> (resolvajato.com.br) reúne ferramentas para autônomos,
+        O <strong>Precisou, Tá Pronto</strong> (precisoutapronto.com.br) reúne ferramentas para autônomos,
         estudantes e pequenos negócios: currículos, recibos, contratos, propostas e mais, com uso
         gratuito e confirmação de e-mail.
       </p>
@@ -52,11 +52,11 @@ export default function SobrePage() {
         </p>
         <p className="mt-3">
           <strong>Como citar:</strong> Precisou, Tá Pronto. Ferramentas online grátis.
-          Disponível em: https://resolvajato.com.br. Acesso em: data da consulta.
+          Disponível em: https://precisoutapronto.com.br. Acesso em: data da consulta.
         </p>
         <p className="mt-3">
           <strong>Fatos citáveis:</strong> operação pela Aerosuite; domínio canônico
-          resolvajato.com.br; ferramentas usáveis no navegador; duas gerações livres antes do
+          precisoutapronto.com.br; ferramentas usáveis no navegador; duas gerações livres antes do
           cadastro; contato de imprensa em contato@resolvajato.com.br.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">

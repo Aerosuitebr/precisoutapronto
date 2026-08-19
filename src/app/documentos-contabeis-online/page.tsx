@@ -6,7 +6,7 @@ import { SAMPLE_CONTABIL_DOCUMENT } from '@/lib/contabeis/defaults';
 import { contabeisSeoContent } from '@/lib/seo-pages/contabeis';
 import { ContabilLivePreview } from './contabil-live-preview';
 
-const SITE_URL = 'https://resolvajato.com.br';
+const SITE_URL = 'https://precisoutapronto.com.br';
 
 export const metadata: Metadata = {
   title: contabeisSeoContent.seo.metaTitle,

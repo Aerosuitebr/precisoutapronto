@@ -71,7 +71,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
       { href: '/gerador-de-curriculo', label: 'Gerador de currículo' },
       { href: '/para/freelancers', label: 'Ferramentas para freelancers' }
     ],
-    ogEyebrow: 'RESOLVA JATO · IDENTIDADE PROFISSIONAL',
+    ogEyebrow: 'PRECISOU, TÁ PRONTO · IDENTIDADE PROFISSIONAL',
     ogTitle: 'Seu e-mail com cara profissional.',
     ogSubtitle: 'Logo, contatos e redes · pronto para copiar',
     applicationCategory: 'BusinessApplication'
@@ -123,7 +123,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
       { href: '/gerador-de-curriculo', label: 'Gerador de currículo' },
       { href: '/recursos', label: 'Catálogo de ferramentas' }
     ],
-    ogEyebrow: 'RESOLVA JATO · IMAGENS',
+    ogEyebrow: 'PRECISOU, TÁ PRONTO · IMAGENS',
     ogTitle: 'Remova o fundo em segundos.',
     ogSubtitle: 'PNG transparente · processamento no navegador',
     applicationCategory: 'MultimediaApplication'
@@ -171,7 +171,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
       { href: '/gerador-de-contrato', label: 'Gerador de contrato' },
       { href: '/recursos', label: 'Catálogo de ferramentas' }
     ],
-    ogEyebrow: 'RESOLVA JATO · PDF',
+    ogEyebrow: 'PRECISOU, TÁ PRONTO · PDF',
     ogTitle: 'Edite PDFs sem instalar nada.',
     ogSubtitle: 'Juntar, girar e extrair · no navegador',
     applicationCategory: 'BusinessApplication'
@@ -219,7 +219,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
       { href: '/gerador-de-curriculo', label: 'Gerador de currículo' },
       { href: '/para/estudantes', label: 'Para estudantes' }
     ],
-    ogEyebrow: 'RESOLVA JATO · ABNT',
+    ogEyebrow: 'PRECISOU, TÁ PRONTO · ABNT',
     ogTitle: 'Referências ABNT em segundos.',
     ogSubtitle: 'Sites, livros e artigos · padrão NBR 6023',
     applicationCategory: 'EducationalApplication'
@@ -267,7 +267,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
       { href: '/orcamento-com-pix', label: 'Orçamento com Pix' },
       { href: '/para/freelancers', label: 'Para freelancers' }
     ],
-    ogEyebrow: 'RESOLVA JATO · AGENDA',
+    ogEyebrow: 'PRECISOU, TÁ PRONTO · AGENDA',
     ogTitle: 'Organize prazos sem planilha solta.',
     ogSubtitle: 'Compromissos e visão semanal · no navegador',
     applicationCategory: 'BusinessApplication'
@@ -315,7 +315,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
       { href: '/gerador-de-recibo', label: 'Gerador de recibo' },
       { href: '/recursos', label: 'Catálogo de ferramentas' }
     ],
-    ogEyebrow: 'RESOLVA JATO · RATEIO',
+    ogEyebrow: 'PRECISOU, TÁ PRONTO · RATEIO',
     ogTitle: 'Divida a conta sem planilha.',
     ogSubtitle: 'Churrasco, restaurante ou viagem · grátis',
     applicationCategory: 'UtilitiesApplication'

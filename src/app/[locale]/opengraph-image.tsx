@@ -136,7 +136,7 @@ export default async function InternationalOpenGraphImage({ params }: ImageProps
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8', fontSize: 20 }}>
-            <div style={{ display: 'flex' }}>resolvajato.com.br/{locale}</div>
+            <div style={{ display: 'flex' }}>precisoutapronto.com.br/{locale}</div>
             <div style={{ display: 'flex', color: '#a7f3d0' }}>{selected.cta}</div>
           </div>
         </div>

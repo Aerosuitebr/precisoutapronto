@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · ESTUDANTES',
+    eyebrow: 'PRECISOU, TÁ PRONTO · ESTUDANTES',
     title: 'Capa ABNT e currículo antes do prazo.',
     subtitle: 'Trabalhos, currículo e documentos sem enrolação'
   });

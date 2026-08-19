@@ -1,4 +1,4 @@
-/* Resolva Jato — service worker for Web Push alerts */
+/* Precisou, Tá Pronto — service worker for Web Push alerts */
 
 self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting());
@@ -10,7 +10,7 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('push', (event) => {
   let data = {
-    title: 'Resolva Jato',
+    title: 'Precisou, Tá Pronto',
     body: 'Você tem um novo aviso.',
     url: '/ferramentas/orcamentos',
     tag: 'resolva-jato',

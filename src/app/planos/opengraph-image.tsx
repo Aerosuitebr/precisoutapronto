@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · PLANOS',
+    eyebrow: 'PRECISOU, TÁ PRONTO · PLANOS',
     title: 'Comece grátis. Premium quando precisar.',
     subtitle: 'Orçamento com Pix, recibo, contrato e proposta'
   });

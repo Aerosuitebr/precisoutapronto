@@ -16,7 +16,7 @@ export default function PrivacidadePage() {
   return (
     <LegalPage title="Privacidade" subtitle="Transparência sobre dados no Precisou, Tá Pronto">
       <p>
-        O Precisou, Tá Pronto (<strong>resolvajato.com.br</strong>) é operado pela Aerosuite. Coletamos apenas
+        O Precisou, Tá Pronto (<strong>precisoutapronto.com.br</strong>) é operado pela Aerosuite. Coletamos apenas
         os dados necessários para criar e proteger sua conta: nome, e-mail, senha (armazenada com hash),
         e sinais de segurança (IP, dispositivo e logs de auditoria) para prevenir abuso.
       </p>

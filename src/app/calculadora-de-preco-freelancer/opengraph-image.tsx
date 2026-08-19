@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · PRECIFICAÇÃO',
+    eyebrow: 'PRECISOU, TÁ PRONTO · PRECIFICAÇÃO',
     title: 'Descubra quanto cobrar de verdade.',
     subtitle: 'Custos, horas, taxas e margem · grátis, sem cadastro'
   });

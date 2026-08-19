@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · RESCISÃO',
+    eyebrow: 'PRECISOU, TÁ PRONTO · RESCISÃO',
     title: 'Calcule sua rescisão em minutos.',
     subtitle: 'Saldo, férias, 13º, aviso e FGTS · grátis, sem cadastro'
   });

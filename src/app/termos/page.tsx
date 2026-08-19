@@ -16,7 +16,7 @@ export default function TermosPage() {
   return (
     <LegalPage title="Termos de uso" subtitle="Regras claras para uso do Precisou, Tá Pronto">
       <p>
-        Ao criar uma conta em <strong>resolvajato.com.br</strong>, você concorda em usar a plataforma de
+        Ao criar uma conta em <strong>precisoutapronto.com.br</strong>, você concorda em usar a plataforma de
         boa-fé: sem spam, fraude, engenharia social ou tentativas de contornar limites de segurança.
       </p>
       <p>

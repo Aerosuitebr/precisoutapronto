@@ -15,7 +15,7 @@ export const BRAND_PRIMARY_SITE = `https://${BRAND_HOST}`;
 export const BRAND_LEGACY_SITE = `https://${BRAND_LEGACY_HOST}`;
 /** URL operacional; troca automaticamente quando NEXT_PUBLIC_APP_URL mudar no corte. */
 export const BRAND_SITE =
-  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || BRAND_LEGACY_SITE;
+  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || BRAND_PRIMARY_SITE;
 
 /**
  * Mantém a caixa atual enquanto o Google Workspace não for migrado.

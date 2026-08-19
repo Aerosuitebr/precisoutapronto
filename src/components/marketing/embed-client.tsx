@@ -8,17 +8,18 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { Button } from '@/components/ui/button';
 import { partnerUtm } from '@/lib/seo/authority-assets';
+import { BRAND_SITE } from '@/lib/brand';
 
 const EMBEDS = [
   {
     id: 'badge-geral',
     title: 'Badge geral',
-    html: `<a href="${partnerUtm('/', 'embed', 'badge_geral')}" rel="noopener noreferrer"><img src="https://resolvajato.com.br/badges/ferramentas-gratis.svg" alt="Ferramentas grátis · Precisou, Tá Pronto" width="220" height="40" /></a>`
+    html: `<a href="${partnerUtm('/', 'embed', 'badge_geral')}" rel="noopener noreferrer"><img src="${BRAND_SITE}/badges/ferramentas-gratis.svg" alt="Ferramentas grátis · Precisou, Tá Pronto" width="260" height="40" /></a>`
   },
   {
     id: 'badge-feito',
     title: 'Badge “feito com”',
-    html: `<a href="${partnerUtm('/', 'embed', 'badge_feito')}" rel="noopener noreferrer"><img src="https://resolvajato.com.br/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width="200" height="40" /></a>`
+    html: `<a href="${partnerUtm('/', 'embed', 'badge_feito')}" rel="noopener noreferrer"><img src="${BRAND_SITE}/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width="240" height="40" /></a>`
   },
   {
     id: 'rescisao',
@@ -83,7 +84,7 @@ const EMBEDS = [
   {
     id: 'markdown',
     title: 'Markdown (README / fóruns)',
-    html: `[![Ferramentas grátis · Precisou, Tá Pronto](https://resolvajato.com.br/badges/ferramentas-gratis.svg)](${partnerUtm('/', 'embed', 'markdown')})`
+    html: `[![Ferramentas grátis · Precisou, Tá Pronto](${BRAND_SITE}/badges/ferramentas-gratis.svg)](${partnerUtm('/', 'embed', 'markdown')})`
   }
 ] as const;
 
@@ -141,8 +142,8 @@ export function EmbedClient() {
           <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5">
             <p className="text-sm font-bold text-emerald-950">Prévia dos badges</p>
             <div className="mt-4 flex flex-wrap gap-4">
-              <Image src="/badges/ferramentas-gratis.svg" alt="Ferramentas grátis" width={220} height={40} />
-              <Image src="/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width={200} height={40} />
+              <Image src="/badges/ferramentas-gratis.svg" alt="Ferramentas grátis" width={260} height={40} />
+              <Image src="/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width={240} height={40} />
             </div>
           </div>
           {EMBEDS.map((item) => (

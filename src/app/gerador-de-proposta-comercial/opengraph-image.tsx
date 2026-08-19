@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · PROPOSTA',
+    eyebrow: 'PRECISOU, TÁ PRONTO · PROPOSTA',
     title: 'Proposta comercial com cara de empresa.',
     subtitle: 'Itens, valores e PDF profissional em minutos'
   });

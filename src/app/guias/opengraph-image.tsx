@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · GUIAS',
+    eyebrow: 'PRECISOU, TÁ PRONTO · GUIAS',
     title: 'Respostas claras para o dia a dia.',
     subtitle: 'Recibos, contratos, currículo, rescisão e precificação'
   });

@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · PIX',
+    eyebrow: 'PRECISOU, TÁ PRONTO · PIX',
     title: 'QR Code Pix e Copia e Cola grátis.',
     subtitle: 'Padrão Banco Central · sem cadastro para gerar'
   });

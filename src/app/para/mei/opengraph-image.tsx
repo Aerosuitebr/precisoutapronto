@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · PARA MEI',
+    eyebrow: 'PRECISOU, TÁ PRONTO · PARA MEI',
     title: 'Cobrar e profissionalizar sem burocracia.',
     subtitle: 'Orçamento com Pix, recibo, contrato e proposta'
   });

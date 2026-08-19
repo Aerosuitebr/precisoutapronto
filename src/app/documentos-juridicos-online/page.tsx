@@ -6,7 +6,7 @@ import { SAMPLE_LEGAL_DOCUMENT } from '@/lib/juridicos/defaults';
 import { juridicosSeoContent } from '@/lib/seo-pages/juridicos';
 import { JuridicoLivePreview } from './juridico-live-preview';
 
-const SITE_URL = 'https://resolvajato.com.br';
+const SITE_URL = 'https://precisoutapronto.com.br';
 
 export const metadata: Metadata = {
   title: juridicosSeoContent.seo.metaTitle,

@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · IMPRENSA',
+    eyebrow: 'PRECISOU, TÁ PRONTO · IMPRENSA',
     title: 'Press kit e fatos citáveis.',
     subtitle: 'Boilerplates, logos e contato de mídia'
   });

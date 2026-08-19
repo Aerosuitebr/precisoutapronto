@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · ENEM',
+    eyebrow: 'PRECISOU, TÁ PRONTO · ENEM',
     title: 'Corrija sua redação por competência.',
     subtitle: 'Estimativa C1 a C5 · 2 análises grátis sem cadastro'
   });

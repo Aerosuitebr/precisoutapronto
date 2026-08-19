@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · RECIBO',
+    eyebrow: 'PRECISOU, TÁ PRONTO · RECIBO',
     title: 'Recibo de pagamento limpo e completo.',
     subtitle: 'Valor por extenso · PDF · assinatura digital'
   });

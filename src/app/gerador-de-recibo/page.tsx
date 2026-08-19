@@ -5,7 +5,7 @@ import { SAMPLE_RECEIPT } from '@/lib/recibos/defaults';
 import { recibosSeoContent } from '@/lib/seo-pages/recibos';
 import { ReciboLivePreview } from './recibo-live-preview';
 
-const SITE_URL = 'https://resolvajato.com.br';
+const SITE_URL = 'https://precisoutapronto.com.br';
 
 export const metadata: Metadata = {
   title: recibosSeoContent.seo.metaTitle,

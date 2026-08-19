@@ -5,7 +5,7 @@ import { SAMPLE_PROPOSAL } from '@/lib/propostas/defaults';
 import { propostasSeoContent } from '@/lib/seo-pages/propostas';
 import { PropostaLivePreview } from './proposta-live-preview';
 
-const SITE_URL = 'https://resolvajato.com.br';
+const SITE_URL = 'https://precisoutapronto.com.br';
 
 export const metadata: Metadata = {
   title: propostasSeoContent.seo.metaTitle,

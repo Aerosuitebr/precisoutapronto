@@ -202,7 +202,7 @@ export async function createBillingCheckoutPreference(input: {
       ],
       payer,
       external_reference: input.payerEmail.toLowerCase(),
-      statement_descriptor: 'RESOLVA JATO',
+      statement_descriptor: 'TA PRONTO',
       // Objeto (não string): melhora score antifraude do Checkout Pro.
       additional_info: {
         items: [

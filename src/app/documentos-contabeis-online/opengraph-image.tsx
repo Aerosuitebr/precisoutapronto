@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · CONTÁBIL',
+    eyebrow: 'PRECISOU, TÁ PRONTO · CONTÁBIL',
     title: 'Documentos contábeis prontos para assinar.',
     subtitle: 'Modelos claros · PDF organizado · uso gratuito'
   });

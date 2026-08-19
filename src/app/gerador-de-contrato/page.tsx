@@ -6,7 +6,7 @@ import { SAMPLE_CONTRATO } from '@/lib/contratos/defaults';
 import { contratosSeoContent } from '@/lib/seo-pages/contratos';
 import { ContratoLivePreview } from './contrato-live-preview';
 
-const SITE_URL = 'https://resolvajato.com.br';
+const SITE_URL = 'https://precisoutapronto.com.br';
 
 export const metadata: Metadata = {
   title: contratosSeoContent.seo.metaTitle,

@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · MEI',
+    eyebrow: 'PRECISOU, TÁ PRONTO · MEI',
     title: 'Checklist de cobrança do MEI.',
     subtitle: 'Orçamento · Pix · proposta · recibo'
   });

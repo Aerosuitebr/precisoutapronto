@@ -18,7 +18,7 @@ export default function Image() {
         }}
       >
         <div style={{ display: 'flex', fontSize: 25, fontWeight: 800, color: '#7dd3fc' }}>
-          RESOLVA JATO · RECIBO DE ALUGUEL
+          PRECISOU, TÁ PRONTO · RECIBO DE ALUGUEL
         </div>
         <div style={{ display: 'flex', maxWidth: 1030, fontSize: 64, lineHeight: 1.06, fontWeight: 850 }}>
           Gere um recibo de aluguel claro e em PDF.

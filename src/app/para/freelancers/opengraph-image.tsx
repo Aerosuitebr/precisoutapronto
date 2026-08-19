@@ -7,7 +7,7 @@ export const contentType = ogContentType;
 
 export default function Image() {
   return createOgImage({
-    eyebrow: 'RESOLVA JATO · FREELANCERS',
+    eyebrow: 'PRECISOU, TÁ PRONTO · FREELANCERS',
     title: 'Proposta, contrato e Pix sem parecer amador.',
     subtitle: 'Do briefing ao pagamento, em um fluxo só'
   });
