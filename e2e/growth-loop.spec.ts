@@ -5,12 +5,14 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Resolva agora. Saia com algo pronto.');
   await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
-  await expect(page.getByText('Escolha pelo que precisa fazer')).toBeVisible();
+  await expect(page.getByText('Acesso rápido')).toBeVisible();
   const main = page.locator('main');
   for (const label of ['Recibo de aluguel', 'Calcular rescisão', 'Gerar QR Code Pix', 'Referência ABNT']) {
     await expect(main.getByText(label, { exact: true }).first()).toBeVisible();
   }
   await expect(page.getByRole('heading', { name: 'Não é uma lista de ferramentas. É um caminho até o resultado.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Outras tarefas que estão resolvendo o dia.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Filtre pelo tipo de resultado que precisa.' })).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Jato Games');
 });
 
