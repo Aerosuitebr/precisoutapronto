@@ -125,6 +125,9 @@ export function middleware(request: NextRequest) {
       const destination = request.nextUrl.clone();
       destination.protocol = canonical.protocol;
       destination.host = canonical.host;
+      // O NextURL pode carregar a porta interna do origin (por exemplo, :3000)
+      // mesmo depois da troca de host. Nunca a exponha no redirect publico.
+      destination.port = canonical.port;
       // O validador de Mudanca de endereco do Google Search Console exige
       // explicitamente um 301 na origem, embora 308 tambem seja permanente.
       return NextResponse.redirect(destination, 301);
