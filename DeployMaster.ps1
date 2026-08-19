@@ -37,7 +37,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $WorkflowName = 'Deploy Resolva Jato Vultr'
-$ProdUrl = 'https://resolvajato.com.br/'
+$ProdUrl = 'https://precisoutapronto.com.br/'
 $StagingUrl = 'https://staging.resolvajato.com.br/'
 $RepoRoot = $PSScriptRoot
 $script:RepoSlug = $null
@@ -532,6 +532,39 @@ if ([string]::IsNullOrWhiteSpace($script:RepoSlug)) {
   throw 'Nao foi possivel resolver o repositorio. Configure GH_REPO=owner/repo ou o remote origin do GitHub.'
 }
 
+function Get-PromotedProductionRunId {
+  param(
+    [Parameter(Mandatory)][string]$BranchName,
+    [Parameter(Mandatory)][string]$Sha,
+    [Parameter(Mandatory)][long]$StagingRunId,
+    [Parameter(Mandatory)][datetime]$NotBefore
+  )
+  $deadline = (Get-Date).AddMinutes(5)
+  while ((Get-Date) -lt $deadline) {
+    $runs = Invoke-GhJson @(
+      'run', 'list',
+      '--workflow', $WorkflowName,
+      '--branch', $BranchName,
+      '--limit', '12',
+      '--json', 'databaseId,status,conclusion,headSha,createdAt,url,event'
+    )
+    $match = @($runs) |
+      Where-Object {
+        [long]$_.databaseId -ne $StagingRunId -and
+        $_.headSha -eq $Sha -and
+        $_.event -eq 'workflow_dispatch' -and
+        ([datetime]$_.createdAt).ToUniversalTime() -ge $NotBefore.ToUniversalTime().AddSeconds(-5)
+      } |
+      Sort-Object { [datetime]$_.createdAt } -Descending |
+      Select-Object -First 1
+    if ($match) { return [long]$match.databaseId }
+    Show-ProgressBar -Percent 66 -Label 'aguardando promocao automatica'
+    Start-Sleep -Seconds 3
+  }
+  Complete-ProgressLine
+  throw "O staging terminou, mas o workflow nao criou a promocao automatica para $Sha."
+}
+
 function Get-ReusableStagingRunId {
   param(
     [Parameter(Mandatory)][string]$BranchName,
@@ -653,7 +686,13 @@ if ($stagingRunId) {
 } else {
   $stagingNotBefore = (Get-Date).ToUniversalTime()
   try {
-    [void](Invoke-GhJson -GhArgs @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=staging') -NoJson)
+    $autoPromote = if ($StagingOnly) { 'false' } else { 'true' }
+    [void](Invoke-GhJson -GhArgs @(
+      'workflow', 'run', $WorkflowName,
+      '--ref', $Branch,
+      '-f', 'target=staging',
+      '-f', "auto_promote=$autoPromote"
+    ) -NoJson)
   } catch {
     Complete-ProgressLine
     throw ("Falha ao disparar workflow de staging apos retentativas: {0}" -f $_.Exception.Message)
@@ -692,18 +731,14 @@ if ($StagingOnly) {
 }
 
 # --- PRODUCTION --------------------------------------------------------------
-Write-Step 'Staging OK. Promovendo automaticamente para PRODUCAO...' 'Cyan'
-Show-ProgressBar -Percent 65 -Label 'disparando producao'
-$prodNotBefore = (Get-Date).ToUniversalTime()
-try {
-  [void](Invoke-GhJson -GhArgs @('workflow', 'run', $WorkflowName, '--ref', $Branch, '-f', 'target=production') -NoJson)
-} catch {
-  Complete-ProgressLine
-  throw ("Falha ao disparar workflow de producao apos retentativas: {0}" -f $_.Exception.Message)
-}
-
-Show-ProgressBar -Percent 68 -Label 'localizando run de producao'
-$prodRunId = Get-LatestRunId -BranchName $Branch -Sha $sha -NotBefore $prodNotBefore
+Write-Step 'Staging OK. Aguardando promocao protegida para PRODUCAO...' 'Cyan'
+Show-ProgressBar -Percent 65 -Label 'localizando promocao automatica'
+$stagingCreatedAt = ([datetime]$stagingSnap.createdAt).ToUniversalTime()
+$prodRunId = Get-PromotedProductionRunId `
+  -BranchName $Branch `
+  -Sha $sha `
+  -StagingRunId $stagingRunId `
+  -NotBefore $stagingCreatedAt
 Write-Host ("  Producao run: https://github.com/{0}/actions/runs/{1}" -f $script:RepoSlug, $prodRunId)
 
 $prodSnap = Wait-WorkflowRun `
