@@ -161,6 +161,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Wait for staging
+        shell: bash
         run: |
           set -euo pipefail
           for i in $(seq 1 30); do
