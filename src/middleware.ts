@@ -125,7 +125,9 @@ export function middleware(request: NextRequest) {
       const destination = request.nextUrl.clone();
       destination.protocol = canonical.protocol;
       destination.host = canonical.host;
-      return NextResponse.redirect(destination, 308);
+      // O validador de Mudanca de endereco do Google Search Console exige
+      // explicitamente um 301 na origem, embora 308 tambem seja permanente.
+      return NextResponse.redirect(destination, 301);
     }
   }
 
