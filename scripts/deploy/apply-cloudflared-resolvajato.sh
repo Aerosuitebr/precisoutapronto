@@ -23,7 +23,8 @@ if systemctl list-unit-files | grep -q "${SERVICE}"; then
   systemctl restart "${SERVICE}"
   systemctl --no-pager --full status "${SERVICE}" | head -20
 else
-  echo "AVISO: serviço ${SERVICE} nao encontrado; reinicie o cloudflared manualmente."
+  echo "==> Serviço ${SERVICE} ausente; instalar conector dedicado"
+  bash "$(cd "$(dirname "$0")" && pwd)/install-cloudflared-resolvajato.sh"
 fi
 
 echo "OK. Confirme DNS staging.resolvajato.com.br e Cloudflare Access."

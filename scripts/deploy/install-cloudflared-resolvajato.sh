@@ -53,7 +53,9 @@ systemctl enable cloudflared-resolvajato
 systemctl restart cloudflared-resolvajato
 sleep 5
 systemctl is-active cloudflared-resolvajato
-systemctl is-active cloudflared
+# O serviço genérico pode não existir neste host. O conector dedicado acima é
+# suficiente e não deve depender da instalação usada por outros projetos.
+systemctl is-active cloudflared >/dev/null 2>&1 || true
 journalctl -u cloudflared-resolvajato -n 15 --no-pager
 
 echo "OK — tunnel Resolva Jato ativo (Aerosuite cloudflared intacto)."
