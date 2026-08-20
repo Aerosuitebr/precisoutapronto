@@ -30,7 +30,7 @@ export function CategoryExplorer() {
           className={cn(
             'inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition',
             active === 'todos'
-              ? 'border-slate-900 bg-slate-900 text-white'
+              ? 'border-[#031f4b] bg-[#031f4b] text-white'
               : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
           )}
         >
@@ -47,7 +47,7 @@ export function CategoryExplorer() {
             className={cn(
               'inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition',
               active === category.id
-                ? 'border-slate-900 bg-slate-900 text-white'
+                ? 'border-[#031f4b] bg-[#031f4b] text-white'
                 : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
             )}
           >
@@ -73,8 +73,8 @@ export function CategoryExplorer() {
                 className={cn(
                   'group flex h-full flex-col overflow-hidden rounded-2xl border bg-slate-50/80 p-5 transition hover:-translate-y-0.5 hover:shadow-md',
                   isActive
-                    ? 'border-emerald-300 bg-white shadow-md ring-1 ring-emerald-200'
-                    : 'border-slate-200 hover:border-emerald-300 hover:bg-white',
+                    ? 'border-[#0b5cff]/45 bg-white shadow-md ring-1 ring-[#0b5cff]/20'
+                    : 'border-slate-200 hover:border-[#0b5cff]/40 hover:bg-white',
                   isDimmed && 'opacity-60'
                 )}
               >
@@ -84,7 +84,7 @@ export function CategoryExplorer() {
                 >
                   <CategoryIcon className="h-5 w-5" />
                 </span>
-                <p className="mt-4 text-base font-bold text-slate-900 group-hover:text-emerald-800">
+                <p className="mt-4 text-base font-bold text-[#031f4b] group-hover:text-[#0b5cff]">
                   {category.shortLabel}
                 </p>
                 <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
@@ -106,7 +106,7 @@ export function CategoryExplorer() {
                     </li>
                   )}
                 </ul>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-emerald-700">
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#0b5cff]">
                   Explorar
                   <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
                 </span>

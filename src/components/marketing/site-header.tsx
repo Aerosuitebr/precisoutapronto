@@ -25,7 +25,7 @@ export function SiteHeader() {
   const [segmentsOpen, setSegmentsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#0b5cff]/20 bg-white/95 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:px-6 lg:gap-5">
         <Link href="/" className="min-w-0 shrink" aria-label="Precisou, Tá Pronto, ferramentas online que resolvem de verdade">
           <Logo
@@ -58,8 +58,8 @@ export function SiteHeader() {
               className={cn(
                 'inline-flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors',
                 segmentsOpen
-                  ? 'bg-slate-100 text-slate-950'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-[#eef5ff] text-[#031f4b]'
+                  : 'text-slate-600 hover:bg-[#eef5ff] hover:text-[#031f4b]'
               )}
             >
               Para você
@@ -80,7 +80,7 @@ export function SiteHeader() {
                     href={`/para/${segment.slug}`}
                     role="menuitem"
                     onClick={() => setSegmentsOpen(false)}
-                    className="rounded-xl p-3 outline-none transition-colors hover:bg-sky-50 focus:bg-sky-50 focus:ring-2 focus:ring-sky-300"
+                    className="rounded-xl p-3 outline-none transition-colors hover:bg-[#eef5ff] focus:bg-[#eef5ff] focus:ring-2 focus:ring-[#0b5cff]/35"
                   >
                     <span className="block text-sm font-bold text-slate-900">{segment.name}</span>
                     <span className="mt-1 block text-xs leading-5 text-slate-500">{segment.shortDescription}</span>
@@ -93,8 +93,8 @@ export function SiteHeader() {
             const className = cn(
               'whitespace-nowrap rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors',
               pathname === link.href || pathname.startsWith(`${link.href}/`)
-                ? 'bg-slate-900 text-white'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                ? 'bg-[#031f4b] text-white'
+                : 'text-slate-600 hover:bg-[#eef5ff] hover:text-[#031f4b]'
             );
             if (link.auth) {
               return (

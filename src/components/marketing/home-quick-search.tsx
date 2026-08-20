@@ -49,7 +49,7 @@ export function HomeQuickSearch() {
     <div className="relative max-w-2xl">
       <form onSubmit={submit} role="search" aria-label="Buscar ferramenta">
         <label htmlFor="home-tool-search" className="sr-only">O que você precisa resolver hoje?</label>
-        <div className="flex rounded-2xl bg-white p-1.5 shadow-[0_18px_55px_-24px_rgba(15,23,42,0.35)] ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-emerald-500">
+        <div className="flex rounded-2xl bg-white p-1.5 shadow-[0_18px_55px_-24px_rgba(3,31,75,0.32)] ring-1 ring-[#0b5cff]/20 focus-within:ring-2 focus-within:ring-[#0b5cff]">
           <Search className="ml-3 mt-3 h-5 w-5 shrink-0 text-slate-500" aria-hidden />
           <input
             id="home-tool-search"
@@ -59,7 +59,7 @@ export function HomeQuickSearch() {
             autoComplete="off"
             className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-base font-medium text-slate-950 outline-none placeholder:text-slate-500"
           />
-          <button type="submit" className="grid min-h-11 min-w-11 place-items-center rounded-xl bg-emerald-800 px-3 font-bold text-white transition hover:bg-emerald-700" aria-label="Buscar">
+          <button type="submit" className="grid min-h-11 min-w-11 place-items-center rounded-xl bg-[#0b5cff] px-3 font-bold text-white transition hover:bg-[#0648c9]" aria-label="Buscar">
             <ArrowRight className="h-5 w-5" aria-hidden />
           </button>
         </div>
@@ -67,7 +67,7 @@ export function HomeQuickSearch() {
       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
         <span className="mr-1 font-semibold">Buscas rápidas:</span>
         {INTENTS.slice(0, 4).map((item) => (
-          <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 font-bold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800">
+          <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="rounded-full border border-[#0b5cff]/15 bg-white px-3 py-1.5 font-bold text-[#031f4b] transition hover:border-[#0b5cff]/40 hover:bg-[#eef5ff] hover:text-[#0b5cff]">
             {item.label.replace(/^(Criar|Calcular|Gerar) /, '')}
           </button>
         ))}
@@ -75,7 +75,7 @@ export function HomeQuickSearch() {
       {query ? (
         <div className="absolute z-30 mt-2 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 text-slate-950 shadow-2xl" role="listbox" aria-label="Ferramentas encontradas">
           {results.length ? results.map((item) => (
-            <button key={item.href} type="button" role="option" aria-selected="false" onClick={() => go(item.href, item.label, 'suggestion')} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-bold hover:bg-emerald-50 hover:text-emerald-800">
+            <button key={item.href} type="button" role="option" aria-selected="false" onClick={() => go(item.href, item.label, 'suggestion')} className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-bold hover:bg-[#eef5ff] hover:text-[#0b5cff]">
               {item.label}<ArrowRight className="h-4 w-4" aria-hidden />
             </button>
           )) : <p className="px-3 py-3 text-sm text-slate-600">Não encontramos essa tarefa. Veja o catálogo completo.</p>}
