@@ -66,7 +66,7 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
                 Experimente na própria página
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-300 sm:text-base">
-                Use a demo acima com duas gerações livres. Conta grátis só entra depois, para salvar histórico e PDF sem marca.
+                Use a demo acima com duas gerações livres. Conta grátis só entra depois, para salvar o histórico.
               </p>
             </div>
             <Button asChild size="lg" className="h-12 shrink-0 bg-sky-500 px-6 font-bold hover:bg-sky-400">

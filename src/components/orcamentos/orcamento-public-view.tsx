@@ -11,6 +11,7 @@ import {
   ThumbsUp,
   XCircle
 } from 'lucide-react';
+import { OrcamentoPublicPixPay } from '@/components/orcamentos/orcamento-public-pix-pay';
 import {
   ViralRecruitCard,
   ViralRecruitSticky
@@ -20,7 +21,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast';
 import { formatCurrency } from '@/lib/formatters';
 import type { OrcamentoPublic } from '@/lib/orcamentos/types';
-import { viralOrcamentoSignupPath } from '@/lib/viral-loop';
+import { viralOrcamentoPublicPath } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
 
@@ -255,6 +256,8 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
           </section>
         ) : null}
 
+        <OrcamentoPublicPixPay orcamento={orcamento} />
+
         {showDecline && pending ? (
           <section className="mt-4 rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-bold text-slate-900">O que você gostaria de ajustar?</p>
@@ -292,15 +295,14 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
         ) : null}
 
         <p className="mt-6 text-center text-[11px] text-slate-400">
-          Powered by{' '}
+          Documento gerado em segundos por{' '}
           <a
-            href={viralOrcamentoSignupPath()}
+            href={viralOrcamentoPublicPath()}
             className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
           >
-            Precisou, Tá Pronto
+            precisoutapronto.com.br
           </a>
-          {' · '}
-          Documento gerado para análise do cliente
+          . Crie o seu grátis.
         </p>
       </div>
 

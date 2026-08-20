@@ -47,6 +47,10 @@ export async function POST(request: Request) {
         total: validated.data.total,
         validade: validated.data.validade || '',
         observacoes: validated.data.observacoes || '',
+        pixKey: validated.data.pixKey || '',
+        pixKeyType: validated.data.pixKeyType || '',
+        pixMerchantName: validated.data.pixMerchantName || '',
+        pixMerchantCity: validated.data.pixMerchantCity || '',
         ownerEmail: validated.data.ownerEmail || null
       }
     });
@@ -106,6 +110,10 @@ export async function GET(request: Request) {
         observacoes: row.observacoes,
         itens: row.itens as unknown as OrcamentoItem[],
         total: row.total,
+        pixKey: row.pixKey,
+        pixKeyType: row.pixKeyType,
+        pixMerchantName: row.pixMerchantName,
+        pixMerchantCity: row.pixMerchantCity,
         status: row.status,
         createdAt: row.createdAt.toISOString(),
         updatedAt: row.updatedAt.toISOString()

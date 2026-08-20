@@ -9,31 +9,31 @@ import { localeFromPathname, type Locale } from './i18n-locale';
 
 const guestCopy = {
   'pt-BR': {
-    trialAvailable: 'Acesso livre: duas gerações completas sem marca.',
+    trialAvailable: 'Acesso livre: duas gerações completas. O PDF grátis leva um rodapé da marca.',
     accountRequired:
-      'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com a marca Precisou, Tá Pronto.',
-    guestSuccess: 'Documento gerado sem marca. Você ainda pode gerar de novo sem conta.',
-    guestSuccessLast: 'Documento gerado sem marca. Para continuar, crie uma conta grátis.',
+      'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com o rodapé Precisou, Tá Pronto.',
+    guestSuccess: 'Documento gerado. Você ainda pode gerar de novo sem conta.',
+    guestSuccessLast: 'Documento gerado. Para continuar, crie uma conta grátis.',
     saved: 'Documento salvo com sucesso.',
     downloaded: 'Download concluído.',
     analyzed: 'Análise concluída.'
   },
   en: {
-    trialAvailable: 'Free access: two full generations without branding.',
+    trialAvailable: 'Free access: two full generations. Free PDFs include a brand footer.',
     accountRequired:
-      'Create a free account to keep generating documents. Generation stays free, with the Precisou, Tá Pronto brand.',
-    guestSuccess: 'Document generated without branding. You can generate again without an account.',
-    guestSuccessLast: 'Document generated without branding. Create a free account to continue.',
+      'Create a free account to keep generating documents. Generation stays free, with the Precisou, Tá Pronto footer.',
+    guestSuccess: 'Document generated. You can generate again without an account.',
+    guestSuccessLast: 'Document generated. Create a free account to continue.',
     saved: 'Document saved successfully.',
     downloaded: 'Download complete.',
     analyzed: 'Analysis complete.'
   },
   es: {
-    trialAvailable: 'Acceso libre: dos generaciones completas sin marca.',
+    trialAvailable: 'Acceso libre: dos generaciones completas. El PDF gratis lleva un pie de marca.',
     accountRequired:
-      'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con la marca Precisou, Tá Pronto.',
-    guestSuccess: 'Documento generado sin marca. Todavia puedes generar otra vez sin cuenta.',
-    guestSuccessLast: 'Documento generado sin marca. Para continuar, crea una cuenta gratis.',
+      'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con el pie Precisou, Tá Pronto.',
+    guestSuccess: 'Documento generado. Todavia puedes generar otra vez sin cuenta.',
+    guestSuccessLast: 'Documento generado. Para continuar, crea una cuenta gratis.',
     saved: 'Documento guardado con exito.',
     downloaded: 'Descarga concluida.',
     analyzed: 'Analisis concluido.'
@@ -184,12 +184,10 @@ export function getToolUsageProgress(): ToolUsageProgress {
 
 /**
  * Marca Precisou, Tá Pronto no PDF/WhatsApp?
- * Premium: não. Guest nas gerações livres: não. Conta grátis: sim.
+ * Premium: não. Guest e conta grátis: sim (rodapé clean, sem marca d'água pesada).
  */
 export function shouldBrandDocuments(): boolean {
   if (cachedProgress.unlimited) return false;
-  if (!getSession() && hasGuestTrialAvailable()) return false;
-  if (!getSession()) return false;
   return true;
 }
 
@@ -216,7 +214,7 @@ function billableContextKey(context: BillableContext) {
 
 /**
  * Executa a ação e só registra o consumo no servidor após sucesso.
- * Guest: 2 gerações completas sem marca; depois pede conta.
+ * Guest: 2 gerações completas com rodapé da marca; depois pede conta.
  */
 export async function performBillableAction<T>(context: BillableContext, effect: () => Promise<T> | T) {
   const access = canUseTool();

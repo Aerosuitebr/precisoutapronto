@@ -67,6 +67,10 @@ model Orcamento {
   total                Float
   validade             String          @default("")
   observacoes          String          @default("")
+  pixKey               String          @default("")
+  pixKeyType           String          @default("")
+  pixMerchantName      String          @default("")
+  pixMerchantCity      String          @default("")
   status               OrcamentoStatus @default(pending)
   feedbackCliente      String?
   ownerEmail           String?

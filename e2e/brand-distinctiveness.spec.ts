@@ -11,7 +11,14 @@ test.describe('brand distinctiveness', () => {
     await expect(page.getByRole('tab', { name: 'Todas as áreas' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Comece pelo contexto do problema.' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Ferramentas que entregam um resultado, não mais uma tarefa.' })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Criar orçamento/ })).toHaveAttribute('href', '/ferramentas/orcamentos');
+    await expect(page.getByRole('link', { name: 'Criar orçamento grátis' })).toHaveAttribute(
+      'href',
+      '/orcamento-com-pix'
+    );
+    await expect(page.getByRole('link', { name: 'Criar orçamento', exact: true })).toHaveAttribute(
+      'href',
+      '/ferramentas/orcamentos'
+    );
     await expect(page.getByRole('link', { name: /Gerar recibo/ })).toHaveAttribute('href', '/ferramentas/recibos');
     await expect(page.getByRole('button', { name: 'Favoritar Orçamentos' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Compartilhar Recibos' })).toBeVisible();

@@ -39,6 +39,39 @@ export function LandingPage() {
         <div className="h-1 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff]" />
       </section>
 
+      <section className="border-b border-[#0b5cff]/10 bg-white py-12 sm:py-16">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Em 60 segundos, no celular</p>
+            <h2 className="rj-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">
+              Orçamento no WhatsApp. Cliente aprova e paga no Pix.
+            </h2>
+            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
+              Preencha os itens, gere o link e envie no zap. Sem cadastro nas duas primeiras vezes.
+            </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/orcamento-com-pix"
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] transition hover:bg-[#a9ed42]"
+              >
+                Criar orçamento grátis <ArrowRight className="h-5 w-5" aria-hidden />
+              </Link>
+              <Link
+                href="/gerador-de-recibo"
+                className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl border border-[#0b5cff]/20 bg-white px-7 font-black text-[#031f4b] transition hover:border-[#0b5cff]/40"
+              >
+                Baixar recibo em PDF
+              </Link>
+            </div>
+          </div>
+          <ul className="space-y-3 text-sm font-semibold text-slate-700">
+            <li className="rounded-2xl border border-[#0b5cff]/15 bg-[#f8faf7] px-4 py-3">1. Monte itens e valor</li>
+            <li className="rounded-2xl border border-[#0b5cff]/15 bg-[#f8faf7] px-4 py-3">2. Envie o link no WhatsApp</li>
+            <li className="rounded-2xl border border-[#0b5cff]/15 bg-[#f8faf7] px-4 py-3">3. Cliente aprova e copia o Pix</li>
+          </ul>
+        </div>
+      </section>
+
       <section id="categorias" className="scroll-mt-24 bg-[#f8faf7] py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="min-w-0">

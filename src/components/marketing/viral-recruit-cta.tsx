@@ -5,7 +5,7 @@ import { ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   buildViralInviteWhatsAppUrl,
-  viralOrcamentoSignupPath,
+  viralOrcamentoPublicPath,
   viralOrcamentoToolPath
 } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
@@ -40,14 +40,14 @@ export function ViralRecruitCard({ className, sourceDocumentId, sourceOccupation
           <Sparkles className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-extrabold text-slate-900">Também trabalha por conta própria?</p>
+          <p className="text-sm font-extrabold text-slate-900">Você também é autônomo?</p>
           <p className="mt-1.5 text-sm leading-6 text-slate-600">
-            Crie seu orçamento grátis, envie no WhatsApp e cobre por Pix no mesmo fluxo.
+            Crie orçamentos profissionais como este de graça. Cliente aprova e paga no Pix.
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <Button asChild className="h-11 bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
               <Link
-                href={viralOrcamentoSignupPath(attribution)}
+                href={viralOrcamentoPublicPath(attribution)}
                 onClick={() => trackRecruitClick('card', sourceDocumentId, sourceOccupation)}
               >
                 Criar meu orçamento grátis
@@ -75,11 +75,11 @@ export function ViralRecruitSticky({ sourceDocumentId, sourceOccupation }: Recru
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-amber-200 bg-slate-950 p-4 text-white">
       <div className="mx-auto flex max-w-lg flex-col gap-2 sm:flex-row sm:items-center">
         <p className="flex-1 text-center text-xs leading-5 text-slate-300 sm:text-left">
-          Quer cobrar assim no WhatsApp? Monte seu orçamento grátis.
+          Você também é autônomo? Crie orçamentos como este de graça.
         </p>
         <Button asChild className="h-11 shrink-0 bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
           <Link
-            href={viralOrcamentoSignupPath(attribution)}
+            href={viralOrcamentoPublicPath(attribution)}
             onClick={() => trackRecruitClick('sticky', sourceDocumentId, sourceOccupation)}
           >
             Quero cobrar assim

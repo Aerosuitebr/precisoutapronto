@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation';
 import { InternationalQuotePublicView } from '@/components/orcamentos/international-quote-public-view';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { isInternationalLocale } from '@/lib/i18n';
-import type { OrcamentoItem, OrcamentoPublic } from '@/lib/orcamentos/types';
+import { toOrcamentoPublic } from '@/lib/orcamentos/public-map';
+import type { OrcamentoPublic } from '@/lib/orcamentos/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,22 +22,7 @@ async function loadQuote(id: string): Promise<OrcamentoPublic | null> {
   try {
     const row = await getPrisma().orcamento.findUnique({ where: { id } });
     if (!row) return null;
-    return {
-      id: row.id,
-      profissionalNome: row.profissionalNome,
-      profissionalWhatsapp: row.profissionalWhatsapp,
-      clienteNome: row.clienteNome,
-      clienteContato: row.clienteContato,
-      clienteEmail: row.clienteEmail || '',
-      itens: row.itens as unknown as OrcamentoItem[],
-      total: row.total,
-      validade: row.validade,
-      observacoes: row.observacoes,
-      status: row.status,
-      feedbackCliente: row.feedbackCliente,
-      createdAt: row.createdAt.toISOString(),
-      updatedAt: row.updatedAt.toISOString()
-    };
+    return toOrcamentoPublic(row);
   } catch {
     return null;
   }

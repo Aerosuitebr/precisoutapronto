@@ -1,9 +1,8 @@
-import rjEscuro from '@/assets/RJ_escuro.png';
 import { buildResolvaJatoDownloadName } from '@/lib/download-filename';
 import { viralPdfFooterLabel, viralPdfFooterUrl } from '@/lib/viral-loop';
 
 export type ExportPdfOptions = {
-  /** Quando true (plano grátis), carimba logo + rodapé viral em cada página. */
+  /** Quando true (plano grátis), carimba rodapé viral em cada página. */
   branded?: boolean;
 };
 
@@ -52,62 +51,6 @@ const MAX_SQUEEZE = 0.85;
 /** Progresso mínimo na página antes de antecipar quebra por bloco keep. */
 const MIN_PAGE_FILL = 0.3;
 
-let cachedWatermark: { dataUrl: string; aspect: number } | null | undefined;
-
-function logoSrc(): string {
-  return typeof rjEscuro === 'string' ? rjEscuro : rjEscuro.src;
-}
-
-function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('Falha ao carregar logo'));
-    img.src = src;
-  });
-}
-
-/** Logo Precisou, Tá Pronto no centro da página (marca d’água). */
-async function getWatermarkDataUrl(): Promise<{ dataUrl: string; aspect: number } | null> {
-  if (cachedWatermark !== undefined) return cachedWatermark;
-  if (typeof window === 'undefined') {
-    cachedWatermark = null;
-    return null;
-  }
-
-  try {
-    const img = await loadImage(logoSrc());
-    const angle = (-18 * Math.PI) / 180;
-    const drawW = 720;
-    const drawH = (img.height / img.width) * drawW;
-    const cos = Math.abs(Math.cos(angle));
-    const sin = Math.abs(Math.sin(angle));
-    const canvasW = Math.ceil(drawW * cos + drawH * sin);
-    const canvasH = Math.ceil(drawW * sin + drawH * cos);
-    const canvas = document.createElement('canvas');
-    canvas.width = canvasW;
-    canvas.height = canvasH;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      cachedWatermark = null;
-      return null;
-    }
-    ctx.translate(canvasW / 2, canvasH / 2);
-    ctx.rotate(angle);
-    ctx.globalAlpha = 0.17;
-    ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
-    cachedWatermark = {
-      dataUrl: canvas.toDataURL('image/png'),
-      aspect: canvasH / canvasW
-    };
-    return cachedWatermark;
-  } catch {
-    cachedWatermark = null;
-    return null;
-  }
-}
-
 function stampViralFooter(pdf: JsPdf, pageWidth: number, pageHeight: number) {
   const label = viralPdfFooterLabel();
   const url = viralPdfFooterUrl();
@@ -126,19 +69,7 @@ function stampViralFooter(pdf: JsPdf, pageWidth: number, pageHeight: number) {
   pdf.link(x, footerY - blockH, widest, blockH + 2, { url });
 }
 
-async function stampWatermark(pdf: JsPdf, pageWidth: number, pageHeight: number) {
-  const mark = await getWatermarkDataUrl();
-  if (!mark) return;
-  // ~48% da largura da página: destaque sem cobrir o texto
-  const markW = pageWidth * 0.48;
-  const markH = markW * mark.aspect;
-  const x = (pageWidth - markW) / 2;
-  const y = (pageHeight - markH) / 2;
-  pdf.addImage(mark.dataUrl, 'PNG', x, y, markW, markH);
-}
-
 async function stampPageBrand(pdf: JsPdf, pageWidth: number, pageHeight: number) {
-  await stampWatermark(pdf, pageWidth, pageHeight);
   stampViralFooter(pdf, pageWidth, pageHeight);
 }
 
