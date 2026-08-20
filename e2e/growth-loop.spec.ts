@@ -5,9 +5,9 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Resolva agora. Saia com algo pronto.');
   await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
-  await expect(page.getByText('Acesso rápido')).toBeVisible();
+  await expect(page.getByText('Produtos em destaque')).toBeVisible();
   const main = page.locator('main');
-  for (const label of ['Recibo de aluguel', 'Calcular rescisão', 'Gerar QR Code Pix', 'Referência ABNT']) {
+  for (const label of ['Orçamento + Pix', 'Criar recibo', 'Calcular rescisão', 'Ferramentas de PDF']) {
     await expect(main.getByText(label, { exact: true }).first()).toBeVisible();
   }
   await expect(page.getByRole('heading', { name: 'Não é uma lista de ferramentas. É um caminho até o resultado.' })).toBeVisible();

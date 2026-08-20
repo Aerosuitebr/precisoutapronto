@@ -94,7 +94,7 @@ export function RecibosApp() {
   const brandDocuments = useDocumentBranding();
   const { shareDocument, sharing } = useDocumentShare();
   const { toast } = useToast();
-  const { afterPdfExport, viralShareOpen, viralShareLabel, closeViralShare } = useViralPdfShare();
+  const { afterPdfExport, viralShareOpen, viralShareLabel, viralShareReferral, closeViralShare } = useViralPdfShare();
   const [receipts, setReceipts] = useState<ReceiptData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [receipt, setReceipt] = useState<ReceiptData>(createEmptyReceipt());
@@ -387,7 +387,7 @@ export function RecibosApp() {
       title="Recibos exigem cadastro"
       description="Crie sua conta gratuita para emitir, salvar e baixar recibos profissionais em PDF."
     >
-      <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} />
+      <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} showReferral={viralShareReferral} />
       <div className="space-y-5">
         <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

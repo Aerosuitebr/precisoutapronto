@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { MessageCircle, Share2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Gift, MessageCircle, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { useToast } from '@/components/ui/toast';
+import { trackEvent } from '@/lib/analytics';
 import {
   buildViralPdfShareWhatsAppUrl,
   viralHomeUrl
@@ -13,12 +14,31 @@ import {
 export function ViralPdfShareModal({
   open,
   onClose,
-  docLabel
+  docLabel,
+  showReferral
 }: {
   open: boolean;
   onClose: () => void;
   docLabel: string;
+  showReferral?: boolean;
 }) {
+  const [referral, setReferral] = useState<{ whatsappUrl: string } | null>(null);
+
+  useEffect(() => {
+    if (!open || !showReferral) return;
+    let active = true;
+    fetch('/api/referral/me')
+      .then(async (response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (active && data?.whatsappUrl) {
+          setReferral({ whatsappUrl: data.whatsappUrl });
+          trackEvent('post_result_referral_viewed', { result_type: 'pdf' });
+        }
+      })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, [open, showReferral]);
+
   return (
     <Modal
       open={open}
@@ -61,6 +81,28 @@ export function ViralPdfShareModal({
           . Remova a marca por R$ 5,00 por 30 dias na sua conta.
         </span>
       </p>
+      {showReferral && referral ? (
+        <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+          <p className="flex items-center gap-2 text-sm font-bold text-amber-900">
+            <Gift className="h-4 w-4" />
+            Você já gerou mais de um documento
+          </p>
+          <p className="mt-1 text-sm leading-6 text-amber-900/80">
+            Convide 3 amigos ativos e ganhe 30 dias de Premium.
+          </p>
+          <Button asChild size="sm" className="mt-3 bg-amber-400 text-slate-950 hover:bg-amber-300">
+            <a
+              href={referral.whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackEvent('post_result_referral_clicked', { result_type: 'pdf', channel: 'whatsapp' })}
+            >
+              <MessageCircle className="h-4 w-4" />
+              Convidar um amigo
+            </a>
+          </Button>
+        </div>
+      ) : null}
     </Modal>
   );
 }
@@ -69,8 +111,17 @@ export function useViralPdfShare() {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [docLabel, setDocLabel] = useState('documento');
+  const [showReferral, setShowReferral] = useState(false);
 
   function afterPdfExport(label = 'documento') {
+    try {
+      const key = 'rj_generated_document_count';
+      const count = Math.max(0, Number(window.localStorage.getItem(key)) || 0) + 1;
+      window.localStorage.setItem(key, String(count));
+      setShowReferral(count >= 2);
+    } catch {
+      setShowReferral(false);
+    }
     setDocLabel(label);
     setOpen(true);
     toast('PDF baixado. Compartilhe e divulgue o Precisou, Tá Pronto!');
@@ -80,6 +131,7 @@ export function useViralPdfShare() {
     afterPdfExport,
     viralShareOpen: open,
     viralShareLabel: docLabel,
+    viralShareReferral: showReferral,
     closeViralShare: () => setOpen(false)
   };
 }

@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, Calculator, Check, FileCheck2, FileText, GraduationCap, ImageIcon, Receipt, Search, ShieldCheck, Sparkles, Wallet } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Calculator, Check, FileCheck2, FileText, ImageIcon, Receipt, Search, ShieldCheck, Sparkles } from 'lucide-react';
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
 
 const quickActions = [
-  { href: '/recibo-de-aluguel', label: 'Recibo de aluguel', note: 'Preencha, baixe e imprima', icon: Receipt, tone: 'bg-emerald-50 text-emerald-800' },
+  { href: '/orcamento-com-pix', label: 'Orçamento + Pix', note: 'Envie, aprove e cobre no WhatsApp', icon: FileCheck2, tone: 'bg-emerald-50 text-emerald-800' },
+  { href: '/gerador-de-recibo', label: 'Criar recibo', note: 'Preencha, baixe e compartilhe', icon: Receipt, tone: 'bg-sky-50 text-sky-800' },
   { href: '/calculadora-de-rescisao', label: 'Calcular rescisão', note: 'Veja uma estimativa detalhada', icon: Calculator, tone: 'bg-amber-50 text-amber-800' },
-  { href: '/gerador-de-qr-code-pix', label: 'Gerar QR Code Pix', note: 'QR e Copia e Cola na hora', icon: Wallet, tone: 'bg-sky-50 text-sky-800' },
-  { href: '/gerador-de-referencias-abnt', label: 'Referência ABNT', note: 'Organize a fonte corretamente', icon: GraduationCap, tone: 'bg-violet-50 text-violet-800' },
+  { href: '/pdf', label: 'Ferramentas de PDF', note: 'Edite, comprima, junte e converta', icon: FileText, tone: 'bg-violet-50 text-violet-800' },
 ] as const;
 
 const popularNow = [
@@ -32,7 +32,7 @@ export function LandingPage() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 shadow-sm"><Sparkles className="h-3.5 w-3.5" /> Ferramentas úteis, sem enrolação</div>
             <h1 className="rj-display mt-6 max-w-3xl text-[clamp(2.7rem,6vw,5.2rem)] font-black leading-[0.94] tracking-[-0.05em]">Resolva agora. <span className="text-emerald-700">Saia com algo pronto.</span></h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600 sm:text-xl">Recibos, cálculos, documentos e ferramentas para tarefas que não deveriam tomar a sua tarde inteira.</p>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600 sm:text-xl">Precisou mandar um orçamento, emitir recibo, calcular a rescisão ou resolver um PDF? Tá pronto.</p>
             <div className="mt-7 max-w-2xl"><HomeQuickSearch /></div>
             <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">{['Sem instalar nada', 'Comece grátis', 'Funciona no celular'].map((item) => <li key={item} className="flex items-center gap-1.5"><Check className="h-4 w-4 text-emerald-700" />{item}</li>)}</ul>
           </div>
@@ -40,7 +40,7 @@ export function LandingPage() {
             <div className="absolute -inset-6 rounded-[3rem] bg-emerald-200/30 blur-3xl" />
             <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_30px_90px_-35px_rgba(15,23,42,0.35)]">
               <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4"><div className="flex gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-rose-300" /><span className="h-2.5 w-2.5 rounded-full bg-amber-300" /><span className="h-2.5 w-2.5 rounded-full bg-emerald-300" /></div><span className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">Precisou, Tá Pronto</span></div>
-              <div className="p-5 sm:p-7"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Acesso rápido</p><p className="mt-2 text-sm leading-6 text-slate-500">Quatro tarefas frequentes para começar sem procurar no catálogo.</p><div className="mt-4 grid gap-3 sm:grid-cols-2">{quickActions.map((item) => <Link key={item.href} href={item.href} className="group rounded-2xl border border-slate-200 p-4 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"><span className={`grid h-9 w-9 place-items-center rounded-xl ${item.tone}`}><item.icon className="h-4 w-4" /></span><p className="mt-4 font-extrabold">{item.label}</p><p className="mt-1 text-xs leading-5 text-slate-500">{item.note}</p><ArrowRight className="mt-4 h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-emerald-700" /></Link>)}</div></div>
+              <div className="p-5 sm:p-7"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Produtos em destaque</p><p className="mt-2 text-sm leading-6 text-slate-500">Quatro soluções para lembrar. As demais continuam no catálogo.</p><div className="mt-4 grid gap-3 sm:grid-cols-2">{quickActions.map((item) => <Link key={item.href} href={item.href} className="group rounded-2xl border border-slate-200 p-4 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"><span className={`grid h-9 w-9 place-items-center rounded-xl ${item.tone}`}><item.icon className="h-4 w-4" /></span><p className="mt-4 font-extrabold">{item.label}</p><p className="mt-1 text-xs leading-5 text-slate-500">{item.note}</p><ArrowRight className="mt-4 h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-emerald-700" /></Link>)}</div></div>
             </div>
           </div>
         </div>
