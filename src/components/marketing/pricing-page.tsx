@@ -21,7 +21,7 @@ export function PricingPage() {
           Gere grátis. Remova a marca quando quiser.
         </h1>
         <p className="mt-4 text-sm leading-7 text-slate-600">
-          No gratuito, o PDF leva o logo discreto e o rodapé do Precisou, Tá Pronto, assim você avalia a
+          No gratuito, o PDF leva a identificação e o rodapé do Precisou, Tá Pronto, assim você avalia a
           qualidade. Com o Premium, documentos limpos, sem rodapé nem logo, por 30 dias.
         </p>
       </div>

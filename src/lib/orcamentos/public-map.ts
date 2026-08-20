@@ -10,6 +10,7 @@ export type OrcamentoRow = {
   profissionalWhatsapp: string;
   profissionalLogoDataUrl?: string | null;
   sourceOccupation?: string | null;
+  recruitedFromDocument?: string | null;
   clienteNome: string;
   clienteContato: string;
   clienteEmail: string;
@@ -47,6 +48,7 @@ export function toOrcamentoPublic(row: OrcamentoRow, options?: { includePix?: bo
     profissionalWhatsapp: row.profissionalWhatsapp,
     profissionalLogoDataUrl: row.profissionalLogoDataUrl || '',
     sourceOccupation: row.sourceOccupation || '',
+    recruitedFromDocument: row.recruitedFromDocument || '',
     clienteNome: row.clienteNome,
     clienteContato: row.clienteContato,
     clienteEmail: row.clienteEmail || '',

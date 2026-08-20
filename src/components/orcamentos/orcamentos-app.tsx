@@ -381,6 +381,9 @@ export function OrcamentosApp({
     const sourceOccupation = preset?.occupation || (typeof window !== 'undefined'
       ? new URLSearchParams(window.location.search).get('profissao') || new URLSearchParams(window.location.search).get('source_occupation') || ''
       : '');
+    const recruitedFromDocument = typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('source_document') || ''
+      : '';
     return {
       profissionalNome,
       profissionalWhatsapp,
@@ -393,6 +396,7 @@ export function OrcamentosApp({
       ownerEmail,
       profissionalLogoDataUrl,
       sourceOccupation,
+      recruitedFromDocument,
       pixKey,
       pixKeyType,
       pixMerchantName: pixMerchantName.trim() || profissionalNome,

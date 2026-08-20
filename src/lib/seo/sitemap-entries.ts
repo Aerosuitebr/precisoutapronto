@@ -23,6 +23,8 @@ export const PUBLIC_TOOL_LANDINGS = [
   '/gerador-de-curriculo',
   '/gerador-de-contrato',
   '/documentos-juridicos-online',
+  '/declaracao-de-residencia',
+  '/orcamento-pix-copia-e-cola',
   '/documentos-contabeis-online',
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',

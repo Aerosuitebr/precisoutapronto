@@ -17,11 +17,11 @@ const FEATURED_TEMPLATES = LEGAL_TEMPLATES.filter((template) =>
   ['procuracao', 'honorarios', 'substabelecimento', 'notificacao', 'declaracao-residencia'].includes(template.id)
 );
 
-export function JuridicoLivePreview() {
+export function JuridicoLivePreview({ initialTemplateId = SAMPLE_LEGAL_DOCUMENT.templateId }: { initialTemplateId?: LegalTemplateId } = {}) {
   const [partyAName, setPartyAName] = useState(SAMPLE_LEGAL_DOCUMENT.partyA.name);
   const [partyBName, setPartyBName] = useState(SAMPLE_LEGAL_DOCUMENT.partyB.name);
   const [objectDescription, setObjectDescription] = useState('');
-  const [templateId, setTemplateId] = useState<LegalTemplateId>(SAMPLE_LEGAL_DOCUMENT.templateId);
+  const [templateId, setTemplateId] = useState<LegalTemplateId>(initialTemplateId);
 
   const previewData = useMemo(() => {
     const base = {

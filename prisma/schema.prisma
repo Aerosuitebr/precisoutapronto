@@ -77,12 +77,14 @@ model Orcamento {
   ownerEmail           String?
   profissionalLogoDataUrl String?
   sourceOccupation     String?
+  recruitedFromDocument String?
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
 
   @@index([ownerEmail])
   @@index([status])
   @@index([sourceOccupation, createdAt])
+  @@index([recruitedFromDocument, createdAt])
   @@map("orcamentos")
 }
 

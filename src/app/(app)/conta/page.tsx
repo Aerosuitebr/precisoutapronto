@@ -30,7 +30,6 @@ import { useAuth } from '@/hooks/use-auth';
 import { formatDate, formatDateTime, cancelPremium } from '@/lib/billing';
 import { PLANS } from '@/lib/plans';
 import { ProfileSettings } from '@/components/account/profile-settings';
-import { K100Panel } from '@/components/account/k100-panel';
 import { SharedLinksPanel } from '@/components/account/shared-links-panel';
 import { RecentDocumentsPanel } from '@/components/account/recent-documents-panel';
 import { SavedResultsPanel } from '@/components/account/saved-results-panel';
@@ -280,7 +279,6 @@ function ContaContent() {
         </section>
 
         <ProfileSettings />
-        <K100Panel />
         <RecentDocumentsPanel />
         <SavedResultsPanel />
         <SharedLinksPanel />

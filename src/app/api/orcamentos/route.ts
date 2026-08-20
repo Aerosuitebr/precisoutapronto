@@ -60,6 +60,7 @@ export async function POST(request: Request) {
         ownerEmail: validated.data.ownerEmail || null,
         profissionalLogoDataUrl: validated.data.profissionalLogoDataUrl || owner?.profile?.logoDataUrl || null,
         sourceOccupation: validated.data.sourceOccupation || owner?.profile?.occupation || owner?.profile?.segment || null
+        ,recruitedFromDocument: validated.data.recruitedFromDocument || null
       }
     });
 
@@ -116,6 +117,7 @@ export async function GET(request: Request) {
         profissionalWhatsapp: row.profissionalWhatsapp,
         profissionalLogoDataUrl: row.profissionalLogoDataUrl || '',
         sourceOccupation: row.sourceOccupation || '',
+        recruitedFromDocument: row.recruitedFromDocument || '',
         validade: row.validade,
         observacoes: row.observacoes,
         itens: row.itens as unknown as OrcamentoItem[],

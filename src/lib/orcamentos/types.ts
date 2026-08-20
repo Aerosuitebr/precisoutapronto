@@ -19,6 +19,7 @@ export interface OrcamentoPayload {
   ownerEmail?: string | null;
   profissionalLogoDataUrl?: string;
   sourceOccupation?: string;
+  recruitedFromDocument?: string;
   pixKey?: string;
   pixKeyType?: string;
   pixMerchantName?: string;
@@ -31,6 +32,7 @@ export interface OrcamentoPublic {
   profissionalWhatsapp: string;
   profissionalLogoDataUrl: string;
   sourceOccupation: string;
+  recruitedFromDocument: string;
   clienteNome: string;
   clienteContato: string;
   clienteEmail: string;

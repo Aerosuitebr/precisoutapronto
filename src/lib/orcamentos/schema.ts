@@ -53,6 +53,7 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
   const pixMerchantCity = asString(data.pixMerchantCity);
   const profissionalLogoDataUrl = asString(data.profissionalLogoDataUrl);
   const sourceOccupation = asString(data.sourceOccupation).slice(0, 120);
+  const recruitedFromDocument = asString(data.recruitedFromDocument);
   const itens = parseItens(data.itens);
 
   const clienteWhatsapp = clienteContato.replace(/\D+/g, '');
@@ -77,6 +78,9 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
   }
   if (profissionalLogoDataUrl.length > 550_000) {
     return { ok: false, error: 'O logo deve ter no máximo 400 KB.' };
+  }
+  if (recruitedFromDocument && !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(recruitedFromDocument)) {
+    return { ok: false, error: 'Origem de recrutamento inválida.' };
   }
 
   let pixKeyType = '';
@@ -107,6 +111,7 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
       ownerEmail,
       profissionalLogoDataUrl,
       sourceOccupation,
+      recruitedFromDocument,
       pixKey,
       pixKeyType,
       pixMerchantName: pixKey ? pixMerchantName : '',

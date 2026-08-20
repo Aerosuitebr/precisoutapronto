@@ -93,6 +93,7 @@ export async function PUT(request: Request, context: RouteContext) {
         pixMerchantCity: validated.data.pixMerchantCity || '',
         profissionalLogoDataUrl: validated.data.profissionalLogoDataUrl || null,
         sourceOccupation: validated.data.sourceOccupation || null
+        ,recruitedFromDocument: validated.data.recruitedFromDocument || null
       }
     });
 

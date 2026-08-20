@@ -68,7 +68,7 @@ export function ViralPdfShareModal({
       <p className="flex items-start gap-2 rounded-xl bg-slate-50 px-3 py-3 text-sm text-slate-600">
         <Share2 className="mt-0.5 h-4 w-4 shrink-0 text-sky-700" />
         <span>
-          O PDF leva a marca Precisou, Tá Pronto no rodapé (e um logo discreto). Quem receber pode criar o
+          O PDF gratuito leva a identificação Precisou, Tá Pronto no rodapé. Quem receber pode criar o
           dele em{' '}
           <a
             className="font-semibold text-sky-700 underline-offset-2 hover:underline"

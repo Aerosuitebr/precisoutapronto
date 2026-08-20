@@ -7,6 +7,7 @@ type K100Data = {
   days: number;
   quotes: number;
   newCreators: number;
+  recruitedQuotes: number;
   k100: number;
   definition: string;
   occupations: Array<{ name: string; quotes: number }>;
@@ -39,10 +40,11 @@ export function K100Panel() {
       </div>
       {loading ? <p className="mt-6 inline-flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> Calculando…</p> : data ? (
         <>
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-4">
             <Metric label="K100" value={data.k100.toLocaleString('pt-BR')} highlight />
             <Metric label="Novos criadores" value={String(data.newCreators)} />
             <Metric label="Orçamentos" value={String(data.quotes)} />
+            <Metric label="Com origem viral" value={String(data.recruitedQuotes)} />
           </div>
           <div className="mt-6">
             <h3 className="text-sm font-bold text-slate-900">Orçamentos por ofício</h3>
