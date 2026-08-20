@@ -17,6 +17,30 @@ test.describe('brand distinctiveness', () => {
     await expect(page.getByRole('button', { name: 'Compartilhar Recibos' })).toBeVisible();
   });
 
+  test('mobile homepage navigation and categories stay inside the viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+
+    const viewport = await page.evaluate(() => ({
+      documentWidth: document.documentElement.scrollWidth,
+      viewportWidth: window.innerWidth
+    }));
+    expect(viewport.documentWidth).toBeLessThanOrEqual(viewport.viewportWidth);
+
+    await expect(page.getByRole('heading', { name: 'Comece pelo contexto do problema.' })).toBeVisible();
+    const categoryCards = page.locator('main a[href^="/recursos#category-"]');
+    await expect(categoryCards.first()).toBeVisible();
+    const firstCardBox = await categoryCards.first().boundingBox();
+    expect(firstCardBox?.x).toBeGreaterThanOrEqual(0);
+    expect((firstCardBox?.x || 0) + (firstCardBox?.width || 0)).toBeLessThanOrEqual(390);
+
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+    const mobileMenu = page.locator('#menu-principal-mobile');
+    await expect(mobileMenu).toBeVisible();
+    const menuBox = await mobileMenu.boundingBox();
+    expect(menuBox?.width).toBeLessThanOrEqual(390);
+  });
+
   test('official brand page has unique entity signals', async ({ page }) => {
     await page.goto('/precisou-ta-pronto');
     await expect(page.locator('h1')).toHaveText('Precisou? Tá Pronto! Site oficial');

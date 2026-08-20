@@ -20,15 +20,15 @@ export function CategoryExplorer() {
   const [active, setActive] = useState<ToolCategoryId | 'todos'>('todos');
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filtrar por área">
+    <div className="min-w-0 max-w-full">
+      <div className="-mx-4 flex max-w-[calc(100vw)] snap-x gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:max-w-none sm:flex-wrap sm:overflow-visible sm:px-0" role="tablist" aria-label="Filtrar por área">
         <button
           type="button"
           role="tab"
           aria-selected={active === 'todos'}
           onClick={() => setActive('todos')}
           className={cn(
-            'inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition',
+            'inline-flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition',
             active === 'todos'
               ? 'border-[#031f4b] bg-[#031f4b] text-white'
               : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
@@ -45,7 +45,7 @@ export function CategoryExplorer() {
             aria-selected={active === category.id}
             onClick={() => setActive(category.id)}
             className={cn(
-              'inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition',
+              'inline-flex min-h-11 shrink-0 snap-start items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-semibold transition',
               active === category.id
                 ? 'border-[#031f4b] bg-[#031f4b] text-white'
                 : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
@@ -56,7 +56,7 @@ export function CategoryExplorer() {
         ))}
       </div>
 
-      <ul className="mt-6 flex snap-x gap-5 overflow-x-auto pb-2 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-5">
+      <ul className="mt-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {CATEGORY_OVERVIEW.map((category) => {
           const CategoryIcon = category.icon;
           const isActive = active === category.id;
@@ -66,7 +66,7 @@ export function CategoryExplorer() {
           const extra = active === 'todos' ? category.tools.length - shownTools.length : 0;
 
           return (
-            <li key={category.id} className="relative w-[260px] shrink-0 snap-start sm:w-auto">
+            <li key={category.id} className={cn('relative min-w-0', isDimmed && 'hidden sm:block')}>
               <AuthAwareLink
                 href={`/recursos#category-${category.id}`}
                 onMouseEnter={() => setActive(category.id)}
@@ -75,7 +75,7 @@ export function CategoryExplorer() {
                   isActive
                     ? 'border-[#0b5cff]/45 bg-white shadow-md ring-1 ring-[#0b5cff]/20'
                     : 'border-slate-200 hover:border-[#0b5cff]/40 hover:bg-white',
-                  isDimmed && 'opacity-60'
+                  isDimmed && 'opacity-55'
                 )}
               >
                 <span className={cn('absolute inset-x-0 top-0 h-1', category.accentBar)} aria-hidden />
@@ -90,12 +90,12 @@ export function CategoryExplorer() {
                 <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
                   {category.tools.length} ferramentas
                 </p>
-                <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{category.description}</p>
+                <p className="mt-2 flex-1 break-words text-sm leading-6 text-slate-600">{category.description}</p>
                 <ul className="mt-4 flex flex-wrap gap-1.5">
                   {(highlights || shownTools.map((tool) => tool.name)).map((name) => (
                     <li
                       key={name}
-                      className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 ring-1 ring-slate-200"
+                      className="max-w-full break-words rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 ring-1 ring-slate-200"
                     >
                       {name}
                     </li>

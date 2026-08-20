@@ -26,11 +26,11 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#0b5cff]/20 bg-white/95 shadow-[0_8px_24px_-20px_rgba(3,31,75,.45)] backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:px-6 lg:gap-5">
-        <Link href="/" className="min-w-0 shrink" aria-label="Precisou, Tá Pronto, ferramentas online que resolvem de verdade">
+      <div className="mx-auto flex min-w-0 max-w-7xl items-center justify-between gap-2 px-3 py-2 sm:px-6 sm:py-2.5 lg:gap-5">
+        <Link href="/" className="min-w-0 flex-1 overflow-hidden" aria-label="Precisou, Tá Pronto, ferramentas online que resolvem de verdade">
           <Logo
             variant="marketing"
-            className="h-16 max-w-none sm:h-20"
+            className="h-12 max-w-[145px] sm:h-16 sm:max-w-none lg:h-20"
           />
           <span className="sr-only">Ferramentas online que resolvem de verdade</span>
         </Link>
@@ -135,10 +135,10 @@ export function SiteHeader() {
       </div>
 
       {mobileOpen ? (
-        <div id="menu-principal-mobile" className="border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
+        <div id="menu-principal-mobile" className="absolute inset-x-0 top-full max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-slate-200 bg-white px-4 py-4 shadow-2xl lg:hidden">
           <nav aria-label="Navegação principal no celular" className="mx-auto grid max-w-6xl gap-2">
             <p className="px-4 pt-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Por perfil</p>
-            <div className="grid grid-cols-2 gap-1">
+            <div className="grid grid-cols-1 gap-1 min-[420px]:grid-cols-2">
               {growthSegments.map((segment) => (
                 <Link key={segment.slug} href={`/para/${segment.slug}`} className="flex min-h-11 items-center rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100" onClick={() => setMobileOpen(false)}>
                   {segment.name}
