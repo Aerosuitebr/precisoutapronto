@@ -6,8 +6,8 @@ const required = [
   'src/app/layout.tsx',
   'src/app/not-found.tsx',
   'src/app/robots.txt/route.ts',
-  'src/app/sitemap.xml/route.ts',
-  'src/app/sitemaps/index.xml/route.ts',
+  'src/app/sitemap.ts',
+  'src/app/sitemaps/[segment]/route.ts',
   'public/llms.txt',
   'public/manifest.webmanifest',
   'public/.well-known/security.txt'
