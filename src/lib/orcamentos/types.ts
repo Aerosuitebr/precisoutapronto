@@ -17,6 +17,10 @@ export interface OrcamentoPayload {
   validade?: string;
   observacoes?: string;
   ownerEmail?: string | null;
+  pixKey?: string;
+  pixKeyType?: string;
+  pixMerchantName?: string;
+  pixMerchantCity?: string;
 }
 
 export interface OrcamentoPublic {
@@ -30,6 +34,10 @@ export interface OrcamentoPublic {
   total: number;
   validade: string;
   observacoes: string;
+  pixKey: string;
+  pixKeyType: string;
+  pixMerchantName: string;
+  pixMerchantCity: string;
   status: OrcamentoStatus;
   feedbackCliente: string | null;
   createdAt: string;
@@ -48,6 +56,10 @@ export interface OrcamentoHistoryItem {
   observacoes: string;
   itens: OrcamentoItem[];
   total: number;
+  pixKey?: string;
+  pixKeyType?: string;
+  pixMerchantName?: string;
+  pixMerchantCity?: string;
   status: OrcamentoStatus;
   createdAt: string;
   updatedAt: string;

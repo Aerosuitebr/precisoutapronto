@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { DocumentBrandWatermark, DocumentViralFooter } from '@/components/brand/document-viral-footer';
+import { DocumentViralFooter } from '@/components/brand/document-viral-footer';
 import { cn } from '@/lib/utils';
 
-/** Envolve o preview exportável: marca no grátis, limpo no Premium. */
+/** Envolve o preview exportável: rodapé viral no grátis, limpo no Premium. */
 export function DocumentExportShell({
   branded,
   children,
@@ -20,7 +20,6 @@ export function DocumentExportShell({
       )}
       style={{ fontFeatureSettings: 'normal' }}
     >
-      {branded ? <DocumentBrandWatermark /> : null}
       <div className="relative z-[2] flex-1">{children}</div>
       {branded ? <DocumentViralFooter /> : null}
     </div>

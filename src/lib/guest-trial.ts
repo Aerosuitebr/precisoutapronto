@@ -43,7 +43,7 @@ function readCount(): number {
   }
 }
 
-/** Ainda há a degustação completa (PDF/link/WhatsApp sem marca). */
+/** Ainda há a degustação completa (PDF/link/WhatsApp com rodapé da marca). */
 export function hasGuestTrialAvailable(): boolean {
   if (getSession()) return false;
   return readCount() < GUEST_TRIAL_LIMIT;

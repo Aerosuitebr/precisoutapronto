@@ -1,8 +1,8 @@
 /** Loops de viralização: links e textos compartilháveis. */
 
-import { BRAND_DISPLAY_NAME, BRAND_LEGACY_HOST } from '@/lib/brand';
+import { BRAND_DISPLAY_NAME, BRAND_HOST } from '@/lib/brand';
 
-export const VIRAL_SITE_HOST = BRAND_LEGACY_HOST;
+export const VIRAL_SITE_HOST = BRAND_HOST;
 
 export function getViralBaseUrl() {
   if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_APP_URL) {
@@ -12,6 +12,14 @@ export function getViralBaseUrl() {
     return window.location.origin.replace(/\/$/, '');
   }
   return `https://${VIRAL_SITE_HOST}`;
+}
+
+export function getViralSiteHost() {
+  try {
+    return new URL(getViralBaseUrl()).hostname || VIRAL_SITE_HOST;
+  } catch {
+    return VIRAL_SITE_HOST;
+  }
 }
 
 export function viralHomeUrl(utmCampaign: string) {
@@ -34,16 +42,20 @@ function withOrcamentoAttribution(path: string, attribution: OrcamentoViralAttri
   const params = new URLSearchParams(query);
   if (attribution.sourceDocumentId) params.set('source_document', attribution.sourceDocumentId);
   if (attribution.sourceOccupation) params.set('source_occupation', attribution.sourceOccupation);
-  return `${pathname}?${params.toString()}`;
+  const serialized = params.toString();
+  return serialized ? `${pathname}?${serialized}` : pathname;
+}
+
+/** Destino do CTA viral: editor público, sem cadastro no primeiro uso. */
+export function viralOrcamentoPublicPath(attribution: OrcamentoViralAttribution = {}) {
+  return withOrcamentoAttribution(
+    `/orcamento-com-pix?utm_source=share&utm_medium=orcamento_publico&utm_campaign=quero_cobrar`,
+    attribution
+  );
 }
 
 export function viralOrcamentoSignupPath(attribution: OrcamentoViralAttribution = {}) {
-  const attributedTool = withOrcamentoAttribution('/ferramentas/orcamentos', attribution);
-  const next = encodeURIComponent(attributedTool);
-  return withOrcamentoAttribution(
-    `/cadastro?next=${next}&utm_source=share&utm_medium=orcamento_publico&utm_campaign=quero_cobrar`,
-    attribution
-  );
+  return viralOrcamentoPublicPath(attribution);
 }
 
 export function viralOrcamentoToolPath(attribution: OrcamentoViralAttribution = {}) {
@@ -54,7 +66,7 @@ export function viralOrcamentoToolPath(attribution: OrcamentoViralAttribution = 
 }
 
 export function viralOrcamentoSignupUrl() {
-  return `${getViralBaseUrl()}${viralOrcamentoSignupPath()}`;
+  return `${getViralBaseUrl()}${viralOrcamentoPublicPath()}`;
 }
 
 export function viralOrcamentoToolUrl() {
@@ -62,7 +74,7 @@ export function viralOrcamentoToolUrl() {
 }
 
 export function viralPdfFooterLabel() {
-  return `Documento gerado com ${BRAND_DISPLAY_NAME} Documentos profissionais gratuitos. ${VIRAL_SITE_HOST}`;
+  return `Documento gerado em segundos por ${getViralSiteHost()}. Crie o seu grátis.`;
 }
 
 export function viralPdfFooterUrl() {
@@ -73,7 +85,7 @@ export function viralPdfFooterUrl() {
 export function viralMessageBrandBlock(utmCampaign = 'whatsapp_message') {
   return (
     `\n\n` +
-    `Enviado com ${BRAND_DISPLAY_NAME} Cobranças e documentos profissionais gratuitos.\n` +
+    `Enviado com ${BRAND_DISPLAY_NAME}. Cobranças e documentos profissionais gratuitos.\n` +
     viralHomeUrl(utmCampaign)
   );
 }
@@ -115,7 +127,7 @@ export function buildViralInviteWhatsAppUrl() {
 /** Texto sugerido após baixar um PDF (currículo, proposta, etc.). */
 export function buildViralPdfShareWhatsAppText(docLabel: string) {
   return (
-    `Gerei meu ${docLabel} com ${BRAND_DISPLAY_NAME} Ficou profissional em minutos.\n` +
+    `Gerei meu ${docLabel} com ${BRAND_DISPLAY_NAME}. Ficou profissional em minutos.\n` +
     `Faça o seu grátis: ${viralHomeUrl('pdf_whatsapp')}`
   );
 }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { CheckCircle2, MessageCircle, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { OrcamentoPublicPixPay } from '@/components/orcamentos/orcamento-public-pix-pay';
 import type { InternationalLocale } from '@/lib/i18n';
 import type { OrcamentoPublic } from '@/lib/orcamentos/types';
 
@@ -189,6 +190,7 @@ export function InternationalQuotePublicView({
             </Button>
           </section>
         )}
+        <OrcamentoPublicPixPay orcamento={quote} />
         {error ? <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</p> : null}
       </div>
     </main>

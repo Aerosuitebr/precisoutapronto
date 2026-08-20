@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { shouldBrandDocuments } from '@/lib/billing';
 import { GUEST_TRIAL_CONSUMED_EVENT, hasGuestTrialAvailable } from '@/lib/guest-trial';
 
-/** Reativo: marca nos documentos (grátis logado) vs limpo (premium / 1ª degustação guest). */
+/** Reativo: rodapé da marca em guest e grátis. Premium sai limpo. */
 export function useDocumentBranding() {
   const { usage, isAuthenticated, ready } = useAuth();
   const [tick, setTick] = useState(0);

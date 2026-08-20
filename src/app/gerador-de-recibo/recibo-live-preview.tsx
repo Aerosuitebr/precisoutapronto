@@ -1,15 +1,20 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Check } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
+import { DocumentExportShell } from '@/components/brand/document-export-shell';
 import {
   LiveToolPreviewLayout,
   livePreviewFieldClass
 } from '@/components/marketing/tool-landing/live-tool-preview-layout';
 import { ReciboPreview } from '@/components/recibos/recibo-preview';
-import { SAMPLE_RECEIPT } from '@/lib/recibos/defaults';
+import { useToast } from '@/components/ui/toast';
+import { useDocumentBranding } from '@/hooks/use-document-branding';
+import { performBillableAction } from '@/lib/billing';
+import { exportElementToPdf } from '@/lib/curriculo/pdf';
 import { parseCurrency } from '@/lib/formatters';
+import { SAMPLE_RECEIPT } from '@/lib/recibos/defaults';
 import type { ReceiptTemplateId } from '@/lib/recibos/types';
 
 const TEMPLATES: { id: ReceiptTemplateId; name: string }[] = [
@@ -23,6 +28,10 @@ export function ReciboLivePreview() {
   const [payerName, setPayerName] = useState(SAMPLE_RECEIPT.payer.name);
   const [amountInput, setAmountInput] = useState(SAMPLE_RECEIPT.amountInput);
   const [templateId, setTemplateId] = useState<ReceiptTemplateId>(SAMPLE_RECEIPT.templateId);
+  const [exporting, setExporting] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
+  const brandDocuments = useDocumentBranding();
+  const { toast } = useToast();
 
   const previewData = useMemo(() => {
     const amount = parseCurrency(amountInput) || SAMPLE_RECEIPT.amount;
@@ -44,7 +53,28 @@ export function ReciboLivePreview() {
   ];
   const completedCount = checklist.filter((item) => item.done).length;
 
+  async function handleDownloadPdf() {
+    if (!exportRef.current) return;
+    setExporting(true);
+    try {
+      const outcome = await performBillableAction(
+        { toolId: 'recibos', artifactId: `landing_${Date.now()}`, action: 'download' },
+        () => exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments })
+      );
+      if (!outcome.allowed) {
+        toast(outcome.reason || 'Não foi possível gerar o PDF.');
+        return;
+      }
+      toast('PDF baixado. Conta só depois de duas gerações.');
+    } catch {
+      toast('Não foi possível gerar o PDF. Tente de novo.');
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
+    <>
     <LiveToolPreviewLayout
       form={
         <>
@@ -143,11 +173,17 @@ export function ReciboLivePreview() {
             </div>
           </div>
 
-          <Link
-            href="/ferramentas/recibos"
-            className="block w-full rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={exporting}
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 disabled:opacity-60"
           >
-            Abrir gerador e baixar PDF
+            {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            {exporting ? 'Gerando PDF...' : 'Baixar PDF agora'}
+          </button>
+          <Link href="/ferramentas/recibos" className="block text-center text-sm font-semibold text-sky-700 hover:underline">
+            Abrir gerador completo
           </Link>
           <p className="text-center text-xs font-medium text-slate-500">
             Use grátis no navegador. Conta só depois de duas gerações.
@@ -156,5 +192,13 @@ export function ReciboLivePreview() {
       }
       preview={<ReciboPreview data={previewData} />}
     />
+    <div className="pointer-events-none fixed -left-[10000px] top-0 w-[794px]" aria-hidden>
+      <div ref={exportRef} className="bg-white p-8">
+        <DocumentExportShell branded={brandDocuments}>
+          <ReciboPreview data={previewData} />
+        </DocumentExportShell>
+      </div>
+    </div>
+    </>
   );
 }

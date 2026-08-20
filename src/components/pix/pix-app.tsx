@@ -71,7 +71,7 @@ function validatePixKey(key: string, keyType: PixKeyType): string {
 
 export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}) {
   const { toast } = useToast();
-  const { session, usage, refresh: refreshAuth } = useAuth();
+  const { session, refresh: refreshAuth } = useAuth();
   const brandDocuments = useDocumentBranding();
   const [keyType, setKeyType] = useState<PixKeyType>('cpf');
   const [key, setKey] = useState('');
@@ -168,24 +168,6 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
   }
 
   async function handleWhatsAppMessage() {
-    if (publicAccess && !ownerEmail) {
-      setError('Crie uma conta grátis para enviar a cobrança pelo WhatsApp.');
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(
-          new CustomEvent('rj-account-required', {
-            detail: {
-              nextHref: window.location.pathname || '/gerador-de-qr-code-pix',
-              variant: 'default'
-            }
-          })
-        );
-      }
-      return;
-    }
-    if (!ownerEmail) {
-      setError('Faça login novamente para enviar pelo WhatsApp.');
-      return;
-    }
     if (whatsappError) {
       setError(whatsappError);
       return;
@@ -543,16 +525,16 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
           </div>
         </section>
 
-        {waModal && ownerEmail ? (
+        {waModal ? (
           <WhatsAppSendModal
             open={Boolean(waModal)}
             onClose={() => setWaModal(null)}
-            ownerEmail={ownerEmail}
+            ownerEmail={ownerEmail || undefined}
             toPhone={clientWhatsapp}
             message={waModal.message}
             destinationHint="WhatsApp do cliente / pagador"
-            allowWaMeFallback={usage.unlimited}
-            brandLocked={!usage.unlimited}
+            allowWaMeFallback
+            brandLocked={brandDocuments}
           />
         ) : null}
       </div>

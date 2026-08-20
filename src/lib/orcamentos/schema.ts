@@ -1,5 +1,7 @@
 import type { OrcamentoItem, OrcamentoPayload, OrcamentoStatus } from './types';
 import { calcOrcamentoTotal, isValidEmail } from './types';
+import { ORCAMENTO_PIX_KEY_TYPES } from './public-map';
+import type { PixKeyType } from '@/lib/pix/types';
 
 export interface ValidationResult {
   ok: boolean;
@@ -45,6 +47,10 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
   const validade = asString(data.validade);
   const observacoes = asString(data.observacoes);
   const ownerEmail = asString(data.ownerEmail).toLowerCase() || null;
+  const pixKey = asString(data.pixKey);
+  const pixKeyTypeRaw = asString(data.pixKeyType).toLowerCase();
+  const pixMerchantName = asString(data.pixMerchantName);
+  const pixMerchantCity = asString(data.pixMerchantCity);
   const itens = parseItens(data.itens);
 
   const clienteWhatsapp = clienteContato.replace(/\D+/g, '');
@@ -53,8 +59,8 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
   if (profissionalWhatsapp.length < 10) {
     return { ok: false, error: 'Informe o seu WhatsApp com DDD. É nele que você recebe o aviso.' };
   }
-  if (!ownerEmail || !isValidEmail(ownerEmail)) {
-    return { ok: false, error: 'Informe seu e-mail para receber o alerta quando o cliente responder.' };
+  if (ownerEmail && !isValidEmail(ownerEmail)) {
+    return { ok: false, error: 'Informe um e-mail de alertas válido, ou deixe o campo em branco.' };
   }
   if (!clienteNome) return { ok: false, error: 'Informe o nome do cliente.' };
   if (clienteWhatsapp.length < 10) {
@@ -64,6 +70,20 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
     return { ok: false, error: 'Informe um e-mail do cliente válido, ou deixe o campo em branco.' };
   }
   if (!itens) return { ok: false, error: 'Adicione ao menos um item com quantidade e valor válidos.' };
+
+  let pixKeyType = '';
+  if (pixKey) {
+    if (!ORCAMENTO_PIX_KEY_TYPES.includes(pixKeyTypeRaw as PixKeyType)) {
+      return { ok: false, error: 'Informe o tipo da chave Pix (CPF, CNPJ, e-mail, telefone ou aleatória).' };
+    }
+    if (!pixMerchantName) {
+      return { ok: false, error: 'Informe o nome do recebedor Pix.' };
+    }
+    if (!pixMerchantCity) {
+      return { ok: false, error: 'Informe a cidade do recebedor Pix.' };
+    }
+    pixKeyType = pixKeyTypeRaw;
+  }
 
   return {
     ok: true,
@@ -77,6 +97,10 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
       validade,
       observacoes,
       ownerEmail,
+      pixKey,
+      pixKeyType,
+      pixMerchantName: pixKey ? pixMerchantName : '',
+      pixMerchantCity: pixKey ? pixMerchantCity : '',
       total: calcOrcamentoTotal(itens)
     }
   };

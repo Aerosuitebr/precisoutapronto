@@ -66,11 +66,11 @@ export const SEO_LANDINGS = {
       },
       {
         q: 'É grátis?',
-        a: 'Sim. Você experimenta o orçamento sem cadastro. Conta só entra depois de duas gerações, para salvar e enviar no WhatsApp.'
+        a: 'Sim. Você experimenta o orçamento sem cadastro. Conta só entra depois de duas gerações, para salvar o histórico.'
       },
       {
         q: 'Preciso criar conta para testar?',
-        a: 'Não. Preencha, veja o preview e use duas gerações livres. A conta só entra depois disso, para continuar salvando e enviando.'
+        a: 'Não. Preencha, veja o preview e use duas gerações livres. A conta só entra depois disso, para continuar salvando.'
       },
       {
         q: 'Serve para qualquer serviço?',

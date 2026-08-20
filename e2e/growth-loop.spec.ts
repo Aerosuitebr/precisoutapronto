@@ -5,6 +5,8 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Precisou resolver?Tá pronto.');
   await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Orçamento no WhatsApp. Cliente aprova e paga no Pix.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Criar orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix');
   await expect(page.getByText('Descubra e resolva')).toBeVisible();
   const main = page.locator('main');
   for (const label of ['Orçamentos', 'Recibos', 'Contratos', 'Currículos']) {

@@ -17,8 +17,7 @@ interface WhatsAppSendModalProps {
   destinationHint?: string;
   onSent?: () => void;
   /**
-   * Plano grátis: esconde wa.me (texto editável) para a marca ir só pelo servidor.
-   * Premium: permite abrir no WhatsApp Web/app.
+   * Mostra o atalho wa.me (padrão no celular). QR do servidor continua opcional.
    */
   allowWaMeFallback?: boolean;
   /** Exibe aviso de que a referência Precisou, Tá Pronto não pode ser removida. */
@@ -44,7 +43,7 @@ export function WhatsAppSendModal({
   message,
   destinationHint = 'Número do destinatário',
   onSent,
-  allowWaMeFallback = false,
+  allowWaMeFallback = true,
   brandLocked = false
 }: WhatsAppSendModalProps) {
   const { toast } = useToast();
@@ -206,10 +205,10 @@ export function WhatsAppSendModal({
               Envio com o seu WhatsApp
             </p>
             <h2 id="whatsapp-send-title" className="mt-1 text-lg font-bold text-slate-900">
-              Conecte, envie e desconecte
+              Enviar no WhatsApp
             </h2>
             <p className="mt-1 text-sm leading-6 text-slate-600">
-              Escaneie o QR com o WhatsApp que vai enviar. Depois do envio, o servidor desconecta.
+              Abra o app no celular com a mensagem pronta. O QR do servidor é opcional.
             </p>
           </div>
           <button
@@ -292,20 +291,21 @@ export function WhatsAppSendModal({
           {error ? <p className="text-sm font-medium text-rose-600">{error}</p> : null}
 
           <div className="flex flex-col gap-2">
+            {allowWaMeFallback ? (
+              <Button type="button" className="w-full bg-emerald-600 hover:bg-emerald-500" onClick={handleCopyAndOpenWaMe}>
+                <ExternalLink className="h-4 w-4" />
+                Abrir no WhatsApp
+              </Button>
+            ) : null}
             <Button
-              className="w-full bg-emerald-600 hover:bg-emerald-500"
+              className={allowWaMeFallback ? 'w-full' : 'w-full bg-emerald-600 hover:bg-emerald-500'}
+              variant={allowWaMeFallback ? 'outline' : 'default'}
               disabled={!connected || sending}
               onClick={handleSend}
             >
               {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageCircle className="h-4 w-4" />}
-              Enviar e desconectar
+              Enviar pelo servidor e desconectar
             </Button>
-            {allowWaMeFallback ? (
-              <Button type="button" variant="outline" className="w-full" onClick={handleCopyAndOpenWaMe}>
-                <ExternalLink className="h-4 w-4" />
-                Abrir no WhatsApp (wa.me)
-              </Button>
-            ) : null}
             <Button type="button" variant="ghost" className="w-full" onClick={handleCancelDisconnect}>
               <Unplug className="h-4 w-4" />
               Cancelar

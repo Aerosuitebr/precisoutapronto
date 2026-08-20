@@ -49,6 +49,8 @@ import {
   saveOrcamentoPrefs
 } from '@/lib/orcamentos/defaults';
 import { buildClienteOrcamentoWhatsAppText, buildClienteWhatsAppSendUrl } from '@/lib/orcamentos/whatsapp-links';
+import { ORCAMENTO_PIX_KEY_TYPES } from '@/lib/orcamentos/public-map';
+import type { PixKeyType } from '@/lib/pix/types';
 import {
   calcOrcamentoTotal,
   type OrcamentoHistoryItem,
@@ -86,6 +88,14 @@ export interface OrcamentoPreset {
 }
 
 const QUICK_NOTES = ['50% na entrada', 'Pagamento via Pix', 'Prazo de 7 dias úteis', 'Materiais inclusos'];
+
+const PIX_TYPE_LABELS: Record<PixKeyType, string> = {
+  cpf: 'CPF',
+  cnpj: 'CNPJ',
+  email: 'E-mail',
+  phone: 'Telefone',
+  random: 'Chave aleatória'
+};
 const PERIOD_OPTIONS = ['7', '15', '30'];
 
 function statusLabel(status: OrcamentoStatus) {
@@ -143,6 +153,10 @@ export function OrcamentosApp({
   const [validade, setValidade] = useState('');
   const [validadeMode, setValidadeMode] = useState<'period' | 'date'>('period');
   const [observacoes, setObservacoes] = useState(preset?.observacoes || '');
+  const [pixKeyType, setPixKeyType] = useState<PixKeyType>('phone');
+  const [pixKey, setPixKey] = useState('');
+  const [pixMerchantName, setPixMerchantName] = useState('');
+  const [pixMerchantCity, setPixMerchantCity] = useState('');
   const [items, setItems] = useState<OrcamentoItem[]>(() =>
     preset?.items.length
       ? preset.items.map((item) => ({
@@ -364,7 +378,11 @@ export function OrcamentosApp({
       validade,
       observacoes,
       itens: items,
-      ownerEmail
+      ownerEmail,
+      pixKey,
+      pixKeyType,
+      pixMerchantName: pixMerchantName.trim() || profissionalNome,
+      pixMerchantCity: pixMerchantCity.trim() || 'Brasil'
     };
   }
 
@@ -509,7 +527,7 @@ export function OrcamentosApp({
         source_occupation: sourceOccupation || undefined
       });
       await loadHistory();
-      toast('Link gerado. Conecte seu WhatsApp para enviar ao cliente (escaneia → envia → desconecta).');
+      toast('Link gerado. Envie no WhatsApp com um toque.');
     } catch (submitError) {
       setBannerError(submitError instanceof Error ? submitError.message : 'Falha ao gerar orçamento.');
     } finally {
@@ -573,10 +591,6 @@ export function OrcamentosApp({
       quote_value: link.total,
       send_mode: 'ephemeral'
     });
-    if (!ownerEmail) {
-      setBannerError('Informe seu e-mail de alertas antes de enviar pelo WhatsApp.');
-      return;
-    }
     if (!link.clienteWhatsapp) {
       setBannerError('Informe o WhatsApp do cliente.');
       return;
@@ -599,32 +613,21 @@ export function OrcamentosApp({
     url: string;
     total: number;
   }) {
-    // Plano grátis: só envio pelo servidor (marca não editável no Zap)
-    if (brandDocuments) {
-      openEphemeralSend({
-        id: link.id,
-        url: link.url,
-        clienteNome: link.clienteNome,
-        clienteWhatsapp: link.clienteWhatsapp,
-        total: link.total,
-        profissionalNome
-      });
-      return;
-    }
     const href = buildClienteWhatsAppSendUrl({
       clienteWhatsapp: link.clienteWhatsapp,
       clienteNome: link.clienteNome,
       profissionalNome,
       url: link.url,
       total: link.total,
-      branded: false
+      branded: brandDocuments
     });
     trackEvent('quote_whatsapp_send_completed', {
       source_document: link.id,
       quote_value: link.total,
       send_mode: 'manual'
     });
-    window.open(href, '_blank', 'noopener,noreferrer');
+    const opened = window.open(href, '_blank', 'noopener,noreferrer');
+    if (!opened) window.location.href = href;
   }
 
   function fillFromHistory(item: OrcamentoHistoryItem, mode: 'reuse' | 'edit') {
@@ -636,6 +639,14 @@ export function OrcamentosApp({
     setValidade(item.validade || '');
     setValidadeMode(detectValidadeMode(item.validade || ''));
     setObservacoes(item.observacoes || '');
+    setPixKey(item.pixKey || '');
+    setPixKeyType(
+      ORCAMENTO_PIX_KEY_TYPES.includes(item.pixKeyType as PixKeyType)
+        ? (item.pixKeyType as PixKeyType)
+        : 'phone'
+    );
+    setPixMerchantName(item.pixMerchantName || '');
+    setPixMerchantCity(item.pixMerchantCity || '');
     setItems(
       item.itens?.length
         ? item.itens.map((row) => ({ ...row, id: row.id || crypto.randomUUID() }))
@@ -1169,6 +1180,56 @@ export function OrcamentosApp({
               </div>
             </section>
 
+            <section id="orc-section-pix" className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+              <h2 className="mb-1 text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900">
+                Pix para o cliente pagar
+              </h2>
+              <p className="mb-4 text-xs leading-5 text-slate-500">
+                Opcional. Depois da aprovação, o cliente vê o QR e o Copia e Cola neste link.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <FormField label="Tipo da chave" htmlFor="orc-pix-tipo">
+                  <Select
+                    id="orc-pix-tipo"
+                    className="w-full"
+                    value={pixKeyType}
+                    onChange={(event) => setPixKeyType(event.target.value as PixKeyType)}
+                  >
+                    {ORCAMENTO_PIX_KEY_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {PIX_TYPE_LABELS[type]}
+                      </option>
+                    ))}
+                  </Select>
+                </FormField>
+                <FormField label="Chave Pix" htmlFor="orc-pix-chave">
+                  <Input
+                    id="orc-pix-chave"
+                    value={pixKey}
+                    onChange={(event) => setPixKey(event.target.value)}
+                    placeholder="CPF, CNPJ, e-mail, telefone ou aleatória"
+                    autoComplete="off"
+                  />
+                </FormField>
+                <FormField label="Nome do recebedor" htmlFor="orc-pix-nome">
+                  <Input
+                    id="orc-pix-nome"
+                    value={pixMerchantName}
+                    onChange={(event) => setPixMerchantName(event.target.value)}
+                    placeholder={profissionalNome || 'Como aparece no Pix'}
+                  />
+                </FormField>
+                <FormField label="Cidade" htmlFor="orc-pix-cidade">
+                  <Input
+                    id="orc-pix-cidade"
+                    value={pixMerchantCity}
+                    onChange={(event) => setPixMerchantCity(event.target.value)}
+                    placeholder="Cidade do recebedor"
+                  />
+                </FormField>
+              </div>
+            </section>
+
             {/* Total */}
             <section className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-sm sm:p-6">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-800">Total do orçamento</p>
@@ -1310,7 +1371,7 @@ export function OrcamentosApp({
                     </p>
                   ) : (
                     <p className="mt-2 text-sm leading-6 text-slate-600">
-                      Envie com o seu aparelho: escaneie o QR → envie → desconectamos automaticamente.
+                      Envie pelo seu WhatsApp. O cliente abre o link, aprova e paga no Pix.
                     </p>
                   )}
                   <p className="mt-3 break-all rounded-xl bg-slate-50 px-3 py-2 text-xs text-slate-700">
@@ -1319,19 +1380,17 @@ export function OrcamentosApp({
                   <div className="mt-4 flex flex-col gap-2">
                     <Button
                       className="bg-emerald-600 hover:bg-emerald-500"
-                      onClick={() => openEphemeralSend(generated)}
+                      onClick={() => openClienteWhatsAppFallback(generated)}
                     >
                       <MessageCircle className="h-4 w-4" />
-                      {generated.whatsappApiSent
-                        ? 'Reenviar (conectar → enviar → desconectar)'
-                        : 'Enviar com meu WhatsApp (QR)'}
+                      Enviar no WhatsApp
                     </Button>
-                    {usage.unlimited || !brandDocuments ? (
-                      <Button variant="outline" onClick={() => openClienteWhatsAppFallback(generated)}>
-                        <MessageCircle className="h-4 w-4" />
-                        Abrir WhatsApp manual (contingência)
-                      </Button>
-                    ) : null}
+                    <Button variant="outline" onClick={() => openEphemeralSend(generated)}>
+                      <MessageCircle className="h-4 w-4" />
+                      {generated.whatsappApiSent
+                        ? 'Reenviar pelo servidor (QR)'
+                        : 'Enviar pelo servidor (QR)'}
+                    </Button>
                     <Button variant="outline" onClick={() => copyText(generated.url, 'Link copiado.')}>
                       <Copy className="h-4 w-4" />
                       Copiar link
@@ -1594,11 +1653,11 @@ export function OrcamentosApp({
         ) : null}
       </div>
 
-      {sendModal && ownerEmail ? (
+      {sendModal ? (
         <WhatsAppSendModal
           open={Boolean(sendModal)}
           onClose={() => setSendModal(null)}
-          ownerEmail={ownerEmail}
+          ownerEmail={ownerEmail || undefined}
           toPhone={sendModal.clienteWhatsapp}
           destinationHint="WhatsApp do cliente"
           message={buildClienteOrcamentoWhatsAppText({
@@ -1608,7 +1667,7 @@ export function OrcamentosApp({
             url: sendModal.url,
             branded: brandDocuments
           })}
-          allowWaMeFallback={!brandDocuments}
+          allowWaMeFallback
           brandLocked={brandDocuments}
           onSent={() => {
             trackEvent('quote_whatsapp_send_completed', {

@@ -4,7 +4,6 @@ import { hardwareGuides } from '@/lib/games/hardware';
 import { listSeoLandings } from '@/lib/seo/landing-content';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { guides } from '@/lib/guides';
-import { growthSegments } from '@/lib/growth/segments';
 import { intentPages } from '@/lib/growth/intents';
 import { INTERNATIONAL_TOOLS } from '@/lib/international-tools-catalog';
 import { isPublicIndexablePath } from '@/lib/seo/public-indexable-path';
@@ -130,12 +129,24 @@ function buildCore(base: string): MetadataRoute.Sitemap {
   ];
 }
 
+/** Slugs de `/para/[segmento]` indexáveis. Mantido aqui para o sitemap não importar lucide-react. */
+const GROWTH_INDEXABLE_SEGMENT_SLUGS = [
+  'mei',
+  'freelancers',
+  'empresas',
+  'rh',
+  'contadores',
+  'advogados',
+  'estudantes',
+  'prestadores',
+  'saude',
+  'gestores'
+] as const;
+
 /** Paths já cobertos por `buildGrowth` (evita URL duplicada nos sitemaps segmentados). */
 function growthPaths(): Set<string> {
   return new Set([
-    ...growthSegments
-      .filter((segment) => segment.slug !== 'autonomos')
-      .map((segment) => `/para/${segment.slug}`),
+    ...GROWTH_INDEXABLE_SEGMENT_SLUGS.map((slug) => `/para/${slug}`),
     '/para/freelancers',
     ...intentPages.map((intent) => `/modelos/${intent.slug}`)
   ]);
@@ -229,11 +240,8 @@ function buildTools(base: string): MetadataRoute.Sitemap {
 
 function buildGrowth(base: string): MetadataRoute.Sitemap {
   return [
-    ...growthSegments
-      // /para/autonomos redireciona para /para/freelancers (evita canibalização).
-      .filter((segment) => segment.slug !== 'autonomos')
-      .map((segment) => ({
-      url: `${base}/para/${segment.slug}`,
+    ...GROWTH_INDEXABLE_SEGMENT_SLUGS.map((slug) => ({
+      url: `${base}/para/${slug}`,
       lastModified: CORE_UPDATED_AT,
       changeFrequency: 'weekly' as const,
       priority: 0.85
@@ -337,7 +345,50 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): 
   }
 }
 
-/** Sitemap completo (deduplicado) para `/sitemap.xml` e IndexNow. */
+/** Sitemap completo (deduplicado) para IndexNow e testes. */
 export function buildFullSitemap(baseUrl?: string): MetadataRoute.Sitemap {
   return dedupe(SITEMAP_SEGMENTS.flatMap((segment) => buildSitemapSegment(segment, baseUrl)));
+}
+
+function xmlEscape(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/** urlset XML para um segmento ou para o sitemap único. */
+export function sitemapEntriesToXml(entries: MetadataRoute.Sitemap): string {
+  const urls = entries
+    .map((entry) => {
+      const lastmod = entry.lastModified
+        ? `<lastmod>${new Date(entry.lastModified).toISOString()}</lastmod>`
+        : '';
+      const changefreq = entry.changeFrequency ? `<changefreq>${entry.changeFrequency}</changefreq>` : '';
+      const priority =
+        typeof entry.priority === 'number' ? `<priority>${entry.priority}</priority>` : '';
+      return `<url><loc>${xmlEscape(entry.url)}</loc>${lastmod}${changefreq}${priority}</url>`;
+    })
+    .join('');
+
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`
+  );
+}
+
+/** Índice apontando para `/sitemaps/{segment}`. Evita o 500 do sitemap.ts monolítico do Next. */
+export function buildSitemapIndexXml(baseUrl?: string): string {
+  const base = (baseUrl ?? getViralBaseUrl()).replace(/\/$/, '');
+  const lastmod = CORE_UPDATED_AT.toISOString();
+  const body = SITEMAP_SEGMENTS.map(
+    (segment) =>
+      `<sitemap><loc>${xmlEscape(`${base}/sitemaps/${segment}`)}</loc><lastmod>${lastmod}</lastmod></sitemap>`
+  ).join('');
+
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>` +
+    `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${body}</sitemapindex>`
+  );
 }

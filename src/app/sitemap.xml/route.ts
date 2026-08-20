@@ -7,7 +7,7 @@ export const runtime = 'nodejs';
 const EMPTY_INDEX =
   '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></sitemapindex>';
 
-/** Índice de sitemaps por segmento, para o GSC mostrar cobertura por grupo. */
+/** Google lê `/sitemap.xml` como índice dos segmentos em `/sitemaps/{segment}`. */
 export async function GET() {
   const xml = isStagingEnv() ? EMPTY_INDEX : buildSitemapIndexXml();
   return new Response(xml, {

@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server';
 import type { Prisma } from '@prisma/client';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { notifyProfissional } from '@/lib/orcamentos/notify';
+import { toOrcamentoPublic } from '@/lib/orcamentos/public-map';
 import { validateOrcamentoPayload, validateStatusPatch } from '@/lib/orcamentos/schema';
-import type { OrcamentoItem, OrcamentoPublic } from '@/lib/orcamentos/types';
+import type { OrcamentoPublic } from '@/lib/orcamentos/types';
 
 function appBaseUrl(request: Request) {
   const envUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '');
@@ -20,38 +21,8 @@ function appBaseUrl(request: Request) {
 
 type RouteContext = { params: Promise<{ id: string }> };
 
-function toPublic(row: {
-  id: string;
-  profissionalNome: string;
-  profissionalWhatsapp: string;
-  clienteNome: string;
-  clienteContato: string;
-  clienteEmail: string;
-  itens: unknown;
-  total: number;
-  validade: string;
-  observacoes: string;
-  status: string;
-  feedbackCliente: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}): OrcamentoPublic {
-  return {
-    id: row.id,
-    profissionalNome: row.profissionalNome,
-    profissionalWhatsapp: row.profissionalWhatsapp,
-    clienteNome: row.clienteNome,
-    clienteContato: row.clienteContato,
-    clienteEmail: row.clienteEmail || '',
-    itens: row.itens as unknown as OrcamentoItem[],
-    total: row.total,
-    validade: row.validade,
-    observacoes: row.observacoes,
-    status: row.status as OrcamentoPublic['status'],
-    feedbackCliente: row.feedbackCliente,
-    createdAt: row.createdAt.toISOString(),
-    updatedAt: row.updatedAt.toISOString()
-  };
+function toPublic(row: Parameters<typeof toOrcamentoPublic>[0], includePix?: boolean): OrcamentoPublic {
+  return toOrcamentoPublic(row, includePix === undefined ? undefined : { includePix });
 }
 
 export async function GET(_request: Request, context: RouteContext) {
@@ -115,7 +86,11 @@ export async function PUT(request: Request, context: RouteContext) {
         itens: validated.data.itens as unknown as Prisma.InputJsonValue,
         total: validated.data.total,
         validade: validated.data.validade || '',
-        observacoes: validated.data.observacoes || ''
+        observacoes: validated.data.observacoes || '',
+        pixKey: validated.data.pixKey || '',
+        pixKeyType: validated.data.pixKeyType || '',
+        pixMerchantName: validated.data.pixMerchantName || '',
+        pixMerchantCity: validated.data.pixMerchantCity || ''
       }
     });
 
@@ -125,7 +100,7 @@ export async function PUT(request: Request, context: RouteContext) {
       url,
       total: updated.total,
       status: updated.status,
-      orcamento: toPublic(updated)
+      orcamento: toPublic(updated, true)
     });
   } catch (error) {
     console.error('[PUT /api/orcamentos/:id]', error);
