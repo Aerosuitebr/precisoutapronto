@@ -2,17 +2,17 @@ import { expect, test } from '@playwright/test';
 
 test('home leads with a task-first promise and popular outcomes', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Resolva agora. Saia com algo pronto.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Precisou resolver?Tá pronto.');
   await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
-  await expect(page.getByText('Produtos em destaque')).toBeVisible();
+  await expect(page.getByText('Descubra e resolva')).toBeVisible();
   const main = page.locator('main');
-  for (const label of ['Orçamento + Pix', 'Criar recibo', 'Calcular rescisão', 'Ferramentas de PDF']) {
+  for (const label of ['Orçamentos', 'Recibos', 'Contratos', 'Currículos']) {
     await expect(main.getByText(label, { exact: true }).first()).toBeVisible();
   }
-  await expect(page.getByRole('heading', { name: 'Não é uma lista de ferramentas. É um caminho até o resultado.' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Outras tarefas que estão resolvendo o dia.' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Filtre pelo tipo de resultado que precisa.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Comece pelo contexto do problema.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Do problema ao resultado em três movimentos.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Guias curtos. Aplicação imediata.' })).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Jato Games');
 });
 
