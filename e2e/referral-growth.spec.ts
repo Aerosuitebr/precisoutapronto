@@ -10,6 +10,8 @@ test('referral links carry attribution and a normalized code', () => {
   expect(code).toBe('RJABC123');
   const url = buildReferralSignupUrl(code);
   expect(url).toContain('ref=RJABC123');
+  expect(url).toContain('/orcamento-com-pix?');
+  expect(url).not.toContain('/cadastro');
   expect(url).toContain('utm_source=referral');
   expect(url).toContain('utm_campaign=premium_3friends');
 });

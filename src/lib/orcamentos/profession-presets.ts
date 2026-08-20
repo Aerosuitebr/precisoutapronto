@@ -13,6 +13,27 @@ export interface ProfessionLanding {
 
 export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
+    slug: 'personal-trainer',
+    name: 'Personal trainer',
+    title: 'Orçamento para personal trainer com planos e Pix',
+    description: 'Apresente avaliação, sessões, acompanhamento e condições de remarcação em um orçamento profissional para aprovação pelo celular.',
+    promise: 'Modelo preparado para treino presencial, online e consultoria esportiva.',
+    preset: {
+      occupation: 'personal trainer',
+      items: [
+        { nome: 'Avaliação física inicial' },
+        { nome: 'Pacote de sessões de treino' },
+        { nome: 'Acompanhamento e ajustes do plano' }
+      ],
+      observacoes: 'Informe quantidade, duração e frequência das sessões.\nDefina validade do pacote e regra de cancelamento ou remarcação.\nPagamento via Pix conforme as condições combinadas.'
+    },
+    checklist: ['Quantidade e duração das sessões', 'Formato presencial ou online', 'Pagamento e remarcação definidos'],
+    faqs: [
+      { q: 'Como apresentar um pacote mensal?', a: 'Use a quantidade para registrar o número de sessões e deixe frequência, duração e validade nas observações.' },
+      { q: 'Como tratar faltas e remarcações?', a: 'Registre antecedência mínima, prazo para reposição e situações em que a sessão será considerada realizada.' }
+    ]
+  },
+  {
     slug: 'eletricista',
     name: 'Eletricista',
     title: 'Orçamento para eletricista com aprovação e Pix',

@@ -137,6 +137,9 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
     <div className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#ecfdf5_45%,#f8fafc_100%)] pb-28 text-slate-900">
       <div className="mx-auto max-w-lg px-4 pb-8 pt-8 sm:px-6">
         <header className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+          {orcamento.profissionalLogoDataUrl ? (
+            <img src={orcamento.profissionalLogoDataUrl} alt={`Logo de ${orcamento.profissionalNome}`} className="mb-4 h-16 max-w-[180px] object-contain object-left" />
+          ) : null}
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-700">
             Orçamento digital
           </p>

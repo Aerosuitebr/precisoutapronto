@@ -51,6 +51,8 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
   const pixKeyTypeRaw = asString(data.pixKeyType).toLowerCase();
   const pixMerchantName = asString(data.pixMerchantName);
   const pixMerchantCity = asString(data.pixMerchantCity);
+  const profissionalLogoDataUrl = asString(data.profissionalLogoDataUrl);
+  const sourceOccupation = asString(data.sourceOccupation).slice(0, 120);
   const itens = parseItens(data.itens);
 
   const clienteWhatsapp = clienteContato.replace(/\D+/g, '');
@@ -70,6 +72,12 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
     return { ok: false, error: 'Informe um e-mail do cliente válido, ou deixe o campo em branco.' };
   }
   if (!itens) return { ok: false, error: 'Adicione ao menos um item com quantidade e valor válidos.' };
+  if (profissionalLogoDataUrl && !/^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(profissionalLogoDataUrl)) {
+    return { ok: false, error: 'Logo inválido. Use PNG, JPG ou WebP.' };
+  }
+  if (profissionalLogoDataUrl.length > 550_000) {
+    return { ok: false, error: 'O logo deve ter no máximo 400 KB.' };
+  }
 
   let pixKeyType = '';
   if (pixKey) {
@@ -97,6 +105,8 @@ export function validateOrcamentoPayload(body: unknown): ValidationResult {
       validade,
       observacoes,
       ownerEmail,
+      profissionalLogoDataUrl,
+      sourceOccupation,
       pixKey,
       pixKeyType,
       pixMerchantName: pixKey ? pixMerchantName : '',

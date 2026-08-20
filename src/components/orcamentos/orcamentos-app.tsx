@@ -145,6 +145,7 @@ export function OrcamentosApp({
   const [profissionalNome, setProfissionalNome] = useState('');
   const [profissionalWhatsapp, setProfissionalWhatsapp] = useState('');
   const [profissionalEmail, setProfissionalEmail] = useState('');
+  const [profissionalLogoDataUrl, setProfissionalLogoDataUrl] = useState('');
   const [profissionalCollapsed, setProfissionalCollapsed] = useState(false);
   const hasHydratedProfissionalRef = useRef(false);
   const [clienteNome, setClienteNome] = useState('');
@@ -329,6 +330,14 @@ export function OrcamentosApp({
     }
   }, [session?.user.email]);
 
+  useEffect(() => {
+    if (!session) return;
+    void fetch('/api/profile', { cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => setProfissionalLogoDataUrl(data?.profile?.logoDataUrl || ''))
+      .catch(() => undefined);
+  }, [session]);
+
   const loadHistory = useCallback(async () => {
     if (!ownerEmail || (publicAccess && !session)) return;
     setHistoryLoading(true);
@@ -369,6 +378,9 @@ export function OrcamentosApp({
   }
 
   function payloadBody() {
+    const sourceOccupation = preset?.occupation || (typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('profissao') || new URLSearchParams(window.location.search).get('source_occupation') || ''
+      : '');
     return {
       profissionalNome,
       profissionalWhatsapp,
@@ -379,6 +391,8 @@ export function OrcamentosApp({
       observacoes,
       itens: items,
       ownerEmail,
+      profissionalLogoDataUrl,
+      sourceOccupation,
       pixKey,
       pixKeyType,
       pixMerchantName: pixMerchantName.trim() || profissionalNome,

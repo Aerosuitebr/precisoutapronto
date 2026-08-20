@@ -12,6 +12,9 @@ const INTENTS = [
   { label: 'Criar contrato de serviço', href: '/gerador-de-contrato#ferramenta', terms: 'contrato prestacao servico freelancer mei' },
   { label: 'Fazer currículo', href: '/gerador-de-curriculo#ferramenta', terms: 'curriculo emprego vaga pdf resume cv' },
   { label: 'Criar orçamento com Pix', href: '/orcamento-com-pix#montar', terms: 'orcamento proposta cobrar pix whatsapp cliente' },
+  { label: 'Orçamento Pix Copia e Cola', href: '/orcamento-com-pix#montar', terms: 'orcamento pix copiar e colar copia cola codigo pagamento' },
+  { label: 'Orçamento para personal trainer', href: '/orcamento-para/personal-trainer', terms: 'personal trainer academia treino consultoria esportiva orçamento' },
+  { label: 'Declaração de residência', href: '/documentos-juridicos-online#ferramenta', terms: 'declaracao residência comprovante endereço juridico documento' },
   { label: 'Corrigir redação ENEM', href: '/corretor-de-redacao-enem', terms: 'redacao enem nota texto estudante' },
   { label: 'Editar PDF', href: '/editor-de-pdf-online', terms: 'pdf editar juntar dividir comprimir arquivo' },
   { label: 'Calcular férias', href: '/calculadora-de-ferias', terms: 'ferias clt salario abono' },
@@ -50,14 +53,14 @@ export function HomeQuickSearch() {
       <form onSubmit={submit} role="search" aria-label="Buscar ferramenta">
         <label htmlFor="home-tool-search" className="sr-only">O que você precisa resolver hoje?</label>
         <div className="flex rounded-2xl bg-white p-1.5 shadow-[0_18px_55px_-24px_rgba(3,31,75,0.32)] ring-1 ring-[#0b5cff]/20 focus-within:ring-2 focus-within:ring-[#0b5cff]">
-          <Search className="ml-3 mt-3 h-5 w-5 shrink-0 text-slate-500" aria-hidden />
+          <Search className="ml-2 mt-3 h-5 w-5 shrink-0 text-slate-600 sm:ml-3" aria-hidden />
           <input
             id="home-tool-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="O que você precisa resolver hoje?"
+            placeholder="O que você precisa?"
             autoComplete="off"
-            className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-base font-medium text-slate-950 outline-none placeholder:text-slate-500"
+            className="min-w-0 flex-1 bg-transparent px-2 py-2.5 text-base font-medium text-slate-950 outline-none placeholder:text-slate-600 sm:px-3"
           />
           <button type="submit" className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-xl bg-[#0b5cff] px-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#0648c9] hover:shadow-md active:translate-y-0 sm:px-5" aria-label="Buscar">
             <span className="hidden sm:inline">Encontrar</span>
@@ -65,7 +68,7 @@ export function HomeQuickSearch() {
           </button>
         </div>
       </form>
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-white/90">
         <span className="mr-1 font-semibold">Buscas rápidas:</span>
         {INTENTS.slice(0, 4).map((item) => (
           <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="min-h-11 rounded-full border border-[#0b5cff]/20 bg-white px-4 py-2 font-bold text-[#031f4b] transition hover:border-[#0b5cff]/50 hover:bg-[#eef5ff] hover:text-[#0b5cff] sm:min-h-0 sm:px-3 sm:py-1.5">

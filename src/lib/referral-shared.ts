@@ -8,7 +8,7 @@ export function normalizeReferralCode(raw: string | null | undefined) {
   return code.length >= 4 && code.length <= 16 ? code : '';
 }
 
-export function buildReferralSignupUrl(code: string) {
+export function buildReferralInviteUrl(code: string) {
   const base = getViralBaseUrl();
   const params = new URLSearchParams({
     ref: code,
@@ -16,21 +16,24 @@ export function buildReferralSignupUrl(code: string) {
     utm_medium: 'invite',
     utm_campaign: 'premium_3friends'
   });
-  return `${base}/cadastro?${params.toString()}`;
+  return `${base}/orcamento-com-pix?${params.toString()}#montar`;
 }
 
+/** @deprecated Convites agora começam na ferramenta pública, sem exigir conta. */
+export const buildReferralSignupUrl = buildReferralInviteUrl;
+
 export function buildReferralWhatsAppUrl(code: string) {
-  const link = buildReferralSignupUrl(code);
+  const link = buildReferralInviteUrl(code);
   const text =
     `Estou usando o Precisou, Tá Pronto pra orçamento + Pix no WhatsApp.\n` +
-    `Cria sua conta por este link (grátis pra testar):\n${link}`;
+    `Teste grátis, sem cadastro, por este link:\n${link}`;
   return `https://wa.me/?text=${encodeURIComponent(text)}`;
 }
 
 export function buildReferralSharePayload(code: string): ShareData {
   return {
     title: 'Convite Precisou, Tá Pronto',
-    text: 'Crie sua conta grátis no Precisou, Tá Pronto e experimente as ferramentas de documentos e negócios.',
-    url: buildReferralSignupUrl(code)
+    text: 'Teste grátis o orçamento com Pix do Precisou, Tá Pronto. Não precisa criar conta para começar.',
+    url: buildReferralInviteUrl(code)
   };
 }

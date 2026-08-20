@@ -8,6 +8,7 @@ model UserProfile {
   segment     String
   occupation  String?
   companyName String?
+  logoDataUrl String?
   preferences Json     @default("{}")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -74,11 +75,14 @@ model Orcamento {
   status               OrcamentoStatus @default(pending)
   feedbackCliente      String?
   ownerEmail           String?
+  profissionalLogoDataUrl String?
+  sourceOccupation     String?
   createdAt            DateTime        @default(now())
   updatedAt            DateTime        @updatedAt
 
   @@index([ownerEmail])
   @@index([status])
+  @@index([sourceOccupation, createdAt])
   @@map("orcamentos")
 }
 

@@ -36,6 +36,12 @@ export async function POST(request: Request) {
     }
 
     const prisma = getPrisma();
+    const owner = validated.data.ownerEmail
+      ? await prisma.user.findUnique({
+          where: { email: validated.data.ownerEmail },
+          select: { profile: { select: { logoDataUrl: true, occupation: true, segment: true } } }
+        })
+      : null;
     const created = await prisma.orcamento.create({
       data: {
         profissionalNome: validated.data.profissionalNome,
@@ -51,7 +57,9 @@ export async function POST(request: Request) {
         pixKeyType: validated.data.pixKeyType || '',
         pixMerchantName: validated.data.pixMerchantName || '',
         pixMerchantCity: validated.data.pixMerchantCity || '',
-        ownerEmail: validated.data.ownerEmail || null
+        ownerEmail: validated.data.ownerEmail || null,
+        profissionalLogoDataUrl: validated.data.profissionalLogoDataUrl || owner?.profile?.logoDataUrl || null,
+        sourceOccupation: validated.data.sourceOccupation || owner?.profile?.occupation || owner?.profile?.segment || null
       }
     });
 
@@ -106,6 +114,8 @@ export async function GET(request: Request) {
         clienteEmail: row.clienteEmail,
         profissionalNome: row.profissionalNome,
         profissionalWhatsapp: row.profissionalWhatsapp,
+        profissionalLogoDataUrl: row.profissionalLogoDataUrl || '',
+        sourceOccupation: row.sourceOccupation || '',
         validade: row.validade,
         observacoes: row.observacoes,
         itens: row.itens as unknown as OrcamentoItem[],

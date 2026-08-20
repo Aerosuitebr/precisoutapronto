@@ -90,7 +90,9 @@ export async function PUT(request: Request, context: RouteContext) {
         pixKey: validated.data.pixKey || '',
         pixKeyType: validated.data.pixKeyType || '',
         pixMerchantName: validated.data.pixMerchantName || '',
-        pixMerchantCity: validated.data.pixMerchantCity || ''
+        pixMerchantCity: validated.data.pixMerchantCity || '',
+        profissionalLogoDataUrl: validated.data.profissionalLogoDataUrl || null,
+        sourceOccupation: validated.data.sourceOccupation || null
       }
     });
 

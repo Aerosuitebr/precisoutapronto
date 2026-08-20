@@ -17,6 +17,8 @@ export interface OrcamentoPayload {
   validade?: string;
   observacoes?: string;
   ownerEmail?: string | null;
+  profissionalLogoDataUrl?: string;
+  sourceOccupation?: string;
   pixKey?: string;
   pixKeyType?: string;
   pixMerchantName?: string;
@@ -27,6 +29,8 @@ export interface OrcamentoPublic {
   id: string;
   profissionalNome: string;
   profissionalWhatsapp: string;
+  profissionalLogoDataUrl: string;
+  sourceOccupation: string;
   clienteNome: string;
   clienteContato: string;
   clienteEmail: string;
