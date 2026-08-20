@@ -9,7 +9,7 @@ interface LogoProps {
 }
 
 export function Logo({ collapsed = false, variant = 'marketing', className }: LogoProps) {
-  const isHero = variant === 'hero' || variant === 'footer' || variant === 'marketing';
+  const isHero = variant === 'hero' || variant === 'footer';
   const src = isHero ? BRAND_LOGO_DARK : BRAND_LOGO_LIGHT;
 
   return (
@@ -25,7 +25,7 @@ export function Logo({ collapsed = false, variant = 'marketing', className }: Lo
         !collapsed && variant === 'hero' && 'h-[6rem] sm:h-[7.5rem] lg:h-[9rem]',
         !collapsed && variant === 'footer' && 'h-14 sm:h-16',
         !collapsed && variant === 'auth' && 'mx-auto h-[5.25rem] sm:h-[6rem]',
-        !collapsed && variant === 'marketing' && 'h-14 sm:h-16',
+        !collapsed && variant === 'marketing' && 'h-[4.25rem] sm:h-[5rem] lg:h-[5.5rem]',
         !collapsed && variant === 'app' && 'h-14 sm:h-16 lg:h-[4.5rem]',
         !collapsed && variant === 'sidebar' && 'h-14',
         className

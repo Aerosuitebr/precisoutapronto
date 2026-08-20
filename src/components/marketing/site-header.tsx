@@ -26,11 +26,11 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-2.5 sm:px-8 lg:gap-5 lg:px-10 2xl:px-12">
-        <Link href="/" className="min-w-0 shrink-0" aria-label="Precisou, Tá Pronto, ferramentas online que resolvem de verdade">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:px-6 lg:gap-5">
+        <Link href="/" className="min-w-0 shrink" aria-label="Precisou, Tá Pronto, ferramentas online que resolvem de verdade">
           <Logo
-            variant="footer"
-            className="h-14 sm:h-16"
+            variant="marketing"
+            className="h-16 max-w-none sm:h-20"
           />
           <span className="sr-only">Ferramentas online que resolvem de verdade</span>
         </Link>
