@@ -29,8 +29,8 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-3 px-4 py-2.5 sm:px-8 lg:gap-5 lg:px-10 2xl:px-12">
         <Link href="/" className="min-w-0 shrink-0" aria-label="Precisou, Tá Pronto, ferramentas online que resolvem de verdade">
           <Logo
-            variant="marketing"
-            className="h-11 sm:h-12"
+            variant="footer"
+            className="h-14 sm:h-16"
           />
           <span className="sr-only">Ferramentas online que resolvem de verdade</span>
         </Link>
