@@ -25,7 +25,7 @@ export function SiteHeader() {
   const [segmentsOpen, setSegmentsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#0b5cff]/20 bg-white/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#0b5cff]/20 bg-white/95 shadow-[0_8px_24px_-20px_rgba(3,31,75,.45)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:px-6 lg:gap-5">
         <Link href="/" className="min-w-0 shrink" aria-label="Precisou, Tá Pronto, ferramentas online que resolvem de verdade">
           <Logo
@@ -34,7 +34,7 @@ export function SiteHeader() {
           />
           <span className="sr-only">Ferramentas online que resolvem de verdade</span>
         </Link>
-        <nav className="hidden items-center gap-1.5 lg:flex">
+        <nav aria-label="Navegação principal" className="hidden items-center gap-1.5 lg:flex">
           <div
             className="relative"
             onMouseEnter={() => setSegmentsOpen(true)}
@@ -127,6 +127,7 @@ export function SiteHeader() {
             onClick={() => setMobileOpen((current) => !current)}
             aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={mobileOpen}
+            aria-controls="menu-principal-mobile"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -134,12 +135,12 @@ export function SiteHeader() {
       </div>
 
       {mobileOpen ? (
-        <div className="border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
-          <nav className="mx-auto grid max-w-6xl gap-2">
+        <div id="menu-principal-mobile" className="border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
+          <nav aria-label="Navegação principal no celular" className="mx-auto grid max-w-6xl gap-2">
             <p className="px-4 pt-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Por perfil</p>
             <div className="grid grid-cols-2 gap-1">
               {growthSegments.map((segment) => (
-                <Link key={segment.slug} href={`/para/${segment.slug}`} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100" onClick={() => setMobileOpen(false)}>
+                <Link key={segment.slug} href={`/para/${segment.slug}`} className="flex min-h-11 items-center rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100" onClick={() => setMobileOpen(false)}>
                   {segment.name}
                 </Link>
               ))}

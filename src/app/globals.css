@@ -89,6 +89,16 @@ a {
   text-decoration: none;
 }
 
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #0b5cff;
+  outline-offset: 3px;
+}
+
+::selection {
+  background: #c8ff73;
+  color: #031f4b;
+}
+
 .rj-hud-grid {
   background-image:
     linear-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px),

@@ -84,6 +84,11 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
 
         <ToolLandingRelated tools={content.relatedTools} />
       </main>
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 shadow-[0_-10px_30px_-18px_rgba(15,23,42,.45)] backdrop-blur lg:hidden">
+        <Button asChild size="lg" className="w-full bg-[#0b5cff] font-bold hover:bg-[#0648c9]">
+          <a href="#ferramenta">{content.ctaPrimary}<ArrowRight className="h-4 w-4" aria-hidden /></a>
+        </Button>
+      </div>
       <SiteFooter />
     </>
   );

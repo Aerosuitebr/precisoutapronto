@@ -59,7 +59,8 @@ export function HomeQuickSearch() {
             autoComplete="off"
             className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-base font-medium text-slate-950 outline-none placeholder:text-slate-500"
           />
-          <button type="submit" className="grid min-h-11 min-w-11 place-items-center rounded-xl bg-[#0b5cff] px-3 font-bold text-white transition hover:bg-[#0648c9]" aria-label="Buscar">
+          <button type="submit" className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-xl bg-[#0b5cff] px-3 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#0648c9] hover:shadow-md active:translate-y-0 sm:px-5" aria-label="Buscar">
+            <span className="hidden sm:inline">Encontrar</span>
             <ArrowRight className="h-5 w-5" aria-hidden />
           </button>
         </div>
@@ -67,7 +68,7 @@ export function HomeQuickSearch() {
       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
         <span className="mr-1 font-semibold">Buscas rápidas:</span>
         {INTENTS.slice(0, 4).map((item) => (
-          <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="rounded-full border border-[#0b5cff]/15 bg-white px-3 py-1.5 font-bold text-[#031f4b] transition hover:border-[#0b5cff]/40 hover:bg-[#eef5ff] hover:text-[#0b5cff]">
+          <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="min-h-11 rounded-full border border-[#0b5cff]/20 bg-white px-4 py-2 font-bold text-[#031f4b] transition hover:border-[#0b5cff]/50 hover:bg-[#eef5ff] hover:text-[#0b5cff] sm:min-h-0 sm:px-3 sm:py-1.5">
             {item.label.replace(/^(Criar|Calcular|Gerar) /, '')}
           </button>
         ))}

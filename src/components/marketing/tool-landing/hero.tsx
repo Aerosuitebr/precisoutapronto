@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { SeoPageContent } from '@/lib/seo-pages/types';
 
@@ -13,7 +13,14 @@ export function ToolLandingHero({
   return (
     <section className="relative overflow-hidden bg-[linear-gradient(180deg,#020617_0%,#0f172a_55%,#0c4a6e_100%)] text-white">
       <div className="pointer-events-none absolute inset-0 opacity-40 [background:radial-gradient(60%_50%_at_80%_0%,theme(colors.sky.500/40),transparent)]" />
-      <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:py-24">
+      <nav aria-label="Breadcrumb" className="relative mx-auto flex max-w-6xl items-center gap-1.5 px-4 pt-5 text-sm text-slate-300 sm:px-6">
+        <Link href="/" className="rounded px-1 py-1 hover:text-white">Início</Link>
+        <ChevronRight className="h-3.5 w-3.5" aria-hidden />
+        <Link href="/recursos" className="rounded px-1 py-1 hover:text-white">Ferramentas</Link>
+        <ChevronRight className="h-3.5 w-3.5" aria-hidden />
+        <span aria-current="page" className="truncate font-semibold text-white">{content.seo.breadcrumbLabel}</span>
+      </nav>
+      <div className="relative mx-auto grid max-w-6xl gap-8 px-4 pb-12 pt-8 sm:px-6 sm:pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:pb-24">
         <div>
           <p className="rj-display text-xs font-bold uppercase tracking-[0.25em] text-sky-300">
             Precisou, Tá Pronto · {content.toolName}

@@ -28,6 +28,9 @@ export function LandingPage() {
             <h1 className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">Precisou resolver?<br /><span className="text-[#a9ed42]">Tá pronto.</span></h1>
             <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-blue-100 sm:text-xl">Encontre a ferramenta certa, personalize em poucos passos e termine o dia com um resultado que você pode usar ou compartilhar.</p>
             <div className="mx-auto mt-9 max-w-2xl rounded-[1.4rem] bg-white/10 p-2 shadow-2xl shadow-blue-950/30 ring-1 ring-white/20 backdrop-blur"><HomeQuickSearch /></div>
+            <Link href="/recursos" className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/35 bg-white px-5 py-3 text-sm font-black text-[#031f4b] shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c8ff73] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c8ff73] focus-visible:ring-offset-2 focus-visible:ring-offset-[#031f4b]">
+              Ver todas as ferramentas <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
             <div className="mt-6 flex flex-wrap justify-center gap-2 text-xs font-bold">
               {['#MaisUsadas', '#Novas', '#Negócios', '#Carreira', '#PDFs'].map((tag) => <a key={tag} href="#categorias" className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-blue-50 transition hover:border-[#83d600]/60 hover:text-[#c8ff73]">{tag}</a>)}
             </div>
