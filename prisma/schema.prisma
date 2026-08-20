@@ -39,6 +39,28 @@ model SharedDocument {
   @@map("shared_documents")
 }
 
+/// Resultado curto, anonimizado e criado somente após ação explícita de compartilhamento.
+model SharedResult {
+  id           String    @id @default(cuid())
+  token        String    @unique
+  tool         String
+  title        String
+  subtitle     String?
+  data         Json
+  ctaLabel     String
+  ctaPath      String
+  source       String    @default("result")
+  referrer     String?
+  createdAt    DateTime  @default(now())
+  expiresAt    DateTime
+  viewCount    Int       @default(0)
+  lastViewedAt DateTime?
+
+  @@index([tool, createdAt])
+  @@index([expiresAt])
+  @@map("shared_results")
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

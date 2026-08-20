@@ -32,6 +32,7 @@ import { viralToolShareFooter } from "@/lib/viral-loop";
 import { ResultShareCard } from "@/components/shared/result-share-card";
 import { trackEvent } from "@/lib/analytics";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
+import { NextToolCta } from "@/components/growth/next-tool-cta";
 
 const TIPOS: TipoRescisao[] = [
   "sem-justa-causa",
@@ -384,6 +385,13 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
                     toolPath="/calculadora-de-rescisao"
                     utmCampaign="rescisao_card"
                     fileNameHint="calculo-rescisao"
+                  />
+                  <NextToolCta
+                    from="rescisao"
+                    to="curriculo"
+                    href="/gerador-de-curriculo"
+                    title="Próximo passo: deixar o currículo pronto"
+                    description="Use o resultado como ponto de partida para a próxima oportunidade."
                   />
                 </div>
               )}

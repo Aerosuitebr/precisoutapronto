@@ -29,8 +29,10 @@ import {
 import { cn } from '@/lib/utils';
 import { viralToolShareFooter } from '@/lib/viral-loop';
 import { ResultShareCard } from '@/components/shared/result-share-card';
+import { ShareResult } from '@/components/shared/share-result';
 import { trackEvent } from '@/lib/analytics';
 import { WhatsAppSendModal } from '@/components/whatsapp/whatsapp-send-modal';
+import { NextToolCta } from '@/components/growth/next-tool-cta';
 
 const STEPS = [
   { id: 'custos', label: 'Materiais' },
@@ -423,6 +425,27 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
                 <p className="text-xs leading-5 text-slate-600">
                   Estimativa educativa. Ajuste conforme concorrência e o valor que seu cliente enxerga.
                 </p>
+
+                <ShareResult
+                  tool="precificacao"
+                  title="Seu preço mínimo sustentável"
+                  subtitle={`Preço sugerido: ${formatCurrency(resultado.precoFinal)}`}
+                  lines={[
+                    { label: 'Preço sugerido', value: formatCurrency(resultado.precoFinal), emphasis: true },
+                    { label: 'Custo total', value: formatCurrency(resultado.custoTotal) },
+                    { label: 'Lucro por venda', value: formatCurrency(resultado.lucroLiquidoPorVenda) },
+                    { label: 'Margem líquida', value: `${resultado.margemLiquidaReal.toFixed(1)}%` },
+                  ]}
+                  whatsappText={resumoTexto()}
+                />
+
+                <NextToolCta
+                  from="precificacao"
+                  to="orcamento"
+                  href="/orcamento-com-pix#montar"
+                  title="Criar orçamento com este valor"
+                  description="Leve o preço calculado para um orçamento com aprovação e Pix."
+                />
 
                 <div className="flex flex-wrap gap-2">
                   <Button variant="outline" size="sm" onClick={handleCopy} icon={Copy}>

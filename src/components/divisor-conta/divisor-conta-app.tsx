@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Copy,
-  MessageCircle,
   Plus,
   Sparkles,
   Trash2,
@@ -12,6 +11,7 @@ import {
 import { AuthGate } from "@/components/auth/auth-gate";
 import { PageHero } from "@/components/shared/page-hero";
 import { ResultShareCard } from "@/components/shared/result-share-card";
+import { ShareResult } from "@/components/shared/share-result";
 import { ToolsBackButton } from "@/components/shared/tools-back-button";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
@@ -19,9 +19,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/toast";
 import { parseCurrency } from "@/lib/formatters";
 import { calcularDivisao } from "@/lib/divisor-conta/calc";
-import { cn } from "@/lib/utils";
-import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 import { trackEvent } from "@/lib/analytics";
+import { getViralBaseUrl } from "@/lib/viral-loop";
+import { cn } from "@/lib/utils";
 import { viralToolShareFooter } from "@/lib/viral-loop";
 
 type Locale = "pt-BR" | "en" | "es";
@@ -80,6 +80,7 @@ const COPY: Record<
     totalComTaxaLabel: string;
     copiarDivisao: string;
     enviarWhatsApp: string;
+    compartilharImagem: string;
     destinationHint: string;
     semNome: string;
     toastCopiado: string;
@@ -88,6 +89,8 @@ const COPY: Record<
     resumoTotalComTaxa: string;
     resumoValorPorPessoa: string;
     resumoRodape: string;
+    resultadoPronto: string;
+    criarDivisao: string;
   }
 > = {
   "pt-BR": {
@@ -122,6 +125,7 @@ const COPY: Record<
     totalComTaxaLabel: "Total com taxa de serviço",
     copiarDivisao: "Copiar divisão",
     enviarWhatsApp: "Enviar no WhatsApp",
+    compartilharImagem: "Criar imagem para Stories",
     destinationHint: "WhatsApp que receberá a divisão",
     semNome: "Sem nome",
     toastCopiado: "Divisão copiada!",
@@ -130,6 +134,8 @@ const COPY: Record<
     resumoTotalComTaxa: "*TOTAL COM TAXA*",
     resumoValorPorPessoa: "*VALOR POR PESSOA*",
     resumoRodape: "Divisão automática. Confira antes de pagar.",
+    resultadoPronto: "Sua divisão está pronta",
+    criarDivisao: "Faça sua divisão grátis",
   },
   en: {
     authTitle: "Group Bill Splitter",
@@ -163,6 +169,7 @@ const COPY: Record<
     totalComTaxaLabel: "Total with service fee",
     copiarDivisao: "Copy split",
     enviarWhatsApp: "Send on WhatsApp",
+    compartilharImagem: "Create image for Stories",
     destinationHint: "WhatsApp that will receive the split",
     semNome: "No name",
     toastCopiado: "Split copied!",
@@ -171,6 +178,8 @@ const COPY: Record<
     resumoTotalComTaxa: "*TOTAL WITH FEE*",
     resumoValorPorPessoa: "*AMOUNT PER PERSON*",
     resumoRodape: "Automatic split. Double check it before paying.",
+    resultadoPronto: "Your split is ready",
+    criarDivisao: "Split your bill for free",
   },
   es: {
     authTitle: "Divisor de Cuenta en Grupo",
@@ -204,6 +213,7 @@ const COPY: Record<
     totalComTaxaLabel: "Total con cargo por servicio",
     copiarDivisao: "Copiar division",
     enviarWhatsApp: "Enviar por WhatsApp",
+    compartilharImagem: "Crear imagen para Stories",
     destinationHint: "WhatsApp que recibira la division",
     semNome: "Sin nombre",
     toastCopiado: "Division copiada!",
@@ -212,6 +222,8 @@ const COPY: Record<
     resumoTotalComTaxa: "*TOTAL CON CARGO*",
     resumoValorPorPessoa: "*MONTO POR PERSONA*",
     resumoRodape: "Division automatica. Revisa antes de pagar.",
+    resultadoPronto: "Tu division esta lista",
+    criarDivisao: "Divide tu cuenta gratis",
   },
 };
 
@@ -231,7 +243,36 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
     { nome: t.pessoaNome(1), consumoExtraInput: "" },
     { nome: t.pessoaNome(2), consumoExtraInput: "" },
   ]);
-  const [whatsAppOpen, setWhatsAppOpen] = useState(false);
+
+  // Restaura um resultado recebido sem persistir dados no servidor. A própria
+  // ação de compartilhar é o consentimento para incluir os nomes na URL.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const total = Number(params.get("total"));
+    const taxa = Number(params.get("taxa"));
+    const igual = params.get("igual");
+    const participantes = params.getAll("p").slice(0, 30);
+    if (!Number.isFinite(total) || total <= 0 || participantes.length === 0) return;
+
+    setValorTotalInput(formatMoneyInput(String(Math.round(total)), locale));
+    if (Number.isFinite(taxa) && taxa >= 0 && taxa <= 100) setTaxaServico(taxa);
+    setDividirIgualmente(igual !== "0");
+    setPessoas(
+      participantes.map((value, idx) => {
+        const separator = value.lastIndexOf(":");
+        const nome = separator > 0 ? value.slice(0, separator) : t.pessoaNome(idx + 1);
+        const consumo = separator > 0 ? Number(value.slice(separator + 1)) : 0;
+        return {
+          nome: nome.slice(0, 60) || t.pessoaNome(idx + 1),
+          consumoExtraInput:
+            Number.isFinite(consumo) && consumo > 0
+              ? formatMoneyInput(String(Math.round(consumo)), locale)
+              : "",
+        };
+      }),
+    );
+    trackEvent("shared_result_opened", { tool_id: "divisor_conta" });
+  }, [locale, t]);
 
   const valorTotal = parseCurrency(valorTotalInput);
 
@@ -287,9 +328,29 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
       linhas,
       "",
       t.resumoRodape,
+      "",
+      `${t.criarDivisao}:`,
+      buildShareUrl(),
     ].join("\n");
     if (locale !== "pt-BR") return summary;
     return summary + viralToolShareFooter("/divisor-de-conta", "divisor_conta_whatsapp");
+  }
+
+  function buildShareUrl() {
+    const params = new URLSearchParams({
+      total: String(Math.round(valorTotal * 100)),
+      taxa: String(taxaServico),
+      igual: dividirIgualmente ? "1" : "0",
+      utm_source: "share",
+      utm_medium: "divisor_resultado",
+      utm_campaign: "divisao_grupo",
+    });
+    pessoas.forEach((p) => {
+      const nome = (p.nome || t.semNome).trim().slice(0, 60);
+      const consumo = Math.round(parseCurrency(p.consumoExtraInput) * 100);
+      params.append("p", `${nome}:${consumo}`);
+    });
+    return `${getViralBaseUrl()}/divisor-de-conta?${params.toString()}`;
   }
 
   function handleCopy() {
@@ -301,16 +362,6 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
     });
     toast(t.toastCopiado);
   }
-
-  function handleWhatsApp() {
-    trackEvent("share_result", {
-      method: "whatsapp",
-      tool_path: locale === "pt-BR" ? "/divisor-de-conta" : `/${locale}/tools/bill-splitter`,
-      campaign: "divisor_conta_whatsapp",
-    });
-    setWhatsAppOpen(true);
-  }
-
   return (
     <AuthGate
       title={t.authTitle}
@@ -486,15 +537,36 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
                   >
                     {t.copiarDivisao}
                   </Button>
-                  <Button
-                    variant="success"
-                    size="sm"
-                    className="flex-1 sm:flex-none"
-                    onClick={handleWhatsApp}
-                    icon={MessageCircle}
-                  >
-                    {t.enviarWhatsApp}
-                  </Button>
+                </div>
+
+                <ShareResult
+                  tool="divisor_conta"
+                  title={t.resultadoPronto}
+                  subtitle={`${formatCurrency(resultado.totalComTaxa)} · ${resultado.porPessoa.length} participantes`}
+                  lines={[
+                    { label: t.totalComTaxaLabel, value: formatCurrency(resultado.totalComTaxa), emphasis: true },
+                    ...resultado.porPessoa.map((p) => ({ label: p.nome, value: formatCurrency(p.total) })),
+                  ]}
+                  whatsappText={resumoTexto()}
+                />
+
+                <div className="rounded-xl border border-sky-100 bg-sky-50 p-3">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wide text-sky-800">
+                    {t.resultadoPronto} · {t.compartilharImagem}
+                  </p>
+                  <ResultShareCard
+                    eyebrow={t.heroTitle}
+                    title={t.resultadoPronto}
+                    highlightLabel={t.totalComTaxaLabel}
+                    highlightValue={formatCurrency(resultado.totalComTaxa)}
+                    lines={resultado.porPessoa.slice(0, 5).map((p) => ({
+                      label: p.nome,
+                      value: formatCurrency(p.total),
+                    }))}
+                    toolPath="/divisor-de-conta"
+                    utmCampaign="divisor_conta_stories"
+                    fileNameHint="divisao-da-conta"
+                  />
                 </div>
 
                 {locale === "pt-BR" ? (
@@ -517,12 +589,6 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
           </div>
         </div>
       </div>
-      <WhatsAppSendModal
-        open={whatsAppOpen}
-        onClose={() => setWhatsAppOpen(false)}
-        message={resumoTexto()}
-        destinationHint={t.destinationHint}
-      />
     </AuthGate>
   );
 }
