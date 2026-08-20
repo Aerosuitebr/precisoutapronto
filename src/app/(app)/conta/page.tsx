@@ -81,6 +81,7 @@ function ContaContent() {
       description="Entre para acompanhar seu plano e o upgrade Premium."
       enforceUsageLimit={false}
       requireEmailVerified={false}
+      publicAccess={false}
     >
       <div className="space-y-5">
         <PageHero
