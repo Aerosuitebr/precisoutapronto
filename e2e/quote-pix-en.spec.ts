@@ -4,6 +4,7 @@ test.describe('EN quote + Pix gate', () => {
   test('unit price 1000 updates total and Generate is never silent', async ({ page }) => {
     await page.goto('/en/tools/quote-pix', { waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('heading', { name: /Quote \+ client approval \+ Pix/i })).toBeVisible();
+    await page.waitForLoadState('networkidle');
 
     await page.getByPlaceholder('Service or product 1').fill('Website design');
     await page.getByLabel('Qty.').fill('1');

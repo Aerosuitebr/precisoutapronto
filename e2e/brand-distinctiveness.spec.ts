@@ -11,10 +11,11 @@ test.describe('brand distinctiveness', () => {
     await expect(page.getByRole('tab', { name: 'Todas as áreas' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Comece pelo contexto do problema.' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Ferramentas que entregam um resultado, não mais uma tarefa.' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Criar orçamento grátis' })).toHaveAttribute(
+    await expect(page.getByRole('link', { name: 'Abrir uma demonstração completa' })).toHaveAttribute(
       'href',
-      '/orcamento-com-pix'
+      '/orcamento-para/eletricista'
     );
+    await expect(page.getByLabel('Exemplo do orçamento recebido pelo cliente')).toContainText('R$ 490');
     await expect(page.getByRole('link', { name: 'Criar orçamento', exact: true })).toHaveAttribute(
       'href',
       '/ferramentas/orcamentos'
