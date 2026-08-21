@@ -53,36 +53,31 @@ export function LandingPage() {
         <LiveStatsBar className="mx-auto max-w-4xl" />
       </section>
 
-      <section className="border-b border-[#0b5cff]/10 bg-white py-12 sm:py-16">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+      <section className="border-b border-[#0b5cff]/10 bg-white py-12 sm:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Em 60 segundos, no celular</p>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Veja o que o cliente recebe</p>
             <h2 className="rj-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">
-              Orçamento no WhatsApp. Cliente aprova e paga no Pix.
+              Um link claro para decidir sem trocar dez mensagens.
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
-              Preencha os itens, gere o link e envie no zap. Sem cadastro nas duas primeiras vezes.
+              O cliente confere itens e valor, aprova ou pede um ajuste e avisa você pelo próprio WhatsApp. Sem baixar aplicativo.
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/orcamento-com-pix"
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] transition hover:bg-[#a9ed42]"
-              >
-                Criar orçamento grátis <ArrowRight className="h-5 w-5" aria-hidden />
-              </Link>
-              <Link
-                href="/gerador-de-recibo"
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl border border-[#0b5cff]/20 bg-white px-7 font-black text-[#031f4b] transition hover:border-[#0b5cff]/40"
-              >
-                Baixar recibo em PDF
-              </Link>
+            <Link href="/orcamento-para/eletricista" className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#0b5cff]/20 bg-[#eef5ff] px-5 font-black text-[#0b5cff] transition hover:border-[#0b5cff]/40 hover:bg-white">
+              Abrir uma demonstração completa <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+          </div>
+          <div className="rounded-[2rem] bg-[#031f4b] p-3 shadow-2xl shadow-blue-950/20 sm:p-5" aria-label="Exemplo do orçamento recebido pelo cliente">
+            <div className="rounded-[1.45rem] bg-white p-5 sm:p-7">
+              <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-5">
+                <div><p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Orçamento digital</p><p className="mt-2 text-xl font-black text-[#031f4b]">Elétrica Silva</p><p className="mt-1 text-xs text-slate-500">Preparado para seu cliente</p></div>
+                <span className="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-black uppercase text-amber-900">Aguardando</span>
+              </div>
+              <div className="space-y-3 py-5 text-sm"><div className="flex justify-between gap-4"><span className="font-semibold text-slate-700">Instalação de tomadas</span><strong>R$ 350</strong></div><div className="flex justify-between gap-4"><span className="font-semibold text-slate-700">Material elétrico</span><strong>R$ 140</strong></div></div>
+              <div className="flex items-end justify-between gap-4 border-t border-slate-100 pt-4"><div><p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Total</p><p className="text-3xl font-black text-emerald-700">R$ 490</p></div><p className="text-right text-xs font-semibold text-slate-500">Confere no celular<br />e responde no link</p></div>
+              <div className="mt-5 grid grid-cols-2 gap-2"><span className="rounded-xl bg-emerald-600 px-3 py-3 text-center text-sm font-black text-white">Aprovar</span><span className="rounded-xl border border-slate-200 px-3 py-3 text-center text-sm font-black text-slate-700">Pedir ajuste</span></div>
             </div>
           </div>
-          <ul className="space-y-3 text-sm font-semibold text-slate-700">
-            <li className="rounded-2xl border border-[#0b5cff]/15 bg-[#f8faf7] px-4 py-3">1. Monte itens e valor</li>
-            <li className="rounded-2xl border border-[#0b5cff]/15 bg-[#f8faf7] px-4 py-3">2. Envie o link no WhatsApp</li>
-            <li className="rounded-2xl border border-[#0b5cff]/15 bg-[#f8faf7] px-4 py-3">3. Cliente aprova e copia o Pix</li>
-          </ul>
         </div>
       </section>
 

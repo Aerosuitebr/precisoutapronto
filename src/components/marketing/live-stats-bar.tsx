@@ -8,6 +8,25 @@ function formatCount(n: number) {
   return `${n.toLocaleString('pt-BR')}+`;
 }
 
+const verifiedProductIndicators = [
+  { value: '2', label: 'usos grátis sem cadastro' },
+  { value: '0', label: 'apps para o cliente instalar' },
+  { value: '1', label: 'link para conferir e responder' }
+] as const;
+
+function StatsList({ items, className }: { items: ReadonlyArray<{ value: string; label: string }>; className?: string }) {
+  return (
+    <ul className={cn('grid gap-3 sm:grid-cols-3', className)} aria-label="Indicadores do produto">
+      {items.slice(0, 3).map((stat) => (
+        <li key={stat.label} className="rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-4 text-center">
+          <p className="text-2xl font-black tabular-nums tracking-tight text-emerald-950">{stat.value}</p>
+          <p className="mt-1 text-xs font-semibold leading-5 text-emerald-900/75">{stat.label}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function LiveStatsBar({
   initial,
   className
@@ -31,20 +50,7 @@ export function LiveStatsBar({
   }, []);
 
   if (!stats) {
-    return (
-      <ul className={cn('grid gap-3 sm:grid-cols-3', className)} aria-label="Como funciona">
-        {[
-          { value: 'Orçamento + Pix', label: 'Fecha no WhatsApp' },
-          { value: 'Sem app', label: 'Cliente aprova no celular' },
-          { value: 'PDF pronto', label: 'Em minutos' }
-        ].map((stat) => (
-          <li key={stat.label} className="rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-4 text-center">
-            <p className="text-sm font-extrabold tracking-tight text-emerald-950 sm:text-base">{stat.value}</p>
-            <p className="mt-1 text-xs leading-5 text-emerald-900/75">{stat.label}</p>
-          </li>
-        ))}
-      </ul>
-    );
+    return <StatsList items={verifiedProductIndicators} className={className} />;
   }
 
   const items = [
@@ -70,41 +76,6 @@ export function LiveStatsBar({
     }
   ].filter((item) => item.show);
 
-  if (items.length === 0) {
-    return (
-      <ul className={cn('grid gap-3 sm:grid-cols-3', className)}>
-        {[
-          { value: 'Orçamento + Pix', label: 'Fecha no WhatsApp' },
-          { value: 'Sem app', label: 'Cliente aprova no celular' },
-          { value: 'PDF pronto', label: 'Em minutos' }
-        ].map((stat) => (
-          <li
-            key={stat.label}
-            className="rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-4 text-center"
-          >
-            <p className="text-sm font-extrabold tracking-tight text-emerald-950 sm:text-base">
-              {stat.value}
-            </p>
-            <p className="mt-1 text-xs leading-5 text-emerald-900/75">{stat.label}</p>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  return (
-    <ul className={cn('grid gap-3 sm:grid-cols-3', className)}>
-      {items.slice(0, 3).map((stat) => (
-        <li
-          key={stat.label}
-          className="rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-4 text-center"
-        >
-          <p className="text-2xl font-black tabular-nums tracking-tight text-emerald-950">
-            {stat.value}
-          </p>
-          <p className="mt-1 text-xs font-semibold leading-5 text-emerald-900/75">{stat.label}</p>
-        </li>
-      ))}
-    </ul>
-  );
+  const visibleItems = [...items, ...verifiedProductIndicators].slice(0, 3);
+  return <StatsList items={visibleItems} className={className} />;
 }

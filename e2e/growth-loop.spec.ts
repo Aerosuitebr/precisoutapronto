@@ -120,8 +120,10 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   await expect(page.getByRole('link', { name: 'Criar meu orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
   await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Orçamento no WhatsApp. Cliente aprova e paga no Pix.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Criar orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix');
+  await expect(page.getByRole('heading', { name: 'Um link claro para decidir sem trocar dez mensagens.' })).toBeVisible();
+  await expect(page.getByLabel('Exemplo do orçamento recebido pelo cliente')).toContainText('R$ 490');
+  await expect(page.getByRole('link', { name: 'Abrir uma demonstração completa' })).toHaveAttribute('href', '/orcamento-para/eletricista');
+  await expect(page.getByLabel('Indicadores do produto')).toContainText(/usos grátis sem cadastro|Orçamentos hoje|Docs gerados/);
   await expect(page.getByText('Descubra e resolva')).toBeVisible();
   const main = page.locator('main');
   for (const label of ['Orçamentos', 'Recibos', 'Contratos', 'Currículos']) {
