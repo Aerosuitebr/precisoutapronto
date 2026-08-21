@@ -127,3 +127,9 @@ O contrato `experiment.exposed` e a função `recordPresentedExperimentExposure`
 `resolveGatedExperiment` adiciona o gate obrigatório antes do assignment. Com a flag desligada, ausente, indisponível ou em kill switch, retorna a variante de controle e não grava assignment. Apenas subjects aprovados pelo evaluator da flag chegam à atribuição persistente. Assim, criar a definição de um experimento não inicia rollout implicitamente.
 
 `GET /api/analytics/experiments?days=1|7|30` fornece observabilidade interna agregada: total de assignments, total de exposições, contagens por experimento/variante e estado das flags. A resposta não inclui `subjectKey`, IDs de usuário, device, sessão ou propriedades de eventos, e usa a mesma allowlist administrativa dos demais endpoints internos.
+
+## Política de retenção preparada
+
+`PRODUCT_EVENT_RETENTION_DAYS` define a janela pretendida de retenção, com padrão de 90 dias e limites aceitos de 30 a 730 dias. Valores ausentes ou inválidos voltam ao padrão seguro. A consulta interna de eventos informa o cutoff e quantos registros seriam elegíveis para uma limpeza futura.
+
+Nesta etapa `enforcement` permanece `disabled`: nenhuma linha é apagada, nenhum job destrutivo é criado e nenhum dado preexistente é alterado. A execução da retenção exigirá slice próprio, aprovação operacional, batch limitado, audit log e rollback por kill switch.

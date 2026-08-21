@@ -15,6 +15,18 @@ import {
   experimentAssignmentAggregates,
   experimentObservabilityDays
 } from '../src/lib/experimentation/observability';
+import {
+  productEventRetentionCutoff,
+  productEventRetentionDays
+} from '../src/lib/events/retention';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import {
+  isSafeIntentKey,
+  parseIntentEdgeRule,
+  parseIntentTransferSchema
+} from '../src/lib/intent-graph/contracts';
+import { parseIntentEdgeAdminPatch } from '../src/lib/intent-graph/admin';
 
 const event = {
   eventId: '018f47a6-9d62-7c1d-8b31-1d8e0f962e37',
@@ -227,4 +239,50 @@ test('experiment observability exposes aggregates without subject identifiers', 
     experimentKey: 'quote_next_action_v1', variant: 'control', count: 12
   }]);
   expect(JSON.stringify(aggregates)).not.toContain('subject');
+});
+
+test('product event retention policy is bounded and read-only by default', () => {
+  expect(productEventRetentionDays('120')).toBe(120);
+  expect(productEventRetentionDays('29')).toBe(90);
+  expect(productEventRetentionDays('731')).toBe(90);
+  expect(productEventRetentionDays('invalid')).toBe(90);
+  expect(productEventRetentionCutoff(new Date('2026-08-21T00:00:00.000Z'), '30').toISOString())
+    .toBe('2026-07-22T00:00:00.000Z');
+});
+
+test('V003 intent graph migration is additive, idempotent and covers P0 tools', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821140000_add_intent_graph', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain('CREATE TABLE "intent_nodes"');
+  expect(migration).toContain('CREATE TABLE "intent_edges"');
+  expect(migration).toContain('ON CONFLICT ("key") DO NOTHING');
+  expect(migration).toContain('ON CONFLICT ("fromNodeId", "toNodeId", "relationType") DO NOTHING');
+  for (const tool of ['orcamentos', 'recibos', 'pix', 'contratos', 'propostas', 'precificacao', 'agenda']) {
+    expect(migration).toContain(`'${tool}', 'tool'`);
+  }
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|RENAME)\b/i);
+});
+
+test('intent graph contracts reject unknown rules and unsafe transfer fields', () => {
+  expect(isSafeIntentKey('orcamentos')).toBe(true);
+  expect(isSafeIntentKey('../orcamentos')).toBe(false);
+  expect(parseIntentTransferSchema({ version: 1, fields: ['amount', 'description', 'amount'] }))
+    .toEqual({ version: 1, fields: ['amount', 'description'] });
+  expect(parseIntentTransferSchema({ version: 1, fields: ['customer.email'] })).toBeNull();
+  expect(parseIntentTransferSchema({ version: 1, fields: [], copyAll: true })).toBeNull();
+  expect(parseIntentEdgeRule({ requiresOutcome: 'completed' })).toEqual({ requiresOutcome: 'completed' });
+  expect(parseIntentEdgeRule({ requiresOutcome: 'started' })).toBeNull();
+  expect(parseIntentEdgeRule({ allowPrivateData: true })).toBeNull();
+});
+
+test('intent edge administration accepts bounded patches only', () => {
+  expect(parseIntentEdgeAdminPatch({ active: false, weight: 0.725 })).toEqual({
+    ok: true, patch: { active: false, weight: 0.725 }
+  });
+  expect(parseIntentEdgeAdminPatch({ weight: 1.001 }).ok).toBe(false);
+  expect(parseIntentEdgeAdminPatch({ weight: 0.1234 }).ok).toBe(false);
+  expect(parseIntentEdgeAdminPatch({ delete: true }).ok).toBe(false);
+  expect(parseIntentEdgeAdminPatch({ transferSchema: { version: 1, fields: ['customer.email'] } }).ok)
+    .toBe(false);
 });

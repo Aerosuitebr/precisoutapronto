@@ -426,3 +426,44 @@ model ExperimentAssignment {
   @@index([experimentKey, assignedAt])
   @@map("experiment_assignments")
 }
+
+model IntentNode {
+  id             String   @id @default(uuid()) @db.Uuid
+  key            String   @unique @db.VarChar(80)
+  type           String   @db.VarChar(32)
+  label          String   @db.VarChar(120)
+  description    String
+  frequencyClass String   @db.VarChar(24)
+  riskLevel      String   @db.VarChar(24)
+  active         Boolean  @default(true)
+  metadata       Json     @default("{}")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  outgoingEdges IntentEdge[] @relation("IntentEdgeFrom")
+  incomingEdges IntentEdge[] @relation("IntentEdgeTo")
+
+  @@index([type, active])
+  @@map("intent_nodes")
+}
+
+model IntentEdge {
+  id             String   @id @default(uuid()) @db.Uuid
+  fromNodeId     String   @db.Uuid
+  toNodeId       String   @db.Uuid
+  relationType   String   @db.VarChar(32)
+  weight         Decimal  @db.Decimal(6, 3)
+  transferSchema Json     @default("{}")
+  ruleJson       Json     @default("{}")
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  fromNode IntentNode @relation("IntentEdgeFrom", fields: [fromNodeId], references: [id], onDelete: Restrict)
+  toNode   IntentNode @relation("IntentEdgeTo", fields: [toNodeId], references: [id], onDelete: Restrict)
+
+  @@unique([fromNodeId, toNodeId, relationType])
+  @@index([fromNodeId, active])
+  @@index([toNodeId, active])
+  @@map("intent_edges")
+}
