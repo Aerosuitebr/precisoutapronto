@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import { ArrowRight, BookOpen, CheckCircle2, Search, SlidersHorizontal, Sparkles, WandSparkles } from 'lucide-react';
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
@@ -16,6 +17,32 @@ const guides = [
   { href: '/guias/como-calcular-rescisao', eyebrow: 'Trabalho', title: 'Como conferir seu cálculo de rescisão passo a passo', time: 'Leitura rápida' }
 ] as const;
 
+function AnimatedHeroLine({ text, start = 0, accent = false }: { text: string; start?: number; accent?: boolean }) {
+  let characterIndex = start;
+
+  return (
+    <span className={accent ? 'hero-title-line block text-[#a9ed42]' : 'hero-title-line block'} aria-hidden="true">
+      {text.split(' ').map((word, wordIndex) => (
+        <span key={`${word}-${wordIndex}`} className="inline-block whitespace-nowrap">
+          {Array.from(word).map((character) => {
+            const index = characterIndex++;
+            return (
+              <span
+                key={`${character}-${index}`}
+                className="hero-title-character inline-block"
+                style={{ '--hero-character-index': index } as CSSProperties}
+              >
+                {character}
+              </span>
+            );
+          })}
+          {wordIndex < text.split(' ').length - 1 && <span className="inline-block w-[0.22em]" aria-hidden="true" />}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export function LandingPage() {
   return (
     <div className="bg-[#f8faf7] text-[#031f4b]">
@@ -25,7 +52,10 @@ export function LandingPage() {
         <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-24 lg:px-10 lg:py-28 2xl:px-12">
           <div className="mx-auto max-w-4xl text-center">
             <p className="inline-flex items-center gap-2 rounded-full border border-[#83d600]/40 bg-[#83d600]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[#c8ff73]"><Sparkles className="h-4 w-4" />Sua necessidade. Nossa solução.</p>
-            <h1 className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">Orçamento no WhatsApp.<br /><span className="text-[#a9ed42]">Aprovado. Pix recebido.</span></h1>
+            <h1 className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]" aria-label="Orçamento no WhatsApp. Aprovado. Pix recebido.">
+              <AnimatedHeroLine text="Orçamento no WhatsApp." />
+              <AnimatedHeroLine text="Aprovado. Pix recebido." start={20} accent />
+            </h1>
             <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-blue-100 sm:text-xl">Monte em poucos passos, envie o link e deixe o cliente aprovar no celular. Sem instalar aplicativo e sem cadastro para começar.</p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link href="/orcamento-com-pix#montar" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:bg-[#a9ed42]">
