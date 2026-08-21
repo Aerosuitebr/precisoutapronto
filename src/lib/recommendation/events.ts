@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { emitServerProductEvent } from '@/lib/events/server-emitter';
 import { readNextActionTrackingToken } from '@/lib/recommendation/tracking-token';
 
-export type RecommendationInteraction = 'shown' | 'clicked';
+export type RecommendationInteraction = 'shown' | 'clicked' | 'completed';
 
 export function recommendationEventId(trackingToken: string, interaction: RecommendationInteraction) {
   const hex = createHash('sha256').update(`recommendation:v1:${interaction}:${trackingToken}`).digest('hex');
@@ -29,10 +29,12 @@ export async function recordRecommendationInteraction(input: {
   deviceId: string;
   authenticatedSessionId?: string;
   userId?: string;
+  currentToolKey?: string;
 }, dependencies: RecommendationEventDependencies = defaultDependencies) {
-  if (!input.deviceId || !['shown', 'clicked'].includes(input.interaction)) return false;
+  if (!input.deviceId || !['shown', 'clicked', 'completed'].includes(input.interaction)) return false;
   const tracking = dependencies.readToken(input.trackingToken);
   if (!tracking) return false;
+  if (input.interaction === 'completed' && tracking.targetToolKey !== input.currentToolKey) return false;
   return dependencies.emit({
     eventId: recommendationEventId(input.trackingToken, input.interaction),
     eventName: `recommendation.${input.interaction}`,

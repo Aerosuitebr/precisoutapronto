@@ -10,6 +10,11 @@ interface NextActionDTO {
   trackingToken: string;
 }
 
+function attributedUrl(action: NextActionDTO) {
+  const separator = action.targetUrl.includes('?') ? '&' : '?';
+  return `${action.targetUrl}${separator}rj_rec=${encodeURIComponent(action.trackingToken)}`;
+}
+
 function recordInteraction(trackingToken: string, interaction: 'shown' | 'clicked') {
   return fetch('/api/v1/recommendations/events', {
     method: 'POST',
@@ -59,7 +64,7 @@ export function NextActionsPanel({ sourceToolKey, active }: { sourceToolKey: str
         {actions.map((action) => (
           <li key={action.key}>
             <a
-              href={action.targetUrl}
+              href={attributedUrl(action)}
               onClick={() => { void recordInteraction(action.trackingToken, 'clicked'); }}
               className="flex items-center justify-between gap-3 rounded-xl border border-sky-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-900 transition hover:border-sky-400 hover:bg-sky-50"
             >

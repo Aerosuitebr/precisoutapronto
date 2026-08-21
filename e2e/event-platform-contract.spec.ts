@@ -33,6 +33,11 @@ import {
   readNextActionTrackingToken
 } from '../src/lib/recommendation/tracking-token';
 import { recommendationEventId, recordRecommendationInteraction } from '../src/lib/recommendation/events';
+import {
+  recommendationMetrics,
+  recommendationObservabilityDays,
+  recommendationRolloutReadiness
+} from '../src/lib/recommendation/observability';
 
 const event = {
   eventId: '018f47a6-9d62-7c1d-8b31-1d8e0f962e37',
@@ -402,4 +407,95 @@ test('quote NBA panel is additive and records exposure only after actions exist'
   expect(panel).toContain("recordInteraction(action.trackingToken, 'clicked')");
   expect(panel).toContain('Seu orçamento continuará salvo.');
   expect(quote).toContain('<NextActionsPanel sourceToolKey="orcamentos" active={Boolean(generated)} />');
+});
+
+test('recommendation observability calculates aggregate rates without identifiers', () => {
+  expect(recommendationObservabilityDays('30')).toBe(30);
+  expect(recommendationObservabilityDays('90')).toBe(7);
+  const metrics = recommendationMetrics([
+    { eventName: 'recommendation.shown', _count: { _all: 100 } },
+    { eventName: 'recommendation.clicked', _count: { _all: 25 } },
+    { eventName: 'recommendation.completed', _count: { _all: 10 } }
+  ]);
+  expect(metrics).toEqual({
+    shown: 100,
+    clicked: 25,
+    completed: 10,
+    clickThroughRate: 25,
+    completionRate: 10,
+    clickToCompletionRate: 40
+  });
+  expect(recommendationMetrics([]).clickThroughRate).toBe(0);
+  expect(JSON.stringify(metrics)).not.toMatch(/subject|token|user/i);
+});
+
+test('recommendation completion is accepted only by the signed target tool', async () => {
+  let calls = 0;
+  const dependencies = {
+    readToken: () => ({
+      sourceToolKey: 'orcamentos', targetToolKey: 'recibos', variant: 'rules_v1', rank: 1, issuedAt: Date.now()
+    }),
+    emit: async () => { calls += 1; return true; }
+  };
+  expect(await recordRecommendationInteraction({
+    trackingToken: 'signed', interaction: 'completed', deviceId: 'device', currentToolKey: 'pix'
+  }, dependencies)).toBe(false);
+  expect(calls).toBe(0);
+  expect(await recordRecommendationInteraction({
+    trackingToken: 'signed', interaction: 'completed', deviceId: 'device', currentToolKey: 'recibos'
+  }, dependencies)).toBe(true);
+  expect(calls).toBe(1);
+
+  const receipt = readFileSync(path.join(
+    process.cwd(), 'src', 'components', 'recibos', 'recibos-app.tsx'
+  ), 'utf8');
+  expect(receipt).toContain("useRecommendationAttribution('recibos')");
+  expect(receipt).toContain("completeRecommendationAttribution('recibos')");
+});
+
+test('NBA rollout readiness fails closed with explicit blockers', () => {
+  expect(recommendationRolloutReadiness({
+    trackingSecretConfigured: false,
+    nbaFlagEnabled: false,
+    eventPlatformEnabled: false,
+    killSwitchActive: true,
+    activeEdges: 0
+  })).toEqual({
+    ready: false,
+    blockers: [
+      'tracking-secret-missing',
+      'nba-flag-disabled',
+      'event-platform-disabled',
+      'kill-switch-active',
+      'no-active-edges'
+    ]
+  });
+  expect(recommendationRolloutReadiness({
+    trackingSecretConfigured: true,
+    nbaFlagEnabled: true,
+    eventPlatformEnabled: true,
+    killSwitchActive: false,
+    activeEdges: 1
+  })).toEqual({ ready: true, blockers: [] });
+});
+
+test('V004 task and artifact migration is additive and preserves legacy storage', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821150000_add_task_artifact', 'migration.sql'
+  ), 'utf8');
+  const schema = readFileSync(path.join(process.cwd(), 'prisma', 'schema.prisma'), 'utf8');
+
+  expect(migration).toContain('CREATE TABLE "tasks"');
+  expect(migration).toContain('CREATE TABLE "artifacts"');
+  expect(migration).toContain('CREATE TABLE "artifact_relations"');
+  expect(migration).toContain('ON DELETE RESTRICT');
+  expect(migration).toContain('ON DELETE SET NULL');
+  expect(migration).toContain('CHECK ("visibility" IN (\'private\', \'unlisted\', \'public\'))');
+  expect(migration).toContain('CHECK ("version" >= 1)');
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|RENAME)\b/i);
+  expect(migration).not.toContain('ALTER TABLE "tool_documents"');
+  expect(schema).toContain('model ToolDocument {');
+  expect(schema).toContain('model Task {');
+  expect(schema).toContain('model Artifact {');
+  expect(schema).toContain('model ArtifactRelation {');
 });

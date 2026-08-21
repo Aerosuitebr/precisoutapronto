@@ -80,28 +80,28 @@ enum BlacklistType {
 }
 
 model Orcamento {
-  id                   String          @id @default(uuid()) @db.Uuid
-  profissionalNome     String
-  profissionalWhatsapp String
-  clienteNome          String
-  clienteContato       String          @default("")
-  clienteEmail         String          @default("")
-  itens                Json
-  total                Float
-  validade             String          @default("")
-  observacoes          String          @default("")
-  pixKey               String          @default("")
-  pixKeyType           String          @default("")
-  pixMerchantName      String          @default("")
-  pixMerchantCity      String          @default("")
-  status               OrcamentoStatus @default(pending)
-  feedbackCliente      String?
-  ownerEmail           String?
+  id                      String          @id @default(uuid()) @db.Uuid
+  profissionalNome        String
+  profissionalWhatsapp    String
+  clienteNome             String
+  clienteContato          String          @default("")
+  clienteEmail            String          @default("")
+  itens                   Json
+  total                   Float
+  validade                String          @default("")
+  observacoes             String          @default("")
+  pixKey                  String          @default("")
+  pixKeyType              String          @default("")
+  pixMerchantName         String          @default("")
+  pixMerchantCity         String          @default("")
+  status                  OrcamentoStatus @default(pending)
+  feedbackCliente         String?
+  ownerEmail              String?
   profissionalLogoDataUrl String?
-  sourceOccupation     String?
-  recruitedFromDocument String?
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  sourceOccupation        String?
+  recruitedFromDocument   String?
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
 
   @@index([ownerEmail])
   @@index([status])
@@ -382,18 +382,18 @@ model RateLimitBucket {
 }
 
 model ProductEvent {
-  id          String   @id @default(uuid()) @db.Uuid
-  eventName   String
-  occurredAt  DateTime
-  userId      String?
-  anonymousId String
-  sessionId   String
-  toolKey     String?
-  taskId      String?  @db.Uuid
-  artifactId  String?  @db.Uuid
-  properties  Json     @default("{}")
-  schemaVersion Int    @default(1)
-  receivedAt  DateTime @default(now())
+  id            String   @id @default(uuid()) @db.Uuid
+  eventName     String
+  occurredAt    DateTime
+  userId        String?
+  anonymousId   String
+  sessionId     String
+  toolKey       String?
+  taskId        String?  @db.Uuid
+  artifactId    String?  @db.Uuid
+  properties    Json     @default("{}")
+  schemaVersion Int      @default(1)
+  receivedAt    DateTime @default(now())
 
   @@index([occurredAt])
   @@index([eventName, occurredAt])
@@ -466,4 +466,81 @@ model IntentEdge {
   @@index([fromNodeId, active])
   @@index([toNodeId, active])
   @@map("intent_edges")
+}
+
+model Task {
+  id                 String    @id @default(uuid()) @db.Uuid
+  userId             String?
+  anonymousSessionId String?
+  toolKey            String    @db.VarChar(80)
+  intentKey          String?   @db.VarChar(80)
+  status             String    @default("started") @db.VarChar(32)
+  startedAt          DateTime  @default(now())
+  completedAt        DateTime?
+  sourceChannel      String?   @db.VarChar(48)
+  sourceUrl          String?
+  parentTaskId       String?   @db.Uuid
+  contextSnapshot    Json      @default("{}")
+  experimentSnapshot Json      @default("{}")
+
+  parentTask Task?      @relation("TaskHierarchy", fields: [parentTaskId], references: [id], onDelete: SetNull)
+  childTasks Task[]     @relation("TaskHierarchy")
+  artifacts  Artifact[]
+
+  @@index([userId, startedAt])
+  @@index([anonymousSessionId, startedAt])
+  @@index([toolKey, startedAt])
+  @@index([status, startedAt])
+  @@index([parentTaskId])
+  @@map("tasks")
+}
+
+model Artifact {
+  id               String    @id @default(uuid()) @db.Uuid
+  taskId           String    @db.Uuid
+  userId           String?
+  artifactType     String    @db.VarChar(48)
+  toolKey          String    @db.VarChar(80)
+  publicId         String?   @unique @db.VarChar(120)
+  visibility       String    @default("private") @db.VarChar(16)
+  title            String?
+  payloadJson      Json      @default("{}")
+  summaryJson      Json      @default("{}")
+  status           String    @default("draft") @db.VarChar(32)
+  version          Int       @default(1)
+  duplicatedFromId String?   @db.Uuid
+  templateId       String?   @db.Uuid
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  expiresAt        DateTime?
+
+  task              Task               @relation(fields: [taskId], references: [id], onDelete: Restrict)
+  duplicatedFrom    Artifact?          @relation("ArtifactDuplication", fields: [duplicatedFromId], references: [id], onDelete: SetNull)
+  duplicates        Artifact[]         @relation("ArtifactDuplication")
+  outgoingRelations ArtifactRelation[] @relation("ArtifactRelationSource")
+  incomingRelations ArtifactRelation[] @relation("ArtifactRelationTarget")
+
+  @@index([taskId, updatedAt])
+  @@index([userId, updatedAt])
+  @@index([toolKey, updatedAt])
+  @@index([visibility, updatedAt])
+  @@index([duplicatedFromId])
+  @@index([templateId])
+  @@map("artifacts")
+}
+
+model ArtifactRelation {
+  id                String   @id @default(uuid()) @db.Uuid
+  sourceArtifactId  String   @db.Uuid
+  targetArtifactId  String   @db.Uuid
+  relationType      String   @db.VarChar(48)
+  transferredFields Json     @default("{}")
+  createdAt         DateTime @default(now())
+
+  sourceArtifact Artifact @relation("ArtifactRelationSource", fields: [sourceArtifactId], references: [id], onDelete: Restrict)
+  targetArtifact Artifact @relation("ArtifactRelationTarget", fields: [targetArtifactId], references: [id], onDelete: Restrict)
+
+  @@unique([sourceArtifactId, targetArtifactId, relationType])
+  @@index([targetArtifactId, createdAt])
+  @@map("artifact_relations")
 }

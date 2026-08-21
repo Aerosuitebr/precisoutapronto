@@ -17,7 +17,8 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
   if (
     !body || typeof body.trackingToken !== 'string' || body.trackingToken.length > 2048 ||
-    !['shown', 'clicked'].includes(String(body.interaction))
+    !['shown', 'clicked', 'completed'].includes(String(body.interaction)) ||
+    (body.interaction === 'completed' && typeof body.currentToolKey !== 'string')
   ) return NextResponse.json({ error: 'Payload inválido.' }, { status: 400 });
 
   const rate = await consumeRateLimit({
@@ -38,7 +39,8 @@ export async function POST(request: Request) {
     interaction: body.interaction as RecommendationInteraction,
     deviceId,
     authenticatedSessionId: session?.sid,
-    userId: session?.sub
+    userId: session?.sub,
+    currentToolKey: typeof body.currentToolKey === 'string' ? body.currentToolKey : undefined
   });
   return NextResponse.json({ accepted });
 }

@@ -44,6 +44,10 @@ O piloto visual `NextActionsPanel` foi adicionado depois do card de sucesso do o
 
 Rollout permanece bloqueado até `NBA_TRACKING_SECRET` (mínimo 32 caracteres) estar configurado em staging/produção e `nba_v1` incluir apenas subjects internos. A ordem recomendada continua internal → 5% → 25% → 50% → 100%, observando task completion e p95.
 
+`GET /api/analytics/recommendations?days=1|7|30` fornece shown, clicked, completed, CTR, completion rate, click-to-completion, edges ativos e estado de rollout. A resposta é restrita à equipe interna e não retorna tokens, propriedades, subjects, sessões ou usuários. Divisões sem denominador retornam zero, sem produzir `NaN`/`Infinity`.
+
+O link NBA inclui `rj_rec`, que contém somente o token assinado e é removido da URL após ser guardado em `sessionStorage` pela ferramenta de destino. No piloto, a exportação bem-sucedida do PDF em Recibos envia `recommendation.completed`. O servidor confere se o target assinado é `recibos`; uma ferramenta diferente falha fechada sem emitir evento. Nenhum campo do orçamento é transferido.
+
 ## Rollback
 
 Não remover as tabelas no rollback operacional. Como não há reader ativo, basta manter `nba_v1=false`; os fluxos atuais continuam independentes do V003.

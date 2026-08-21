@@ -50,6 +50,10 @@ import { consumeAssistantBriefing, receiptFromBriefing } from '@/lib/assistant-b
 import { applyProfileToReceipt, type ProfileMemory } from '@/lib/profile-memory';
 import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 import { trackEvent } from '@/lib/analytics';
+import {
+  completeRecommendationAttribution,
+  useRecommendationAttribution
+} from '@/hooks/use-recommendation-attribution';
 
 type EditorTab = 'valores' | 'recebedor' | 'pagador';
 type TouchedKey =
@@ -88,6 +92,7 @@ const STEPS: { id: EditorTab; label: string }[] = [
 ];
 
 export function RecibosApp() {
+  useRecommendationAttribution('recibos');
   const previewRef = useRef<HTMLDivElement>(null);
   const profileMemoryRef = useRef<ProfileMemory | null>(null);
   const { refresh: refreshAuth, usage } = useAuth();
@@ -366,6 +371,7 @@ export function RecibosApp() {
       }
       refreshAuth();
       trackEvent('document_completed', { tool_name: 'recibos', output: 'pdf' });
+      void completeRecommendationAttribution('recibos');
       afterPdfExport('recibo');
     } catch {
       setError('Não foi possível gerar o PDF. Tente novamente.');
