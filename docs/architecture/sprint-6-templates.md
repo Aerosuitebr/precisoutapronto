@@ -36,3 +36,13 @@ tool, sanitiza novamente o payload e não oferece publicação community neste s
 `POST /api/v1/templates/{id}/instantiate` cria task e artifact draft privados a
 partir de um template ativo do próprio usuário. O novo artifact referencia
 `templateId`; o template e o artifact de origem não são alterados.
+
+`GET /api/v1/templates` lista somente metadados de templates privados ativos do
+usuário, com paginação por cursor. O payload sanitizado não sai nessa listagem.
+
+`DELETE /api/v1/templates/{id}` arquiva logicamente apenas template privado ativo
+do owner autenticado. A linha e todos os artifacts que referenciam o template
+permanecem preservados.
+
+`POST /api/v1/templates/{id}/restore` reativa somente template privado arquivado
+do owner autenticado, reutilizando a mesma linha e mantendo todas as referências.

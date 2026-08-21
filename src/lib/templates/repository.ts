@@ -132,3 +132,83 @@ export async function instantiatePersonalTemplate(
     return null;
   }
 }
+
+interface ArchiveTemplateDependencies {
+  databaseConfigured: () => boolean;
+  decide: typeof getFeatureFlagDecision;
+  archiveOwned: (ownerUserId: string, templateId: string, updatedAt: Date) => Promise<boolean>;
+  now: () => Date;
+}
+
+const defaultArchiveDependencies: ArchiveTemplateDependencies = {
+  databaseConfigured: isDatabaseConfigured,
+  decide: getFeatureFlagDecision,
+  archiveOwned: async (ownerUserId, templateId, updatedAt) => {
+    const result = await getPrisma().personalTemplate.updateMany({
+      where: { id: templateId, ownerUserId, visibility: 'private', status: 'active' },
+      data: { status: 'archived', updatedAt }
+    });
+    return result.count === 1;
+  },
+  now: () => new Date()
+};
+
+export async function archivePersonalTemplate(
+  ownerUserId: string,
+  templateId: string,
+  dependencies: ArchiveTemplateDependencies = defaultArchiveDependencies
+) {
+  try {
+    if (!ownerUserId || !templateId || !dependencies.databaseConfigured()) return null;
+    const decision = await dependencies.decide('personal_templates_v1', ownerUserId);
+    if (!decision.enabled) return { enabled: false as const };
+    const archivedAt = dependencies.now();
+    const archived = await dependencies.archiveOwned(ownerUserId, templateId, archivedAt);
+    return archived
+      ? { enabled: true as const, notFound: false as const, archivedAt: archivedAt.toISOString() }
+      : { enabled: true as const, notFound: true as const };
+  } catch (error) {
+    console.error('[personal-templates] archive failed', { templateId, error });
+    return null;
+  }
+}
+
+interface RestoreTemplateDependencies {
+  databaseConfigured: () => boolean;
+  decide: typeof getFeatureFlagDecision;
+  restoreOwned: (ownerUserId: string, templateId: string, updatedAt: Date) => Promise<boolean>;
+  now: () => Date;
+}
+
+const defaultRestoreDependencies: RestoreTemplateDependencies = {
+  databaseConfigured: isDatabaseConfigured,
+  decide: getFeatureFlagDecision,
+  restoreOwned: async (ownerUserId, templateId, updatedAt) => {
+    const result = await getPrisma().personalTemplate.updateMany({
+      where: { id: templateId, ownerUserId, visibility: 'private', status: 'archived' },
+      data: { status: 'active', updatedAt }
+    });
+    return result.count === 1;
+  },
+  now: () => new Date()
+};
+
+export async function restorePersonalTemplate(
+  ownerUserId: string,
+  templateId: string,
+  dependencies: RestoreTemplateDependencies = defaultRestoreDependencies
+) {
+  try {
+    if (!ownerUserId || !templateId || !dependencies.databaseConfigured()) return null;
+    const decision = await dependencies.decide('personal_templates_v1', ownerUserId);
+    if (!decision.enabled) return { enabled: false as const };
+    const restoredAt = dependencies.now();
+    const restored = await dependencies.restoreOwned(ownerUserId, templateId, restoredAt);
+    return restored
+      ? { enabled: true as const, notFound: false as const, restoredAt: restoredAt.toISOString() }
+      : { enabled: true as const, notFound: true as const };
+  } catch (error) {
+    console.error('[personal-templates] restore failed', { templateId, error });
+    return null;
+  }
+}

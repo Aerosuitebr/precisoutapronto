@@ -24,6 +24,10 @@ import type { OrcamentoPublic } from '@/lib/orcamentos/types';
 import { viralOrcamentoPublicPath } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
+import {
+  rememberQuoteWhatsAppOpened,
+  wasQuoteWhatsAppOpened
+} from '@/lib/orcamentos/recipient-session';
 
 interface OrcamentoPublicViewProps {
   initial: OrcamentoPublic;
@@ -55,6 +59,7 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
 
   const pending = orcamento.status === 'pending';
   const needsWhatsAppGate = !pending && !whatsappOpened;
+  const viralSourceOccupation = sourceOccupation || orcamento.sourceOccupation || undefined;
 
   useEffect(() => {
     trackEvent('quote_recipient_view', {
@@ -62,6 +67,10 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
       quote_status: orcamento.status
     });
   }, [orcamento.id, orcamento.status]);
+
+  useEffect(() => {
+    if (wasQuoteWhatsAppOpened(orcamento.id)) setWhatsappOpened(true);
+  }, [orcamento.id]);
 
   async function submitStatus(status: 'approved' | 'declined') {
     setError('');
@@ -100,8 +109,9 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
       const waUrl = notifications?.whatsappUrl;
       if (waUrl) {
         window.setTimeout(() => {
-          window.location.href = waUrl;
+          rememberQuoteWhatsAppOpened(orcamento.id);
           setWhatsappOpened(true);
+          window.location.href = waUrl;
         }, 400);
       }
     } catch (submitError) {
@@ -125,12 +135,13 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
         return `https://wa.me/${withCountry}?text=${text}`;
       })();
 
-    window.location.href = url;
+    rememberQuoteWhatsAppOpened(orcamento.id);
     setWhatsappOpened(true);
     trackEvent('quote_professional_whatsapp_opened', {
       source_document: orcamento.id,
       quote_status: orcamento.status
     });
+    window.location.href = url;
   }
 
   return (
@@ -293,7 +304,7 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
           <ViralRecruitCard
             className="mt-6"
             sourceDocumentId={orcamento.id}
-            sourceOccupation={sourceOccupation}
+            sourceOccupation={viralSourceOccupation}
           />
         ) : null}
 
@@ -352,7 +363,7 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
           </div>
         </div>
       ) : (
-        <ViralRecruitSticky sourceDocumentId={orcamento.id} sourceOccupation={sourceOccupation} />
+        <ViralRecruitSticky sourceDocumentId={orcamento.id} sourceOccupation={viralSourceOccupation} />
       )}
     </div>
   );

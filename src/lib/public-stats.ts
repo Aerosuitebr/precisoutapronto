@@ -9,6 +9,23 @@ export interface PublicStats {
   updatedAt: string;
 }
 
+function publicBucket(value: number, minimum: number, step: number) {
+  if (!Number.isFinite(value) || value < minimum) return 0;
+  return Math.floor(value / step) * step;
+}
+
+/** Evita publicar contagens pequenas ou precisão que permita inferir atividade individual. */
+export function sanitizePublicStats(stats: PublicStats): PublicStats {
+  return {
+    ...stats,
+    orcamentosToday: publicBucket(stats.orcamentosToday, 10, 5),
+    orcamentosWeek: publicBucket(stats.orcamentosWeek, 20, 10),
+    orcamentosApprovedWeek: publicBucket(stats.orcamentosApprovedWeek, 10, 5),
+    usersTotal: publicBucket(stats.usersTotal, 50, 50),
+    docsGeneratedApprox: publicBucket(stats.docsGeneratedApprox, 100, 100)
+  };
+}
+
 function startOfUtcDay(d = new Date()) {
   return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
 }
@@ -47,14 +64,14 @@ export async function getPublicStats(): Promise<PublicStats> {
         prisma.toolUsage.aggregate({ _sum: { totalConsumed: true } })
       ]);
 
-    return {
+    return sanitizePublicStats({
       orcamentosToday,
       orcamentosWeek,
       orcamentosApprovedWeek,
       usersTotal,
       docsGeneratedApprox: usageAgg._sum.totalConsumed || 0,
       updatedAt: new Date().toISOString()
-    };
+    });
   } catch {
     return empty;
   }

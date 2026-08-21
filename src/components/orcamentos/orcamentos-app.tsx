@@ -14,14 +14,18 @@ import {
   Link2,
   Loader2,
   MessageCircle,
+  Mic,
+  MicOff,
   MoreHorizontal,
   Package,
   Pencil,
   Plus,
   Receipt,
   RefreshCw,
+  Share2,
   Timer,
   UserRound,
+  WandSparkles,
   XCircle
 } from 'lucide-react';
 import { AuthGate } from '@/components/auth/auth-gate';
@@ -49,8 +53,15 @@ import {
   loadOrcamentoPrefs,
   saveOrcamentoPrefs
 } from '@/lib/orcamentos/defaults';
-import { buildClienteOrcamentoWhatsAppText, buildClienteWhatsAppSendUrl } from '@/lib/orcamentos/whatsapp-links';
+import {
+  buildClienteFollowUpWhatsAppUrl,
+  buildClienteOrcamentoWhatsAppText,
+  buildClienteWhatsAppSendUrl,
+  getQuoteFollowUpState
+} from '@/lib/orcamentos/whatsapp-links';
 import { ORCAMENTO_PIX_KEY_TYPES } from '@/lib/orcamentos/public-map';
+import { parseQuickQuoteText } from '@/lib/orcamentos/quick-entry';
+import { toSafeQuoteTemplate } from '@/lib/orcamentos/safe-template';
 import type { PixKeyType } from '@/lib/pix/types';
 import {
   calcOrcamentoTotal,
@@ -61,6 +72,8 @@ import {
 import { isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
+import { buildApprovedQuoteShareWhatsAppUrl } from '@/lib/viral-loop';
+import { saveQuoteReceiptTransfer } from '@/lib/orcamentos/quote-to-receipt';
 
 interface GeneratedLink {
   id: string;
@@ -81,6 +94,20 @@ interface FieldErrors {
   profissionalNome?: string;
   profissionalWhatsapp?: string;
 }
+
+interface BrowserSpeechRecognition {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  onerror: ((event: { error: string }) => void) | null;
+  onend: (() => void) | null;
+}
+
+type BrowserSpeechRecognitionConstructor = new () => BrowserSpeechRecognition;
 
 export interface OrcamentoPreset {
   occupation: string;
@@ -127,7 +154,7 @@ const CHECKLIST_TARGETS: Record<ChecklistKey, { sectionId: string; focusId: stri
   profissional: { sectionId: 'orc-section-profissional', focusId: 'orc-profissional-nome' },
   cliente: { sectionId: 'orc-section-cliente', focusId: 'orc-cliente-nome' },
   itens: { sectionId: 'orc-section-itens', focusId: 'orc-item-0-nome' },
-  valor: { sectionId: 'orc-section-itens', focusId: 'orc-item-0-nome' }
+  valor: { sectionId: 'orc-section-itens', focusId: 'orc-item-0-valor' }
 };
 
 function detectValidadeMode(value: string): 'period' | 'date' {
@@ -148,7 +175,17 @@ export function OrcamentosApp({
   const [profissionalEmail, setProfissionalEmail] = useState('');
   const [profissionalLogoDataUrl, setProfissionalLogoDataUrl] = useState('');
   const [profissionalCollapsed, setProfissionalCollapsed] = useState(false);
+  const [showOptionalDetails, setShowOptionalDetails] = useState(!publicAccess);
+  const [quickEntry, setQuickEntry] = useState('');
+  const [quickEntryMessage, setQuickEntryMessage] = useState('');
+  const [templateMessage, setTemplateMessage] = useState('');
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const [speechListening, setSpeechListening] = useState(false);
+  const templateLoadedRef = useRef(false);
+  const userEditedItemsRef = useRef(false);
+  const speechRecognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const hasHydratedProfissionalRef = useRef(false);
+  const lastHistoryRefreshAtRef = useRef(0);
   const [clienteNome, setClienteNome] = useState('');
   const [clienteWhatsapp, setClienteWhatsapp] = useState('');
   const [clienteEmail, setClienteEmail] = useState('');
@@ -299,6 +336,42 @@ export function OrcamentosApp({
   }, [profissionalNome, clienteNome, items, publicAccess]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const speechWindow = window as unknown as {
+      SpeechRecognition?: BrowserSpeechRecognitionConstructor;
+      webkitSpeechRecognition?: BrowserSpeechRecognitionConstructor;
+    };
+    const Recognition = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition;
+    setSpeechSupported(Boolean(Recognition));
+    return () => speechRecognitionRef.current?.abort();
+  }, []);
+
+  useEffect(() => {
+    if (!publicAccess || preset || templateLoadedRef.current || typeof window === 'undefined') return;
+    const sourceDocument = new URLSearchParams(window.location.search).get('source_document') || '';
+    if (!sourceDocument) return;
+    templateLoadedRef.current = true;
+
+    void fetch(`/api/orcamentos/${encodeURIComponent(sourceDocument)}/template`, { cache: 'no-store' })
+      .then(async (response) => response.ok ? response.json() : null)
+      .then((data) => {
+        const safeItems = toSafeQuoteTemplate(data?.items);
+        if (!safeItems.length) return;
+        if (userEditedItemsRef.current) return;
+        setItems(safeItems.map((item) => ({ ...createEmptyItem(), ...item, valorUnitario: 0 })));
+        setTemplateMessage('Modelo seguro carregado: serviços e quantidades vieram como ponto de partida. Preços e dados pessoais não foram copiados. Complete seus valores e revise.');
+        trackEvent('quote_safe_template_loaded', { item_count: safeItems.length });
+        window.requestAnimationFrame(() => {
+          const active = document.activeElement;
+          if (active && active !== document.body) return;
+          document.getElementById('orc-section-itens')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          window.setTimeout(() => document.getElementById('orc-item-0-valor')?.focus(), 300);
+        });
+      })
+      .catch(() => undefined);
+  }, [publicAccess, preset]);
+
+  useEffect(() => {
     if (!readyToGenerate || previewTrackedRef.current) return;
     previewTrackedRef.current = true;
     trackEvent('quote_preview_ready', { quote_value: total, item_count: items.length });
@@ -341,6 +414,7 @@ export function OrcamentosApp({
 
   const loadHistory = useCallback(async () => {
     if (!ownerEmail || (publicAccess && !session)) return;
+    lastHistoryRefreshAtRef.current = Date.now();
     setHistoryLoading(true);
     try {
       const response = await fetch(`/api/orcamentos?ownerEmail=${encodeURIComponent(ownerEmail)}`);
@@ -370,12 +444,41 @@ export function OrcamentosApp({
     loadHistory();
   }, [loadHistory, publicAccess, session]);
 
+  useEffect(() => {
+    if (!session) return;
+    const refreshWhenVisible = () => {
+      if (document.visibilityState !== 'visible') return;
+      if (Date.now() - lastHistoryRefreshAtRef.current < 15_000) return;
+      void loadHistory();
+    };
+    window.addEventListener('focus', refreshWhenVisible);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => {
+      window.removeEventListener('focus', refreshWhenVisible);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
+  }, [loadHistory, session]);
+
   function savePrefs() {
     saveOrcamentoPrefs({
       profissionalNome,
       profissionalWhatsapp,
       profissionalEmail
     });
+  }
+
+  function clearSavedProfessional() {
+    setProfissionalNome('');
+    setProfissionalWhatsapp('');
+    setProfissionalEmail(session?.user.email || '');
+    setProfissionalCollapsed(false);
+    saveOrcamentoPrefs({
+      profissionalNome: '',
+      profissionalWhatsapp: '',
+      profissionalEmail: session?.user.email || ''
+    });
+    trackEvent('quote_saved_identity_cleared', { public_access: publicAccess });
+    window.requestAnimationFrame(() => document.getElementById('orc-profissional-nome')?.focus());
   }
 
   function payloadBody() {
@@ -407,6 +510,66 @@ export function OrcamentosApp({
 
   function appendObservacao(text: string) {
     setObservacoes((current) => (current.trim() ? `${current.trim()}\n${text}` : text));
+  }
+
+  function applyQuickEntry() {
+    const parsed = parseQuickQuoteText(quickEntry);
+    if (!parsed.length) {
+      setQuickEntryMessage('Não encontrei itens com preço. Use uma linha por item, por exemplo: Instalação 350.');
+      return;
+    }
+    userEditedItemsRef.current = true;
+    setItems(parsed.map((item) => ({ ...createEmptyItem(), ...item })));
+    setQuickEntryMessage(`${parsed.length} ${parsed.length === 1 ? 'item montado' : 'itens montados'}. Revise nomes e valores abaixo.`);
+    setFieldErrors((current) => ({ ...current, items: undefined }));
+    trackEvent('quote_quick_entry_applied', {
+      item_count: parsed.length,
+      input_length_bucket: quickEntry.length < 80 ? 'short' : quickEntry.length < 240 ? 'medium' : 'long'
+    });
+    window.requestAnimationFrame(() => document.getElementById('orc-section-itens')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
+
+  function toggleSpeechEntry() {
+    if (speechListening) {
+      speechRecognitionRef.current?.stop();
+      setSpeechListening(false);
+      return;
+    }
+    const speechWindow = window as unknown as {
+      SpeechRecognition?: BrowserSpeechRecognitionConstructor;
+      webkitSpeechRecognition?: BrowserSpeechRecognitionConstructor;
+    };
+    const Recognition = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition;
+    if (!Recognition) return;
+
+    const recognition = new Recognition();
+    recognition.lang = 'pt-BR';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.onresult = (event) => {
+      const last = event.results[event.results.length - 1];
+      const transcript = last?.[0]?.transcript?.trim() || '';
+      if (!transcript) return;
+      setQuickEntry((current) => `${current.trim()}${current.trim() ? '\n' : ''}${transcript}`.slice(0, 2000));
+      setQuickEntryMessage('Ditado inserido. Confira o texto e toque em montar itens.');
+      trackEvent('quote_voice_entry_completed', {
+        transcript_length_bucket: transcript.length < 80 ? 'short' : transcript.length < 240 ? 'medium' : 'long'
+      });
+    };
+    recognition.onerror = (event) => {
+      if (event.error !== 'aborted') setQuickEntryMessage('Não foi possível concluir o ditado. Você pode digitar ou colar o pedido.');
+      setSpeechListening(false);
+    };
+    recognition.onend = () => setSpeechListening(false);
+    speechRecognitionRef.current = recognition;
+    setQuickEntryMessage('Ouvindo… fale os serviços e preços.');
+    setSpeechListening(true);
+    try {
+      recognition.start();
+    } catch {
+      setSpeechListening(false);
+      setQuickEntryMessage('O ditado não pôde ser iniciado. Você pode digitar ou colar o pedido.');
+    }
   }
 
   function validateForm(): boolean {
@@ -649,6 +812,51 @@ export function OrcamentosApp({
     if (!opened) window.location.href = href;
   }
 
+  function openFollowUp(item: OrcamentoHistoryItem) {
+    const href = buildClienteFollowUpWhatsAppUrl({
+      clienteWhatsapp: item.clienteContato,
+      clienteNome: item.clienteNome,
+      profissionalNome: item.profissionalNome || profissionalNome,
+      url: item.url,
+      total: item.total,
+      viewed: Boolean(item.firstViewedAt),
+      branded: brandDocuments
+    });
+    trackEvent('quote_follow_up_opened', {
+      source_document: item.id,
+      quote_age_days: getQuoteFollowUpState(item.createdAt, item.status, undefined, item.firstViewedAt).ageDays,
+      quote_was_viewed: Boolean(item.firstViewedAt),
+      follow_up_kind: item.firstViewedAt ? 'review_reminder' : 'link_resend'
+    });
+    const opened = window.open(href, '_blank', 'noopener,noreferrer');
+    if (!opened) window.location.href = href;
+  }
+
+  function openApprovedShare(item: OrcamentoHistoryItem) {
+    trackEvent('quote_approval_story_shared', {
+      source_document: item.id,
+      channel: 'whatsapp'
+    });
+    const href = buildApprovedQuoteShareWhatsAppUrl();
+    const opened = window.open(href, '_blank', 'noopener,noreferrer');
+    if (!opened) window.location.href = href;
+  }
+
+  function convertApprovedToReceipt(item: OrcamentoHistoryItem) {
+    const saved = saveQuoteReceiptTransfer({
+      receiverName: item.profissionalNome,
+      payerName: item.clienteNome,
+      amount: item.total,
+      itemNames: item.itens.map((row) => row.nome)
+    });
+    if (!saved) {
+      setBannerError('Não foi possível preparar o recibo neste navegador.');
+      return;
+    }
+    trackEvent('quote_to_receipt_clicked', { source_document: item.id, item_count: item.itens.length });
+    window.location.href = '/ferramentas/recibos?origem=orcamento_aprovado';
+  }
+
   function fillFromHistory(item: OrcamentoHistoryItem, mode: 'reuse' | 'edit') {
     setProfissionalNome(item.profissionalNome || profissionalNome);
     setProfissionalWhatsapp(formatPhoneDisplay(item.profissionalWhatsapp || profissionalWhatsapp));
@@ -753,6 +961,46 @@ export function OrcamentosApp({
           </div>
         </section>
 
+        {templateMessage ? (
+          <div className="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-semibold leading-6 text-sky-900" role="status">
+            {templateMessage}
+          </div>
+        ) : null}
+
+        {publicAccess ? (
+          <section className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-sm sm:p-6">
+            <div className="flex items-start gap-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-emerald-600 text-white"><WandSparkles className="h-5 w-5" /></span>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-base font-extrabold text-emerald-950">Cole o pedido do WhatsApp</h2>
+                <p className="mt-1 text-sm leading-6 text-emerald-900/75">Escreva um item e preço por linha. O texto fica no seu navegador e você revisa tudo antes de enviar.</p>
+              </div>
+            </div>
+            <Textarea
+              className="mt-4 bg-white"
+              rows={3}
+              value={quickEntry}
+              onChange={(event) => {
+                setQuickEntry(event.target.value.slice(0, 2000));
+                setQuickEntryMessage('');
+              }}
+              placeholder={'Instalação de 6 tomadas 240\nMaterial elétrico 140\nMão de obra 350'}
+              aria-label="Pedido copiado do WhatsApp"
+            />
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+              <Button type="button" onClick={applyQuickEntry} disabled={!quickEntry.trim()} className="bg-emerald-700 hover:bg-emerald-600">
+                <WandSparkles className="h-4 w-4" />Montar itens automaticamente
+              </Button>
+              {speechSupported ? (
+                <Button type="button" variant="outline" className={cn('bg-white', speechListening && 'border-rose-300 bg-rose-50 text-rose-800')} onClick={toggleSpeechEntry} aria-pressed={speechListening}>
+                  {speechListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  {speechListening ? 'Parar ditado' : 'Ditar pedido'}
+                </Button>
+              ) : null}
+              {quickEntryMessage ? <p className="text-xs font-semibold text-emerald-900" role="status">{quickEntryMessage}</p> : null}
+            </div>
+          </section>
+        ) : null}
 
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(280px,0.85fr)]">
           <div className="space-y-5">
@@ -794,15 +1042,15 @@ export function OrcamentosApp({
                   </h2>
                 </div>
                 {profissionalCollapsed && professionalComplete ? (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setProfissionalCollapsed(false)}
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                    Editar
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button type="button" variant="ghost" size="sm" onClick={clearSavedProfessional}>
+                      Usar outros dados
+                    </Button>
+                    <Button type="button" variant="outline" size="sm" onClick={() => setProfissionalCollapsed(false)}>
+                      <Pencil className="h-3.5 w-3.5" />
+                      Editar
+                    </Button>
+                  </div>
                 ) : null}
               </div>
 
@@ -1014,6 +1262,7 @@ export function OrcamentosApp({
               <OrcamentoItemsEditor
                 items={items}
                 onChange={(next) => {
+                  userEditedItemsRef.current = true;
                   setItems(next);
                   if (fieldErrors.items) {
                     setFieldErrors((current) => ({ ...current, items: undefined }));
@@ -1028,6 +1277,20 @@ export function OrcamentosApp({
               />
             </section>
 
+            {publicAccess && !showOptionalDetails ? (
+              <section className="rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/60 p-5 text-center">
+                <p className="text-sm font-bold text-emerald-950">O essencial já está acima.</p>
+                <p className="mt-1 text-xs leading-5 text-emerald-800">Validade, condições e Pix são opcionais. Você pode gerar o orçamento sem preencher esses campos.</p>
+                <button type="button" className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-300 bg-white px-4 text-sm font-bold text-emerald-950 transition hover:bg-emerald-100" onClick={() => {
+                  setShowOptionalDetails(true);
+                  trackEvent('quote_optional_details_opened', { public_access: true });
+                }}>
+                  Adicionar validade, condições ou Pix
+                </button>
+              </section>
+            ) : null}
+
+            <div className={cn('space-y-5', publicAccess && !showOptionalDetails && 'hidden')}>
             {/* Validade */}
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
               <h2 className="text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900">
@@ -1248,6 +1511,7 @@ export function OrcamentosApp({
                 </FormField>
               </div>
             </section>
+            </div>
 
             {/* Total */}
             <section className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5 shadow-sm sm:p-6">
@@ -1464,6 +1728,13 @@ export function OrcamentosApp({
                           <p className="mt-0.5 text-sm font-bold text-slate-900">
                             {formatCurrency(item.total)}
                           </p>
+                          {item.firstViewedAt ? (
+                            <p className="mt-1 text-[11px] font-bold text-blue-700">
+                              Visualizado em {new Date(item.firstViewedAt).toLocaleDateString('pt-BR')}
+                            </p>
+                          ) : item.status === 'pending' ? (
+                            <p className="mt-1 text-[11px] font-medium text-slate-500">Ainda não visualizado</p>
+                          ) : null}
                         </div>
                         <span
                           className={cn(
@@ -1484,13 +1755,21 @@ export function OrcamentosApp({
                           Criar cópia
                         </button>
                         {item.status === 'pending' ? (
-                          <button
-                            type="button"
-                            className="text-xs font-bold text-amber-900 hover:underline"
-                            onClick={() => fillFromHistory(item, 'edit')}
-                          >
-                            Editar
-                          </button>
+                          <>
+                            {getQuoteFollowUpState(item.createdAt, item.status, undefined, item.firstViewedAt).due ? (
+                              <button type="button" className="text-xs font-black text-emerald-800 hover:underline" onClick={() => openFollowUp(item)}>
+                                {item.firstViewedAt ? 'Lembrar cliente' : 'Reenviar link'}
+                              </button>
+                            ) : null}
+                            <button type="button" className="text-xs font-bold text-amber-900 hover:underline" onClick={() => fillFromHistory(item, 'edit')}>
+                              Editar
+                            </button>
+                          </>
+                        ) : item.status === 'approved' ? (
+                          <>
+                            <button type="button" className="text-xs font-black text-emerald-800 hover:underline" onClick={() => convertApprovedToReceipt(item)}>Gerar recibo</button>
+                            <button type="button" className="text-xs font-black text-blue-800 hover:underline" onClick={() => openApprovedShare(item)}>Compartilhar conquista</button>
+                          </>
                         ) : null}
                       </div>
                     </li>
@@ -1581,8 +1860,30 @@ export function OrcamentosApp({
                           ? ` · Atualizado ${new Date(item.updatedAt).toLocaleDateString('pt-BR')}`
                           : ''}
                       </p>
+                      {item.firstViewedAt ? (
+                        <p className="mt-1 text-xs font-bold text-blue-700">
+                          Visualizado em {new Date(item.firstViewedAt).toLocaleDateString('pt-BR')}
+                        </p>
+                      ) : item.status === 'pending' ? (
+                        <p className="mt-1 text-xs font-medium text-slate-500">Ainda não visualizado</p>
+                      ) : null}
+                      {getQuoteFollowUpState(item.createdAt, item.status, undefined, item.firstViewedAt).due ? (
+                        <p className="mt-1 text-xs font-bold text-amber-800">
+                          Aguardando resposta há {getQuoteFollowUpState(item.createdAt, item.status, undefined, item.firstViewedAt).ageDays} dias
+                        </p>
+                      ) : null}
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
+                      {item.status === 'approved' ? (
+                        <>
+                          <Button size="sm" className="bg-emerald-700 hover:bg-emerald-600" onClick={() => convertApprovedToReceipt(item)}>
+                            <Receipt className="h-3.5 w-3.5" />Gerar recibo
+                          </Button>
+                          <Button size="sm" variant="outline" className="border-blue-200 text-blue-800" onClick={() => openApprovedShare(item)}>
+                            <Share2 className="h-3.5 w-3.5" />Compartilhar conquista
+                          </Button>
+                        </>
+                      ) : null}
                       <Button size="sm" variant="outline" onClick={() => fillFromHistory(item, 'reuse')}>
                         <Copy className="h-3.5 w-3.5" />
                         Criar cópia
@@ -1590,7 +1891,11 @@ export function OrcamentosApp({
                       <Button
                         size="sm"
                         className="bg-emerald-600 hover:bg-emerald-500"
-                        onClick={() =>
+                        onClick={() => {
+                          if (getQuoteFollowUpState(item.createdAt, item.status, undefined, item.firstViewedAt).due) {
+                            openFollowUp(item);
+                            return;
+                          }
                           openEphemeralSend({
                             id: item.id,
                             url: item.url,
@@ -1598,11 +1903,13 @@ export function OrcamentosApp({
                             clienteWhatsapp: item.clienteContato,
                             total: item.total,
                             profissionalNome: item.profissionalNome
-                          })
-                        }
+                          });
+                        }}
                       >
                         <MessageCircle className="h-3.5 w-3.5" />
-                        Enviar
+                        {getQuoteFollowUpState(item.createdAt, item.status, undefined, item.firstViewedAt).due
+                          ? item.firstViewedAt ? 'Lembrar cliente' : 'Reenviar link'
+                          : 'Enviar'}
                       </Button>
                       <div className="relative">
                         <Button

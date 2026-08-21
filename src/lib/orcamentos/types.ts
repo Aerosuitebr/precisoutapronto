@@ -67,6 +67,7 @@ export interface OrcamentoHistoryItem {
   pixMerchantName?: string;
   pixMerchantCity?: string;
   status: OrcamentoStatus;
+  firstViewedAt?: string;
   createdAt: string;
   updatedAt: string;
 }

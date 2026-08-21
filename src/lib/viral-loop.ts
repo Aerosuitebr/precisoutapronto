@@ -172,6 +172,27 @@ export function viralPublicResultUrl(input: {
   return `${getViralBaseUrl()}/resultado-jato?${params.toString()}`;
 }
 
+/** Prova social pós-aprovação sem cliente, valor, profissão ou identificadores. */
+export function buildApprovedQuoteShareWhatsAppUrl() {
+  const resultUrl = viralPublicResultUrl({
+    title: 'Orçamento aprovado pelo celular',
+    highlightLabel: 'Status',
+    highlightValue: 'Aprovado',
+    lines: [
+      { label: 'Envio', value: 'WhatsApp' },
+      { label: 'Resposta', value: 'No próprio link' },
+      { label: 'Cobrança', value: 'Pix opcional' }
+    ],
+    toolPath: '/orcamento-com-pix',
+    campaign: 'orcamento_aprovado'
+  });
+  const text =
+    `Orçamento aprovado sem troca de PDF e sem instalar aplicativo.\n` +
+    `O cliente abriu, conferiu e respondeu pelo celular.\n\n` +
+    `Veja como funciona: ${resultUrl}`;
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+
 /** Rodapé padrão anexado aos resumos de calculadoras compartilhados. */
 export function viralToolShareFooter(toolPath: string, utmCampaign: string) {
   return `\n\n*CALCULE TAMBÉM*\nAcesse grátis, sem cadastro:\n${viralToolShareUrl(toolPath, utmCampaign)}`;

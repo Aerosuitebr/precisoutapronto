@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, Gift, MessageCircle, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   buildViralInviteWhatsAppUrl,
@@ -23,6 +24,12 @@ function trackRecruitClick(placement: string, sourceDocumentId?: string, sourceO
     source_document: sourceDocumentId,
     source_occupation: sourceOccupation
   });
+  if (sourceDocumentId) {
+    void fetch(`/api/orcamentos/${encodeURIComponent(sourceDocumentId)}/recruit-click`, {
+      method: 'POST',
+      keepalive: true
+    }).catch(() => undefined);
+  }
 }
 
 /** CTA para quem recebeu o orçamento: recruta o próximo profissional. */
@@ -93,14 +100,25 @@ export function ViralRecruitSticky({ sourceDocumentId, sourceOccupation }: Recru
 
 /** Pack de indicação após gerar link (profissional → colegas). */
 export function ViralInviteShareRow({ className }: { className?: string }) {
+  const [referralWhatsappUrl, setReferralWhatsappUrl] = useState('');
+
+  useEffect(() => {
+    void fetch('/api/referral/me', { cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => setReferralWhatsappUrl(data?.whatsappUrl || ''))
+      .catch(() => undefined);
+  }, []);
+
+  const whatsappUrl = referralWhatsappUrl || buildViralInviteWhatsAppUrl();
+
   return (
-    <div className={cn('rounded-xl border border-slate-200 bg-slate-50 p-3', className)}>
-      <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Indicar Precisou, Tá Pronto</p>
+    <div className={cn('rounded-xl border border-amber-200 bg-amber-50 p-3', className)}>
+      <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-amber-800"><Gift className="h-3.5 w-3.5" />Indique e ganhe</p>
       <p className="mt-1 text-sm leading-5 text-slate-600">
-        Mande para um colega que também cobra no WhatsApp.
+        Mande para um colega que também cobra no WhatsApp.{referralWhatsappUrl ? ' A cada 3 amigos ativos, você ganha 30 dias Premium.' : ''}
       </p>
       <Button asChild variant="outline" className="mt-3 h-10 w-full border-emerald-200 bg-white">
-        <a href={buildViralInviteWhatsAppUrl()} target="_blank" rel="noreferrer">
+        <a href={whatsappUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent('referral_invite_shared', { channel: referralWhatsappUrl ? 'quote_result_whatsapp' : 'quote_result_generic' })}>
           <MessageCircle className="h-4 w-4 text-emerald-700" />
           Compartilhar no WhatsApp
         </a>

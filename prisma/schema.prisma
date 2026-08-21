@@ -100,6 +100,8 @@ model Orcamento {
   profissionalLogoDataUrl String?
   sourceOccupation        String?
   recruitedFromDocument   String?
+  firstViewedAt           DateTime?
+  firstRecruitClickedAt   DateTime?
   createdAt               DateTime        @default(now())
   updatedAt               DateTime        @updatedAt
 
@@ -107,6 +109,8 @@ model Orcamento {
   @@index([status])
   @@index([sourceOccupation, createdAt])
   @@index([recruitedFromDocument, createdAt])
+  @@index([firstViewedAt])
+  @@index([firstRecruitClickedAt])
   @@map("orcamentos")
 }
 
@@ -486,6 +490,8 @@ model Task {
   parentTask Task?      @relation("TaskHierarchy", fields: [parentTaskId], references: [id], onDelete: SetNull)
   childTasks Task[]     @relation("TaskHierarchy")
   artifacts  Artifact[]
+  recommendationSources RecommendationExposure[] @relation("RecommendationSourceTask")
+  recommendationCompletions RecommendationExposure[] @relation("RecommendationCompletedTask")
 
   @@index([userId, startedAt])
   @@index([anonymousSessionId, startedAt])
@@ -521,6 +527,8 @@ model Artifact {
   incomingRelations ArtifactRelation[] @relation("ArtifactRelationTarget")
   sourceTemplates    PersonalTemplate[] @relation("PersonalTemplateSource")
   instantiatedFrom  PersonalTemplate?  @relation("ArtifactTemplate", fields: [templateId], references: [id], onDelete: SetNull)
+  shareLinks         ShareLink[]
+  recommendationExposures RecommendationExposure[]
 
   @@index([taskId, updatedAt])
   @@index([userId, updatedAt])
@@ -550,6 +558,125 @@ model PersonalTemplate {
   @@index([toolKey, visibility, status])
   @@index([sourceArtifactId])
   @@map("personal_templates")
+}
+
+model ShareLink {
+  id              String    @id @default(uuid()) @db.Uuid
+  artifactId      String    @db.Uuid
+  tokenHash       String    @unique @db.Char(64)
+  channel         String    @db.VarChar(32)
+  createdByUserId String?
+  campaign        String?   @db.VarChar(80)
+  expiresAt       DateTime?
+  revokedAt       DateTime?
+  createdAt       DateTime  @default(now())
+
+  artifact Artifact     @relation(fields: [artifactId], references: [id], onDelete: Restrict)
+  events   ShareEvent[]
+
+  @@index([artifactId, createdAt])
+  @@index([createdByUserId, createdAt])
+  @@index([expiresAt])
+  @@map("share_links")
+}
+
+model ShareEvent {
+  id                   String   @id @default(uuid()) @db.Uuid
+  shareLinkId          String   @db.Uuid
+  eventType            String   @db.VarChar(40)
+  anonymousRecipientId String   @db.VarChar(80)
+  userId               String?
+  occurredAt           DateTime @default(now())
+  metadata             Json     @default("{}")
+
+  shareLink ShareLink @relation(fields: [shareLinkId], references: [id], onDelete: Restrict)
+
+  @@index([shareLinkId, occurredAt])
+  @@index([eventType, occurredAt])
+  @@map("share_events")
+}
+
+model RecommendationExposure {
+  id                  String    @id @default(uuid()) @db.Uuid
+  userId              String?
+  sessionId           String?
+  sourceTaskId        String?   @db.Uuid
+  sourceArtifactId    String?   @db.Uuid
+  recommendationKey   String    @db.VarChar(80)
+  targetToolKey       String    @db.VarChar(80)
+  variant             String    @default("default") @db.VarChar(48)
+  rank                Int
+  shownAt             DateTime  @default(now())
+  clickedAt           DateTime?
+  completedTaskId     String?   @db.Uuid
+
+  sourceTask    Task?     @relation("RecommendationSourceTask", fields: [sourceTaskId], references: [id], onDelete: SetNull)
+  sourceArtifact Artifact? @relation(fields: [sourceArtifactId], references: [id], onDelete: SetNull)
+  completedTask Task?     @relation("RecommendationCompletedTask", fields: [completedTaskId], references: [id], onDelete: SetNull)
+
+  @@index([userId, shownAt])
+  @@index([sessionId, shownAt])
+  @@index([sourceTaskId, shownAt])
+  @@index([sourceArtifactId, shownAt])
+  @@index([recommendationKey, shownAt])
+  @@index([targetToolKey, shownAt])
+  @@map("recommendation_exposures")
+}
+
+model HelpfulnessFeedback {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String?
+  anonymousId String   @db.VarChar(80)
+  targetType  String   @db.VarChar(40)
+  targetId    String   @db.VarChar(128)
+  rating      String   @db.VarChar(24)
+  detail      String?
+  createdAt   DateTime @default(now())
+
+  @@index([targetType, targetId, createdAt])
+  @@index([userId, createdAt])
+  @@index([anonymousId, createdAt])
+  @@map("helpfulness_feedback")
+}
+
+model ResolutionRequest {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String?
+  anonymousId      String   @db.VarChar(80)
+  rawText          String
+  normalizedIntent String?  @db.VarChar(120)
+  source           String   @db.VarChar(48)
+  status           String   @default("received") @db.VarChar(24)
+  createdAt        DateTime @default(now())
+
+  @@index([status, createdAt])
+  @@index([normalizedIntent, createdAt])
+  @@index([userId, createdAt])
+  @@index([anonymousId, createdAt])
+  @@map("resolution_requests")
+}
+
+model AiInteraction {
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String?
+  sessionId     String?
+  capability    String    @db.VarChar(80)
+  modelKey      String    @db.VarChar(80)
+  promptVersion String    @db.VarChar(48)
+  inputHash     String    @db.Char(64)
+  outputJson    Json      @default("{}")
+  safetyResult  Json      @default("{}")
+  latencyMs     Int
+  estimatedCost Decimal   @default(0) @db.Decimal(12, 6)
+  accepted      Boolean?
+  createdAt     DateTime  @default(now())
+
+  @@index([userId, createdAt])
+  @@index([sessionId, createdAt])
+  @@index([capability, createdAt])
+  @@index([modelKey, createdAt])
+  @@index([inputHash, createdAt])
+  @@map("ai_interactions")
 }
 
 model ArtifactRelation {

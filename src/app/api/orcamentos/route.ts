@@ -42,11 +42,23 @@ export async function POST(request: Request) {
     }
 
     const prisma = getPrisma();
-    const owner = validated.data.ownerEmail
+    const session = await getValidSessionFromCookies();
+    const effectiveOwnerEmail = session?.email.trim().toLowerCase() || null;
+    const owner = effectiveOwnerEmail
       ? await prisma.user.findUnique({
-          where: { email: validated.data.ownerEmail },
+          where: { email: effectiveOwnerEmail },
           select: { profile: { select: { logoDataUrl: true, occupation: true, segment: true } } }
         })
+      : null;
+    const requestedRecruitSource = validated.data.recruitedFromDocument || '';
+    const recruitSource = requestedRecruitSource
+      ? await prisma.orcamento.findUnique({
+          where: { id: requestedRecruitSource },
+          select: { id: true, status: true }
+        })
+      : null;
+    const recruitedFromDocument = recruitSource && recruitSource.status !== 'pending'
+      ? recruitSource.id
       : null;
     const created = await prisma.orcamento.create({
       data: {
@@ -63,16 +75,15 @@ export async function POST(request: Request) {
         pixKeyType: validated.data.pixKeyType || '',
         pixMerchantName: validated.data.pixMerchantName || '',
         pixMerchantCity: validated.data.pixMerchantCity || '',
-        ownerEmail: validated.data.ownerEmail || null,
+        ownerEmail: effectiveOwnerEmail,
         profissionalLogoDataUrl: validated.data.profissionalLogoDataUrl || owner?.profile?.logoDataUrl || null,
         sourceOccupation: validated.data.sourceOccupation || owner?.profile?.occupation || owner?.profile?.segment || null
-        ,recruitedFromDocument: validated.data.recruitedFromDocument || null
+        ,recruitedFromDocument
       }
     });
 
     const url = `${appBaseUrl(request)}/orcamento/${created.id}`;
     const deviceId = (await cookies()).get(DEVICE_COOKIE)?.value || '';
-    const session = await getValidSessionFromCookies();
     const completedAt = new Date();
     const anonymousSessionId = deviceId
       ? buildServerEventIdentity({
@@ -139,6 +150,11 @@ export async function GET(request: Request) {
     if (!ownerEmail) {
       return NextResponse.json({ error: 'Informe ownerEmail para listar orçamentos.' }, { status: 400 });
     }
+    const session = await getValidSessionFromCookies();
+    if (!session) return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
+    if (session.email.trim().toLowerCase() !== ownerEmail) {
+      return NextResponse.json({ error: 'Você só pode consultar seus próprios orçamentos.' }, { status: 403 });
+    }
 
     const prisma = getPrisma();
     const rows = await prisma.orcamento.findMany({
@@ -148,8 +164,8 @@ export async function GET(request: Request) {
     });
 
     const base = appBaseUrl(request);
-    return NextResponse.json({
-      items: rows.map((row) => ({
+    return NextResponse.json(
+      { items: rows.map((row) => ({
         id: row.id,
         url: `${base}/orcamento/${row.id}`,
         clienteNome: row.clienteNome,
@@ -169,10 +185,12 @@ export async function GET(request: Request) {
         pixMerchantName: row.pixMerchantName,
         pixMerchantCity: row.pixMerchantCity,
         status: row.status,
+        firstViewedAt: row.firstViewedAt?.toISOString() || '',
         createdAt: row.createdAt.toISOString(),
         updatedAt: row.updatedAt.toISOString()
-      }))
-    });
+      })) },
+      { headers: { 'Cache-Control': 'private, no-store, max-age=0' } }
+    );
   } catch (error) {
     console.error('[GET /api/orcamentos]', error);
     return NextResponse.json({ error: 'Não foi possível listar orçamentos.' }, { status: 500 });

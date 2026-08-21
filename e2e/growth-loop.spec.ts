@@ -1,8 +1,123 @@
 import { expect, test } from '@playwright/test';
+import { parseQuickQuoteText } from '../src/lib/orcamentos/quick-entry';
+import { toSafeQuoteTemplate } from '../src/lib/orcamentos/safe-template';
+import { viralFunnelMetrics } from '../src/lib/growth/viral-funnel';
+import { buildClienteFollowUpWhatsAppUrl, getQuoteFollowUpState } from '../src/lib/orcamentos/whatsapp-links';
+import { buildApprovedQuoteShareWhatsAppUrl } from '../src/lib/viral-loop';
+import { sanitizePublicStats } from '../src/lib/public-stats';
+import { normalizeQuoteReceiptTransfer, receiptFromApprovedQuote } from '../src/lib/orcamentos/quote-to-receipt';
+import { quoteWhatsAppAckKey } from '../src/lib/orcamentos/recipient-session';
+
+test('quick quote parser converts bounded WhatsApp notes into editable items', () => {
+  expect(parseQuickQuoteText('Instalação de tomadas 240\n2x Material elétrico R$ 140,50\nsem preço')).toEqual([
+    { nome: 'Instalação de tomadas', quantidade: 1, valorUnitario: 240 },
+    { nome: 'Material elétrico', quantidade: 2, valorUnitario: 140.5 }
+  ]);
+  expect(parseQuickQuoteText('Serviço 0\nOutro 999999999')).toEqual([]);
+});
+
+test('recipient WhatsApp acknowledgement uses only a bounded quote id', () => {
+  const id = '123e4567-e89b-42d3-a456-426614174000';
+  expect(quoteWhatsAppAckKey(id)).toBe(`rj_quote_whatsapp_ack_v1:${id}`);
+  expect(quoteWhatsAppAckKey('cliente@example.com')).toBe('');
+  expect(quoteWhatsAppAckKey('../outro-orcamento')).toBe('');
+});
+
+test('shared quote template strips prices, ids and all identity fields', () => {
+  const source = [
+    { id: 'private-id', nome: 'Instalação', quantidade: 2, valorUnitario: 900, clienteNome: 'Pessoa' },
+    { nome: 'Material', quantidade: 1, valorUnitario: 400 }
+  ];
+  const safe = toSafeQuoteTemplate(source);
+  expect(safe).toEqual([
+    { nome: 'Instalação', quantidade: 2 },
+    { nome: 'Material', quantidade: 1 }
+  ]);
+  expect(JSON.stringify(safe)).not.toMatch(/900|400|private-id|Pessoa|cliente|valor/i);
+});
+
+test('viral funnel derives aggregate rates and actionable alerts without identities', () => {
+  const metrics = viralFunnelMetrics({
+    quotes: 100,
+    viewed: 60,
+    recruitClicked: 15,
+    approved: 20,
+    adjustments: 10,
+    recruitedQuotes: 4,
+    newCreators: 3,
+    activeCreators: 20,
+    repeatCreators: 4
+  });
+  expect(metrics).toMatchObject({ k100: 3, viewRate: 60, responseFromViewRate: 50, recruitClickRate: 50, recruitCompletionRate: 26.7, responseRate: 30, approvalRate: 66.7, viralQuoteRate: 4, repeatCreatorRate: 20 });
+  expect(metrics.alerts).toHaveLength(3);
+  expect(JSON.stringify(metrics)).not.toMatch(/email|phone|whatsapp|userId|owner/i);
+});
+
+test('quote follow-up becomes due after two days and builds a review message', () => {
+  const now = new Date('2026-08-21T12:00:00.000Z');
+  expect(getQuoteFollowUpState('2026-08-20T12:00:00.000Z', 'pending', now).due).toBe(false);
+  expect(getQuoteFollowUpState('2026-08-19T11:59:00.000Z', 'pending', now)).toMatchObject({ due: true, ageDays: 2, urgency: 'normal' });
+  expect(getQuoteFollowUpState('2026-08-10T12:00:00.000Z', 'pending', now, '2026-08-20T12:00:00.000Z')).toMatchObject({ due: false, ageDays: 1, viewed: true });
+  expect(getQuoteFollowUpState('2026-08-10T12:00:00.000Z', 'approved', now).due).toBe(false);
+  const url = buildClienteFollowUpWhatsAppUrl({
+    clienteWhatsapp: '(11) 98888-0000', clienteNome: 'Ana', profissionalNome: 'Oficina',
+    url: 'https://precisoutapronto.com.br/orcamento/teste', total: 490, branded: false
+  });
+  expect(url).toContain('https://wa.me/5511988880000?text=');
+  expect(decodeURIComponent(url)).toContain('LEMBRETE DO ORÇAMENTO');
+  expect(decodeURIComponent(url)).toContain('REVER ORÇAMENTO');
+  expect(decodeURIComponent(url)).toContain('link tenha se perdido');
+  const viewedUrl = buildClienteFollowUpWhatsAppUrl({
+    clienteWhatsapp: '(11) 98888-0000', clienteNome: 'Ana', profissionalNome: 'Oficina',
+    url: 'https://precisoutapronto.com.br/orcamento/teste', total: 490, viewed: true, branded: false
+  });
+  expect(decodeURIComponent(viewedUrl)).toContain('conseguiu analisar');
+  expect(decodeURIComponent(viewedUrl)).not.toMatch(/visualizou|rastreamento/i);
+});
+
+test('approved quote story is shareable without customer or commercial data', () => {
+  const url = buildApprovedQuoteShareWhatsAppUrl();
+  const decoded = decodeURIComponent(url);
+  expect(decoded).toContain('Orçamento aprovado');
+  expect(decoded).toContain('utm_campaign=orcamento_aprovado');
+  expect(decoded).toContain('/resultado-jato?');
+  expect(decoded).not.toMatch(/clienteNome|source_document|telefone|email|R\$|total|pixKey/i);
+});
+
+test('public proof hides small cohorts and rounds visible counters down', () => {
+  const safe = sanitizePublicStats({
+    orcamentosToday: 9,
+    orcamentosWeek: 27,
+    orcamentosApprovedWeek: 14,
+    usersTotal: 149,
+    docsGeneratedApprox: 987,
+    updatedAt: '2026-08-21T12:00:00.000Z'
+  });
+  expect(safe).toMatchObject({
+    orcamentosToday: 0,
+    orcamentosWeek: 20,
+    orcamentosApprovedWeek: 10,
+    usersTotal: 100,
+    docsGeneratedApprox: 900
+  });
+});
+
+test('approved quote becomes an editable receipt with only necessary fields', () => {
+  const transfer = normalizeQuoteReceiptTransfer({
+    receiverName: 'Oficina Silva', payerName: 'Ana', amount: 490,
+    itemNames: ['Instalação', 'Material'], telefone: '11999999999', pixKey: 'secret'
+  });
+  expect(transfer).toEqual({ receiverName: 'Oficina Silva', payerName: 'Ana', amount: 490, itemNames: ['Instalação', 'Material'] });
+  const receipt = receiptFromApprovedQuote(transfer!);
+  expect(receipt).toMatchObject({ amount: 490, reference: 'Instalação, Material', receiver: { name: 'Oficina Silva' }, payer: { name: 'Ana' } });
+  expect(JSON.stringify(receipt)).not.toContain('11999999999');
+  expect(JSON.stringify(receipt)).not.toContain('secret');
+});
 
 test('home leads with a task-first promise and popular outcomes', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Precisou resolver?Tá pronto.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Orçamento no WhatsApp.Aprovado. Pix recebido.');
+  await expect(page.getByRole('link', { name: 'Criar meu orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
   await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Orçamento no WhatsApp. Cliente aprova e paga no Pix.' })).toBeVisible();
@@ -16,6 +131,24 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   await expect(page.getByRole('heading', { name: 'Do problema ao resultado em três movimentos.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Guias curtos. Aplicação imediata.' })).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Jato Games');
+});
+
+test('public quote editor keeps optional details out of the critical path', async ({ page }) => {
+  await page.goto('/orcamento-com-pix#montar', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByText('O essencial já está acima.')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Validade da proposta' })).toBeHidden();
+  await page.getByRole('button', { name: 'Adicionar validade, condições ou Pix' }).click();
+  await expect(page.getByRole('heading', { name: 'Validade da proposta' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Pix para o cliente pagar' })).toBeVisible();
+});
+
+test('public quote editor turns pasted WhatsApp text into quote items', async ({ page }) => {
+  await page.goto('/orcamento-com-pix#montar', { waitUntil: 'domcontentloaded' });
+  await page.getByLabel('Pedido copiado do WhatsApp').fill('Instalação 350\nMaterial 140');
+  await page.getByRole('button', { name: 'Montar itens automaticamente' }).click();
+  await expect(page.getByRole('status')).toContainText('2 itens montados');
+  await expect(page.locator('input[value="Instalação"]')).toBeVisible();
+  await expect(page.locator('input[value="Material"]')).toBeVisible();
 });
 
 test('profession landing loads an adapted quote instead of generic copy', async ({ page }) => {

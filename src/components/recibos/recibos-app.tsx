@@ -50,6 +50,7 @@ import { consumeAssistantBriefing, receiptFromBriefing } from '@/lib/assistant-b
 import { applyProfileToReceipt, type ProfileMemory } from '@/lib/profile-memory';
 import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
 import { trackEvent } from '@/lib/analytics';
+import { consumeQuoteReceiptTransfer, receiptFromApprovedQuote } from '@/lib/orcamentos/quote-to-receipt';
 import {
   completeRecommendationAttribution,
   useRecommendationAttribution
@@ -114,6 +115,18 @@ export function RecibosApp() {
   useEffect(() => {
     Promise.all([loadReceipts(), loadProfileMemory()]).then(([stored, profile]) => {
       profileMemoryRef.current = profile;
+      const quoteTransfer = consumeQuoteReceiptTransfer();
+      if (quoteTransfer) {
+        const prepared = applyProfileToReceipt(receiptFromApprovedQuote(quoteTransfer), profile);
+        const saved = saveReceipt(prepared.document);
+        trackProfileMemoryApplied('recibos', prepared.applied);
+        setReceipts(listReceipts());
+        setActiveId(saved.id);
+        setReceipt(saved);
+        setTab('valores');
+        trackEvent('quote_to_receipt_started', { item_count: quoteTransfer.itemNames.length });
+        return;
+      }
       const requestedPreset = new URLSearchParams(window.location.search).get('modelo') as ReceiptPreset | null;
       const validPresets: ReceiptPreset[] = ['prestacao-de-servicos', 'aluguel-residencial', 'aluguel-comercial', 'aluguel-pix', 'diarista-e-domestica', 'psicologo-e-terapia'];
       if (requestedPreset && validPresets.includes(requestedPreset)) {

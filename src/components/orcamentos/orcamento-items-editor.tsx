@@ -122,9 +122,11 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
               </FormField>
               <FormField
                 label="Valor unitário"
+                htmlFor={index === 0 ? 'orc-item-0-valor' : undefined}
                 error={zeroValue ? 'Valor deve ser maior que zero.' : undefined}
               >
                 <MaskedInput
+                  id={index === 0 ? 'orc-item-0-valor' : undefined}
                   format={formatCurrencyInput}
                   value={
                     item.valorUnitario > 0

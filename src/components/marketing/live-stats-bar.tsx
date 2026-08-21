@@ -5,7 +5,7 @@ import type { PublicStats } from '@/lib/public-stats';
 import { cn } from '@/lib/utils';
 
 function formatCount(n: number) {
-  return n.toLocaleString('pt-BR');
+  return `${n.toLocaleString('pt-BR')}+`;
 }
 
 export function LiveStatsBar({
@@ -30,7 +30,22 @@ export function LiveStatsBar({
     };
   }, []);
 
-  if (!stats) return null;
+  if (!stats) {
+    return (
+      <ul className={cn('grid gap-3 sm:grid-cols-3', className)} aria-label="Como funciona">
+        {[
+          { value: 'Orçamento + Pix', label: 'Fecha no WhatsApp' },
+          { value: 'Sem app', label: 'Cliente aprova no celular' },
+          { value: 'PDF pronto', label: 'Em minutos' }
+        ].map((stat) => (
+          <li key={stat.label} className="rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-4 text-center">
+            <p className="text-sm font-extrabold tracking-tight text-emerald-950 sm:text-base">{stat.value}</p>
+            <p className="mt-1 text-xs leading-5 text-emerald-900/75">{stat.label}</p>
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   const items = [
     {

@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, CheckCircle2, Search, SlidersHorizontal, Sparkles
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
 import { HomeToolGallery } from '@/components/marketing/home-tool-gallery';
+import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
 
 const steps = [
   { icon: Search, number: '01', title: 'Encontre', text: 'Descreva o que precisa resolver ou navegue por uma categoria.' },
@@ -25,8 +26,17 @@ export function LandingPage() {
         <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-24 lg:px-10 lg:py-28 2xl:px-12">
           <div className="mx-auto max-w-4xl text-center">
             <p className="inline-flex items-center gap-2 rounded-full border border-[#83d600]/40 bg-[#83d600]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[#c8ff73]"><Sparkles className="h-4 w-4" />Sua necessidade. Nossa solução.</p>
-            <h1 className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">Precisou resolver?<br /><span className="text-[#a9ed42]">Tá pronto.</span></h1>
-            <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-blue-100 sm:text-xl">Encontre a ferramenta certa, personalize em poucos passos e termine o dia com um resultado que você pode usar ou compartilhar.</p>
+            <h1 className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">Orçamento no WhatsApp.<br /><span className="text-[#a9ed42]">Aprovado. Pix recebido.</span></h1>
+            <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-blue-100 sm:text-xl">Monte em poucos passos, envie o link e deixe o cliente aprovar no celular. Sem instalar aplicativo e sem cadastro para começar.</p>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link href="/orcamento-com-pix#montar" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:bg-[#a9ed42]">
+                Criar meu orçamento grátis <ArrowRight className="h-5 w-5" aria-hidden />
+              </Link>
+              <Link href="/orcamento-para/eletricista" className="inline-flex min-h-14 items-center justify-center rounded-2xl border border-white/30 bg-white/10 px-7 font-black text-white transition hover:bg-white/15">
+                Ver um modelo pronto
+              </Link>
+            </div>
+            <p className="mt-3 text-xs font-bold text-blue-100">Cliente não precisa criar conta · funciona no celular · Pix opcional</p>
             <div className="mx-auto mt-9 max-w-2xl rounded-[1.4rem] bg-white/10 p-2 shadow-2xl shadow-blue-950/30 ring-1 ring-white/20 backdrop-blur"><HomeQuickSearch /></div>
             <Link href="/recursos" className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/35 bg-white px-5 py-3 text-sm font-black text-[#031f4b] shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c8ff73] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c8ff73] focus-visible:ring-offset-2 focus-visible:ring-offset-[#031f4b]">
               Ver todas as ferramentas <ArrowRight className="h-4 w-4" aria-hidden />
@@ -37,6 +47,10 @@ export function LandingPage() {
           </div>
         </div>
         <div className="h-1 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff]" />
+      </section>
+
+      <section className="border-b border-emerald-100 bg-white px-4 py-6 sm:px-6" aria-label="Resultados e benefícios">
+        <LiveStatsBar className="mx-auto max-w-4xl" />
       </section>
 
       <section className="border-b border-[#0b5cff]/10 bg-white py-12 sm:py-16">

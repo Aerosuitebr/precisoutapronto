@@ -43,7 +43,40 @@ import {
 import { canonicalHistoryLimit, listCanonicalHistory } from '../src/lib/artifacts/history';
 import { duplicateOwnedArtifact, portableArtifactPayload } from '../src/lib/artifacts/duplication';
 import { parsePersonalTemplateCreate } from '../src/lib/templates/contracts';
-import { createPersonalTemplate, instantiatePersonalTemplate } from '../src/lib/templates/repository';
+import {
+  archivePersonalTemplate,
+  createPersonalTemplate,
+  instantiatePersonalTemplate,
+  restorePersonalTemplate
+} from '../src/lib/templates/repository';
+import { listPersonalTemplates, parseTemplateListQuery } from '../src/lib/templates/reader';
+import { parseShareLinkCreate } from '../src/lib/distribution/contracts';
+import {
+  createCanonicalShareLink,
+  hashShareToken,
+  revokeCanonicalShareLink
+} from '../src/lib/distribution/share-links';
+import { resolveCanonicalShareLink } from '../src/lib/distribution/resolver';
+import { hashRecipientKey, parseShareEvent, recordCanonicalShareEvent } from '../src/lib/distribution/events';
+import {
+  createRecommendationExposure,
+  clickRecommendationExposure,
+  completeRecommendationExposure,
+  parseRecommendationExposure,
+  pseudonymizeRecommendationSession
+} from '../src/lib/recommendation/exposures';
+import {
+  createHelpfulnessFeedback,
+  parseHelpfulnessFeedback,
+  pseudonymizeFeedbackIdentity,
+  redactFeedbackPii
+} from '../src/lib/feedback/helpfulness';
+import {
+  createResolutionRequest,
+  normalizeResolutionIntent,
+  parseResolutionRequest
+} from '../src/lib/feedback/resolution-requests';
+import { hashAiInput, parseAiInteraction, recordAiInteraction } from '../src/lib/ai-gateway/interactions';
 import { decryptContextValue, encryptContextValue } from '../src/lib/context/encryption';
 import {
   createEnvironmentContextKeyProvider,
@@ -1386,4 +1419,592 @@ test('template instantiate route derives ownership from session and validates or
   expect(route).toContain('instantiatePersonalTemplate(session.sub, id)');
   expect(route).toContain('isTrustedWriteOrigin(request)');
   expect(route).not.toMatch(/body\.ownerUserId|searchParams\.get\(['"]ownerUserId/);
+});
+
+test('personal template list query has bounded cursor pagination', () => {
+  expect(parseTemplateListQuery(new URLSearchParams('limit=50'))).toEqual({ limit: 50 });
+  expect(parseTemplateListQuery(new URLSearchParams('limit=100'))).toBeNull();
+  expect(parseTemplateListQuery(new URLSearchParams('cursor=invalid'))).toBeNull();
+});
+
+test('personal template list is owner-scoped and never returns payloads', async () => {
+  let ownerSeen = '';
+  const result = await listPersonalTemplates('user-1', { limit: 10 }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'personal_templates_v1', enabled: true, reason: 'enabled' as const }),
+    find: async (ownerUserId) => {
+      ownerSeen = ownerUserId;
+      return [{
+        id: '40000000-0000-4000-8000-000000000001', toolKey: 'orcamentos',
+        name: 'Modelo comercial', visibility: 'private', status: 'active',
+        createdAt: new Date('2026-08-21T22:00:00.000Z'),
+        updatedAt: new Date('2026-08-21T23:00:00.000Z')
+      }];
+    }
+  });
+  expect(ownerSeen).toBe('user-1');
+  expect(result).toMatchObject({ enabled: true, templates: [{ name: 'Modelo comercial' }], nextCursor: null });
+  expect(JSON.stringify(result)).not.toMatch(/templatePayload|payloadJson/i);
+});
+
+test('templates GET route derives owner exclusively from session', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'templates', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('listPersonalTemplates(session.sub, query)');
+  expect(route).not.toMatch(/searchParams\.get\(['"]ownerUserId|body\.ownerUserId/);
+});
+
+test('personal template archive is logical and owner-scoped', async () => {
+  let ownerSeen = '';
+  const result = await archivePersonalTemplate(
+    'user-1',
+    '40000000-0000-4000-8000-000000000001',
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'personal_templates_v1', enabled: true, reason: 'enabled' as const }),
+      archiveOwned: async (ownerUserId) => { ownerSeen = ownerUserId; return true; },
+      now: () => new Date('2026-08-21T23:30:00.000Z')
+    }
+  );
+  expect(ownerSeen).toBe('user-1');
+  expect(result).toEqual({ enabled: true, notFound: false, archivedAt: '2026-08-21T23:30:00.000Z' });
+});
+
+test('template DELETE route archives by session ownership without physical deletion', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'templates', '[id]', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('archivePersonalTemplate(session.sub, id)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/\.delete\(|deleteMany\(|body\.ownerUserId/);
+});
+
+test('personal template restore is logical and owner-scoped', async () => {
+  let ownerSeen = '';
+  const result = await restorePersonalTemplate(
+    'user-1',
+    '40000000-0000-4000-8000-000000000001',
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'personal_templates_v1', enabled: true, reason: 'enabled' as const }),
+      restoreOwned: async (ownerUserId) => { ownerSeen = ownerUserId; return true; },
+      now: () => new Date('2026-08-21T23:45:00.000Z')
+    }
+  );
+  expect(ownerSeen).toBe('user-1');
+  expect(result).toEqual({ enabled: true, notFound: false, restoredAt: '2026-08-21T23:45:00.000Z' });
+});
+
+test('template restore route derives owner from session and validates origin', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'templates', '[id]', 'restore', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('restorePersonalTemplate(session.sub, id)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/body\.ownerUserId|searchParams\.get\(['"]ownerUserId/);
+});
+
+test('V007 distribution migration is additive and never stores plaintext tokens', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821180000_add_distribution', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain('CREATE TABLE "share_links"');
+  expect(migration).toContain('CREATE TABLE "share_events"');
+  expect(migration).toContain('"tokenHash" CHAR(64) NOT NULL');
+  expect(migration).toContain('CREATE UNIQUE INDEX "share_links_tokenHash_key"');
+  expect(migration).toContain('REFERENCES "artifacts"("id") ON DELETE RESTRICT');
+  expect(migration).toContain('REFERENCES "share_links"("id") ON DELETE RESTRICT');
+  expect(migration).not.toMatch(/"token"\s|"tokenPlain|ON DELETE CASCADE/i);
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|DELETE FROM|INSERT INTO)\b/i);
+});
+
+test('distribution rollout flags remain disabled by default', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821101000_add_feature_flags', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain("('share_attribution_v1', 'Canonical share attribution', false, 0");
+  expect(migration).toContain("('recipient_cta_v1', 'Contextual recipient call to action', false, 0");
+});
+
+test('share link create contract rejects identity and unsafe campaign fields', () => {
+  expect(parseShareLinkCreate({ channel: 'whatsapp', campaign: 'repeat_customer', expiresInDays: 30 })).toEqual({
+    ok: true, data: { channel: 'whatsapp', campaign: 'repeat_customer', expiresInDays: 30 }
+  });
+  expect(parseShareLinkCreate({ channel: 'sms' })).toEqual({ ok: false, error: 'invalid-channel' });
+  expect(parseShareLinkCreate({ channel: 'link', createdByUserId: 'other' })).toEqual({ ok: false, error: 'unknown-field' });
+  expect(parseShareLinkCreate({ channel: 'link', expiresInDays: 365 })).toEqual({ ok: false, error: 'invalid-expiry' });
+});
+
+test('canonical share writer persists only token hash and owner-scoped artifact', async () => {
+  const rawToken = 'secure-token-returned-only-once-1234567890';
+  let persisted: Record<string, unknown> | null = null;
+  let ownerSeen = '';
+  const result = await createCanonicalShareLink(
+    'user-1',
+    '10000000-0000-4000-8000-000000000001',
+    { channel: 'email', campaign: 'renewal', expiresInDays: 7 },
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'share_attribution_v1', enabled: true, reason: 'enabled' as const }),
+      findOwnedArtifact: async (userId, id) => {
+        ownerSeen = userId;
+        return { id, toolKey: 'orcamentos' };
+      },
+      persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+      uuid: () => '70000000-0000-4000-8000-000000000001',
+      token: () => rawToken,
+      now: () => new Date('2026-08-22T00:00:00.000Z')
+    }
+  );
+  expect(ownerSeen).toBe('user-1');
+  expect(result).toMatchObject({ enabled: true, token: rawToken, toolKey: 'orcamentos' });
+  expect(persisted).toMatchObject({
+    createdByUserId: 'user-1', tokenHash: hashShareToken(rawToken), channel: 'email', campaign: 'renewal'
+  });
+  expect(JSON.stringify(persisted)).not.toContain(rawToken);
+});
+
+test('share link route derives owner from session and returns token only on create', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'artifacts', '[id]', 'share-links', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('createCanonicalShareLink(session.sub, id, parsed.data)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).toContain('token: result.token');
+  expect(route.indexOf('createCanonicalShareLink(session.sub, id, parsed.data)'))
+    .toBeLessThan(route.indexOf("eventName: 'outcome.shared'"));
+  expect(route).toContain('share_link_id: result.shareLinkId');
+  expect(route).toContain('channel: parsed.data.channel');
+  expect(route).not.toMatch(/body\.createdByUserId|body\.userId/);
+});
+
+test('share resolver hashes token, rejects expiry and returns metadata without owner or payload', async () => {
+  const token = 'secure-token-returned-only-once-1234567890';
+  let hashSeen = '';
+  const result = await resolveCanonicalShareLink(token, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'share_attribution_v1', enabled: true, reason: 'enabled' as const }),
+    find: async (tokenHash) => {
+      hashSeen = tokenHash;
+      return {
+        id: '80000000-0000-4000-8000-000000000001', channel: 'link', campaign: null,
+        expiresAt: new Date('2026-08-23T00:00:00.000Z'), revokedAt: null,
+        artifact: {
+          id: '10000000-0000-4000-8000-000000000001', artifactType: 'quote',
+          toolKey: 'orcamentos', status: 'active'
+        }
+      };
+    },
+    now: () => new Date('2026-08-22T00:00:00.000Z')
+  });
+  expect(hashSeen).toBe(hashShareToken(token));
+  expect(JSON.stringify(result)).not.toMatch(/owner|userId|payload|tokenHash/i);
+  expect(result).toMatchObject({ enabled: true, unavailable: false, shareLink: { channel: 'link' } });
+
+  const expired = await resolveCanonicalShareLink(token, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'share_attribution_v1', enabled: true, reason: 'enabled' as const }),
+    find: async () => ({
+      id: '80000000-0000-4000-8000-000000000001', channel: 'link', campaign: null,
+      expiresAt: new Date('2026-08-21T00:00:00.000Z'), revokedAt: null,
+      artifact: { id: '10000000-0000-4000-8000-000000000001', artifactType: 'quote', toolKey: 'orcamentos', status: 'active' }
+    }),
+    now: () => new Date('2026-08-22T00:00:00.000Z')
+  });
+  expect(expired).toEqual({ enabled: true, unavailable: true });
+});
+
+test('share resolver route is explicitly private and noindex', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'shares', '[token]', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain("'Cache-Control': 'private, no-store, max-age=0'");
+  expect(route).toContain("'X-Robots-Tag': 'noindex, nofollow, noarchive'");
+  expect(route).not.toMatch(/payloadJson|createdByUserId|tokenHash/);
+});
+
+test('share event contract accepts only pseudonymous recipient actions', () => {
+  const recipientKey = 'device:opaque-1234567890';
+  expect(parseShareEvent({ eventType: 'opened', recipientKey })).toEqual({
+    ok: true, data: { eventType: 'opened', recipientKey }
+  });
+  expect(parseShareEvent({ eventType: 'recipient_action', recipientKey, action: 'use_template' })).toEqual({
+    ok: true, data: { eventType: 'recipient_action', recipientKey, action: 'use_template' }
+  });
+  expect(parseShareEvent({ eventType: 'recipient_action', recipientKey, action: 'custom-text' }))
+    .toEqual({ ok: false, error: 'invalid-action' });
+  expect(parseShareEvent({ eventType: 'opened', recipientKey, email: 'x@y.test' }))
+    .toEqual({ ok: false, error: 'unknown-field' });
+});
+
+test('share event writer hashes recipient and persists allowlisted metadata only', async () => {
+  const token = 'secure-token-returned-only-once-1234567890';
+  const recipientKey = 'device:opaque-1234567890';
+  let persisted: Record<string, unknown> | null = null;
+  let tokenHashSeen = '';
+  const result = await recordCanonicalShareEvent(token, {
+    eventType: 'recipient_action', recipientKey, action: 'download'
+  }, undefined, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'share_attribution_v1', enabled: true, reason: 'enabled' as const }),
+    findActive: async (tokenHash) => { tokenHashSeen = tokenHash; return { id: '80000000-0000-4000-8000-000000000001' }; },
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: () => '90000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-22T00:30:00.000Z')
+  });
+  expect(tokenHashSeen).toBe(hashShareToken(token));
+  expect(result).toEqual({ enabled: true, unavailable: false, eventId: '90000000-0000-4000-8000-000000000001' });
+  expect(persisted).toMatchObject({
+    shareLinkId: '80000000-0000-4000-8000-000000000001',
+    anonymousRecipientId: hashRecipientKey(recipientKey),
+    metadata: { action: 'download' }
+  });
+  expect(JSON.stringify(persisted)).not.toContain(recipientKey);
+  expect(JSON.stringify(persisted)).not.toContain(token);
+});
+
+test('share events route validates origin and never accepts persisted identity', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'shares', '[token]', 'events', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).toContain('recordCanonicalShareEvent(token, parsed.data, session?.sub)');
+  expect(route).not.toMatch(/body\.userId|body\.anonymousRecipientId/);
+});
+
+test('canonical share revocation is logical and creator-scoped', async () => {
+  let ownerSeen = '';
+  const result = await revokeCanonicalShareLink(
+    'user-1',
+    '80000000-0000-4000-8000-000000000001',
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'share_attribution_v1', enabled: true, reason: 'enabled' as const }),
+      revokeOwned: async (userId) => { ownerSeen = userId; return true; },
+      now: () => new Date('2026-08-22T01:00:00.000Z')
+    }
+  );
+  expect(ownerSeen).toBe('user-1');
+  expect(result).toEqual({ enabled: true, notFound: false, revokedAt: '2026-08-22T01:00:00.000Z' });
+});
+
+test('share link DELETE route derives creator from session without physical deletion', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'share-links', '[id]', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('revokeCanonicalShareLink(session.sub, id)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/\.delete\(|deleteMany\(|body\.createdByUserId/);
+});
+
+test('V008 recommendation exposure migration is additive and preserves canonical context', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821190000_add_recommendation_exposures', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain('CREATE TABLE "recommendation_exposures"');
+  expect(migration).toContain('"recommendationKey" VARCHAR(80) NOT NULL');
+  expect(migration).toContain('"targetToolKey" VARCHAR(80) NOT NULL');
+  expect(migration).toContain('CHECK ("rank" BETWEEN 1 AND 3)');
+  expect(migration).toContain('CHECK ("userId" IS NOT NULL OR "sessionId" IS NOT NULL)');
+  expect(migration.match(/ON DELETE SET NULL/g)?.length).toBe(3);
+  expect(migration).not.toContain('ON DELETE CASCADE');
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|DELETE FROM|INSERT INTO|UPDATE\s+"?recommendation_exposures)\b/i);
+});
+
+test('V008 leaves existing NBA event and ranking implementations intact', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821190000_add_recommendation_exposures', 'migration.sql'
+  ), 'utf8');
+  expect(migration).not.toMatch(/ALTER TABLE "product_events"|ALTER TABLE "intent_edges"/);
+  expect(migration).not.toMatch(/recommendation\.shown|recommendation\.clicked|recommendation\.completed/);
+});
+
+test('recommendation exposure contract rejects persisted identity and invalid rank', () => {
+  const valid = { recommendationKey: 'quote.to.receipt', targetToolKey: 'recibos', variant: 'default', rank: 1 };
+  expect(parseRecommendationExposure(valid)).toEqual({ ok: true, data: valid });
+  expect(parseRecommendationExposure({ ...valid, userId: 'other' })).toEqual({ ok: false, error: 'unknown-field' });
+  expect(parseRecommendationExposure({ ...valid, sourceTaskId: '10000000-0000-4000-8000-000000000001' }))
+    .toEqual({ ok: false, error: 'unknown-field' });
+  expect(parseRecommendationExposure({ ...valid, rank: 4 })).toEqual({ ok: false, error: 'invalid-rank' });
+});
+
+test('recommendation exposure writer is flag-gated and persists pseudonymous subject', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const sessionId = pseudonymizeRecommendationSession('anonymous-session-123456789');
+  const result = await createRecommendationExposure({ sessionId }, {
+    recommendationKey: 'quote.to.receipt', targetToolKey: 'recibos', rank: 2
+  }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'nba_v1', enabled: true, reason: 'enabled' as const }),
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: () => 'a0000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-22T02:00:00.000Z')
+  });
+  expect(result).toEqual({
+    enabled: true, exposureId: 'a0000000-0000-4000-8000-000000000001', shownAt: '2026-08-22T02:00:00.000Z'
+  });
+  expect(persisted).toMatchObject({
+    userId: null, sessionId, recommendationKey: 'quote.to.receipt',
+    targetToolKey: 'recibos', variant: 'default', rank: 2
+  });
+});
+
+test('recommendation exposure route derives identity from session or pseudonymized header', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'recommendations', 'exposures', 'route.ts'
+  ), 'utf8');
+  expect(route).toMatch(/const subject = session\s*\?/);
+  expect(route).toContain('{ userId: session.sub }');
+  expect(route).toContain('pseudonymizeRecommendationSession(anonymousKey)');
+  expect(route).not.toMatch(/body\.userId|body\.sessionId|body\.sourceTaskId/);
+});
+
+test('recommendation exposure click is subject-scoped and idempotent', async () => {
+  let subjectSeen = '';
+  const result = await clickRecommendationExposure(
+    'a0000000-0000-4000-8000-000000000001',
+    { userId: 'user-1' },
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'nba_v1', enabled: true, reason: 'enabled' as const }),
+      markClicked: async ({ userId }) => { subjectSeen = userId || ''; return 'updated'; },
+      now: () => new Date('2026-08-22T02:30:00.000Z')
+    }
+  );
+  expect(subjectSeen).toBe('user-1');
+  expect(result).toEqual({
+    enabled: true, notFound: false, alreadyClicked: false, clickedAt: '2026-08-22T02:30:00.000Z'
+  });
+
+  const repeated = await clickRecommendationExposure(
+    'a0000000-0000-4000-8000-000000000001',
+    { userId: 'user-1' },
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'nba_v1', enabled: true, reason: 'enabled' as const }),
+      markClicked: async () => 'already-clicked',
+      now: () => new Date('2026-08-22T02:31:00.000Z')
+    }
+  );
+  expect(repeated).toEqual({ enabled: true, notFound: false, alreadyClicked: true });
+});
+
+test('recommendation click route derives identity without accepting a body', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'recommendations', 'exposures', '[id]', 'click', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('clickRecommendationExposure(id, subject)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/request\.json|body\.|searchParams\.get\(['"]userId/);
+});
+
+test('recommendation completion writer requires owned completed target task', async () => {
+  let inputSeen: Record<string, unknown> | null = null;
+  const result = await completeRecommendationExposure(
+    'a0000000-0000-4000-8000-000000000001',
+    'b0000000-0000-4000-8000-000000000001',
+    { userId: 'user-1' },
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'nba_v1', enabled: true, reason: 'enabled' as const }),
+      completeOwned: async (input) => { inputSeen = input as unknown as Record<string, unknown>; return 'updated'; }
+    }
+  );
+  expect(inputSeen).toEqual({
+    exposureId: 'a0000000-0000-4000-8000-000000000001',
+    completedTaskId: 'b0000000-0000-4000-8000-000000000001',
+    userId: 'user-1'
+  });
+  expect(result).toEqual({ enabled: true, notFound: false, targetMismatch: false, alreadyCompleted: false });
+
+  const mismatch = await completeRecommendationExposure(
+    'a0000000-0000-4000-8000-000000000001',
+    'b0000000-0000-4000-8000-000000000001',
+    { userId: 'user-1' },
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'nba_v1', enabled: true, reason: 'enabled' as const }),
+      completeOwned: async () => 'target-mismatch'
+    }
+  );
+  expect(mismatch).toEqual({ enabled: true, targetMismatch: true });
+});
+
+test('recommendation completion has no client-facing API route', () => {
+  const source = readFileSync(path.join(
+    process.cwd(), 'src', 'lib', 'recommendation', 'exposures.ts'
+  ), 'utf8');
+  expect(source).toContain('Writer interno');
+  expect(source).toContain("status: 'completed'");
+  expect(source).toContain('toolKey: exposure.targetToolKey');
+});
+
+test('V009 feedback request migration is additive and bounds free text', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821200000_add_feedback_requests', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain('CREATE TABLE "helpfulness_feedback"');
+  expect(migration).toContain('CREATE TABLE "resolution_requests"');
+  expect(migration).toContain("CHECK (\"rating\" IN ('resolved', 'partial', 'not_resolved'))");
+  expect(migration).toContain('char_length("detail") <= 1000');
+  expect(migration).toContain('char_length("rawText") BETWEEN 3 AND 2000');
+  expect(migration).toContain("CHECK (\"status\" IN ('received', 'triaged', 'planned', 'resolved', 'dismissed'))");
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|DELETE FROM|INSERT INTO)\b/i);
+  expect(migration).not.toContain('ON DELETE CASCADE');
+});
+
+test('V009 foundation introduces no public writer before PII redaction', () => {
+  const docs = readFileSync(path.join(
+    process.cwd(), 'docs', 'architecture', 'sprint-9-feedback.md'
+  ), 'utf8');
+  expect(docs).toContain('detecção/redação de PII');
+  expect(docs).toContain('rate limiting');
+});
+
+test('helpfulness contract redacts common PII and rejects identity smuggling', () => {
+  const detail = 'Fale comigo em pessoa@example.com ou (11) 99999-8888, CPF 123.456.789-10';
+  expect(redactFeedbackPii(detail)).toBe(
+    'Fale comigo em [email-redacted] ou [phone-redacted], CPF [tax-id-redacted]'
+  );
+  expect(parseHelpfulnessFeedback({
+    targetType: 'tool', targetId: 'orcamentos', rating: 'partial', detail
+  })).toMatchObject({
+    ok: true,
+    data: { detail: 'Fale comigo em [email-redacted] ou [phone-redacted], CPF [tax-id-redacted]' }
+  });
+  expect(parseHelpfulnessFeedback({
+    targetType: 'tool', targetId: 'orcamentos', rating: 'resolved', userId: 'other'
+  })).toEqual({ ok: false, error: 'unknown-field' });
+});
+
+test('helpfulness writer persists only server-derived pseudonymous identity', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const anonymousId = pseudonymizeFeedbackIdentity('device-opaque-123456789');
+  const result = await createHelpfulnessFeedback({ userId: 'user-1', anonymousId }, {
+    targetType: 'article', targetId: 'como-fazer', rating: 'resolved'
+  }, {
+    databaseConfigured: () => true,
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: () => 'c0000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-22T03:00:00.000Z')
+  });
+  expect(result).toEqual({ feedbackId: 'c0000000-0000-4000-8000-000000000001', createdAt: '2026-08-22T03:00:00.000Z' });
+  expect(persisted).toMatchObject({ userId: 'user-1', anonymousId, rating: 'resolved' });
+});
+
+test('helpfulness route rate limits before persistence and derives identity', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'feedback', 'helpfulness', 'route.ts'
+  ), 'utf8');
+  expect(route.indexOf('consumeRateLimit')).toBeLessThan(route.indexOf('createHelpfulnessFeedback'));
+  expect(route).toContain('pseudonymizeFeedbackIdentity(anonymousKey)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route.indexOf('createHelpfulnessFeedback')).toBeLessThan(route.indexOf("eventName: 'feedback.helpfulness'"));
+  expect(route).toContain('rating: parsed.data.rating');
+  expect(route).not.toMatch(/detail:\s*parsed|properties:[\s\S]{0,200}detail/);
+  expect(route).not.toMatch(/body\.userId|body\.anonymousId/);
+});
+
+test('resolution request contract redacts PII and derives closed intent server-side', () => {
+  expect(normalizeResolutionIntent('Preciso criar um orçamento para cliente')).toBe('document.quote');
+  expect(normalizeResolutionIntent('Algo totalmente novo')).toBe('unclassified');
+  const parsed = parseResolutionRequest({
+    rawText: 'Preciso de contrato, retorno em pessoa@example.com', source: 'search'
+  });
+  expect(parsed).toEqual({
+    ok: true,
+    data: { rawText: 'Preciso de contrato, retorno em [email-redacted]', source: 'search' }
+  });
+  expect(parseResolutionRequest({ rawText: 'pedido', source: 'search', normalizedIntent: 'forged' }))
+    .toEqual({ ok: false, error: 'unknown-field' });
+});
+
+test('resolution request writer persists redacted text and server-normalized intent', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const result = await createResolutionRequest({ anonymousId: 'feedback_hash' }, {
+    rawText: 'Quero um recibo e meu telefone é 11 99999-8888', source: 'feedback'
+  }, {
+    databaseConfigured: () => true,
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: () => 'd0000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-22T03:30:00.000Z')
+  });
+  expect(result).toMatchObject({ requestId: 'd0000000-0000-4000-8000-000000000001', normalizedIntent: 'document.receipt' });
+  expect(persisted).toMatchObject({
+    rawText: 'Quero um recibo e meu telefone é [phone-redacted]',
+    normalizedIntent: 'document.receipt', status: 'received', source: 'feedback'
+  });
+  expect(JSON.stringify(persisted)).not.toContain('99999-8888');
+});
+
+test('resolution request route rate limits and never trusts normalized intent or identity', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'feedback', 'resolution-requests', 'route.ts'
+  ), 'utf8');
+  expect(route.indexOf('consumeRateLimit')).toBeLessThan(route.indexOf('createResolutionRequest'));
+  expect(route).toContain('pseudonymizeFeedbackIdentity(anonymousKey)');
+  expect(route.indexOf('createResolutionRequest')).toBeLessThan(route.indexOf("eventName: 'request.resolution_gap'"));
+  expect(route).toContain('normalized_intent: result.normalizedIntent');
+  expect(route).not.toMatch(/properties:[\s\S]{0,200}rawText/);
+  expect(route).not.toMatch(/body\.normalizedIntent|body\.userId|body\.anonymousId|body\.status/);
+});
+
+test('V010 AI gateway migration is additive and has no plaintext prompt column', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821210000_add_ai_gateway', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain('CREATE TABLE "ai_interactions"');
+  expect(migration).toContain('"inputHash" CHAR(64) NOT NULL');
+  expect(migration).toContain('"outputJson" JSONB NOT NULL');
+  expect(migration).toContain('"safetyResult" JSONB NOT NULL');
+  expect(migration).toContain('CHECK ("userId" IS NOT NULL OR "sessionId" IS NOT NULL)');
+  expect(migration).toContain('CHECK ("latencyMs" >= 0)');
+  expect(migration).toContain('CHECK ("estimatedCost" >= 0)');
+  expect(migration).not.toMatch(/"(prompt|input|rawInput|rawPrompt)"\s/i);
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|DELETE FROM|INSERT INTO)\b/i);
+});
+
+test('AI rollout flags remain disabled by default', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821101000_add_feature_flags', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain("('ai_router_beta', 'AI need router beta', false, 0");
+  expect(migration).toContain("('ai_prefill_beta', 'AI structured prefill beta', false, 0");
+});
+
+test('AI interaction contract accepts only hashes and structured allowlisted output', () => {
+  const valid = {
+    capability: 'route', modelKey: 'rules_v1', promptVersion: 'router_v1',
+    inputHash: hashAiInput('texto sensível que não será persistido'),
+    output: { tool_key: 'orcamentos', confidence_band: 'high', fallback: false },
+    safety: { blocked: false, policy: 'safe_v1', category_count: 0, redacted: true },
+    latencyMs: 12, estimatedCost: 0
+  };
+  expect(parseAiInteraction(valid)).toEqual({ ok: true, data: valid });
+  expect(parseAiInteraction({ ...valid, prompt: 'não persistir' })).toEqual({ ok: false, error: 'unknown-field' });
+  expect(parseAiInteraction({ ...valid, output: { answer: 'texto livre' } })).toEqual({ ok: false, error: 'invalid-output' });
+  expect(parseAiInteraction({ ...valid, inputHash: 'raw-input' })).toEqual({ ok: false, error: 'invalid-input-hash' });
+});
+
+test('AI interaction writer is capability-gated and stores no raw input', async () => {
+  let flagSeen = '';
+  let persisted: Record<string, unknown> | null = null;
+  const inputHash = hashAiInput('pedido privado');
+  const result = await recordAiInteraction({ userId: 'user-1' }, {
+    capability: 'prefill', modelKey: 'extractor_v1', promptVersion: 'prefill_v1',
+    inputHash, output: { field_count: 3, confidence_band: 'medium' },
+    safety: { blocked: false, policy: 'safe_v1', category_count: 0, redacted: true },
+    latencyMs: 45, estimatedCost: 0.001
+  }, {
+    databaseConfigured: () => true,
+    decide: async (flag) => { flagSeen = flag; return { key: flag, enabled: true, reason: 'enabled' as const }; },
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: () => 'e0000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-22T04:00:00.000Z')
+  });
+  expect(flagSeen).toBe('ai_prefill_beta');
+  expect(result).toMatchObject({ enabled: true, interactionId: 'e0000000-0000-4000-8000-000000000001' });
+  expect(persisted).toMatchObject({ userId: 'user-1', inputHash, capability: 'prefill', accepted: null });
+  expect(JSON.stringify(persisted)).not.toContain('pedido privado');
 });
