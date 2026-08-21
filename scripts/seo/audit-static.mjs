@@ -14,6 +14,29 @@ const required = [
 ];
 
 const failures = [];
+const tierFixture = JSON.parse(
+  await readFile(path.join(root, 'scripts/seo/tier-fixtures.json'), 'utf8')
+);
+const tierEntries = Object.entries(tierFixture.tiers || {}).flatMap(([tier, entries]) =>
+  entries.map((entry) => ({ ...entry, tier }))
+);
+const tierPaths = new Set();
+for (const entry of tierEntries) {
+  if (!entry.path?.startsWith('/') || !entry.routeFile || typeof entry.indexable !== 'boolean') {
+    failures.push(`fixture SEO ${entry.tier}: contrato inválido`);
+    continue;
+  }
+  if (tierPaths.has(entry.path)) failures.push(`fixture SEO: URL duplicada ${entry.path}`);
+  tierPaths.add(entry.path);
+  try {
+    if (!(await stat(path.join(root, entry.routeFile))).isFile()) {
+      failures.push(`fixture SEO ${entry.path}: routeFile não é arquivo`);
+    }
+  } catch {
+    failures.push(`fixture SEO ${entry.path}: routeFile ausente (${entry.routeFile})`);
+  }
+}
+if (!tierEntries.length) failures.push('fixture SEO: nenhuma URL Tier 0/1 definida');
 for (const relative of required) {
   try {
     if (!(await stat(path.join(root, relative))).isFile()) failures.push(`${relative}: não é arquivo`);
@@ -94,8 +117,8 @@ if (!i18nSeo.includes('includeHreflang') || !i18nSeo.includes('index: false')) {
 }
 
 const layout = await readFile(path.join(root, 'src/app/layout.tsx'), 'utf8');
-if (!layout.includes("template: '%s | Resolva Jato'")) {
-  failures.push('layout.tsx: title template sem marca Resolva Jato');
+if (!layout.includes('template: `%s | ${BRAND_DISPLAY_NAME}`')) {
+  failures.push('layout.tsx: title template não usa BRAND_DISPLAY_NAME');
 }
 if (!layout.includes('lang="pt-BR"')) {
   failures.push('layout.tsx: lang pt-BR estático ausente');

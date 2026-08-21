@@ -380,3 +380,49 @@ model RateLimitBucket {
   @@index([windowStart])
   @@map("rate_limit_buckets")
 }
+
+model ProductEvent {
+  id          String   @id @default(uuid()) @db.Uuid
+  eventName   String
+  occurredAt  DateTime
+  userId      String?
+  anonymousId String
+  sessionId   String
+  toolKey     String?
+  taskId      String?  @db.Uuid
+  artifactId  String?  @db.Uuid
+  properties  Json     @default("{}")
+  schemaVersion Int    @default(1)
+  receivedAt  DateTime @default(now())
+
+  @@index([occurredAt])
+  @@index([eventName, occurredAt])
+  @@index([userId, occurredAt])
+  @@index([anonymousId, occurredAt])
+  @@index([sessionId, occurredAt])
+  @@index([toolKey, occurredAt])
+  @@map("product_events")
+}
+
+model FeatureFlag {
+  key            String   @id
+  description    String
+  enabled        Boolean  @default(false)
+  rolloutPercent Int      @default(0)
+  rules          Json     @default("{}")
+  updatedAt      DateTime @updatedAt
+
+  @@map("feature_flags")
+}
+
+model ExperimentAssignment {
+  id            String   @id @default(uuid()) @db.Uuid
+  experimentKey String
+  subjectKey    String
+  variant       String
+  assignedAt    DateTime @default(now())
+
+  @@unique([experimentKey, subjectKey])
+  @@index([experimentKey, assignedAt])
+  @@map("experiment_assignments")
+}

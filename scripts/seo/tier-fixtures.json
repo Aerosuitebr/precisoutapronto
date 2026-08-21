@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "originEnv": "SEO_BASE_URL",
+  "tiers": {
+    "tier0": [
+      { "path": "/", "routeFile": "src/app/page.tsx", "indexable": true },
+      { "path": "/orcamento-com-pix", "routeFile": "src/app/orcamento-com-pix/page.tsx", "indexable": true },
+      { "path": "/gerador-de-recibo", "routeFile": "src/app/gerador-de-recibo/page.tsx", "indexable": true },
+      { "path": "/gerador-de-contrato", "routeFile": "src/app/gerador-de-contrato/page.tsx", "indexable": true },
+      { "path": "/gerador-de-proposta-comercial", "routeFile": "src/app/gerador-de-proposta-comercial/page.tsx", "indexable": true },
+      { "path": "/gerador-de-curriculo", "routeFile": "src/app/gerador-de-curriculo/page.tsx", "indexable": true },
+      { "path": "/calculadora-de-rescisao", "routeFile": "src/app/calculadora-de-rescisao/page.tsx", "indexable": true },
+      { "path": "/editor-de-pdf-online", "routeFile": "src/app/editor-de-pdf-online/page.tsx", "indexable": true },
+      { "path": "/corretor-de-redacao-enem", "routeFile": "src/app/corretor-de-redacao-enem/page.tsx", "indexable": true },
+      { "path": "/recursos", "routeFile": "src/app/recursos/page.tsx", "indexable": true }
+    ],
+    "tier1": [
+      { "path": "/recibo-de-pagamento", "routeFile": "src/app/recibo-de-pagamento/page.tsx", "indexable": true },
+      { "path": "/recibo-de-aluguel", "routeFile": "src/app/recibo-de-aluguel/page.tsx", "indexable": true },
+      { "path": "/proposta-comercial-mei", "routeFile": "src/app/proposta-comercial-mei/page.tsx", "indexable": true },
+      { "path": "/contrato-de-aluguel", "routeFile": "src/app/contrato-de-aluguel/page.tsx", "indexable": true },
+      { "path": "/calculadora-de-ferias", "routeFile": "src/app/calculadora-de-ferias/page.tsx", "indexable": true },
+      { "path": "/calculadora-de-decimo-terceiro", "routeFile": "src/app/calculadora-de-decimo-terceiro/page.tsx", "indexable": true },
+      { "path": "/gerador-de-referencias-abnt", "routeFile": "src/app/gerador-de-referencias-abnt/page.tsx", "indexable": true },
+      { "path": "/remover-fundo-de-imagem", "routeFile": "src/app/remover-fundo-de-imagem/page.tsx", "indexable": true },
+      { "path": "/biblioteca", "routeFile": "src/app/biblioteca/page.tsx", "indexable": true },
+      { "path": "/precisou-ta-pronto", "routeFile": "src/app/precisou-ta-pronto/page.tsx", "indexable": true }
+    ]
+  }
+}
