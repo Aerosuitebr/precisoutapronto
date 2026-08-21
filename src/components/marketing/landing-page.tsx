@@ -79,7 +79,7 @@ export function LandingPage() {
       <section id="categorias" className="scroll-mt-24 bg-[#f8faf7] py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="min-w-0">
-            <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Categorias dinâmicas</p><h2 className="rj-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Comece pelo contexto do problema.</h2><p className="mt-4 text-sm leading-7 text-slate-600">Filtre a coleção e encontre caminhos que fazem sentido para sua rotina.</p></div>
+            <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Escolha por objetivo</p><h2 className="rj-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Encontre a ferramenta certa para o que você precisa.</h2><p className="mt-4 text-base leading-7 text-slate-600">Selecione uma área e veja soluções prontas para criar documentos, fazer cálculos e organizar sua rotina.</p></div>
             <div className="mt-8 min-w-0"><CategoryExplorer /></div>
           </div>
         </div>

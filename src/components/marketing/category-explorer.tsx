@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRight, LayoutGrid } from 'lucide-react';
+import { ArrowRight, Check, LayoutGrid } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
 import { getToolsByCategory, toolCategories, type ToolCategoryId } from '@/lib/tools-catalog';
 import { cn } from '@/lib/utils';
@@ -56,7 +56,7 @@ export function CategoryExplorer() {
         ))}
       </div>
 
-      <ul className="mt-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <ul className="mt-7 grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {CATEGORY_OVERVIEW.map((category) => {
           const CategoryIcon = category.icon;
           const isActive = active === category.id;
@@ -66,16 +66,14 @@ export function CategoryExplorer() {
           const extra = active === 'todos' ? category.tools.length - shownTools.length : 0;
 
           return (
-            <li key={category.id} className={cn('relative min-w-0', isDimmed && 'hidden sm:block')}>
+            <li key={category.id} className={cn('relative min-w-0', isDimmed && 'hidden')}>
               <AuthAwareLink
                 href={`/recursos#category-${category.id}`}
-                onMouseEnter={() => setActive(category.id)}
                 className={cn(
-                  'group flex h-full flex-col overflow-hidden rounded-2xl border bg-slate-50/80 p-5 transition hover:-translate-y-0.5 hover:shadow-md',
+                  'group flex h-full min-h-[330px] flex-col overflow-hidden rounded-[1.5rem] border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg',
                   isActive
-                    ? 'border-[#0b5cff]/45 bg-white shadow-md ring-1 ring-[#0b5cff]/20'
-                    : 'border-slate-200 hover:border-[#0b5cff]/40 hover:bg-white',
-                  isDimmed && 'opacity-55'
+                    ? 'border-[#0b5cff] ring-2 ring-[#0b5cff]/15'
+                    : 'border-slate-200 hover:border-[#0b5cff]/40'
                 )}
               >
                 <span className={cn('absolute inset-x-0 top-0 h-1', category.accentBar)} aria-hidden />
@@ -84,30 +82,29 @@ export function CategoryExplorer() {
                 >
                   <CategoryIcon className="h-5 w-5" />
                 </span>
-                <p className="mt-4 text-base font-bold text-[#031f4b] group-hover:text-[#0b5cff]">
-                  {category.shortLabel}
-                </p>
-                <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  {category.tools.length} ferramentas
-                </p>
-                <p className="mt-2 flex-1 break-words text-sm leading-6 text-slate-600">{category.description}</p>
-                <ul className="mt-4 flex flex-wrap gap-1.5">
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <p className="text-xl font-black text-[#031f4b] group-hover:text-[#0b5cff]">{category.shortLabel}</p>
+                  <span className="shrink-0 rounded-full bg-[#eef5ff] px-3 py-1 text-xs font-bold text-[#0b5cff]">{category.tools.length} opções</span>
+                </div>
+                <p className="mt-3 break-words text-sm leading-6 text-slate-600">{category.description}</p>
+                <ul className="mt-5 flex-1 space-y-2.5 border-t border-slate-100 pt-5">
                   {(highlights || shownTools.map((tool) => tool.name)).map((name) => (
                     <li
                       key={name}
-                      className="max-w-full break-words rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-600 ring-1 ring-slate-200"
+                      className="flex max-w-full items-start gap-2 break-words text-sm font-medium leading-5 text-slate-700"
                     >
-                      {name}
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden />
+                      <span>{name}</span>
                     </li>
                   ))}
                   {extra > 0 && (
-                    <li className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-slate-400 ring-1 ring-slate-200">
-                      +{extra}
+                    <li className="pl-6 text-sm font-semibold text-slate-500">
+                      + {extra} {extra === 1 ? 'ferramenta' : 'ferramentas'}
                     </li>
                   )}
                 </ul>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#0b5cff]">
-                  Explorar
+                <span className="mt-6 inline-flex items-center gap-2 border-t border-slate-100 pt-4 text-sm font-black text-[#0b5cff]">
+                  Ver ferramentas
                   <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
                 </span>
               </AuthAwareLink>

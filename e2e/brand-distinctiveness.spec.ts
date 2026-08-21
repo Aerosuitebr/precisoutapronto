@@ -9,7 +9,7 @@ test.describe('brand distinctiveness', () => {
     await expect(page.locator('a[href="/para/autonomos"]')).toHaveCount(0);
     await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(5);
     await expect(page.getByRole('tab', { name: 'Todas as áreas' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Comece pelo contexto do problema.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Encontre a ferramenta certa para o que você precisa.' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Ferramentas que entregam um resultado, não mais uma tarefa.' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Abrir uma demonstração completa' })).toHaveAttribute(
       'href',
@@ -35,7 +35,7 @@ test.describe('brand distinctiveness', () => {
     }));
     expect(viewport.documentWidth).toBeLessThanOrEqual(viewport.viewportWidth);
 
-    await expect(page.getByRole('heading', { name: 'Comece pelo contexto do problema.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Encontre a ferramenta certa para o que você precisa.' })).toBeVisible();
     const categoryCards = page.locator('main a[href^="/recursos#category-"]');
     await expect(categoryCards.first()).toBeVisible();
     const firstCardBox = await categoryCards.first().boundingBox();

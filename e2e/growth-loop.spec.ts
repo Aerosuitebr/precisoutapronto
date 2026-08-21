@@ -128,7 +128,7 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   for (const label of ['Orçamentos', 'Recibos', 'Contratos', 'Currículos']) {
     await expect(main.getByText(label, { exact: true }).first()).toBeVisible();
   }
-  await expect(page.getByRole('heading', { name: 'Comece pelo contexto do problema.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Encontre a ferramenta certa para o que você precisa.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Do problema ao resultado em três movimentos.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Guias curtos. Aplicação imediata.' })).toBeVisible();
   await expect(page.locator('main')).not.toContainText('Jato Games');
