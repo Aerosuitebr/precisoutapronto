@@ -8,6 +8,8 @@ test.describe('PT quote smoke', () => {
 
     await expect(page.locator('body')).toBeVisible();
     await expect(page.locator('h1, h2').filter({ hasText: /orçamento|orcamento|Pix|Precisou/i }).first()).toBeVisible();
+    await expect(page.getByLabel('Chave Pix')).toBeHidden();
+    await page.getByRole('button', { name: 'Adicionar validade, condições ou Pix' }).click();
     await expect(page.getByLabel('Chave Pix')).toBeVisible();
     await expect(page.locator('body')).not.toContainText(/Application error|Internal Server Error/i);
   });
