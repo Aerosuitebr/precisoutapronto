@@ -32,6 +32,8 @@ CREATE TABLE "customers" (
     "addressJson" BYTEA,
     "metadata" JSONB NOT NULL DEFAULT '{}',
     "encryptionKeyVersion" VARCHAR(32),
+    "consentVersion" VARCHAR(32) NOT NULL,
+    "consentedAt" TIMESTAMP(3) NOT NULL,
     "archivedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

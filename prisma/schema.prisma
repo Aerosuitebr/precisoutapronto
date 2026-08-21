@@ -519,6 +519,8 @@ model Artifact {
   duplicates        Artifact[]         @relation("ArtifactDuplication")
   outgoingRelations ArtifactRelation[] @relation("ArtifactRelationSource")
   incomingRelations ArtifactRelation[] @relation("ArtifactRelationTarget")
+  sourceTemplates    PersonalTemplate[] @relation("PersonalTemplateSource")
+  instantiatedFrom  PersonalTemplate?  @relation("ArtifactTemplate", fields: [templateId], references: [id], onDelete: SetNull)
 
   @@index([taskId, updatedAt])
   @@index([userId, updatedAt])
@@ -527,6 +529,27 @@ model Artifact {
   @@index([duplicatedFromId])
   @@index([templateId])
   @@map("artifacts")
+}
+
+model PersonalTemplate {
+  id               String   @id @default(uuid()) @db.Uuid
+  ownerUserId      String
+  sourceArtifactId String   @db.Uuid
+  toolKey          String   @db.VarChar(80)
+  name             String   @db.VarChar(120)
+  templatePayload  Json     @default("{}")
+  visibility       String   @default("private") @db.VarChar(16)
+  status           String   @default("active") @db.VarChar(24)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  sourceArtifact Artifact   @relation("PersonalTemplateSource", fields: [sourceArtifactId], references: [id], onDelete: Restrict)
+  instances      Artifact[] @relation("ArtifactTemplate")
+
+  @@index([ownerUserId, updatedAt])
+  @@index([toolKey, visibility, status])
+  @@index([sourceArtifactId])
+  @@map("personal_templates")
 }
 
 model ArtifactRelation {
@@ -579,6 +602,8 @@ model Customer {
   addressJson          Bytes?
   metadata             Json      @default("{}")
   encryptionKeyVersion String?   @db.VarChar(32)
+  consentVersion       String    @db.VarChar(32)
+  consentedAt          DateTime
   archivedAt           DateTime?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
@@ -586,4 +611,19 @@ model Customer {
   @@index([ownerUserId, archivedAt])
   @@index([ownerUserId, displayName])
   @@map("customers")
+}
+
+model ContextAuditEvent {
+  id             String   @id @default(uuid()) @db.Uuid
+  actorUserId    String
+  entityType     String   @db.VarChar(32)
+  entityId       String   @db.Uuid
+  action         String   @db.VarChar(32)
+  changedFields  Json     @default("[]")
+  consentVersion String?  @db.VarChar(32)
+  occurredAt     DateTime @default(now())
+
+  @@index([actorUserId, occurredAt])
+  @@index([entityType, entityId, occurredAt])
+  @@map("context_audit_events")
 }

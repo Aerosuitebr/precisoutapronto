@@ -76,3 +76,68 @@ export function parseBusinessContextWrite(value: unknown):
   if (contentKeys.length === 0) return { ok: false, error: 'empty-update' };
   return { ok: true, data: { ...input, consentVersion: CONTEXT_CONSENT_VERSION } };
 }
+
+const CUSTOMER_FIELDS = new Set([
+  'consent', 'consentVersion', 'type', 'displayName', 'legalName', 'taxId',
+  'email', 'phone', 'address', 'metadata'
+]);
+const CUSTOMER_PATCH_FIELDS = new Set([
+  'consent', 'consentVersion', 'displayName', 'legalName', 'taxId',
+  'email', 'phone', 'address', 'metadata'
+]);
+const CUSTOMER_METADATA_FIELDS = new Set(['tags', 'source']);
+
+function validCustomerShared(input: Record<string, unknown>) {
+  if (!optionalText(input.displayName, 120)
+    || (input.legalName !== null && !optionalText(input.legalName, 160))) return 'invalid-name';
+  if (input.taxId !== undefined && input.taxId !== null && (typeof input.taxId !== 'string' || !/^(\d{11}|\d{14})$/.test(input.taxId.replace(/\D/g, '')))) return 'invalid-tax-id';
+  if (input.email !== undefined && input.email !== null && (typeof input.email !== 'string' || input.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email))) return 'invalid-email';
+  if (input.phone !== undefined && input.phone !== null && (typeof input.phone !== 'string' || !/^\+?[1-9]\d{7,14}$/.test(input.phone.replace(/[\s()-]/g, '')))) return 'invalid-phone';
+  if (input.address !== undefined && input.address !== null) {
+    const address = objectRecord(input.address);
+    if (!address || unknownKey(address, ADDRESS_FIELDS)
+      || !optionalText(address.line1, 160) || !optionalText(address.line2, 160)
+      || !optionalText(address.city, 100) || !optionalText(address.state, 60)
+      || !optionalText(address.postalCode, 20) || !optionalText(address.country, 2)) return 'invalid-address';
+  }
+  if (input.metadata !== undefined) {
+    const metadata = objectRecord(input.metadata);
+    if (!metadata || unknownKey(metadata, CUSTOMER_METADATA_FIELDS)) return 'invalid-metadata';
+    if (metadata.source !== undefined && metadata.source !== 'manual') return 'invalid-metadata';
+    if (metadata.tags !== undefined && (!Array.isArray(metadata.tags) || metadata.tags.length > 10
+      || metadata.tags.some((tag) => typeof tag !== 'string' || !/^[a-z0-9_-]{1,32}$/.test(tag)))) return 'invalid-metadata';
+  }
+  return null;
+}
+
+function customerConsent(input: Record<string, unknown>) {
+  return input.consent === true && input.consentVersion === CONTEXT_CONSENT_VERSION;
+}
+
+export function parseCustomerCreate(value: unknown):
+  | { ok: true; data: Record<string, unknown> & { consentVersion: typeof CONTEXT_CONSENT_VERSION } }
+  | { ok: false; error: string } {
+  const input = objectRecord(value);
+  if (!input) return { ok: false, error: 'invalid-input' };
+  if (unknownKey(input, CUSTOMER_FIELDS)) return { ok: false, error: 'unknown-field' };
+  if (!customerConsent(input)) return { ok: false, error: 'explicit-consent-required' };
+  if (!['person', 'business'].includes(String(input.type || ''))) return { ok: false, error: 'invalid-type' };
+  if (typeof input.displayName !== 'string' || !input.displayName.trim()) return { ok: false, error: 'display-name-required' };
+  const invalid = validCustomerShared(input);
+  if (invalid) return { ok: false, error: invalid };
+  return { ok: true, data: { ...input, consentVersion: CONTEXT_CONSENT_VERSION } };
+}
+
+export function parseCustomerPatch(value: unknown):
+  | { ok: true; data: Record<string, unknown> & { consentVersion: typeof CONTEXT_CONSENT_VERSION } }
+  | { ok: false; error: string } {
+  const input = objectRecord(value);
+  if (!input) return { ok: false, error: 'invalid-input' };
+  if (unknownKey(input, CUSTOMER_PATCH_FIELDS)) return { ok: false, error: 'unknown-field' };
+  if (!customerConsent(input)) return { ok: false, error: 'explicit-consent-required' };
+  const contentKeys = Object.keys(input).filter((key) => !['consent', 'consentVersion'].includes(key));
+  if (contentKeys.length === 0) return { ok: false, error: 'empty-update' };
+  const invalid = validCustomerShared(input);
+  if (invalid) return { ok: false, error: invalid };
+  return { ok: true, data: { ...input, consentVersion: CONTEXT_CONSENT_VERSION } };
+}

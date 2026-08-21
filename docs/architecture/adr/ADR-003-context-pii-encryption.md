@@ -17,8 +17,10 @@ necessidade e exige PII cifrada.
 - Criptografia será feita na aplicação com AES-256-GCM e envelope versionado.
 - Produção deverá obter a chave por um `ContextKeyProvider`; chave não será salva
   no banco, logs, bundle cliente ou código-fonte.
-- Cada campo sensível será persistido como `BYTEA`, contendo versão, nonce,
-  ciphertext e authentication tag. `encryptionKeyVersion` identifica a chave.
+- Cada campo sensível será persistido como `BYTEA`, contendo versão do envelope,
+  versão da chave, nonce, ciphertext e authentication tag. A coluna
+  `encryptionKeyVersion` é apenas metadata da última escrita, não fonte para
+  decifrar todos os campos.
 - Associated data vinculará ciphertext a entidade, registro, proprietário e campo,
   impedindo transplante entre registros.
 - Writers falharão fechados quando a chave estiver ausente ou inválida.
@@ -42,5 +44,6 @@ rollback de aplicação.
 
 O envelope criptográfico e o provider de ambiente foram concluídos, incluindo
 keyring com até oito versões e escolha independente da versão ativa. Permanecem
-pendentes consentimento, retenção, audit trail e ownership antes da criação dos
-endpoints de escrita.
+pendentes retenção e ownership antes da criação dos endpoints de escrita. O
+audit trail estrutural foi criado e armazena apenas nomes de campos allowlisted,
+nunca seus valores.

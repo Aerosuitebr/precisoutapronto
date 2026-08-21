@@ -41,12 +41,31 @@ import {
   artifactShadowMetrics
 } from '../src/lib/artifacts/observability';
 import { canonicalHistoryLimit, listCanonicalHistory } from '../src/lib/artifacts/history';
+import { duplicateOwnedArtifact, portableArtifactPayload } from '../src/lib/artifacts/duplication';
+import { parsePersonalTemplateCreate } from '../src/lib/templates/contracts';
+import { createPersonalTemplate, instantiatePersonalTemplate } from '../src/lib/templates/repository';
 import { decryptContextValue, encryptContextValue } from '../src/lib/context/encryption';
 import {
   createEnvironmentContextKeyProvider,
   type ContextKeyProvider
 } from '../src/lib/context/key-provider';
-import { CONTEXT_CONSENT_VERSION, parseBusinessContextWrite } from '../src/lib/context/contracts';
+import {
+  CONTEXT_CONSENT_VERSION,
+  parseBusinessContextWrite,
+  parseCustomerCreate,
+  parseCustomerPatch
+} from '../src/lib/context/contracts';
+import { contextChangedFields, validContextAuditMetadata } from '../src/lib/context/audit';
+import { writeBusinessContextProfile } from '../src/lib/context/profile-repository';
+import { readBusinessContextProfile } from '../src/lib/context/profile-reader';
+import { isTrustedWriteOrigin } from '../src/lib/security/request-origin';
+import {
+  archiveContextCustomer,
+  createContextCustomer,
+  restoreContextCustomer,
+  updateContextCustomer
+} from '../src/lib/context/customer-repository';
+import { getContextCustomer, listContextCustomers, parseCustomerListQuery } from '../src/lib/context/customer-reader';
 import {
   recommendationMetrics,
   recommendationObservabilityDays,
@@ -704,8 +723,8 @@ test('context encryption round-trips only with the same authenticated scope', ()
   const encrypted = encryptContextValue('cliente@example.com', scope, provider);
   expect(encrypted?.keyVersion).toBe('v1');
   expect(encrypted?.ciphertext.toString('utf8')).not.toContain('cliente@example.com');
-  expect(decryptContextValue(encrypted!.ciphertext, 'v1', scope, provider)).toBe('cliente@example.com');
-  expect(decryptContextValue(encrypted!.ciphertext, 'v1', { ...scope, ownerUserId: 'user-2' }, provider)).toBeNull();
+  expect(decryptContextValue(encrypted!.ciphertext, scope, provider)).toBe('cliente@example.com');
+  expect(decryptContextValue(encrypted!.ciphertext, { ...scope, ownerUserId: 'user-2' }, provider)).toBeNull();
 });
 
 test('context encryption fails closed for missing keys and tampered envelopes', () => {
@@ -724,8 +743,8 @@ test('context encryption fails closed for missing keys and tampered envelopes', 
   const encrypted = encryptContextValue('11999999999', scope, provider)!;
   const tampered = Buffer.from(encrypted.ciphertext);
   tampered[tampered.length - 1] ^= 1;
-  expect(decryptContextValue(tampered, 'v1', scope, provider)).toBeNull();
-  expect(decryptContextValue(encrypted.ciphertext, 'v2', scope, unavailable)).toBeNull();
+  expect(decryptContextValue(tampered, scope, provider)).toBeNull();
+  expect(decryptContextValue(encrypted.ciphertext, scope, unavailable)).toBeNull();
 });
 
 test('context keyring rotates writes while retaining old versions for reads', () => {
@@ -738,6 +757,23 @@ test('context keyring rotates writes while retaining old versions for reads', ()
   expect(provider.active()?.version).toBe('2026-08');
   expect(provider.byVersion('2026-01')?.key.equals(Buffer.alloc(32, 1))).toBe(true);
   expect(provider.byVersion('missing')).toBeNull();
+});
+
+test('each context envelope embeds its key version for mixed-version patches', () => {
+  const oldKey = Buffer.alloc(32, 3);
+  const newKey = Buffer.alloc(32, 4);
+  const keys = new Map([['old', oldKey], ['new', newKey]]);
+  let active = 'old';
+  const provider: ContextKeyProvider = {
+    active: () => ({ version: active, key: keys.get(active)! }),
+    byVersion: (version) => keys.has(version) ? { version, key: keys.get(version)! } : null
+  };
+  const scope = { entity: 'customer' as const, recordId: 'record-1', ownerUserId: 'user-1', field: 'email' };
+  const oldEnvelope = encryptContextValue('old@example.com', scope, provider)!;
+  active = 'new';
+  const newEnvelope = encryptContextValue('new@example.com', scope, provider)!;
+  expect(decryptContextValue(oldEnvelope.ciphertext, scope, provider)).toBe('old@example.com');
+  expect(decryptContextValue(newEnvelope.ciphertext, scope, provider)).toBe('new@example.com');
 });
 
 test('context keyring rejects malformed or oversized configurations', () => {
@@ -783,4 +819,571 @@ test('business context contract rejects nested smuggling and empty updates', () 
   expect(parseBusinessContextWrite({
     ...consent, preferences: { locale: 'en-US' }
   })).toEqual({ ok: false, error: 'invalid-preferences' });
+});
+
+test('context audit migration stores metadata only and has no destructive cascade', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821161000_add_context_audit', 'migration.sql'
+  ), 'utf8');
+  const statements = migration.replace(/^--.*$/gm, '');
+  expect(migration).toContain('CREATE TABLE "context_audit_events"');
+  expect(migration).toContain('"changedFields" JSONB');
+  expect(statements).not.toMatch(/payload|ciphertext|email|taxId|phone|address/i);
+  expect(statements).not.toMatch(/\b(DROP|TRUNCATE|DELETE FROM|ON DELETE CASCADE)\b/i);
+});
+
+test('context audit records field names without carrying their values', () => {
+  const changed = contextChangedFields({
+    email: 'secret@example.com', phone: '11999999999', consent: true, unknown: 'secret'
+  });
+  expect(changed).toEqual(['email', 'phone']);
+  expect(JSON.stringify(changed)).not.toContain('secret@example.com');
+  expect(validContextAuditMetadata({
+    entityType: 'user_business_profile', action: 'updated', changedFields: changed
+  })).toBe(true);
+  expect(validContextAuditMetadata({
+    entityType: 'customer', action: 'updated', changedFields: ['password']
+  })).toBe(false);
+});
+
+test('business context repository is flag-gated and never persists while disabled', async () => {
+  let writes = 0;
+  const result = await writeBusinessContextProfile('user-1', {
+    consent: true, consentVersion: CONTEXT_CONSENT_VERSION, mode: 'patch', email: 'safe@example.com'
+  }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: false, reason: 'disabled' as const }),
+    keys: { active: () => null, byVersion: () => null },
+    findId: async () => { throw new Error('must not read'); },
+    persist: async () => { writes += 1; },
+    now: () => new Date('2026-08-21T18:00:00.000Z')
+  });
+  expect(result).toBeNull();
+  expect(writes).toBe(0);
+});
+
+test('business context repository persists ciphertext and audit metadata atomically', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const key = Buffer.alloc(32, 6);
+  const result = await writeBusinessContextProfile('user-1', {
+    consent: true,
+    consentVersion: CONTEXT_CONSENT_VERSION,
+    mode: 'patch',
+    displayName: 'Oficina Horizonte',
+    email: 'safe@example.com',
+    phone: '+5511999999999'
+  }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+    keys: {
+      active: () => ({ version: 'v1', key }),
+      byVersion: () => ({ version: 'v1', key })
+    },
+    findId: async () => null,
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    now: () => new Date('2026-08-21T18:00:00.000Z')
+  });
+  expect(result?.id).toMatch(/^[0-9a-f-]{36}$/);
+  const serialized = JSON.stringify(persisted, (_key, value) => Buffer.isBuffer(value) ? '<buffer>' : value);
+  expect(serialized).not.toContain('safe@example.com');
+  expect(serialized).not.toContain('+5511999999999');
+  expect(persisted).toMatchObject({
+    create: { displayName: 'Oficina Horizonte', consentVersion: CONTEXT_CONSENT_VERSION },
+    audit: {
+      actorUserId: 'user-1', action: 'created',
+      changedFields: ['displayName', 'email', 'phone']
+    }
+  });
+});
+
+test('business context reader checks the flag before querying storage', async () => {
+  let reads = 0;
+  const result = await readBusinessContextProfile('user-1', {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: false, reason: 'disabled' as const }),
+    keys: { active: () => null, byVersion: () => null },
+    find: async () => { reads += 1; return null; }
+  });
+  expect(result).toEqual({ enabled: false, context: null });
+  expect(reads).toBe(0);
+});
+
+test('business context reader decrypts an owned profile and fails closed on wrong ownership', async () => {
+  const key = Buffer.alloc(32, 8);
+  const keys: ContextKeyProvider = {
+    active: () => ({ version: 'v1', key }),
+    byVersion: () => ({ version: 'v1', key })
+  };
+  const id = '10000000-0000-4000-8000-000000000001';
+  const scope = { entity: 'user_business_profile' as const, recordId: id, ownerUserId: 'user-1', field: 'email' };
+  const email = encryptContextValue('safe@example.com', scope, keys)!.ciphertext;
+  const stored = {
+    id, displayName: 'Oficina', legalName: null, taxIdEncrypted: null, email,
+    phone: null, addressJson: null, pixJson: null,
+    preferencesJson: { locale: 'pt-BR', injected: 'omit' },
+    consentVersion: CONTEXT_CONSENT_VERSION,
+    consentedAt: new Date('2026-08-21T18:00:00.000Z'),
+    updatedAt: new Date('2026-08-21T18:10:00.000Z')
+  };
+  const dependencies = {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+    keys,
+    find: async () => stored
+  };
+  const owned = await readBusinessContextProfile('user-1', dependencies);
+  expect(owned).toMatchObject({ enabled: true, context: { email: 'safe@example.com', preferences: { locale: 'pt-BR' } } });
+  expect(JSON.stringify(owned)).not.toContain('injected');
+  expect(await readBusinessContextProfile('user-2', dependencies)).toBeNull();
+});
+
+test('me context endpoint derives ownership only from the authenticated session', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'me', 'context', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('readBusinessContextProfile(session.sub)');
+  expect(route).not.toMatch(/searchParams|get\(['"]userId/);
+  expect(route).toContain("status: 401");
+  expect(route).toContain("status: 503");
+});
+
+test('write origin guard rejects cross-site and missing origins', () => {
+  expect(isTrustedWriteOrigin(new Request('https://resolvajato.com.br/api/v1/me/context', {
+    headers: { origin: 'https://resolvajato.com.br', 'sec-fetch-site': 'same-origin' }
+  }))).toBe(true);
+  expect(isTrustedWriteOrigin(new Request('https://resolvajato.com.br/api/v1/me/context'))).toBe(false);
+  expect(isTrustedWriteOrigin(new Request('https://resolvajato.com.br/api/v1/me/context', {
+    headers: { origin: 'https://evil.example', 'sec-fetch-site': 'cross-site' }
+  }))).toBe(false);
+});
+
+test('context PUT validates origin, session and contract without accepting client ownership', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'me', 'context', 'route.ts'
+  ), 'utf8');
+  const put = route.slice(route.indexOf('export async function PUT'));
+  expect(put.indexOf('isTrustedWriteOrigin(request)')).toBeLessThan(put.indexOf('request.json()'));
+  expect(put).toContain('writeBusinessContextProfile(session.sub, parsed.data)');
+  expect(put).not.toMatch(/body\.userId|parsed\.data\.userId/);
+  expect(put).toContain("status: 400");
+  expect(put).toContain("status: 401");
+  expect(put).toContain("status: 403");
+});
+
+test('customer create requires consent, type and display name without client ownership', () => {
+  const consent = { consent: true, consentVersion: CONTEXT_CONSENT_VERSION };
+  expect(parseCustomerCreate({ ...consent, type: 'person' })).toEqual({
+    ok: false, error: 'display-name-required'
+  });
+  expect(parseCustomerCreate({
+    ...consent, type: 'business', displayName: 'Cliente ACME', ownerUserId: 'other-user'
+  })).toEqual({ ok: false, error: 'unknown-field' });
+  expect(parseCustomerCreate({
+    ...consent,
+    type: 'business',
+    displayName: 'Cliente ACME',
+    email: 'financeiro@example.com',
+    metadata: { source: 'manual', tags: ['recorrente'] }
+  }).ok).toBe(true);
+});
+
+test('customer patch rejects immutable fields and free-form metadata', () => {
+  const consent = { consent: true, consentVersion: CONTEXT_CONSENT_VERSION };
+  expect(parseCustomerPatch({ ...consent })).toEqual({ ok: false, error: 'empty-update' });
+  expect(parseCustomerPatch({ ...consent, type: 'person' })).toEqual({ ok: false, error: 'unknown-field' });
+  expect(parseCustomerPatch({
+    ...consent, metadata: { notes: 'contains private narrative' }
+  })).toEqual({ ok: false, error: 'invalid-metadata' });
+  expect(parseCustomerPatch({ ...consent, phone: '+5511988887777' }).ok).toBe(true);
+});
+
+test('customer repository reports a soft duplicate without persisting', async () => {
+  let writes = 0;
+  const result = await createContextCustomer('user-1', {
+    consent: true, consentVersion: CONTEXT_CONSENT_VERSION,
+    type: 'business', displayName: 'Cliente ACME'
+  }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+    keys: { active: () => null, byVersion: () => null },
+    findDuplicate: async () => ({ id: 'existing-id', displayName: 'Cliente Acme' }),
+    persist: async () => { writes += 1; },
+    uuid: () => '10000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-21T19:00:00.000Z')
+  });
+  expect(result).toEqual({
+    duplicate: true,
+    customer: { id: 'existing-id', displayName: 'Cliente Acme' }
+  });
+  expect(writes).toBe(0);
+});
+
+test('customer repository atomically persists ciphertext and audit metadata', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const key = Buffer.alloc(32, 10);
+  const result = await createContextCustomer('user-1', {
+    consent: true, consentVersion: CONTEXT_CONSENT_VERSION,
+    type: 'person', displayName: 'Cliente Um',
+    email: 'cliente@example.com', phone: '+5511988887777',
+    metadata: { source: 'manual', tags: ['recorrente'] }
+  }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+    keys: {
+      active: () => ({ version: 'v1', key }),
+      byVersion: () => ({ version: 'v1', key })
+    },
+    findDuplicate: async () => null,
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: () => '10000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-21T19:00:00.000Z')
+  });
+  expect(result).toEqual({
+    duplicate: false,
+    customer: { id: '10000000-0000-4000-8000-000000000001', displayName: 'Cliente Um', type: 'person' }
+  });
+  const serialized = JSON.stringify(persisted, (_key, value) => Buffer.isBuffer(value) ? '<buffer>' : value);
+  expect(serialized).not.toContain('cliente@example.com');
+  expect(serialized).not.toContain('+5511988887777');
+  expect(persisted).toMatchObject({
+    customer: { ownerUserId: 'user-1', displayName: 'Cliente Um' },
+    audit: { actorUserId: 'user-1', entityType: 'customer', action: 'created' }
+  });
+});
+
+test('customer list query accepts bounded pagination and rejects invalid cursors', () => {
+  expect(parseCustomerListQuery(new URLSearchParams('limit=50&search=acme'))).toEqual({
+    limit: 50, search: 'acme'
+  });
+  expect(parseCustomerListQuery(new URLSearchParams('limit=100'))).toBeNull();
+  expect(parseCustomerListQuery(new URLSearchParams('cursor=not-a-uuid'))).toBeNull();
+});
+
+test('customer list is flag-gated, ownership-scoped and returns summaries only', async () => {
+  let ownerSeen = '';
+  const result = await listContextCustomers('user-1', { limit: 10 }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+    find: async (owner) => {
+      ownerSeen = owner;
+      return [{
+        id: '10000000-0000-4000-8000-000000000001', type: 'business', displayName: 'Cliente ACME',
+        metadata: { source: 'manual', tags: ['vip'], privateNotes: 'omit' },
+        createdAt: new Date('2026-08-21T19:00:00.000Z'), updatedAt: new Date('2026-08-21T19:10:00.000Z')
+      }];
+    }
+  });
+  expect(ownerSeen).toBe('user-1');
+  expect(result).toMatchObject({
+    enabled: true,
+    customers: [{ displayName: 'Cliente ACME', metadata: { source: 'manual', tags: ['vip'] } }],
+    nextCursor: null
+  });
+  expect(JSON.stringify(result)).not.toContain('privateNotes');
+  expect(JSON.stringify(result)).not.toMatch(/email|phone|taxId|address/i);
+});
+
+test('customers route derives ownership from session for reads and creates', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'customers', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('listContextCustomers(session.sub, query)');
+  expect(route).toContain('createContextCustomer(session.sub, parsed.data)');
+  expect(route).not.toMatch(/body\.ownerUserId|searchParams\.get\(['"]ownerUserId/);
+  expect(route).toContain("status: 409");
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+});
+
+test('customer patch can explicitly clear sensitive fields', () => {
+  const consent = { consent: true, consentVersion: CONTEXT_CONSENT_VERSION };
+  expect(parseCustomerPatch({ ...consent, email: null, phone: null, address: null }).ok).toBe(true);
+  expect(parseCustomerPatch({ ...consent, displayName: null })).toEqual({ ok: false, error: 'invalid-name' });
+});
+
+test('customer update checks ownership and persists update with audit atomically', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const result = await updateContextCustomer(
+    'user-1',
+    '10000000-0000-4000-8000-000000000001',
+    { consent: true, consentVersion: CONTEXT_CONSENT_VERSION, displayName: 'Novo Nome', email: null },
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+      keys: { active: () => null, byVersion: () => null },
+      existsOwned: async (owner, id) => owner === 'user-1' && id.endsWith('1'),
+      persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+      now: () => new Date('2026-08-21T20:00:00.000Z')
+    }
+  );
+  expect(result).toEqual({ notFound: false, customer: { id: '10000000-0000-4000-8000-000000000001' } });
+  expect(persisted).toMatchObject({
+    ownerUserId: 'user-1',
+    update: { displayName: 'Novo Nome', email: null },
+    audit: { actorUserId: 'user-1', action: 'updated', changedFields: ['displayName', 'email'] }
+  });
+});
+
+test('customer PATCH route never accepts ownership from params or body', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'customers', '[id]', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('updateContextCustomer(session.sub, id, parsed.data)');
+  expect(route).not.toMatch(/body\.ownerUserId|parsed\.data\.ownerUserId/);
+  expect(route).toContain("status: 404");
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+});
+
+test('customer detail is owner-scoped and decrypts PII only on explicit read', async () => {
+  const key = Buffer.alloc(32, 7);
+  const keys: ContextKeyProvider = {
+    active: () => ({ version: 'v1', key }),
+    byVersion: (version) => version === 'v1' ? { version, key } : null
+  };
+  const id = '10000000-0000-4000-8000-000000000001';
+  const encryptedEmail = encryptContextValue('cliente@example.com', {
+    entity: 'customer', recordId: id, ownerUserId: 'user-1', field: 'email'
+  }, keys)!.ciphertext;
+  let ownerSeen = '';
+  const result = await getContextCustomer('user-1', id, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+    keys,
+    find: async (owner) => {
+      ownerSeen = owner;
+      return {
+        id, type: 'person', displayName: 'Cliente Um', legalName: null,
+        taxIdEncrypted: null, email: encryptedEmail, phone: null, addressJson: null,
+        metadata: { source: 'manual', privateNotes: 'omit' },
+        createdAt: new Date('2026-08-21T19:00:00.000Z'),
+        updatedAt: new Date('2026-08-21T20:00:00.000Z')
+      };
+    }
+  });
+  expect(ownerSeen).toBe('user-1');
+  expect(result).toMatchObject({
+    enabled: true,
+    customer: { id, email: 'cliente@example.com', metadata: { source: 'manual' } }
+  });
+  expect(JSON.stringify(result)).not.toContain('privateNotes');
+});
+
+test('customer detail route derives ownership exclusively from session', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'customers', '[id]', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('getContextCustomer(session.sub, id)');
+  expect(route).not.toMatch(/body\.ownerUserId|searchParams\.get\(['"]ownerUserId/);
+});
+
+test('customer archive is owner-scoped, soft and audited atomically', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const result = await archiveContextCustomer(
+    'user-1',
+    '10000000-0000-4000-8000-000000000001',
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+      persist: async (value) => { persisted = value as unknown as Record<string, unknown>; return true; },
+      now: () => new Date('2026-08-21T21:00:00.000Z')
+    }
+  );
+  expect(result).toEqual({ notFound: false, archivedAt: '2026-08-21T21:00:00.000Z' });
+  expect(persisted).toMatchObject({
+    ownerUserId: 'user-1',
+    audit: { actorUserId: 'user-1', action: 'archived', changedFields: ['archivedAt'] }
+  });
+});
+
+test('customer DELETE route performs archival and derives ownership from session', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'customers', '[id]', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('archiveContextCustomer(session.sub, id)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/\.delete\(|deleteMany\(|body\.ownerUserId/);
+});
+
+test('customer restore is owner-scoped and audited atomically', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const result = await restoreContextCustomer(
+    'user-1',
+    '10000000-0000-4000-8000-000000000001',
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'reusable_context_v1', enabled: true, reason: 'enabled' as const }),
+      persist: async (value) => { persisted = value as unknown as Record<string, unknown>; return true; },
+      now: () => new Date('2026-08-21T21:30:00.000Z')
+    }
+  );
+  expect(result).toEqual({ notFound: false, restoredAt: '2026-08-21T21:30:00.000Z' });
+  expect(persisted).toMatchObject({
+    ownerUserId: 'user-1',
+    audit: { actorUserId: 'user-1', action: 'restored', changedFields: ['archivedAt'] }
+  });
+});
+
+test('customer restore route derives ownership from session and validates origin', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'customers', '[id]', 'restore', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('restoreContextCustomer(session.sub, id)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/body\.ownerUserId|searchParams\.get\(['"]ownerUserId/);
+});
+
+test('V006 personal template migration is additive and preserves artifacts', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821170000_add_personal_templates', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain('CREATE TABLE "personal_templates"');
+  expect(migration).toContain('REFERENCES "artifacts"("id") ON DELETE RESTRICT');
+  expect(migration).toContain('REFERENCES "personal_templates"("id") ON DELETE SET NULL');
+  expect(migration).toContain("CHECK (\"visibility\" IN ('private', 'community'))");
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|DELETE FROM|INSERT INTO|UPDATE\s+"?artifacts"?\s+SET)\b/i);
+  expect(migration).not.toContain('ON DELETE CASCADE');
+});
+
+test('template rollout flags remain independent and disabled by default', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821101000_add_feature_flags', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain("('duplicate_v1', 'Canonical artifact duplication', false, 0");
+  expect(migration).toContain("('personal_templates_v1', 'Personal artifact templates', false, 0");
+});
+
+test('artifact duplication payload keeps only bounded structural fields', () => {
+  expect(portableArtifactPayload({
+    currency: 'BRL', layout: 'compact', validity_days: 15,
+    customer_name: 'Cliente Secreto', email: 'cliente@example.com', notes: 'livre',
+    nested: { phone: '+5511999999999' }
+  })).toEqual({ currency: 'BRL', layout: 'compact', validity_days: 15 });
+});
+
+test('artifact duplication creates an independent private draft without changing source', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const result = await duplicateOwnedArtifact('user-1', '10000000-0000-4000-8000-000000000001', {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'duplicate_v1', enabled: true, reason: 'enabled' as const }),
+    findOwned: async (userId, id) => userId === 'user-1' ? {
+      id, artifactType: 'quote', toolKey: 'orcamentos', title: 'Orçamento 10',
+      payloadJson: { currency: 'BRL', customer_name: 'Não copiar' },
+      summaryJson: { item_count: 2, email: 'não@copiar.test' }
+    } : null,
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: (() => {
+      const ids = ['20000000-0000-4000-8000-000000000001', '30000000-0000-4000-8000-000000000001'];
+      return () => ids.shift()!;
+    })(),
+    now: () => new Date('2026-08-21T22:00:00.000Z')
+  });
+  expect(result).toMatchObject({ enabled: true, artifactId: '30000000-0000-4000-8000-000000000001' });
+  expect(persisted).toMatchObject({
+    task: { userId: 'user-1', status: 'started', sourceChannel: 'duplicate' },
+    artifact: {
+      userId: 'user-1', status: 'draft', visibility: 'private',
+      duplicatedFromId: '10000000-0000-4000-8000-000000000001',
+      payloadJson: { currency: 'BRL' }, summaryJson: { item_count: 2 }
+    }
+  });
+  expect(JSON.stringify(persisted)).not.toContain('Não copiar');
+  expect(JSON.stringify(persisted)).not.toContain('não@copiar.test');
+});
+
+test('duplicate route derives ownership from session and validates origin', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'artifacts', '[id]', 'duplicate', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('duplicateOwnedArtifact(session.sub, id)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route.indexOf('duplicateOwnedArtifact(session.sub, id)')).toBeLessThan(route.indexOf("eventName: 'continuity.duplicated'"));
+  expect(route).toContain('source_artifact_id: id');
+  expect(route).toContain('target_task_id: result.taskId');
+  expect(route).not.toMatch(/body\.userId|searchParams\.get\(['"]userId/);
+});
+
+test('personal template create contract rejects ownership and publication smuggling', () => {
+  const valid = {
+    sourceArtifactId: '10000000-0000-4000-8000-000000000001',
+    name: 'Meu orçamento padrão'
+  };
+  expect(parsePersonalTemplateCreate(valid)).toEqual({ ok: true, data: valid });
+  expect(parsePersonalTemplateCreate({ ...valid, ownerUserId: 'other' })).toEqual({ ok: false, error: 'unknown-field' });
+  expect(parsePersonalTemplateCreate({ ...valid, visibility: 'community' })).toEqual({ ok: false, error: 'unknown-field' });
+});
+
+test('personal template creation is private, owner-scoped and sanitized', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const result = await createPersonalTemplate('user-1', {
+    sourceArtifactId: '10000000-0000-4000-8000-000000000001',
+    name: ' Modelo comercial '
+  }, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'personal_templates_v1', enabled: true, reason: 'enabled' as const }),
+    findOwned: async (userId, id) => userId === 'user-1' ? {
+      id, toolKey: 'orcamentos', payloadJson: { currency: 'BRL', customer_name: 'Não copiar' }
+    } : null,
+    persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+    uuid: () => '40000000-0000-4000-8000-000000000001',
+    now: () => new Date('2026-08-21T22:30:00.000Z')
+  });
+  expect(result).toMatchObject({ enabled: true, template: { name: 'Modelo comercial', toolKey: 'orcamentos' } });
+  expect(persisted).toMatchObject({
+    ownerUserId: 'user-1', visibility: 'private', status: 'active',
+    templatePayload: { currency: 'BRL' }
+  });
+  expect(JSON.stringify(persisted)).not.toContain('Não copiar');
+});
+
+test('templates POST route derives owner from session and cannot publish community', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'templates', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('createPersonalTemplate(session.sub, parsed.data)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/body\.ownerUserId|visibility:\s*['"]community/);
+});
+
+test('personal template instantiation creates a new private draft and preserves template', async () => {
+  let persisted: Record<string, unknown> | null = null;
+  const result = await instantiatePersonalTemplate(
+    'user-1',
+    '40000000-0000-4000-8000-000000000001',
+    {
+      databaseConfigured: () => true,
+      decide: async () => ({ key: 'personal_templates_v1', enabled: true, reason: 'enabled' as const }),
+      findOwned: async (ownerUserId, id) => ownerUserId === 'user-1' ? {
+        id, toolKey: 'orcamentos', name: 'Modelo comercial',
+        templatePayload: { currency: 'BRL', email: 'não@copiar.test' },
+        sourceArtifact: { artifactType: 'quote' }
+      } : null,
+      persist: async (value) => { persisted = value as unknown as Record<string, unknown>; },
+      uuid: (() => {
+        const ids = ['50000000-0000-4000-8000-000000000001', '60000000-0000-4000-8000-000000000001'];
+        return () => ids.shift()!;
+      })(),
+      now: () => new Date('2026-08-21T23:00:00.000Z')
+    }
+  );
+  expect(result).toMatchObject({
+    enabled: true, taskId: '50000000-0000-4000-8000-000000000001',
+    artifactId: '60000000-0000-4000-8000-000000000001'
+  });
+  expect(persisted).toMatchObject({
+    task: { userId: 'user-1', status: 'started', sourceChannel: 'personal_template' },
+    artifact: {
+      userId: 'user-1', status: 'draft', visibility: 'private',
+      templateId: '40000000-0000-4000-8000-000000000001',
+      payloadJson: { currency: 'BRL' }
+    }
+  });
+  expect(JSON.stringify(persisted)).not.toContain('não@copiar.test');
+});
+
+test('template instantiate route derives ownership from session and validates origin', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'v1', 'templates', '[id]', 'instantiate', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain('instantiatePersonalTemplate(session.sub, id)');
+  expect(route).toContain('isTrustedWriteOrigin(request)');
+  expect(route).not.toMatch(/body\.ownerUserId|searchParams\.get\(['"]ownerUserId/);
 });
