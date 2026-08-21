@@ -5,6 +5,7 @@ import { persistProductEvents, validateProductEvent } from '@/lib/events/product
 type ScalarProperty = string | number | boolean | null;
 
 export interface ServerProductEventInput {
+  eventId?: string;
   eventName: string;
   occurredAt?: Date;
   deviceId: string;
@@ -67,7 +68,7 @@ export async function emitServerProductEvent(
     if (!decision.enabled) return false;
 
     const event = {
-      eventId: dependencies.uuid(),
+      eventId: input.eventId || dependencies.uuid(),
       eventName: input.eventName,
       occurredAt: occurredAt.toISOString(),
       schemaVersion: 1,

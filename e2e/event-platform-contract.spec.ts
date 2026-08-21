@@ -26,7 +26,13 @@ import {
   parseIntentEdgeRule,
   parseIntentTransferSchema
 } from '../src/lib/intent-graph/contracts';
-import { parseIntentEdgeAdminPatch } from '../src/lib/intent-graph/admin';
+import { parseIntentEdgeAdminPatch, parseIntentNodeAdminPatch } from '../src/lib/intent-graph/admin';
+import { getGatedRankedNextActions, rankIntentEdges } from '../src/lib/recommendation/ranker';
+import {
+  createNextActionTrackingToken,
+  readNextActionTrackingToken
+} from '../src/lib/recommendation/tracking-token';
+import { recommendationEventId, recordRecommendationInteraction } from '../src/lib/recommendation/events';
 
 const event = {
   eventId: '018f47a6-9d62-7c1d-8b31-1d8e0f962e37',
@@ -285,4 +291,115 @@ test('intent edge administration accepts bounded patches only', () => {
   expect(parseIntentEdgeAdminPatch({ delete: true }).ok).toBe(false);
   expect(parseIntentEdgeAdminPatch({ transferSchema: { version: 1, fields: ['customer.email'] } }).ok)
     .toBe(false);
+});
+
+test('intent node administration preserves identity and rejects unsafe text', () => {
+  expect(parseIntentNodeAdminPatch({
+    active: true,
+    label: ' Orçamentos ',
+    frequencyClass: 'high',
+    riskLevel: 'low'
+  })).toEqual({
+    ok: true,
+    patch: { active: true, label: 'Orçamentos', frequencyClass: 'high', riskLevel: 'low' }
+  });
+  expect(parseIntentNodeAdminPatch({ key: 'new-key' }).ok).toBe(false);
+  expect(parseIntentNodeAdminPatch({ type: 'outcome' }).ok).toBe(false);
+  expect(parseIntentNodeAdminPatch({ label: '<script>alert(1)</script>' }).ok).toBe(false);
+  expect(parseIntentNodeAdminPatch({ riskLevel: 'critical' }).ok).toBe(false);
+});
+
+test('NBA rule ranking filters eligibility and returns at most three safe actions', () => {
+  const action = (key: string, weight: number, riskLevel = 'low') => ({
+    relationType: 'next_action',
+    weight,
+    transferSchema: { version: 1 as const, fields: [] },
+    rule: { requiresOutcome: 'completed' as const },
+    target: { key, label: key, riskLevel }
+  });
+  const ranked = rankIntentEdges({
+    sourceToolKey: 'orcamentos',
+    outcomeStatus: 'completed',
+    maximumRiskLevel: 'medium',
+    edges: [
+      action('pix', 0.8), action('recibos', 0.9), action('propostas', 0.6),
+      action('agenda', 0.5), action('contratos', 1, 'high')
+    ],
+    resolveTool: (key) => ({ href: `/ferramentas/${key}`, status: 'available' })
+  });
+  expect(ranked.map((item) => item.targetToolKey)).toEqual(['recibos', 'pix', 'propostas']);
+  expect(ranked.map((item) => item.rank)).toEqual([1, 2, 3]);
+  expect(ranked.every((item) => item.targetUrl.startsWith('/'))).toBe(true);
+});
+
+test('NBA remains empty and does not read the graph while its flag is disabled', async () => {
+  let graphCalls = 0;
+  const actions = await getGatedRankedNextActions({
+    sourceToolKey: 'orcamentos', subjectKey: 'subject-1', outcomeStatus: 'completed'
+  }, {
+    decide: async () => ({ key: 'nba_v1', enabled: false, reason: 'disabled' }),
+    graph: async () => { graphCalls += 1; return []; }
+  });
+  expect(actions).toEqual([]);
+  expect(graphCalls).toBe(0);
+});
+
+test('next action tracking token is signed, bounded and tamper evident', () => {
+  const secret = 'a'.repeat(32);
+  const issuedAt = Date.parse('2026-08-21T12:00:00.000Z');
+  const token = createNextActionTrackingToken({
+    sourceToolKey: 'orcamentos',
+    targetToolKey: 'recibos',
+    variant: 'rules_v1',
+    rank: 1,
+    issuedAt
+  }, secret);
+  expect(token).not.toBeNull();
+  expect(readNextActionTrackingToken(token!, secret, issuedAt + 60_000)).toMatchObject({
+    sourceToolKey: 'orcamentos', targetToolKey: 'recibos', variant: 'rules_v1', rank: 1
+  });
+  expect(readNextActionTrackingToken(`${token}tampered`, secret, issuedAt + 60_000)).toBeNull();
+  expect(readNextActionTrackingToken(token!, secret, issuedAt + 86_400_001)).toBeNull();
+  expect(createNextActionTrackingToken({
+    sourceToolKey: 'orcamentos', targetToolKey: 'recibos', variant: 'rules_v1', rank: 1, issuedAt
+  }, 'short')).toBeNull();
+});
+
+test('recommendation interactions use deterministic IDs and safe properties', async () => {
+  const token = 'signed-token';
+  let emitted: Parameters<typeof emitServerProductEvent>[0] | null = null;
+  const accepted = await recordRecommendationInteraction({
+    trackingToken: token,
+    interaction: 'shown',
+    deviceId: 'device-secret'
+  }, {
+    readToken: () => ({
+      sourceToolKey: 'orcamentos', targetToolKey: 'recibos', variant: 'rules_v1', rank: 1, issuedAt: Date.now()
+    }),
+    emit: async (input) => { emitted = input; return true; }
+  });
+  expect(accepted).toBe(true);
+  expect(emitted).toMatchObject({
+    eventName: 'recommendation.shown',
+    toolKey: 'orcamentos',
+    properties: {
+      recommendation_key: 'orcamentos.recibos', target_tool_key: 'recibos', variant: 'rules_v1', rank: 1
+    }
+  });
+  expect(recommendationEventId(token, 'shown')).toBe(recommendationEventId(token, 'shown'));
+  expect(recommendationEventId(token, 'shown')).not.toBe(recommendationEventId(token, 'clicked'));
+});
+
+test('quote NBA panel is additive and records exposure only after actions exist', () => {
+  const panel = readFileSync(path.join(
+    process.cwd(), 'src', 'components', 'recommendation', 'next-actions-panel.tsx'
+  ), 'utf8');
+  const quote = readFileSync(path.join(
+    process.cwd(), 'src', 'components', 'orcamentos', 'orcamentos-app.tsx'
+  ), 'utf8');
+  expect(panel).toContain("if (!actions.length) return null");
+  expect(panel).toContain("recordInteraction(action.trackingToken, 'shown')");
+  expect(panel).toContain("recordInteraction(action.trackingToken, 'clicked')");
+  expect(panel).toContain('Seu orçamento continuará salvo.');
+  expect(quote).toContain('<NextActionsPanel sourceToolKey="orcamentos" active={Boolean(generated)} />');
 });

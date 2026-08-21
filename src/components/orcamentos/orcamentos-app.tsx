@@ -29,6 +29,7 @@ import { useAuthRequired } from '@/components/auth/auth-required-provider';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
 import { OrcamentoItemsEditor } from '@/components/orcamentos/orcamento-items-editor';
 import { ViralInviteShareRow } from '@/components/marketing/viral-recruit-cta';
+import { NextActionsPanel } from '@/components/recommendation/next-actions-panel';
 import { EnablePushButton } from '@/components/push/enable-push-button';
 import { ToolsBackButton } from '@/components/shared/tools-back-button';
 import { WhatsAppSendModal } from '@/components/whatsapp/whatsapp-send-modal';
@@ -1421,6 +1422,7 @@ export function OrcamentosApp({
                     </Button>
                   </div>
                   <ViralInviteShareRow className="mt-4" />
+                  <NextActionsPanel sourceToolKey="orcamentos" active={Boolean(generated)} />
                 </div>
               ) : null}
             </div>

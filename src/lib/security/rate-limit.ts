@@ -47,5 +47,7 @@ export const RATE_LIMITS = {
   toolSuggestion: { limit: 5, windowMs: 60 * 60 * 1000 },
   assistantReview: { limit: 20, windowMs: 60 * 60 * 1000 },
   productEventBatch: { limit: 60, windowMs: 60 * 60 * 1000 },
+  nextActions: { limit: 120, windowMs: 60 * 60 * 1000 },
+  recommendationEvents: { limit: 240, windowMs: 60 * 60 * 1000 },
   cardPayment: { limit: 8, windowMs: 10 * 60 * 1000 }
 } as const;
