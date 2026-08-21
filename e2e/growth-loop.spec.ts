@@ -123,7 +123,6 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   await expect(page.getByRole('heading', { name: 'Um link claro para decidir sem trocar dez mensagens.' })).toBeVisible();
   await expect(page.getByLabel('Exemplo do orçamento recebido pelo cliente')).toContainText('R$ 490');
   await expect(page.getByRole('link', { name: 'Abrir uma demonstração completa' })).toHaveAttribute('href', '/orcamento-para/eletricista');
-  await expect(page.getByLabel('Indicadores do produto')).toContainText(/usos grátis sem cadastro|Orçamentos hoje|Docs gerados/);
   await expect(page.getByText('Descubra e resolva')).toBeVisible();
   const main = page.locator('main');
   for (const label of ['Orçamentos', 'Recibos', 'Contratos', 'Currículos']) {

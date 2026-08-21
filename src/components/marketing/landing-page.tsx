@@ -3,7 +3,6 @@ import { ArrowRight, BookOpen, CheckCircle2, Search, SlidersHorizontal, Sparkles
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
 import { HomeToolGallery } from '@/components/marketing/home-tool-gallery';
-import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
 
 const steps = [
   { icon: Search, number: '01', title: 'Encontre', text: 'Descreva o que precisa resolver ou navegue por uma categoria.' },
@@ -47,10 +46,6 @@ export function LandingPage() {
           </div>
         </div>
         <div className="h-1 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff]" />
-      </section>
-
-      <section className="border-b border-emerald-100 bg-white px-4 py-6 sm:px-6" aria-label="Resultados e benefícios">
-        <LiveStatsBar className="mx-auto max-w-4xl" />
       </section>
 
       <section className="border-b border-[#0b5cff]/10 bg-white py-12 sm:py-20">
