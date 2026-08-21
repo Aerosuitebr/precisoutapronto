@@ -84,6 +84,7 @@ export function ResultShareCard({
         tool_path: toolPath,
         campaign: utmCampaign
       });
+      trackEvent('share_download', { tool_name: utmCampaign, share_surface: 'result_card' });
       toast('Imagem baixada! Pronta pra postar no Stories ou WhatsApp.');
     } catch {
       toast('Não foi possível gerar a imagem agora.');
@@ -164,6 +165,7 @@ export function ResultShareCard({
           tool_path: toolPath,
           campaign: utmCampaign
         });
+        trackEvent('share_story', { tool_name: utmCampaign, share_surface: 'result_card' });
       } else if (nav.share) {
         await nav.share({ title, text: shareText, url: shareUrl });
         trackEvent('share_result', {

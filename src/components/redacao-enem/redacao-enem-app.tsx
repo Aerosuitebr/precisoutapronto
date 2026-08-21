@@ -22,6 +22,7 @@ import {
   type RedacaoAnaliseResult,
 } from "@/lib/redacao-enem/analyze";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
+import { ShareResult } from "@/components/shared/share-result";
 
 type Locale = "pt-BR" | "en" | "es";
 
@@ -525,6 +526,17 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
                 <p className="text-xs leading-5 text-slate-500">
                   {t.disclaimer}
                 </p>
+
+                <ShareResult
+                  tool="enem"
+                  title={`Minha redação ficou em ${resultado.notaTotalEstimada}/1000`}
+                  subtitle="Quanto você tiraria?"
+                  lines={[
+                    { label: t.notaTotalLabel, value: `${resultado.notaTotalEstimada}/1000`, emphasis: true },
+                    ...resultado.competencias.map((c) => ({ label: `C${c.id}`, value: `${c.nota}/200` })),
+                  ]}
+                  whatsappText={`Tirei ${resultado.notaTotalEstimada} nessa redação 👀\nQuero ver quanto você faz.`}
+                />
 
                 <div className="flex flex-wrap gap-2">
                   <Button

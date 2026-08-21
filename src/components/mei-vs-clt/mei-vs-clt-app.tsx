@@ -30,6 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 import { viralToolShareUrl } from "@/lib/viral-loop";
 import { ResultShareCard } from "@/components/shared/result-share-card";
+import { ShareResult } from "@/components/shared/share-result";
 import { trackEvent } from "@/lib/analytics";
 import { WhatsAppSendModal } from "@/components/whatsapp/whatsapp-send-modal";
 import { buildStructuredWhatsAppMessage } from "@/lib/whatsapp/message-format";
@@ -630,6 +631,24 @@ export function MeiVsCltApp({
               <p className="mt-3 text-xs leading-5 text-slate-500">
                 {t.disclaimerComparativo}
               </p>
+
+              <div className="mt-3">
+                <ShareResult
+                  tool="mei_clt"
+                  title={t.shareTitle}
+                  subtitle={
+                    (diferenca ?? 0) >= 0
+                      ? t.meiWins(formatCurrency(diferenca ?? 0))
+                      : t.cltWins(formatCurrency(Math.abs(diferenca ?? 0)))
+                  }
+                  lines={[
+                    { label: t.shareLineClt, value: formatCurrency(resultadoClt.liquidoMensalEquivalente) },
+                    { label: t.shareLineMei, value: formatCurrency(resultadoMei.lucroLiquido) },
+                    { label: (diferenca ?? 0) >= 0 ? t.shareHighlightMei : t.shareHighlightClt, value: formatCurrency(Math.abs(diferenca ?? 0)), emphasis: true },
+                  ]}
+                  whatsappText={resumoTexto()}
+                />
+              </div>
 
               <div className="mt-3 flex flex-wrap gap-2">
                 <Button
