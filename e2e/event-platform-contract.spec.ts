@@ -5,6 +5,16 @@ import { buildServerEventIdentity, emitServerProductEvent } from '../src/lib/eve
 import { isInternalDashboardEmail } from '../src/lib/auth/internal-access';
 import { parseFeatureFlagAdminPatch } from '../src/lib/experimentation/flag-admin';
 import { featureFlagSubjectHash } from '../src/lib/experimentation/feature-flags';
+import {
+  chooseExperimentVariant,
+  getOrCreateExperimentAssignment,
+  resolveGatedExperiment
+} from '../src/lib/experimentation/experiment-assignments';
+import { recordPresentedExperimentExposure } from '../src/lib/experimentation/experiment-exposure';
+import {
+  experimentAssignmentAggregates,
+  experimentObservabilityDays
+} from '../src/lib/experimentation/observability';
 
 const event = {
   eventId: '018f47a6-9d62-7c1d-8b31-1d8e0f962e37',
@@ -109,4 +119,112 @@ test('feature flag admin patch rejects unsafe rollout rules', () => {
   expect(parseFeatureFlagAdminPatch({
     rules: { includeSubjectHashes: [hash], excludeSubjectHashes: [hash] }
   }).ok).toBe(false);
+});
+
+test('experiment assignment is deterministic and validates its definition', () => {
+  const definition = {
+    experimentKey: 'quote_next_action_v1',
+    subjectKey: 'internal-user-id',
+    variants: [{ key: 'control', weight: 50 }, { key: 'treatment', weight: 50 }]
+  };
+  expect(chooseExperimentVariant(definition)).toBe(chooseExperimentVariant(definition));
+  expect(chooseExperimentVariant({ ...definition, variants: [{ key: 'control', weight: 100 }] })).toBeNull();
+  expect(chooseExperimentVariant({ ...definition, variants: [
+    { key: 'control', weight: 50 }, { key: 'control', weight: 50 }
+  ] })).toBeNull();
+});
+
+test('persisted experiment assignment pseudonymizes the subject and fails closed', async () => {
+  let persistedSubject = '';
+  const input = {
+    experimentKey: 'quote_next_action_v1',
+    subjectKey: 'raw-internal-user-id',
+    variants: [{ key: 'control', weight: 1 }, { key: 'treatment', weight: 1 }]
+  };
+  const assigned = await getOrCreateExperimentAssignment(input, {
+    configured: () => true,
+    persist: async (assignment) => {
+      persistedSubject = assignment.subjectKey;
+      return { variant: assignment.variant };
+    }
+  });
+  expect(assigned).not.toBeNull();
+  expect(persistedSubject).toMatch(/^[a-f0-9]{64}$/);
+  expect(persistedSubject).not.toContain(input.subjectKey);
+
+  const unavailable = await getOrCreateExperimentAssignment(input, {
+    configured: () => false,
+    persist: async () => { throw new Error('must not run'); }
+  });
+  expect(unavailable).toBeNull();
+});
+
+test('experiment exposure is emitted only for a confirmed safe presentation', async () => {
+  let emitted: Parameters<typeof emitServerProductEvent>[0] | null = null;
+  const result = await recordPresentedExperimentExposure({
+    presented: true,
+    experimentKey: 'quote_next_action_v1',
+    variant: 'treatment',
+    deviceId: 'device-secret',
+    toolKey: 'orcamentos'
+  }, {
+    emit: async (input) => { emitted = input; return true; }
+  });
+  expect(result).toBe(true);
+  expect(emitted).toMatchObject({
+    eventName: 'experiment.exposed',
+    properties: {
+      experiment_key: 'quote_next_action_v1',
+      variant: 'treatment',
+      assignment_source: 'stable'
+    }
+  });
+
+  const rejected = await recordPresentedExperimentExposure({
+    presented: true,
+    experimentKey: 'unsafe experiment',
+    variant: 'control',
+    deviceId: 'device-secret'
+  }, {
+    emit: async () => { throw new Error('must not run'); }
+  });
+  expect(rejected).toBe(false);
+});
+
+test('gated experiment returns control without creating assignment while disabled', async () => {
+  let assignmentCalls = 0;
+  const input = {
+    flagKey: 'nba_v1',
+    experimentKey: 'quote_next_action_v1',
+    controlVariant: 'control',
+    subjectKey: 'internal-user-id',
+    variants: [{ key: 'control', weight: 50 }, { key: 'treatment', weight: 50 }]
+  };
+  const disabled = await resolveGatedExperiment(input, {
+    decide: async () => ({ key: 'nba_v1', enabled: false, reason: 'disabled' }),
+    assign: async () => { assignmentCalls += 1; return 'treatment'; }
+  });
+  expect(disabled).toEqual({ variant: 'control', active: false, reason: 'flag-disabled' });
+  expect(assignmentCalls).toBe(0);
+
+  const enabled = await resolveGatedExperiment(input, {
+    decide: async () => ({ key: 'nba_v1', enabled: true, reason: 'enabled' }),
+    assign: async () => { assignmentCalls += 1; return 'treatment'; }
+  });
+  expect(enabled).toEqual({ variant: 'treatment', active: true, reason: 'assigned' });
+  expect(assignmentCalls).toBe(1);
+});
+
+test('experiment observability exposes aggregates without subject identifiers', () => {
+  expect(experimentObservabilityDays('30')).toBe(30);
+  expect(experimentObservabilityDays('365')).toBe(7);
+  const aggregates = experimentAssignmentAggregates([{
+    experimentKey: 'quote_next_action_v1',
+    variant: 'control',
+    _count: { _all: 12 }
+  }]);
+  expect(aggregates).toEqual([{
+    experimentKey: 'quote_next_action_v1', variant: 'control', count: 12
+  }]);
+  expect(JSON.stringify(aggregates)).not.toContain('subject');
 });

@@ -109,3 +109,21 @@ Procedimento interno inicial para `event_platform_v1`:
 3. gerar um orçamento de teste e confirmar `task.completed` na consulta agregada;
 4. remover a inclusão ou desligar a flag se latência/logs divergirem;
 5. somente depois considerar 5%, com aprovação explícita do gate.
+
+## Assignments estáveis de experimentos
+
+`getOrCreateExperimentAssignment` completa a camada V002 sem ativar qualquer experiência. O serviço:
+
+- exige chave e variantes em formato allowlisted, com no mínimo controle e tratamento;
+- escolhe a variante por hash determinístico e pesos inteiros positivos;
+- persiste por chave composta, preservando a primeira atribuição mesmo após mudança de pesos;
+- grava somente um hash SHA-256 com domínio próprio no `subjectKey`, nunca ID, e-mail ou IP em claro;
+- retorna `null` quando a definição é inválida, o banco está indisponível ou a persistência falha.
+
+A atribuição não equivale a exposição. O evento canônico de exposição só deve ser emitido por um slice futuro quando a variante for realmente renderizada, sem bloquear a jornada se analytics falhar.
+
+O contrato `experiment.exposed` e a função `recordPresentedExperimentExposure` preparam esse registro. A chamada exige confirmação literal `presented: true`, aceita apenas chaves allowlisted e delega ao emissor não bloqueante protegido por `event_platform_v1`. Nenhum componente chama essa função nesta etapa.
+
+`resolveGatedExperiment` adiciona o gate obrigatório antes do assignment. Com a flag desligada, ausente, indisponível ou em kill switch, retorna a variante de controle e não grava assignment. Apenas subjects aprovados pelo evaluator da flag chegam à atribuição persistente. Assim, criar a definição de um experimento não inicia rollout implicitamente.
+
+`GET /api/analytics/experiments?days=1|7|30` fornece observabilidade interna agregada: total de assignments, total de exposições, contagens por experimento/variante e estado das flags. A resposta não inclui `subjectKey`, IDs de usuário, device, sessão ou propriedades de eventos, e usa a mesma allowlist administrativa dos demais endpoints internos.

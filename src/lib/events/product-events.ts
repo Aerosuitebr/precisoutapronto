@@ -28,6 +28,7 @@ const EVENT_NAMES = new Set([
   'recommendation.shown',
   'recommendation.clicked',
   'recommendation.completed',
+  'experiment.exposed',
   'feedback.helpfulness',
   'request.resolution_gap',
   'ai.route_requested',
