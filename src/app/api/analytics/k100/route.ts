@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getValidSessionFromCookies } from '@/lib/auth/user-session';
+import { isInternalDashboardEmail } from '@/lib/auth/internal-access';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -8,12 +9,7 @@ export async function GET(request: Request) {
   if (!isDatabaseConfigured()) return NextResponse.json({ error: 'Banco não configurado.' }, { status: 503 });
   const session = await getValidSessionFromCookies();
   if (!session) return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 });
-  const allowed = new Set([
-    'contato@resolvajato.com.br',
-    'contato@precisoutapronto.com.br',
-    ...(process.env.INTERNAL_DASHBOARD_EMAILS || '').split(',').map((email) => email.trim().toLowerCase()).filter(Boolean)
-  ]);
-  if (!allowed.has(session.email.toLowerCase())) return NextResponse.json({ error: 'Acesso interno restrito.' }, { status: 403 });
+  if (!isInternalDashboardEmail(session.email)) return NextResponse.json({ error: 'Acesso interno restrito.' }, { status: 403 });
 
   const requested = Number(new URL(request.url).searchParams.get('days') || 30);
   const days = [7, 30, 90].includes(requested) ? requested : 30;

@@ -11,7 +11,7 @@ export interface FeatureFlagDefinition {
 export interface FeatureFlagDecision {
   key: string;
   enabled: boolean;
-  reason: 'enabled' | 'disabled' | 'rollout' | 'missing' | 'unavailable' | 'kill-switch';
+  reason: 'enabled' | 'disabled' | 'rollout' | 'included' | 'excluded' | 'missing' | 'unavailable' | 'kill-switch';
   bucket?: number;
 }
 
@@ -25,12 +25,38 @@ export function featureFlagBucket(flagKey: string, subjectKey: string) {
   return digest.readUInt32BE(0) % 100;
 }
 
+export function featureFlagSubjectHash(subjectKey: string) {
+  return createHash('sha256').update(subjectKey).digest('hex');
+}
+
+function subjectRules(value: unknown) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return { includeSubjectHashes: [] as string[], excludeSubjectHashes: [] as string[] };
+  }
+  const rules = value as Record<string, unknown>;
+  const hashes = (key: string) => Array.isArray(rules[key])
+    ? rules[key].filter((item): item is string => typeof item === 'string')
+    : [];
+  return {
+    includeSubjectHashes: hashes('includeSubjectHashes'),
+    excludeSubjectHashes: hashes('excludeSubjectHashes')
+  };
+}
+
 export function evaluateFeatureFlag(
   flag: FeatureFlagDefinition | null | undefined,
   subjectKey: string
 ): FeatureFlagDecision {
   if (!flag) return { key: 'unknown', enabled: false, reason: 'missing' };
   if (!flag.enabled) return { key: flag.key, enabled: false, reason: 'disabled' };
+  const subjectHash = featureFlagSubjectHash(subjectKey);
+  const rules = subjectRules(flag.rules);
+  if (rules.excludeSubjectHashes.includes(subjectHash)) {
+    return { key: flag.key, enabled: false, reason: 'excluded' };
+  }
+  if (rules.includeSubjectHashes.includes(subjectHash)) {
+    return { key: flag.key, enabled: true, reason: 'included' };
+  }
   const rollout = normalizedRollout(flag.rolloutPercent);
   if (rollout === 0) return { key: flag.key, enabled: false, reason: 'rollout', bucket: 0 };
   if (rollout === 100) return { key: flag.key, enabled: true, reason: 'enabled' };

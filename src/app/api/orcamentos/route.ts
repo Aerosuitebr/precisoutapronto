@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import type { Prisma } from '@prisma/client';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
+import { getValidSessionFromCookies } from '@/lib/auth/user-session';
+import { emitServerProductEvent } from '@/lib/events/server-emitter';
 import { validateOrcamentoPayload } from '@/lib/orcamentos/schema';
+import { DEVICE_COOKIE } from '@/lib/security/device-cookie';
 import type { OrcamentoItem } from '@/lib/orcamentos/types';
 
 function appBaseUrl(request: Request) {
@@ -18,6 +22,7 @@ function appBaseUrl(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const startedAt = Date.now();
   try {
     if (!isDatabaseConfigured()) {
       return NextResponse.json(
@@ -65,6 +70,21 @@ export async function POST(request: Request) {
     });
 
     const url = `${appBaseUrl(request)}/orcamento/${created.id}`;
+    const deviceId = (await cookies()).get(DEVICE_COOKIE)?.value || '';
+    const session = await getValidSessionFromCookies();
+    await emitServerProductEvent({
+      eventName: 'task.completed',
+      occurredAt: new Date(),
+      deviceId,
+      authenticatedSessionId: session?.sid,
+      userId: session?.sub,
+      toolKey: 'orcamentos',
+      artifactId: created.id,
+      properties: {
+        duration_ms: Date.now() - startedAt,
+        outcome_type: 'share_link'
+      }
+    });
     return NextResponse.json({
       id: created.id,
       url,

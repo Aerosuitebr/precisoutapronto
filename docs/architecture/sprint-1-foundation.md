@@ -63,3 +63,49 @@ Nenhuma ferramenta chama o endpoint novo nesta etapa. GA4, Clarity e os eventos 
 - Retenção de `product_events` precisa ser definida antes do rollout amplo.
 - A primeira instrumentação deve criar subject/session IDs pseudônimos consent-aware.
 - Não há painel administrativo; mudanças de flag exigem operação interna auditável.
+
+## Piloto P0 — orçamento
+
+O primeiro dual-write foi conectado ao sucesso de `POST /api/orcamentos`:
+
+- o evento legado no navegador continua inalterado;
+- o servidor tenta emitir `task.completed` somente depois de persistir o orçamento;
+- `artifactId` referencia o UUID do orçamento, sem copiar cliente, Pix, itens ou valor;
+- as únicas propriedades são duração agregada e tipo de outcome;
+- device e sessão são convertidos em pseudônimos antes da decisão/persistência;
+- flag desligada não grava evento;
+- falha de analytics retorna `false` e nunca transforma o orçamento em erro.
+
+## Observabilidade do piloto
+
+`GET /api/analytics/product-events?days=1|7|30` fornece uma query operacional agregada para contas internas autorizadas. A resposta inclui:
+
+- total da janela e da última hora;
+- contagem por `eventName`;
+- contagem por `toolKey`;
+- estado e percentual de `event_platform_v1`;
+- timestamp inicial da janela.
+
+O endpoint não retorna `properties`, user IDs, anonymous IDs, session IDs, task IDs ou artifact IDs. A mesma allowlist central protege este endpoint e o dashboard K100.
+
+Gate de rollout do piloto: confirmar flag, volume esperado, ausência de propriedades rejeitadas nos logs, estabilidade do outcome e nenhuma piora relevante de latência antes de avançar além do grupo interno.
+
+## Operação de feature flags
+
+`GET /api/analytics/feature-flags/{key}` retorna a configuração para um administrador autenticado, o estado do kill switch e o hash do subject atual. `PATCH` aceita somente:
+
+- `enabled` booleano;
+- `rolloutPercent` inteiro entre 0 e 100;
+- `rules.includeSubjectHashes` e `rules.excludeSubjectHashes`, contendo apenas SHA-256.
+
+O master switch `enabled=false` sempre prevalece. Com a flag habilitada, exclusão prevalece sobre inclusão, e inclusão prevalece sobre o bucket percentual. Um hash não pode existir simultaneamente nas duas listas.
+
+Cada alteração cria `AuditLog` com autor, flag e estado anterior/posterior. E-mail pode existir no audit log administrativo existente, mas nunca é gravado em `rules`. `FEATURE_KILL_SWITCHES` continua prevalecendo sobre banco e endpoint.
+
+Procedimento interno inicial para `event_platform_v1`:
+
+1. consultar a flag e copiar `currentSubjectHash` da conta interna;
+2. manter `rolloutPercent=0`, definir o hash na inclusão e então `enabled=true`;
+3. gerar um orçamento de teste e confirmar `task.completed` na consulta agregada;
+4. remover a inclusão ou desligar a flag se latência/logs divergirem;
+5. somente depois considerar 5%, com aprovação explícita do gate.
