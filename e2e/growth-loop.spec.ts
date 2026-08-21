@@ -116,7 +116,9 @@ test('approved quote becomes an editable receipt with only necessary fields', ()
 
 test('home leads with a task-first promise and popular outcomes', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Orçamento no WhatsApp.Aprovado. Pix recebido.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(
+    'Orçamento no WhatsApp. Aprovado. Pix recebido.'
+  );
   await expect(page.getByRole('link', { name: 'Criar meu orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
   await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
