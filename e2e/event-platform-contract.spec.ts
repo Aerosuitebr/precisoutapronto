@@ -33,6 +33,20 @@ import {
   readNextActionTrackingToken
 } from '../src/lib/recommendation/tracking-token';
 import { recommendationEventId, recordRecommendationInteraction } from '../src/lib/recommendation/events';
+import { parseCanonicalArtifactWrite } from '../src/lib/artifacts/contracts';
+import { canonicalShadowIds, writeCanonicalArtifactShadow } from '../src/lib/artifacts/writer';
+import {
+  artifactObservabilityDays,
+  artifactRolloutReadiness,
+  artifactShadowMetrics
+} from '../src/lib/artifacts/observability';
+import { canonicalHistoryLimit, listCanonicalHistory } from '../src/lib/artifacts/history';
+import { decryptContextValue, encryptContextValue } from '../src/lib/context/encryption';
+import {
+  createEnvironmentContextKeyProvider,
+  type ContextKeyProvider
+} from '../src/lib/context/key-provider';
+import { CONTEXT_CONSENT_VERSION, parseBusinessContextWrite } from '../src/lib/context/contracts';
 import {
   recommendationMetrics,
   recommendationObservabilityDays,
@@ -498,4 +512,275 @@ test('V004 task and artifact migration is additive and preserves legacy storage'
   expect(schema).toContain('model Task {');
   expect(schema).toContain('model Artifact {');
   expect(schema).toContain('model ArtifactRelation {');
+});
+
+test('canonical artifact contract rejects PII and requires a subject', () => {
+  expect(parseCanonicalArtifactWrite({ toolKey: 'orcamentos', artifactType: 'quote' }).ok).toBe(false);
+  expect(parseCanonicalArtifactWrite({
+    anonymousSessionId: 'anon-session', toolKey: 'orcamentos', artifactType: 'quote', summary: { cliente_nome: 'Ana' }
+  })).toEqual({ ok: false, error: 'unsafe-summary-key' });
+  expect(parseCanonicalArtifactWrite({
+    anonymousSessionId: 'anon-session', toolKey: 'orcamentos', artifactType: 'quote',
+    legacyArtifactId: 'legacy-1', summary: { total_items: 2, outcome: 'share_link' }
+  }).ok).toBe(true);
+});
+
+test('canonical artifact shadow writer is gated, transactional and payload-free', async () => {
+  let persisted: unknown = null;
+  const base = {
+    databaseConfigured: () => true,
+    persist: async (records: unknown) => { persisted = records; },
+    uuid: (() => { let value = 0; return () => `00000000-0000-4000-8000-00000000000${++value}`; })(),
+    now: () => new Date('2026-08-21T15:00:00.000Z')
+  };
+  const input = {
+    anonymousSessionId: 'anon-session', toolKey: 'orcamentos', artifactType: 'quote',
+    legacyArtifactId: 'legacy-1', summary: { total_items: 2 }
+  };
+  expect(await writeCanonicalArtifactShadow(input, {
+    ...base, decide: async () => ({ key: 'artifact_shadow_write_v1', enabled: false, reason: 'disabled' as const })
+  })).toBeNull();
+  expect(persisted).toBeNull();
+
+  expect(await writeCanonicalArtifactShadow(input, {
+    ...base, decide: async () => ({ key: 'artifact_shadow_write_v1', enabled: true, reason: 'enabled' as const })
+  })).toEqual({
+    taskId: '00000000-0000-4000-8000-000000000001',
+    artifactId: '00000000-0000-4000-8000-000000000002'
+  });
+  expect(persisted).toMatchObject({
+    task: { toolKey: 'orcamentos', status: 'completed' },
+    artifact: {
+      toolKey: 'orcamentos', payloadJson: {},
+      summaryJson: { total_items: 2, legacy_artifact_id: 'legacy-1' }
+    }
+  });
+});
+
+test('quote canonical pilot runs only after legacy persistence and keeps the response unchanged', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'orcamentos', 'route.ts'
+  ), 'utf8');
+  const legacyCreate = route.indexOf('prisma.orcamento.create');
+  const shadowWrite = route.indexOf('writeCanonicalArtifactShadow({');
+  const response = route.indexOf('return NextResponse.json({', shadowWrite);
+
+  expect(legacyCreate).toBeGreaterThan(-1);
+  expect(shadowWrite).toBeGreaterThan(legacyCreate);
+  expect(response).toBeGreaterThan(shadowWrite);
+  expect(route).toContain("artifactType: 'quote'");
+  expect(route).toContain('total_items: validated.data.itens.length');
+  expect(route).toContain('anonymousSessionId = deviceId');
+  expect(route).not.toContain('payloadJson: validated.data');
+});
+
+test('artifact observability exposes aggregate coverage and explicit blockers', () => {
+  expect(artifactObservabilityDays('30')).toBe(30);
+  expect(artifactObservabilityDays('90')).toBe(7);
+  const metrics = artifactShadowMetrics({
+    legacyCreated: 20,
+    tasksCreated: 5,
+    artifactsCreated: 4,
+    tasksWithoutArtifact: 1
+  });
+  expect(metrics).toEqual({
+    legacyCreated: 20,
+    tasksCreated: 5,
+    artifactsCreated: 4,
+    tasksWithoutArtifact: 1,
+    coveragePercent: 20,
+    taskArtifactDelta: 1
+  });
+  expect(artifactRolloutReadiness({
+    writeFlagEnabled: false,
+    killSwitchActive: true,
+    tasksWithoutArtifact: 1,
+    taskArtifactDelta: 1
+  }).blockers).toEqual([
+    'artifact-shadow-write-flag-disabled',
+    'kill-switch-active',
+    'orphan-tasks-detected',
+    'task-artifact-count-mismatch'
+  ]);
+});
+
+test('artifact analytics route never selects payloads, summaries or identifiers', () => {
+  const route = readFileSync(path.join(
+    process.cwd(), 'src', 'app', 'api', 'analytics', 'artifacts', 'route.ts'
+  ), 'utf8');
+  expect(route).toContain("isInternalDashboardEmail(session.email)");
+  expect(route).not.toMatch(/select:\s*\{[^}]*?(payloadJson|summaryJson|userId|anonymousSessionId|publicId)/s);
+  expect(route).toContain('Aggregates only');
+});
+
+test('canonical history fails closed and never queries while its flag is disabled', async () => {
+  let reads = 0;
+  expect(canonicalHistoryLimit('50')).toBe(50);
+  expect(canonicalHistoryLimit('500')).toBe(20);
+  const result = await listCanonicalHistory('user-1', 20, {
+    databaseConfigured: () => true,
+    decide: async () => ({ key: 'smart_history_v1', enabled: false, reason: 'disabled' as const }),
+    find: async () => { reads += 1; return []; }
+  });
+  expect(result).toEqual({ enabled: false, items: [] });
+  expect(reads).toBe(0);
+});
+
+test('canonical history selects metadata but never artifact payloads', () => {
+  const history = readFileSync(path.join(process.cwd(), 'src', 'lib', 'artifacts', 'history.ts'), 'utf8');
+  const legacyRoute = readFileSync(path.join(process.cwd(), 'src', 'app', 'api', 'documents', 'route.ts'), 'utf8');
+  expect(history).toContain('summaryJson: true');
+  expect(history).not.toContain('payloadJson: true');
+  expect(legacyRoute).not.toContain('listCanonicalHistory');
+});
+
+test('smart history panel is additive and invisible without enabled items', () => {
+  const panel = readFileSync(path.join(
+    process.cwd(), 'src', 'components', 'account', 'smart-history-panel.tsx'
+  ), 'utf8');
+  const account = readFileSync(path.join(
+    process.cwd(), 'src', 'app', '(app)', 'conta', 'page.tsx'
+  ), 'utf8');
+  expect(panel).toContain('if (!history?.enabled || items.length === 0) return null');
+  expect(panel).toContain("fetch('/api/v1/artifacts/history?limit=10'");
+  expect(panel).not.toContain('payloadJson');
+  expect(account.indexOf('<SmartHistoryPanel />')).toBeGreaterThan(account.indexOf('<RecentDocumentsPanel />'));
+});
+
+test('canonical shadow IDs are stable per legacy artifact and isolated by tool', () => {
+  const first = canonicalShadowIds('orcamentos', 'legacy-1');
+  expect(canonicalShadowIds('orcamentos', 'legacy-1')).toEqual(first);
+  expect(canonicalShadowIds('recibos', 'legacy-1')).not.toEqual(first);
+  expect(first.taskId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+
+  const writer = readFileSync(path.join(process.cwd(), 'src', 'lib', 'artifacts', 'writer.ts'), 'utf8');
+  expect(writer).toContain('task.upsert');
+  expect(writer).toContain('artifact.upsert');
+  expect(writer).toContain('update: {}');
+});
+
+test('artifact write and smart history read have independent disabled flags', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821151000_add_artifact_shadow_flag', 'migration.sql'
+  ), 'utf8');
+  const writer = readFileSync(path.join(process.cwd(), 'src', 'lib', 'artifacts', 'writer.ts'), 'utf8');
+  const history = readFileSync(path.join(process.cwd(), 'src', 'lib', 'artifacts', 'history.ts'), 'utf8');
+  expect(migration).toContain("'artifact_shadow_write_v1'");
+  expect(migration).toContain('false, 0');
+  expect(migration).toContain('ON CONFLICT ("key") DO NOTHING');
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|DELETE)\b/i);
+  expect(writer).toContain("decide('artifact_shadow_write_v1'");
+  expect(history).toContain("decide('smart_history_v1'");
+});
+
+test('V005 context migration is additive, encrypted at rest and performs no backfill', () => {
+  const migration = readFileSync(path.join(
+    process.cwd(), 'prisma', 'migrations', '20260821160000_add_context_profile', 'migration.sql'
+  ), 'utf8');
+  expect(migration).toContain('CREATE TABLE "user_business_profiles"');
+  expect(migration).toContain('CREATE TABLE "customers"');
+  for (const field of ['legalName', 'taxIdEncrypted', 'email', 'phone', 'addressJson']) {
+    expect(migration).toContain(`"${field}" BYTEA`);
+  }
+  expect(migration).toContain('"pixJson" BYTEA');
+  expect(migration).toContain('"encryptionKeyVersion" VARCHAR(32)');
+  expect(migration).not.toMatch(/\b(DROP|TRUNCATE|RENAME|INSERT INTO|UPDATE|DELETE FROM)\b/i);
+  expect(migration).not.toContain('ALTER TABLE "users"');
+  expect(migration).not.toContain('ON DELETE CASCADE');
+});
+
+test('context encryption round-trips only with the same authenticated scope', () => {
+  const key = Buffer.alloc(32, 7);
+  const provider: ContextKeyProvider = {
+    active: () => ({ version: 'v1', key }),
+    byVersion: (version) => version === 'v1' ? { version, key } : null
+  };
+  const scope = {
+    entity: 'customer' as const,
+    recordId: 'record-1',
+    ownerUserId: 'user-1',
+    field: 'email'
+  };
+  const encrypted = encryptContextValue('cliente@example.com', scope, provider);
+  expect(encrypted?.keyVersion).toBe('v1');
+  expect(encrypted?.ciphertext.toString('utf8')).not.toContain('cliente@example.com');
+  expect(decryptContextValue(encrypted!.ciphertext, 'v1', scope, provider)).toBe('cliente@example.com');
+  expect(decryptContextValue(encrypted!.ciphertext, 'v1', { ...scope, ownerUserId: 'user-2' }, provider)).toBeNull();
+});
+
+test('context encryption fails closed for missing keys and tampered envelopes', () => {
+  const unavailable: ContextKeyProvider = { active: () => null, byVersion: () => null };
+  const scope = {
+    entity: 'user_business_profile' as const,
+    recordId: 'record-1', ownerUserId: 'user-1', field: 'phone'
+  };
+  expect(encryptContextValue('11999999999', scope, unavailable)).toBeNull();
+
+  const key = Buffer.alloc(32, 9);
+  const provider: ContextKeyProvider = {
+    active: () => ({ version: 'v1', key }),
+    byVersion: () => ({ version: 'v1', key })
+  };
+  const encrypted = encryptContextValue('11999999999', scope, provider)!;
+  const tampered = Buffer.from(encrypted.ciphertext);
+  tampered[tampered.length - 1] ^= 1;
+  expect(decryptContextValue(tampered, 'v1', scope, provider)).toBeNull();
+  expect(decryptContextValue(encrypted.ciphertext, 'v2', scope, unavailable)).toBeNull();
+});
+
+test('context keyring rotates writes while retaining old versions for reads', () => {
+  const oldKey = Buffer.alloc(32, 1).toString('base64');
+  const newKey = Buffer.alloc(32, 2).toString('base64');
+  const provider = createEnvironmentContextKeyProvider({
+    CONTEXT_ENCRYPTION_KEYS_JSON: JSON.stringify({ '2026-01': oldKey, '2026-08': newKey }),
+    CONTEXT_ENCRYPTION_ACTIVE_VERSION: '2026-08'
+  });
+  expect(provider.active()?.version).toBe('2026-08');
+  expect(provider.byVersion('2026-01')?.key.equals(Buffer.alloc(32, 1))).toBe(true);
+  expect(provider.byVersion('missing')).toBeNull();
+});
+
+test('context keyring rejects malformed or oversized configurations', () => {
+  expect(createEnvironmentContextKeyProvider({
+    CONTEXT_ENCRYPTION_KEYS_JSON: '{invalid', CONTEXT_ENCRYPTION_ACTIVE_VERSION: 'v1'
+  }).active()).toBeNull();
+  expect(createEnvironmentContextKeyProvider({
+    CONTEXT_ENCRYPTION_KEYS_JSON: JSON.stringify({ v1: 'not-base64' }),
+    CONTEXT_ENCRYPTION_ACTIVE_VERSION: 'v1'
+  }).active()).toBeNull();
+  const tooMany = Object.fromEntries(Array.from({ length: 9 }, (_, index) => [
+    `v${index}`, Buffer.alloc(32, index).toString('base64')
+  ]));
+  expect(createEnvironmentContextKeyProvider({
+    CONTEXT_ENCRYPTION_KEYS_JSON: JSON.stringify(tooMany), CONTEXT_ENCRYPTION_ACTIVE_VERSION: 'v1'
+  }).active()).toBeNull();
+});
+
+test('business context contract requires explicit versioned consent and allowlisted fields', () => {
+  expect(parseBusinessContextWrite({ mode: 'patch', displayName: 'Oficina' })).toEqual({
+    ok: false, error: 'explicit-consent-required'
+  });
+  expect(parseBusinessContextWrite({
+    consent: true, consentVersion: CONTEXT_CONSENT_VERSION, mode: 'patch', displayName: 'Oficina', admin: true
+  })).toEqual({ ok: false, error: 'unknown-field' });
+  expect(parseBusinessContextWrite({
+    consent: true,
+    consentVersion: CONTEXT_CONSENT_VERSION,
+    mode: 'patch',
+    displayName: 'Oficina Horizonte',
+    email: 'contato@example.com',
+    address: { city: 'Campinas', state: 'SP', country: 'BR' },
+    preferences: { defaultCurrency: 'BRL', locale: 'pt-BR', reuseBusinessContext: true }
+  }).ok).toBe(true);
+});
+
+test('business context contract rejects nested smuggling and empty updates', () => {
+  const consent = { consent: true, consentVersion: CONTEXT_CONSENT_VERSION, mode: 'patch' };
+  expect(parseBusinessContextWrite({ ...consent })).toEqual({ ok: false, error: 'empty-update' });
+  expect(parseBusinessContextWrite({
+    ...consent, address: { city: 'Recife', coordinates: [-8, -34] }
+  })).toEqual({ ok: false, error: 'invalid-address' });
+  expect(parseBusinessContextWrite({
+    ...consent, preferences: { locale: 'en-US' }
+  })).toEqual({ ok: false, error: 'invalid-preferences' });
 });

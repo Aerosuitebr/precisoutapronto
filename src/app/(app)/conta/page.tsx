@@ -32,6 +32,7 @@ import { PLANS } from '@/lib/plans';
 import { ProfileSettings } from '@/components/account/profile-settings';
 import { SharedLinksPanel } from '@/components/account/shared-links-panel';
 import { RecentDocumentsPanel } from '@/components/account/recent-documents-panel';
+import { SmartHistoryPanel } from '@/components/account/smart-history-panel';
 import { SavedResultsPanel } from '@/components/account/saved-results-panel';
 import { ACCOUNT_SECTIONS, type AccountSectionId } from '@/lib/account-sections';
 import { trackEvent } from '@/lib/analytics';
@@ -280,6 +281,7 @@ function ContaContent() {
 
         <ProfileSettings />
         <RecentDocumentsPanel />
+        <SmartHistoryPanel />
         <SavedResultsPanel />
         <SharedLinksPanel />
 

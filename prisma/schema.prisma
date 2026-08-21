@@ -544,3 +544,46 @@ model ArtifactRelation {
   @@index([targetArtifactId, createdAt])
   @@map("artifact_relations")
 }
+
+model UserBusinessProfile {
+  id                   String   @id @default(uuid()) @db.Uuid
+  userId               String   @unique
+  displayName          String?
+  legalName            Bytes?
+  taxIdEncrypted       Bytes?
+  email                Bytes?
+  phone                Bytes?
+  addressJson          Bytes?
+  logoAssetId          String?  @db.Uuid
+  pixJson              Bytes?
+  signatureAssetId     String?  @db.Uuid
+  preferencesJson      Json     @default("{}")
+  encryptionKeyVersion String?  @db.VarChar(32)
+  consentVersion       String   @db.VarChar(32)
+  consentedAt          DateTime
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@map("user_business_profiles")
+}
+
+model Customer {
+  id                   String    @id @default(uuid()) @db.Uuid
+  ownerUserId          String
+  type                 String    @db.VarChar(24)
+  displayName          String
+  legalName            Bytes?
+  taxIdEncrypted       Bytes?
+  email                Bytes?
+  phone                Bytes?
+  addressJson          Bytes?
+  metadata             Json      @default("{}")
+  encryptionKeyVersion String?   @db.VarChar(32)
+  archivedAt           DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@index([ownerUserId, archivedAt])
+  @@index([ownerUserId, displayName])
+  @@map("customers")
+}
