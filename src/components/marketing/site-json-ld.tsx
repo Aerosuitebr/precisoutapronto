@@ -1,5 +1,5 @@
 import {
-  BRAND_EMAIL,
+  BRAND_PUBLIC_EMAIL,
   BRAND_DESCRIPTION,
   BRAND_DISPLAY_NAME,
   BRAND_NAME,
@@ -18,9 +18,9 @@ export function SiteJsonLd() {
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,
     name: BRAND_NAME,
-    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto', 'Resolva Jato', 'ResolvaJato'],
+    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto'],
     url: siteUrl,
-    email: BRAND_EMAIL,
+    email: BRAND_PUBLIC_EMAIL,
     logo: {
       '@type': 'ImageObject',
       url: `${siteUrl}/icon-512.png`,
@@ -39,26 +39,24 @@ export function SiteJsonLd() {
       {
         '@type': 'ContactPoint',
         contactType: 'customer support',
-        email: BRAND_EMAIL,
+        email: BRAND_PUBLIC_EMAIL,
         availableLanguage: ['Portuguese', 'English', 'Spanish'],
         url: `${siteUrl}/contato`
       },
       {
         '@type': 'ContactPoint',
         contactType: 'security',
-        email: BRAND_EMAIL,
+        email: BRAND_PUBLIC_EMAIL,
         url: `${siteUrl}/.well-known/security.txt`
       }
     ],
     sameAs: [...BRAND_SAME_AS],
     knowsAbout: [
-      'calculadora de rescisão trabalhista',
-      'corretor de redação ENEM',
-      'recibo de pagamento',
-      'documentos profissionais',
+      'orçamento no WhatsApp',
       'orçamento com Pix',
-      'MEI e freelancers',
+      'recibo de pagamento',
       'cobrança para MEI',
+      'MEI e freelancers',
       'proposta comercial',
       'contrato de prestação de serviços',
       'precificação de serviços',
@@ -78,7 +76,7 @@ export function SiteJsonLd() {
     '@type': 'WebSite',
     '@id': `${siteUrl}/#website`,
     name: BRAND_NAME,
-    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto', 'Resolva Jato'],
+    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto'],
     url: siteUrl,
     inLanguage: 'pt-BR',
     description: BRAND_DESCRIPTION,
@@ -94,11 +92,11 @@ export function SiteJsonLd() {
     itemListOrder: 'https://schema.org/ItemListOrderAscending',
     numberOfItems: 6,
     itemListElement: [
-      { name: 'Calculadora de rescisão', path: '/calculadora-de-rescisao' },
-      { name: 'Corretor de redação ENEM', path: '/corretor-de-redacao-enem' },
-      { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
       { name: 'Orçamento com Pix', path: '/orcamento-com-pix' },
+      { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
       { name: 'Gerador de currículo', path: '/gerador-de-curriculo' },
+      { name: 'Calculadora de rescisão', path: '/calculadora-de-rescisao' },
+      { name: 'Gerador de QR Code Pix', path: '/gerador-de-qr-code-pix' },
       { name: 'Para MEI', path: '/para/mei' }
     ].map((item, index) => ({
       '@type': 'ListItem',

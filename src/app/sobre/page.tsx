@@ -56,8 +56,8 @@ export default function SobrePage() {
         </p>
         <p className="mt-3">
           <strong>Fatos citáveis:</strong> operação pela Aerosuite; domínio canônico
-          precisoutapronto.com.br; ferramentas usáveis no navegador; duas gerações livres antes do
-          cadastro; contato de imprensa em contato@resolvajato.com.br.
+          precisoutapronto.com.br; ferramentas usáveis no navegador; orçamento e recibo sem cadastro;
+          conta grátis para histórico; contato de imprensa em contato@precisoutapronto.com.br.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/criterios-editoriais" className="font-semibold text-sky-700 hover:text-sky-800">

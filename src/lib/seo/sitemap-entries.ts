@@ -80,6 +80,15 @@ export const SITEMAP_SEGMENTS: readonly SitemapSegment[] = [
   'i18n'
 ] as const;
 
+/** Segmentos enviados ao Google. Games fica no ar, mas fora do índice canônico. */
+export const INDEXABLE_SITEMAP_SEGMENTS: readonly SitemapSegment[] = [
+  'core',
+  'tools',
+  'growth',
+  'guides',
+  'i18n'
+] as const;
+
 function dedupe(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
   const byUrl = new Map<string, MetadataRoute.Sitemap[number]>();
   for (const entry of entries) {
@@ -350,9 +359,9 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): 
   }
 }
 
-/** Sitemap completo (deduplicado) para IndexNow e testes. */
+/** Sitemap público (sem games) para `/sitemap.xml`, IndexNow e testes. */
 export function buildFullSitemap(baseUrl?: string): MetadataRoute.Sitemap {
-  return dedupe(SITEMAP_SEGMENTS.flatMap((segment) => buildSitemapSegment(segment, baseUrl)));
+  return dedupe(INDEXABLE_SITEMAP_SEGMENTS.flatMap((segment) => buildSitemapSegment(segment, baseUrl)));
 }
 
 function xmlEscape(value: string) {
@@ -387,7 +396,7 @@ export function sitemapEntriesToXml(entries: MetadataRoute.Sitemap): string {
 export function buildSitemapIndexXml(baseUrl?: string): string {
   const base = (baseUrl ?? getViralBaseUrl()).replace(/\/$/, '');
   const lastmod = CORE_UPDATED_AT.toISOString();
-  const body = SITEMAP_SEGMENTS.map(
+  const body = INDEXABLE_SITEMAP_SEGMENTS.map(
     (segment) =>
       `<sitemap><loc>${xmlEscape(`${base}/sitemaps/${segment}`)}</loc><lastmod>${lastmod}</lastmod></sitemap>`
   ).join('');

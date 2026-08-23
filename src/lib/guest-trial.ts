@@ -1,8 +1,16 @@
 import { getSession } from '@/lib/auth';
 
 export const GUEST_TRIAL_STORAGE_KEY = 'rj_guest_exports';
-/** Gerações/exportações livres antes de pedir cadastro. */
+/** Gerações/exportações livres antes de pedir cadastro (ferramentas fora do loop viral). */
 export const GUEST_TRIAL_LIMIT = 2;
+/** Orçamento e recibo: o PDF/link precisa sair sem conta para circular no WhatsApp. */
+export const OPEN_GUEST_TOOL_IDS = ['orcamentos', 'recibos'] as const;
+
+export function isOpenGuestTool(toolId: string | undefined): boolean {
+  if (!toolId) return false;
+  return (OPEN_GUEST_TOOL_IDS as readonly string[]).includes(toolId);
+}
+
 export const GUEST_TRIAL_CONSUMED_EVENT = 'rj-guest-trial-consumed';
 export const POST_SIGNUP_PREMIUM_OFFER_KEY = 'rj_post_signup_premium_offer';
 

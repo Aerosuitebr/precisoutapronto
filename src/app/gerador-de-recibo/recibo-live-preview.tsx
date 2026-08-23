@@ -65,7 +65,7 @@ export function ReciboLivePreview() {
         toast(outcome.reason || 'Não foi possível gerar o PDF.');
         return;
       }
-      toast('PDF baixado. Conta só depois de duas gerações.');
+      toast('PDF baixado. Conta só se quiser histórico ou tirar a marca.');
     } catch {
       toast('Não foi possível gerar o PDF. Tente de novo.');
     } finally {
@@ -186,7 +186,7 @@ export function ReciboLivePreview() {
             Abrir gerador completo
           </Link>
           <p className="text-center text-xs font-medium text-slate-500">
-            Use grátis no navegador. Conta só depois de duas gerações.
+            Use grátis no navegador. Conta só se quiser histórico ou tirar a marca.
           </p>
         </>
       }

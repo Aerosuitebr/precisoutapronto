@@ -911,9 +911,9 @@ export function OrcamentosApp({
 
   return (
     <AuthGate
-      title="Orçamentos exigem cadastro"
-      description="Crie sua conta gratuita para gerar links de aprovação para seus clientes."
-      publicAccess={publicAccess}
+      title="Envie orçamento sem cadastro"
+      description="O cliente recebe o link, aprova e paga no Pix. Conta grátis só para histórico e para tirar a marca."
+      publicAccess
     >
       <div className="space-y-5 pb-24 lg:pb-0">
         {showAccountExtras ? <EnablePushButton variant="banner" /> : null}

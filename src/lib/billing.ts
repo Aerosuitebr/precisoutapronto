@@ -2,38 +2,45 @@ import { getSession } from './auth';
 import { getPlan, type PlanId } from './plans';
 import type { BillableAction, BillableContext, BillableToolId } from './billing-server';
 import {
-  consumeGuestTrial,
-  hasGuestTrialAvailable
+  consumeGuestTrial as consumeGuestTrial,
+  hasGuestTrialAvailable as hasGuestTrialAvailable,
+  isOpenGuestTool as isOpenGuestTool
 } from './guest-trial';
 import { localeFromPathname, type Locale } from './i18n-locale';
 
 const guestCopy = {
   'pt-BR': {
-    trialAvailable: 'Acesso livre: duas gerações completas. O PDF grátis leva um rodapé da marca.',
+    trialAvailable:
+      'Orçamento e recibo saem sem conta. O PDF grátis leva um rodapé da marca. Nas outras ferramentas, duas gerações livres.',
     accountRequired:
-      'Crie uma conta gratuita para continuar gerando documentos. A geração segue grátis, com o rodapé Precisou, Tá Pronto.',
+      'Crie uma conta gratuita para continuar nesta ferramenta. Orçamento e recibo seguem sem cadastro. A geração continua grátis, com o rodapé Precisou, Tá Pronto.',
     guestSuccess: 'Documento gerado. Você ainda pode gerar de novo sem conta.',
-    guestSuccessLast: 'Documento gerado. Para continuar, crie uma conta grátis.',
+    guestSuccessLast: 'Documento gerado. Para continuar nesta ferramenta, crie uma conta grátis.',
+    guestSuccessOpen: 'Pronto. Cadastro só se quiser histórico ou tirar a marca.',
     saved: 'Documento salvo com sucesso.',
     downloaded: 'Download concluído.',
     analyzed: 'Análise concluída.'
   },
   en: {
-    trialAvailable: 'Free access: two full generations. Free PDFs include a brand footer.',
+    trialAvailable:
+      'Quotes and receipts work without an account. Free PDFs include a brand footer. Other tools include two free generations.',
     accountRequired:
-      'Create a free account to keep generating documents. Generation stays free, with the Precisou, Tá Pronto footer.',
+      'Create a free account to keep using this tool. Quotes and receipts stay open without signup. Generation stays free, with the Precisou, Tá Pronto footer.',
     guestSuccess: 'Document generated. You can generate again without an account.',
-    guestSuccessLast: 'Document generated. Create a free account to continue.',
+    guestSuccessLast: 'Document generated. Create a free account to continue with this tool.',
+    guestSuccessOpen: 'Done. Sign up only if you want history or to remove the brand mark.',
     saved: 'Document saved successfully.',
     downloaded: 'Download complete.',
     analyzed: 'Analysis complete.'
   },
   es: {
-    trialAvailable: 'Acceso libre: dos generaciones completas. El PDF gratis lleva un pie de marca.',
+    trialAvailable:
+      'Presupuesto y recibo salen sin cuenta. El PDF gratis lleva un pie de marca. En las otras herramientas, dos generaciones libres.',
     accountRequired:
-      'Crea una cuenta gratuita para seguir generando documentos. La generacion sigue gratis, con el pie Precisou, Tá Pronto.',
+      'Crea una cuenta gratuita para seguir en esta herramienta. Presupuesto y recibo siguen sin registro. La generacion sigue gratis, con el pie Precisou, Tá Pronto.',
     guestSuccess: 'Documento generado. Todavia puedes generar otra vez sin cuenta.',
-    guestSuccessLast: 'Documento generado. Para continuar, crea una cuenta gratis.',
+    guestSuccessLast: 'Documento generado. Para continuar en esta herramienta, crea una cuenta gratis.',
+    guestSuccessOpen: 'Listo. La cuenta solo sirve para historial o para quitar la marca.',
     saved: 'Documento guardado con exito.',
     downloaded: 'Descarga concluida.',
     analyzed: 'Analisis concluido.'
@@ -191,10 +198,10 @@ export function shouldBrandDocuments(): boolean {
   return true;
 }
 
-export function canUseTool(): UsageDecision {
+export function canUseTool(toolId?: BillableToolId): UsageDecision {
   const copy = guestCopy[billingLocale()];
   if (!getSession()) {
-    if (hasGuestTrialAvailable()) {
+    if (isOpenGuestTool(toolId) || hasGuestTrialAvailable()) {
       return { allowed: true, reason: copy.trialAvailable };
     }
     return {
@@ -214,10 +221,10 @@ function billableContextKey(context: BillableContext) {
 
 /**
  * Executa a ação e só registra o consumo no servidor após sucesso.
- * Guest: 2 gerações completas com rodapé da marca; depois pede conta.
+ * Guest: orçamento e recibo sem limite de conta; demais ferramentas, 2 gerações e depois pede cadastro.
  */
 export async function performBillableAction<T>(context: BillableContext, effect: () => Promise<T> | T) {
-  const access = canUseTool();
+  const access = canUseTool(context.toolId);
   if (!access.allowed) {
     if (access.accountRequired && typeof window !== 'undefined') {
       window.dispatchEvent(
@@ -243,16 +250,23 @@ export async function performBillableAction<T>(context: BillableContext, effect:
     const result = await effect();
 
     if (isGuest) {
-      consumeGuestTrial({
-        nextHref: typeof window !== 'undefined' ? window.location.pathname : '/ferramentas'
-      });
+      const openGuest = isOpenGuestTool(context.toolId);
+      if (!openGuest) {
+        consumeGuestTrial({
+          nextHref: typeof window !== 'undefined' ? window.location.pathname : '/ferramentas'
+        });
+      }
       if (typeof window !== 'undefined') {
         const copy = guestCopy[billingLocale()];
-        const stillHasTrial = hasGuestTrialAvailable();
+        const stillHasTrial = openGuest || hasGuestTrialAvailable();
         window.dispatchEvent(
           new CustomEvent('rj-billable-success', {
             detail: {
-              message: stillHasTrial ? copy.guestSuccess : copy.guestSuccessLast,
+              message: openGuest
+                ? copy.guestSuccessOpen
+                : stillHasTrial
+                  ? copy.guestSuccess
+                  : copy.guestSuccessLast,
               toolId: context.toolId,
               action: context.action,
               charged: false,

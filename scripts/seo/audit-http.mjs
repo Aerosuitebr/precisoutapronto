@@ -91,8 +91,11 @@ if (urls.length < 100) failures.push(`/sitemap.xml: somente ${urls.length} URLs`
 if (leaked.length) failures.push(`/sitemap.xml: URLs privadas encontradas: ${leaked.join(', ')}`);
 
 const sitemapIndex = results.get('/sitemaps/index.xml').body;
-if ((sitemapIndex.match(/<sitemap>/g) || []).length !== 6) {
+if ((sitemapIndex.match(/<sitemap>/g) || []).length !== 5) {
   failures.push('/sitemaps/index.xml: quantidade inesperada de segmentos');
+}
+if (sitemapIndex.includes('/sitemaps/games')) {
+  failures.push('/sitemaps/index.xml: segmento games ainda no índice canônico');
 }
 
 const notFound = results.get('/pagina-que-nao-deve-existir-audit').body;
@@ -106,4 +109,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Smoke test SEO aprovado em ${base}: ${checks.length} endpoints, ${urls.length} URLs e 6 sitemaps segmentados.`);
+console.log(`Smoke test SEO aprovado em ${base}: ${checks.length} endpoints, ${urls.length} URLs e 5 sitemaps no índice canônico.`);

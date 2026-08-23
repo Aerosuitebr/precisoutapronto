@@ -76,7 +76,7 @@ export default function RecursosPage() {
               Encontre a ferramenta certa para resolver agora
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-              Conheça cada recurso sem cadastro. Use as ferramentas livremente; a conta só aparece depois de duas gerações.
+              Orçamento e recibo saem sem cadastro. Nas outras ferramentas, duas gerações livres. Conta grátis guarda o histórico.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 text-sm font-bold text-slate-700">
               <span className="rounded-full bg-sky-50 px-4 py-2">{availableTools.length} ferramentas disponíveis</span>

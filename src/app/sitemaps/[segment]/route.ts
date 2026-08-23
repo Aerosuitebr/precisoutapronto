@@ -1,13 +1,13 @@
 import { isStagingEnv } from '@/lib/app-env';
 import {
   SITEMAP_SEGMENTS,
-  buildSitemapIndexXml,
+  buildSitemapIndexXml as buildSitemapIndexXml,
   buildSitemapSegment,
-  sitemapEntriesToXml,
+  sitemapEntriesToXml as sitemapEntriesToXml,
   type SitemapSegment
 } from '@/lib/seo/sitemap-entries';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 export const runtime = 'nodejs';
 
 const XML_HEADERS = {
@@ -40,13 +40,21 @@ export async function GET(
     return new Response(isIndex(segment) ? EMPTY_INDEX : EMPTY_URLSET, { headers: XML_HEADERS });
   }
 
-  if (isIndex(segment)) {
-    return new Response(buildSitemapIndexXml(), { headers: XML_HEADERS });
-  }
+  try {
+    if (isIndex(segment)) {
+      return new Response(buildSitemapIndexXml(), { headers: XML_HEADERS });
+    }
 
-  if (!isSegment(segment)) {
-    return new Response('Not found', { status: 404 });
-  }
+    if (!isSegment(segment)) {
+      return new Response('Not found', { status: 404 });
+    }
 
-  return new Response(sitemapEntriesToXml(buildSitemapSegment(segment)), { headers: XML_HEADERS });
+    return new Response(sitemapEntriesToXml(buildSitemapSegment(segment)), { headers: XML_HEADERS });
+  } catch (error) {
+    console.error('[sitemaps]', segment, error);
+    return new Response(isIndex(segment) ? EMPTY_INDEX : EMPTY_URLSET, {
+      status: 200,
+      headers: XML_HEADERS
+    });
+  }
 }

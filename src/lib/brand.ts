@@ -23,6 +23,8 @@ export const BRAND_SITE =
  */
 export const BRAND_EMAIL =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL || `contato@${BRAND_LEGACY_HOST}`;
+/** Endereço público da marca nova. A caixa SMTP pode continuar no domínio legado até o Workspace migrar. */
+export const BRAND_PUBLIC_EMAIL = `contato@${BRAND_HOST}`;
 
 /** Remetente SMTP / Resend no formato RFC. */
 export const BRAND_EMAIL_FROM = `${BRAND_NAME} <${BRAND_EMAIL}>`;

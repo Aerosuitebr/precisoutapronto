@@ -4,11 +4,12 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { LandingPage } from '@/components/marketing/landing-page';
 import { BRAND_DISPLAY_NAME } from '@/lib/brand';
+import { getPublicStats } from '@/lib/public-stats';
 
 export const metadata: Metadata = {
-  title: { absolute: `${BRAND_DISPLAY_NAME} Recibos, cálculos e documentos online` },
+  title: { absolute: `${BRAND_DISPLAY_NAME} Orçamento no WhatsApp, aprovado, Pix recebido` },
   description:
-    'Resolva tarefas práticas com recibos, calculadoras, documentos e ferramentas online. Encontre o que precisa e saia com o resultado pronto.',
+    'Monte o orçamento, envie o link no WhatsApp e receba a aprovação no celular. Recibo em PDF sem cadastro para começar. Cliente não instala aplicativo.',
   alternates: {
     canonical: '/',
     languages: {
@@ -20,14 +21,16 @@ export const metadata: Metadata = {
   }
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const initialStats = await getPublicStats();
+
   return (
     <>
       <TopEnvBanner />
       <div className="pt-8">
         <SiteHeader />
         <main>
-          <LandingPage />
+          <LandingPage initialStats={initialStats} />
         </main>
         <SiteFooter />
       </div>

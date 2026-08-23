@@ -57,7 +57,7 @@ export default function ImprensaPage() {
   const shortBoiler =
     'Precisou, Tá Pronto é uma plataforma brasileira de ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador.';
   const longBoiler =
-    'O Precisou, Tá Pronto (precisoutapronto.com.br), operado pela Aerosuite, oferece ferramentas práticas para MEIs, freelancers, estudantes e pequenos negócios: orçamento com Pix, currículo, recibo, proposta, contrato, calculadoras trabalhistas, corretor de redação ENEM, editor de PDF e referências ABNT. O uso começa com duas gerações livres, sem cartão.';
+    'O Precisou, Tá Pronto (precisoutapronto.com.br), operado pela Aerosuite, oferece ferramentas práticas para MEIs, freelancers, estudantes e pequenos negócios: orçamento com Pix, currículo, recibo, proposta, contrato, calculadoras trabalhistas, corretor de redação ENEM, editor de PDF e referências ABNT. Orçamento e recibo saem sem cadastro. Não pedimos cartão para começar.';
 
   return (
     <>

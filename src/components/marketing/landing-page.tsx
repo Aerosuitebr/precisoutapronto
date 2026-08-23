@@ -3,7 +3,9 @@ import { ArrowRight, BookOpen, CheckCircle2, Search, SlidersHorizontal, Sparkles
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
 import { HomeToolGallery } from '@/components/marketing/home-tool-gallery';
+import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
 import { AnimatedHeroTitle } from '@/components/marketing/animated-hero-title';
+import type { PublicStats } from '@/lib/public-stats';
 
 const steps = [
   { icon: Search, number: '01', title: 'Encontre', text: 'Descreva o que precisa resolver ou navegue por uma categoria.' },
@@ -17,7 +19,7 @@ const guides = [
   { href: '/guias/como-calcular-rescisao', eyebrow: 'Trabalho', title: 'Como conferir seu cálculo de rescisão passo a passo', time: 'Leitura rápida' }
 ] as const;
 
-export function LandingPage() {
+export function LandingPage({ initialStats }: { initialStats?: PublicStats | null }) {
   return (
     <div className="bg-[#f8faf7] text-[#031f4b]">
       <section className="relative isolate overflow-hidden bg-[#031f4b] text-white">
@@ -36,7 +38,13 @@ export function LandingPage() {
                 Ver um modelo pronto
               </Link>
             </div>
-            <p className="mt-3 text-xs font-bold text-blue-100">Cliente não precisa criar conta · funciona no celular · Pix opcional</p>
+            <p className="mt-3 text-xs font-bold text-blue-100">Sem cadastro para enviar o primeiro orçamento · cliente não cria conta · Pix opcional</p>
+            <div className="mx-auto mt-6 max-w-2xl">
+              <LiveStatsBar
+                initial={initialStats}
+                className="[&_li]:border-white/15 [&_li]:bg-white/10 [&_p:first-child]:text-white [&_p:last-child]:text-blue-100"
+              />
+            </div>
             <div className="mx-auto mt-9 max-w-2xl rounded-[1.4rem] bg-white/10 p-2 shadow-2xl shadow-blue-950/30 ring-1 ring-white/20 backdrop-blur"><HomeQuickSearch /></div>
             <Link href="/recursos" className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/35 bg-white px-5 py-3 text-sm font-black text-[#031f4b] shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c8ff73] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c8ff73] focus-visible:ring-offset-2 focus-visible:ring-offset-[#031f4b]">
               Ver todas as ferramentas <ArrowRight className="h-4 w-4" aria-hidden />

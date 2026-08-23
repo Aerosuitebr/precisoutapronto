@@ -36,7 +36,7 @@ export const SEO_LANDINGS = {
     eyebrow: 'Orçamento digital + Pix',
     title: 'Orçamento com Pix Grátis: Gere e Envie por WhatsApp',
     description:
-      'Crie um orçamento profissional grátis, envie pelo WhatsApp e receba a aprovação do cliente. Teste 2 vezes sem cadastro.',
+      'Crie um orçamento profissional grátis, envie pelo WhatsApp e receba a aprovação do cliente. Sem cadastro para o primeiro envio.',
     heroBullets: [
       'Cliente aprova sem instalar app',
       'QR Pix e Copia e Cola prontos',
@@ -66,11 +66,11 @@ export const SEO_LANDINGS = {
       },
       {
         q: 'É grátis?',
-        a: 'Sim. Você experimenta o orçamento sem cadastro. Conta só entra depois de duas gerações, para salvar o histórico.'
+        a: 'Sim. Você envia o orçamento sem cadastro. Conta grátis só entra se quiser histórico ou tirar a marca.'
       },
       {
         q: 'Preciso criar conta para testar?',
-        a: 'Não. Preencha, veja o preview e use duas gerações livres. A conta só entra depois disso, para continuar salvando.'
+        a: 'Não. Preencha, veja o preview e envie o link. A conta só entra se quiser guardar o histórico ou remover a marca.'
       },
       {
         q: 'Serve para qualquer serviço?',

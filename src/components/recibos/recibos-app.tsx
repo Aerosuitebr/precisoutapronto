@@ -403,8 +403,8 @@ export function RecibosApp() {
 
   return (
     <AuthGate
-      title="Recibos exigem cadastro"
-      description="Crie sua conta gratuita para emitir, salvar e baixar recibos profissionais em PDF."
+      title="Emita recibo sem cadastro"
+      description="Baixe o PDF agora. Conta grátis só para histórico e para tirar a marca."
     >
       <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} toolKey={viralShareToolKey} showReferral={viralShareReferral} />
       <div className="space-y-5">

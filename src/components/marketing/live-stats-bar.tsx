@@ -9,7 +9,7 @@ function formatCount(n: number) {
 }
 
 const verifiedProductIndicators = [
-  { value: '2', label: 'usos grátis sem cadastro' },
+  { value: '0', label: 'cadastro para o 1º orçamento' },
   { value: '0', label: 'apps para o cliente instalar' },
   { value: '1', label: 'link para conferir e responder' }
 ] as const;

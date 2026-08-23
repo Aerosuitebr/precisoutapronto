@@ -3,7 +3,7 @@
  * Páginas públicas devem ser indexáveis e úteis o bastante para merecer o link.
  */
 
-import { BRAND_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
+import { BRAND_PUBLIC_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
 
 export type AuthorityAsset = {
   path: string;
@@ -67,9 +67,9 @@ export const PRESS_FACTS = [
   `Nome: ${BRAND_NAME}`,
   `Domínio canônico: ${BRAND_SITE}`,
   'Operação: Aerosuite',
-  `Contato de imprensa: ${BRAND_EMAIL}`,
+  `Contato de imprensa: ${BRAND_PUBLIC_EMAIL}`,
   'Proposta: ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador',
-  'Acesso: duas gerações livres sem cadastro; conta grátis para continuar',
+  'Acesso: orçamento e recibo sem cadastro; conta grátis para histórico e para tirar a marca',
   'Idiomas da interface pública: português (principal), inglês e espanhol em rotas dedicadas'
 ] as const;
 
