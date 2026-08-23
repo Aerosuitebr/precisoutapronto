@@ -23,6 +23,7 @@ Caddyfile
 coverage
 .tmp
 tmp
+vertowell-stage
 agent-transcripts
 terminals
 assets
