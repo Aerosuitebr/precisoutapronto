@@ -105,7 +105,7 @@ export function ViralPdfShareModal({
             Você já gerou mais de um documento
           </p>
           <p className="mt-1 text-sm leading-6 text-amber-900/80">
-            Convide 3 amigos ativos e ganhe 30 dias de Premium.
+            Ganhe 7 dias Premium já no primeiro amigo ativo — e ele também recebe 7 dias.
           </p>
           <Button asChild size="sm" className="mt-3 bg-amber-400 text-slate-950 hover:bg-amber-300">
             <a

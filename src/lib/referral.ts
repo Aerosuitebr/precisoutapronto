@@ -1,11 +1,13 @@
 import { generateSecureToken } from '@/lib/auth/password-hash';
-import { grantPremiumMonthServer } from '@/lib/billing-server';
+import { grantPremiumDaysServer } from '@/lib/billing-server';
 import { getPrisma } from '@/lib/db';
 import {
   buildReferralSignupUrl,
   buildReferralWhatsAppUrl,
   normalizeReferralCode,
-  REFERRAL_BATCH_SIZE
+  REFERRAL_BATCH_SIZE,
+  REFERRAL_MILESTONE_DAYS,
+  REFERRED_WELCOME_PREMIUM_DAYS
 } from '@/lib/referral-shared';
 import { writeAuditLog } from '@/lib/security/audit';
 
@@ -14,6 +16,8 @@ export {
   buildReferralWhatsAppUrl,
   normalizeReferralCode,
   REFERRAL_BATCH_SIZE,
+  REFERRAL_MILESTONE_DAYS,
+  REFERRED_WELCOME_PREMIUM_DAYS,
   REFERRAL_STORAGE_KEY
 } from '@/lib/referral-shared';
 
@@ -82,14 +86,21 @@ export async function maybeActivateReferral(referredUserId: string) {
       emailVerifiedAt: true,
       referredByUserId: true,
       toolUsage: { select: { totalConsumed: true } },
-      referralActivationReceived: { select: { id: true } }
+      referralActivationReceived: { select: { id: true, referrerId: true } }
     }
   });
 
   if (!user?.referredByUserId) return { activated: false as const };
   if (!user.emailVerifiedAt) return { activated: false as const };
   if ((user.toolUsage?.totalConsumed || 0) < 1) return { activated: false as const };
-  if (user.referralActivationReceived) return { activated: false as const };
+  if (user.referralActivationReceived) {
+    const benefits = await grantActivationBenefits({
+      activationId: user.referralActivationReceived.id,
+      referrerId: user.referralActivationReceived.referrerId,
+      referredId: user.id
+    });
+    return { activated: false as const, benefits };
+  }
 
   if (await sharesDeviceWithReferrer(user.referredByUserId, user.id)) {
     await writeAuditLog({
@@ -101,7 +112,7 @@ export async function maybeActivateReferral(referredUserId: string) {
     return { activated: false as const, blocked: 'same_device' as const };
   }
 
-  await prisma.referralActivation.create({
+  const activation = await prisma.referralActivation.create({
     data: {
       referrerId: user.referredByUserId,
       referredId: user.id
@@ -115,74 +126,85 @@ export async function maybeActivateReferral(referredUserId: string) {
     meta: { referrerId: user.referredByUserId }
   });
 
-  const reward = await maybeGrantReferralRewards(user.referredByUserId);
-  return { activated: true as const, reward };
+  const benefits = await grantActivationBenefits({
+    activationId: activation.id,
+    referrerId: user.referredByUserId,
+    referredId: user.id
+  });
+  return { activated: true as const, benefits };
 }
 
-export async function maybeGrantReferralRewards(referrerId: string) {
+async function grantBenefit(input: {
+  activationId: string;
+  beneficiaryId: string;
+  kind: 'referrer_milestone' | 'referred_welcome';
+  days: number;
+}) {
   const prisma = getPrisma();
-  const [activations, rewards] = await Promise.all([
-    prisma.referralActivation.count({ where: { referrerId } }),
-    prisma.referralReward.count({ where: { referrerId } })
-  ]);
+  const existing = await prisma.referralBenefit.findUnique({
+    where: { activationId_kind: { activationId: input.activationId, kind: input.kind } }
+  });
+  if (existing) return { granted: false as const, days: existing.days, expiresAt: existing.expiresAt };
 
-  const earnedBatches = Math.floor(activations / REFERRAL_BATCH_SIZE);
-  if (earnedBatches <= rewards) {
-    return {
-      granted: false as const,
-      activations,
-      rewards,
-      progress: activations % REFERRAL_BATCH_SIZE
-    };
+  const providerRef = `referral:${input.kind}:${input.activationId}`;
+  try {
+    await prisma.referralBenefit.create({
+      data: { ...input, providerRef, expiresAt: new Date() }
+    });
+  } catch (error) {
+    const claimed = await prisma.referralBenefit.findUnique({
+      where: { activationId_kind: { activationId: input.activationId, kind: input.kind } }
+    });
+    if (claimed) return { granted: false as const, days: claimed.days, expiresAt: claimed.expiresAt };
+    throw error;
   }
 
-  const rewardId = `referral_${referrerId}_${rewards + 1}_${Date.now()}`;
-  const providerRef = `referral:reward:${rewardId}`;
-  const sub = await grantPremiumMonthServer(referrerId, providerRef);
-
-  await prisma.referralReward.create({
-    data: {
-      referrerId,
-      expiresAt: sub.expiresAt,
-      batchSize: REFERRAL_BATCH_SIZE,
-      providerRef
-    }
+  let sub;
+  try {
+    sub = await grantPremiumDaysServer(input.beneficiaryId, input.days, providerRef);
+  } catch (error) {
+    await prisma.referralBenefit.deleteMany({ where: { providerRef } });
+    throw error;
+  }
+  const benefit = await prisma.referralBenefit.update({
+    where: { providerRef },
+    data: { expiresAt: sub.expiresAt }
   });
-
-  const referrer = await prisma.user.findUnique({
-    where: { id: referrerId },
-    select: { email: true }
-  });
-
   await writeAuditLog({
-    event: 'referral_premium_granted',
-    userId: referrerId,
-    email: referrer?.email,
-    meta: {
-      activations,
-      rewardIndex: rewards + 1,
-      expiresAt: sub.expiresAt.toISOString(),
-      providerRef
-    }
+    event: `referral_${input.kind}_granted`,
+    userId: input.beneficiaryId,
+    meta: { activationId: input.activationId, days: input.days, providerRef, expiresAt: sub.expiresAt.toISOString() }
   });
+  return { granted: true as const, days: benefit.days, expiresAt: benefit.expiresAt };
+}
 
-  return {
-    granted: true as const,
-    activations,
-    rewards: rewards + 1,
-    expiresAt: sub.expiresAt.toISOString()
-  };
+async function grantActivationBenefits(input: { activationId: string; referrerId: string; referredId: string }) {
+  const prisma = getPrisma();
+  const activationPosition = await prisma.referralActivation.count({
+    where: { referrerId: input.referrerId, activatedAt: { lte: (await prisma.referralActivation.findUniqueOrThrow({ where: { id: input.activationId }, select: { activatedAt: true } })).activatedAt } }
+  });
+  const milestoneIndex = Math.max(0, (activationPosition - 1) % REFERRAL_BATCH_SIZE);
+  const referrerDays = REFERRAL_MILESTONE_DAYS[milestoneIndex];
+  const [referrer, referred] = await Promise.all([
+    grantBenefit({ activationId: input.activationId, beneficiaryId: input.referrerId, kind: 'referrer_milestone', days: referrerDays }),
+    grantBenefit({ activationId: input.activationId, beneficiaryId: input.referredId, kind: 'referred_welcome', days: REFERRED_WELCOME_PREMIUM_DAYS })
+  ]);
+  return { referrer, referred, milestone: milestoneIndex + 1 };
 }
 
 export async function getReferralDashboard(userId: string) {
   const prisma = getPrisma();
   const code = await ensureUserReferralCode(userId);
-  const [activations, rewards, pendingReferrals] = await Promise.all([
+  const [activations, rewards, benefits, pendingReferrals] = await Promise.all([
     prisma.referralActivation.count({ where: { referrerId: userId } }),
     prisma.referralReward.findMany({
       where: { referrerId: userId },
       orderBy: { grantedAt: 'desc' },
       take: 5
+    }),
+    prisma.referralBenefit.findMany({
+      where: { beneficiaryId: userId, kind: 'referrer_milestone' },
+      orderBy: { grantedAt: 'desc' }
     }),
     prisma.user.count({
       where: {
@@ -206,7 +228,9 @@ export async function getReferralDashboard(userId: string) {
     remainingForReward,
     progressInBatch,
     rewardsCount: rewards.length,
-    lastRewardExpiresAt: rewards[0]?.expiresAt.toISOString() || null,
+    premiumDaysEarned: benefits.reduce((total, benefit) => total + benefit.days, rewards.length * 30),
+    nextRewardDays: REFERRAL_MILESTONE_DAYS[progressInBatch],
+    lastRewardExpiresAt: benefits[0]?.expiresAt.toISOString() || rewards[0]?.expiresAt.toISOString() || null,
     rewards: rewards.map((r) => ({
       id: r.id,
       grantedAt: r.grantedAt.toISOString(),

@@ -148,15 +148,26 @@ export function ApprovedQuoteNextActions({ className, sourceDocumentId, sourceOc
 }
 
 /** Pack de indicação após gerar link (profissional → colegas). */
-export function ViralInviteShareRow({ className }: { className?: string }) {
+const claimedPostValueOffers = new Set<string>();
+
+export function ViralInviteShareRow({ className, toolKey = 'orcamento' }: { className?: string; toolKey?: string }) {
   const [referralWhatsappUrl, setReferralWhatsappUrl] = useState('');
+  const [visible] = useState(() => {
+    if (claimedPostValueOffers.has(toolKey)) return false;
+    claimedPostValueOffers.add(toolKey);
+    return true;
+  });
 
   useEffect(() => {
+    if (!visible) return;
+    trackEvent('post_result_referral_viewed', { result_type: toolKey, moment: 'first_value' });
     void fetch('/api/referral/me', { cache: 'no-store' })
       .then((response) => response.ok ? response.json() : null)
       .then((data) => setReferralWhatsappUrl(data?.whatsappUrl || ''))
       .catch(() => undefined);
-  }, []);
+  }, [toolKey, visible]);
+
+  if (!visible) return null;
 
   const whatsappUrl = referralWhatsappUrl || buildViralInviteWhatsAppUrl();
 
@@ -164,10 +175,10 @@ export function ViralInviteShareRow({ className }: { className?: string }) {
     <div className={cn('rounded-xl border border-amber-200 bg-amber-50 p-3', className)}>
       <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-amber-800"><Gift className="h-3.5 w-3.5" />Indique e ganhe</p>
       <p className="mt-1 text-sm leading-5 text-slate-600">
-        Mande para um colega que também cobra no WhatsApp.{referralWhatsappUrl ? ' A cada 3 amigos ativos, você ganha 30 dias Premium.' : ''}
+        Mande para um colega que também resolve isso no WhatsApp.{referralWhatsappUrl ? ' Você ganha 7 dias Premium já no primeiro amigo ativo — e ele também ganha 7 dias.' : ''}
       </p>
       <Button asChild variant="outline" className="mt-3 h-10 w-full border-emerald-200 bg-white">
-        <a href={whatsappUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent('referral_invite_shared', { channel: referralWhatsappUrl ? 'quote_result_whatsapp' : 'quote_result_generic' })}>
+        <a href={whatsappUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent('referral_invite_shared', { channel: referralWhatsappUrl ? 'post_value_whatsapp' : 'post_value_generic', tool_name: toolKey })}>
           <MessageCircle className="h-4 w-4 text-emerald-700" />
           Compartilhar no WhatsApp
         </a>

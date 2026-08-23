@@ -25,7 +25,7 @@ export async function GET(request: Request) {
   const prisma = getPrisma();
   const where = { occurredAt: { gte: since } };
 
-  const [total, recentHour, byEvent, byTool, viralRows, continuityRows, transitionRows, flag, retentionEligible] = await Promise.all([
+  const [total, recentHour, byEvent, byTool, viralRows, continuityRows, transitionRows, creatorCampaignRows, flag, retentionEligible] = await Promise.all([
     prisma.productEvent.count({ where }),
     prisma.productEvent.count({ where: { occurredAt: { gte: new Date(Date.now() - 3_600_000) } } }),
     prisma.productEvent.groupBy({
@@ -128,6 +128,41 @@ export async function GET(request: Request) {
       ORDER BY users DESC
       LIMIT 20
     `,
+    prisma.$queryRaw<Array<{ source: string; campaign: string; entryTool: string; starters: bigint; completed: bigint; secondGeneration: bigint; secondTool: bigint }>>`
+      WITH attributed AS (
+        SELECT DISTINCT ON ("anonymousId")
+          "anonymousId",
+          COALESCE("properties"->>'utm_source', 'unknown') AS source,
+          COALESCE("properties"->>'utm_campaign', 'unknown') AS campaign,
+          COALESCE("toolKey", 'unknown') AS entry_tool,
+          "occurredAt" AS attributed_at
+        FROM "product_events"
+        WHERE "occurredAt" >= ${since}
+          AND "eventName" = 'task.started'
+          AND COALESCE("properties"->>'utm_medium', '') IN ('creator', 'partner')
+        ORDER BY "anonymousId", "occurredAt" ASC
+      )
+      SELECT
+        attributed.source,
+        attributed.campaign,
+        attributed.entry_tool AS "entryTool",
+        COUNT(*)::bigint AS starters,
+        COUNT(*) FILTER (WHERE activity.completed_count >= 1)::bigint AS completed,
+        COUNT(*) FILTER (WHERE activity.completed_count >= 2)::bigint AS "secondGeneration",
+        COUNT(*) FILTER (WHERE activity.used_second_tool)::bigint AS "secondTool"
+      FROM attributed
+      CROSS JOIN LATERAL (
+        SELECT
+          COUNT(*) FILTER (WHERE later."eventName" = 'task.completed') AS completed_count,
+          COALESCE(BOOL_OR(later."eventName" = 'task.started' AND later."toolKey" IS NOT NULL AND later."toolKey" <> attributed.entry_tool), false) AS used_second_tool
+        FROM "product_events" later
+        WHERE later."anonymousId" = attributed."anonymousId"
+          AND later."occurredAt" >= attributed.attributed_at
+      ) activity
+      GROUP BY attributed.source, attributed.campaign, attributed.entry_tool
+      ORDER BY completed DESC, starters DESC
+      LIMIT 30
+    `,
     prisma.featureFlag.findUnique({
       where: { key: 'event_platform_v1' },
       select: { enabled: true, rolloutPercent: true, updatedAt: true }
@@ -159,6 +194,17 @@ export async function GET(request: Request) {
       };
     }),
     transitions: transitionRows.map((row) => ({ sourceTool: row.sourceTool, targetTool: row.targetTool, users: Number(row.users) })),
+    creatorCampaigns: creatorCampaignRows.map((row) => ({
+      source: row.source,
+      campaign: row.campaign,
+      entryTool: row.entryTool,
+      starters: Number(row.starters),
+      completed: Number(row.completed),
+      secondGeneration: Number(row.secondGeneration),
+      secondTool: Number(row.secondTool),
+      completionRate: aggregateRate(Number(row.completed), Number(row.starters)),
+      secondGenerationRate: aggregateRate(Number(row.secondGeneration), Number(row.starters))
+    })),
     flag: flag
       ? {
           enabled: flag.enabled,

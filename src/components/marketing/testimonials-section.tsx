@@ -1,4 +1,7 @@
-import { MessageCircleMore, Quote } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, MessageCircleMore, Quote } from 'lucide-react';
+import { BRAND_SAME_AS } from '@/lib/brand';
+import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { cn } from '@/lib/utils';
 
 const TESTIMONIALS = [
@@ -71,7 +74,7 @@ export function TestimonialsSection({ className }: { className?: string }) {
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
                   <MessageCircleMore className="h-3.5 w-3.5" aria-hidden />
-                  Product Hunt
+                  <a href={BRAND_SAME_AS[0]} target="_blank" rel="noopener noreferrer" className="hover:text-sky-700 hover:underline">Product Hunt</a>
                 </span>
               </div>
 
@@ -110,7 +113,21 @@ export function TestimonialsSection({ className }: { className?: string }) {
             </li>
           ))}
         </ul>
+        <ApprovedBrazilianTestimonials />
+        <p className="mt-7 text-sm text-slate-600">Usa o produto no Brasil? <Link href="/depoimentos" className="inline-flex items-center gap-1 font-bold text-sky-700 hover:underline">Conte sua experiência real <ArrowRight className="h-3.5 w-3.5" /></Link></p>
       </div>
     </section>
   );
+}
+
+async function ApprovedBrazilianTestimonials() {
+  if (!isDatabaseConfigured()) return null;
+  const rows = await getPrisma().testimonialSubmission.findMany({
+    where: { status: 'approved' },
+    orderBy: { reviewedAt: 'desc' },
+    take: 6,
+    select: { id: true, publicName: true, profession: true, city: true, state: true, toolKey: true, quote: true }
+  }).catch(() => []);
+  if (!rows.length) return null;
+  return <ul className="mt-5 grid gap-5 lg:grid-cols-2">{rows.map(item => <li key={item.id} className="rounded-[26px] border border-emerald-200 bg-white p-6 shadow-sm"><span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800">Experiência verificada · {item.toolKey}</span><Quote className="mt-5 h-6 w-6 text-emerald-500" aria-hidden /><blockquote className="mt-3 text-base font-medium leading-7 text-slate-800">“{item.quote}”</blockquote><div className="mt-5 border-t border-slate-100 pt-4"><p className="text-sm font-bold text-slate-900">{item.publicName}</p><p className="text-xs text-slate-500">{item.profession} · {item.city}/{item.state}</p></div></li>)}</ul>;
 }

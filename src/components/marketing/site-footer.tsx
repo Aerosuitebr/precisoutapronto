@@ -56,6 +56,8 @@ const SEO_LINKS = [
   { href: '/recibo-de-pagamento', label: 'Recibo de pagamento' },
   { href: '/proposta-comercial-mei', label: 'Proposta para MEI' },
   { href: '/indique-e-ganhe', label: 'Indique e ganhe' },
+  { href: '/parcerias/criadores', label: 'Parcerias para creators' },
+  { href: '/depoimentos', label: 'Conte sua experiência' },
   { href: '/para/mei', label: 'Para MEI' },
   { href: '/para/freelancers', label: 'Para freelancers' },
   { href: '/para/estudantes', label: 'Para estudantes' },

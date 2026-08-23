@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { PostResultActionBar } from '@/components/shared/post-result-action-bar';
+import { ViralInviteShareRow } from '@/components/marketing/viral-recruit-cta';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
@@ -58,5 +59,5 @@ export function ShareResult({ tool, title, subtitle, lines, whatsappText }: { to
     toast('Contexto mantido. Ajuste apenas o que mudou.');
   }
 
-  return <PostResultActionBar onWhatsApp={() => void shareWhatsApp()} onCopyLink={() => void copyLink()} onCreateAnother={createAnother} busy={creating} />;
+  return <div className="space-y-3"><PostResultActionBar onWhatsApp={() => void shareWhatsApp()} onCopyLink={() => void copyLink()} onCreateAnother={createAnother} busy={creating} /><ViralInviteShareRow toolKey={tool} /></div>;
 }

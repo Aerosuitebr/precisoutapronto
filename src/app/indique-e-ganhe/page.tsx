@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, Gift, Link2, ShieldCheck, Users } from 'lucid
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { BRAND_NAME } from '@/lib/brand';
-import { REFERRAL_BATCH_SIZE } from '@/lib/referral-shared';
+import { REFERRAL_BATCH_SIZE, REFERRAL_MILESTONE_DAYS, REFERRED_WELCOME_PREMIUM_DAYS } from '@/lib/referral-shared';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 const PATH = '/indique-e-ganhe';
@@ -12,11 +12,11 @@ const SITE = getViralBaseUrl().replace(/\/$/, '');
 
 export const metadata: Metadata = {
   title: 'Indique e ganhe 30 dias Premium',
-  description: `Indique o Precisou, Tá Pronto. A cada ${REFERRAL_BATCH_SIZE} amigos ativos, ganhe 30 dias Premium. Veja como funciona e gere seu link pessoal.`,
+  description: `Indique o Precisou, Tá Pronto e ganhe Premium desde o primeiro amigo ativo. Em três indicações, são 30 dias; o indicado também ganha.`,
   alternates: { canonical: PATH },
   openGraph: {
     title: 'Indique e ganhe | Precisou, Tá Pronto',
-    description: `${REFERRAL_BATCH_SIZE} amigos ativos valem 30 dias Premium.`,
+    description: `Ganhe desde o primeiro amigo ativo. ${REFERRAL_BATCH_SIZE} ativos valem 30 dias Premium.`,
     url: `${SITE}${PATH}`,
     type: 'website'
   }
@@ -26,12 +26,13 @@ const steps = [
   { icon: Link2, title: 'Pegue seu link', text: 'Entre na sua conta e copie o convite pessoal na área de indicações.' },
   { icon: Users, title: 'Convide quem vai usar', text: 'Seu amigo começa gratuitamente pelo orçamento com Pix, sem precisar se cadastrar antes de testar.' },
   { icon: CheckCircle2, title: 'O amigo fica ativo', text: 'A indicação conta quando ele cria a conta, confirma o e-mail e usa uma ferramenta pela primeira vez.' },
-  { icon: Gift, title: 'Receba automaticamente', text: `Ao completar ${REFERRAL_BATCH_SIZE} amigos ativos, 30 dias Premium são adicionados à sua conta.` }
+  { icon: Gift, title: 'Os dois ganham', text: `Você ganha ${REFERRAL_MILESTONE_DAYS.join(', depois ')} dias; cada indicado ativo recebe ${REFERRED_WELCOME_PREMIUM_DAYS} dias Premium.` }
 ];
 
 const faqs = [
   { q: 'O que significa amigo ativo?', a: 'É uma pessoa indicada que confirmou o e-mail e realizou o primeiro uso válido de uma ferramenta, como salvar ou baixar um resultado.' },
-  { q: 'Quando recebo a recompensa?', a: `A recompensa é liberada automaticamente quando ${REFERRAL_BATCH_SIZE} indicações se tornam ativas.` },
+  { q: 'Quando recebo a recompensa?', a: `Desde o primeiro ativo: ${REFERRAL_MILESTONE_DAYS[0]} dias no primeiro, mais ${REFERRAL_MILESTONE_DAYS[1]} no segundo e mais ${REFERRAL_MILESTONE_DAYS[2]} no terceiro.` },
+  { q: 'O que meu amigo ganha?', a: `Ao confirmar o e-mail e concluir o primeiro uso válido, ele recebe ${REFERRED_WELCOME_PREMIUM_DAYS} dias Premium automaticamente.` },
   { q: 'Os meses acumulam?', a: 'Sim. Novas recompensas são acrescentadas ao período Premium que você já possui.' },
   { q: 'Posso indicar alguém da mesma casa?', a: 'Indicações legítimas são aceitas, mas contas vinculadas ao mesmo dispositivo podem ser bloqueadas pela proteção antifraude.' },
   { q: 'Meu amigo precisa pagar?', a: 'Não. Ele pode começar gratuitamente e a ativação depende do primeiro uso válido, não de uma compra.' }
@@ -55,7 +56,7 @@ export default function ReferralLandingPage() {
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
           <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-amber-300"><Gift className="h-4 w-4" /> Programa de indicação</p>
           <h1 className="rj-display mt-4 max-w-4xl text-4xl font-extrabold tracking-tight sm:text-6xl">Indique para quem precisa resolver. Ganhe quando a pessoa realmente usar.</h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-emerald-50">A cada <strong>{REFERRAL_BATCH_SIZE} amigos ativos</strong>, você recebe <strong>30 dias Premium</strong>. Seu amigo pode experimentar o orçamento com Pix gratuitamente antes de criar a conta.</p>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-emerald-50">Ganhe <strong>desde o primeiro amigo ativo</strong> e complete <strong>30 dias Premium a cada três</strong>. O indicado também recebe <strong>{REFERRED_WELCOME_PREMIUM_DAYS} dias Premium</strong> ao ativar.</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link href="/conta#indicacoes" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">Pegar meu link de indicação <ArrowRight className="h-4 w-4" /></Link>
             <Link href="/cadastro?utm_source=referral_landing&utm_medium=cta&utm_campaign=indique_e_ganhe" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/25 bg-white/10 px-6 font-bold text-white hover:bg-white/15">Criar conta grátis</Link>
@@ -73,7 +74,7 @@ export default function ReferralLandingPage() {
       <section className="border-y border-slate-200 bg-white">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1fr_0.8fr] lg:items-center">
           <div><p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-700">Regras claras</p><h2 className="rj-display mt-2 text-3xl font-extrabold text-slate-950">A recompensa vem do uso real, não do clique.</h2><ul className="mt-6 space-y-3 text-sm leading-6 text-slate-700"><li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />O indicado não precisa pagar para se tornar ativo.</li><li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />Cada pessoa ativa conta uma única vez.</li><li className="flex gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />Recompensas acumulam com seu Premium atual.</li><li className="flex gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />Autoconvites e vínculos pelo mesmo dispositivo podem ser bloqueados.</li></ul></div>
-          <div className="rounded-3xl bg-slate-950 p-7 text-white"><p className="text-sm font-bold text-amber-300">Resumo da recompensa</p><p className="mt-4 text-5xl font-black">{REFERRAL_BATCH_SIZE} → 30</p><p className="mt-2 text-sm leading-6 text-slate-300">{REFERRAL_BATCH_SIZE} amigos ativos geram 30 dias Premium. Ao completar outro grupo, você ganha novamente.</p><Link href="/conta#indicacoes" className="mt-6 inline-flex items-center gap-2 font-bold text-emerald-300 hover:text-emerald-200">Abrir meu painel <ArrowRight className="h-4 w-4" /></Link></div>
+          <div className="rounded-3xl bg-slate-950 p-7 text-white"><p className="text-sm font-bold text-amber-300">Recompensa progressiva</p><p className="mt-4 text-4xl font-black">+7 → +7 → +16</p><p className="mt-2 text-sm leading-6 text-slate-300">Cada ativo libera uma recompensa. O ciclo soma 30 dias Premium e recomeça automaticamente.</p><Link href="/conta#indicacoes" className="mt-6 inline-flex items-center gap-2 font-bold text-emerald-300 hover:text-emerald-200">Abrir meu painel <ArrowRight className="h-4 w-4" /></Link></div>
         </div>
       </section>
 

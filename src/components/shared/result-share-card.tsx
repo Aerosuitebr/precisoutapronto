@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { PostResultActionBar } from '@/components/shared/post-result-action-bar';
+import { ViralInviteShareRow } from '@/components/marketing/viral-recruit-cta';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
@@ -203,6 +204,7 @@ export function ResultShareCard({
   return (
     <div className="space-y-3">
       <PostResultActionBar onWhatsApp={handleWhatsApp} onCopyLink={handleCopyLink} onShare={handleShare} onCreateAnother={handleCreateAnother} onSave={handleSave} onDownload={handleDownload} busy={generating} compact />
+      <ViralInviteShareRow toolKey={toolKey} />
 
       {/* Wrapper 0×0 + overflow:hidden evita o card 1080px expandir o scroll horizontal no mobile. */}
       <div

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Check, Copy, Gift, Loader2, MessageCircle, Share2, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
-import { buildReferralSharePayload, REFERRAL_BATCH_SIZE } from '@/lib/referral-shared';
+import { buildReferralSharePayload, REFERRAL_BATCH_SIZE, REFERRAL_MILESTONE_DAYS, REFERRED_WELCOME_PREMIUM_DAYS } from '@/lib/referral-shared';
 import { isShareCancellation } from '@/lib/document-sharing';
 import { trackEvent } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,8 @@ interface ReferralDashboard {
   remainingForReward: number;
   progressInBatch: number;
   rewardsCount: number;
+  premiumDaysEarned: number;
+  nextRewardDays: number;
   lastRewardExpiresAt: string | null;
 }
 
@@ -90,11 +92,12 @@ export function ReferralPanel({ className }: { className?: string }) {
             Indique e ganhe
           </p>
           <h2 className="rj-display mt-2 text-2xl font-extrabold tracking-tight text-slate-900">
-            3 amigos ativos = 1 mês Premium
+            Ganhe desde o primeiro amigo ativo
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
             Seu amigo precisa confirmar o e-mail e usar uma ferramenta (salvar ou baixar PDF). Aí
-            conta como ativo. A cada 3, você ganha 30 dias de Premium, que empilha com o que já tiver.
+            conta como ativo. Você ganha {REFERRAL_MILESTONE_DAYS.join(' + ')} dias a cada três ativos,
+            e cada indicado ganha {REFERRED_WELCOME_PREMIUM_DAYS} dias Premium ao ativar.
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={() => void load()} disabled={loading}>
@@ -120,21 +123,21 @@ export function ReferralPanel({ className }: { className?: string }) {
               <p className="mt-1 text-xs text-slate-500">amigos ativos</p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Faltam</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Próximo ativo</p>
               <p className="mt-1 text-2xl font-black tabular-nums text-slate-900">
-                {data.remainingForReward}
+                +{data.nextRewardDays} dias
               </p>
-              <p className="mt-1 text-xs text-slate-500">para o próximo mês Pro</p>
+              <p className="mt-1 text-xs text-slate-500">creditados imediatamente</p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-white p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Já ganhos</p>
               <p className="mt-1 text-2xl font-black tabular-nums text-slate-900">
-                {data.rewardsCount}
+                {data.premiumDaysEarned}
               </p>
               <p className="mt-1 text-xs text-slate-500">
                 {data.pendingReferrals > 0
                   ? `${data.pendingReferrals} convite(s) ainda sem uso`
-                  : 'meses Premium por indicação'}
+                  : 'dias Premium por indicação'}
               </p>
             </div>
           </div>
@@ -178,7 +181,7 @@ export function ReferralPanel({ className }: { className?: string }) {
             </div>
           </div>
 
-          {data.rewardsCount > 0 ? (
+          {data.premiumDaysEarned > 0 ? (
             <p className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-800">
               <Check className="h-4 w-4" />
               {data.lastRewardExpiresAt

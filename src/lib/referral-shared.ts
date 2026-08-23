@@ -1,6 +1,8 @@
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const REFERRAL_BATCH_SIZE = 3;
+export const REFERRAL_MILESTONE_DAYS = [7, 7, 16] as const;
+export const REFERRED_WELCOME_PREMIUM_DAYS = 7;
 export const REFERRAL_STORAGE_KEY = 'rj_referral_code';
 
 export function normalizeReferralCode(raw: string | null | undefined) {

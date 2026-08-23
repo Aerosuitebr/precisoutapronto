@@ -109,6 +109,8 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/checklist-cobranca-mei`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/conteudos-para-compartilhar`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/indique-e-ganhe`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${base}/parcerias/criadores`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/depoimentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.6 },
     ...PROFESSION_LANDINGS.map((page) => ({
       url: `${base}/orcamento-para/${page.slug}`,
       lastModified: CORE_UPDATED_AT,
