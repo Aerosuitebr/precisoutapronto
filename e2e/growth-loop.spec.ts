@@ -140,7 +140,10 @@ test('public quote editor keeps optional details out of the critical path', asyn
   await page.goto('/orcamento-com-pix#montar', { waitUntil: 'domcontentloaded' });
   await expect(page.getByText('O essencial já está acima.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Validade da proposta' })).toBeHidden();
-  await page.getByRole('button', { name: 'Adicionar validade, condições ou Pix' }).click();
+  const optionalDetailsButton = page.getByRole('button', { name: 'Adicionar validade, condições ou Pix' });
+  await expect(optionalDetailsButton).toBeVisible();
+  await optionalDetailsButton.click();
+  await expect(optionalDetailsButton).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Validade da proposta' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Pix para o cliente pagar' })).toBeVisible();
 });
