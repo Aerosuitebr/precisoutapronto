@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ArrowRight, Gift, MessageCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, CopyPlus, Gift, MessageCircle, QrCode, ReceiptText, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   buildViralInviteWhatsAppUrl,
@@ -11,6 +11,7 @@ import {
 } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 
 type RecruitProps = {
   className?: string;
@@ -95,6 +96,54 @@ export function ViralRecruitSticky({ sourceDocumentId, sourceOccupation }: Recru
         </Button>
       </div>
     </div>
+  );
+}
+
+function trackApprovedNextAction(action: string, targetTool: string) {
+  trackEvent('quote_recipient_next_action', { action, target_tool: targetTool });
+  emitClientProductEvent({
+    eventName: 'growth.recipient_action',
+    toolKey: 'orcamentos',
+    properties: { action, target_tool: targetTool, surface: 'approved_quote' }
+  });
+}
+
+/** Próximos passos contextuais exibidos somente depois da aprovação. */
+export function ApprovedQuoteNextActions({ className, sourceDocumentId, sourceOccupation }: RecruitProps) {
+  const attribution = { sourceDocumentId, sourceOccupation };
+  const receiptHref = '/gerador-de-recibo?utm_source=approved_quote&utm_medium=recipient_cta&utm_campaign=quote_to_receipt';
+  const pixHref = '/gerador-de-qr-code-pix?utm_source=approved_quote&utm_medium=recipient_cta&utm_campaign=quote_to_pix';
+
+  return (
+    <section className={cn('rounded-[28px] border border-emerald-200 bg-white p-5 shadow-sm', className)}>
+      <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Orçamento aprovado · próximo passo</p>
+      <h2 className="mt-2 text-xl font-extrabold text-slate-950">Use este mesmo fluxo no seu trabalho</h2>
+      <p className="mt-2 text-sm leading-6 text-slate-600">O modelo é copiado sem nomes, valores ou dados privados. Você recebe uma base segura para editar.</p>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <Link
+          href={viralOrcamentoPublicPath(attribution)}
+          onClick={() => {
+            trackRecruitClick('approved_duplicate', sourceDocumentId, sourceOccupation);
+            trackApprovedNextAction('duplicate_safe_template', 'orcamentos');
+          }}
+          className="rounded-2xl border border-amber-200 bg-amber-50 p-4 transition hover:border-amber-400 hover:bg-amber-100"
+        >
+          <CopyPlus className="h-5 w-5 text-amber-700" />
+          <strong className="mt-3 block text-sm text-slate-950">Criar orçamento como este</strong>
+          <span className="mt-1 block text-xs leading-5 text-slate-600">Duplique a estrutura segura e troque só o necessário.</span>
+        </Link>
+        <Link href={pixHref} onClick={() => trackApprovedNextAction('create_pix', 'pix')} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:border-emerald-300 hover:bg-emerald-50">
+          <QrCode className="h-5 w-5 text-emerald-700" />
+          <strong className="mt-3 block text-sm text-slate-950">Criar cobrança Pix</strong>
+          <span className="mt-1 block text-xs leading-5 text-slate-600">Gere QR Code e Pix Copia e Cola para sua próxima cobrança.</span>
+        </Link>
+        <Link href={receiptHref} onClick={() => trackApprovedNextAction('create_receipt', 'recibos')} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:border-sky-300 hover:bg-sky-50">
+          <ReceiptText className="h-5 w-5 text-sky-700" />
+          <strong className="mt-3 block text-sm text-slate-950">Gerar recibo</strong>
+          <span className="mt-1 block text-xs leading-5 text-slate-600">Comprove um pagamento com um recibo pronto para PDF.</span>
+        </Link>
+      </div>
+    </section>
   );
 }
 

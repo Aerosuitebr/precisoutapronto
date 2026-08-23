@@ -9,6 +9,7 @@ export type ClientProductEventName =
   | 'task.completed'
   | 'outcome.shared'
   | 'outcome.approved'
+  | 'continuity.duplicated'
   | 'growth.share_opened'
   | 'growth.recipient_action'
   | 'growth.recipient_activated';

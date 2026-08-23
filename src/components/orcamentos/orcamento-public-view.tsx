@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { OrcamentoPublicPixPay } from '@/components/orcamentos/orcamento-public-pix-pay';
 import {
+  ApprovedQuoteNextActions,
   ViralRecruitCard,
   ViralRecruitSticky
 } from '@/components/marketing/viral-recruit-cta';
@@ -319,11 +320,11 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
         {error ? <p className="mt-4 text-sm font-medium text-rose-600">{error}</p> : null}
 
         {!pending ? (
-          <ViralRecruitCard
-            className="mt-6"
-            sourceDocumentId={orcamento.id}
-            sourceOccupation={viralSourceOccupation}
-          />
+          orcamento.status === 'approved' ? (
+            <ApprovedQuoteNextActions className="mt-6" sourceDocumentId={orcamento.id} sourceOccupation={viralSourceOccupation} />
+          ) : (
+            <ViralRecruitCard className="mt-6" sourceDocumentId={orcamento.id} sourceOccupation={viralSourceOccupation} />
+          )
         ) : null}
 
         <p className="mt-6 text-center text-[11px] text-slate-400">

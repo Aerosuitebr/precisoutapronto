@@ -100,7 +100,7 @@ export function PropostasApp() {
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
   const { shareDocument, sharing } = useDocumentShare();
-  const { afterPdfExport, viralShareOpen, viralShareLabel, viralShareReferral, closeViralShare } = useViralPdfShare();
+  const { afterPdfExport, viralShareOpen, viralShareLabel, viralShareToolKey, viralShareReferral, closeViralShare } = useViralPdfShare();
   const [proposals, setProposals] = useState<ProposalData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [proposal, setProposal] = useState<ProposalData>(createEmptyProposal());
@@ -316,7 +316,7 @@ export function PropostasApp() {
       }
       refreshAuth();
       trackEvent('document_completed', { tool_name: 'propostas', output: 'pdf' });
-      afterPdfExport('proposta');
+      afterPdfExport('proposta', 'propostas');
     } catch {
       setError('Não foi possível gerar o PDF. Tente novamente.');
     } finally {
@@ -333,7 +333,7 @@ export function PropostasApp() {
       title="Propostas exigem cadastro"
       description="Crie sua conta gratuita para montar, salvar e baixar propostas comerciais profissionais."
     >
-      <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} showReferral={viralShareReferral} />
+      <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} toolKey={viralShareToolKey} showReferral={viralShareReferral} />
       <div className="space-y-5">
         <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

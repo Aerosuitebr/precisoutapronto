@@ -7,16 +7,16 @@ export interface ProductViralFunnelCounts {
   activated: number;
 }
 
-function pct(value: number, base: number) {
+export function aggregateRate(value: number, base: number) {
   return base > 0 ? Math.round((value / base) * 1000) / 10 : 0;
 }
 
 export function productViralFunnelMetrics(counts: ProductViralFunnelCounts) {
   return {
     ...counts,
-    shareRate: pct(counts.shared, counts.completed),
-    openRate: pct(counts.opened, counts.shared),
-    actionRate: pct(counts.acted, counts.opened),
-    activationRate: pct(counts.activated, counts.opened)
+    shareRate: aggregateRate(counts.shared, counts.completed),
+    openRate: aggregateRate(counts.opened, counts.shared),
+    actionRate: aggregateRate(counts.acted, counts.opened),
+    activationRate: aggregateRate(counts.activated, counts.opened)
   };
 }

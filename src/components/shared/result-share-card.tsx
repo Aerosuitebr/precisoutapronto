@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Copy, Download, MessageCircle, RotateCcw, Save, Share2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { PostResultActionBar } from '@/components/shared/post-result-action-bar';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
@@ -133,6 +132,12 @@ export function ResultShareCard({
       tool_path: toolPath,
       campaign: utmCampaign
     });
+    emitClientProductEvent({ eventName: 'continuity.duplicated', toolKey, properties: { mode: 'context_preserved', surface: 'result_card' } });
+    const form = document.querySelector('form');
+    const target = form || document.querySelector('input, textarea, select');
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (target instanceof HTMLElement) window.setTimeout(() => target.focus(), 350);
+    toast('Contexto mantido. Ajuste apenas o que mudou.');
   }
 
   function handleSave() {
@@ -196,55 +201,8 @@ export function ResultShareCard({
   }
 
   return (
-    <div className="space-y-3 rounded-2xl border border-sky-200 bg-sky-50/70 p-3">
-      <div>
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">Resultado Jato</p>
-        <p className="mt-1 text-sm font-semibold text-slate-800">Seu resultado está pronto para compartilhar.</p>
-      </div>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-        <Button
-          variant="success"
-          size="sm"
-          className="w-full"
-          onClick={handleWhatsApp}
-          icon={MessageCircle}
-        >
-          WhatsApp
-        </Button>
-        <Button variant="outline" size="sm" className="w-full" onClick={handleCopyLink} icon={Copy}>
-          Copiar link
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full"
-          onClick={handleShare}
-          icon={Share2}
-          disabled={generating}
-        >
-          {generating ? 'Gerando…' : 'Enviar resultado'}
-        </Button>
-        <Button asChild variant="outline" size="sm" className="w-full">
-          <a href={toolPath} onClick={handleCreateAnother}>
-            <RotateCcw className="h-4 w-4 shrink-0" aria-hidden />
-            Criar outro igual
-          </a>
-        </Button>
-        <Button variant="outline" size="sm" className="col-span-2 w-full sm:col-span-1" onClick={handleSave} icon={Save}>
-          Salvar resultado
-        </Button>
-      </div>
-      <div className="flex justify-end">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleDownload}
-          icon={Download}
-          disabled={generating}
-        >
-          Baixar imagem
-        </Button>
-      </div>
+    <div className="space-y-3">
+      <PostResultActionBar onWhatsApp={handleWhatsApp} onCopyLink={handleCopyLink} onShare={handleShare} onCreateAnother={handleCreateAnother} onSave={handleSave} onDownload={handleDownload} busy={generating} compact />
 
       {/* Wrapper 0×0 + overflow:hidden evita o card 1080px expandir o scroll horizontal no mobile. */}
       <div

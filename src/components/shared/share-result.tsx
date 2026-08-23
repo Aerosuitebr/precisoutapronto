@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Copy, Loader2, MessageCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { PostResultActionBar } from '@/components/shared/post-result-action-bar';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
@@ -49,5 +48,15 @@ export function ShareResult({ tool, title, subtitle, lines, whatsappText }: { to
     finally { setCreating(false); }
   }
 
-  return <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4"><p className="font-black text-slate-950">✅ Tá pronto!</p><p className="mt-1 text-sm text-slate-600">Conhece alguém que precisa resolver isso também? Envie o resultado.</p><div className="mt-3 flex flex-col gap-2 sm:flex-row"><Button variant="success" className="flex-1" onClick={shareWhatsApp} disabled={creating}>{creating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageCircle className="h-4 w-4" />}Compartilhar no WhatsApp</Button><Button variant="outline" onClick={copyLink} disabled={creating}><Copy className="h-4 w-4" />Copiar link</Button></div></div>;
+  function createAnother() {
+    emitClientProductEvent({ eventName: 'continuity.duplicated', toolKey: tool, properties: { mode: 'context_preserved', surface: 'result' } });
+    trackEvent('result_duplicated', { tool_name: tool, mode: 'context_preserved' });
+    const form = document.querySelector('form');
+    const target = form || document.querySelector('input, textarea, select');
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (target instanceof HTMLElement) window.setTimeout(() => target.focus(), 350);
+    toast('Contexto mantido. Ajuste apenas o que mudou.');
+  }
+
+  return <PostResultActionBar onWhatsApp={() => void shareWhatsApp()} onCopyLink={() => void copyLink()} onCreateAnother={createAnother} busy={creating} />;
 }

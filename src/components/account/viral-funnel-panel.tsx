@@ -18,6 +18,8 @@ interface FunnelRow {
 
 interface FunnelData {
   rows: FunnelRow[];
+  continuity: Array<{ toolKey: string; duplicated: number; secondToolUsers: number; duplicationRate: number; secondToolRate: number }>;
+  transitions: Array<{ sourceTool: string; targetTool: string; users: number }>;
   flag: { enabled: boolean; rolloutPercent: number } | null;
 }
 
@@ -29,7 +31,7 @@ export function ViralFunnelPanel() {
     setData(null);
     void fetch(`/api/analytics/product-events?days=${days}`, { cache: 'no-store' })
       .then((response) => response.ok ? response.json() : null)
-      .then((response) => setData(response ? { rows: response.viralFunnel || [], flag: response.flag || null } : { rows: [], flag: null }));
+      .then((response) => setData(response ? { rows: response.viralFunnel || [], continuity: response.continuity || [], transitions: response.transitions || [], flag: response.flag || null } : { rows: [], continuity: [], transitions: [], flag: null }));
   }, [days]);
 
   return (
@@ -58,6 +60,8 @@ export function ViralFunnelPanel() {
           </table>
         </div>
       ) : <p className="mt-6 text-sm text-slate-500">Ainda não há eventos canônicos suficientes no período.</p>}
+      {data?.continuity.length ? <div className="mt-8"><h3 className="text-base font-extrabold text-slate-950">Reutilização e segunda ferramenta</h3><div className="mt-3 overflow-x-auto"><table className="min-w-[680px] w-full text-left text-sm"><thead><tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500"><th className="px-3 py-3">Origem</th><th className="px-3 py-3">Duplicaram</th><th className="px-3 py-3">Taxa de duplicação</th><th className="px-3 py-3">Usaram outra ferramenta</th><th className="px-3 py-3">Taxa de segunda ferramenta</th></tr></thead><tbody>{data.continuity.map((row) => <tr key={row.toolKey} className="border-b border-slate-100"><td className="px-3 py-3 font-bold text-slate-900">{row.toolKey}</td><Cell value={row.duplicated} /><Rate value={row.duplicationRate} /><Cell value={row.secondToolUsers} /><Rate value={row.secondToolRate} /></tr>)}</tbody></table></div></div> : null}
+      {data?.transitions.length ? <div className="mt-8"><h3 className="text-base font-extrabold text-slate-950">Primeira próxima ferramenta</h3><div className="mt-3 grid gap-2 sm:grid-cols-2">{data.transitions.map((row) => <div key={`${row.sourceTool}-${row.targetTool}`} className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 text-sm"><span><strong>{row.sourceTool}</strong> <span className="text-slate-400">→</span> <strong>{row.targetTool}</strong></span><span className="font-black tabular-nums text-emerald-700">{row.users}</span></div>)}</div></div> : null}
     </section>
   );
 }

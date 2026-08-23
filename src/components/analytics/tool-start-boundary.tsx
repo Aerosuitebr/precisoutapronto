@@ -15,11 +15,16 @@ export function ToolStartBoundary({ toolName, children }: { toolName: string; ch
 
     const params = new URLSearchParams(window.location.search);
     const source = params.get('utm_source');
-    if (source === 'shared_result' || source === 'shared_document' || source === 'public_result') {
+    const recipientSource = source === 'shared_result' || source === 'shared_document' || source === 'public_result' || source === 'approved_quote'
+      ? source
+      : params.has('source_document')
+        ? 'shared_quote'
+        : null;
+    if (recipientSource) {
       emitClientProductEvent({
         eventName: 'growth.recipient_activated',
         toolKey: toolName,
-        properties: { source, activation: 'first_interaction' }
+        properties: { source: recipientSource, activation: 'first_interaction' }
       });
     }
   }

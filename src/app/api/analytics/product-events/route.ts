@@ -3,7 +3,7 @@ import { isInternalDashboardEmail } from '@/lib/auth/internal-access';
 import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { productEventRetentionCutoff, productEventRetentionDays } from '@/lib/events/retention';
-import { productViralFunnelMetrics } from '@/lib/growth/product-viral-funnel';
+import { aggregateRate, productViralFunnelMetrics } from '@/lib/growth/product-viral-funnel';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
   const prisma = getPrisma();
   const where = { occurredAt: { gte: since } };
 
-  const [total, recentHour, byEvent, byTool, viralRows, flag, retentionEligible] = await Promise.all([
+  const [total, recentHour, byEvent, byTool, viralRows, continuityRows, transitionRows, flag, retentionEligible] = await Promise.all([
     prisma.productEvent.count({ where }),
     prisma.productEvent.count({ where: { occurredAt: { gte: new Date(Date.now() - 3_600_000) } } }),
     prisma.productEvent.groupBy({
@@ -62,6 +62,72 @@ export async function GET(request: Request) {
       ORDER BY shared DESC, opened DESC
       LIMIT 30
     `,
+    prisma.$queryRaw<Array<{ toolKey: string; duplicated: bigint; secondToolUsers: bigint }>>`
+      WITH first_tools AS (
+        SELECT DISTINCT ON ("anonymousId")
+          "anonymousId", "toolKey" AS source_tool, "occurredAt" AS source_at
+        FROM "product_events"
+        WHERE "occurredAt" >= ${since}
+          AND "eventName" IN ('task.started', 'task.completed')
+          AND "toolKey" IS NOT NULL
+        ORDER BY "anonymousId", "occurredAt" ASC
+      ), second_tools AS (
+        SELECT first_tools.source_tool, COUNT(DISTINCT first_tools."anonymousId")::bigint AS users
+        FROM first_tools
+        WHERE EXISTS (
+          SELECT 1 FROM "product_events" later
+          WHERE later."anonymousId" = first_tools."anonymousId"
+            AND later."occurredAt" > first_tools.source_at
+            AND later."eventName" = 'task.started'
+            AND later."toolKey" IS NOT NULL
+            AND later."toolKey" <> first_tools.source_tool
+        )
+        GROUP BY first_tools.source_tool
+      ), duplicates AS (
+        SELECT "toolKey" AS source_tool, COUNT(DISTINCT "anonymousId")::bigint AS users
+        FROM "product_events"
+        WHERE "occurredAt" >= ${since}
+          AND "eventName" = 'continuity.duplicated'
+          AND "toolKey" IS NOT NULL
+        GROUP BY "toolKey"
+      )
+      SELECT COALESCE(duplicates.source_tool, second_tools.source_tool) AS "toolKey",
+        COALESCE(duplicates.users, 0)::bigint AS duplicated,
+        COALESCE(second_tools.users, 0)::bigint AS "secondToolUsers"
+      FROM duplicates FULL OUTER JOIN second_tools ON second_tools.source_tool = duplicates.source_tool
+      ORDER BY "secondToolUsers" DESC, duplicated DESC
+      LIMIT 30
+    `,
+    prisma.$queryRaw<Array<{ sourceTool: string; targetTool: string; users: bigint }>>`
+      WITH first_tools AS (
+        SELECT DISTINCT ON ("anonymousId")
+          "anonymousId", "toolKey" AS source_tool, "occurredAt" AS source_at
+        FROM "product_events"
+        WHERE "occurredAt" >= ${since}
+          AND "eventName" IN ('task.started', 'task.completed')
+          AND "toolKey" IS NOT NULL
+        ORDER BY "anonymousId", "occurredAt" ASC
+      ), transitions AS (
+        SELECT first_tools."anonymousId", first_tools.source_tool, next_tool."toolKey" AS target_tool
+        FROM first_tools
+        CROSS JOIN LATERAL (
+          SELECT later."toolKey"
+          FROM "product_events" later
+          WHERE later."anonymousId" = first_tools."anonymousId"
+            AND later."occurredAt" > first_tools.source_at
+            AND later."eventName" = 'task.started'
+            AND later."toolKey" IS NOT NULL
+            AND later."toolKey" <> first_tools.source_tool
+          ORDER BY later."occurredAt" ASC
+          LIMIT 1
+        ) next_tool
+      )
+      SELECT source_tool AS "sourceTool", target_tool AS "targetTool", COUNT(DISTINCT "anonymousId")::bigint AS users
+      FROM transitions
+      GROUP BY source_tool, target_tool
+      ORDER BY users DESC
+      LIMIT 20
+    `,
     prisma.featureFlag.findUnique({
       where: { key: 'event_platform_v1' },
       select: { enabled: true, rolloutPercent: true, updatedAt: true }
@@ -82,6 +148,17 @@ export async function GET(request: Request) {
       acted: Number(row.acted),
       activated: Number(row.activated)
     })),
+    continuity: continuityRows.map((row) => {
+      const completed = Number(viralRows.find((viral) => viral.toolKey === row.toolKey)?.completed || 0);
+      return {
+        toolKey: row.toolKey,
+        duplicated: Number(row.duplicated),
+        secondToolUsers: Number(row.secondToolUsers),
+        duplicationRate: aggregateRate(Number(row.duplicated), completed),
+        secondToolRate: aggregateRate(Number(row.secondToolUsers), completed)
+      };
+    }),
+    transitions: transitionRows.map((row) => ({ sourceTool: row.sourceTool, targetTool: row.targetTool, users: Number(row.users) })),
     flag: flag
       ? {
           enabled: flag.enabled,

@@ -63,7 +63,7 @@ export function ContratosApp() {
   const { refresh: refreshAuth, usage } = useAuth();
   const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
-  const { afterPdfExport, viralShareOpen, viralShareLabel, viralShareReferral, closeViralShare } = useViralPdfShare();
+  const { afterPdfExport, viralShareOpen, viralShareLabel, viralShareToolKey, viralShareReferral, closeViralShare } = useViralPdfShare();
   const [items, setItems] = useState<ContractData[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [contrato, setContrato] = useState<ContractData>(createEmptyContrato());
@@ -350,7 +350,7 @@ export function ContratosApp() {
       }
       refreshAuth();
       trackEvent('document_completed', { tool_name: 'contratos', output: 'pdf' });
-      afterPdfExport('contrato');
+      afterPdfExport('contrato', 'contratos');
     } catch {
       setError('Não foi possível gerar o PDF. Tente novamente.');
     } finally {
@@ -363,7 +363,7 @@ export function ContratosApp() {
       title="Contratos exigem cadastro"
       description="Crie sua conta gratuita para montar contratos sob medida e baixar em PDF."
     >
-      <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} showReferral={viralShareReferral} />
+      <ViralPdfShareModal open={viralShareOpen} onClose={closeViralShare} docLabel={viralShareLabel} toolKey={viralShareToolKey} showReferral={viralShareReferral} />
       <div className="space-y-6">
         <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
           <div className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-r from-slate-950 via-slate-900 to-sky-950 px-5 py-6 text-white sm:px-6">

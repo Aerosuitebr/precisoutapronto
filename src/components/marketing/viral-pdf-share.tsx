@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Gift, MessageCircle, Share2 } from 'lucide-react';
+import { Gift, MessageCircle, RotateCcw, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 import {
   buildViralPdfShareWhatsAppUrl,
   viralHomeUrl
@@ -15,14 +16,26 @@ export function ViralPdfShareModal({
   open,
   onClose,
   docLabel,
-  showReferral
+  showReferral,
+  toolKey
 }: {
   open: boolean;
   onClose: () => void;
   docLabel: string;
   showReferral?: boolean;
+  toolKey: string;
 }) {
   const [referral, setReferral] = useState<{ whatsappUrl: string } | null>(null);
+
+  function createAnother() {
+    emitClientProductEvent({ eventName: 'continuity.duplicated', toolKey, properties: { mode: 'context_preserved', surface: 'pdf_complete' } });
+    trackEvent('document_duplicated', { tool_name: toolKey, mode: 'context_preserved' });
+    onClose();
+    const form = document.querySelector('main form');
+    const target = form || document.querySelector('main input, main textarea, main select');
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (target instanceof HTMLElement) window.setTimeout(() => target.focus(), 350);
+  }
 
   useEffect(() => {
     if (!open || !showReferral) return;
@@ -50,6 +63,10 @@ export function ViralPdfShareModal({
         <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-end">
           <Button variant="outline" onClick={onClose}>
             Fechar
+          </Button>
+          <Button variant="outline" onClick={createAnother}>
+            <RotateCcw className="h-4 w-4" />
+            Criar outro igual
           </Button>
           <Button asChild className="bg-emerald-600 hover:bg-emerald-500">
             <a
@@ -111,9 +128,10 @@ export function useViralPdfShare() {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [docLabel, setDocLabel] = useState('documento');
+  const [toolKey, setToolKey] = useState('documentos');
   const [showReferral, setShowReferral] = useState(false);
 
-  function afterPdfExport(label = 'documento') {
+  function afterPdfExport(label = 'documento', sourceToolKey = 'documentos') {
     try {
       const key = 'rj_generated_document_count';
       const count = Math.max(0, Number(window.localStorage.getItem(key)) || 0) + 1;
@@ -123,6 +141,7 @@ export function useViralPdfShare() {
       setShowReferral(false);
     }
     setDocLabel(label);
+    setToolKey(sourceToolKey);
     setOpen(true);
     toast('PDF baixado. Compartilhe e divulgue o Precisou, Tá Pronto!');
   }
@@ -131,6 +150,7 @@ export function useViralPdfShare() {
     afterPdfExport,
     viralShareOpen: open,
     viralShareLabel: docLabel,
+    viralShareToolKey: toolKey,
     viralShareReferral: showReferral,
     closeViralShare: () => setOpen(false)
   };
