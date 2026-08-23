@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackEvent } from '@/lib/analytics';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 import type { SharedResultLine } from '@/lib/shared-results';
 
 export function SharedResultView({
@@ -26,6 +27,7 @@ export function SharedResultView({
 }) {
   useEffect(() => {
     trackEvent('shared_result_open', { tool_name: tool, result_id: token });
+    emitClientProductEvent({ eventName: 'growth.share_opened', toolKey: tool, properties: { surface: 'shared_result' } });
   }, [token, tool]);
 
   const target = `${ctaPath}${ctaPath.includes('?') ? '&' : '?'}utm_source=shared_result&utm_medium=viral_loop&utm_campaign=create_my_own&rid=${token}`;
@@ -46,7 +48,10 @@ export function SharedResultView({
         ))}
       </dl>
       <Button asChild size="lg" className="mt-7 h-13 w-full bg-emerald-600 text-base hover:bg-emerald-500">
-        <Link href={target} onClick={() => trackEvent('shared_result_cta', { tool_name: tool, result_id: token, action: 'create_my_own' })}>
+        <Link href={target} onClick={() => {
+          trackEvent('shared_result_cta', { tool_name: tool, result_id: token, action: 'create_my_own' });
+          emitClientProductEvent({ eventName: 'growth.recipient_action', toolKey: tool, properties: { action: 'create_my_own', surface: 'shared_result' } });
+        }}>
           {ctaLabel}<ArrowRight className="h-5 w-5" />
         </Link>
       </Button>

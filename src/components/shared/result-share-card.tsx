@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Copy, Download, MessageCircle, RotateCcw, Save, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 import { viralPublicResultUrl, viralToolShareUrl } from '@/lib/viral-loop';
 import { saveToolResult } from '@/lib/result-history';
 
@@ -54,6 +55,12 @@ export function ResultShareCard({
   const toolShareUrl = viralToolShareUrl(toolPath, utmCampaign);
   const shareUrl = viralPublicResultUrl({ title, highlightLabel, highlightValue, lines, toolPath, campaign: utmCampaign });
   const shareHost = toolShareUrl.replace(/^https?:\/\//, '');
+  const toolKey = toolPath.replace(/^\//, '');
+
+  useEffect(() => {
+    emitClientProductEvent({ eventName: 'task.first_value', toolKey, properties: { surface: 'result_card' } });
+    emitClientProductEvent({ eventName: 'task.completed', toolKey, properties: { output: 'result_card' } });
+  }, [toolKey]);
 
   async function renderToBlob(): Promise<Blob | null> {
     if (!cardRef.current) return null;
@@ -85,6 +92,7 @@ export function ResultShareCard({
         campaign: utmCampaign
       });
       trackEvent('share_download', { tool_name: utmCampaign, share_surface: 'result_card' });
+      emitClientProductEvent({ eventName: 'outcome.shared', toolKey, properties: { channel: 'download_image', surface: 'result_card' } });
       toast('Imagem baixada! Pronta pra postar no Stories ou WhatsApp.');
     } catch {
       toast('Não foi possível gerar a imagem agora.');
@@ -101,6 +109,7 @@ export function ResultShareCard({
         tool_path: toolPath,
         campaign: utmCampaign
       });
+      emitClientProductEvent({ eventName: 'outcome.shared', toolKey, properties: { channel: 'copy_link', surface: 'result_card' } });
       toast('Link copiado!');
     } catch {
       toast('Não foi possível copiar o link agora.');
@@ -114,6 +123,7 @@ export function ResultShareCard({
       tool_path: toolPath,
       campaign: utmCampaign
     });
+    emitClientProductEvent({ eventName: 'outcome.shared', toolKey, properties: { channel: 'whatsapp', surface: 'result_card' } });
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   }
 
@@ -166,6 +176,7 @@ export function ResultShareCard({
           campaign: utmCampaign
         });
         trackEvent('share_story', { tool_name: utmCampaign, share_surface: 'result_card' });
+        emitClientProductEvent({ eventName: 'outcome.shared', toolKey, properties: { channel: 'native_image', surface: 'result_card' } });
       } else if (nav.share) {
         await nav.share({ title, text: shareText, url: shareUrl });
         trackEvent('share_result', {
@@ -173,6 +184,7 @@ export function ResultShareCard({
           tool_path: toolPath,
           campaign: utmCampaign
         });
+        emitClientProductEvent({ eventName: 'outcome.shared', toolKey, properties: { channel: 'native_link', surface: 'result_card' } });
       } else {
         await handleDownload();
       }

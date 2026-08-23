@@ -3,6 +3,7 @@ import { isInternalDashboardEmail } from '@/lib/auth/internal-access';
 import { getValidSessionFromCookies } from '@/lib/auth/user-session';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { productEventRetentionCutoff, productEventRetentionDays } from '@/lib/events/retention';
+import { productViralFunnelMetrics } from '@/lib/growth/product-viral-funnel';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
   const prisma = getPrisma();
   const where = { occurredAt: { gte: since } };
 
-  const [total, recentHour, byEvent, byTool, flag, retentionEligible] = await Promise.all([
+  const [total, recentHour, byEvent, byTool, viralRows, flag, retentionEligible] = await Promise.all([
     prisma.productEvent.count({ where }),
     prisma.productEvent.count({ where: { occurredAt: { gte: new Date(Date.now() - 3_600_000) } } }),
     prisma.productEvent.groupBy({
@@ -39,6 +40,28 @@ export async function GET(request: Request) {
       _count: { _all: true },
       orderBy: { _count: { toolKey: 'desc' } }
     }),
+    prisma.$queryRaw<Array<{
+      toolKey: string;
+      completed: bigint;
+      shared: bigint;
+      opened: bigint;
+      acted: bigint;
+      activated: bigint;
+    }>>`
+      SELECT
+        COALESCE("toolKey", 'unknown') AS "toolKey",
+        COUNT(DISTINCT "anonymousId") FILTER (WHERE "eventName" = 'task.completed')::bigint AS completed,
+        COUNT(DISTINCT "anonymousId") FILTER (WHERE "eventName" = 'outcome.shared')::bigint AS shared,
+        COUNT(DISTINCT "anonymousId") FILTER (WHERE "eventName" = 'growth.share_opened')::bigint AS opened,
+        COUNT(DISTINCT "anonymousId") FILTER (WHERE "eventName" = 'growth.recipient_action')::bigint AS acted,
+        COUNT(DISTINCT "anonymousId") FILTER (WHERE "eventName" = 'growth.recipient_activated')::bigint AS activated
+      FROM "product_events"
+      WHERE "occurredAt" >= ${since}
+        AND "eventName" IN ('task.completed', 'outcome.shared', 'growth.share_opened', 'growth.recipient_action', 'growth.recipient_activated')
+      GROUP BY COALESCE("toolKey", 'unknown')
+      ORDER BY shared DESC, opened DESC
+      LIMIT 30
+    `,
     prisma.featureFlag.findUnique({
       where: { key: 'event_platform_v1' },
       select: { enabled: true, rolloutPercent: true, updatedAt: true }
@@ -51,6 +74,14 @@ export async function GET(request: Request) {
     totals: { events: total, lastHour: recentHour },
     byEvent: byEvent.map((row) => ({ eventName: row.eventName, count: row._count._all })),
     byTool: byTool.map((row) => ({ toolKey: row.toolKey || 'unknown', count: row._count._all })),
+    viralFunnel: viralRows.map((row) => productViralFunnelMetrics({
+      toolKey: row.toolKey,
+      completed: Number(row.completed),
+      shared: Number(row.shared),
+      opened: Number(row.opened),
+      acted: Number(row.acted),
+      activated: Number(row.activated)
+    })),
     flag: flag
       ? {
           enabled: flag.enabled,

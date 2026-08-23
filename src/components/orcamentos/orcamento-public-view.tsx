@@ -24,6 +24,7 @@ import type { OrcamentoPublic } from '@/lib/orcamentos/types';
 import { viralOrcamentoPublicPath } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 import {
   rememberQuoteWhatsAppOpened,
   wasQuoteWhatsAppOpened
@@ -66,6 +67,11 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
       source_document: orcamento.id,
       quote_status: orcamento.status
     });
+    emitClientProductEvent({
+      eventName: 'growth.share_opened',
+      toolKey: 'orcamentos',
+      properties: { surface: 'public_quote', status: orcamento.status }
+    });
   }, [orcamento.id, orcamento.status]);
 
   useEffect(() => {
@@ -99,6 +105,18 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
         source_document: orcamento.id,
         quote_value: orcamento.total
       });
+      emitClientProductEvent({
+        eventName: 'growth.recipient_action',
+        toolKey: 'orcamentos',
+        properties: { action: status === 'approved' ? 'approved' : 'adjustment_requested', surface: 'public_quote' }
+      });
+      if (status === 'approved') {
+        emitClientProductEvent({
+          eventName: 'outcome.approved',
+          toolKey: 'orcamentos',
+          properties: { surface: 'public_quote' }
+        });
+      }
       toast(
         status === 'approved'
           ? 'Aprovado! Abrindo seu WhatsApp para avisar o profissional…'

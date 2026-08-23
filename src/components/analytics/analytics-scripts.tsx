@@ -3,8 +3,8 @@
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { ANALYTICS_CONSENT_KEY } from '@/lib/analytics-consent';
 
-const CONSENT_KEY = 'rj_analytics_consent';
 type Consent = 'accepted' | 'rejected' | null;
 
 export function AnalyticsScripts() {
@@ -15,13 +15,13 @@ export function AnalyticsScripts() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(CONSENT_KEY);
+    const saved = window.localStorage.getItem(ANALYTICS_CONSENT_KEY);
     setConsent(saved === 'accepted' || saved === 'rejected' ? saved : null);
     setReady(true);
   }, []);
 
   function choose(next: Exclude<Consent, null>) {
-    window.localStorage.setItem(CONSENT_KEY, next);
+    window.localStorage.setItem(ANALYTICS_CONSENT_KEY, next);
     setConsent(next);
   }
 

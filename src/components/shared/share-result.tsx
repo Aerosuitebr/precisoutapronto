@@ -5,6 +5,7 @@ import { Copy, Loader2, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 import type { SharedResultLine } from '@/lib/shared-results';
 
 export function ShareResult({ tool, title, subtitle, lines, whatsappText }: { tool: string; title: string; subtitle?: string; lines: SharedResultLine[]; whatsappText?: string }) {
@@ -14,6 +15,8 @@ export function ShareResult({ tool, title, subtitle, lines, whatsappText }: { to
   useEffect(() => {
     trackEvent('result_generated', { tool_name: tool, user_type: 'anonymous' });
     trackEvent('share_view', { tool_name: tool, share_surface: 'result' });
+    emitClientProductEvent({ eventName: 'task.first_value', toolKey: tool, properties: { surface: 'result' } });
+    emitClientProductEvent({ eventName: 'task.completed', toolKey: tool, properties: { output: 'result' } });
   }, [tool]);
 
   async function createLink() {
@@ -28,6 +31,7 @@ export function ShareResult({ tool, title, subtitle, lines, whatsappText }: { to
     try {
       const url = await createLink();
       trackEvent('share_whatsapp', { tool_name: tool, result_id: url.split('/').pop(), share_surface: 'result', user_type: 'anonymous' });
+      emitClientProductEvent({ eventName: 'outcome.shared', toolKey: tool, properties: { channel: 'whatsapp', surface: 'result' } });
       window.location.href = `https://wa.me/?text=${encodeURIComponent(`${whatsappText || title}\n\nVeja o resultado completo:\n${url}\n\nCriado grátis no Precisou? Tá Pronto.`)}`;
     } catch (error) { toast(error instanceof Error ? error.message : 'Falha ao compartilhar.'); }
     finally { setCreating(false); }
@@ -39,6 +43,7 @@ export function ShareResult({ tool, title, subtitle, lines, whatsappText }: { to
       const url = await createLink();
       await navigator.clipboard.writeText(url);
       trackEvent('share_copy_link', { tool_name: tool, result_id: url.split('/').pop(), share_surface: 'result' });
+      emitClientProductEvent({ eventName: 'outcome.shared', toolKey: tool, properties: { channel: 'copy_link', surface: 'result' } });
       toast('Link do resultado copiado!');
     } catch (error) { toast(error instanceof Error ? error.message : 'Falha ao criar o link.'); }
     finally { setCreating(false); }

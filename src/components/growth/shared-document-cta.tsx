@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { getSharedDocumentCta } from '@/lib/shared-document-growth';
 import { trackEvent } from '@/lib/analytics';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 
 export function SharedDocumentCta({ toolId }: { toolId: string }) {
   const cta = getSharedDocumentCta(toolId);
 
   useEffect(() => {
     trackEvent('shared_document_landing_viewed', { tool_id: toolId });
+    emitClientProductEvent({ eventName: 'growth.share_opened', toolKey: toolId, properties: { surface: 'shared_document' } });
   }, [toolId]);
 
   return (
@@ -20,7 +22,10 @@ export function SharedDocumentCta({ toolId }: { toolId: string }) {
       <p className="mt-2 text-sm text-emerald-100">{cta.description}</p>
       <Link
         href={cta.href}
-        onClick={() => trackEvent('shared_document_cta_clicked', { tool_id: toolId })}
+        onClick={() => {
+          trackEvent('shared_document_cta_clicked', { tool_id: toolId });
+          emitClientProductEvent({ eventName: 'growth.recipient_action', toolKey: toolId, properties: { action: 'create_my_own', surface: 'shared_document' } });
+        }}
         className="mt-5 inline-flex items-center gap-2 rounded-xl bg-amber-400 px-5 py-3 font-bold text-slate-950"
       >
         {cta.label}
