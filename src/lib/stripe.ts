@@ -46,10 +46,10 @@ export async function createStripePremiumCheckout(input: {
     ? (process.env[`STRIPE_CURRENCY_${locale.toUpperCase()}`] || 'usd').toLowerCase()
     : 'brl';
   const configuredAmount = international
-    ? Number(process.env[`STRIPE_PREMIUM_AMOUNT_${locale.toUpperCase()}`] || '100')
+    ? Number(process.env[`STRIPE_PREMIUM_AMOUNT_${locale.toUpperCase()}`] || '600')
     : Math.round(product.price * 100);
   const fallbackAmount =
-    Number.isFinite(configuredAmount) && configuredAmount > 0 ? Math.round(configuredAmount) : 100;
+    Number.isFinite(configuredAmount) && configuredAmount > 0 ? Math.round(configuredAmount) : 600;
   const localized = locale === 'es'
     ? {
         name: 'Precisou, Tá Pronto Premium: documentos sin marca · 30 días',
@@ -77,14 +77,20 @@ export async function createStripePremiumCheckout(input: {
   if (dashboardPriceId && (!dashboardPrice?.active || dashboardPrice.unit_amount === null)) {
     throw new Error('The configured Stripe price is inactive or does not have a fixed amount.');
   }
-  const expectedAmountTotal = dashboardPrice?.unit_amount ?? fallbackAmount;
+  // Não deixa um Price antigo do Dashboard cobrar o valor anterior após uma troca de preço.
+  const useDashboardPrice = Boolean(
+    dashboardPrice &&
+    dashboardPrice.unit_amount === fallbackAmount &&
+    dashboardPrice.currency.toLowerCase() === currency
+  );
+  const expectedAmountTotal = fallbackAmount;
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     client_reference_id: input.userId,
     customer_email: input.email,
     line_items: [
-      dashboardPriceId
+      dashboardPriceId && useDashboardPrice
         ? { price: dashboardPriceId, quantity: 1 }
         : {
             quantity: 1,

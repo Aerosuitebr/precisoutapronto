@@ -95,7 +95,7 @@ export function ViralPdfShareModal({
           >
             precisoutapronto.com.br
           </a>
-          . Remova a marca por R$ 5,00 por 30 dias na sua conta.
+          . Remova a marca por R$ 30,00 por 30 dias na sua conta.
         </span>
       </p>
       {showReferral && referral ? (

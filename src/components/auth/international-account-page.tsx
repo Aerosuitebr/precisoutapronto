@@ -18,7 +18,7 @@ const copy = {
     plans: 'View plans', premiumUntil: 'Premium access until', clean: 'Documents without the Precisou, Tá Pronto brand.',
     freeText: 'Your documents include a discreet Precisou, Tá Pronto footer. Premium removes it for 30 days.',
     payment: 'International Premium checkout is securely processed by Stripe.',
-    checkout: 'Continue securely with Stripe · US$1.00'
+    checkout: 'Continue securely with Stripe · US$6.00'
   },
   es: {
     language: 'Idioma', title: 'Mi cuenta', subtitle: 'Administra tu acceso y el plan Premium.',
@@ -27,7 +27,7 @@ const copy = {
     plans: 'Ver planes', premiumUntil: 'Acceso Premium hasta', clean: 'Documentos sin la marca Precisou, Tá Pronto.',
     freeText: 'Tus documentos incluyen un pie discreto de Precisou, Tá Pronto. Premium lo elimina durante 30 días.',
     payment: 'El checkout Premium internacional se procesa de forma segura con Stripe.',
-    checkout: 'Continuar de forma segura con Stripe · US$1,00'
+    checkout: 'Continuar de forma segura con Stripe · US$6,00'
   }
 } as const;
 

@@ -15,7 +15,7 @@ const copy = {
   en: {
     language: 'Language', back: 'Back to plans', title: 'Premium checkout',
     intro: 'Pay securely with Stripe. Your Premium access is activated as soon as payment is confirmed.',
-    price: 'US$1.00', period: 'One-time payment · 30 days of Premium',
+    price: 'US$6.00', period: 'One-time payment · 30 days of Premium',
     features: ['Documents without Precisou, Tá Pronto branding', 'Secure international card payment', 'No automatic renewal'],
     pay: 'Continue securely with Stripe', starting: 'Opening secure checkout...',
     secure: 'Payment processed securely by Stripe', failed: 'We could not start the checkout. Please try again.',
@@ -27,7 +27,7 @@ const copy = {
   es: {
     language: 'Idioma', back: 'Volver a planes', title: 'Checkout Premium',
     intro: 'Paga de forma segura con Stripe. Tu acceso Premium se activa cuando se confirma el pago.',
-    price: 'US$1,00', period: 'Pago único · 30 días de Premium',
+    price: 'US$6,00', period: 'Pago único · 30 días de Premium',
     features: ['Documentos sin la marca Precisou, Tá Pronto', 'Pago internacional seguro con tarjeta', 'Sin renovación automática'],
     pay: 'Continuar de forma segura con Stripe', starting: 'Abriendo el checkout seguro...',
     secure: 'Pago procesado de forma segura por Stripe', failed: 'No pudimos iniciar el checkout. Inténtalo de nuevo.',

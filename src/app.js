@@ -670,7 +670,7 @@ function landingTemplate() {
             <article><span>01</span><strong>Busca universal</strong><p>Resultados filtrados por plano, categoria, texto e intenção.</p></article>
             <article><span>02</span><strong>Workspace de documentos</strong><p>Editor, anexos, autosave e preview com zoom em uma área só.</p></article>
             <article><span>03</span><strong>Menu lateral premium</strong><p>Funcionalidades organizadas em um shell parecido com sistema operacional.</p></article>
-            <article><span>04</span><strong>Plano Completo</strong><p>Oferta simples de R$ 5,00/mês com uso ilimitado e recursos avançados.</p></article>
+            <article><span>04</span><strong>Plano Completo</strong><p>Oferta simples de R$ 30,00/mês com uso ilimitado e recursos avançados.</p></article>
           </div>
         </section>
 
@@ -683,7 +683,7 @@ function landingTemplate() {
           </article>
           <article class="featured">
             <span>Completo</span>
-            <h3>R$ 5,00 <small>/mês</small></h3>
+            <h3>R$ 30,00 <small>/mês</small></h3>
             <p>Uso ilimitado, documentos avançados, histórico, anexos, autosave e analytics.</p>
             <button class="primary-action" type="button" data-open-auth>Ativar Completo</button>
           </article>
@@ -1087,7 +1087,7 @@ function plansPage() {
       </article>
       <article class="featured">
         <span>Completo</span>
-        <h3>R$ 5,00 <small>/mês</small></h3>
+        <h3>R$ 30,00 <small>/mês</small></h3>
         <p>Uso ilimitado, documentos, histórico, anexos, analytics e autosave.</p>
         <button class="primary-action" type="button" data-upgrade>${isCompletePlan() ? 'Plano ativo' : 'Ativar demonstração Completo'}</button>
       </article>

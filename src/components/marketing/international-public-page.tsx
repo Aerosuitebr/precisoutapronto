@@ -123,7 +123,7 @@ export function InternationalPlansPage({ locale }: { locale: InternationalLocale
     description: 'Free PDFs include a discreet Precisou, Tá Pronto footer. Premium removes the logo and footer for 30 days.',
     free: 'Free', freeNote: 'Try the service with no card', create: 'Start with free tools',
     premiumNote: 'Clean documents without Precisou, Tá Pronto references', period: 'for 30 days',
-    price: 'US$1.00', payment: 'International checkout securely processed by Stripe.',
+    price: 'US$6.00', payment: 'International checkout securely processed by Stripe.',
     buy: 'Continue securely with Stripe',
     freeItems: ['Professional PDF documents', 'Save and download without a usage limit', 'Precisou, Tá Pronto footer and logo', 'Public resource search'],
     paidItems: ['PDF without footer or logo', 'WhatsApp and email without brand references', '30 days of Premium access', 'One-time payment without automatic renewal']
@@ -132,7 +132,7 @@ export function InternationalPlansPage({ locale }: { locale: InternationalLocale
     description: 'Los PDF gratuitos incluyen un pie discreto de Precisou, Tá Pronto. Premium elimina el logotipo y el pie durante 30 días.',
     free: 'Gratis', freeNote: 'Prueba el servicio sin tarjeta', create: 'Empezar con herramientas gratis',
     premiumNote: 'Documentos limpios sin referencias a Precisou, Tá Pronto', period: 'por 30 días',
-    price: 'US$1,00', payment: 'Checkout internacional procesado de forma segura por Stripe.',
+    price: 'US$6,00', payment: 'Checkout internacional procesado de forma segura por Stripe.',
     buy: 'Continuar de forma segura con Stripe',
     freeItems: ['Documentos profesionales en PDF', 'Guardado y descargas sin límite de uso', 'Pie y logotipo de Precisou, Tá Pronto', 'Buscador público de recursos'],
     paidItems: ['PDF sin pie ni logotipo', 'WhatsApp y correo sin referencias de marca', '30 días de acceso Premium', 'Pago único sin renovación automática']
