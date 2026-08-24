@@ -1,19 +1,19 @@
 # Precisou, Tá Pronto
 
-> Plataforma brasileira de ferramentas online grátis para resolver trabalho, estudo e tarefas do dia a dia.
+> Orçamento no WhatsApp com aprovação e Pix no mesmo link. Recibo em PDF sem cadastro. Ferramentas para MEI, freelancer e prestador no Brasil.
 
 Canonical site: https://precisoutapronto.com.br
 Language: pt-BR
 
 ## Main public pages
 - https://precisoutapronto.com.br/
-- https://precisoutapronto.com.br/recursos
-- https://precisoutapronto.com.br/biblioteca
-- https://precisoutapronto.com.br/assistente/documentos
-- https://precisoutapronto.com.br/guias
-- https://precisoutapronto.com.br/planos
 - https://precisoutapronto.com.br/orcamento-com-pix
+- https://precisoutapronto.com.br/gerador-de-recibo
+- https://precisoutapronto.com.br/orcamento-para/eletricista
+- https://precisoutapronto.com.br/para/mei
+- https://precisoutapronto.com.br/para/prestadores
 - https://precisoutapronto.com.br/gerador-de-qr-code-pix
+- https://precisoutapronto.com.br/recursos
 - https://precisoutapronto.com.br/gerador-de-curriculo
 - https://precisoutapronto.com.br/corretor-de-redacao-enem
 - https://precisoutapronto.com.br/editor-de-pdf-online
@@ -24,7 +24,6 @@ Language: pt-BR
 - https://precisoutapronto.com.br/embed
 - https://precisoutapronto.com.br/checklist-cobranca-mei
 - https://precisoutapronto.com.br/gerador-de-contrato
-- https://precisoutapronto.com.br/gerador-de-recibo
 - https://precisoutapronto.com.br/gerador-de-proposta-comercial
 - https://precisoutapronto.com.br/documentos-juridicos-online
 - https://precisoutapronto.com.br/documentos-contabeis-online
@@ -109,6 +108,5 @@ Evergreen hub for games, suggested PC setups, hardware guides, consoles and cura
 - https://precisoutapronto.com.br/privacidade
 - https://precisoutapronto.com.br/termos
 - https://precisoutapronto.com.br/contato
-- Contact email: contato@resolvajato.com.br
+- Contact email: contato@precisoutapronto.com.br
 - Security: https://precisoutapronto.com.br/.well-known/security.txt
-- Product Hunt: https://www.producthunt.com/products/resolva-jato

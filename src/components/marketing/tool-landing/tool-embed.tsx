@@ -8,12 +8,14 @@ export function ToolLandingEmbed({
   toolName,
   tool,
   ctaHref,
-  ctaLabel
+  ctaLabel,
+  openWithoutAccount = false
 }: {
   toolName: string;
   tool: ReactNode;
   ctaHref: string;
   ctaLabel: string;
+  openWithoutAccount?: boolean;
 }) {
   return (
     <section id="ferramenta" className="scroll-mt-20 border-y border-slate-200 bg-white">
@@ -24,7 +26,9 @@ export function ToolLandingEmbed({
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
           Preencha alguns dados abaixo. No celular, o preview fica sob demanda pra digitação fluida.
-          Duas gerações livres sem conta; depois o cadastro libera PDF sem marca e histórico.
+          {openWithoutAccount
+            ? ` ${toolName} sai sem conta. Cadastro só se quiser histórico ou PDF sem o rodapé da marca.`
+            : ' Duas gerações livres sem conta; depois o cadastro libera PDF sem marca e histórico.'}
         </p>
         <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName}>{tool}</ToolStartBoundary></div>
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
@@ -34,7 +38,9 @@ export function ToolLandingEmbed({
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </Button>
-          <p className="text-sm font-medium text-slate-500">2 gerações grátis. Sem cartão.</p>
+          <p className="text-sm font-medium text-slate-500">
+            {openWithoutAccount ? 'Sem cadastro. Sem cartão.' : '2 gerações grátis. Sem cartão.'}
+          </p>
         </div>
       </div>
     </section>

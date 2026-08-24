@@ -72,6 +72,11 @@ const nextConfig = {
         source: '/modelos/recibo-de-pagamento',
         destination: '/recibo-de-pagamento',
         permanent: true
+      },
+      {
+        source: '/autores/equipe-resolva-jato',
+        destination: '/autores/equipe-editorial',
+        permanent: true
       }
     ];
   },

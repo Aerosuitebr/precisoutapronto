@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { getReceiptClusterPage, receiptClusterPages } from '@/lib/seo/receipt-cluster';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { BRAND_AUTHOR_PATH } from '@/lib/brand';
 
 type Props = { params: Promise<{ slug: string }> };
 export function generateStaticParams() { return receiptClusterPages.map(({ slug }) => ({ slug })); }
@@ -22,7 +23,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
   const base = getViralBaseUrl().replace(/\/$/, '');
   const related = page.related.map(getReceiptClusterPage).filter((item): item is NonNullable<typeof item> => Boolean(item));
   const jsonLd = { '@context': 'https://schema.org', '@graph': [
-    { '@type': 'Article', headline: page.title, description: page.description, inLanguage: 'pt-BR', datePublished: '2026-08-10', dateModified: '2026-08-10', mainEntityOfPage: `${base}/recibos/${page.slug}`, author: { '@type': 'Organization', name: 'Equipe editorial Precisou, Tá Pronto', url: `${base}/autores/equipe-resolva-jato` }, publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base } },
+    { '@type': 'Article', headline: page.title, description: page.description, inLanguage: 'pt-BR', datePublished: '2026-08-10', dateModified: '2026-08-10', mainEntityOfPage: `${base}/recibos/${page.slug}`, author: { '@type': 'Organization', name: 'Equipe editorial Precisou, Tá Pronto', url: `${base}${BRAND_AUTHOR_PATH}` }, publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base } },
     { '@type': 'HowTo', name: page.title, step: page.steps.map((text, index) => ({ '@type': 'HowToStep', position: index + 1, name: `Passo ${index + 1}`, text })) },
     { '@type': 'FAQPage', mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
     { '@type': 'BreadcrumbList', itemListElement: [

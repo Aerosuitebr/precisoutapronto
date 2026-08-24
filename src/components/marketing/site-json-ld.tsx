@@ -50,7 +50,7 @@ export function SiteJsonLd() {
         url: `${siteUrl}/.well-known/security.txt`
       }
     ],
-    sameAs: [...BRAND_SAME_AS],
+    ...(BRAND_SAME_AS.length > 0 ? { sameAs: [...BRAND_SAME_AS] } : {}),
     knowsAbout: [
       'orçamento no WhatsApp',
       'orçamento com Pix',
@@ -94,10 +94,10 @@ export function SiteJsonLd() {
     itemListElement: [
       { name: 'Orçamento com Pix', path: '/orcamento-com-pix' },
       { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
-      { name: 'Gerador de currículo', path: '/gerador-de-curriculo' },
-      { name: 'Calculadora de rescisão', path: '/calculadora-de-rescisao' },
+      { name: 'Orçamento para eletricista', path: '/orcamento-para/eletricista' },
+      { name: 'Para MEI', path: '/para/mei' },
       { name: 'Gerador de QR Code Pix', path: '/gerador-de-qr-code-pix' },
-      { name: 'Para MEI', path: '/para/mei' }
+      { name: 'Gerador de currículo', path: '/gerador-de-curriculo' }
     ].map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,

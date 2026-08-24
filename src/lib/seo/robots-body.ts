@@ -72,6 +72,8 @@ export function buildRobotsBody(): string {
     ...PUBLIC_ALLOWS.map((path) => `Allow: ${path}`),
     ...PRIVATE_DISALLOWS.map((path) => `Disallow: ${path}`),
     '',
+    `Sitemap: ${base}/sitemaps/index`,
+    `Sitemap: ${base}/sitemaps/core`,
     `Sitemap: ${base}/sitemap.xml`,
     `Sitemap: ${base}/sitemaps/index.xml`,
     ''

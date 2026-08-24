@@ -47,6 +47,8 @@ export interface SeoPageContent {
   ctaSecondary: string;
   /** CTA principal: preferir âncora pública (#ferramenta), nunca /ferramentas/* (noindex). */
   ctaHref: string;
+  /** Recibo e orçamento: a landing promete emissão sem cadastro. */
+  openWithoutAccount?: boolean;
   quickBadges: SeoPageQuickBadge[];
   benefits: SeoPageBenefit[];
   steps: SeoPageStep[];

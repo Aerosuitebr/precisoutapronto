@@ -34,7 +34,8 @@ export async function GET(
   _request: Request,
   context: { params: Promise<{ segment: string }> }
 ) {
-  const { segment } = await context.params;
+  const { segment: rawSegment } = await context.params;
+  const segment = rawSegment.replace(/\.xml$/i, '');
 
   if (isStagingEnv()) {
     return new Response(isIndex(segment) ? EMPTY_INDEX : EMPTY_URLSET, { headers: XML_HEADERS });

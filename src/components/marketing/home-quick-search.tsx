@@ -6,12 +6,13 @@ import { ArrowRight, Search } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 
 const INTENTS = [
+  { label: 'Criar orçamento com Pix', href: '/orcamento-com-pix#montar', terms: 'orcamento proposta cobrar pix whatsapp cliente' },
   { label: 'Criar recibo', href: '/gerador-de-recibo#ferramenta', terms: 'recibo pagamento mei autonomo aluguel pdf' },
-  { label: 'Calcular rescisão', href: '/calculadora-de-rescisao', terms: 'rescisao clt demissao fgts ferias aviso previo' },
-  { label: 'Gerar referências ABNT', href: '/gerador-de-referencias-abnt#ferramenta', terms: 'abnt referencias bibliografia faculdade trabalho academico' },
+  { label: 'Orçamento para eletricista', href: '/orcamento-para/eletricista', terms: 'eletricista instalacao eletrica orcamento whatsapp pix' },
   { label: 'Criar contrato de serviço', href: '/gerador-de-contrato#ferramenta', terms: 'contrato prestacao servico freelancer mei' },
   { label: 'Fazer currículo', href: '/gerador-de-curriculo#ferramenta', terms: 'curriculo emprego vaga pdf resume cv' },
-  { label: 'Criar orçamento com Pix', href: '/orcamento-com-pix#montar', terms: 'orcamento proposta cobrar pix whatsapp cliente' },
+  { label: 'Calcular rescisão', href: '/calculadora-de-rescisao', terms: 'rescisao clt demissao fgts ferias aviso previo' },
+  { label: 'Gerar referências ABNT', href: '/gerador-de-referencias-abnt#ferramenta', terms: 'abnt referencias bibliografia faculdade trabalho academico' },
   { label: 'Orçamento Pix Copia e Cola', href: '/orcamento-pix-copia-e-cola', terms: 'orcamento pix copiar e colar copia cola codigo pagamento' },
   { label: 'Orçamento para personal trainer', href: '/orcamento-para/personal-trainer', terms: 'personal trainer academia treino consultoria esportiva orçamento' },
   { label: 'Declaração de residência', href: '/declaracao-de-residencia', terms: 'declaracao residência comprovante endereço juridico documento' },

@@ -15,7 +15,7 @@ export function Logo({ collapsed = false, variant = 'marketing', className }: Lo
   return (
     <Image
       src={src}
-      alt={`${BRAND_DISPLAY_NAME} — documentos, cálculos e ferramentas online`}
+      alt={`${BRAND_DISPLAY_NAME}: orçamento no WhatsApp, recibo e Pix`}
       width={2048}
       height={768}
       priority

@@ -3,13 +3,15 @@ import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { LandingPage } from '@/components/marketing/landing-page';
-import { BRAND_DISPLAY_NAME } from '@/lib/brand';
-import { getPublicStats } from '@/lib/public-stats';
+import { BRAND_DESCRIPTION, BRAND_DISPLAY_NAME, BRAND_TAGLINE } from '@/lib/brand';
+
+const homeTitle = `${BRAND_DISPLAY_NAME} ${BRAND_TAGLINE}`;
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: { absolute: `${BRAND_DISPLAY_NAME} Orçamento no WhatsApp, aprovado, Pix recebido` },
-  description:
-    'Monte o orçamento, envie o link no WhatsApp e receba a aprovação no celular. Recibo em PDF sem cadastro para começar. Cliente não instala aplicativo.',
+  title: { absolute: homeTitle },
+  description: BRAND_DESCRIPTION,
   alternates: {
     canonical: '/',
     languages: {
@@ -18,19 +20,32 @@ export const metadata: Metadata = {
       es: '/es',
       'x-default': '/'
     }
+  },
+  openGraph: {
+    title: homeTitle,
+    description: BRAND_DESCRIPTION,
+    url: '/',
+    siteName: BRAND_DISPLAY_NAME,
+    locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: homeTitle }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: homeTitle,
+    description: BRAND_DESCRIPTION,
+    images: ['/opengraph-image']
   }
 };
 
-export default async function HomePage() {
-  const initialStats = await getPublicStats();
-
+export default function HomePage() {
   return (
     <>
       <TopEnvBanner />
       <div className="pt-8">
         <SiteHeader />
         <main>
-          <LandingPage initialStats={initialStats} />
+          <LandingPage />
         </main>
         <SiteFooter />
       </div>

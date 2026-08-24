@@ -6,10 +6,11 @@ export const recibosSeoContent: SeoPageContent = {
   toolName: 'Recibo',
   h1: 'Gerador de Recibo Online em PDF com Extenso e Assinatura',
   subtitle:
-    'Crie um recibo de pagamento profissional em minutos. Preencha valor, quem pagou e quem recebeu, escolha um modelo e baixe em PDF pronto para enviar.',
+    'Crie um recibo de pagamento profissional em minutos, sem cadastro. Preencha valor, quem pagou e quem recebeu, escolha um modelo e baixe em PDF pronto para enviar.',
   ctaPrimary: 'Emitir recibo grátis',
   ctaSecondary: 'Ver modelos de recibo',
   ctaHref: '/gerador-de-recibo#ferramenta',
+  openWithoutAccount: true,
   quickBadges: [
     { icon: Clock3, label: 'Pronto em 2 minutos' },
     { icon: Download, label: 'Download em PDF' },
@@ -76,6 +77,10 @@ export const recibosSeoContent: SeoPageContent = {
     {
       question: 'O gerador de recibo é gratuito?',
       answer: 'Sim. Você pode criar, editar e baixar seu recibo em PDF gratuitamente pelo Precisou, Tá Pronto.'
+    },
+    {
+      question: 'Preciso criar conta para emitir o recibo?',
+      answer: 'Não. O recibo sai na hora, sem cadastro. A conta grátis só entra se você quiser histórico ou PDF sem o rodapé da marca.'
     },
     {
       question: 'O recibo tem validade como comprovante de pagamento?',

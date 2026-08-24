@@ -10,10 +10,9 @@ const YEAR = new Date().getFullYear();
 
 const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/', label: 'Início' },
-  { href: '/calculadora-de-rescisao', label: 'Calculadora de rescisão' },
-  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM' },
-  { href: '/gerador-de-recibo', label: 'Recibo' },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
+  { href: '/gerador-de-recibo', label: 'Recibo' },
+  { href: '/orcamento-para/eletricista', label: 'Orçamento para eletricista' },
   { href: '/biblioteca', label: 'Biblioteca' },
   { href: '/guias', label: 'Guias' },
   { href: '/sobre', label: 'Sobre e equipe' },
@@ -50,7 +49,7 @@ const SEO_LINKS = [
   { href: '/politica-de-correcoes', label: 'Política de correções' },
   { href: '/metodologia-calculadoras', label: 'Metodologia das calculadoras' },
   { href: '/precisou-ta-pronto', label: 'Marca Precisou, Tá Pronto' },
-  { href: '/qualidade-e-seguranca', label: 'Qualidade Jato' },
+  { href: '/qualidade-e-seguranca', label: 'Qualidade e segurança' },
   { href: '/guias', label: 'Todos os guias' },
   { href: '/contrato-de-aluguel', label: 'Contrato de aluguel' },
   { href: '/recibo-de-pagamento', label: 'Recibo de pagamento' },
@@ -67,13 +66,13 @@ const SEO_LINKS = [
 
 /** Links públicos no bloco Ferramentas (evita empurrar só rotas autenticadas). */
 const PUBLIC_TOOL_LINKS = [
-  { href: '/calculadora-de-rescisao', label: 'Rescisão' },
-  { href: '/corretor-de-redacao-enem', label: 'Redação ENEM' },
-  { href: '/gerador-de-recibo', label: 'Recibo' },
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
+  { href: '/gerador-de-recibo', label: 'Recibo' },
+  { href: '/orcamento-para/eletricista', label: 'Eletricista' },
   { href: '/gerador-de-curriculo', label: 'Currículo' },
   { href: '/calculadora-de-preco-freelancer', label: 'Precificação' },
   { href: '/mei-ou-clt', label: 'MEI ou CLT' },
+  { href: '/calculadora-de-rescisao', label: 'Rescisão' },
   { href: '/recursos', label: 'Ver catálogo completo' }
 ] as const;
 
@@ -107,7 +106,7 @@ export function SiteFooter() {
             Ferramentas online que resolvem de verdade.
           </p>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            PDFs, imagens, documentos e cálculos com Qualidade Jato: privacidade, clareza e resultados verificáveis.
+            Orçamento no WhatsApp, recibo em PDF e cobrança com Pix: privacidade, clareza e resultado verificável.
           </p>
         </div>
 

@@ -1,5 +1,22 @@
 # URLs cujo conteúdo ou snippet mudou nesta versão.
 # O deploy envia este arquivo somente quando seu conteúdo muda.
-/recibo-de-aluguel
-/recibos/recibo-pagamento-pix
-/es/tools/severance
+/
+/orcamento-com-pix
+/gerador-de-recibo
+/orcamento-para/eletricista
+/orcamento-para/pintor
+/orcamento-para/instalacao-ar-condicionado
+/orcamento-para/manutencao-residencial
+/orcamento-para/pedreiro
+/recibo/prestacao-de-servicos
+/recibo/diarista-e-domestica
+/para/mei
+/para/prestadores
+/para/freelancers
+/precisou-ta-pronto
+/orcamento-pix-copia-e-cola
+/gerador-de-qr-code-pix
+/checklist-cobranca-mei
+/guias/como-fazer-orcamento-com-pix
+/guias/como-cobrar-cliente-pelo-whatsapp
+/autores/equipe-editorial

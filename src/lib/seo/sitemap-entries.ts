@@ -14,7 +14,7 @@ import { CONTRACT_PROFESSION_CONTEXTS } from '@/lib/contratos/profession-context
 import { RECEIPT_PROFESSION_CONTEXTS } from '@/lib/recibos/profession-contexts';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-export const CORE_UPDATED_AT = new Date('2026-08-17T06:30:00.000Z');
+export const CORE_UPDATED_AT = new Date('2026-08-24T12:00:00.000Z');
 export const GUIDES_UPDATED_AT = new Date('2026-08-07T15:00:00.000Z');
 export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 
@@ -109,7 +109,7 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/sobre`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/precisou-ta-pronto`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/qualidade-e-seguranca`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.65 },
-    { url: `${base}/autores/equipe-resolva-jato`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/autores/equipe-editorial`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/criterios-editoriais`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/politica-de-correcoes`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/metodologia-calculadoras`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.6 },

@@ -43,23 +43,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${BRAND_DISPLAY_NAME} | Ferramentas online confiáveis`,
-    description: 'PDFs, imagens, documentos e cálculos com qualidade, privacidade e resultados verificáveis.'
+    title: `${BRAND_TAGLINE} | ${BRAND_DISPLAY_NAME}`,
+    description: BRAND_DESCRIPTION
   },
   keywords: [
-    'calculadora de rescisão',
-    'corretor de redação enem',
-    'gerador de recibo',
+    'orçamento no WhatsApp',
     'orçamento com pix',
     'orçamento online grátis',
-    'gerador de contrato',
-    'proposta comercial',
-    'ferramentas grátis para MEI',
-    'ferramentas online grátis',
-    'Precisou, Tá Pronto',
-    'ferramentas para PDF',
-    'ferramentas para imagens',
+    'gerador de recibo',
+    'recibo online grátis',
     'cobrança para autônomos',
+    'ferramentas grátis para MEI',
+    'Precisou, Tá Pronto',
+    'proposta comercial',
+    'gerador de contrato',
     'documentos para prestadores de serviço'
   ],
   ...(!staging && (googleVerification || bingVerification)

@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!page) return {};
   const path = `/recibo/${page.slug}`;
   return {
-    title: { absolute: `${page.title} — Grátis | Precisou, Tá Pronto` },
+    title: { absolute: `${page.title} · Grátis | Precisou, Tá Pronto` },
     description: `${page.description} Grátis para começar e compatível com celular.`,
     alternates: { canonical: path },
     openGraph: { title: page.title, description: page.description, url: path, type: 'website', images: [{ url: '/gerador-de-recibo/opengraph-image' }] },

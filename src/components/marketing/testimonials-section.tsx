@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { ArrowRight, MessageCircleMore, Quote } from 'lucide-react';
-import { BRAND_SAME_AS } from '@/lib/brand';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { cn } from '@/lib/utils';
 
@@ -74,7 +73,7 @@ export function TestimonialsSection({ className }: { className?: string }) {
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
                   <MessageCircleMore className="h-3.5 w-3.5" aria-hidden />
-                  <a href={BRAND_SAME_AS[0]} target="_blank" rel="noopener noreferrer" className="hover:text-sky-700 hover:underline">Product Hunt</a>
+                  <a href="/depoimentos" className="hover:text-sky-700 hover:underline">Conte a sua</a>
                 </span>
               </div>
 

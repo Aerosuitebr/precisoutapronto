@@ -4,7 +4,6 @@ import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
 import { HomeToolGallery } from '@/components/marketing/home-tool-gallery';
 import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
-import { AnimatedHeroTitle } from '@/components/marketing/animated-hero-title';
 import type { PublicStats } from '@/lib/public-stats';
 
 const steps = [
@@ -16,7 +15,7 @@ const steps = [
 const guides = [
   { href: '/guias/como-cobrar-cliente-pelo-whatsapp', eyebrow: 'Cobrança', title: 'Como cobrar um cliente pelo WhatsApp sem desgastar a relação', time: '6 min' },
   { href: '/guias/recibo-simples-tem-validade', eyebrow: 'Documentos', title: 'Recibo simples tem validade? O que não pode faltar', time: '6 min' },
-  { href: '/guias/como-calcular-rescisao', eyebrow: 'Trabalho', title: 'Como conferir seu cálculo de rescisão passo a passo', time: 'Leitura rápida' }
+  { href: '/guias/como-fazer-orcamento-com-pix', eyebrow: 'Orçamento', title: 'Como fazer um orçamento com Pix e enviar pelo WhatsApp', time: '6 min' }
 ] as const;
 
 export function LandingPage({ initialStats }: { initialStats?: PublicStats | null }) {
@@ -28,7 +27,10 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
         <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-24 lg:px-10 lg:py-28 2xl:px-12">
           <div className="mx-auto max-w-4xl text-center">
             <p className="inline-flex items-center gap-2 rounded-full border border-[#83d600]/40 bg-[#83d600]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[#c8ff73]"><Sparkles className="h-4 w-4" />Sua necessidade. Nossa solução.</p>
-            <AnimatedHeroTitle />
+            <h1 className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">
+              <span className="block">Orçamento no WhatsApp.</span>
+              <span className="mt-1 block text-[#a9ed42]">Aprovado. Pix recebido.</span>
+            </h1>
             <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-blue-100 sm:text-xl">Monte em poucos passos, envie o link e deixe o cliente aprovar no celular. Sem instalar aplicativo e sem cadastro para começar.</p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
               <Link href="/orcamento-com-pix#montar" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:bg-[#a9ed42]">
@@ -50,7 +52,7 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
               Ver todas as ferramentas <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
             <div className="mt-6 flex flex-wrap justify-center gap-2 text-xs font-bold">
-              {['#MaisUsadas', '#Novas', '#Negócios', '#Carreira', '#PDFs'].map((tag) => <a key={tag} href="#categorias" className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-blue-50 transition hover:border-[#83d600]/60 hover:text-[#c8ff73]">{tag}</a>)}
+              {['#Orçamento', '#Pix', '#Recibo', '#Ofícios', '#MEI'].map((tag) => <a key={tag} href="#categorias" className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-blue-50 transition hover:border-[#83d600]/60 hover:text-[#c8ff73]">{tag}</a>)}
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage } from '@/components/marketing/legal-page';
-import { BRAND_EMAIL, BRAND_SAME_AS, BRAND_SITE } from '@/lib/brand';
+import { BRAND_EMAIL, BRAND_SITE } from '@/lib/brand';
 
 export const metadata: Metadata = {
   title: 'Contato',
@@ -15,8 +15,6 @@ export const metadata: Metadata = {
     url: '/contato'
   }
 };
-
-const productHunt = BRAND_SAME_AS[0];
 
 export default function ContatoPage() {
   return (
@@ -40,17 +38,6 @@ export default function ContatoPage() {
         <Link href="/" className="font-semibold text-sky-700 hover:text-sky-800">
           {BRAND_SITE}
         </Link>
-      </p>
-      <p>
-        Product Hunt:{' '}
-        <a
-          href={productHunt}
-          className="font-semibold text-sky-700 hover:text-sky-800"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          resolva-jato
-        </a>
       </p>
       <p>
         Relatos de segurança: veja também{' '}

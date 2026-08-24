@@ -62,10 +62,10 @@ test.describe('brand distinctiveness', () => {
 
   test('quality page documents test and privacy commitments', async ({ page }) => {
     await page.goto('/qualidade-e-seguranca');
-    await expect(page.locator('h1')).toHaveText('Qualidade Jato');
+    await expect(page.locator('h1')).toHaveText('Qualidade e segurança');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.getByRole('heading', { name: 'Testes antes da publicação' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Privacidade Jato' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Processamento local' })).toBeVisible();
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/qualidade-e-seguranca$/);
   });
 });
