@@ -73,7 +73,7 @@ export function TestimonialsSection({ className }: { className?: string }) {
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
                   <MessageCircleMore className="h-3.5 w-3.5" aria-hidden />
-                  <a href="/depoimentos" className="hover:text-sky-700 hover:underline">Conte a sua</a>
+                  <Link href="/depoimentos" className="hover:text-sky-700 hover:underline">Conte a sua</Link>
                 </span>
               </div>
 
