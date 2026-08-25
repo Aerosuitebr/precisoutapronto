@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Deploy Precisou, Tá Pronto STAGING no Vultr (homolog i18n).
-# Não altera .env.staging do servidor se já existir.
+# Preserva segredos e atualiza somente a URL pública canônica do staging.
 # Uso: INSTALL_DIR=/opt/precisoutapronto-staging bash vultr-deploy-precisoutapronto-staging.sh
 
 set -euo pipefail
@@ -40,6 +40,12 @@ if [[ ! -f .env.staging ]]; then
   echo "ERRO: .env.staging ausente em ${INSTALL_DIR}."
   echo "Copie .env.staging.example → .env.staging e preencha (Stripe test, DB, AUTH_SECRET)."
   exit 1
+fi
+
+if grep -qE '^NEXT_PUBLIC_APP_URL=' .env.staging; then
+  sed -i 's#^NEXT_PUBLIC_APP_URL=.*#NEXT_PUBLIC_APP_URL=https://staging.precisoutapronto.com.br#' .env.staging
+else
+  printf '%s\n' 'NEXT_PUBLIC_APP_URL=https://staging.precisoutapronto.com.br' >> .env.staging
 fi
 
 COMPOSE=(
