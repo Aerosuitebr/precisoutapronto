@@ -8,30 +8,30 @@
 #
 # Ver DOCKER.md para o passo a passo completo.
 
-name: precisoutapronto
+name: resolva-jato
 
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: precisoutapronto-postgres
+    container_name: resolva-jato-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-precisoutapronto}
+      POSTGRES_USER: ${POSTGRES_USER:-resolvajato}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}
-      POSTGRES_DB: ${POSTGRES_DB:-precisoutapronto}
+      POSTGRES_DB: ${POSTGRES_DB:-resolvajato}
     volumes:
-      - precisoutapronto_postgres:/var/lib/postgresql/data
+      - rj_postgres:/var/lib/postgresql/data
     healthcheck:
       test:
         [
           'CMD-SHELL',
-          'pg_isready -U ${POSTGRES_USER:-precisoutapronto} -d ${POSTGRES_DB:-precisoutapronto}'
+          'pg_isready -U ${POSTGRES_USER:-resolvajato} -d ${POSTGRES_DB:-resolvajato}'
         ]
       interval: 5s
       timeout: 5s
       retries: 12
     networks:
-      - precisoutapronto_net
+      - rj_net
 
   app:
     build:
@@ -46,18 +46,18 @@ services:
         NEXT_PUBLIC_CLARITY_PROJECT_ID: ${NEXT_PUBLIC_CLARITY_PROJECT_ID:-xsknm22mhw}
         GOOGLE_SITE_VERIFICATION: ${GOOGLE_SITE_VERIFICATION:-}
         BING_SITE_VERIFICATION: ${BING_SITE_VERIFICATION:-}
-    container_name: precisoutapronto-app
+    container_name: resolva-jato-app
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
-      precisoutapronto-evolution-api:
+      rj-evolution-api:
         condition: service_healthy
     environment:
       NODE_ENV: production
       PORT: '3000'
       PRISMA_SCHEMA_MODE: ${PRISMA_SCHEMA_MODE:-push}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-precisoutapronto}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-precisoutapronto}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER:-resolvajato}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-resolvajato}?schema=public
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://precisoutapronto.com.br}
       DOCUMENT_AI_ENDPOINT: ${DOCUMENT_AI_ENDPOINT:-}
       DOCUMENT_AI_API_KEY: ${DOCUMENT_AI_API_KEY:-}
@@ -91,11 +91,11 @@ services:
       TWILIO_FROM_NUMBER: ${TWILIO_FROM_NUMBER:-}
       WHATSAPP_PROVIDER: ${WHATSAPP_PROVIDER:-evolution}
       WHATSAPP_API_ENABLED: ${WHATSAPP_API_ENABLED:-true}
-      EVOLUTION_API_URL: http://precisoutapronto-evolution-api:8080
-      WHATSAPP_API_URL: http://precisoutapronto-evolution-api:8080
+      EVOLUTION_API_URL: http://rj-evolution-api:8080
+      WHATSAPP_API_URL: http://rj-evolution-api:8080
       EVOLUTION_API_KEY: ${EVOLUTION_API_KEY:?Defina EVOLUTION_API_KEY no .env}
       WHATSAPP_API_TOKEN: ${EVOLUTION_API_KEY}
-      WHATSAPP_INSTANCE: ${WHATSAPP_INSTANCE:-precisoutapronto}
+      WHATSAPP_INSTANCE: ${WHATSAPP_INSTANCE:-resolva-jato}
       NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${NEXT_PUBLIC_VAPID_PUBLIC_KEY:-}
       NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-}
       NEXT_PUBLIC_CLARITY_PROJECT_ID: ${NEXT_PUBLIC_CLARITY_PROJECT_ID:-xsknm22mhw}
@@ -110,11 +110,11 @@ services:
       retries: 8
       start_period: 60s
     networks:
-      - precisoutapronto_net
+      - rj_net
 
   caddy:
     image: caddy:2-alpine
-    container_name: precisoutapronto-caddy
+    container_name: resolva-jato-caddy
     restart: unless-stopped
     depends_on:
       app:
@@ -127,32 +127,32 @@ services:
       DOMAIN: ${DOMAIN:-precisoutapronto.com.br}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - precisoutapronto_caddy_data:/data
-      - precisoutapronto_caddy_config:/config
+      - rj_caddy_data:/data
+      - rj_caddy_config:/config
     networks:
-      - precisoutapronto_net
+      - rj_net
 
-  precisoutapronto-evolution-postgres:
+  rj-evolution-postgres:
     image: postgres:15-alpine
-    container_name: precisoutapronto-evolution-postgres
+    container_name: resolva-jato-evolution-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: evolution
       POSTGRES_PASSWORD: ${EVOLUTION_DB_PASSWORD:-evolution}
       POSTGRES_DB: evolution
     volumes:
-      - precisoutapronto_evolution_postgres:/var/lib/postgresql/data
+      - rj_evolution_postgres:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U evolution -d evolution']
       interval: 5s
       timeout: 5s
       retries: 10
     networks:
-      - precisoutapronto_net
+      - rj_net
 
-  precisoutapronto-evolution-redis:
+  rj-evolution-redis:
     image: redis:7-alpine
-    container_name: precisoutapronto-evolution-redis
+    container_name: resolva-jato-evolution-redis
     restart: unless-stopped
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
@@ -160,16 +160,16 @@ services:
       timeout: 3s
       retries: 10
     networks:
-      - precisoutapronto_net
+      - rj_net
 
-  precisoutapronto-evolution-api:
+  rj-evolution-api:
     image: evoapicloud/evolution-api:v2.3.7
-    container_name: precisoutapronto-evolution-api
+    container_name: resolva-jato-evolution-api
     restart: unless-stopped
     depends_on:
-      precisoutapronto-evolution-postgres:
+      rj-evolution-postgres:
         condition: service_healthy
-      precisoutapronto-evolution-redis:
+      rj-evolution-redis:
         condition: service_healthy
     # Só no localhost do host — não publicar na internet
     ports:
@@ -182,16 +182,16 @@ services:
       AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES: 'true'
       DATABASE_ENABLED: 'true'
       DATABASE_PROVIDER: postgresql
-      DATABASE_CONNECTION_URI: postgresql://evolution:${EVOLUTION_DB_PASSWORD:-evolution}@precisoutapronto-evolution-postgres:5432/evolution?schema=public
+      DATABASE_CONNECTION_URI: postgresql://evolution:${EVOLUTION_DB_PASSWORD:-evolution}@rj-evolution-postgres:5432/evolution?schema=public
       CACHE_REDIS_ENABLED: 'true'
-      CACHE_REDIS_URI: redis://precisoutapronto-evolution-redis:6379/1
-      CACHE_REDIS_PREFIX_KEY: precisoutapronto-evolution
+      CACHE_REDIS_URI: redis://rj-evolution-redis:6379/1
+      CACHE_REDIS_PREFIX_KEY: rj-evolution
       CACHE_LOCAL_ENABLED: 'false'
       LOG_LEVEL: ERROR,WARN,INFO
       DEL_INSTANCE: 'false'
       CONFIG_SESSION_PHONE_VERSION: '2.3000.1025062854'
     volumes:
-      - precisoutapronto_evolution_instances:/evolution/instances
+      - rj_evolution_instances:/evolution/instances
     healthcheck:
       test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://localhost:8080/']
       interval: 15s
@@ -199,15 +199,15 @@ services:
       retries: 12
       start_period: 40s
     networks:
-      - precisoutapronto_net
+      - rj_net
 
 volumes:
-  precisoutapronto_postgres:
-  precisoutapronto_caddy_data:
-  precisoutapronto_caddy_config:
-  precisoutapronto_evolution_postgres:
-  precisoutapronto_evolution_instances:
+  rj_postgres:
+  rj_caddy_data:
+  rj_caddy_config:
+  rj_evolution_postgres:
+  rj_evolution_instances:
 
 networks:
-  precisoutapronto_net:
+  rj_net:
     driver: bridge

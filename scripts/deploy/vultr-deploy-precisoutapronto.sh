@@ -105,7 +105,7 @@ done
 if [[ "${ok}" -ne 1 ]]; then
   echo "ERRO: app nao respondeu em http://127.0.0.1:3000/"
   "${COMPOSE[@]}" ps
-  docker logs precisoutapronto-app --tail 80 || true
+  docker logs resolva-jato-app --tail 80 || true
   exit 1
 fi
 
@@ -141,7 +141,7 @@ if [[ -s "${INDEXNOW_URL_FILE}" ]]; then
     -v "${INSTALL_DIR}/scripts/seo/submit-indexnow.mjs:/tmp/submit-indexnow.mjs:ro" \
     -v "${INDEXNOW_URL_FILE}:/tmp/indexnow-urls.txt:ro" \
     --entrypoint node \
-    precisoutapronto-app:latest \
+    resolva-jato-app:latest \
     /tmp/submit-indexnow.mjs --file /tmp/indexnow-urls.txt
   then
     echo "IndexNow: apenas URLs novas ou atualizadas foram enviadas."
