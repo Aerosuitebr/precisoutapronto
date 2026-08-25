@@ -38,7 +38,7 @@ export function ProgressBanner({
               style={{ width: `${Math.min(100, Math.max(0, value!))}%` }}
             />
           ) : (
-            <div className="rj-progress-indeterminate h-full w-1/3 rounded-full bg-sky-600" />
+            <div className="precisoutapronto-progress-indeterminate h-full w-1/3 rounded-full bg-sky-600" />
           )}
         </div>
       </div>

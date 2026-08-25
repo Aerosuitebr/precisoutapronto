@@ -15,7 +15,7 @@ export type AssistantBriefing = {
   createdAt: string;
 };
 
-const STORAGE_KEY = 'rj-assistant-briefing';
+const STORAGE_KEY = 'precisoutapronto-assistant-briefing';
 const MAX_AGE_MS = 30 * 60 * 1000;
 
 export function saveAssistantBriefing(input: Omit<AssistantBriefing, 'createdAt'>) {

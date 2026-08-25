@@ -1,7 +1,7 @@
 import { getSession } from '@/lib/auth';
 import type { AgendaEvent } from './types';
 
-const STORAGE_PREFIX = 'resolva-jato-agenda';
+const STORAGE_PREFIX = 'precisoutapronto-agenda';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

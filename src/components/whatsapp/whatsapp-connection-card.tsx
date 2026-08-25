@@ -89,7 +89,7 @@ export function WhatsAppConnectionCard() {
           {connected ? 'Conectado' : `Status: ${state}`}
         </span>
         <span className="text-xs text-slate-500">
-          Instância {status?.evolution?.instance || 'resolva-jato'} ·{' '}
+          Instância {status?.evolution?.instance || 'precisoutapronto'} ·{' '}
           {status?.evolution?.baseUrl || 'http://localhost:18083'}
         </span>
       </div>

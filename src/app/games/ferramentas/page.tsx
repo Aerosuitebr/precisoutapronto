@@ -4,11 +4,11 @@ import { ArrowRight, ChevronRight, Cpu, Crosshair, Gamepad2, HardDrive, WalletCa
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Ferramentas gamer grátis | Jato Games' },
+  title: { absolute: 'Ferramentas gamer grátis | Precisou, Tá Pronto Games' },
   description: 'Use calculadora de eDPI, planejador de armazenamento e custo por hora jogada. Ferramentas gamer gratuitas e diretas.',
   alternates: { canonical: '/games/ferramentas' },
   openGraph: {
-    title: 'Ferramentas gamer grátis | Jato Games',
+    title: 'Ferramentas gamer grátis | Precisou, Tá Pronto Games',
     description: 'Calcule eDPI, espaço para jogos e custo por hora antes da próxima partida ou compra.',
     url: '/games/ferramentas',
     type: 'website'
@@ -46,7 +46,7 @@ export default function GamerToolsPage() {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Jato Games', item: `${base}/games` },
+          { '@type': 'ListItem', position: 1, name: 'Precisou, Tá Pronto Games', item: `${base}/games` },
           { '@type': 'ListItem', position: 2, name: 'Ferramentas gamer', item: url }
         ]
       }
@@ -57,13 +57,13 @@ export default function GamerToolsPage() {
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <nav aria-label="Navegação estrutural" className="mb-6 flex items-center gap-2 text-sm font-semibold text-slate-600">
-        <Link href="/games" className="hover:text-teal-700">Jato Games</Link>
+        <Link href="/games" className="hover:text-teal-700">Precisou, Tá Pronto Games</Link>
         <ChevronRight className="h-4 w-4" />
         <span aria-current="page">Ferramentas</span>
       </nav>
       <header className="overflow-hidden rounded-[32px] border border-slate-200 bg-slate-950 p-7 text-white shadow-xl sm:p-10">
         <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-teal-300"><Gamepad2 className="h-4 w-4" /> Central de utilidades</p>
-        <h1 className="rj-display mt-4 max-w-3xl text-4xl font-black leading-tight sm:text-5xl">Ferramentas gamer que resolvem antes da partida</h1>
+        <h1 className="precisoutapronto-display mt-4 max-w-3xl text-4xl font-black leading-tight sm:text-5xl">Ferramentas gamer que resolvem antes da partida</h1>
         <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">Ajuste sua mira, planeje o SSD e entenda se uma compra vale o tempo que você realmente pretende jogar.</p>
         <div className="mt-7 flex flex-wrap gap-2">
           {[
@@ -111,7 +111,7 @@ export default function GamerToolsPage() {
             return (
               <article key={tool.href} className="flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-teal-100 text-teal-800"><Icon className="h-6 w-6" /></span>
-                <h3 className="rj-display mt-5 text-2xl font-extrabold text-slate-950">{tool.title}</h3>
+                <h3 className="precisoutapronto-display mt-5 text-2xl font-extrabold text-slate-950">{tool.title}</h3>
                 <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{tool.description}</p>
                 <Link href={tool.href} className="mt-6 inline-flex items-center gap-2 font-bold text-teal-700 hover:text-teal-600">
                   {tool.cta} <ArrowRight className="h-4 w-4" />
@@ -122,7 +122,7 @@ export default function GamerToolsPage() {
         </div>
       </section>
       <section className="mt-10 rounded-3xl border border-amber-200 bg-amber-50 p-6 sm:p-8">
-        <h2 className="rj-display text-2xl font-extrabold text-slate-950">Próximas ferramentas em estudo</h2>
+        <h2 className="precisoutapronto-display text-2xl font-extrabold text-slate-950">Próximas ferramentas em estudo</h2>
         <p className="mt-3 leading-7 text-slate-700">
           Comparador de sensibilidade entre jogos, calculadora de fonte e planejador de upgrade
           estão em avaliação. Cada ferramenta será publicada somente com fórmulas, limites e bases

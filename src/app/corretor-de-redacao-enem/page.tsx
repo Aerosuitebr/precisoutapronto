@@ -112,7 +112,7 @@ export default function CorretorDeRedacaoEnemPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteHeader />
-      <main className="bg-[image:var(--rj-page-bg)]">
+      <main className="bg-[image:var(--precisoutapronto-page-bg)]">
         <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
           <nav aria-label="Breadcrumb" className="mb-4 text-xs text-slate-500">
             <Link href="/" className="hover:text-slate-700">

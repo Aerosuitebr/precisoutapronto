@@ -6,14 +6,14 @@ export function useSidebarCollapse() {
   const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem('rj-sidebar-collapsed');
+    const stored = window.localStorage.getItem('precisoutapronto-sidebar-collapsed');
     setCollapsed(stored === 'true');
   }, []);
 
   function toggleCollapsed() {
     setCollapsed((current) => {
       const next = !current;
-      window.localStorage.setItem('rj-sidebar-collapsed', String(next));
+      window.localStorage.setItem('precisoutapronto-sidebar-collapsed', String(next));
       return next;
     });
   }

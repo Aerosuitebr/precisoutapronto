@@ -3,8 +3,8 @@
 ## Estado atual
 
 - A identidade pública no código usa **Precisou? Tá Pronto!**.
-- `resolvajato.com.br` permanece como origem operacional e canônica por ambiente.
-- `contato@resolvajato.com.br` permanece como caixa padrão até a migração do Workspace.
+- `precisoutapronto.com.br` permanece como origem operacional e canônica por ambiente.
+- `contato@precisoutapronto.com.br` permanece como caixa padrão até a migração do Workspace.
 - Os dois domínios devem coexistir durante a transferência dos sinais de busca.
 
 ## Antes do corte
@@ -28,7 +28,7 @@ NEXT_PUBLIC_CONTACT_EMAIL=contato@precisoutapronto.com.br
 
 Depois:
 
-1. Redirecionar cada URL de `resolvajato.com.br` para o mesmo caminho no domínio novo com HTTP 301 ou 308.
+1. Redirecionar cada URL de `precisoutapronto.com.br` para o mesmo caminho no domínio novo com HTTP 301 ou 308.
 2. Não redirecionar todas as páginas para a home.
 3. Atualizar sitemaps, canonicals, hreflang, dados estruturados e IndexNow.
 4. Enviar a mudança de endereço no Search Console.

@@ -96,7 +96,7 @@ export default async function InternationalOpenGraphImage({ params }: ImageProps
                   fontWeight: 900
                 }}
               >
-                RJ
+                PTP
               </div>
               <div style={{ display: 'flex', fontSize: 30, fontWeight: 800 }}>Precisou, Tá Pronto</div>
             </div>

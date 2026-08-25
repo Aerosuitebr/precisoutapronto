@@ -25,7 +25,7 @@ export default function PrivacidadePage() {
         para uso do serviço. Você pode solicitar exclusão da conta pelo e-mail de contato.
       </p>
       <p>
-        Usamos cookies essenciais de sessão e de dispositivo (`rj_session`, `rj_device`) e Cloudflare
+        Usamos cookies essenciais de sessão e de dispositivo (`precisoutapronto_session`, `precisoutapronto_device`) e Cloudflare
         Turnstile para proteção contra bots. Não usamos pixels de anúncio de terceiros neste site.
       </p>
       <p>Última atualização: 21 de julho de 2026.</p>

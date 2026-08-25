@@ -1,4 +1,4 @@
-import { buildResolvaJatoDownloadName } from '@/lib/download-filename';
+import { buildPrecisouTaProntoDownloadName } from '@/lib/download-filename';
 import { viralPdfFooterLabel, viralPdfFooterUrl } from '@/lib/viral-loop';
 
 export type ExportPdfOptions = {
@@ -31,7 +31,7 @@ function normalizeCloneTextForPdf(root: HTMLElement) {
     else if (/\btext-right\b/.test(cls)) el.style.textAlign = 'right';
     else if (/\btext-justify\b/.test(cls) || /\btext-left\b/.test(cls)) el.style.textAlign = 'left';
 
-    if (!/\btracking-/.test(cls) && !cls.includes('rj-signature-moderno')) {
+    if (!/\btracking-/.test(cls) && !cls.includes('precisoutapronto-signature-moderno')) {
       el.style.letterSpacing = 'normal';
     }
     el.style.wordSpacing = 'normal';
@@ -74,19 +74,19 @@ async function stampPageBrand(pdf: JsPdf, pageWidth: number, pageHeight: number)
 }
 
 function setBrandNodesVisibility(element: HTMLElement, visible: boolean) {
-  element.querySelectorAll<HTMLElement>('[data-rj-brand]').forEach((node) => {
+  element.querySelectorAll<HTMLElement>('[data-precisoutapronto-brand]').forEach((node) => {
     // display:none remove o espaço do rodapé no canvas: o carimbo do PDF cuida disso
     node.style.display = visible ? '' : 'none';
   });
 }
 
-/** Mede blocos `[data-rj-keep]` em mm, relativos ao topo do elemento exportado. */
+/** Mede blocos `[data-precisoutapronto-keep]` em mm, relativos ao topo do elemento exportado. */
 function measureKeepRanges(root: HTMLElement, contentHeightMm: number): KeepRangeMm[] {
   const rootRect = root.getBoundingClientRect();
   if (rootRect.height <= 0) return [];
 
   const pxToMm = contentHeightMm / rootRect.height;
-  return Array.from(root.querySelectorAll<HTMLElement>('[data-rj-keep]'))
+  return Array.from(root.querySelectorAll<HTMLElement>('[data-precisoutapronto-keep]'))
     .map((node) => {
       const rect = node.getBoundingClientRect();
       return {
@@ -313,7 +313,7 @@ export async function exportElementToPdf(
       if (branded) await stampPageBrand(pdf, pageWidth, pageHeight);
     }
 
-    pdf.save(buildResolvaJatoDownloadName('pdf'));
+    pdf.save(buildPrecisouTaProntoDownloadName('pdf'));
   } finally {
     if (branded) setBrandNodesVisibility(element, true);
   }

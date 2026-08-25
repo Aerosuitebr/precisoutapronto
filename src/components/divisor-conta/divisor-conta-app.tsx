@@ -479,7 +479,7 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:sticky lg:top-24">
-            <h2 className="rj-display mb-3 text-base font-bold text-slate-900">
+            <h2 className="precisoutapronto-display mb-3 text-base font-bold text-slate-900">
               {t.resultTitle}
             </h2>
             {!resultado ? (
@@ -503,7 +503,7 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
                         <p className="text-sm font-bold text-slate-900">
                           {p.nome}
                         </p>
-                        <span className="rj-display text-base font-bold text-sky-700">
+                        <span className="precisoutapronto-display text-base font-bold text-sky-700">
                           {formatCurrency(p.total)}
                         </span>
                       </div>
@@ -522,7 +522,7 @@ export function DivisorContaApp({ locale = "pt-BR" }: { locale?: Locale } = {}) 
                   <span className="text-sm font-semibold">
                     {t.totalComTaxaLabel}
                   </span>
-                  <span className="rj-display text-lg font-bold">
+                  <span className="precisoutapronto-display text-lg font-bold">
                     {formatCurrency(resultado.totalComTaxa)}
                   </span>
                 </div>

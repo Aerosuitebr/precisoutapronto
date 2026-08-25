@@ -1,6 +1,6 @@
 import type { OrcamentoItem } from './types';
 
-export const ORCAMENTO_PREFS_KEY = 'resolva-jato-orcamento-prefs';
+export const ORCAMENTO_PREFS_KEY = 'precisoutapronto-orcamento-prefs';
 
 export interface OrcamentoPrefs {
   profissionalNome: string;

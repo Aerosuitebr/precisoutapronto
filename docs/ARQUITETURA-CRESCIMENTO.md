@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Esta evolução organiza o Resolva Jato por problemas e perfis sem substituir os editores, rotas públicas ou documentos existentes.
+Esta evolução organiza o Precisou, Tá Pronto por problemas e perfis sem substituir os editores, rotas públicas ou documentos existentes.
 
 ## Novas camadas
 
@@ -42,7 +42,7 @@ Cada item pode ser duplicado pela conta. O `POST /api/documents/[toolId]/[artifa
 
 A biblioteca também aciona o compartilhamento público sem abrir o editor. O fluxo usa a mesma `POST /api/share`, com validade de 30 dias: um link ativo do mesmo documento é reutilizado, e somente na ausência dele um novo token é criado. Em navegadores compatíveis abre o compartilhamento nativo; nos demais copia o link. Os eventos existentes agora distinguem `source: account` de `source: editor`.
 
-Após a API confirmar a criação ou reutilização, o cliente emite o sinal interno tipado `resolva-jato:document-share-updated`. O painel “Links compartilhados” escuta esse sinal e recarrega sua lista imediatamente. A sincronização é local à aba, não usa polling e não inclui título, URL, token ou conteúdo do documento no evento.
+Após a API confirmar a criação ou reutilização, o cliente emite o sinal interno tipado `precisoutapronto:document-share-updated`. O painel “Links compartilhados” escuta esse sinal e recarrega sua lista imediatamente. A sincronização é local à aba, não usa polling e não inclui título, URL, token ou conteúdo do documento no evento.
 
 O painel apresenta um resumo de desempenho calculado no cliente: visualizações acumuladas, quantidade de links ativos e documento mais visto. As métricas usam somente `viewCount`, validade e revogação já retornados pela API; não existem identificação de visitante, endereço IP ou eventos individuais nessa visão.
 
@@ -139,7 +139,7 @@ npm run db:migrate:status
 
 Antes do deploy, faça backup e confirme que `DATABASE_URL` aponta para a instância correta. Não use `prisma db push` em produção.
 
-Se a base já existia antes da adoção de `prisma/migrations` (criada via `db push`), o primeiro `migrate deploy` pode retornar **P3005**. O entrypoint trata isso marcando `20260729000000_baseline_existing_schema` como aplicada e em seguida executa as migrations aditivas. Em staging isso já foi validado: as tabelas `user_profiles` e `shared_documents` existem e o app responde em `https://staging.resolvajato.com.br`.
+Se a base já existia antes da adoção de `prisma/migrations` (criada via `db push`), o primeiro `migrate deploy` pode retornar **P3005**. O entrypoint trata isso marcando `20260729000000_baseline_existing_schema` como aplicada e em seguida executa as migrations aditivas. Em staging isso já foi validado: as tabelas `user_profiles` e `shared_documents` existem e o app responde em `https://staging.precisoutapronto.com.br`.
 
 A migration aditiva pressupõe que as tabelas `users` e `tool_documents` já existem com os nomes definidos no schema.
 
@@ -180,9 +180,9 @@ O evento `referral_invite_shared` registra somente o canal (`native`, `whatsapp`
 
 - Adicionar testes de integração para criação, expiração e revogação de links.
 - Expandir intenções somente após medir indexação, cliques para ferramenta e conclusão do documento.
-## Jato Games: aquisição por utilidade
+## Precisou, Tá Pronto Games: aquisição por utilidade
 
-O Jato Games evolui de um diretório editorial para uma central de decisão e ferramentas do público gamer.
+O Precisou, Tá Pronto Games evolui de um diretório editorial para uma central de decisão e ferramentas do público gamer.
 
 - Landing `/games` organizada por objetivos: competir, montar PC, comprar com segurança e descobrir jogos.
 - Central pública `/games/ferramentas`, incluída na navegação e no sitemap.

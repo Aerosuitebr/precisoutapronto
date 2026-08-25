@@ -4,7 +4,7 @@ import { buildDefaultClauses } from './clauses';
 import { createEmptyContabilDocument } from './defaults';
 import type { ContabilDocumentData, ContabilParty } from './types';
 
-const STORAGE_PREFIX = 'resolva-jato-contabeis';
+const STORAGE_PREFIX = 'precisoutapronto-contabeis';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

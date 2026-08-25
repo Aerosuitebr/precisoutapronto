@@ -4,7 +4,7 @@ import { buildDefaultClauses } from './clauses';
 import { createEmptyLegalDocument } from './defaults';
 import type { LegalDocumentData, LegalParty } from './types';
 
-const STORAGE_PREFIX = 'resolva-jato-juridicos';
+const STORAGE_PREFIX = 'precisoutapronto-juridicos';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

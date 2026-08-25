@@ -9,7 +9,7 @@ import { FormField } from '@/components/ui/form-field';
 import { useToast } from '@/components/ui/toast';
 import { growthSegments } from '@/lib/growth/segments';
 
-const STORAGE_KEY = 'rj-growth-segment';
+const STORAGE_KEY = 'precisoutapronto-growth-segment';
 
 export function ProfileSettings() {
   const { toast } = useToast();

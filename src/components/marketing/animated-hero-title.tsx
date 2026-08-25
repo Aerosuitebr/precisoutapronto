@@ -49,7 +49,7 @@ export function AnimatedHeroTitle() {
   return (
     <h1
       ref={titleRef}
-      className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]"
+      className="precisoutapronto-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]"
       aria-label="Orçamento no WhatsApp. Aprovado. Pix recebido."
     >
       <AnimatedLine text="Orçamento no WhatsApp." />

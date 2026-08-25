@@ -43,14 +43,14 @@ export default async function ReceiptProfessionPage({ params }: Props) {
       <section className="bg-[linear-gradient(145deg,#020617,#0f172a_50%,#075985)] text-white">
         <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-300">Modelo pré-preenchido · {page.name}</p>
-          <h1 className="rj-display mt-3 max-w-4xl text-4xl font-extrabold sm:text-5xl">{page.title}</h1>
+          <h1 className="precisoutapronto-display mt-3 max-w-4xl text-4xl font-extrabold sm:text-5xl">{page.title}</h1>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-200">{page.description}</p>
           <Link href={editorHref} className="mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">Criar recibo e baixar PDF <ArrowRight className="h-4 w-4" /></Link>
           <p className="mt-3 text-sm text-sky-100">100% grátis para começar · valor por extenso · assinatura · compatível com celular</p>
         </div>
       </section>
       <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
-        <h2 className="rj-display text-3xl font-extrabold text-slate-950">O modelo já abre com os campos essenciais</h2>
+        <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">O modelo já abre com os campos essenciais</h2>
         <ul className="mt-6 grid gap-3 sm:grid-cols-3">{page.checklist.map((item) => <li key={item} className="flex gap-2 rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold"><Check className="h-4 w-4 shrink-0 text-emerald-600" />{item}</li>)}</ul>
         <div className="mt-12 grid gap-4 sm:grid-cols-2">{page.faqs.map(({ q, a }) => <article key={q} className="rounded-2xl border border-slate-200 bg-white p-5"><h2 className="font-bold text-slate-950">{q}</h2><p className="mt-2 text-sm leading-6 text-slate-600">{a}</p></article>)}</div>
         <p className="mt-8 text-sm text-slate-600">Quer começar sem um contexto específico? <Link href="/gerador-de-recibo" className="font-bold text-sky-700 hover:underline">Abra o gerador de recibo geral</Link>.</p>

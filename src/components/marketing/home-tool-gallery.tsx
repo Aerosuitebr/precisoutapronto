@@ -73,7 +73,7 @@ export function HomeToolGallery() {
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]"><Sparkles className="h-4 w-4 text-[#83d600]" />Descubra e resolva</p>
-            <h2 className="rj-display mt-3 max-w-3xl text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Ferramentas que entregam um resultado, não mais uma tarefa.</h2>
+            <h2 className="precisoutapronto-display mt-3 max-w-3xl text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Ferramentas que entregam um resultado, não mais uma tarefa.</h2>
           </div>
           <button type="button" onClick={() => setShowFavorites((value) => !value)} className={cn('inline-flex h-11 items-center justify-center gap-2 rounded-full border px-5 text-sm font-extrabold transition', showFavorites ? 'border-[#83d600] bg-[#effbdc] text-[#315f00]' : 'border-[#0b5cff]/20 bg-white text-[#031f4b] hover:border-[#0b5cff]/50')}>
             <Heart className={cn('h-4 w-4', showFavorites && 'fill-current')} />

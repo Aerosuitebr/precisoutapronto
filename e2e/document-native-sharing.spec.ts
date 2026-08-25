@@ -44,7 +44,7 @@ test('share request is bounded, private and expires in 30 days', () => {
 });
 
 test('share update signal is stable and safe during server rendering', () => {
-  expect(DOCUMENT_SHARE_UPDATED_EVENT).toBe('resolva-jato:document-share-updated');
+  expect(DOCUMENT_SHARE_UPDATED_EVENT).toBe('precisoutapronto:document-share-updated');
   expect(() => dispatchDocumentShareUpdated({
     toolId: 'contratos',
     artifactId: 'ctr_123',

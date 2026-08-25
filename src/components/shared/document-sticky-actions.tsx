@@ -20,7 +20,7 @@ export function DocumentStickyActions({
   return (
     <div
       className={cn(
-        'sticky top-[var(--rj-chrome-top)] z-40 -mx-1 mb-1 rounded-2xl border border-slate-200/90 bg-white/95 px-3 py-2.5 shadow-md shadow-slate-900/5 backdrop-blur-xl sm:mx-0 sm:px-4',
+        'sticky top-[var(--precisoutapronto-chrome-top)] z-40 -mx-1 mb-1 rounded-2xl border border-slate-200/90 bg-white/95 px-3 py-2.5 shadow-md shadow-slate-900/5 backdrop-blur-xl sm:mx-0 sm:px-4',
         className
       )}
     >

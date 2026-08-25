@@ -34,8 +34,8 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-[var(--rj-section-scroll-mt)] rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-      <h2 className="rj-display text-xl font-bold text-slate-900">{title}</h2>
+    <section id={id} className="scroll-mt-[var(--precisoutapronto-section-scroll-mt)] rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <h2 className="precisoutapronto-display text-xl font-bold text-slate-900">{title}</h2>
       <p className="mt-1 max-w-2xl text-sm font-medium leading-6 text-slate-600">{description}</p>
       <div className="mt-5">{children}</div>
     </section>
@@ -102,7 +102,7 @@ export default function DesignSystemPage() {
       />
 
       <nav
-        className="sticky top-[var(--rj-chrome-top)] z-30 flex gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur"
+        className="sticky top-[var(--precisoutapronto-chrome-top)] z-30 flex gap-2 overflow-x-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur"
         aria-label="Seções do guia"
       >
         {[
@@ -116,7 +116,7 @@ export default function DesignSystemPage() {
           <a
             key={href}
             href={`#${href}`}
-            className="rj-press h-10 shrink-0 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="precisoutapronto-press h-10 shrink-0 rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
             {label}
           </a>

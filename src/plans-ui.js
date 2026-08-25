@@ -45,7 +45,7 @@ function handlePlanBarClick(event) {
   }
 
   if (event.target.closest('[data-view-target="planos"]')) {
-    window.dispatchEvent(new CustomEvent('resolvajato:navigate', { detail: { view: 'planos' } }));
+    window.dispatchEvent(new CustomEvent('precisoutapronto:navigate', { detail: { view: 'planos' } }));
   }
 }
 
@@ -347,7 +347,7 @@ async function handleCloudSync() {
 
   try {
     const payload = await pullCloudData();
-    window.dispatchEvent(new CustomEvent('resolvajato:cloud-pull', { detail: payload }));
+    window.dispatchEvent(new CustomEvent('precisoutapronto:cloud-pull', { detail: payload }));
     if (feedback) feedback.textContent = 'Dados restaurados da nuvem.';
   } catch (error) {
     if (feedback) feedback.textContent = error.message;
@@ -355,7 +355,7 @@ async function handleCloudSync() {
 }
 
 function handleExportBackup() {
-  window.dispatchEvent(new CustomEvent('resolvajato:export-backup'));
+  window.dispatchEvent(new CustomEvent('precisoutapronto:export-backup'));
   showToast('Backup exportado.');
 }
 
@@ -365,7 +365,7 @@ async function handleImportBackup(event) {
 
   try {
     const data = await importLocalBackup(file);
-    window.dispatchEvent(new CustomEvent('resolvajato:import-backup', { detail: data }));
+    window.dispatchEvent(new CustomEvent('precisoutapronto:import-backup', { detail: data }));
     showToast('Backup importado com sucesso.');
   } catch (error) {
     showToast(error.message);

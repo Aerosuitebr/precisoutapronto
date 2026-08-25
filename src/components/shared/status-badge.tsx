@@ -7,10 +7,10 @@ interface StatusBadgeProps {
 }
 
 const statusMap: Record<Status, { label: string; className: string }> = {
-  aprovada: { label: 'Aprovada', className: 'bg-[var(--rj-success-bg)] text-[var(--rj-success)]' },
-  rascunho: { label: 'Rascunho', className: 'bg-[var(--rj-draft-bg)] text-[var(--rj-draft)]' },
-  em_analise: { label: 'Em analise', className: 'bg-[var(--rj-warning-bg)] text-[var(--rj-warning)]' },
-  cancelada: { label: 'Cancelada', className: 'bg-[var(--rj-danger-bg)] text-[var(--rj-danger)]' }
+  aprovada: { label: 'Aprovada', className: 'bg-[var(--precisoutapronto-success-bg)] text-[var(--precisoutapronto-success)]' },
+  rascunho: { label: 'Rascunho', className: 'bg-[var(--precisoutapronto-draft-bg)] text-[var(--precisoutapronto-draft)]' },
+  em_analise: { label: 'Em analise', className: 'bg-[var(--precisoutapronto-warning-bg)] text-[var(--precisoutapronto-warning)]' },
+  cancelada: { label: 'Cancelada', className: 'bg-[var(--precisoutapronto-danger-bg)] text-[var(--precisoutapronto-danger)]' }
 };
 
 export function StatusBadge({ status }: StatusBadgeProps) {

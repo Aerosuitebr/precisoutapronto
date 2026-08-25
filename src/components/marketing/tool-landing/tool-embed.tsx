@@ -20,8 +20,8 @@ export function ToolLandingEmbed({
   return (
     <section id="ferramenta" className="scroll-mt-20 border-y border-slate-200 bg-white">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-20">
-        <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">Experimente agora</p>
-        <h2 className="rj-display mt-3 max-w-xl text-2xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+        <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">Experimente agora</p>
+        <h2 className="precisoutapronto-display mt-3 max-w-xl text-2xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
           Monte seu {toolName.toLowerCase()} sem precisar sair da página.
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">

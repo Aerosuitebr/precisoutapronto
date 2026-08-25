@@ -3,7 +3,7 @@ import { normalizeResume } from './defaults';
 import { getSession } from '@/lib/auth';
 import { deleteRemoteDocument, listRemoteDocuments, saveRemoteDocument } from '@/lib/documents/remote-storage';
 
-const STORAGE_PREFIX = 'resolva-jato-resumes';
+const STORAGE_PREFIX = 'precisoutapronto-resumes';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

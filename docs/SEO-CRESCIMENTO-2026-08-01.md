@@ -34,5 +34,5 @@ O site já está tecnicamente rastreável (robots, sitemaps, canônicos, JSON-LD
 
 ```bash
 npm run seo:audit
-SEO_BASE_URL=https://resolvajato.com.br npm run seo:smoke
+SEO_BASE_URL=https://precisoutapronto.com.br npm run seo:smoke
 ```

@@ -11,10 +11,10 @@ Olá, equipe Sebrae PI (ascom),
 Complementando o e-mail de 1º de agosto: o pedido concreto é um link ou menção para a página interna abaixo (não só a home).
 
 Recurso: gerador de recibo grátis (PDF)
-URL para linkar: https://resolvajato.com.br/gerador-de-recibo?utm_source=sebraepi&utm_medium=partner&utm_campaign=autoridade_fu_2026_08
+URL para linkar: https://precisoutapronto.com.br/gerador-de-recibo?utm_source=sebraepi&utm_medium=partner&utm_campaign=autoridade_fu_2026_08
 
-Badges HTML prontos: https://resolvajato.com.br/embed?...
-Press kit / como citar: https://resolvajato.com.br/imprensa?...
+Badges HTML prontos: https://precisoutapronto.com.br/embed?...
+Press kit / como citar: https://precisoutapronto.com.br/imprensa?...
 
 Se não for o momento, tudo bem. Se couber numa matéria, guia ou lista de ferramentas, esse link interno ajuda o público a achar o recurso certo.
 
@@ -36,7 +36,7 @@ Wellem Lyra
 ## Comando (VPS)
 
 ```bash
-cd /opt/resolva-jato
+cd /opt/precisoutapronto
 node --env-file=.env.production scripts/seo/send-outreach-day.mjs \
   --day=docs/divulgacao/outreach-followup-2026-08-04.json --send
 ```

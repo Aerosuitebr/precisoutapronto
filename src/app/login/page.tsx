@@ -53,10 +53,10 @@ function LoginForm() {
 
   useEffect(() => {
     try {
-      const replaced = sessionStorage.getItem('rj-session-replaced');
+      const replaced = sessionStorage.getItem('precisoutapronto-session-replaced');
       if (replaced) {
         setInfo(replaced);
-        sessionStorage.removeItem('rj-session-replaced');
+        sessionStorage.removeItem('precisoutapronto-session-replaced');
       }
     } catch {
       // ignore

@@ -46,7 +46,7 @@ Rollout permanece bloqueado até `NBA_TRACKING_SECRET` (mínimo 32 caracteres) e
 
 `GET /api/analytics/recommendations?days=1|7|30` fornece shown, clicked, completed, CTR, completion rate, click-to-completion, edges ativos e estado de rollout. A resposta é restrita à equipe interna e não retorna tokens, propriedades, subjects, sessões ou usuários. Divisões sem denominador retornam zero, sem produzir `NaN`/`Infinity`.
 
-O link NBA inclui `rj_rec`, que contém somente o token assinado e é removido da URL após ser guardado em `sessionStorage` pela ferramenta de destino. No piloto, a exportação bem-sucedida do PDF em Recibos envia `recommendation.completed`. O servidor confere se o target assinado é `recibos`; uma ferramenta diferente falha fechada sem emitir evento. Nenhum campo do orçamento é transferido.
+O link NBA inclui `precisoutapronto_rec`, que contém somente o token assinado e é removido da URL após ser guardado em `sessionStorage` pela ferramenta de destino. No piloto, a exportação bem-sucedida do PDF em Recibos envia `recommendation.completed`. O servidor confere se o target assinado é `recibos`; uma ferramenta diferente falha fechada sem emitir evento. Nenhum campo do orçamento é transferido.
 
 ## Rollback
 

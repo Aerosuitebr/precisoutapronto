@@ -47,7 +47,7 @@ async function asaasFetch<T>(path: string, init?: RequestInit): Promise<T> {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      'User-Agent': `ResolvaJato/1.0 (Next.js; ${getAsaasMode()})`,
+      'User-Agent': `PrecisouTaPronto/1.0 (Next.js; ${getAsaasMode()})`,
       access_token: key,
       ...(init?.headers || {})
     },
@@ -182,7 +182,7 @@ function splitName(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   return {
     firstName: parts[0] || 'Cliente',
-    lastName: parts.slice(1).join(' ') || 'ResolvaJato'
+    lastName: parts.slice(1).join(' ') || 'PrecisouTaPronto'
   };
 }
 

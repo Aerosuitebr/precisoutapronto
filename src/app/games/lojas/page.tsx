@@ -3,7 +3,7 @@ import { GamesReadablePanel, ProductBridge, SectionAccent, StoreCard } from '@/c
 import { gameStores, storeSafetyTips } from '@/lib/games/stores';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Lojas de jogos, skins e hardware | Jato Games' },
+  title: { absolute: 'Lojas de jogos, skins e hardware | Precisou, Tá Pronto Games' },
   description:
     'Diretório curado de lojas de jogos, skins, keys, consoles e hardware, com alertas de segurança.',
   alternates: { canonical: '/games/lojas' }
@@ -15,7 +15,7 @@ export default function LojasPage() {
       <SectionAccent>
         <GamesReadablePanel className="max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Lojas</p>
-          <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+          <h1 className="precisoutapronto-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Jogos, skins, keys e hardware
           </h1>
           <p className="mt-3 text-sm leading-7 text-slate-600">

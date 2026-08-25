@@ -1,7 +1,7 @@
 import { createHmac, timingSafeEqual } from 'crypto';
 import { cookies } from 'next/headers';
 
-export const SESSION_COOKIE = 'rj_session';
+export const SESSION_COOKIE = 'precisoutapronto_session';
 const SESSION_MAX_AGE_SEC = 60 * 60 * 24 * 30; // 30 days
 
 export interface SessionPayload {

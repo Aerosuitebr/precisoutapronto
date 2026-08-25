@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 export function MiraFeaturedCta({ compact = false }: { compact?: boolean }) {
   if (getAppEnv() === 'production') return null;
 
-  const href = getToolById('mira')?.href || 'https://search.aerosuite.com.br/escolher-busca?origem=resolva-jato';
+  const href = getToolById('mira')?.href || 'https://search.aerosuite.com.br/escolher-busca?origem=precisoutapronto';
   return (
     <section className={cn('relative overflow-hidden bg-slate-950 text-white', compact ? 'rounded-[2rem]' : 'border-b border-slate-800')}>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(34,211,238,.2),transparent_34%),radial-gradient(circle_at_88%_90%,rgba(139,92,246,.2),transparent_38%)]" />
@@ -18,7 +18,7 @@ export function MiraFeaturedCta({ compact = false }: { compact?: boolean }) {
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-xs font-extrabold uppercase tracking-[.16em] text-cyan-200">
             <Radar className="h-3.5 w-3.5" /> Novo no Precisou, Tá Pronto
           </div>
-          <h2 className="rj-display mt-5 max-w-2xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+          <h2 className="precisoutapronto-display mt-5 max-w-2xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
             Sua próxima oportunidade pode estar mais perto do que você imagina.
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">

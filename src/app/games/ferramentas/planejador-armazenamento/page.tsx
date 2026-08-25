@@ -3,11 +3,11 @@ import { StoragePlanner } from '@/components/games/gamer-tools';
 import { GamerToolLanding } from '@/components/games/gamer-tool-landing';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Calculadora de espaço para jogos no SSD | Jato Games' },
+  title: { absolute: 'Calculadora de espaço para jogos no SSD | Precisou, Tá Pronto Games' },
   description: 'Some o tamanho dos jogos e descubra quanto espaço reservar no SSD, PC, PlayStation ou Xbox antes de instalar.',
   alternates: { canonical: '/games/ferramentas/planejador-armazenamento' },
   openGraph: {
-    title: 'Calculadora de espaço para jogos no SSD | Jato Games',
+    title: 'Calculadora de espaço para jogos no SSD | Precisou, Tá Pronto Games',
     description: 'Planeje sua biblioteca e evite descobrir tarde demais que o próximo jogo não cabe.',
     url: '/games/ferramentas/planejador-armazenamento',
     type: 'website'

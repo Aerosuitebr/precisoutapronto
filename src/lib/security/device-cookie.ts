@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { getPrisma } from '@/lib/db';
 import { generateSecureToken } from '@/lib/auth/password-hash';
 
-export const DEVICE_COOKIE = 'rj_device';
+export const DEVICE_COOKIE = 'precisoutapronto_device';
 const DEVICE_MAX_AGE_SEC = 60 * 60 * 24 * 365; // 1 year
 
 export function deviceCookieOptions(maxAgeSec = DEVICE_MAX_AGE_SEC) {

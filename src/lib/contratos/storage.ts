@@ -5,7 +5,7 @@ import { createEmptyContrato } from './defaults';
 import type { ContractData, ContractParty } from './types';
 import { deleteRemoteDocument, listRemoteDocuments, saveRemoteDocument } from '@/lib/documents/remote-storage';
 
-const STORAGE_PREFIX = 'resolva-jato-contratos';
+const STORAGE_PREFIX = 'precisoutapronto-contratos';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

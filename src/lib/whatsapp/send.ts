@@ -46,7 +46,7 @@ export function getEvolutionConfig() {
 
   const apiKey = firstEnv('WHATSAPP_API_TOKEN', 'EVOLUTION_API_KEY', 'WHATSAPP_API_KEY');
 
-  const instance = firstEnv('WHATSAPP_INSTANCE', 'WHATSAPP_INSTANCE_NAME') || 'resolva-jato';
+  const instance = firstEnv('WHATSAPP_INSTANCE', 'WHATSAPP_INSTANCE_NAME') || 'precisoutapronto';
 
   const enabledFlag = firstEnv('WHATSAPP_API_ENABLED');
   const explicitlyDisabled = enabledFlag === 'false' || enabledFlag === '0';

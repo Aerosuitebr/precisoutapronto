@@ -37,7 +37,7 @@ export function SharedResultView({
         <CheckCircle2 className="h-7 w-7" />
         <p className="text-xs font-black uppercase tracking-[0.18em]">Tá pronto!</p>
       </div>
-      <h1 className="rj-display mt-4 text-3xl font-black tracking-tight text-slate-950">{title}</h1>
+      <h1 className="precisoutapronto-display mt-4 text-3xl font-black tracking-tight text-slate-950">{title}</h1>
       {subtitle ? <p className="mt-2 text-sm leading-6 text-slate-600">{subtitle}</p> : null}
       <dl className="mt-6 space-y-2">
         {lines.map((line, index) => (

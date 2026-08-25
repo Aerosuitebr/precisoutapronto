@@ -1,4 +1,4 @@
-﻿# Guest post outreach · BR + PT
+# Guest post outreach · BR + PT
 
 Lista operacional. Marque ao enviar.
 
@@ -21,7 +21,7 @@ Lista operacional. Marque ao enviar.
 | LinkedIn BR | perfil Wellem | `colar/03-linkedin-preco.txt` | [x] https://lnkd.in/dD27Rwpk |
 | LinkedIn BR · lote artes | perfil Wellem | `colar/29-linkedin-lote-artes.txt` + `ph-gallery/` | Post 1 FEITO https://lnkd.in/dSKZEUE3 · resto COLAR |
 | LinkedIn DM | conexões 1º grau | `colar/23-linkedin-dm-conexoes.txt` | COLAR (lista curta) |
-| TabNews | https://www.tabnews.com.br/resolvajato/... | `colar/20-br-tabnews.txt` | [x] |
+| TabNews | https://www.tabnews.com.br/precisoutapronto/... | `colar/20-br-tabnews.txt` | [x] |
 
 ## Portugal (usar `colar/19-pt-outreach-guestpost.txt`)
 
@@ -38,10 +38,10 @@ Lista operacional. Marque ao enviar.
 
 | Diretório | URL | Texto | Status |
 |-----------|-----|-------|--------|
-| MicroSaaS MKT | https://microsaas.marketing/micro-saas/resolva-jato | Lançado + arte marca (sem círculo RJ) | FEITO |
+| MicroSaaS MKT | https://microsaas.marketing/micro-saas/precisoutapronto | Lançado + arte da marca atual | FEITO |
 | FindSaaS | https://www.findsaas.com.br/dashboard | Enviado, aguarda aprovação (~48h) | FEITO |
 | AlternativeTo | https://alternativeto.net/ (perfil → Suggest new application) | `colar/27-alternativeto.txt` | BLOQUEADO (conta + 7 dias) |
-| TabNews | https://www.tabnews.com.br/resolvajato/mostrei-o-resolva-jato-ferramentas-gratis-pra-mei-e-freelancer-orcamento-com-pix-pdfs-e-calculadoras | `colar/20-br-tabnews.txt` | FEITO |
+| TabNews | https://www.tabnews.com.br/precisoutapronto/mostrei-o-precisoutapronto-ferramentas-gratis-pra-mei-e-freelancer-orcamento-com-pix-pdfs-e-calculadoras | `colar/20-br-tabnews.txt` | FEITO |
 | FreeStartupListing | https://freestartuplisting.org/ | Listado | FEITO |
 | Distrito | https://materiais.distrito.me/cadastro-startups | Cadastro enviado (agradecimento) | FEITO |
 | Startups Brasileiras | https://www.startupsbrasileiras.com.br/enviar-startup | Exige login/cadastro | COLAR |

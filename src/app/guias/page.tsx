@@ -36,7 +36,7 @@ export default function GuidesPage() {
             <span className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-sky-700">
               <BookOpen className="h-4 w-4" /> Guias Precisou, Tá Pronto
             </span>
-            <h1 className="rj-display mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
+            <h1 className="precisoutapronto-display mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
               Orçamento, cobrança e Pix para quem presta serviços
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
@@ -49,7 +49,7 @@ export default function GuidesPage() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-800">Comece pelo fluxo completo</p>
-                <h2 className="rj-display mt-2 text-2xl font-extrabold tracking-tight text-slate-950">Do orçamento ao pagamento</h2>
+                <h2 className="precisoutapronto-display mt-2 text-2xl font-extrabold tracking-tight text-slate-950">Do orçamento ao pagamento</h2>
               </div>
               <Link href="/orcamento-com-pix" className="inline-flex items-center gap-2 text-sm font-bold text-emerald-800 hover:underline">
                 Criar orçamento com Pix <ArrowRight className="h-4 w-4" />

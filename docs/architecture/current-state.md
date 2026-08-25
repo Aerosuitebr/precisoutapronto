@@ -83,7 +83,7 @@ Portanto, o blueprint não deve impor UUID global antes do ADR-002. A primeira m
 
 ## 5. Autenticação, autorização e privacidade
 
-A autenticação é própria, sem NextAuth. O cookie `rj_session` é HttpOnly, SameSite Lax e assinado com HMAC-SHA256. O token carrega um identificador opaco, mas o banco persiste somente seu hash. `UserSession` limita a uma sessão ativa por usuário e permite revogação server-side.
+A autenticação é própria, sem NextAuth. O cookie `precisoutapronto_session` é HttpOnly, SameSite Lax e assinado com HMAC-SHA256. O token carrega um identificador opaco, mas o banco persiste somente seu hash. `UserSession` limita a uma sessão ativa por usuário e permite revogação server-side.
 
 Os Route Handlers protegidos chamam `getValidSessionFromCookies()` e filtram registros pelo `session.sub`. Esse é o padrão que novos endpoints `/api/v1` devem reutilizar.
 
@@ -108,7 +108,7 @@ Lacunas para o blueprint:
 
 ### Estado atual
 
-`trackEvent(name, params)` envia eventos para GA4 e Clarity somente no navegador. A carga dos scripts depende de consentimento salvo em `rj_analytics_consent`. Falhas ou ausência dos providers não bloqueiam o fluxo.
+`trackEvent(name, params)` envia eventos para GA4 e Clarity somente no navegador. A carga dos scripts depende de consentimento salvo em `precisoutapronto_analytics_consent`. Falhas ou ausência dos providers não bloqueiam o fluxo.
 
 Há eventos em jornadas de orçamento, Pix, documentos, compartilhamento, referral, busca, conta, checkout e ferramentas. Alguns equivalentes semânticos já existem, por exemplo:
 
@@ -140,7 +140,7 @@ A Sprint 1 deve criar uma façade compatível que possa emitir a taxonomia canô
 
 ### Risco encontrado
 
-Os scripts SEO contêm expectativas codificadas para nomes e domínios históricos. Exemplos incluem canonical fixo em `resolvajato.com.br` e title template antigo. Como o código já usa constantes de marca e origem configurável, parte dessas verificações pode divergir do estado real mesmo sem regressão funcional.
+Os scripts SEO contêm expectativas codificadas para nomes e domínios históricos. Exemplos incluem canonical fixo em `precisoutapronto.com.br` e title template antigo. Como o código já usa constantes de marca e origem configurável, parte dessas verificações pode divergir do estado real mesmo sem regressão funcional.
 
 Antes de tornar a regressão SEO um gate, a Sprint 0 deve gerar fixtures Tier 0/1 versionadas com origem configurável e expectativas explícitas por ambiente. A correção do teste não autoriza mudar URLs, canonicals, titles ou H1 de produção.
 

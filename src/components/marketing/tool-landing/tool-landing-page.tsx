@@ -63,7 +63,7 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
         <section className="border-y border-slate-200 bg-slate-950 text-white">
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-14 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-16">
             <div className="max-w-xl">
-              <h2 className="rj-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+              <h2 className="precisoutapronto-display text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Experimente na própria página
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-300 sm:text-base">

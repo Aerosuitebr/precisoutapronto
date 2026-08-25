@@ -8,7 +8,7 @@ import {
   ProductBridge,
   SetupTable
 } from '@/components/games/games-ui';
-import { JATO_GAMES } from '@/lib/games/brand';
+import { PRECISOUTAPRONTO_GAMES } from '@/lib/games/brand';
 import { gamesCatalog, getGame } from '@/lib/games/games';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
@@ -51,20 +51,20 @@ export default async function GamePage({ params }: Props) {
         headline: `${game.title}: setup e dicas`,
         description: game.blurb,
         inLanguage: 'pt-BR',
-        datePublished: JATO_GAMES.publishedAt,
-        dateModified: JATO_GAMES.publishedAt,
+        datePublished: PRECISOUTAPRONTO_GAMES.publishedAt,
+        dateModified: PRECISOUTAPRONTO_GAMES.publishedAt,
         mainEntityOfPage: `${base}/games/jogos/${game.slug}`,
-        author: { '@type': 'Organization', name: JATO_GAMES.name, url: `${base}/games` },
+        author: { '@type': 'Organization', name: PRECISOUTAPRONTO_GAMES.name, url: `${base}/games` },
         publisher: {
           '@type': 'Organization',
-          name: JATO_GAMES.name,
+          name: PRECISOUTAPRONTO_GAMES.name,
           url: `${base}/games`
         }
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Jato Games', item: `${base}/games` },
+          { '@type': 'ListItem', position: 1, name: 'Precisou, Tá Pronto Games', item: `${base}/games` },
           { '@type': 'ListItem', position: 2, name: 'Top jogos', item: `${base}/games/top-jogos` },
           {
             '@type': 'ListItem',
@@ -85,7 +85,7 @@ export default async function GamePage({ params }: Props) {
       />
       <nav className="mb-6 break-words rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm">
         <Link href="/games" className="hover:text-teal-700">
-          Jato Games
+          Precisou, Tá Pronto Games
         </Link>
         {' / '}
         <Link href="/games/top-jogos" className="hover:text-teal-700">
@@ -100,12 +100,12 @@ export default async function GamePage({ params }: Props) {
       <div className="mt-10 grid min-w-0 gap-8 lg:grid-cols-[1.25fr_0.75fr]">
         <div className="min-w-0 space-y-8">
           <section className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5 sm:p-6">
-            <h2 className="rj-display text-xl font-extrabold text-slate-950">Por que está no radar</h2>
+            <h2 className="precisoutapronto-display text-xl font-extrabold text-slate-950">Por que está no radar</h2>
             <p className="mt-3 break-words text-base leading-7 text-slate-800">{game.whyPopular}</p>
           </section>
 
           <section className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5 sm:p-6">
-            <h2 className="rj-display text-xl font-extrabold text-slate-950">Setup sugerido</h2>
+            <h2 className="precisoutapronto-display text-xl font-extrabold text-slate-950">Setup sugerido</h2>
             <div className="mt-4 min-w-0">
               <SetupTable game={game} />
             </div>
@@ -115,7 +115,7 @@ export default async function GamePage({ params }: Props) {
           </section>
 
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] ring-1 ring-slate-900/5 sm:p-6">
-            <h2 className="rj-display text-xl font-extrabold text-slate-950">Dicas rápidas</h2>
+            <h2 className="precisoutapronto-display text-xl font-extrabold text-slate-950">Dicas rápidas</h2>
             <GameTips tips={game.tips} />
           </section>
         </div>

@@ -15,41 +15,41 @@
   --input: 214 32% 91%;
   --ring: 199 89% 48%;
 
-  --rj-sidebar-bg: linear-gradient(180deg, #1e293b 0%, #0f172a 55%, #020617 100%);
-  --rj-sidebar-accent: #38bdf8;
-  --rj-sidebar-accent-deep: #0284c7;
-  --rj-sidebar-text: #e2e8f0;
-  --rj-sidebar-muted: #94a3b8;
-  --rj-sidebar-border: rgba(255, 255, 255, 0.1);
-  --rj-sidebar-active-bar: #fbbf24;
-  --rj-page-bg: linear-gradient(180deg, #f8fafc 0%, #eef4f9 40%, #f8fafc 100%);
-  --rj-card-bg: #ffffff;
-  --rj-card-border: #e2e8f0;
-  --rj-gold: #fbbf24;
-  --rj-link: #0284c7;
-  --rj-success: #16a34a;
-  --rj-success-bg: #dcfce7;
-  --rj-draft: #64748b;
-  --rj-draft-bg: #f1f5f9;
-  --rj-warning: #d97706;
-  --rj-warning-bg: #fef3c7;
-  --rj-danger: #dc2626;
-  --rj-danger-bg: #fee2e2;
-  --rj-hero-from: #020617;
-  --rj-hero-via: #0f172a;
-  --rj-hero-to: #0c4a6e;
-  --rj-sidebar-width: 300px;
-  --rj-sidebar-collapsed: 76px;
-  --rj-font-display: 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --rj-font-body: 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --precisoutapronto-sidebar-bg: linear-gradient(180deg, #1e293b 0%, #0f172a 55%, #020617 100%);
+  --precisoutapronto-sidebar-accent: #38bdf8;
+  --precisoutapronto-sidebar-accent-deep: #0284c7;
+  --precisoutapronto-sidebar-text: #e2e8f0;
+  --precisoutapronto-sidebar-muted: #94a3b8;
+  --precisoutapronto-sidebar-border: rgba(255, 255, 255, 0.1);
+  --precisoutapronto-sidebar-active-bar: #fbbf24;
+  --precisoutapronto-page-bg: linear-gradient(180deg, #f8fafc 0%, #eef4f9 40%, #f8fafc 100%);
+  --precisoutapronto-card-bg: #ffffff;
+  --precisoutapronto-card-border: #e2e8f0;
+  --precisoutapronto-gold: #fbbf24;
+  --precisoutapronto-link: #0284c7;
+  --precisoutapronto-success: #16a34a;
+  --precisoutapronto-success-bg: #dcfce7;
+  --precisoutapronto-draft: #64748b;
+  --precisoutapronto-draft-bg: #f1f5f9;
+  --precisoutapronto-warning: #d97706;
+  --precisoutapronto-warning-bg: #fef3c7;
+  --precisoutapronto-danger: #dc2626;
+  --precisoutapronto-danger-bg: #fee2e2;
+  --precisoutapronto-hero-from: #020617;
+  --precisoutapronto-hero-via: #0f172a;
+  --precisoutapronto-hero-to: #0c4a6e;
+  --precisoutapronto-sidebar-width: 300px;
+  --precisoutapronto-sidebar-collapsed: 76px;
+  --precisoutapronto-font-display: 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --precisoutapronto-font-body: 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
   /* Chrome sticky stack: banner + header + doc actions */
-  --rj-banner-h: 2rem;
-  --rj-header-h: 5.75rem;
-  --rj-chrome-top: calc(var(--rj-banner-h) + var(--rj-header-h));
-  --rj-doc-actions-h: 3.5rem;
-  --rj-doc-preview-top: calc(var(--rj-chrome-top) + var(--rj-doc-actions-h) + 0.5rem);
-  --rj-section-scroll-mt: calc(var(--rj-chrome-top) + 1.25rem);
+  --precisoutapronto-banner-h: 2rem;
+  --precisoutapronto-header-h: 5.75rem;
+  --precisoutapronto-chrome-top: calc(var(--precisoutapronto-banner-h) + var(--precisoutapronto-header-h));
+  --precisoutapronto-doc-actions-h: 3.5rem;
+  --precisoutapronto-doc-preview-top: calc(var(--precisoutapronto-chrome-top) + var(--precisoutapronto-doc-actions-h) + 0.5rem);
+  --precisoutapronto-section-scroll-mt: calc(var(--precisoutapronto-chrome-top) + 1.25rem);
 }
 
 * {
@@ -57,11 +57,11 @@
 }
 
 html {
-  scroll-padding-top: var(--rj-section-scroll-mt);
+  scroll-padding-top: var(--precisoutapronto-section-scroll-mt);
 }
 
 [id] {
-  scroll-margin-top: var(--rj-section-scroll-mt);
+  scroll-margin-top: var(--precisoutapronto-section-scroll-mt);
 }
 
 html,
@@ -73,15 +73,15 @@ body {
 
 body {
   margin: 0;
-  background: var(--rj-page-bg);
+  background: var(--precisoutapronto-page-bg);
   color: hsl(var(--foreground));
-  font-family: var(--rj-font-body);
+  font-family: var(--precisoutapronto-font-body);
   font-feature-settings: 'kern' 1, 'liga' 1;
   letter-spacing: -0.011em;
 }
 
-.rj-display {
-  font-family: var(--rj-font-display);
+.precisoutapronto-display {
+  font-family: var(--precisoutapronto-font-display);
 }
 
 a {
@@ -89,7 +89,7 @@ a {
   text-decoration: none;
 }
 
-@keyframes rj-hero-character-enter {
+@keyframes precisoutapronto-hero-character-enter {
   0% {
     opacity: 0;
     transform: translateY(0.7em) rotate(7deg) scale(0.88);
@@ -110,7 +110,7 @@ a {
 .hero-title-character {
   opacity: 0;
   transform-origin: 50% 80%;
-  animation: rj-hero-character-enter 680ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: precisoutapronto-hero-character-enter 680ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: calc(140ms + var(--hero-character-index) * 34ms);
   will-change: transform, opacity, filter;
 }
@@ -138,7 +138,7 @@ a {
   color: #031f4b;
 }
 
-.rj-hud-grid {
+.precisoutapronto-hud-grid {
   background-image:
     linear-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px),
     linear-gradient(90deg, rgba(56, 189, 248, 0.07) 1px, transparent 1px);
@@ -146,7 +146,7 @@ a {
   mask-image: linear-gradient(180deg, black 0%, black 55%, transparent 100%);
 }
 
-@keyframes rj-horizon-pulse {
+@keyframes precisoutapronto-horizon-pulse {
   from {
     opacity: 0.55;
     transform: translateY(0);
@@ -157,7 +157,7 @@ a {
   }
 }
 
-@keyframes rj-fade-up {
+@keyframes precisoutapronto-fade-up {
   from {
     opacity: 0;
     transform: translateY(18px);
@@ -168,7 +168,7 @@ a {
   }
 }
 
-@keyframes rj-drift {
+@keyframes precisoutapronto-drift {
   from {
     transform: translate3d(0, 0, 0);
   }
@@ -177,7 +177,7 @@ a {
   }
 }
 
-@keyframes rj-shine {
+@keyframes precisoutapronto-shine {
   from {
     background-position: 0% 50%;
   }
@@ -186,7 +186,7 @@ a {
   }
 }
 
-@keyframes rj-auth-ambient {
+@keyframes precisoutapronto-auth-ambient {
   0% {
     background-position: 0% 40%;
   }
@@ -198,7 +198,7 @@ a {
   }
 }
 
-@keyframes rj-auth-blob {
+@keyframes precisoutapronto-auth-blob {
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1);
@@ -208,7 +208,7 @@ a {
   }
 }
 
-@keyframes rj-auth-mark {
+@keyframes precisoutapronto-auth-mark {
   0%,
   100% {
     transform: translateY(0) rotate(-6deg);
@@ -220,7 +220,7 @@ a {
   }
 }
 
-@keyframes rj-tools-marquee {
+@keyframes precisoutapronto-tools-marquee {
   from {
     transform: translateX(0);
   }
@@ -229,32 +229,32 @@ a {
   }
 }
 
-.rj-tools-marquee {
-  animation: rj-tools-marquee 42s linear infinite;
+.precisoutapronto-tools-marquee {
+  animation: precisoutapronto-tools-marquee 42s linear infinite;
 }
 
-.rj-animate-fade-up {
-  animation: rj-fade-up 0.7s ease-out both;
+.precisoutapronto-animate-fade-up {
+  animation: precisoutapronto-fade-up 0.7s ease-out both;
 }
 
-.rj-animate-fade-up-delay {
-  animation: rj-fade-up 0.75s ease-out 0.08s both;
+.precisoutapronto-animate-fade-up-delay {
+  animation: precisoutapronto-fade-up 0.75s ease-out 0.08s both;
 }
 
-.rj-animate-fade-up-delay-2 {
-  animation: rj-fade-up 0.75s ease-out 0.16s both;
+.precisoutapronto-animate-fade-up-delay-2 {
+  animation: precisoutapronto-fade-up 0.75s ease-out 0.16s both;
 }
 
-.rj-animate-drift {
-  animation: rj-drift 8s ease-in-out infinite alternate;
+.precisoutapronto-animate-drift {
+  animation: precisoutapronto-drift 8s ease-in-out infinite alternate;
 }
 
-.rj-price-shine {
+.precisoutapronto-price-shine {
   background-size: 200% 200%;
-  animation: rj-shine 6s ease-in-out infinite alternate;
+  animation: precisoutapronto-shine 6s ease-in-out infinite alternate;
 }
 
-.rj-auth-ambient {
+.precisoutapronto-auth-ambient {
   background-image: linear-gradient(
     125deg,
     #e8f4fc 0%,
@@ -265,23 +265,23 @@ a {
     #f8fafc 100%
   );
   background-size: 220% 220%;
-  animation: rj-auth-ambient 18s ease-in-out infinite;
+  animation: precisoutapronto-auth-ambient 18s ease-in-out infinite;
 }
 
-.rj-auth-blob {
-  animation: rj-auth-blob 14s ease-in-out infinite;
+.precisoutapronto-auth-blob {
+  animation: precisoutapronto-auth-blob 14s ease-in-out infinite;
 }
 
-.rj-auth-blob-delay {
-  animation: rj-auth-blob 16s ease-in-out infinite;
+.precisoutapronto-auth-blob-delay {
+  animation: precisoutapronto-auth-blob 16s ease-in-out infinite;
   animation-delay: -6s;
 }
 
-.rj-auth-mark {
-  animation: rj-auth-mark 12s ease-in-out infinite;
+.precisoutapronto-auth-mark {
+  animation: precisoutapronto-auth-mark 12s ease-in-out infinite;
 }
 
-@keyframes rj-spotlight-enter {
+@keyframes precisoutapronto-spotlight-enter {
   from {
     opacity: 0;
     transform: translateY(12px);
@@ -292,7 +292,7 @@ a {
   }
 }
 
-@keyframes rj-spotlight-progress {
+@keyframes precisoutapronto-spotlight-progress {
   from {
     transform: scaleX(0);
   }
@@ -301,20 +301,20 @@ a {
   }
 }
 
-.rj-spotlight-enter {
-  animation: rj-spotlight-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+.precisoutapronto-spotlight-enter {
+  animation: precisoutapronto-spotlight-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.rj-spotlight-enter-delay {
-  animation: rj-spotlight-enter 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+.precisoutapronto-spotlight-enter-delay {
+  animation: precisoutapronto-spotlight-enter 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
 }
 
-.rj-spotlight-progress {
+.precisoutapronto-spotlight-progress {
   transform-origin: left center;
-  animation: rj-spotlight-progress 5.2s linear both;
+  animation: precisoutapronto-spotlight-progress 5.2s linear both;
 }
 
-.rj-press {
+.precisoutapronto-press {
   position: relative;
   transition:
     transform 0.12s ease,
@@ -324,17 +324,17 @@ a {
     filter 0.12s ease;
 }
 
-.rj-press:hover {
+.precisoutapronto-press:hover {
   transform: translateY(-1px);
 }
 
-.rj-press:active {
+.precisoutapronto-press:active {
   transform: scale(0.96);
   filter: brightness(0.97);
-  animation: rj-press-flash 0.45s ease-out;
+  animation: precisoutapronto-press-flash 0.45s ease-out;
 }
 
-@keyframes rj-press-flash {
+@keyframes precisoutapronto-press-flash {
   0% {
     box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.45);
   }
@@ -343,11 +343,11 @@ a {
   }
 }
 
-.rj-favorite-btn.is-active {
-  animation: rj-favorite-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+.precisoutapronto-favorite-btn.is-active {
+  animation: precisoutapronto-favorite-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes rj-favorite-pop {
+@keyframes precisoutapronto-favorite-pop {
   0% {
     transform: scale(0.7);
   }
@@ -359,7 +359,7 @@ a {
   }
 }
 
-@keyframes rj-toast-in {
+@keyframes precisoutapronto-toast-in {
   from {
     opacity: 0;
     transform: translateY(12px);
@@ -370,11 +370,11 @@ a {
   }
 }
 
-.rj-toast-in {
-  animation: rj-toast-in 0.28s ease-out both;
+.precisoutapronto-toast-in {
+  animation: precisoutapronto-toast-in 0.28s ease-out both;
 }
 
-@keyframes rj-progress-indeterminate {
+@keyframes precisoutapronto-progress-indeterminate {
   0% {
     transform: translateX(-120%);
   }
@@ -383,19 +383,19 @@ a {
   }
 }
 
-.rj-progress-indeterminate {
-  animation: rj-progress-indeterminate 1.1s ease-in-out infinite;
+.precisoutapronto-progress-indeterminate {
+  animation: precisoutapronto-progress-indeterminate 1.1s ease-in-out infinite;
 }
 
-.rj-spotlight-doc-frame {
+.precisoutapronto-spotlight-doc-frame {
   position: relative;
   z-index: 1;
 }
 
 /* Mobile/touch: evita bug do Safari que deixa o slide em opacity:0 ao reiniciar a mesma animação */
 @media (hover: none), (max-width: 1023px) {
-  .rj-spotlight-enter,
-  .rj-spotlight-enter-delay {
+  .precisoutapronto-spotlight-enter,
+  .precisoutapronto-spotlight-enter-delay {
     animation: none;
     opacity: 1;
     transform: none;
@@ -403,57 +403,57 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rj-animate-fade-up,
-  .rj-animate-fade-up-delay,
-  .rj-animate-fade-up-delay-2,
-  .rj-animate-drift,
-  .rj-price-shine,
-  .rj-auth-ambient,
-  .rj-auth-blob,
-  .rj-auth-blob-delay,
-  .rj-auth-mark,
-  .rj-tools-marquee,
-  .rj-spotlight-enter,
-  .rj-spotlight-enter-delay,
-  .rj-spotlight-progress,
-  .rj-toast-in,
-  .rj-progress-indeterminate,
-  .rj-press-flash,
-  .rj-favorite-btn.is-active {
+  .precisoutapronto-animate-fade-up,
+  .precisoutapronto-animate-fade-up-delay,
+  .precisoutapronto-animate-fade-up-delay-2,
+  .precisoutapronto-animate-drift,
+  .precisoutapronto-price-shine,
+  .precisoutapronto-auth-ambient,
+  .precisoutapronto-auth-blob,
+  .precisoutapronto-auth-blob-delay,
+  .precisoutapronto-auth-mark,
+  .precisoutapronto-tools-marquee,
+  .precisoutapronto-spotlight-enter,
+  .precisoutapronto-spotlight-enter-delay,
+  .precisoutapronto-spotlight-progress,
+  .precisoutapronto-toast-in,
+  .precisoutapronto-progress-indeterminate,
+  .precisoutapronto-press-flash,
+  .precisoutapronto-favorite-btn.is-active {
     animation: none;
   }
 
-  .rj-press:hover,
-  .rj-press:active {
+  .precisoutapronto-press:hover,
+  .precisoutapronto-press:active {
     transform: none;
     filter: none;
     animation: none;
   }
 }
 
-.rj-signature-elegante {
+.precisoutapronto-signature-elegante {
   font-family: 'Dancing Script', cursive;
   font-weight: 600;
 }
 
-.rj-signature-executivo {
+.precisoutapronto-signature-executivo {
   font-family: 'Playfair Display', Georgia, serif;
   font-style: italic;
   font-weight: 600;
 }
 
-.rj-signature-classico {
+.precisoutapronto-signature-classico {
   font-family: 'Great Vibes', cursive;
   font-weight: 400;
 }
 
-.rj-signature-moderno {
-  font-family: var(--rj-font-body);
+.precisoutapronto-signature-moderno {
+  font-family: var(--precisoutapronto-font-body);
   font-weight: 700;
   letter-spacing: 0.06em;
 }
 
-.rj-signature-formal {
+.precisoutapronto-signature-formal {
   font-family: Georgia, 'Times New Roman', serif;
   font-style: italic;
   font-weight: 500;

@@ -206,11 +206,11 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
                     {publicAccess ? 'Gerador grátis' : 'Microferramenta'}
                   </p>
                   {publicAccess ? (
-                    <h2 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                    <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold tracking-tight">
                       Cobrança Pix com QR Code
                     </h2>
                   ) : (
-                    <h1 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                    <h1 className="precisoutapronto-display mt-1 text-2xl font-extrabold tracking-tight">
                       Cobrança Pix com QR Code
                     </h1>
                   )}

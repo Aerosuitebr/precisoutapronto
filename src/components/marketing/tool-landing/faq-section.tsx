@@ -11,8 +11,8 @@ export function ToolLandingFaq({ faq }: { faq: SeoPageFaqItem[] }) {
   return (
     <section className="border-y border-slate-200 bg-slate-50">
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
-        <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">Dúvidas frequentes</p>
-        <h2 className="rj-display mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+        <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">Dúvidas frequentes</p>
+        <h2 className="precisoutapronto-display mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
           Perguntas frequentes
         </h2>
         <ul className="mt-8 divide-y divide-slate-200 rounded-[24px] border border-slate-200 bg-white shadow-sm">

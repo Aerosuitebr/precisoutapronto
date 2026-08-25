@@ -50,7 +50,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
           <section className="bg-[linear-gradient(145deg,#020617,#0f172a_50%,#064e3b)] text-white">
             <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-300">Modelo para {page.name}</p>
-              <h1 className="rj-display mt-3 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{page.title}</h1>
+              <h1 className="precisoutapronto-display mt-3 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{page.title}</h1>
               <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-200">{page.description}</p>
               <ul className="mt-6 grid max-w-3xl gap-2 text-sm sm:grid-cols-3">
                 {page.checklist.map((item) => <li key={item} className="flex gap-2"><Check className="h-4 w-4 shrink-0 text-amber-300" />{item}</li>)}
@@ -67,7 +67,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
           </section>
           <section className="bg-white">
             <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
-              <h2 className="rj-display text-3xl font-extrabold text-slate-950">Dúvidas de {page.name.toLowerCase()}</h2>
+              <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Dúvidas de {page.name.toLowerCase()}</h2>
               <dl className="mt-7 grid gap-4 sm:grid-cols-2">{page.faqs.map((item) => <div key={item.q} className="rounded-2xl border border-slate-200 p-5"><dt className="font-bold text-slate-900">{item.q}</dt><dd className="mt-2 text-sm leading-6 text-slate-600">{item.a}</dd></div>)}</dl>
               <p className="mt-8 text-sm text-slate-600">Precisa de outro formato? <Link href="/orcamento-com-pix" className="font-bold text-emerald-700 hover:underline">Abra o gerador geral de orçamento com Pix</Link>.</p>
             </div>

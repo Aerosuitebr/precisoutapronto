@@ -18,7 +18,7 @@ test('quick quote parser converts bounded WhatsApp notes into editable items', (
 
 test('recipient WhatsApp acknowledgement uses only a bounded quote id', () => {
   const id = '123e4567-e89b-42d3-a456-426614174000';
-  expect(quoteWhatsAppAckKey(id)).toBe(`rj_quote_whatsapp_ack_v1:${id}`);
+  expect(quoteWhatsAppAckKey(id)).toBe(`precisoutapronto_quote_whatsapp_ack_v1:${id}`);
   expect(quoteWhatsAppAckKey('cliente@example.com')).toBe('');
   expect(quoteWhatsAppAckKey('../outro-orcamento')).toBe('');
 });
@@ -80,7 +80,7 @@ test('approved quote story is shareable without customer or commercial data', ()
   const decoded = decodeURIComponent(url);
   expect(decoded).toContain('Orçamento aprovado');
   expect(decoded).toContain('utm_campaign=orcamento_aprovado');
-  expect(decoded).toContain('/resultado-jato?');
+  expect(decoded).toContain('/resultado-pronto?');
   expect(decoded).not.toMatch(/clienteNome|source_document|telefone|email|R\$|total|pixKey/i);
 });
 
@@ -133,7 +133,7 @@ test('home leads with a task-first promise and popular outcomes', async ({ page 
   await expect(page.getByRole('heading', { name: 'Encontre a ferramenta certa para o que você precisa.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Do problema ao resultado em três movimentos.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Guias curtos. Aplicação imediata.' })).toBeVisible();
-  await expect(page.locator('main')).not.toContainText('Jato Games');
+  await expect(page.locator('main')).not.toContainText('Precisou, Tá Pronto Games');
 });
 
 test('public quote editor keeps optional details out of the critical path', async ({ page }) => {

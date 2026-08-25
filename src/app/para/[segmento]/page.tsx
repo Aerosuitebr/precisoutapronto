@@ -108,7 +108,7 @@ export default async function SegmentPage({ params }: Props) {
         <section className="bg-[linear-gradient(145deg,#020617,#0f172a_50%,#064e3b)] text-white">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-amber-300">Precisou, Tá Pronto para {segment.name}</p>
-            <h1 className="rj-display mt-4 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{segment.headline}</h1>
+            <h1 className="precisoutapronto-display mt-4 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{segment.headline}</h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-200">{segment.description}</p>
             <SegmentJourneyLink segment={segment.slug} destination="tool" href={segment.tools[0].href} className="mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">
               Começar agora <ArrowRight className="h-4 w-4" />
@@ -116,7 +116,7 @@ export default async function SegmentPage({ params }: Props) {
           </div>
         </section>
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="rj-display text-3xl font-extrabold text-slate-950">Ferramentas recomendadas</h2>
+          <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Ferramentas recomendadas</h2>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {segment.tools.map((tool) => (
               <SegmentJourneyLink key={tool.href} segment={segment.slug} destination="tool" href={tool.href} className="group rounded-3xl border border-slate-200 p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg">
@@ -129,7 +129,7 @@ export default async function SegmentPage({ params }: Props) {
         </section>
         <section className="border-y border-slate-200 bg-slate-50">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-            <h2 className="rj-display text-3xl font-extrabold text-slate-950">Respostas para tarefas frequentes</h2>
+            <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Respostas para tarefas frequentes</h2>
             <div className="mt-8 grid gap-4 md:grid-cols-2">
               {relatedIntents.map((intent) => (
                 <SegmentJourneyLink key={intent.slug} segment={segment.slug} destination="intent" href={`/modelos/${intent.slug}`} className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-sky-300">
@@ -144,7 +144,7 @@ export default async function SegmentPage({ params }: Props) {
           </div>
         </section>
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="rj-display text-3xl font-extrabold text-slate-950">Uma jornada organizada para {segment.name}</h2>
+          <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Uma jornada organizada para {segment.name}</h2>
           <div className="mt-7 grid gap-5 md:grid-cols-3">
             {[
               ['1. Entenda', 'Consulte uma resposta objetiva, exemplos e limites antes de começar.'],

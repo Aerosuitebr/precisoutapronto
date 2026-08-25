@@ -1,4 +1,4 @@
-# Testes E2E do Resolva Jato (staging)
+# Testes E2E do Precisou, Tá Pronto (staging)
 
 ## Modelo híbrido
 
@@ -9,7 +9,7 @@
 
 Fluxo:
 
-1. `Deploy Resolva Jato Vultr` com target **staging**
+1. `Deploy Precisou, Tá Pronto Vultr` com target **staging**
 2. Job reutilizável **E2E Staging Gate** roda Playwright
 3. Se Playwright passar, Browser Use gera `ux-report.md`
 4. Commit status `e2e/staging=success` é gravado no SHA
@@ -23,7 +23,7 @@ npx playwright install chromium
 npm run test:e2e:staging
 ```
 
-Base URL padrão: `https://staging.resolvajato.com.br`  
+Base URL padrão: `https://staging.precisoutapronto.com.br`  
 Override: `E2E_BASE_URL=https://outro.host npm run test:e2e`
 
 ### Cloudflare Access (se o staging estiver protegido)
@@ -47,7 +47,7 @@ npm run test:e2e:ui
 
 ## Specs do gate (v1)
 
-- [`e2e/home-locale.spec.ts`](../e2e/home-locale.spec.ts): `/` não redireciona para `/en` com cookie `rj_locale=en`
+- [`e2e/home-locale.spec.ts`](../e2e/home-locale.spec.ts): `/` não redireciona para `/en` com cookie `precisoutapronto_locale=en`
 - [`e2e/quote-pix-en.spec.ts`](../e2e/quote-pix-en.spec.ts): preço `1000` atualiza total; Generate nunca é silencioso
 - [`e2e/orcamento-pt-smoke.spec.ts`](../e2e/orcamento-pt-smoke.spec.ts): páginas PT de orçamento carregam
 

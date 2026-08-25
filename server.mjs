@@ -74,10 +74,10 @@ const server = http.createServer(async (request, response) => {
     response.end(body);
   } catch {
     response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    response.end('RJ Resolva Jato nao encontrado. Rode npm run build primeiro.');
+    response.end('Precisou, Tá Pronto nao encontrado. Rode npm run build primeiro.');
   }
 });
 
 server.listen(port, host, () => {
-  console.log(`RJ Resolva Jato pronto em http://localhost:${port}`);
+  console.log(`Precisou, Tá Pronto pronto em http://localhost:${port}`);
 });

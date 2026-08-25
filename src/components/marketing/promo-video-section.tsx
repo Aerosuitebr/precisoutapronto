@@ -307,8 +307,8 @@ export function PromoVideoSection() {
 
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
         <div className="text-center">
-          <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-300">Veja em 60 segundos</p>
-          <h2 className="rj-display mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-300">Veja em 60 segundos</p>
+          <h2 className="precisoutapronto-display mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
             O Precisou, Tá Pronto em ação
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-slate-300">

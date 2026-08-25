@@ -133,7 +133,7 @@ export function useViralPdfShare() {
 
   function afterPdfExport(label = 'documento', sourceToolKey = 'documentos') {
     try {
-      const key = 'rj_generated_document_count';
+      const key = 'precisoutapronto_generated_document_count';
       const count = Math.max(0, Number(window.localStorage.getItem(key)) || 0) + 1;
       window.localStorage.setItem(key, String(count));
       setShowReferral(count >= 2);

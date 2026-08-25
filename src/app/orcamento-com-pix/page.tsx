@@ -50,7 +50,7 @@ export default function OrcamentoComPixPage() {
       demo={
         <section
           id="montar"
-          className="scroll-mt-24 border-b border-slate-200 bg-[image:var(--rj-page-bg)]"
+          className="scroll-mt-24 border-b border-slate-200 bg-[image:var(--precisoutapronto-page-bg)]"
         >
           <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
             <OrcamentosApp publicAccess />

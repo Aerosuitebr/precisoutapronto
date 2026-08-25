@@ -108,8 +108,8 @@ export const toolsCatalog: ToolDefinition[] = [
     description: "Encontre empresas para prospectar ou profissionais próximos do local do serviço.",
     tip: "Escolha entre a busca empresarial e a busca de profissionais por proximidade.",
     href: process.env.NEXT_PUBLIC_MIRA_URL || (process.env.NODE_ENV === "development"
-      ? "http://localhost:4201/escolher-busca?origem=resolva-jato"
-      : "https://search.aerosuite.com.br/escolher-busca?origem=resolva-jato"),
+      ? "http://localhost:4201/escolher-busca?origem=precisoutapronto"
+      : "https://search.aerosuite.com.br/escolher-busca?origem=precisoutapronto"),
     icon: MapPin,
     categoryId: "negocios",
     actionLabel: "Abrir o MIRA",

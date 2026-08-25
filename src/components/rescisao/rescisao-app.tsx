@@ -267,7 +267,7 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
                 <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-100 text-emerald-800">
                   <Calculator className="h-4 w-4" aria-hidden />
                 </span>
-                <h2 className="rj-display text-base font-bold text-slate-900">
+                <h2 className="precisoutapronto-display text-base font-bold text-slate-900">
                   Resultado estimado
                 </h2>
               </div>
@@ -311,7 +311,7 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
                     <span className="text-sm font-semibold">
                       Total bruto estimado
                     </span>
-                    <span className="rj-display text-lg font-bold">
+                    <span className="precisoutapronto-display text-lg font-bold">
                       {formatCurrency(resultado.totalBruto)}
                     </span>
                   </div>

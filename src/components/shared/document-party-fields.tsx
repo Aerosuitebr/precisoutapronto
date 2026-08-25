@@ -105,7 +105,7 @@ export function DocumentPartyFields({
 
   return (
     <div className="space-y-4">
-      <h3 className="rj-display text-base font-bold text-slate-950">{title}</h3>
+      <h3 className="precisoutapronto-display text-base font-bold text-slate-950">{title}</h3>
       <FormField label="Nome completo / razão social" hint="Como deve aparecer no contrato.">
         <Input
           value={party.name}

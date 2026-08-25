@@ -11,7 +11,7 @@ function normalizeReceipt(receipt: ReceiptData): ReceiptData {
   };
 }
 
-const STORAGE_PREFIX = 'resolva-jato-recibos';
+const STORAGE_PREFIX = 'precisoutapronto-recibos';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

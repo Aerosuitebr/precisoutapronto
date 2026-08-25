@@ -65,7 +65,7 @@ export function InternationalToolsCatalog({ locale }: { locale: InternationalLoc
               {copy.back}
             </Link>
             <p className="mt-8 text-xs font-bold uppercase tracking-[0.18em] text-sky-700">{copy.eyebrow}</p>
-            <h1 className="rj-display mt-4 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{copy.title}</h1>
+            <h1 className="precisoutapronto-display mt-4 max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl">{copy.title}</h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">{copy.description}</p>
             <div className="mt-7 flex max-w-3xl items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-950">
               <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />

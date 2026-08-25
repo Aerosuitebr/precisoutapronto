@@ -4,20 +4,20 @@ Pré-requisito (FAQ oficial):
 1. Criar conta em https://alternativeto.net/
 2. Esperar 7 dias (anti-spam)
 3. Ícone do usuário (topo direita) → Suggest new application
-4. Após aprovação (2 a 7 dias): em cada concorrente → Contribute → Suggest Alternatives → Resolva Jato
+4. Após aprovação (2 a 7 dias): em cada concorrente → Contribute → Suggest Alternatives → Precisou, Tá Pronto
 
 URL antiga /software/new/ dá 404. Use o menu do perfil.
 
 ---
 
 Name:
-Resolva Jato
+Precisou, Tá Pronto
 
 Tagline / short:
 Free Brazilian toolkit for quotes with Pix, PDFs and practical calculators for freelancers and MEI.
 
 Website:
-https://resolvajato.com.br/?utm_source=alternativeto&utm_medium=referral&utm_campaign=directory
+https://precisoutapronto.com.br/?utm_source=alternativeto&utm_medium=referral&utm_campaign=directory
 
 Platforms:
 Online / Web
@@ -32,7 +32,7 @@ Categories / tags (pick closest):
 Business, Productivity, Freelancer Tools, Invoicing, Document Management, Finance
 
 Description (colar):
-Resolva Jato is a free Brazilian web toolkit for freelancers, MEI and small businesses. Create quotes with client approval and Pix payment links, generate professional PDFs (resume, receipt, proposal, service contract), and use practical calculators (severance, freelance pricing, MEI vs CLT). Start without a credit card. Optional Premium removes Resolva Jato branding from exports.
+Precisou, Tá Pronto is a free Brazilian web toolkit for freelancers, MEI and small businesses. Create quotes with client approval and Pix payment links, generate professional PDFs (resume, receipt, proposal, service contract), and use practical calculators (severance, freelance pricing, MEI vs CLT). Start without a credit card. Optional Premium removes Precisou, Tá Pronto branding from exports.
 
 Key features:
 - Quote + client approval link + Pix QR / copy-paste
@@ -56,6 +56,6 @@ Posicionamento:
 "Brazilian freemium alternative focused on WhatsApp + Pix workflows, not full accounting CRM."
 
 Assets:
-Logo: https://resolvajato.com.br/icon-512.png
-Press / about: https://resolvajato.com.br/sobre
+Logo: https://precisoutapronto.com.br/icon-512.png
+Press / about: https://precisoutapronto.com.br/sobre
 Screenshots: use landings /orcamento-com-pix and /gerador-de-qr-code-pix

@@ -3,11 +3,11 @@ import { CostPerHourCalculator } from '@/components/games/gamer-tools';
 import { GamerToolLanding } from '@/components/games/gamer-tool-landing';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Calculadora de custo por hora de jogo | Jato Games' },
+  title: { absolute: 'Calculadora de custo por hora de jogo | Precisou, Tá Pronto Games' },
   description: 'Calcule quanto um jogo custa por hora usando preço, DLCs e tempo estimado. Compare compras antes de gastar.',
   alternates: { canonical: '/games/ferramentas/custo-por-hora' },
   openGraph: {
-    title: 'Calculadora de custo por hora de jogo | Jato Games',
+    title: 'Calculadora de custo por hora de jogo | Precisou, Tá Pronto Games',
     description: 'Transforme preço e horas de diversão em uma comparação objetiva para sua próxima compra.',
     url: '/games/ferramentas/custo-por-hora',
     type: 'website'

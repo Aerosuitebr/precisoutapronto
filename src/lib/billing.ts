@@ -228,7 +228,7 @@ export async function performBillableAction<T>(context: BillableContext, effect:
   if (!access.allowed) {
     if (access.accountRequired && typeof window !== 'undefined') {
       window.dispatchEvent(
-        new CustomEvent('rj-account-required', {
+        new CustomEvent('precisoutapronto-account-required', {
           detail: {
             nextHref: window.location.pathname || '/ferramentas',
             variant: 'guest_trial_done'
@@ -260,7 +260,7 @@ export async function performBillableAction<T>(context: BillableContext, effect:
         const copy = guestCopy[billingLocale()];
         const stillHasTrial = openGuest || hasGuestTrialAvailable();
         window.dispatchEvent(
-          new CustomEvent('rj-billable-success', {
+          new CustomEvent('precisoutapronto-billable-success', {
             detail: {
               message: openGuest
                 ? copy.guestSuccessOpen
@@ -293,7 +293,7 @@ export async function performBillableAction<T>(context: BillableContext, effect:
     if (consumeData.usage) {
       hydrateBillingFromServer({ usage: consumeData.usage, planId: cachedPlanId });
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new Event('resolva-jato-auth-change'));
+        window.dispatchEvent(new Event('precisoutapronto-auth-change'));
       }
     }
 
@@ -317,7 +317,7 @@ export async function performBillableAction<T>(context: BillableContext, effect:
         analyze: copy.analyzed
       };
       window.dispatchEvent(
-        new CustomEvent('rj-billable-success', {
+        new CustomEvent('precisoutapronto-billable-success', {
           detail: {
             message: labels[context.action],
             toolId: context.toolId,

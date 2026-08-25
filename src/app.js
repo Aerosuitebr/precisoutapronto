@@ -94,7 +94,7 @@ const menuItems = [
   },
   {
     id: 'busca',
-    label: 'Busca Jato',
+    label: 'Busca Pronta',
     icon: '⌕',
     plan: 'free',
     section: 'Operacao',
@@ -215,8 +215,8 @@ function createDefaultProposals() {
 }
 
 let state = {
-  authenticated: Boolean(localStorage.getItem('rj-token')),
-  user: JSON.parse(localStorage.getItem('rj-user') || 'null') || { name: 'Wellem Lyra', email: 'demo@resolvajato.local', planId: 'free' },
+  authenticated: Boolean(localStorage.getItem('precisoutapronto-token')),
+  user: JSON.parse(localStorage.getItem('precisoutapronto-user') || 'null') || { name: 'Wellem Lyra', email: 'demo@precisoutapronto.local', planId: 'free' },
   page: 'dashboard',
   query: '',
   featureQuery: '',
@@ -231,8 +231,8 @@ let state = {
   proposalQuery: '',
   proposalStatus: 'todos',
   activeProposalId: 'prop-001',
-  proposals: JSON.parse(localStorage.getItem('rj-proposals') || 'null') || createDefaultProposals(),
-  document: JSON.parse(localStorage.getItem('rj-document') || 'null') || {
+  proposals: JSON.parse(localStorage.getItem('precisoutapronto-proposals') || 'null') || createDefaultProposals(),
+  document: JSON.parse(localStorage.getItem('precisoutapronto-document') || 'null') || {
     client: 'Mercado Central',
     value: 'R$ 4.500,00',
     title: 'Proposta comercial premium',
@@ -261,7 +261,7 @@ function getInitials(name) {
     .split(/\s+/)
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() || '')
-    .join('') || 'RJ';
+    .join('') || 'PTP';
 }
 
 function isCompletePlan() {
@@ -312,9 +312,9 @@ function syncDocumentFromProposal() {
 }
 
 function saveProposals() {
-  localStorage.setItem('rj-proposals', JSON.stringify(state.proposals));
+  localStorage.setItem('precisoutapronto-proposals', JSON.stringify(state.proposals));
   syncDocumentFromProposal();
-  localStorage.setItem('rj-document', JSON.stringify(state.document));
+  localStorage.setItem('precisoutapronto-document', JSON.stringify(state.document));
 }
 
 function nowLabel() {
@@ -540,11 +540,11 @@ function setAuthenticated(payload = {}) {
   state.authenticated = true;
   state.user = {
     name: payload.name || document.querySelector('#auth-name')?.value || 'Usuário Precisou, Tá Pronto',
-    email: payload.email || document.querySelector('#auth-email')?.value || 'demo@resolvajato.local',
+    email: payload.email || document.querySelector('#auth-email')?.value || 'demo@precisoutapronto.local',
     planId: payload.planId || 'free'
   };
-  localStorage.setItem('rj-token', payload.token || 'demo-token');
-  localStorage.setItem('rj-user', JSON.stringify(state.user));
+  localStorage.setItem('precisoutapronto-token', payload.token || 'demo-token');
+  localStorage.setItem('precisoutapronto-user', JSON.stringify(state.user));
   loginDialog.close();
   render();
 }
@@ -573,8 +573,8 @@ async function authRequest(path) {
 }
 
 function logout() {
-  localStorage.removeItem('rj-token');
-  localStorage.removeItem('rj-user');
+  localStorage.removeItem('precisoutapronto-token');
+  localStorage.removeItem('precisoutapronto-user');
   state.authenticated = false;
   state.page = 'dashboard';
   render();
@@ -592,7 +592,7 @@ function setPage(page) {
 
 function upgradePlan() {
   state.user.planId = 'completo';
-  localStorage.setItem('rj-user', JSON.stringify(state.user));
+  localStorage.setItem('precisoutapronto-user', JSON.stringify(state.user));
   render();
 }
 
@@ -607,7 +607,7 @@ function scheduleAutosave() {
   renderPageOnly();
   clearTimeout(autosaveTimer);
   autosaveTimer = setTimeout(() => {
-    localStorage.setItem('rj-document', JSON.stringify(state.document));
+    localStorage.setItem('precisoutapronto-document', JSON.stringify(state.document));
     state.saveStatus = 'Alterações salvas';
     renderPageOnly();
   }, 650);
@@ -619,7 +619,7 @@ function landingTemplate() {
     <div class="landing-shell">
       <header class="landing-header">
         <a class="brand" href="#topo" aria-label="Precisou, Tá Pronto">
-          <span class="brand-mark">RJ</span>
+          <span class="brand-mark">PTP</span>
           <span><strong>Precisou, Tá Pronto</strong><small>Busca, documentos e execução em segundos</small></span>
         </a>
         <nav aria-label="Navegação comercial">
@@ -646,13 +646,13 @@ function landingTemplate() {
           </div>
           <div class="hero-product-preview" aria-label="Preview do produto Precisou, Tá Pronto">
             <div class="mini-sidebar">
-              <span class="brand-mark">RJ</span>
+              <span class="brand-mark">PTP</span>
               <strong>Workspace</strong>
               <small>Free ativo</small>
               ${menuItems.slice(0, 5).map((item, index) => `<span class="${index === 1 ? 'active' : ''}">${item.icon} ${item.label}</span>`).join('')}
             </div>
             <div class="mini-app">
-              <div class="mini-app__top"><strong>Busca Jato</strong><span>42 ms</span></div>
+              <div class="mini-app__top"><strong>Busca Pronta</strong><span>42 ms</span></div>
               <div class="mini-search">⌕ contrato, MEI, proposta, ABNT...</div>
               <div class="mini-grid">
                 ${previewResults.map((item) => `<article><span>${item.categoryLabel}</span><strong>${item.title}</strong><p>${item.description}</p></article>`).join('')}
@@ -711,7 +711,7 @@ function appTemplate() {
     <div class="app-container">
       <aside class="sidebar" aria-label="Menu principal">
         <div class="sidebar-brand">
-          <span class="brand-mark">RJ</span>
+          <span class="brand-mark">PTP</span>
           <div><strong>Precisou, Tá Pronto</strong><small>Suite operacional</small></div>
         </div>
         <div class="sidebar-profile">
@@ -756,7 +756,7 @@ function appTemplate() {
         <footer class="app-footer">
           <span>Status: operacional</span>
           <span>Atalhos: / busca · D documentos · P planos</span>
-          <a href="mailto:suporte@resolvajato.local">Suporte ágil</a>
+          <a href="mailto:suporte@precisoutapronto.local">Suporte ágil</a>
         </footer>
       </div>
     </div>
@@ -800,7 +800,7 @@ function searchPage() {
   return `
     <section class="page-hero compact">
       <div>
-        <p class="eyebrow">Busca Jato</p>
+        <p class="eyebrow">Busca Pronta</p>
         <h1>Encontre o recurso certo sem navegar por telas demais.</h1>
         <p>A estrutura de busca do projeto atual foi mantida e reposicionada como funcionalidade interna da aplicação.</p>
       </div>

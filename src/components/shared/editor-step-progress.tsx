@@ -54,7 +54,7 @@ export function EditorStepProgress({ steps, currentId, onSelect }: EditorStepPro
                 type="button"
                 onClick={() => onSelect?.(step.id)}
                 className={cn(
-                  'rj-press flex w-full items-center gap-2 rounded-xl border px-2.5 py-2.5 text-left transition',
+                  'precisoutapronto-press flex w-full items-center gap-2 rounded-xl border px-2.5 py-2.5 text-left transition',
                   active && 'border-sky-500 bg-sky-50 ring-2 ring-sky-100',
                   done && !active && 'border-emerald-200 bg-emerald-50/70',
                   !done && !active && 'border-slate-200 bg-white hover:bg-slate-50'

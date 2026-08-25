@@ -222,12 +222,12 @@ export function SpotlightAnnouncements() {
   }
 
   return (
-    <section id="ferramentas-destaque" className="mx-auto max-w-[1400px] scroll-mt-[var(--rj-section-scroll-mt)]">
+    <section id="ferramentas-destaque" className="mx-auto max-w-[1400px] scroll-mt-[var(--precisoutapronto-section-scroll-mt)]">
       <div className="mb-3 sm:mb-4">
-        <p className="rj-display text-sm font-bold uppercase tracking-[0.18em] text-sky-700">
+        <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.18em] text-sky-700">
           Ferramentas Precisou, Tá Pronto
         </p>
-        <h2 className="rj-display mt-1 text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
+        <h2 className="precisoutapronto-display mt-1 text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
           Resolva tarefas profissionais em poucos cliques
         </h2>
         <p className="mt-2 max-w-2xl text-[15px] leading-6 text-slate-700 sm:text-base sm:leading-7">
@@ -265,12 +265,12 @@ export function SpotlightAnnouncements() {
         <div className="pointer-events-none absolute -right-16 top-0 h-56 w-56 rounded-full bg-sky-400/15 blur-3xl" />
 
         <div className="relative grid gap-4 p-4 sm:gap-5 sm:p-5 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-6 lg:p-6">
-          <div key={`copy-${animKey}`} className="rj-spotlight-enter flex min-w-0 flex-col">
+          <div key={`copy-${animKey}`} className="precisoutapronto-spotlight-enter flex min-w-0 flex-col">
             <span className="inline-flex w-fit items-center gap-2 rounded-lg bg-black/25 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white ring-1 ring-white/20">
               <Icon className="h-3.5 w-3.5" />
               {slide.badge}
             </span>
-            <h3 className="rj-display mt-3 text-xl font-extrabold tracking-tight sm:text-2xl lg:text-[1.75rem]">
+            <h3 className="precisoutapronto-display mt-3 text-xl font-extrabold tracking-tight sm:text-2xl lg:text-[1.75rem]">
               {slide.label}
             </h3>
             <p className="mt-2 max-w-md text-sm leading-6 text-white/90">{slide.hint}</p>
@@ -302,7 +302,7 @@ export function SpotlightAnnouncements() {
             </div>
           </div>
 
-          <div key={`visual-${animKey}`} className="rj-spotlight-enter-delay min-w-0">
+          <div key={`visual-${animKey}`} className="precisoutapronto-spotlight-enter-delay min-w-0">
             <ToolPreviewPanel preview={slide.preview} />
           </div>
         </div>
@@ -351,7 +351,7 @@ function ToolPreviewPanel({ preview }: { preview: SpotlightToolSlide['preview'] 
   return (
     <div className="flex h-full min-h-[180px] flex-col justify-center px-1 py-0 sm:min-h-[200px] sm:px-3">
       <div className="mx-auto w-full max-w-[260px] sm:max-w-[300px]">
-        <div className="rj-spotlight-doc-frame">
+        <div className="precisoutapronto-spotlight-doc-frame">
           <DocumentMiniPreview type={preview} />
         </div>
       </div>

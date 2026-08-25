@@ -1,5 +1,5 @@
-export const JATO_GAMES = {
-  name: 'Jato Games',
+export const PRECISOUTAPRONTO_GAMES = {
+  name: 'Precisou, Tá Pronto Games',
   tagline: 'Jogos, setups e dicas sem enrolação.',
   description:
     'Top jogos com setup sugerido, guias de hardware, consoles e lojas confiáveis. Conteúdo evergreen para a rapaziada gamer.',

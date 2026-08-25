@@ -285,7 +285,7 @@ export function InternationalQuoteEditor({ locale }: { locale: InternationalLoca
           {t.back}
         </Link>
         <div className="mt-6 max-w-3xl">
-          <h1 className="rj-display text-3xl font-extrabold tracking-tight sm:text-4xl">{t.title}</h1>
+          <h1 className="precisoutapronto-display text-3xl font-extrabold tracking-tight sm:text-4xl">{t.title}</h1>
           <p className="mt-3 text-base leading-7 text-slate-600">{t.subtitle}</p>
         </div>
 

@@ -1,5 +1,5 @@
 import type { AcademicEntry, LattesProfile, ValidationIssue } from './types';
-export const LATTES_STORAGE_KEY = 'resolva-jato:lattes-inteligente:v1';
+export const LATTES_STORAGE_KEY = 'precisoutapronto:lattes-inteligente:v1';
 export const makeId = (prefix = 'item') => `${prefix}_${Math.random().toString(36).slice(2, 9)}`;
 export function createLattesProfile(): LattesProfile { return { id: makeId('lattes'), title: 'Meu currículo acadêmico', updatedAt: new Date().toISOString(), currentStep: 0, general: { fullName: '', citationName: '', nationality: 'Brasileira', city: '', email: '', orcid: '', summary: '' }, entries: [], keywords: [], academicNetworks: [], indicators: { articles: '', citations: '', hIndex: '', i10: '' }, outputMode: 'academico' }; }
 export function createEntry(section: AcademicEntry['section'], partial: Partial<AcademicEntry> = {}): AcademicEntry { return { id: makeId(section), section, title: '', institution: '', startYear: '', endYear: '', description: '', ...partial }; }

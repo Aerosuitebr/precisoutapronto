@@ -17,7 +17,7 @@ Estas ações dependem de contas externas e relacionamento humano; por isso não
 - Preparar perfis em Product Hunt, AlternativeTo e diretórios brasileiros de SaaS.
 - Usar sempre a descrição oficial e os materiais em `/sobre`.
 - Não criar avaliações artificiais nem alegar números sem fonte.
-- Contato oficial: `contato@resolvajato.com.br` (Google Workspace).
+- Contato oficial: `contato@precisoutapronto.com.br` (Google Workspace).
 
 ## Conteúdo social
 

@@ -153,7 +153,7 @@ export default async function GuidePage({ params }: Props) {
               <p className="mt-3 text-sm text-slate-500">
                 Por {author} · {reviewer} · atualizado em {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${updatedAt}T12:00:00Z`))}.
               </p>
-              <h1 className="rj-display mt-4 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">{guide.title}</h1>
+              <h1 className="precisoutapronto-display mt-4 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">{guide.title}</h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">{guide.description}</p>
               <div className="mt-8 rounded-3xl border border-sky-200 bg-sky-50 p-6">
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">Resposta direta</p>
@@ -165,7 +165,7 @@ export default async function GuidePage({ params }: Props) {
             <div className="space-y-12">
               {guide.sections.map((section) => (
                 <section key={section.title}>
-                  <h2 className="rj-display text-2xl font-bold text-slate-950">{section.title}</h2>
+                  <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">{section.title}</h2>
                   {section.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 text-base leading-8 text-slate-700">{paragraph}</p>)}
                   {section.bullets ? <ul className="mt-5 space-y-2">{section.bullets.map((item) => <li key={item} className="flex gap-3 text-sm text-slate-700"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />{item}</li>)}</ul> : null}
                 </section>
@@ -173,7 +173,7 @@ export default async function GuidePage({ params }: Props) {
               {guide.example ? (
                 <section className="rounded-3xl border border-amber-200 bg-amber-50 p-6">
                   <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Exemplo preenchido</p>
-                  <h2 className="rj-display mt-2 text-2xl font-bold text-slate-950">{guide.example.title}</h2>
+                  <h2 className="precisoutapronto-display mt-2 text-2xl font-bold text-slate-950">{guide.example.title}</h2>
                   <div className="mt-4 rounded-2xl border border-amber-200 bg-white p-5">
                     {guide.example.lines.map((line) => <p key={line} className="text-sm leading-7 text-slate-700">{line}</p>)}
                   </div>
@@ -181,7 +181,7 @@ export default async function GuidePage({ params }: Props) {
               ) : null}
               {sources.length ? (
                 <section>
-                  <h2 className="rj-display text-2xl font-bold text-slate-950">Fontes e critérios</h2>
+                  <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Fontes e critérios</h2>
                   <p className="mt-3 text-sm leading-6 text-slate-600">Estas referências oficiais ajudam a conferir regras e conceitos. O conteúdo é informativo e não substitui análise profissional do caso concreto.</p>
                   <ul className="mt-4 space-y-2">
                     {sources.map((source) => <li key={source.href}><a href={source.href} rel="noopener noreferrer" className="text-sm font-semibold text-sky-700 hover:underline">{source.label}</a></li>)}
@@ -189,7 +189,7 @@ export default async function GuidePage({ params }: Props) {
                 </section>
               ) : null}
               <section className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                <h2 className="rj-display text-xl font-bold text-slate-950">Autoria e histórico editorial</h2>
+                <h2 className="precisoutapronto-display text-xl font-bold text-slate-950">Autoria e histórico editorial</h2>
                 <p className="mt-3 text-sm leading-6 text-slate-600"><Link href={BRAND_AUTHOR_PATH} className="font-semibold text-sky-700 hover:underline">{author}</Link> produz e mantém este guia. {reviewer} descreve uma conferência de clareza, coerência, fontes e funcionamento. Não é uma revisão profissional especializada.</p>
                 <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                   <div><dt className="font-semibold text-slate-900">Publicado</dt><dd className="text-slate-600">{publishedAt}</dd></div>
@@ -199,14 +199,14 @@ export default async function GuidePage({ params }: Props) {
               </section>
               {relatedGuides.length ? (
                 <section>
-                  <h2 className="rj-display text-2xl font-bold text-slate-950">Continue por aqui</h2>
+                  <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Continue por aqui</h2>
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
                     {relatedGuides.map((related) => <Link key={related.slug} href={`/guias/${related.slug}`} className="rounded-2xl border border-slate-200 p-4 text-sm font-bold text-slate-800 hover:border-sky-300 hover:text-sky-700">{related.title}</Link>)}
                   </div>
                 </section>
               ) : null}
               <section>
-                <h2 className="rj-display text-2xl font-bold text-slate-950">Perguntas frequentes</h2>
+                <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Perguntas frequentes</h2>
                 <div className="mt-5 divide-y divide-slate-200 rounded-3xl border border-slate-200">
                   {guide.faq.map((item) => <div key={item.question} className="p-5"><h3 className="font-bold text-slate-900">{item.question}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{item.answer}</p></div>)}
                 </div>

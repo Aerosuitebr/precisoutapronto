@@ -5,7 +5,7 @@ import { Download, FileArchive, Lock, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PageHero } from '@/components/shared/page-hero';
 import { ToolsBackButton } from '@/components/shared/tools-back-button';
-import { buildResolvaJatoDownloadName } from '@/lib/download-filename';
+import { buildPrecisouTaProntoDownloadName } from '@/lib/download-filename';
 import { compressPdfLossless, compressPdfRasterized, type PdfCompressionMode } from '@/lib/pdf-compressor/compress';
 
 type Locale = 'pt-BR' | 'en' | 'es';
@@ -41,7 +41,7 @@ export function PdfCompressorApp({ locale = 'pt-BR', publicLanding = false }: { 
     } catch { setError(t.failed); } finally { setBusy(false); setProgress(''); }
   }
   function download() {
-    if (!result) return; const blob = new Blob([result as BlobPart], { type: 'application/pdf' }); const href = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = href; link.download = buildResolvaJatoDownloadName('pdf'); link.click(); setTimeout(() => URL.revokeObjectURL(href), 1000);
+    if (!result) return; const blob = new Blob([result as BlobPart], { type: 'application/pdf' }); const href = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = href; link.download = buildPrecisouTaProntoDownloadName('pdf'); link.click(); setTimeout(() => URL.revokeObjectURL(href), 1000);
   }
   const reduction = file && result ? Math.round((1 - result.byteLength / file.size) * 100) : null;
   return <div className="space-y-5">

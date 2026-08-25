@@ -191,7 +191,7 @@ function ResourceCard({
             <Bookmark className={cn('h-4 w-4', saved && 'fill-current')} />
           </button>
         </div>
-        <h3 className="rj-display mt-3 text-lg font-bold leading-snug tracking-tight text-slate-900">
+        <h3 className="precisoutapronto-display mt-3 text-lg font-bold leading-snug tracking-tight text-slate-900">
           {renderHighlighted(name)}
         </h3>
         <p className="mt-2 line-clamp-3 text-[15px] leading-6 text-slate-700">{renderHighlighted(description)}</p>
@@ -316,10 +316,10 @@ export function BuscaClient() {
         </div>
 
         <div className="relative mx-auto max-w-4xl text-center">
-          <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-300">
+          <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-300">
             Busca gratuita e inteligente
           </p>
-          <h1 className="rj-display mt-4 text-[clamp(1.9rem,4.2vw,3.2rem)] font-extrabold leading-[1.08] tracking-tight">
+          <h1 className="precisoutapronto-display mt-4 text-[clamp(1.9rem,4.2vw,3.2rem)] font-extrabold leading-[1.08] tracking-tight">
             Digite o problema. A gente aponta a saída.
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
@@ -360,12 +360,12 @@ export function BuscaClient() {
         </div>
       </section>
 
-      <div className="space-y-8 bg-[image:var(--rj-page-bg)] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <div className="space-y-8 bg-[image:var(--precisoutapronto-page-bg)] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
         <SpotlightAnnouncements />
 
         <section className="mx-auto max-w-[1400px]">
           <div className="mb-3">
-            <h2 className="rj-display text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
+            <h2 className="precisoutapronto-display text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
               Recursos gratuitos na internet
             </h2>
             <p className="mt-1 text-sm text-slate-600">
@@ -373,7 +373,7 @@ export function BuscaClient() {
             </p>
           </div>
 
-          <div className="sticky top-[var(--rj-chrome-top)] z-30 -mx-1 mb-4 rounded-2xl border border-slate-200/90 bg-white/95 px-3 py-2.5 shadow-sm backdrop-blur-xl sm:mx-0">
+          <div className="sticky top-[var(--precisoutapronto-chrome-top)] z-30 -mx-1 mb-4 rounded-2xl border border-slate-200/90 bg-white/95 px-3 py-2.5 shadow-sm backdrop-blur-xl sm:mx-0">
             <div className="mb-2 flex justify-end text-xs font-semibold text-slate-500">
               <span>{resultsSummary}</span>
             </div>
@@ -402,7 +402,7 @@ export function BuscaClient() {
           </div>
         </section>
 
-        <section id="catalogo-resultados" className="mx-auto max-w-[1400px] scroll-mt-[var(--rj-section-scroll-mt)]">
+        <section id="catalogo-resultados" className="mx-auto max-w-[1400px] scroll-mt-[var(--precisoutapronto-section-scroll-mt)]">
           {query.trim() && results.length > 0 ? (
             <p className="mb-4 text-sm text-slate-600">
               Talvez você também precise de:{' '}
@@ -480,10 +480,10 @@ export function BuscaClient() {
               <div>
                 <div className="mb-4 flex items-end justify-between gap-3">
                   <div>
-                    <p className="rj-display text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
+                    <p className="precisoutapronto-display text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
                       Continue explorando
                     </p>
-                    <h3 className="rj-display mt-1 text-xl font-extrabold tracking-tight text-slate-900">
+                    <h3 className="precisoutapronto-display mt-1 text-xl font-extrabold tracking-tight text-slate-900">
                       Recursos mais acessados
                     </h3>
                   </div>
@@ -515,7 +515,7 @@ export function BuscaClient() {
 
         <section className="mx-auto max-w-[1400px]">
           <div className="mb-4">
-            <h2 className="rj-display text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
+            <h2 className="precisoutapronto-display text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
               Ferramentas Precisou, Tá Pronto
             </h2>
             <p className="mt-1 text-sm text-slate-600">
@@ -535,10 +535,10 @@ export function BuscaClient() {
                       {promo.badge}
                     </span>
                   ) : null}
-                  <p className="rj-display text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
+                  <p className="precisoutapronto-display text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
                     {promo.eyebrow}
                   </p>
-                  <h3 className="rj-display mt-3 max-w-[18ch] text-2xl font-extrabold tracking-tight text-slate-900">
+                  <h3 className="precisoutapronto-display mt-3 max-w-[18ch] text-2xl font-extrabold tracking-tight text-slate-900">
                     {promo.title}
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{promo.description}</p>
@@ -559,7 +559,7 @@ export function BuscaClient() {
             <div className="pointer-events-none absolute -right-8 top-0 h-48 w-48 rounded-full bg-sky-500/20 blur-3xl" />
             <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
-                <h2 className="rj-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                <h2 className="precisoutapronto-display text-2xl font-extrabold tracking-tight sm:text-3xl">
                   Encontrou o caminho? Agora conclua no Precisou, Tá Pronto.
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">

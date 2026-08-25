@@ -15,7 +15,7 @@ export const SIGNATURE_TEMPLATES: SignatureTemplate[] = [
     name: 'Elegante',
     description: 'Traço cursivo fluido, ideal para autônomos e prestadores de serviço.',
     recommended: true,
-    className: 'rj-signature-elegante',
+    className: 'precisoutapronto-signature-elegante',
     previewClassName: 'text-3xl'
   },
   {
@@ -23,14 +23,14 @@ export const SIGNATURE_TEMPLATES: SignatureTemplate[] = [
     name: 'Executivo',
     description: 'Serifado refinado para propostas e documentos corporativos.',
     recommended: true,
-    className: 'rj-signature-executivo',
+    className: 'precisoutapronto-signature-executivo',
     previewClassName: 'text-2xl'
   },
   {
     id: 'classico',
     name: 'Clássico',
     description: 'Caligrafia ornamental para recibos e contratos formais.',
-    className: 'rj-signature-classico',
+    className: 'precisoutapronto-signature-classico',
     previewClassName: 'text-3xl'
   },
   {
@@ -38,14 +38,14 @@ export const SIGNATURE_TEMPLATES: SignatureTemplate[] = [
     name: 'Moderno',
     description: 'Sans-serif limpo com presença, bom para marcas digitais.',
     recommended: true,
-    className: 'rj-signature-moderno',
+    className: 'precisoutapronto-signature-moderno',
     previewClassName: 'text-xl tracking-[0.08em]'
   },
   {
     id: 'formal',
     name: 'Formal',
     description: 'Itálico discreto para uso institucional e acadêmico.',
-    className: 'rj-signature-formal',
+    className: 'precisoutapronto-signature-formal',
     previewClassName: 'text-2xl'
   }
 ];

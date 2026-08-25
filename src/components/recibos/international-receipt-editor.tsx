@@ -250,7 +250,7 @@ export function InternationalReceiptEditor({ locale }: { locale: InternationalLo
         </Link>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="rj-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1>
+            <h1 className="precisoutapronto-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1>
             <p className="mt-2 text-slate-600">{t.subtitle}</p>
           </div>
           <Button variant="outline" icon={Sparkles} onClick={loadSample}>{t.sample}</Button>

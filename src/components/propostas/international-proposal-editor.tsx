@@ -270,7 +270,7 @@ export function InternationalProposalEditor({ locale }: { locale: InternationalL
           <ArrowLeft className="h-4 w-4" /> {t.back}
         </Link>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div><h1 className="rj-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 text-slate-600">{t.subtitle}</p></div>
+          <div><h1 className="precisoutapronto-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 text-slate-600">{t.subtitle}</p></div>
           <Button variant="outline" icon={Sparkles} onClick={loadSample}>{t.sample}</Button>
         </div>
         <p className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-950">{t.brazilNotice}</p>

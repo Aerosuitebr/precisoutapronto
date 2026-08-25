@@ -1,5 +1,5 @@
 /**
- * Catálogo curado Jato Games para a busca pública.
+ * Catálogo curado Precisou, Tá Pronto Games para a busca pública.
  */
 export const gamesResources = [
   {
@@ -219,7 +219,7 @@ export const gamesResources = [
     tags: ['#Games', '#Roblox', '#UGC']
   },
   {
-    name: 'Jato Games (Precisou, Tá Pronto)',
+    name: 'Precisou, Tá Pronto Games (Precisou, Tá Pronto)',
     category: 'games',
     categoryLabel: 'Games',
     description: 'Hub evergreen com top jogos, setups, hardware, consoles e lojas curadas.',

@@ -1,16 +1,16 @@
 # Staging i18n · checklist de homologação
 
-Hostname: `https://staging.resolvajato.com.br`  
+Hostname: `https://staging.precisoutapronto.com.br`  
 Branch: `feat/i18n-pt-en-es`  
 Env: `APP_ENV=staging` (noindex obrigatório)
 
 ## Pré-requisitos no VPS
 
-1. Copiar [`.env.staging.example`](../.env.staging.example) → `/opt/resolva-jato-staging/.env.staging` e preencher.
-2. DNS Cloudflare: `staging.resolvajato.com.br` (proxied) no mesmo tunnel.
+1. Copiar [`.env.staging.example`](../.env.staging.example) → `/opt/precisoutapronto-staging/.env.staging` e preencher.
+2. DNS Cloudflare: `staging.precisoutapronto.com.br` (proxied) no mesmo tunnel.
 3. Ingress **remoto** do tunnel com porta 3001 (YAML local sozinho não basta).
-4. Cloudflare Access no hostname `staging.resolvajato.com.br` (e-mails `@aerosuite.com.br`) + bypass do path `/api/webhooks/stripe`.
-5. Deploy: GitHub Action **Deploy Resolva Jato Vultr** → target `staging`.
+4. Cloudflare Access no hostname `staging.precisoutapronto.com.br` (e-mails `@aerosuite.com.br`) + bypass do path `/api/webhooks/stripe`.
+5. Deploy: GitHub Action **Deploy Precisou, Tá Pronto Vultr** → target `staging`.
 
 ## Checklist QA
 
@@ -53,7 +53,7 @@ Env: `APP_ENV=staging` (noindex obrigatório)
 
 ### Build / runtime
 
-- [x] Container `resolva-jato-staging-app` healthy
+- [x] Container `precisoutapronto-staging-app` healthy
 - [x] Postgres staging separado
 - [x] Sem Evolution no staging
 - [x] Deploy Action target `staging` OK (após fix sem `migrate deploy`)

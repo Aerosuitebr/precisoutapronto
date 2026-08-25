@@ -1,6 +1,6 @@
 metric,value
 period,28_days
-property,sc-domain:resolvajato.com.br
+property,sc-domain:precisoutapronto.com.br
 collected_at,2026-08-04
 clicks,4
 impressions,461
@@ -8,9 +8,9 @@ ctr_percent,0.9
 avg_position,71.2
 
 page,clicks,impressions
-https://resolvajato.com.br/es/tools/pix,2,3
-https://resolvajato.com.br/,1,5
-https://resolvajato.com.br/recibo-de-aluguel,1,2
+https://precisoutapronto.com.br/es/tools/pix,2,3
+https://precisoutapronto.com.br/,1,5
+https://precisoutapronto.com.br/recibo-de-aluguel,1,2
 
 query,clicks,impressions
 calculo rescisão,0,9

@@ -358,7 +358,7 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 lg:sticky lg:top-24">
-            <h2 className="rj-display mb-3 text-base font-bold text-slate-900">
+            <h2 className="precisoutapronto-display mb-3 text-base font-bold text-slate-900">
               {t.estimativaTitle}
             </h2>
             {!resultado ? (
@@ -391,7 +391,7 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
                   <span className="text-sm font-semibold">
                     {t.notaTotalLabel}
                   </span>
-                  <span className="rj-display text-lg font-bold">
+                  <span className="precisoutapronto-display text-lg font-bold">
                     {resultado.notaTotalEstimada}/1000
                   </span>
                 </div>
@@ -406,7 +406,7 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
                         <p className="text-sm font-bold text-slate-800">
                           C{c.id} · {c.titulo}
                         </p>
-                        <span className="rj-display text-sm font-bold text-sky-700">
+                        <span className="precisoutapronto-display text-sm font-bold text-sky-700">
                           {c.nota}/200
                         </span>
                       </div>
@@ -451,7 +451,7 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
                   <span className="text-sm font-semibold">
                     {t.notaTotalLabel}
                   </span>
-                  <span className="rj-display text-lg font-bold">
+                  <span className="precisoutapronto-display text-lg font-bold">
                     {resultado.notaTotalEstimada}/1000
                   </span>
                 </div>
@@ -466,7 +466,7 @@ export function RedacaoEnemApp({ locale = "pt-BR" }: { locale?: Locale } = {}) {
                         <p className="text-sm font-bold text-slate-800">
                           C{c.id} · {c.titulo}
                         </p>
-                        <span className="rj-display text-sm font-bold text-sky-700">
+                        <span className="precisoutapronto-display text-sm font-bold text-sky-700">
                           {c.nota}/200
                         </span>
                       </div>

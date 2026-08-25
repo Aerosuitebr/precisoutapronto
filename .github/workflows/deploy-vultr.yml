@@ -103,8 +103,8 @@ jobs:
       VULTR_HOST: ${{ secrets.VULTR_HOST }}
       VULTR_SSH_USER: ${{ secrets.VULTR_SSH_USER }}
       DEPLOY_TARGET: ${{ inputs.target }}
-      DEPLOY_ARCHIVE: resolva-jato-${{ github.run_id }}-${{ github.run_attempt }}.tgz
-      DEPLOY_SCRIPT: resolva-jato-deploy-${{ github.run_id }}-${{ github.run_attempt }}.sh
+      DEPLOY_ARCHIVE: precisoutapronto-${{ github.run_id }}-${{ github.run_attempt }}.tgz
+      DEPLOY_SCRIPT: precisoutapronto-deploy-${{ github.run_id }}-${{ github.run_attempt }}.sh
     steps:
       - uses: actions/checkout@v4
 
@@ -130,15 +130,15 @@ jobs:
           scp ${SSH_OPTS} "/tmp/${DEPLOY_ARCHIVE}" "${USER}@${HOST}:/tmp/${DEPLOY_ARCHIVE}"
 
           if [[ "${DEPLOY_TARGET}" == "staging" ]]; then
-            scp ${SSH_OPTS} scripts/deploy/vultr-deploy-resolvajato-staging.sh \
+            scp ${SSH_OPTS} scripts/deploy/vultr-deploy-precisoutapronto-staging.sh \
               "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
             ssh ${SSH_OPTS} "${USER}@${HOST}" \
-              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/resolva-jato-staging TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
+              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/precisoutapronto-staging TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
           else
-            scp ${SSH_OPTS} scripts/deploy/vultr-deploy-resolvajato.sh \
+            scp ${SSH_OPTS} scripts/deploy/vultr-deploy-precisoutapronto.sh \
               "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
             ssh ${SSH_OPTS} "${USER}@${HOST}" \
-              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/resolva-jato TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
+              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/precisoutapronto TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
           fi
 
   playwright-gate:

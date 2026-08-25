@@ -2,7 +2,7 @@
 
 type EventParams = Record<string, string | number | boolean | undefined>;
 
-const ATTRIBUTION_KEY = 'rj_content_attribution';
+const ATTRIBUTION_KEY = 'precisoutapronto_content_attribution';
 
 type ContentAttribution = {
   guideSource?: string;

@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Home locale gate', () => {
-  test('root stays PT even with rj_locale=en cookie', async ({ context, page, baseURL }) => {
+  test('root stays PT even with precisoutapronto_locale=en cookie', async ({ context, page, baseURL }) => {
     const hostname = new URL(baseURL || 'https://staging.precisoutapronto.com.br').hostname;
 
     await context.addCookies([
       {
-        name: 'rj_locale',
+        name: 'precisoutapronto_locale',
         value: 'en',
         domain: hostname,
         path: '/',

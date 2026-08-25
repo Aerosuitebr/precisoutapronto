@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   const parsed = parseRecommendationExposure(body);
   if (!parsed.ok) return NextResponse.json({ error: 'Exposição inválida.', code: parsed.error }, { status: 400 });
   const session = await getValidSessionFromCookies();
-  const anonymousKey = request.headers.get('x-rj-session-id') || '';
+  const anonymousKey = request.headers.get('x-precisoutapronto-session-id') || '';
   if (!session && !validAnonymousRecommendationSession(anonymousKey)) {
     return NextResponse.json({ error: 'Sessão inválida.' }, { status: 400 });
   }

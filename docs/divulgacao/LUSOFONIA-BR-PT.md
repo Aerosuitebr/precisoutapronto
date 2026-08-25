@@ -9,7 +9,7 @@ EN/ES ficam fora desta onda.
 
 **Tagline:** Ferramentas grátis para estudar, trabalhar e vender no Brasil  
 **Ângulo:** Pix no WhatsApp, documentos PDF, calculadoras do dia a dia (estudantes, profissionais liberais, MEI, freela, autônomos)  
-**URL canônica:** `https://resolvajato.com.br/?utm_source=<canal>&utm_medium=<meio>&utm_campaign=br_<nome>`
+**URL canônica:** `https://precisoutapronto.com.br/?utm_source=<canal>&utm_medium=<meio>&utm_campaign=br_<nome>`
 
 Núcleo:
 - Orçamento com aprovação e Pix no WhatsApp
@@ -21,7 +21,7 @@ Núcleo:
 **Tagline:** Ferramentas grátis para freelancers e pequenos negócios  
 **Ângulo:** Documentos e orçamentos em minutos, sem Word  
 **Não usar:** Pix, MEI, CLT, FGTS, rescisão trabalhista BR  
-**URL canônica:** `https://resolvajato.com.br/gerador-de-curriculo?utm_source=<canal>&utm_medium=<meio>&utm_campaign=pt_<nome>`
+**URL canônica:** `https://precisoutapronto.com.br/gerador-de-curriculo?utm_source=<canal>&utm_medium=<meio>&utm_campaign=pt_<nome>`
 
 Núcleo para PT:
 - Currículo em PDF com preview

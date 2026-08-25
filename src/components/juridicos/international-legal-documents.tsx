@@ -161,7 +161,7 @@ export function InternationalLegalDocuments({ locale }: { locale: InternationalL
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <Link href={`/${locale}/tools`} className="inline-flex items-center gap-2 text-sm font-bold text-sky-700"><ArrowLeft className="h-4 w-4" />{t.back}</Link>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div><h1 className="rj-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 text-slate-600">{t.subtitle}</p></div>
+          <div><h1 className="precisoutapronto-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 text-slate-600">{t.subtitle}</p></div>
           <Button variant="outline" icon={Sparkles} onClick={loadSample}>{t.sample}</Button>
         </div>
         <p className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-950">{t.warning}</p>

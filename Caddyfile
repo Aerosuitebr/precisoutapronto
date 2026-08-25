@@ -1,5 +1,5 @@
-# TLS automático (Let's Encrypt). Defina DOMAIN no .env (padrão: resolvajato.com.br).
-{$DOMAIN:resolvajato.com.br} {
+# TLS automático (Let's Encrypt). Defina DOMAIN no .env (padrão: precisoutapronto.com.br).
+{$DOMAIN:precisoutapronto.com.br} {
 	encode gzip zstd
 	reverse_proxy app:3000
 }

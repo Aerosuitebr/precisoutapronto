@@ -60,7 +60,7 @@ export function useAuth() {
     }
     syncFromCache();
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new Event('resolva-jato-auth-change'));
+      window.dispatchEvent(new Event('precisoutapronto-auth-change'));
     }
   }, [syncFromCache]);
 
@@ -78,12 +78,12 @@ export function useAuth() {
       setReady(true);
     })();
     window.addEventListener('storage', handleChange);
-    window.addEventListener('resolva-jato-auth-change', handleChange);
+    window.addEventListener('precisoutapronto-auth-change', handleChange);
     document.addEventListener('visibilitychange', handleVisibility);
     window.addEventListener('focus', handleVisibility);
     return () => {
       window.removeEventListener('storage', handleChange);
-      window.removeEventListener('resolva-jato-auth-change', handleChange);
+      window.removeEventListener('precisoutapronto-auth-change', handleChange);
       document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('focus', handleVisibility);
     };

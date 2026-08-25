@@ -58,7 +58,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
                 {copy.hero.eyebrow}
               </p>
-              <h1 className="rj-display mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="precisoutapronto-display mt-4 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
                 {copy.hero.title}
               </h1>
               <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">
@@ -119,7 +119,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
 
         <section id="workflow" className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-700">{copy.workflow.eyebrow}</p>
-          <h2 className="rj-display mt-3 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <h2 className="precisoutapronto-display mt-3 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">
             {copy.workflow.title}
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">{copy.workflow.description}</p>
@@ -137,7 +137,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
         <section id="tools" className="border-y border-slate-200 bg-white">
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700">{copy.tools.eyebrow}</p>
-            <h2 className="rj-display mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.tools.title}</h2>
+            <h2 className="precisoutapronto-display mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.tools.title}</h2>
             <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {copy.tools.items.map(([title, description], index) => (
                 <li key={title} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -159,7 +159,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
         <section id="testimonials" className="bg-sky-50">
           <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-700">{copy.socialProof.eyebrow}</p>
-            <h2 className="rj-display mt-3 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.socialProof.title}</h2>
+            <h2 className="precisoutapronto-display mt-3 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.socialProof.title}</h2>
             <div className="mt-10 grid gap-5 lg:grid-cols-2">
               {[
                 ['Caleb', 'C', copy.socialProof.caleb, copy.socialProof.translated],
@@ -186,7 +186,7 @@ export function InternationalLandingPage({ locale }: { locale: InternationalLoca
 
         <section className="bg-slate-950 text-white">
           <div className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 sm:py-24">
-            <h2 className="rj-display text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.finalCta.title}</h2>
+            <h2 className="precisoutapronto-display text-3xl font-extrabold tracking-tight sm:text-4xl">{copy.finalCta.title}</h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-300">{copy.finalCta.description}</p>
             <Button asChild size="lg" className="mt-8 bg-amber-400 font-bold text-slate-950 hover:bg-amber-300">
               <Link href={`/${locale}/tools`}>

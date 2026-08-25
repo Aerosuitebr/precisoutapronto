@@ -22,11 +22,11 @@ export function IntentLibraryBrowser({ items }: { items: LibraryIntentItem[] }) 
     const fromUrl = normalizeLibrarySegment(new URLSearchParams(window.location.search).get('segment'));
     if (fromUrl) {
       setSegment(fromUrl);
-      localStorage.setItem('rj-growth-segment', fromUrl);
+      localStorage.setItem('precisoutapronto-growth-segment', fromUrl);
       trackEvent('library_opened_segmented', { segment: fromUrl, source: 'url' });
       return;
     }
-    const fromPreference = normalizeLibrarySegment(localStorage.getItem('rj-growth-segment'));
+    const fromPreference = normalizeLibrarySegment(localStorage.getItem('precisoutapronto-growth-segment'));
     if (fromPreference) {
       setSegment(fromPreference);
       trackEvent('library_opened_segmented', { segment: fromPreference, source: 'preference' });
@@ -49,8 +49,8 @@ export function IntentLibraryBrowser({ items }: { items: LibraryIntentItem[] }) 
   function selectSegment(slug: string) {
     const normalized = normalizeLibrarySegment(slug);
     setSegment(normalized);
-    if (normalized) localStorage.setItem('rj-growth-segment', normalized);
-    else localStorage.removeItem('rj-growth-segment');
+    if (normalized) localStorage.setItem('precisoutapronto-growth-segment', normalized);
+    else localStorage.removeItem('precisoutapronto-growth-segment');
     const params = new URLSearchParams(window.location.search);
     if (normalized) params.set('segment', normalized);
     else params.delete('segment');

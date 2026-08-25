@@ -2,7 +2,7 @@ import { getSession } from '@/lib/auth';
 import { createEmptyTrabalho } from './defaults';
 import type { TrabalhoData } from './types';
 
-const STORAGE_PREFIX = 'resolva-jato-trabalhos';
+const STORAGE_PREFIX = 'precisoutapronto-trabalhos';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

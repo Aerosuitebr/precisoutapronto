@@ -1,11 +1,11 @@
-# Produção Docker — Resolva Jato
+# Produção Docker — Precisou, Tá Pronto
 
 Stack: **Next.js + PostgreSQL + Caddy (HTTPS) + Evolution/WhatsApp**.
 
 ## Pré-requisitos
 
 - Docker Engine + Docker Compose v2
-- DNS de `resolvajato.com.br` (ou o valor de `DOMAIN`) apontando para o IP do VPS
+- DNS de `precisoutapronto.com.br` (ou o valor de `DOMAIN`) apontando para o IP do VPS
 - Portas **80** e **443** livres no host
 
 ## Subir
@@ -32,7 +32,7 @@ npm run whatsapp:setup
 
 3. Escaneie o QR em **Minha conta** (ou via API de status).
 
-O container `app` fala com a Evolution em `http://rj-evolution-api:8080` (rede Docker).
+O container `app` fala com a Evolution em `http://precisoutapronto-evolution-api:8080` (rede Docker).
 
 ## Comandos úteis
 
@@ -70,14 +70,14 @@ Contas antigas só em localStorage **não** migram — o usuário precisa cadast
 Deploy incremental após editar o `.env.production` no servidor (sem `-SkipEnv` na primeira vez com as novas vars):
 
 ```powershell
-powershell -File scripts\deploy\setup-vultr-resolvajato.ps1
+powershell -File scripts\deploy\setup-vultr-precisoutapronto.ps1
 ```
 
 ## Mercado Pago
 
 Webhook de produção:
 
-`https://resolvajato.com.br/api/webhooks/mercadopago`
+`https://precisoutapronto.com.br/api/webhooks/mercadopago`
 
 Use credenciais de **produção** no `.env`.
 
@@ -95,19 +95,19 @@ No Vultr **não** usamos Caddy (80/443). O padrão é o do Aerosuite: app só em
 
 ```powershell
 cd D:\Desenvolvimento\hub-recursos-gratis
-powershell -File scripts\deploy\setup-vultr-resolvajato.ps1
+powershell -File scripts\deploy\setup-vultr-precisoutapronto.ps1
 ```
 
-- Código: `/opt/resolva-jato`
+- Código: `/opt/precisoutapronto`
 - App: `127.0.0.1:3000`
-- Tunnel: serviço `cloudflared-resolvajato` (não mexe no tunnel do Aerosuite)
+- Tunnel: serviço `cloudflared-precisoutapronto` (não mexe no tunnel do Aerosuite)
 - Overlay: `docker-compose.vultr.yml`
-- Doc no Aerosuite: `D:\Desenvolvimento\aerosuite\scripts\deploy\RESOLVA-JATO-VULTR.md`
+- Doc no Aerosuite: `D:\Desenvolvimento\aerosuite\scripts\deploy\PRECISOUTAPRONTO-VULTR.md`
 
 Deploy incremental (sem reenviar .env / tunnel):
 
 ```powershell
-powershell -File scripts\deploy\setup-vultr-resolvajato.ps1 -SkipEnv -SkipTunnel
+powershell -File scripts\deploy\setup-vultr-precisoutapronto.ps1 -SkipEnv -SkipTunnel
 ```
 
 Fluxo completo via GitHub Actions (staging + E2E + producao automatica), com barra de progresso:
@@ -123,15 +123,15 @@ Opcoes: `DeployMaster.bat -StagingOnly` · `DeployMaster.bat -Branch nome-da-bra
 Stack paralelo no mesmo VPS (sem Evolution), porta **3001**:
 
 ```bash
-# No servidor: /opt/resolva-jato-staging
+# No servidor: /opt/precisoutapronto-staging
 cp .env.staging.example .env.staging
 # Preencha Stripe test, AUTH_SECRET, POSTGRES_PASSWORD
 
 docker compose --env-file .env.staging \
-  -f docker-compose.staging.yml -p resolva-jato-staging up -d --build
+  -f docker-compose.staging.yml -p precisoutapronto-staging up -d --build
 ```
 
-- Hostname: `https://staging.resolvajato.com.br`
+- Hostname: `https://staging.precisoutapronto.com.br`
 - Checklist: [`docs/I18N-STAGING-QA.md`](docs/I18N-STAGING-QA.md)
-- Deploy Action: **Deploy Resolva Jato Vultr** → target `staging`
-- Tunnel: incluir hostname em [`scripts/deploy/cloudflared-config.resolvajato.yml`](scripts/deploy/cloudflared-config.resolvajato.yml)
+- Deploy Action: **Deploy Precisou, Tá Pronto Vultr** → target `staging`
+- Tunnel: incluir hostname em [`scripts/deploy/cloudflared-config.precisoutapronto.yml`](scripts/deploy/cloudflared-config.precisoutapronto.yml)

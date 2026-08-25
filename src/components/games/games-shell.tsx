@@ -1,25 +1,25 @@
 import Link from 'next/link';
 import { Gamepad2 } from 'lucide-react';
-import { JATO_GAMES } from '@/lib/games/brand';
+import { PRECISOUTAPRONTO_GAMES } from '@/lib/games/brand';
 import { cn } from '@/lib/utils';
 
 export function GamesHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/90 bg-white/95 shadow-sm backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
-        <Link href={JATO_GAMES.path} className="flex min-w-0 items-center gap-2.5">
+        <Link href={PRECISOUTAPRONTO_GAMES.path} className="flex min-w-0 items-center gap-2.5">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-teal-500 text-white shadow-sm shadow-teal-500/25">
             <Gamepad2 className="h-5 w-5" aria-hidden />
           </span>
           <span className="min-w-0">
-            <span className="rj-display block truncate text-lg font-extrabold tracking-tight text-slate-900">
-              {JATO_GAMES.name}
+            <span className="precisoutapronto-display block truncate text-lg font-extrabold tracking-tight text-slate-900">
+              {PRECISOUTAPRONTO_GAMES.name}
             </span>
-            <span className="hidden text-xs text-slate-500 sm:block">{JATO_GAMES.tagline}</span>
+            <span className="hidden text-xs text-slate-500 sm:block">{PRECISOUTAPRONTO_GAMES.tagline}</span>
           </span>
         </Link>
-        <nav aria-label="Jato Games" className="hidden items-center gap-0.5 md:flex">
-          {JATO_GAMES.nav.map((item) => (
+        <nav aria-label="Precisou, Tá Pronto Games" className="hidden items-center gap-0.5 md:flex">
+          {PRECISOUTAPRONTO_GAMES.nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -38,10 +38,10 @@ export function GamesHeader() {
       </div>
       {/* Nav com scroll horizontal isolado para nao puxar a pagina no eixo Y */}
       <nav
-        aria-label="Jato Games mobile"
+        aria-label="Precisou, Tá Pronto Games mobile"
         className="flex touch-pan-x gap-1.5 overflow-x-auto overscroll-x-contain border-t border-slate-200/80 px-4 py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden"
       >
-        {JATO_GAMES.nav.map((item) => (
+        {PRECISOUTAPRONTO_GAMES.nav.map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -60,17 +60,17 @@ export function GamesFooter() {
     <footer className="relative z-10 mt-auto border-t border-slate-200 bg-white">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm font-medium text-slate-700 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>
-          <span className="font-bold text-slate-950">{JATO_GAMES.name}</span>
+          <span className="font-bold text-slate-950">{PRECISOUTAPRONTO_GAMES.name}</span>
           {' · '}
           Conteúdo evergreen sobre jogos, setups e lojas.
         </p>
         <p className="text-slate-700">
           Powered by{' '}
           <Link
-            href={JATO_GAMES.poweredByHref}
+            href={PRECISOUTAPRONTO_GAMES.poweredByHref}
             className="font-bold text-teal-800 underline-offset-2 hover:underline"
           >
-            {JATO_GAMES.poweredBy}
+            {PRECISOUTAPRONTO_GAMES.poweredBy}
           </Link>
         </p>
       </div>

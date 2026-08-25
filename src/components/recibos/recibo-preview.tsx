@@ -1,4 +1,4 @@
-﻿import { formatAddressLine } from '@/lib/address';
+import { formatAddressLine } from '@/lib/address';
 import { DigitalSignatureDisplay } from '@/components/shared/digital-signature-display';
 import { getDocumentFontStack } from '@/lib/documents/fonts';
 import { currencyToWords, formatCurrency } from '@/lib/formatters';
@@ -146,7 +146,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, 
         </div>
       </div>
 
-      <div data-rj-keep className="mt-auto pt-14">
+      <div data-precisoutapronto-keep className="mt-auto pt-14">
         <DigitalSignatureDisplay
           signature={{
             ...data.signature,
@@ -284,7 +284,7 @@ function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDa
           </div>
         </div>
 
-        <div data-rj-keep className="mt-auto flex flex-col items-end pt-12">
+        <div data-precisoutapronto-keep className="mt-auto flex flex-col items-end pt-12">
           <DigitalSignatureDisplay
             signature={{
               ...data.signature,
@@ -386,7 +386,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
         Firmo o presente recibo dando plena e total quitação do valor acima, nada mais tendo a reclamar.
       </p>
 
-      <div data-rj-keep className="mt-auto pt-10">
+      <div data-precisoutapronto-keep className="mt-auto pt-10">
         <DigitalSignatureDisplay
           signature={{
             ...data.signature,

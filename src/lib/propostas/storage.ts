@@ -4,7 +4,7 @@ import { createProposalItem } from './defaults';
 import type { ProposalData } from './types';
 import { deleteRemoteDocument, listRemoteDocuments, saveRemoteDocument } from '@/lib/documents/remote-storage';
 
-const STORAGE_PREFIX = 'resolva-jato-propostas';
+const STORAGE_PREFIX = 'precisoutapronto-propostas';
 
 function storageKey() {
   const email = getSession()?.user.email ?? 'guest';

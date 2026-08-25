@@ -247,7 +247,7 @@ export function CronogramaEntregasApp({ locale = 'pt-BR' }: { locale?: Locale } 
 
         <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <h2 className="rj-display text-base font-bold text-slate-900">{t.visualizacaoTitle}</h2>
+            <h2 className="precisoutapronto-display text-base font-bold text-slate-900">{t.visualizacaoTitle}</h2>
             {gantt ? (
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={copiarResumo} icon={Copy}>
@@ -264,7 +264,7 @@ export function CronogramaEntregasApp({ locale = 'pt-BR' }: { locale?: Locale } 
             <p className="text-sm font-medium leading-6 text-slate-600">{t.emptyGantt}</p>
           ) : (
             <div ref={ganttRef} className="space-y-4 bg-white p-1">
-              {nomeProjeto ? <p className="rj-display text-sm font-bold text-slate-900">{nomeProjeto}</p> : null}
+              {nomeProjeto ? <p className="precisoutapronto-display text-sm font-bold text-slate-900">{nomeProjeto}</p> : null}
 
               <div className="relative">
                 <div className="relative ml-0 h-6 border-b border-slate-200 text-[10px] font-semibold text-slate-500">

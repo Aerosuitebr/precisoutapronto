@@ -81,7 +81,7 @@ export function ResultShareCard({
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${fileNameHint}-resolvajato.png`;
+      a.download = `${fileNameHint}-precisoutapronto.png`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -152,7 +152,7 @@ export function ResultShareCard({
     try {
       const blob = await renderToBlob();
       if (!blob) throw new Error('sem blob');
-      const file = new File([blob], `${fileNameHint}-resolvajato.png`, { type: 'image/png' });
+      const file = new File([blob], `${fileNameHint}-precisoutapronto.png`, { type: 'image/png' });
       const shareText = `${title} · Precisou, Tá Pronto\nCalcule o seu grátis: ${shareUrl}`;
       const nav = navigator as Navigator & {
         canShare?: (data: { files?: File[]; text?: string }) => boolean;
@@ -239,7 +239,7 @@ export function ResultShareCard({
                 color: '#0f172a'
               }}
             >
-              RJ
+              PTP
             </div>
             <span style={{ fontSize: 34, fontWeight: 800, letterSpacing: -0.5 }}>Precisou, Tá Pronto</span>
           </div>

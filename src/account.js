@@ -1,4 +1,4 @@
-const authStorageKey = 'resolva-jato-auth';
+const authStorageKey = 'precisoutapronto-auth';
 
 function getAuthState() {
   try {
@@ -105,7 +105,7 @@ export function exportLocalBackup(data) {
   const stamp = new Date().toISOString().slice(0, 10);
 
   link.href = url;
-  link.download = `resolva-jato-backup-${stamp}.json`;
+  link.download = `precisoutapronto-backup-${stamp}.json`;
   document.body.append(link);
   link.click();
   link.remove();

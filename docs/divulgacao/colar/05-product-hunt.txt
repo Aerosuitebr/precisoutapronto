@@ -1,17 +1,17 @@
 NOME:
-Resolva Jato
+Precisou, Tá Pronto
 
 TAGLINE:
 Ferramentas grátis para MEI, freelancer e pequenos negócios no Brasil
 
 DESCRIÇÃO CURTA:
-Resolva Jato ajuda autônomos e MEIs a resolver tarefas do dia a dia: orçamento com Pix no WhatsApp, currículo, contrato, recibo, proposta e calculadoras de rescisão, preço e MEI vs CLT. Comece grátis, sem cartão.
+Precisou, Tá Pronto ajuda autônomos e MEIs a resolver tarefas do dia a dia: orçamento com Pix no WhatsApp, currículo, contrato, recibo, proposta e calculadoras de rescisão, preço e MEI vs CLT. Comece grátis, sem cartão.
 
 URL:
-https://resolvajato.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch
+https://precisoutapronto.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch
 
 COMENTÁRIO DO FOUNDER:
-Olá, hunters. Construímos o Resolva Jato para o fluxo real do profissional brasileiro: fechar no WhatsApp, emitir documento e calcular o básico sem planilha.
+Olá, hunters. Construímos o Precisou, Tá Pronto para o fluxo real do profissional brasileiro: fechar no WhatsApp, emitir documento e calcular o básico sem planilha.
 
 Hoje o núcleo gratuito inclui:
 • Orçamento com aprovação e Pix
@@ -24,7 +24,7 @@ HORÁRIO SUGERIDO:
 Terça a quinta, ~00:01 PST (manhã no Brasil).
 
 ASSETS LOCAIS:
-docs/divulgacao/assets/RJ_escuro_thumb-512.png
+docs/divulgacao/assets/PTP_escuro_thumb-512.png
 docs/divulgacao/assets/01-home-og.png
 docs/divulgacao/assets/02-orcamento-og.png
 docs/divulgacao/assets/03-curriculo-og.png

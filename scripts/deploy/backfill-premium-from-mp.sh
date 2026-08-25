@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "==> Contas e assinaturas recentes"
-docker exec resolva-jato-postgres psql -U resolvajato -d resolvajato -c \
+docker exec precisoutapronto-postgres psql -U precisoutapronto -d precisoutapronto -c \
   "SELECT u.email, s.\"planId\", s.\"expiresAt\", s.\"providerRef\"
    FROM users u
    LEFT JOIN subscriptions s ON s.\"userId\" = u.id
@@ -13,7 +13,7 @@ echo ""
 echo "==> Buscar pagamentos aprovados recentes no Mercado Pago e liberar Premium"
 
 # Roda um one-shot no container da app (tem node + env)
-docker exec resolva-jato-app node <<'NODE'
+docker exec precisoutapronto-app node <<'NODE'
 const { PrismaClient } = require('@prisma/client');
 
 async function mpFetch(path) {

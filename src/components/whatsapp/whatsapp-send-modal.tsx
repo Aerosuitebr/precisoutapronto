@@ -62,7 +62,7 @@ export function WhatsAppSendModal({
 
   useEffect(() => {
     if (ownerEmail || typeof window === 'undefined') return;
-    const storageKey = 'rj_whatsapp_ephemeral_owner';
+    const storageKey = 'precisoutapronto_whatsapp_ephemeral_owner';
     const saved = window.sessionStorage.getItem(storageKey);
     if (saved) {
       setAnonymousKey(saved);

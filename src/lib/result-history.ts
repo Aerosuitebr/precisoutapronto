@@ -8,7 +8,7 @@ export interface SavedToolResult {
 }
 
 const STORAGE_KEY = 'rj.results.saved';
-export const RESULT_HISTORY_UPDATED_EVENT = 'resolva-jato:result-history-updated';
+export const RESULT_HISTORY_UPDATED_EVENT = 'precisoutapronto:result-history-updated';
 
 export function loadSavedToolResults(): SavedToolResult[] {
   if (typeof window === 'undefined') return [];

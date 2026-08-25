@@ -44,7 +44,7 @@ export function ContabilPreview({ data }: ContabilPreviewProps) {
 
       <div className="mt-8 space-y-5">
         {data.clauses.map((item, index) => (
-          <section key={item.id} data-rj-keep>
+          <section key={item.id} data-precisoutapronto-keep>
             <h2 className="text-[13px] font-bold uppercase tracking-wide text-slate-950">
               {useSimpleNumbering
                 ? `${index + 1}. ${item.title}`
@@ -63,7 +63,7 @@ export function ContabilPreview({ data }: ContabilPreviewProps) {
         </p>
       ) : null}
 
-      <div data-rj-keep>
+      <div data-precisoutapronto-keep>
         <ClosingParagraph data={data} />
 
         <p className="mt-8 text-center text-[13px] text-slate-800">

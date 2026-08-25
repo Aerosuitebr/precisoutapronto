@@ -14,8 +14,8 @@ export function ToolLandingExamples({ examples }: { examples: ToolLandingExample
 
   return (
     <section id="exemplos" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
-      <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-800">Modelos prontos</p>
-      <h2 className="rj-display mt-3 max-w-xl text-2xl font-black tracking-tight text-slate-900 sm:text-4xl">
+      <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-800">Modelos prontos</p>
+      <h2 className="precisoutapronto-display mt-3 max-w-xl text-2xl font-black tracking-tight text-slate-900 sm:text-4xl">
         Compare os modelos lado a lado e escolha o seu.
       </h2>
       <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-slate-700">

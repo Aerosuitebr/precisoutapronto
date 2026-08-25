@@ -35,12 +35,12 @@ export function TestimonialsSection({ className }: { className?: string }) {
     >
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
         <div className="max-w-2xl">
-          <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
+          <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
             Quem conheceu, aprovou
           </p>
           <h2
             id="depoimentos-title"
-            className="rj-display mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl"
+            className="precisoutapronto-display mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl"
           >
             O Precisou, Tá Pronto na voz de quem vive a rotina.
           </h2>

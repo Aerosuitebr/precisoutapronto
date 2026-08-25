@@ -31,14 +31,14 @@ export default function PropostasPage() {
       key: 'numero',
       header: 'Numero',
       render: (row) => (
-        <Link href="#" className="font-bold text-[var(--rj-link)] hover:underline">
+        <Link href="#" className="font-bold text-[var(--precisoutapronto-link)] hover:underline">
           {row.numero}
         </Link>
       )
     },
     { key: 'cliente', header: 'Cliente', render: (row) => <span className="font-medium text-slate-800">{row.cliente}</span> },
     { key: 'produto', header: 'Produto/Servico', render: (row) => <span className="line-clamp-1 max-w-[260px]">{row.produto}</span> },
-    { key: 'valor', header: 'Valor', render: (row) => <span className="font-bold text-[var(--rj-success)]">{formatCurrency(row.valor)}</span> },
+    { key: 'valor', header: 'Valor', render: (row) => <span className="font-bold text-[var(--precisoutapronto-success)]">{formatCurrency(row.valor)}</span> },
     { key: 'data', header: 'Data', render: (row) => formatDate(row.data) },
     { key: 'status', header: 'Status', render: (row) => <StatusBadge status={row.status} /> },
     {
@@ -46,7 +46,7 @@ export default function PropostasPage() {
       header: 'OS',
       render: (row) =>
         row.osNumero ? (
-          <Link href="/oficina/ordens-servico" className="font-semibold text-[var(--rj-link)] hover:underline">
+          <Link href="/oficina/ordens-servico" className="font-semibold text-[var(--precisoutapronto-link)] hover:underline">
             {row.osNumero}
           </Link>
         ) : (

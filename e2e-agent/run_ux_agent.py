@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Browser Use UX agent for Resolva Jato staging.
+Browser Use UX agent for Precisou, Tá Pronto staging.
 
 Runs after the Playwright gate. Writes artifacts/ux-report.json and ux-report.md.
 Exit code 0 even on soft failures when E2E_UX_SOFT=1 (CI default).
@@ -18,13 +18,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 ARTIFACTS = ROOT / "artifacts"
-BASE_URL = os.environ.get("E2E_BASE_URL", "https://staging.resolvajato.com.br").rstrip("/")
+BASE_URL = os.environ.get("E2E_BASE_URL", "https://staging.precisoutapronto.com.br").rstrip("/")
 SOFT = os.environ.get("E2E_UX_SOFT", "1") == "1"
 API_KEY = os.environ.get("E2E_LLM_API_KEY") or os.environ.get("OPENAI_API_KEY")
 
 
 TASK = f"""
-You are a UX QA agent testing Resolva Jato staging.
+You are a UX QA agent testing Precisou, Tá Pronto staging.
 
 Open: {BASE_URL}/en/tools/quote-pix
 
@@ -61,7 +61,7 @@ def write_reports(payload: dict) -> None:
         steps = [steps]
 
     md = [
-        f"# UX report · Resolva Jato staging",
+        f"# UX report · Precisou, Tá Pronto staging",
         "",
         f"- Generated: `{payload.get('generated_at')}`",
         f"- Base URL: `{payload.get('base_url')}`",

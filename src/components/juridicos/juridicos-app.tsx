@@ -286,7 +286,7 @@ export function JuridicosApp() {
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-200/80">
                     Para advogados e escritórios
                   </p>
-                  <h2 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                  <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold tracking-tight">
                     Documentos jurídicos
                   </h2>
                   <p className="mt-1 max-w-2xl text-sm leading-6 text-stone-300">
@@ -691,7 +691,7 @@ export function JuridicosApp() {
             />
           </section>
 
-          <section className="rounded-[28px] border border-slate-200 bg-slate-100/80 p-4 shadow-sm sm:p-6 xl:sticky xl:top-[var(--rj-doc-preview-top)] xl:self-start">
+          <section className="rounded-[28px] border border-slate-200 bg-slate-100/80 p-4 shadow-sm sm:p-6 xl:sticky xl:top-[var(--precisoutapronto-doc-preview-top)] xl:self-start">
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Pré-visualização</p>
             <div className="overflow-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-200/80 to-slate-300/50 p-3 sm:p-5">
               <div

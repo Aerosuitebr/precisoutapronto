@@ -166,10 +166,10 @@ export function viralPublicResultUrl(input: {
     ferramenta: input.toolPath.startsWith('/') ? input.toolPath : '/',
     linhas: JSON.stringify(input.lines.slice(0, 5).map((line) => ({ label: line.label.slice(0, 60), value: line.value.slice(0, 60) }))),
     utm_source: 'share',
-    utm_medium: 'resultado_jato',
+    utm_medium: 'resultado_pronto',
     utm_campaign: input.campaign
   });
-  return `${getViralBaseUrl()}/resultado-jato?${params.toString()}`;
+  return `${getViralBaseUrl()}/resultado-pronto?${params.toString()}`;
 }
 
 /** Prova social pós-aprovação sem cliente, valor, profissão ou identificadores. */

@@ -16,7 +16,7 @@ export function PublicResultActions({ title, value, toolPath, campaign }: { titl
   }, [campaign, toolPath]);
 
   function whatsapp() {
-    const text = `${title}: ${value}\n\nVeja este Resultado Jato e crie o seu:\n${window.location.href}`;
+    const text = `${title}: ${value}\n\nVeja este Resultado Pronto e crie o seu:\n${window.location.href}`;
     trackEvent('public_result_reshared', { method: 'whatsapp', tool_path: toolPath, campaign });
     emitClientProductEvent({ eventName: 'outcome.shared', toolKey: toolPath.replace(/^\//, ''), properties: { channel: 'whatsapp', surface: 'public_result' } });
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');

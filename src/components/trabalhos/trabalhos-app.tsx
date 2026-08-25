@@ -169,7 +169,7 @@ export function TrabalhosApp() {
                 <BookOpen className="h-6 w-6" />
               </span>
               <div>
-                <h1 className="rj-display text-2xl font-extrabold tracking-tight text-slate-900">
+                <h1 className="precisoutapronto-display text-2xl font-extrabold tracking-tight text-slate-900">
                   Capas de Trabalho
                 </h1>
                 <p className="mt-1 text-sm leading-6 text-slate-700">

@@ -93,7 +93,7 @@ export function InternationalResourceSearch({ locale }: { locale: InternationalL
         <section className="bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 px-4 py-12 text-white sm:px-6 sm:py-16">
           <div className="mx-auto max-w-6xl">
             <Link href={`/${locale}/tools`} className="inline-flex items-center gap-2 text-sm font-bold text-sky-300"><ArrowLeft className="h-4 w-4" />{t.back}</Link>
-            <h1 className="rj-display mt-7 text-4xl font-extrabold tracking-tight sm:text-5xl">{t.title}</h1>
+            <h1 className="precisoutapronto-display mt-7 text-4xl font-extrabold tracking-tight sm:text-5xl">{t.title}</h1>
             <p className="mt-3 text-lg text-slate-300">{t.subtitle}</p>
             <label className="relative mt-7 block max-w-2xl">
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />

@@ -66,7 +66,7 @@ Language: pt-BR
 - https://precisoutapronto.com.br/guias/custos-fixos-do-freelancer-como-ratear
 - https://precisoutapronto.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
 
-## Jato Games (gaming vertical)
+## Precisou, Tá Pronto Games (gaming vertical)
 Evergreen hub for games, suggested PC setups, hardware guides, consoles and curated stores.
 - https://precisoutapronto.com.br/games
 - https://precisoutapronto.com.br/games/top-jogos
@@ -93,7 +93,7 @@ Evergreen hub for games, suggested PC setups, hardware guides, consoles and cura
 - Some editors require a free account to save and export documents.
 - Premium access is optional and does not change the public educational content.
 - Legal, labor and accounting materials are educational and do not replace professional advice.
-- Jato Games is a separate content vertical under the same domain; it does not replace Precisou, Tá Pronto document tools.
+- Precisou, Tá Pronto Games is a separate content vertical under the same domain; it does not replace Precisou, Tá Pronto document tools.
 - Native diagnostics process hardware data locally and require explicit consent; no report is uploaded automatically.
 
 ## Editorial and trust notes

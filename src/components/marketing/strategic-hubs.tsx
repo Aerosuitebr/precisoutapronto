@@ -44,7 +44,7 @@ export function StrategicHubs({ compact = false }: { compact?: boolean }) {
       <section className="border-y border-slate-200 bg-slate-50" aria-labelledby="hero-products-title">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Precisou, Tá Pronto</p>
-          <h2 id="hero-products-title" className="rj-display mt-3 max-w-3xl text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+          <h2 id="hero-products-title" className="precisoutapronto-display mt-3 max-w-3xl text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Resolva em segundos aquilo que normalmente dá trabalho.
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
@@ -75,7 +75,7 @@ export function StrategicHubs({ compact = false }: { compact?: boolean }) {
     <section className="border-y border-slate-200 bg-slate-50" aria-labelledby="strategic-hubs-title">
       <div className={`mx-auto max-w-6xl px-4 sm:px-6 ${compact ? 'py-10' : 'py-14 sm:py-16'}`}>
         <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">Guias e ferramentas por assunto</p>
-        <h2 id="strategic-hubs-title" className="rj-display mt-3 text-3xl font-extrabold tracking-tight text-slate-950">
+        <h2 id="strategic-hubs-title" className="precisoutapronto-display mt-3 text-3xl font-extrabold tracking-tight text-slate-950">
           Resolva o problema completo, não apenas uma etapa
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">

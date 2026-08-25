@@ -13,18 +13,18 @@ Pasta: `docs/divulgacao/ph-gallery/`
 | 3 | `ph-gallery-curriculo.png` | Currículo |
 | 4 | `ph-gallery-recibo.png` | Recibo |
 | 5 | `ph-gallery-proposta.png` | Proposta comercial |
-| Thumbnail | `ph-thumb-rj.png` | Ícone / thumb do launch |
+| Thumbnail | `ph-thumb-ptp.png` | Ícone / thumb do launch |
 
 Também serve recortar as stories de `docs/divulgacao/assets/promo-*-stories.png` se quiser vertical no social.
 
-Link canônico: `https://resolvajato.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch`
+Link canônico: `https://precisoutapronto.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch`
 
 ---
 
 ## Update 1 · Maker (logo após o launch, PT)
 
 ```text
-Obrigado pelos upvotes e pelos comentários. Vocês acertaram o ponto: o Resolva Jato nasceu pro fluxo real do profissional brasileiro.
+Obrigado pelos upvotes e pelos comentários. Vocês acertaram o ponto: o Precisou, Tá Pronto nasceu pro fluxo real do profissional brasileiro.
 
 Hoje o núcleo gratuito inclui:
 • Orçamento com aprovação e Pix no WhatsApp
@@ -42,7 +42,7 @@ Quick spotlight: Budget with Pix on WhatsApp.
 Your client opens the budget on their phone, approves, and pays with Pix.
 No app install. No card. Built for how Brazilian freelancers and MEIs actually close deals.
 
-Try it: https://resolvajato.com.br/orcamento-com-pix?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_orcamento
+Try it: https://precisoutapronto.com.br/orcamento-com-pix?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_orcamento
 ```
 
 ## Update 3 · Feature spotlight · Currículo (EN)
@@ -50,8 +50,8 @@ Try it: https://resolvajato.com.br/orcamento-com-pix?utm_source=producthunt&utm_
 ```text
 Need a clean resume PDF fast?
 
-Resolva Jato gives you live preview layouts and export without wrestling with Word.
-Free to start: https://resolvajato.com.br/gerador-de-curriculo?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_curriculo
+Precisou, Tá Pronto gives you live preview layouts and export without wrestling with Word.
+Free to start: https://precisoutapronto.com.br/gerador-de-curriculo?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_curriculo
 ```
 
 ## Update 4 · Feature spotlight · Recibo + Proposta (PT)
@@ -60,10 +60,10 @@ Free to start: https://resolvajato.com.br/gerador-de-curriculo?utm_source=produc
 Dois geradores que o pessoal pediu bastante nos comentários:
 
 1) Recibo em PDF com valor por extenso
-https://resolvajato.com.br/gerador-de-recibo?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_recibo
+https://precisoutapronto.com.br/gerador-de-recibo?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_recibo
 
 2) Proposta comercial com cara de agência
-https://resolvajato.com.br/gerador-de-proposta-comercial?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_proposta
+https://precisoutapronto.com.br/gerador-de-proposta-comercial?utm_source=producthunt&utm_medium=referral&utm_campaign=ph_proposta
 
 Conta grátis pra salvar e baixar. Sem cartão.
 ```

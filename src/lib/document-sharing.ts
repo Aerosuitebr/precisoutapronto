@@ -1,4 +1,4 @@
-export const DOCUMENT_SHARE_UPDATED_EVENT = 'resolva-jato:document-share-updated';
+export const DOCUMENT_SHARE_UPDATED_EVENT = 'precisoutapronto:document-share-updated';
 
 export interface DocumentShareUpdatedDetail {
   toolId: string;

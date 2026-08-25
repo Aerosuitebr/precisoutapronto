@@ -1,8 +1,8 @@
 import { getPlan } from './plans.js';
 import { getSession, pushUsageState } from './account.js';
 
-const planStorageKey = 'resolva-jato-plan';
-const usageStorageKey = 'resolva-jato-usage';
+const planStorageKey = 'precisoutapronto-plan';
+const usageStorageKey = 'precisoutapronto-usage';
 const usagePeriodDays = 30;
 const usagePeriodMs = usagePeriodDays * 24 * 60 * 60 * 1000;
 

@@ -33,7 +33,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
-import { buildResolvaJatoDownloadName } from '@/lib/download-filename';
+import { buildPrecisouTaProntoDownloadName } from '@/lib/download-filename';
 import {
   PAGE_PRESETS,
   blankPageThumbnail,
@@ -528,7 +528,7 @@ export function EditorPdfApp({
         watermarkText,
         watermarkOpacity
       });
-      downloadBytes(bytes as Uint8Array, buildResolvaJatoDownloadName('pdf'));
+      downloadBytes(bytes as Uint8Array, buildPrecisouTaProntoDownloadName('pdf'));
       toast(t.toastPdfSuccess);
     } catch (err) {
       console.error(err);
@@ -799,7 +799,7 @@ export function EditorPdfApp({
               </div>
 
               <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:sticky lg:top-24">
-                <h2 className="rj-display text-base font-bold text-slate-900">{t.finalizeTitle}</h2>
+                <h2 className="precisoutapronto-display text-base font-bold text-slate-900">{t.finalizeTitle}</h2>
 
                 <div className="space-y-2 rounded-xl border border-sky-100 bg-sky-50/80 p-3">
                   <p className="text-xs font-bold uppercase tracking-wide text-sky-800">

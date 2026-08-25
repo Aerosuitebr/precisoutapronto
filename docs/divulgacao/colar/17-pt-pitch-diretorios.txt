@@ -1,18 +1,18 @@
 NOME:
-Resolva Jato
+Precisou, Tá Pronto
 
 TAGLINE (pt-PT):
 Ferramentas grátis para freelancers e pequenos negócios
 
 DESCRIÇÃO CURTA:
-O Resolva Jato ajuda freelancers e pequenos negócios a criar currículo, recibo, proposta comercial e orçamento em PDF, com pré-visualização ao vivo. Comece grátis, sem cartão.
+O Precisou, Tá Pronto ajuda freelancers e pequenos negócios a criar currículo, recibo, proposta comercial e orçamento em PDF, com pré-visualização ao vivo. Comece grátis, sem cartão.
 
 URL:
-https://resolvajato.com.br/gerador-de-curriculo?utm_source=diretorio&utm_medium=referral&utm_campaign=pt_diretorios
+https://precisoutapronto.com.br/gerador-de-curriculo?utm_source=diretorio&utm_medium=referral&utm_campaign=pt_diretorios
 
 CATEGORIAS:
 Productivity, Business, Freelancer tools, Document generators
 
 SITE / PRESS:
-https://resolvajato.com.br/
-https://resolvajato.com.br/sobre
+https://precisoutapronto.com.br/
+https://precisoutapronto.com.br/sobre

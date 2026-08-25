@@ -12,7 +12,7 @@ interface NextActionDTO {
 
 function attributedUrl(action: NextActionDTO) {
   const separator = action.targetUrl.includes('?') ? '&' : '?';
-  return `${action.targetUrl}${separator}rj_rec=${encodeURIComponent(action.trackingToken)}`;
+  return `${action.targetUrl}${separator}precisoutapronto_rec=${encodeURIComponent(action.trackingToken)}`;
 }
 
 function recordInteraction(trackingToken: string, interaction: 'shown' | 'clicked') {

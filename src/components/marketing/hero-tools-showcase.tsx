@@ -136,7 +136,7 @@ function RedacaoMockup() {
         <div className="min-w-0 space-y-2.5">
           <div className="flex items-center justify-between rounded-xl bg-slate-900 px-3 py-2.5 text-white">
             <span className="text-[11px] font-semibold">Nota total estimada</span>
-            <span className="rj-display text-base font-bold">{demo.notaTotal}/1000</span>
+            <span className="precisoutapronto-display text-base font-bold">{demo.notaTotal}/1000</span>
           </div>
           <ul className="space-y-1.5">
             {demo.competencias.map((item) => (
@@ -465,7 +465,7 @@ export function HeroToolsShowcase({ className }: { className?: string }) {
         })}
       </div>
 
-      <div key={active.id} className="rj-animate-fade-up">
+      <div key={active.id} className="precisoutapronto-animate-fade-up">
         <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-amber-300">{active.eyebrow}</p>
         <p className="mt-1.5 text-lg font-extrabold leading-snug text-white sm:text-xl">{active.headline}</p>
         <p className="mt-1.5 max-w-md text-sm leading-6 text-slate-300">{active.subtext}</p>

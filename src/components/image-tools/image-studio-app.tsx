@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { PageHero } from '@/components/shared/page-hero';
 import { ToolsBackButton } from '@/components/shared/tools-back-button';
-import { buildResolvaJatoDownloadName } from '@/lib/download-filename';
+import { buildPrecisouTaProntoDownloadName } from '@/lib/download-filename';
 import { containedDimensions, decodeImage, extensionForFormat, imageBlobToPdf, processImage, type ImageOutputFormat } from '@/lib/image-tools/process';
 
 type Locale = 'pt-BR' | 'en' | 'es';
@@ -69,7 +69,7 @@ export function ImageStudioApp({ locale = 'pt-BR', mode = 'optimize', publicLand
     if (!resultBlob) return;
     const link = document.createElement('a');
     link.href = URL.createObjectURL(resultBlob);
-    link.download = buildResolvaJatoDownloadName(pdfOutput ? 'pdf' : 'picture', pdfOutput ? 'pdf' : extensionForFormat(format));
+    link.download = buildPrecisouTaProntoDownloadName(pdfOutput ? 'pdf' : 'picture', pdfOutput ? 'pdf' : extensionForFormat(format));
     link.click();
     setTimeout(() => URL.revokeObjectURL(link.href), 1000);
   }

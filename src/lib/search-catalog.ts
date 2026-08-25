@@ -130,7 +130,7 @@ export const searchCategories: SearchCategory[] = [
   {
     id: 'games',
     label: 'Games',
-    description: 'Jogos, setups, hardware, consoles, skins e lojas do Jato Games.',
+    description: 'Jogos, setups, hardware, consoles, skins e lojas do Precisou, Tá Pronto Games.',
     icon: Gamepad2
   }
 ];

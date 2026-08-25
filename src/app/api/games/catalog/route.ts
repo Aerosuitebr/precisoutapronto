@@ -19,7 +19,7 @@ export function GET() {
     {
       schemaVersion: 2,
       catalogVersion: CATALOG_UPDATED_AT,
-      source: 'Jato Games',
+      source: 'Precisou, Tá Pronto Games',
       games
     },
     {

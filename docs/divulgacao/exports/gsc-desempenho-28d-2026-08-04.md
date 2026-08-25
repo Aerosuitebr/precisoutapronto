@@ -1,7 +1,7 @@
 # GSC Desempenho · 28 dias · 04/ago/2026
 
 Fonte oficial: export nativo do Search Console + planilha Google.  
-Propriedade: `sc-domain:resolvajato.com.br` · Conta: `contato@resolvajato.com.br`  
+Propriedade: `sc-domain:precisoutapronto.com.br` · Conta: `contato@precisoutapronto.com.br`  
 Filtro: Pesquisa Web · Últimos 28 dias (dados efetivos: 29/jul a 02/ago)
 
 ## Arquivos

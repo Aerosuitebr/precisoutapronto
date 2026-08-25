@@ -1,12 +1,12 @@
-# Resolva Jato
+# Precisou, Tá Pronto
 
 Hub de ferramentas gratuitas e freemium — orçamentos, contratos, currículo, Pix, documentos jurídicos e mais.
 
 | Item | Valor |
 |------|--------|
-| Produto | Resolva Jato (hub) |
-| Domínio | https://resolvajato.com.br |
-| Staging | https://staging.resolvajato.com.br |
+| Produto | Precisou, Tá Pronto (hub) |
+| Domínio | https://precisoutapronto.com.br |
+| Staging | https://staging.precisoutapronto.com.br |
 | Org | [Aerosuitebr](https://github.com/Aerosuitebr) |
 | Stack | Next.js 15 · Prisma · PostgreSQL · Docker · Evolution WhatsApp |
 
@@ -14,11 +14,11 @@ Hub de ferramentas gratuitas e freemium — orçamentos, contratos, currículo, 
 
 | Repo | Papel |
 |------|--------|
-| **resolva-jato** (este) | Hub de ferramentas |
+| **precisoutapronto** (este) | Hub de ferramentas |
 | [mira](https://github.com/Aerosuitebr/mira) | Busca B2B (empresas / profissionais) |
 | [aerosuite](https://github.com/Aerosuitebr/aerosuite) | Marca + ops da plataforma |
 
-O MIRA é integrado via `NEXT_PUBLIC_MIRA_URL` (produção: `https://search.aerosuite.com.br/escolher-busca?origem=resolva-jato`).
+O MIRA é integrado via `NEXT_PUBLIC_MIRA_URL` (produção: `https://search.aerosuite.com.br/escolher-busca?origem=precisoutapronto`).
 
 ## Como rodar
 

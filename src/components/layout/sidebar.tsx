@@ -29,14 +29,14 @@ export function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileOpen,
       {mobileOpen ? <button type="button" aria-label="Fechar menu" className="fixed inset-0 z-[90] bg-slate-950/60 lg:hidden" onClick={onMobileClose} /> : null}
       <aside
         className={cn(
-          'fixed bottom-0 left-0 top-8 z-[100] flex h-[calc(100vh-2rem)] flex-col overflow-hidden border-r border-sky-300/20 bg-[image:var(--rj-sidebar-bg)] text-[var(--rj-sidebar-text)] shadow-[4px_0_48px_rgba(0,0,0,0.45)] transition-all duration-300',
-          collapsed ? 'w-[var(--rj-sidebar-collapsed)]' : 'w-[var(--rj-sidebar-width)]',
+          'fixed bottom-0 left-0 top-8 z-[100] flex h-[calc(100vh-2rem)] flex-col overflow-hidden border-r border-sky-300/20 bg-[image:var(--precisoutapronto-sidebar-bg)] text-[var(--precisoutapronto-sidebar-text)] shadow-[4px_0_48px_rgba(0,0,0,0.45)] transition-all duration-300',
+          collapsed ? 'w-[var(--precisoutapronto-sidebar-collapsed)]' : 'w-[var(--precisoutapronto-sidebar-width)]',
           'max-lg:w-[min(88vw,300px)] max-lg:-translate-x-full',
           mobileOpen && 'max-lg:translate-x-0'
         )}
       >
-        <div className="pointer-events-none absolute inset-0 rj-hud-grid opacity-80" />
-        <div className="pointer-events-none absolute bottom-[8%] left-[-20%] right-[-20%] h-[42%] animate-[rj-horizon-pulse_8s_ease-in-out_infinite_alternate] bg-[radial-gradient(ellipse_70%_45%_at_50%_100%,rgba(14,165,233,0.35)_0%,transparent_70%)]" />
+        <div className="pointer-events-none absolute inset-0 precisoutapronto-hud-grid opacity-80" />
+        <div className="pointer-events-none absolute bottom-[8%] left-[-20%] right-[-20%] h-[42%] animate-[precisoutapronto-horizon-pulse_8s_ease-in-out_infinite_alternate] bg-[radial-gradient(ellipse_70%_45%_at_50%_100%,rgba(14,165,233,0.35)_0%,transparent_70%)]" />
         <div className="relative z-10 flex min-h-0 flex-1 flex-col">
           <header className="flex items-center gap-2 px-3 py-4">
             <Link href="/" className="min-w-0 flex-1 rounded-2xl p-1 transition-colors hover:bg-white/5">

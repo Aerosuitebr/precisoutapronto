@@ -1,4 +1,4 @@
-import { buildResolvaJatoDownloadName } from '@/lib/download-filename';
+import { buildPrecisouTaProntoDownloadName } from '@/lib/download-filename';
 
 /**
  * Exporta um elemento DOM para PDF (A4, múltiplas páginas se necessário).
@@ -62,5 +62,5 @@ export async function exportElementToPdf(
     }
   }
 
-  pdf.save(buildResolvaJatoDownloadName('pdf', filenameHint ? `pdf` : undefined));
+  pdf.save(buildPrecisouTaProntoDownloadName('pdf', filenameHint ? `pdf` : undefined));
 }

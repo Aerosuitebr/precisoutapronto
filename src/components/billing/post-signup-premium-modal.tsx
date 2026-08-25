@@ -57,7 +57,7 @@ export function PostSignupPremiumModal({ open, onClose }: PostSignupPremiumModal
             <Crown className="h-3.5 w-3.5" />
             Sua conta grátis está pronta
           </span>
-          <h2 id="post-signup-premium-title" className="rj-display relative mt-5 pr-8 text-2xl font-extrabold tracking-tight sm:text-3xl">
+          <h2 id="post-signup-premium-title" className="precisoutapronto-display relative mt-5 pr-8 text-2xl font-extrabold tracking-tight sm:text-3xl">
             Continue grátis ou deixe seus documentos totalmente limpos.
           </h2>
           <p className="relative mt-3 text-sm leading-6 text-slate-300">

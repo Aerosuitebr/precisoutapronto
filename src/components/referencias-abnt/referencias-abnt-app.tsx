@@ -407,7 +407,7 @@ export function ReferenciasAbntApp({ locale = 'pt-BR' }: { locale?: Locale } = {
 
           <aside className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
             <div className="mb-3 flex items-center justify-between gap-2">
-              <h2 className="rj-display text-base font-bold text-slate-900">
+              <h2 className="precisoutapronto-display text-base font-bold text-slate-900">
                 {t.listTitle(ordenadas.length)}
               </h2>
               {ordenadas.length > 0 ? (

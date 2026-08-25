@@ -46,9 +46,9 @@ export function AuthRequiredProvider({ children }: { children: ReactNode }) {
         detail?.variant || 'guest_trial_done'
       );
     }
-    window.addEventListener('rj-account-required', onAccountRequired);
+    window.addEventListener('precisoutapronto-account-required', onAccountRequired);
     return () => {
-      window.removeEventListener('rj-account-required', onAccountRequired);
+      window.removeEventListener('precisoutapronto-account-required', onAccountRequired);
     };
   }, [requireAuth]);
 

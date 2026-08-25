@@ -21,7 +21,7 @@ export function ToolsIntentWizard({
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-sky-700">Comece em 1 toque</p>
-          <h2 id="tools-wizard-title" className="rj-display mt-1 text-lg font-bold text-slate-950 sm:text-xl">
+          <h2 id="tools-wizard-title" className="precisoutapronto-display mt-1 text-lg font-bold text-slate-950 sm:text-xl">
             O que você precisa agora?
           </h2>
           <p className="mt-1 text-sm font-medium leading-5 text-slate-600">
@@ -31,7 +31,7 @@ export function ToolsIntentWizard({
         <button
           type="button"
           onClick={onDismiss}
-          className="rj-press inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
+          className="precisoutapronto-press inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
           aria-label="Dispensar sugestões rápidas"
         >
           <X className="h-4 w-4" />
@@ -49,7 +49,7 @@ export function ToolsIntentWizard({
               href={tool.href}
               onClick={() => onPick(tool.id)}
               className={cn(
-                'rj-press group flex min-h-[5.5rem] flex-col items-start gap-2 rounded-2xl border border-slate-200 bg-white p-3',
+                'precisoutapronto-press group flex min-h-[5.5rem] flex-col items-start gap-2 rounded-2xl border border-slate-200 bg-white p-3',
                 'text-left transition hover:border-sky-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-100'
               )}
             >

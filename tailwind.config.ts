@@ -21,8 +21,8 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ['var(--rj-font-body)', 'IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
-        display: ['var(--rj-font-display)', 'IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
+        sans: ['var(--precisoutapronto-font-body)', 'IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['var(--precisoutapronto-font-display)', 'IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
       },
       boxShadow: {
         rj: '0 4px 24px rgba(0,0,0,0.08)'

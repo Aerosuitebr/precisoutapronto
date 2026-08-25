@@ -55,7 +55,7 @@ function useCalculationHistory(tool: string, label: string, params: Record<strin
   const serializedParams = JSON.stringify(params);
 
   useEffect(() => {
-    const storageKey = `jato-games:${tool}:recent`;
+    const storageKey = `precisoutapronto-games:${tool}:recent`;
     const saved = window.localStorage.getItem(storageKey);
     if (saved) {
       try {
@@ -68,7 +68,7 @@ function useCalculationHistory(tool: string, label: string, params: Record<strin
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      const storageKey = `jato-games:${tool}:recent`;
+      const storageKey = `precisoutapronto-games:${tool}:recent`;
       const savedParams = JSON.parse(serializedParams) as Record<string, number>;
       const nextItem = { label, url: buildShareUrl(savedParams), createdAt: Date.now() };
       setItems((current) => {
@@ -108,7 +108,7 @@ function ResultShare({ text, params }: { text: string; params: Record<string, nu
   async function share() {
     const url = buildShareUrl(params);
     if (navigator.share) {
-      await navigator.share({ title: 'Resultado no Jato Games', text, url });
+      await navigator.share({ title: 'Resultado no Precisou, Tá Pronto Games', text, url });
       return;
     }
     await navigator.clipboard.writeText(`${text} ${url}`);
@@ -253,7 +253,7 @@ function ResultBox({
   return (
     <div className={`mt-5 rounded-2xl border p-5 ${tone === 'warning' ? 'border-amber-200 bg-amber-50' : tone === 'success' ? 'border-emerald-200 bg-emerald-50' : 'border-teal-200 bg-teal-50'}`}>
       <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-600">{label}</p>
-      <p className="rj-display mt-1 text-3xl font-black text-slate-950">{value}</p>
+      <p className="precisoutapronto-display mt-1 text-3xl font-black text-slate-950">{value}</p>
       <p className="mt-2 text-sm leading-6 text-slate-700">{note}</p>
     </div>
   );
@@ -278,7 +278,7 @@ function ToolCard({
         <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-teal-600 text-white shadow-lg shadow-teal-600/20"><Icon className="h-6 w-6" /></span>
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">{eyebrow}</p>
-          <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950">{title}</h2>
+          <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold text-slate-950">{title}</h2>
           <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
         </div>
       </div>

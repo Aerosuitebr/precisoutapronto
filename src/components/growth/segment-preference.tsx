@@ -6,7 +6,7 @@ import { Check, Settings2 } from 'lucide-react';
 import { growthSegments } from '@/lib/growth/segments';
 import { trackEvent } from '@/lib/analytics';
 
-const STORAGE_KEY = 'rj-growth-segment';
+const STORAGE_KEY = 'precisoutapronto-growth-segment';
 
 export function SegmentPreference() {
   const [selected, setSelected] = useState('');
@@ -53,7 +53,7 @@ export function SegmentPreference() {
             <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
               <Settings2 className="h-4 w-4" /> Sua área, suas prioridades
             </p>
-            <h2 className="rj-display mt-3 text-3xl font-extrabold text-slate-950">
+            <h2 className="precisoutapronto-display mt-3 text-3xl font-extrabold text-slate-950">
               {active ? `Atalhos para ${active.name}` : 'O que você precisa resolver?'}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">

@@ -829,7 +829,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
         <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-slate-200 bg-white px-4 py-3">
           <div className="min-w-0 flex-1">
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">Editor de página</p>
-              <h2 className="rj-display truncate text-base font-bold text-slate-900">
+              <h2 className="precisoutapronto-display truncate text-base font-bold text-slate-900">
                 Clique para editar · setas movem a caixa
               </h2>
             {fontStatus ? (

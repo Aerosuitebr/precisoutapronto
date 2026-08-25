@@ -176,7 +176,7 @@ export async function createNuPayPaymentFromSession(input: {
   const cpf = onlyDigits(input.cpf || session.shopper?.identification?.value || '');
   const nameParts = input.name.trim().split(/\s+/).filter(Boolean);
   const firstName = nameParts[0] || 'Cliente';
-  const lastName = nameParts.slice(1).join(' ') || 'ResolvaJato';
+  const lastName = nameParts.slice(1).join(' ') || 'PrecisouTaPronto';
   const referenceId = `${session.reference}-pay`;
 
   const body = {

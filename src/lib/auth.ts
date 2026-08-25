@@ -11,8 +11,8 @@ export interface AuthSession {
   user: AuthUser;
 }
 
-const USER_KEY = 'resolva-jato-user';
-const TOKEN_KEY = 'resolva-jato-token';
+const USER_KEY = 'precisoutapronto-user';
+const TOKEN_KEY = 'precisoutapronto-token';
 
 function isBrowser() {
   return typeof window !== 'undefined';
@@ -45,7 +45,7 @@ export function clearSession() {
 
 export function notifyAuthChange() {
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new Event('resolva-jato-auth-change'));
+    window.dispatchEvent(new Event('precisoutapronto-auth-change'));
   }
 }
 
@@ -145,7 +145,7 @@ export async function fetchMe() {
     if (data.reason === 'session_replaced' && typeof window !== 'undefined') {
       try {
         sessionStorage.setItem(
-          'rj-session-replaced',
+          'precisoutapronto-session-replaced',
           data.message || 'Sua conta foi acessada em outro dispositivo. Entre novamente.'
         );
       } catch {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProductBridge, GamesReadablePanel } from '@/components/games/games-ui';
-import { JATO_GAMES } from '@/lib/games/brand';
+import { PRECISOUTAPRONTO_GAMES } from '@/lib/games/brand';
 import { getHardwareGuide, hardwareGuides } from '@/lib/games/hardware';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
@@ -43,13 +43,13 @@ export default async function HardwareGuidePage({ params }: Props) {
         headline: guide.title,
         description: guide.description,
         inLanguage: 'pt-BR',
-        datePublished: JATO_GAMES.publishedAt,
-        dateModified: JATO_GAMES.publishedAt,
+        datePublished: PRECISOUTAPRONTO_GAMES.publishedAt,
+        dateModified: PRECISOUTAPRONTO_GAMES.publishedAt,
         mainEntityOfPage: `${base}/games/hardware/${guide.slug}`,
-        author: { '@type': 'Organization', name: JATO_GAMES.name, url: `${base}/games` },
+        author: { '@type': 'Organization', name: PRECISOUTAPRONTO_GAMES.name, url: `${base}/games` },
         publisher: {
           '@type': 'Organization',
-          name: JATO_GAMES.name,
+          name: PRECISOUTAPRONTO_GAMES.name,
           url: `${base}/games`
         }
       },
@@ -64,7 +64,7 @@ export default async function HardwareGuidePage({ params }: Props) {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Jato Games', item: `${base}/games` },
+          { '@type': 'ListItem', position: 1, name: 'Precisou, Tá Pronto Games', item: `${base}/games` },
           { '@type': 'ListItem', position: 2, name: 'Hardware', item: `${base}/games/hardware` },
           {
             '@type': 'ListItem',
@@ -85,7 +85,7 @@ export default async function HardwareGuidePage({ params }: Props) {
       />
       <nav className="mb-6 rounded-xl border border-white/70 bg-white/85 px-3 py-2 text-xs text-slate-500 backdrop-blur-sm">
         <Link href="/games" className="hover:text-teal-700">
-          Jato Games
+          Precisou, Tá Pronto Games
         </Link>
         {' / '}
         <Link href="/games/hardware" className="hover:text-teal-700">
@@ -99,7 +99,7 @@ export default async function HardwareGuidePage({ params }: Props) {
         <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">
           {guide.readTime} de leitura
         </p>
-        <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+        <h1 className="precisoutapronto-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
           {guide.title}
         </h1>
         <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-950">
@@ -110,7 +110,7 @@ export default async function HardwareGuidePage({ params }: Props) {
       <div className="mt-10 space-y-8 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-sm backdrop-blur-sm sm:p-7">
         {guide.sections.map((section) => (
           <section key={section.title}>
-            <h2 className="rj-display text-xl font-extrabold text-slate-900">{section.title}</h2>
+            <h2 className="precisoutapronto-display text-xl font-extrabold text-slate-900">{section.title}</h2>
             {section.paragraphs.map((paragraph) => (
               <p key={paragraph.slice(0, 40)} className="mt-3 text-sm leading-7 text-slate-600">
                 {paragraph}
@@ -128,7 +128,7 @@ export default async function HardwareGuidePage({ params }: Props) {
       </div>
 
       <section className="mt-12">
-        <h2 className="rj-display mb-4 rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-xl font-extrabold text-slate-900 backdrop-blur-sm">
+        <h2 className="precisoutapronto-display mb-4 rounded-2xl border border-white/70 bg-white/85 px-4 py-3 text-xl font-extrabold text-slate-900 backdrop-blur-sm">
           Perguntas frequentes
         </h2>
         <div className="space-y-3">
@@ -149,7 +149,7 @@ export default async function HardwareGuidePage({ params }: Props) {
       </div>
       <aside className="mt-6 rounded-2xl border border-teal-200 bg-teal-50 p-5">
         <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Utilidades gratuitas</p>
-        <h2 className="rj-display mt-2 text-xl font-extrabold text-slate-950">Teste decisões do seu setup</h2>
+        <h2 className="precisoutapronto-display mt-2 text-xl font-extrabold text-slate-950">Teste decisões do seu setup</h2>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link href="/games/ferramentas/calculadora-edpi" className="rounded-xl bg-teal-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-teal-600">
             Calcular eDPI

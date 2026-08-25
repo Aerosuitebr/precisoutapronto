@@ -76,7 +76,7 @@ export function SeoLandingPage({
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
                 {content.eyebrow}
               </p>
-              <h1 className="rj-display mt-3 max-w-3xl text-[clamp(1.85rem,4vw,3.1rem)] font-extrabold leading-[1.1] tracking-tight">
+              <h1 className="precisoutapronto-display mt-3 max-w-3xl text-[clamp(1.85rem,4vw,3.1rem)] font-extrabold leading-[1.1] tracking-tight">
                 {content.title}
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
@@ -119,7 +119,7 @@ export function SeoLandingPage({
           {content.sections.map((section) => (
             <section key={section.title} className="border-b border-slate-200 bg-white">
               <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-                <h2 className="rj-display max-w-2xl text-3xl font-extrabold tracking-tight text-slate-900">
+                <h2 className="precisoutapronto-display max-w-2xl text-3xl font-extrabold tracking-tight text-slate-900">
                   {section.title}
                 </h2>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
@@ -141,7 +141,7 @@ export function SeoLandingPage({
 
           <section className="border-b border-slate-200 bg-slate-50">
             <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-              <h2 className="rj-display text-3xl font-extrabold tracking-tight text-slate-900">
+              <h2 className="precisoutapronto-display text-3xl font-extrabold tracking-tight text-slate-900">
                 Perguntas frequentes
               </h2>
               <dl className="mt-8 space-y-5">
@@ -157,7 +157,7 @@ export function SeoLandingPage({
 
           <section className="bg-white">
             <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-              <h2 className="rj-display text-3xl font-extrabold tracking-tight text-slate-900">
+              <h2 className="precisoutapronto-display text-3xl font-extrabold tracking-tight text-slate-900">
                 Continue explorando
               </h2>
               <ul className="mt-8 grid gap-4 sm:grid-cols-3">

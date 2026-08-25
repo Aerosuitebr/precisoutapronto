@@ -57,7 +57,7 @@ Nunca preencher ausência de dado como zero silenciosamente. Nunca publicar núm
 3. 7–11s: mostrar o orçamento profissional no celular.
 4. 11–14s: cliente toca em Aprovar.
 5. 14–17s: mostrar a cobrança Pix.
-6. 17–20s: “Faça seus 2 primeiros grátis — Resolva Jato”.
+6. 17–20s: “Faça seus 2 primeiros grátis — Precisou, Tá Pronto”.
 
 ## 15 ganchos para a primeira semana
 
@@ -79,7 +79,7 @@ Nunca preencher ausência de dado como zero silenciosamente. Nunca publicar núm
 
 Cada publicação deve usar uma URL por segmento, por exemplo:
 
-`https://resolvajato.com.br/orcamento-com-pix?profissao=eletricista&utm_source=instagram&utm_medium=organic_social&utm_campaign=orcamento_eletricista`
+`https://precisoutapronto.com.br/orcamento-com-pix?profissao=eletricista&utm_source=instagram&utm_medium=organic_social&utm_campaign=orcamento_eletricista`
 
 ## Entrevista de 10 minutos
 
@@ -88,7 +88,7 @@ Cada publicação deve usar uma URL por segmento, por exemplo:
 3. Quanto tempo você leva para montar e enviar?
 4. O que o cliente mais pede para ajustar?
 5. Você cobra entrada? Como envia o Pix?
-6. Teste o Resolva Jato sem ajuda e diga onde hesitou.
+6. Teste o Precisou, Tá Pronto sem ajuda e diga onde hesitou.
 7. Você enviaria este link a um cliente real hoje? Por quê?
 
 Não pedir elogio. Registrar profissão, canal atual, objeção e se houve envio real.

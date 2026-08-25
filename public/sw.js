@@ -43,11 +43,11 @@ self.addEventListener('push', (event) => {
       if (data.playSound) {
         const clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
         for (const client of clientsList) {
-          client.postMessage({ type: 'RJ_PUSH_ALERT', title: data.title, body: data.body });
+          client.postMessage({ type: 'PTP_PUSH_ALERT', title: data.title, body: data.body });
         }
         try {
-          const channel = new BroadcastChannel('rj-push');
-          channel.postMessage({ type: 'RJ_PUSH_ALERT', title: data.title, body: data.body });
+          const channel = new BroadcastChannel('precisoutapronto-push');
+          channel.postMessage({ type: 'PTP_PUSH_ALERT', title: data.title, body: data.body });
           channel.close();
         } catch {
           // BroadcastChannel may be unavailable

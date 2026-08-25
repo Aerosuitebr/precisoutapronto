@@ -91,7 +91,7 @@ export function ReferralPanel({ className }: { className?: string }) {
             <Gift className="h-3.5 w-3.5" />
             Indique e ganhe
           </p>
-          <h2 className="rj-display mt-2 text-2xl font-extrabold tracking-tight text-slate-900">
+          <h2 className="precisoutapronto-display mt-2 text-2xl font-extrabold tracking-tight text-slate-900">
             Ganhe desde o primeiro amigo ativo
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">

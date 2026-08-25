@@ -17,7 +17,7 @@ try {
       total: 300,
       validade: '7 dias',
       observacoes: 'Smoke test automatizado',
-      ownerEmail: 'teste@resolvajato.local'
+      ownerEmail: 'teste@precisoutapronto.local'
     }
   });
   console.log('CREATE_OK id=' + created.id);

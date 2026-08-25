@@ -118,7 +118,7 @@ export function InternationalQuotePublicView({
       <div className="mx-auto max-w-lg space-y-4">
         <header className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">{t.digital}</p>
-          <h1 className="rj-display mt-2 text-2xl font-extrabold">{quote.profissionalNome}</h1>
+          <h1 className="precisoutapronto-display mt-2 text-2xl font-extrabold">{quote.profissionalNome}</h1>
           <p className="mt-2 text-sm text-slate-600">
             {t.prepared} <strong>{quote.clienteNome}</strong>
           </p>

@@ -43,7 +43,7 @@ export function ContratoPreview({ data }: ContratoPreviewProps) {
 
       <div className="mt-8 space-y-5">
         {data.clauses.map((item, index) => (
-          <section key={item.id} data-rj-keep>
+          <section key={item.id} data-precisoutapronto-keep>
             <h2 className="text-[13px] font-bold uppercase tracking-wide text-slate-950">
               CLÁUSULA {index + 1}ª · {item.title}
             </h2>
@@ -60,7 +60,7 @@ export function ContratoPreview({ data }: ContratoPreviewProps) {
         </p>
       ) : null}
 
-      <div data-rj-keep className="mt-8">
+      <div data-precisoutapronto-keep className="mt-8">
         <p className="text-justify text-[13px] leading-7 text-slate-800">
           E, por estarem assim justas e contratadas, as partes assinam o presente instrumento em 2
           (duas) vias de igual teor, na presença das testemunhas abaixo, se houver, para que produza

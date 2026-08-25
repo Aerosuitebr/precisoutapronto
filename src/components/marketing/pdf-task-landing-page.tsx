@@ -24,7 +24,7 @@ export function PdfTaskLandingPage({ landing, children }: { landing: PdfTaskLand
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <SiteHeader />
-    <main className="bg-[image:var(--rj-page-bg)]">
+    <main className="bg-[image:var(--precisoutapronto-page-bg)]">
       <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
         <nav aria-label="Breadcrumb" className="mb-4 text-xs text-slate-500">
           <Link href={landing.locale === 'pt-BR' ? '/' : `/${landing.locale}`}>{labels.home}</Link><span className="mx-1.5">/</span>
@@ -32,7 +32,7 @@ export function PdfTaskLandingPage({ landing, children }: { landing: PdfTaskLand
         </nav>
         <header className="mb-6 max-w-3xl">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">{landing.eyebrow || 'Precisou, Tá Pronto · PDF'}</p>
-          <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">{landing.h1}</h1>
+          <h1 className="precisoutapronto-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">{landing.h1}</h1>
           <p className="mt-3 text-base leading-7 text-slate-600 sm:text-lg">{landing.subtitle}</p>
         </header>
         <div id="tool" className="scroll-mt-20">{children}</div>

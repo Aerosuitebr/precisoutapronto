@@ -45,7 +45,7 @@ export function JuridicoPreview({ data }: JuridicoPreviewProps) {
 
       <div className="mt-8 space-y-5">
         {data.clauses.map((item, index) => (
-          <section key={item.id} data-rj-keep>
+          <section key={item.id} data-precisoutapronto-keep>
             <h2 className="text-[13px] font-bold uppercase tracking-wide text-slate-950">
               {['notificacao', 'hipossuficiencia', 'peticao-inicial', 'contestacao', 'recurso-inominado', 'declaracao-residencia', 'fichamento-jurisprudencia', 'estudo-caso', 'parecer-academico', 'relatorio-audiencia', 'roteiro-peca'].includes(data.templateId)
                 ? `${index + 1}. ${item.title}`
@@ -64,7 +64,7 @@ export function JuridicoPreview({ data }: JuridicoPreviewProps) {
         </p>
       ) : null}
 
-      <div data-rj-keep>
+      <div data-precisoutapronto-keep>
         <ClosingParagraph data={data} />
 
         <p className="mt-8 text-center text-[13px] text-slate-800">

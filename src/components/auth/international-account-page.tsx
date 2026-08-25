@@ -39,7 +39,7 @@ export function InternationalAccountPage({ locale }: { locale: InternationalLoca
       <header className="border-b border-slate-200 bg-white"><div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6"><Link href={`/${locale}`}><Logo variant="marketing" className="h-12 sm:h-14" /></Link><LocaleSwitcher locale={locale} label={t.language} paths={{ 'pt-BR': '/conta', en: '/en/account', es: '/es/account' }} /></div></header>
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <AuthGate title={t.title} description={t.subtitle} requireEmailVerified={false}>
-          <h1 className="rj-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 text-slate-600">{t.subtitle}</p>
+          <h1 className="precisoutapronto-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 text-slate-600">{t.subtitle}</p>
           <div className="mt-7 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
             <section className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm">
               <div className="bg-slate-950 p-6 text-white"><div className="flex items-center gap-4"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10"><UserRound className="h-5 w-5" /></span><div><p className="text-xs font-bold uppercase tracking-wide text-sky-300">{t.connected}</p><h2 className="mt-1 text-xl font-bold">{session?.user.name}</h2><p className="mt-1 flex items-center gap-2 text-sm text-slate-300"><Mail className="h-4 w-4" />{session?.user.email}</p></div></div></div>

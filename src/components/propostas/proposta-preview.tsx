@@ -1,4 +1,4 @@
-﻿/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element */
 import { DigitalSignatureDisplay } from '@/components/shared/digital-signature-display';
 import { formatAddressLine } from '@/lib/address';
 import { formatCurrency } from '@/lib/formatters';
@@ -175,7 +175,7 @@ function TermsSection({
 
 function ProposalFooter({ data }: { data: ProposalData }) {
   return (
-    <footer data-rj-keep className="mt-auto space-y-4 border-t border-slate-300 pt-12">
+    <footer data-precisoutapronto-keep className="mt-auto space-y-4 border-t border-slate-300 pt-12">
       <div className="flex items-end justify-between gap-8">
         <DigitalSignatureDisplay
           signature={{
@@ -339,7 +339,7 @@ function ExecutivaLayout({ data, metrics, ink }: LayoutProps) {
           </section>
         ) : null}
 
-        <div data-rj-keep className="mt-6 space-y-4">
+        <div data-precisoutapronto-keep className="mt-6 space-y-4">
           <div className="rounded-xl border-2 border-dashed border-slate-400 px-4 py-3 text-center text-[10px] text-slate-600">
             Aceite da proposta: _________________________ &nbsp; Data: ___/___/______
           </div>

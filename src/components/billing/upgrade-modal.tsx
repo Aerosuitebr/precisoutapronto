@@ -56,7 +56,7 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
                 'radial-gradient(ellipse 80% 50% at 20% 0%, rgba(56,189,248,0.35), transparent 55%), radial-gradient(ellipse 60% 40% at 90% 100%, rgba(251,191,36,0.18), transparent 50%)'
             }}
           />
-          <div className="pointer-events-none absolute inset-0 rj-hud-grid opacity-50" />
+          <div className="pointer-events-none absolute inset-0 precisoutapronto-hud-grid opacity-50" />
 
           <div className="relative px-6 py-8 sm:px-10 sm:py-10">
             <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -72,7 +72,7 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
             </p>
             <h2
               id="upgrade-modal-title"
-              className="rj-display mt-3 max-w-xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl"
+              className="precisoutapronto-display mt-3 max-w-xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl"
             >
               Documentos limpos por apenas{' '}
               <span className="bg-gradient-to-r from-amber-200 via-amber-100 to-sky-200 bg-clip-text text-transparent">
@@ -93,7 +93,7 @@ export function UpgradeModal({ open, onUnlock, onLeave }: UpgradeModalProps) {
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
                   Premium · 30 dias
                 </p>
-                <p className="rj-display mt-1 text-5xl font-black tracking-tight text-white sm:text-6xl">
+                <p className="precisoutapronto-display mt-1 text-5xl font-black tracking-tight text-white sm:text-6xl">
                   {premium.priceLabel}
                   <span className="ml-1 text-lg font-semibold text-slate-400">{premium.period}</span>
                 </p>

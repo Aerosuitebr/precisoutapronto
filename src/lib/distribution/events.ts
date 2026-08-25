@@ -9,7 +9,7 @@ const RECIPIENT_KEY = /^[A-Za-z0-9._:-]{16,128}$/;
 const ACTIONS = new Set(['view', 'download', 'copy', 'use_template', 'sign_up']);
 
 export function hashRecipientKey(value: string) {
-  return `recipient_${createHash('sha256').update(`resolva-jato:recipient:v1:${value}`).digest('hex')}`;
+  return `recipient_${createHash('sha256').update(`precisoutapronto:recipient:v1:${value}`).digest('hex')}`;
 }
 
 export function parseShareEvent(value: unknown):

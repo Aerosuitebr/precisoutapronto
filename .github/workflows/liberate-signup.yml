@@ -36,4 +36,4 @@ jobs:
           scp ${SSH_OPTS} scripts/ops/liberate-signup.sh \
             "${USER}@${HOST}:/tmp/liberate-signup.sh"
           ssh ${SSH_OPTS} "${USER}@${HOST}" \
-            "chmod +x /tmp/liberate-signup.sh && EMAIL='${TARGET_EMAIL}' INSTALL_DIR=/opt/resolva-jato bash /tmp/liberate-signup.sh"
+            "chmod +x /tmp/liberate-signup.sh && EMAIL='${TARGET_EMAIL}' INSTALL_DIR=/opt/precisoutapronto bash /tmp/liberate-signup.sh"

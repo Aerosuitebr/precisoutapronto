@@ -12,11 +12,11 @@ Objetivo: conquistar links editoriais reais para ferramentas que já entregam va
 | Bibliotecas e núcleos acadêmicos | `/embed` | `/gerador-de-referencias-abnt` | Recurso direto para guias de TCC e normalização acadêmica. |
 | Portais de utilidades e produtividade | `/embed` | `/pdf` | Reúne tarefas comuns de PDF em uma página estável. |
 
-Os blocos HTML e Markdown com UTM estão prontos em `https://resolvajato.com.br/embed`.
+Os blocos HTML e Markdown com UTM estão prontos em `https://precisoutapronto.com.br/embed`.
 
 ## Onda 2 - pauta editorial
 
-Usar `https://resolvajato.com.br/imprensa` como press kit e apresentar apenas uma pauta por contato:
+Usar `https://precisoutapronto.com.br/imprensa` como press kit e apresentar apenas uma pauta por contato:
 
 1. MEI que perde venda no WhatsApp: orçamento, aprovação e Pix no mesmo fluxo.
 2. Rescisão sem planilha: estimativa educativa e explicação das verbas.
@@ -27,7 +27,7 @@ Usar `https://resolvajato.com.br/imprensa` como press kit e apresentar apenas um
 
 Assunto: recurso gratuito para complementar seu conteúdo sobre [tema]
 
-Olá, [nome]. Vi o conteúdo de vocês sobre [assunto específico]. O Resolva Jato mantém uma ferramenta gratuita que pode ajudar o leitor a executar essa etapa no navegador: [URL]. Ela não exige cartão e a página explica [benefício relacionado ao artigo]. Se fizer sentido editorial, vocês podem incluir o link ou usar o bloco pronto em https://resolvajato.com.br/embed. Posso enviar uma descrição mais curta ou testar o recurso com vocês.
+Olá, [nome]. Vi o conteúdo de vocês sobre [assunto específico]. O Precisou, Tá Pronto mantém uma ferramenta gratuita que pode ajudar o leitor a executar essa etapa no navegador: [URL]. Ela não exige cartão e a página explica [benefício relacionado ao artigo]. Se fizer sentido editorial, vocês podem incluir o link ou usar o bloco pronto em https://precisoutapronto.com.br/embed. Posso enviar uma descrição mais curta ou testar o recurso com vocês.
 
 ## Critérios de qualificação
 
@@ -70,7 +70,7 @@ Não abordar páginas que operam calculadora concorrente direta pedindo substitu
 
 As três mensagens apresentam `/gerador-de-referencias-abnt` como complemento prático aos guias institucionais, sem sugerir substituição das normas ou materiais das bibliotecas.
 
-Em 11/08/2026, foram reenviadas pela conta oficial `contato@resolvajato.com.br` como correção de remetente. Os textos não usam travessões; apenas hífens indispensáveis permanecem nas URLs.
+Em 11/08/2026, foram reenviadas pela conta oficial `contato@precisoutapronto.com.br` como correção de remetente. Os textos não usam travessões; apenas hífens indispensáveis permanecem nas URLs.
 
 ## Onda prioritária enviada em 13/08/2026
 
@@ -80,4 +80,4 @@ Em 11/08/2026, foram reenviadas pela conta oficial `contato@resolvajato.com.br` 
 | Oliveira & Teixeira Advogados | Conteúdos recentes sobre desligamento e rescisão | `/rescisao` | Enviado para `atendimento@oliveiraeteixeira.adv.br` |
 | Kohl Advogados | Página editorial sobre Direito Trabalhista e verbas rescisórias | `/rescisao` | Enviado para `contato@kohladvogados.com.br` |
 
-As mensagens foram enviadas pelo alias oficial `contato@resolvajato.com.br`, com UTMs individuais por parceiro. Não repetir contato antes de 20/08/2026. Se não houver resposta, fazer no máximo um follow-up curto, mantendo o mesmo assunto.
+As mensagens foram enviadas pelo alias oficial `contato@precisoutapronto.com.br`, com UTMs individuais por parceiro. Não repetir contato antes de 20/08/2026. Se não houver resposta, fazer no máximo um follow-up curto, mantendo o mesmo assunto.

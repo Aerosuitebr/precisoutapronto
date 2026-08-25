@@ -8,7 +8,7 @@ if [[ ! "${EMAIL}" =~ ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]; then
   echo "ERRO: e-mail inválido: ${EMAIL}"
   exit 1
 fi
-INSTALL_DIR="${INSTALL_DIR:-/opt/resolva-jato}"
+INSTALL_DIR="${INSTALL_DIR:-/opt/precisoutapronto}"
 cd "${INSTALL_DIR}"
 
 COMPOSE=(
@@ -20,8 +20,8 @@ COMPOSE=(
 
 PG_USER="$("${COMPOSE[@]}" exec -T postgres printenv POSTGRES_USER | tr -d '\r')"
 PG_DB="$("${COMPOSE[@]}" exec -T postgres printenv POSTGRES_DB | tr -d '\r')"
-PG_USER="${PG_USER:-resolvajato}"
-PG_DB="${PG_DB:-resolvajato}"
+PG_USER="${PG_USER:-precisoutapronto}"
+PG_DB="${PG_DB:-precisoutapronto}"
 
 echo "==> Liberando cadastro para ${EMAIL}"
 

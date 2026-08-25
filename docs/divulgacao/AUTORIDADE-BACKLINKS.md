@@ -22,14 +22,14 @@ Objetivo: conquistar menções e links editoriais para páginas internas (não s
 
 ### Lote 2026-08-01
 
-**Status:** ENVIADO (10/10 via SMTP `contato@resolvajato.com.br` no VPS)  
+**Status:** ENVIADO (10/10 via SMTP `contato@precisoutapronto.com.br` no VPS)  
 **Log:** `docs/divulgacao/logs/outreach-2026-08-01.json`
 
 Destinos: Melhor RH, Revista Comunicação, Guia do Estudante, Portal Empreendedor, Junior Achievement Brasil, Sebrae SP/MS/MT/PI/SC.
 
 ### Follow-up 2026-08-01 (enviado)
 
-**Status:** ENVIADO 10/10 via SMTP no container `resolva-jato-app`  
+**Status:** ENVIADO 10/10 via SMTP no container `precisoutapronto-app`  
 **Lista:** `docs/divulgacao/outreach-followup-2026-08-04.json`  
 **Log:** `docs/divulgacao/logs/outreach-2026-08-01-followup.json`  
 **Pedido:** link para página interna (não a home), com `Re:` + `In-Reply-To`

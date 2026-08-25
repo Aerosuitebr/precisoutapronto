@@ -7,8 +7,8 @@ export const localeHomePath: Record<Locale, string> = {
   es: '/es'
 };
 
-export const LOCALE_COOKIE = 'rj_locale';
-export const LOCALE_QUERY = 'rj_locale';
+export const LOCALE_COOKIE = 'precisoutapronto_locale';
+export const LOCALE_QUERY = 'precisoutapronto_locale';
 export const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 export function isLocale(value: string | undefined | null): value is Locale {
@@ -27,7 +27,7 @@ export function parseLocale(value: string | undefined | null): Locale | null {
   return null;
 }
 
-/** Anexa `rj_locale` ao href PT para o middleware não sobrescrever com Accept-Language/cookie antigo. */
+/** Anexa `precisoutapronto_locale` ao href PT para o middleware não sobrescrever com Accept-Language/cookie antigo. */
 export function hrefWithLocalePreference(href: string, locale: Locale): string {
   if (locale !== 'pt-BR') return href;
   const hashIndex = href.indexOf('#');

@@ -14,10 +14,10 @@ export function PricingPage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <div className="mx-auto mb-10 max-w-2xl text-center">
-        <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
+        <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">
           Teste grátis · Premium opcional
         </p>
-        <h1 className="rj-display mt-3 text-4xl font-bold tracking-tight text-slate-900">
+        <h1 className="precisoutapronto-display mt-3 text-4xl font-bold tracking-tight text-slate-900">
           Gere grátis. Remova a marca quando quiser.
         </h1>
         <p className="mt-4 text-sm leading-7 text-slate-600">
@@ -30,7 +30,7 @@ export function PricingPage() {
         <article className="rounded-[28px] border border-slate-200 bg-white p-8 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900">Grátis</h2>
           <p className="mt-1 text-sm text-slate-600">Teste a eficácia do serviço</p>
-          <p className="rj-display mt-6 text-4xl font-extrabold text-slate-900">R$ 0</p>
+          <p className="precisoutapronto-display mt-6 text-4xl font-extrabold text-slate-900">R$ 0</p>
           <ul className="mt-6 space-y-2.5 text-sm text-slate-700">
             {[
               'Documentos profissionais em PDF',
@@ -57,7 +57,7 @@ export function PricingPage() {
             <h2 className="text-2xl font-bold">Premium</h2>
             <p className="mt-1 text-sm text-emerald-100">Documentos sem referências ao Precisou, Tá Pronto</p>
             <div className="mt-6 flex items-end gap-2">
-              <span className="rj-display text-4xl font-extrabold">{premium.priceLabel}</span>
+              <span className="precisoutapronto-display text-4xl font-extrabold">{premium.priceLabel}</span>
               <span className="pb-1 text-sm text-slate-300">{premium.period}</span>
             </div>
             <ul className="mt-6 space-y-2.5 text-sm text-slate-100">

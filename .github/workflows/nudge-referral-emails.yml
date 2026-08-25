@@ -43,15 +43,15 @@ jobs:
 
           ssh ${SSH_OPTS} "${USER}@${HOST}" bash -s <<EOF
           set -euo pipefail
-          cd /opt/resolva-jato
-          docker cp /tmp/nudge-referral-emails.cjs resolva-jato-app:/app/nudge-referral-emails.cjs
-          docker exec -u root resolva-jato-app chown nextjs:nodejs /app/nudge-referral-emails.cjs
-          docker exec resolva-jato-app sh -c 'printf "mail_probe resend=%s smtp_host=%s smtp_user=%s smtp_pass=%s\\n" "\${RESEND_API_KEY:+yes}" "\${SMTP_HOST:+yes}" "\${SMTP_USER:+yes}" "\${SMTP_PASS:+yes}"'
+          cd /opt/precisoutapronto
+          docker cp /tmp/nudge-referral-emails.cjs precisoutapronto-app:/app/nudge-referral-emails.cjs
+          docker exec -u root precisoutapronto-app chown nextjs:nodejs /app/nudge-referral-emails.cjs
+          docker exec precisoutapronto-app sh -c 'printf "mail_probe resend=%s smtp_host=%s smtp_user=%s smtp_pass=%s\\n" "\${RESEND_API_KEY:+yes}" "\${SMTP_HOST:+yes}" "\${SMTP_USER:+yes}" "\${SMTP_PASS:+yes}"'
           docker exec -w /app \
             -e DRY_RUN='${DRY_RUN}' \
             -e LIMIT='${LIMIT}' \
-            resolva-jato-app \
+            precisoutapronto-app \
             node /app/nudge-referral-emails.cjs
-          docker exec -u root resolva-jato-app rm -f /app/nudge-referral-emails.cjs || true
+          docker exec -u root precisoutapronto-app rm -f /app/nudge-referral-emails.cjs || true
           rm -f /tmp/nudge-referral-emails.cjs
           EOF

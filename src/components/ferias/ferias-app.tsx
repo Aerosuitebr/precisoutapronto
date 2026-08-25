@@ -153,7 +153,7 @@ export function FeriasApp({ publicAccess = false }: { publicAccess?: boolean } =
               <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-100 text-emerald-800">
                 <Calculator className="h-4 w-4" aria-hidden />
               </span>
-              <h2 className="rj-display text-base font-bold text-slate-900">Resultado estimado</h2>
+              <h2 className="precisoutapronto-display text-base font-bold text-slate-900">Resultado estimado</h2>
             </div>
 
             {!resultado ? (
@@ -175,7 +175,7 @@ export function FeriasApp({ publicAccess = false }: { publicAccess?: boolean } =
                 </ul>
                 <div className="flex items-center justify-between rounded-xl bg-slate-900 px-4 py-3 text-white">
                   <span className="text-sm font-semibold">Total bruto estimado</span>
-                  <span className="rj-display text-lg font-bold">{formatCurrency(resultado.totalBruto)}</span>
+                  <span className="precisoutapronto-display text-lg font-bold">{formatCurrency(resultado.totalBruto)}</span>
                 </div>
                 <p className="text-xs leading-5 text-slate-500">
                   Valores brutos, sem descontos. Estimativa educativa. Não substitui holerite nem orientação contábil.

@@ -33,7 +33,7 @@ export default function CalculadoraDeFeriasPage() {
     <>
       <CalculatorJsonLd calculator={seo} />
       <SiteHeader />
-      <main className="bg-[image:var(--rj-page-bg)]">
+      <main className="bg-[image:var(--precisoutapronto-page-bg)]">
         <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
           <FeriasApp publicAccess />
           <CalculatorContentSections calculator={seo} />

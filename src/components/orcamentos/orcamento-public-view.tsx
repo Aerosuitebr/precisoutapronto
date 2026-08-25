@@ -173,7 +173,7 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-700">
             Orçamento digital
           </p>
-          <h1 className="rj-display mt-2 text-2xl font-extrabold tracking-tight">
+          <h1 className="precisoutapronto-display mt-2 text-2xl font-extrabold tracking-tight">
             {orcamento.profissionalNome}
           </h1>
           <p className="mt-2 text-sm text-slate-600">

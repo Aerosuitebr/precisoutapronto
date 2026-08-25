@@ -2557,8 +2557,8 @@
                 "width": 350,
                 "height": 42
               },
-              "snippet": "<a class=\"brand\" href=\"#top\" aria-label=\"Resolva Jato\">",
-              "nodeLabel": "RJ\nResolva Jato\nGrátis, útil, direto.",
+              "snippet": "<a class=\"brand\" href=\"#top\" aria-label=\"Precisou, Tá Pronto\">",
+              "nodeLabel": "RJ\nPrecisou, Tá Pronto\nGrátis, útil, direto.",
               "explanation": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
             }
           }

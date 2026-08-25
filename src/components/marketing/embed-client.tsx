@@ -125,7 +125,7 @@ export function EmbedClient() {
         <header className="border-b border-slate-200 bg-white">
           <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-16">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Para parceiros</p>
-            <h1 className="rj-display mt-3 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
+            <h1 className="precisoutapronto-display mt-3 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
               Badges e embeds prontos para linkar
             </h1>
             <p className="mt-4 text-lg leading-8 text-slate-600">

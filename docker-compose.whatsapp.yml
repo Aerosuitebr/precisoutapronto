@@ -1,4 +1,4 @@
-# Evolution API independente do Resolva Jato (WhatsApp) — DEV LOCAL.
+# Evolution API independente do Precisou, Tá Pronto (WhatsApp) — DEV LOCAL.
 # Em produção use o docker-compose.yml unificado (ver DOCKER.md).
 #
 # Subir:
@@ -8,29 +8,29 @@
 #   docker compose -f docker-compose.whatsapp.yml down
 #
 # Host: http://localhost:18083
-# Chave padrão: resolva-jato-evolution-api-key-2026
-# Instância: resolva-jato
+# Chave padrão: precisoutapronto-evolution-api-key-2026
+# Instância: precisoutapronto
 
 services:
-  rj-evolution-postgres:
+  precisoutapronto-evolution-postgres:
     image: postgres:15-alpine
-    container_name: resolva-jato-evolution-postgres
+    container_name: precisoutapronto-evolution-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: evolution
       POSTGRES_PASSWORD: evolution
       POSTGRES_DB: evolution
     volumes:
-      - rj_evolution_postgres:/var/lib/postgresql/data
+      - precisoutapronto_evolution_postgres:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U evolution -d evolution']
       interval: 5s
       timeout: 5s
       retries: 10
 
-  rj-evolution-redis:
+  precisoutapronto-evolution-redis:
     image: redis:7-alpine
-    container_name: resolva-jato-evolution-redis
+    container_name: precisoutapronto-evolution-redis
     restart: unless-stopped
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
@@ -38,14 +38,14 @@ services:
       timeout: 3s
       retries: 10
 
-  rj-evolution-api:
+  precisoutapronto-evolution-api:
     image: evoapicloud/evolution-api:v2.3.7
-    container_name: resolva-jato-evolution-api
+    container_name: precisoutapronto-evolution-api
     restart: unless-stopped
     depends_on:
-      rj-evolution-postgres:
+      precisoutapronto-evolution-postgres:
         condition: service_healthy
-      rj-evolution-redis:
+      precisoutapronto-evolution-redis:
         condition: service_healthy
     ports:
       - '127.0.0.1:18083:8080'
@@ -53,20 +53,20 @@ services:
       SERVER_URL: http://localhost:18083
       SERVER_PORT: '8080'
       AUTHENTICATION_TYPE: apikey
-      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY:-resolva-jato-evolution-api-key-2026}
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY:-precisoutapronto-evolution-api-key-2026}
       AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES: 'true'
       DATABASE_ENABLED: 'true'
       DATABASE_PROVIDER: postgresql
-      DATABASE_CONNECTION_URI: postgresql://evolution:evolution@rj-evolution-postgres:5432/evolution?schema=public
+      DATABASE_CONNECTION_URI: postgresql://evolution:evolution@precisoutapronto-evolution-postgres:5432/evolution?schema=public
       CACHE_REDIS_ENABLED: 'true'
-      CACHE_REDIS_URI: redis://rj-evolution-redis:6379/1
-      CACHE_REDIS_PREFIX_KEY: rj-evolution
+      CACHE_REDIS_URI: redis://precisoutapronto-evolution-redis:6379/1
+      CACHE_REDIS_PREFIX_KEY: precisoutapronto-evolution
       CACHE_LOCAL_ENABLED: 'false'
       LOG_LEVEL: ERROR,WARN,INFO
       DEL_INSTANCE: 'false'
       CONFIG_SESSION_PHONE_VERSION: '2.3000.1025062854'
     volumes:
-      - rj_evolution_instances:/evolution/instances
+      - precisoutapronto_evolution_instances:/evolution/instances
     healthcheck:
       test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://localhost:8080/']
       interval: 15s
@@ -75,5 +75,5 @@ services:
       start_period: 40s
 
 volumes:
-  rj_evolution_postgres:
-  rj_evolution_instances:
+  precisoutapronto_evolution_postgres:
+  precisoutapronto_evolution_instances:

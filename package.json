@@ -1,5 +1,5 @@
 {
-  "name": "rj-resolva-jato",
+  "name": "precisoutapronto",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,14 +20,14 @@
     "docker:logs": "docker compose logs -f app",
     "docker:ps": "docker compose ps",
     "docker:vultr": "docker compose --env-file .env.production -f docker-compose.yml -f docker-compose.vultr.yml up -d --build",
-    "deploy:vultr": "powershell -File scripts/deploy/setup-vultr-resolvajato.ps1",
+    "deploy:vultr": "powershell -File scripts/deploy/setup-vultr-precisoutapronto.ps1",
     "seo:indexnow": "node scripts/seo/submit-indexnow.mjs",
     "seo:audit": "node scripts/seo/audit-static.mjs",
     "seo:smoke": "node scripts/seo/audit-http.mjs",
     "seo:dashboard": "node scripts/seo/build-weekly-dashboard.mjs",
     "whatsapp:up": "docker compose -f docker-compose.whatsapp.yml up -d",
     "whatsapp:down": "docker compose -f docker-compose.whatsapp.yml down",
-    "whatsapp:logs": "docker compose -f docker-compose.whatsapp.yml logs -f rj-evolution-api",
+    "whatsapp:logs": "docker compose -f docker-compose.whatsapp.yml logs -f precisoutapronto-evolution-api",
     "whatsapp:setup": "node --env-file=.env scripts/whatsapp-ensure-instance.mjs",
     "test:e2e": "playwright test",
     "test:e2e:staging": "playwright test",

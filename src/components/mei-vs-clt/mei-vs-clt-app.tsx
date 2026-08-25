@@ -424,7 +424,7 @@ export function MeiVsCltApp({
 
         <div className="grid gap-5 lg:grid-cols-2">
           <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-            <h2 className="rj-display text-base font-bold text-slate-900">
+            <h2 className="precisoutapronto-display text-base font-bold text-slate-900">
               {t.cltSectionTitle}
             </h2>
             <FormField
@@ -504,7 +504,7 @@ export function MeiVsCltApp({
           </div>
 
           <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-            <h2 className="rj-display text-base font-bold text-slate-900">
+            <h2 className="precisoutapronto-display text-base font-bold text-slate-900">
               {t.meiSectionTitle}
             </h2>
             <FormField
@@ -591,7 +591,7 @@ export function MeiVsCltApp({
             </div>
           ) : (
             <>
-              <h2 className="rj-display mb-3 text-base font-bold text-slate-900">
+              <h2 className="precisoutapronto-display mb-3 text-base font-bold text-slate-900">
                 {t.comparativoTitle}
               </h2>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -599,7 +599,7 @@ export function MeiVsCltApp({
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                     {t.cltMedioLabel}
                   </p>
-                  <p className="rj-display mt-1 text-xl font-bold text-slate-900">
+                  <p className="precisoutapronto-display mt-1 text-xl font-bold text-slate-900">
                     {formatCurrency(resultadoClt.liquidoMensalEquivalente)}
                   </p>
                 </div>
@@ -607,7 +607,7 @@ export function MeiVsCltApp({
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                     {t.meiLucroLabel}
                   </p>
-                  <p className="rj-display mt-1 text-xl font-bold text-slate-900">
+                  <p className="precisoutapronto-display mt-1 text-xl font-bold text-slate-900">
                     {formatCurrency(resultadoMei.lucroLiquido)}
                   </p>
                 </div>

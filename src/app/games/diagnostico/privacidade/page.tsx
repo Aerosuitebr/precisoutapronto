@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Privacidade · Jato Games Diagnostic' },
-  description: 'Política de privacidade específica do diagnóstico local de hardware do Jato Games.',
+  title: { absolute: 'Privacidade · Precisou, Tá Pronto Games Diagnostic' },
+  description: 'Política de privacidade específica do diagnóstico local de hardware do Precisou, Tá Pronto Games.',
   alternates: { canonical: '/games/diagnostico/privacidade' }
 };
 
 export default function Page() {
   return (
-    <LegalPage title="Privacidade do Jato Games Diagnostic" subtitle="Diagnóstico local e consentimento explícito">
+    <LegalPage title="Privacidade do Precisou, Tá Pronto Games Diagnostic" subtitle="Diagnóstico local e consentimento explícito">
       <p><strong>O diagnóstico não exige conta e não envia automaticamente inventário, benchmark ou relatório.</strong></p>
       <p>Após sua autorização, o aplicativo consulta localmente sistema operacional, CPU, quantidade de memória, adaptadores gráficos, versão do driver e espaço livre na unidade do sistema. Ele não lê seus documentos, histórico, senhas, mensagens ou conteúdo de arquivos.</p>
       <p>Para medir o armazenamento, cria um arquivo temporário de até 192 MB e tenta removê-lo ao final, inclusive após cancelamento ou falha. O catálogo de jogos é obtido por HTTPS sem incluir dados do computador.</p>

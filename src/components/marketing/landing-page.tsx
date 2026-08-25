@@ -27,7 +27,7 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
         <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-24 lg:px-10 lg:py-28 2xl:px-12">
           <div className="mx-auto max-w-4xl text-center">
             <p className="inline-flex items-center gap-2 rounded-full border border-[#83d600]/40 bg-[#83d600]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[#c8ff73]"><Sparkles className="h-4 w-4" />Sua necessidade. Nossa solução.</p>
-            <h1 className="rj-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">
+            <h1 className="precisoutapronto-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">
               <span className="block">Orçamento no WhatsApp.</span>
               <span className="mt-1 block text-[#a9ed42]">Aprovado. Pix recebido.</span>
             </h1>
@@ -63,7 +63,7 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Veja o que o cliente recebe</p>
-            <h2 className="rj-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">
+            <h2 className="precisoutapronto-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">
               Um link claro para decidir sem trocar dez mensagens.
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
@@ -90,7 +90,7 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
       <section id="categorias" className="scroll-mt-24 bg-[#f8faf7] py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="min-w-0">
-            <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Escolha por objetivo</p><h2 className="rj-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Encontre a ferramenta certa para o que você precisa.</h2><p className="mt-4 text-base leading-7 text-slate-600">Selecione uma área e veja soluções prontas para criar documentos, fazer cálculos e organizar sua rotina.</p></div>
+            <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Escolha por objetivo</p><h2 className="precisoutapronto-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Encontre a ferramenta certa para o que você precisa.</h2><p className="mt-4 text-base leading-7 text-slate-600">Selecione uma área e veja soluções prontas para criar documentos, fazer cálculos e organizar sua rotina.</p></div>
             <div className="mt-8 min-w-0"><CategoryExplorer /></div>
           </div>
         </div>
@@ -101,7 +101,7 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
       <section className="relative overflow-hidden bg-[#eef5ff] py-16 sm:py-24">
         <div className="absolute -right-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-[#83d600]/20 blur-3xl" />
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="text-center"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Como funciona</p><h2 className="rj-display mt-3 text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Do problema ao resultado em três movimentos.</h2></div>
+          <div className="text-center"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Como funciona</p><h2 className="precisoutapronto-display mt-3 text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Do problema ao resultado em três movimentos.</h2></div>
           <ol className="relative mt-12 grid gap-5 lg:grid-cols-3">
             <span className="absolute left-[16%] right-[16%] top-12 hidden h-0.5 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff] lg:block" aria-hidden />
             {steps.map((step) => <li key={step.number} className="relative rounded-[1.75rem] border border-[#0b5cff]/15 bg-white p-7 shadow-sm"><div className="flex items-center justify-between"><span className="grid h-14 w-14 place-items-center rounded-2xl bg-[#031f4b] text-white"><step.icon className="h-7 w-7" /></span><span className="text-4xl font-black text-[#0b5cff]/15">{step.number}</span></div><h3 className="mt-7 text-2xl font-black text-[#031f4b]">{step.title}</h3><p className="mt-2 text-sm leading-7 text-slate-600">{step.text}</p></li>)}
@@ -111,7 +111,7 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
 
       <section className="bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]"><BookOpen className="h-4 w-4" />Aprenda enquanto resolve</p><h2 className="rj-display mt-3 text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Guias curtos. Aplicação imediata.</h2></div><Link href="/guias" className="inline-flex items-center gap-2 text-sm font-extrabold text-[#0b5cff]">Ver todos os guias <ArrowRight className="h-4 w-4" /></Link></div>
+          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]"><BookOpen className="h-4 w-4" />Aprenda enquanto resolve</p><h2 className="precisoutapronto-display mt-3 text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Guias curtos. Aplicação imediata.</h2></div><Link href="/guias" className="inline-flex items-center gap-2 text-sm font-extrabold text-[#0b5cff]">Ver todos os guias <ArrowRight className="h-4 w-4" /></Link></div>
           <ul className="mt-10 grid gap-5 lg:grid-cols-3">
             {guides.map((guide, index) => <li key={guide.href}><Link href={guide.href} className="group flex h-full min-h-[235px] flex-col rounded-[1.75rem] border border-[#0b5cff]/15 bg-[#f8faf7] p-6 transition hover:-translate-y-1 hover:border-[#0b5cff]/40 hover:bg-white hover:shadow-lg"><div className="flex items-center justify-between"><span className="rounded-full bg-[#eef5ff] px-3 py-1 text-xs font-black uppercase tracking-wide text-[#0b5cff]">{guide.eyebrow}</span><span className="text-xs font-bold text-slate-400">{guide.time}</span></div><h3 className="mt-7 flex-1 text-2xl font-black leading-tight text-[#031f4b]">{guide.title}</h3><span className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#0b5cff]">Ler e aplicar <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span><span className={`mt-5 h-1 rounded-full ${index === 1 ? 'bg-[#83d600]' : 'bg-[#0b5cff]'}`} /></Link></li>)}
           </ul>
@@ -119,7 +119,7 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
       </section>
 
       <section className="bg-[#031f4b] py-16 text-white sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center"><div><p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#a9ed42]"><WandSparkles className="h-4 w-4" />Uma coleção que cresce com você</p><h2 className="rj-display mt-3 max-w-3xl text-4xl font-black tracking-[-0.04em] sm:text-5xl">Explore, favorite e compartilhe o que resolveu seu problema.</h2></div><Link href="/recursos" className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] transition hover:bg-[#a9ed42]">Explorar todas as ferramentas <ArrowRight className="h-5 w-5" /></Link></div>
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center"><div><p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#a9ed42]"><WandSparkles className="h-4 w-4" />Uma coleção que cresce com você</p><h2 className="precisoutapronto-display mt-3 max-w-3xl text-4xl font-black tracking-[-0.04em] sm:text-5xl">Explore, favorite e compartilhe o que resolveu seu problema.</h2></div><Link href="/recursos" className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] transition hover:bg-[#a9ed42]">Explorar todas as ferramentas <ArrowRight className="h-5 w-5" /></Link></div>
       </section>
     </div>
   );

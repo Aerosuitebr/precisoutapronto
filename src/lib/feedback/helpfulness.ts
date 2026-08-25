@@ -16,7 +16,7 @@ export function redactFeedbackPii(value: string) {
 }
 
 export function pseudonymizeFeedbackIdentity(value: string) {
-  return `feedback_${createHash('sha256').update(`resolva-jato:feedback:v1:${value}`).digest('hex')}`;
+  return `feedback_${createHash('sha256').update(`precisoutapronto:feedback:v1:${value}`).digest('hex')}`;
 }
 
 export function validFeedbackAnonymousKey(value: string) {

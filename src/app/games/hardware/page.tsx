@@ -3,7 +3,7 @@ import { GamesReadablePanel, HardwareCard, SectionAccent } from '@/components/ga
 import { hardwareGuides } from '@/lib/games/hardware';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Hardware gamer: GPU, CPU e engines | Jato Games' },
+  title: { absolute: 'Hardware gamer: GPU, CPU e engines | Precisou, Tá Pronto Games' },
   description:
     'Guias evergreen para escolher placa de vídeo, processador, entender game engines e montar PC sem desperdiçar.',
   alternates: { canonical: '/games/hardware' }
@@ -15,7 +15,7 @@ export default function HardwareIndexPage() {
       <SectionAccent>
         <GamesReadablePanel className="max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">Hardware</p>
-          <h1 className="rj-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+          <h1 className="precisoutapronto-display mt-2 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             GPU, CPU, engines e montagem
           </h1>
           <p className="mt-3 text-sm leading-7 text-slate-600">

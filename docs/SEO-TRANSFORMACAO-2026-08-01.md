@@ -1,7 +1,7 @@
 # Relatório de SEO, AEO, indexação e performance
 
 Data da revisão: 1 de agosto de 2026  
-Site canônico: https://resolvajato.com.br
+Site canônico: https://precisoutapronto.com.br
 
 ## Resultado executivo
 
@@ -40,7 +40,7 @@ O projeto já possuía uma arquitetura orgânica madura e foi preservado. A revi
 ## Pendências externas e operacionais
 
 - Publicar a versão e confirmar no ambiente real os status HTTP, canonicals e conteúdos de `robots.txt` e sitemaps.
-- Enviar `https://resolvajato.com.br/sitemaps/index.xml` ao Google Search Console e Bing Webmaster Tools.
+- Enviar `https://precisoutapronto.com.br/sitemaps/index.xml` ao Google Search Console e Bing Webmaster Tools.
 - Acompanhar páginas indexadas, consultas, CTR, Core Web Vitals de campo e erros de rastreamento por pelo menos 28 dias.
 - Executar Lighthouse em dispositivo móvel contra produção; métricas locais não substituem dados reais de usuários.
 - Revisar trimestralmente conteúdos jurídicos, trabalhistas e contábeis com profissional habilitado e atualizar `dateModified` somente quando houver revisão real.

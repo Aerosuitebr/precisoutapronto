@@ -17,7 +17,7 @@ import { PageHero } from "@/components/shared/page-hero";
 import { ToolsBackButton } from "@/components/shared/tools-back-button";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
-import { buildResolvaJatoDownloadName } from "@/lib/download-filename";
+import { buildPrecisouTaProntoDownloadName } from "@/lib/download-filename";
 import { cn } from "@/lib/utils";
 import {
   downloadBlob,
@@ -288,7 +288,7 @@ export function RemoverFundoApp({
   }
 
   async function handleDownload() {
-    const name = buildResolvaJatoDownloadName("picture");
+    const name = buildPrecisouTaProntoDownloadName("picture");
     if (compositeUrl) {
       const res = await fetch(compositeUrl);
       const blob = await res.blob();
@@ -447,7 +447,7 @@ export function RemoverFundoApp({
             </div>
 
             <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:sticky lg:top-24">
-              <h2 className="rj-display text-base font-bold text-slate-900">
+              <h2 className="precisoutapronto-display text-base font-bold text-slate-900">
                 {t.outputTitle}
               </h2>
               {!resultUrl ? (

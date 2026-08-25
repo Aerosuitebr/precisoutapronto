@@ -154,7 +154,7 @@ function splitName(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   return {
     firstName: parts[0] || 'Cliente',
-    lastName: parts.slice(1).join(' ') || 'ResolvaJato'
+    lastName: parts.slice(1).join(' ') || 'PrecisouTaPronto'
   };
 }
 

@@ -12,7 +12,7 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <>
       <TopEnvBanner />
-      <main className="flex min-h-screen flex-col bg-[image:var(--rj-page-bg)] pt-8">
+      <main className="flex min-h-screen flex-col bg-[image:var(--precisoutapronto-page-bg)] pt-8">
         <PremiumHeader />
         <UsageBanner />
         <div className="mx-auto w-full max-w-[1600px] flex-1 p-3 sm:p-5 lg:px-8 lg:py-7">{children}</div>

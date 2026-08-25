@@ -55,13 +55,13 @@ try {
 
 Set-Location $RepoRoot
 try {
-  $Host.UI.RawUI.WindowTitle = 'DeployMaster - Resolva Jato'
+  $Host.UI.RawUI.WindowTitle = 'DeployMaster - Precisou, Tá Pronto'
 } catch { }
 
 function Write-Banner {
   Write-Host ''
   Write-Host '============================================================' -ForegroundColor Cyan
-  Write-Host '  DeployMaster - Resolva Jato (staging -> producao)' -ForegroundColor Cyan
+  Write-Host '  DeployMaster - Precisou, Tá Pronto (staging -> producao)' -ForegroundColor Cyan
   Write-Host '============================================================' -ForegroundColor Cyan
   Write-Host ''
 }

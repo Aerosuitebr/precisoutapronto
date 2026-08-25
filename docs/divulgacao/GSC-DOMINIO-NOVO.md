@@ -1,8 +1,8 @@
-# Indexação Google · domínio novo (Resolva Jato)
+# Indexação Google · domínio novo (Precisou, Tá Pronto)
 
 Auditoria pública (2026-07-30): homepage, `robots.txt` e `sitemap.xml` em HTTP 200;
 sitemap com ~159 URLs; canônicas corretas; sem `noindex` / `X-Robots-Tag` em páginas
-públicas. `site:resolvajato.com.br` ainda frágil (domínio recente + descoberta).
+públicas. `site:precisoutapronto.com.br` ainda frágil (domínio recente + descoberta).
 
 Meta de verificação já publicada no HTML:
 
@@ -10,12 +10,12 @@ Meta de verificação já publicada no HTML:
 
 ## Duas propriedades no GSC (normal)
 
-No seletor aparecem dois Resolva Jato:
+No seletor aparecem dois Precisou, Tá Pronto:
 
 | Propriedade | Tipo | Uso |
 |---|---|---|
-| `resolvajato.com.br` | **Domínio** (DNS) | Principal. Cobre apex, `www`, http e https. |
-| `https://resolvajato.com.br/` | Prefixo de URL | Secundária. Só esse scheme+host. |
+| `precisoutapronto.com.br` | **Domínio** (DNS) | Principal. Cobre apex, `www`, http e https. |
+| `https://precisoutapronto.com.br/` | Prefixo de URL | Secundária. Só esse scheme+host. |
 
 **Trabalhe na propriedade de domínio.** Envie sitemaps, peça indexação e acompanhe
 Desempenho / Páginas lá. A de prefixo pode ficar verificada, mas evita fila duplicada.
@@ -26,10 +26,10 @@ tráfego de campo do Chrome UX Report).
 
 ## Prioridade no Google Search Console
 
-1. Usar a propriedade de **domínio** `resolvajato.com.br`.
+1. Usar a propriedade de **domínio** `precisoutapronto.com.br`.
 2. Enviar sitemaps:
-   - `https://resolvajato.com.br/sitemap.xml` (completo)
-   - `https://resolvajato.com.br/sitemaps/index.xml` (segmentos: core, tools, growth, guides, games, i18n)
+   - `https://precisoutapronto.com.br/sitemap.xml` (completo)
+   - `https://precisoutapronto.com.br/sitemaps/index.xml` (segmentos: core, tools, growth, guides, games, i18n)
 3. Inspecionar e solicitar indexação, nesta ordem:
    - `/`
    - `/gerador-de-contrato`
@@ -64,8 +64,8 @@ tráfego de campo do Chrome UX Report).
 ```bash
 npm run seo:indexnow
 
-node scripts/seo/submit-indexnow.mjs --url https://resolvajato.com.br/
-node scripts/seo/submit-indexnow.mjs --url https://resolvajato.com.br/gerador-de-contrato
+node scripts/seo/submit-indexnow.mjs --url https://precisoutapronto.com.br/
+node scripts/seo/submit-indexnow.mjs --url https://precisoutapronto.com.br/gerador-de-contrato
 ```
 
 O script lê o `sitemap.xml` ao vivo por padrão (cobertura completa).

@@ -72,7 +72,7 @@ function PixPreview() {
           </div>
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Valor</p>
-            <p className="rj-display text-2xl font-extrabold tracking-tight text-slate-950">R$ 180,00</p>
+            <p className="precisoutapronto-display text-2xl font-extrabold tracking-tight text-slate-950">R$ 180,00</p>
             <p className="mt-1 truncate text-xs text-slate-500">Ana Lima Design · Pix Copia e Cola</p>
           </div>
         </div>
@@ -93,13 +93,13 @@ function PixPreview() {
 export function HeroDualNiche({ className }: { className?: string }) {
   return (
     <div className={cn('grid gap-4 sm:gap-5', className)}>
-      <article className="rj-animate-fade-up-delay grid gap-4 rounded-[28px] border border-white/15 bg-white/5 p-4 backdrop-blur-sm sm:grid-cols-[1fr_1.05fr] sm:p-5">
+      <article className="precisoutapronto-animate-fade-up-delay grid gap-4 rounded-[28px] border border-white/15 bg-white/5 p-4 backdrop-blur-sm sm:grid-cols-[1fr_1.05fr] sm:p-5">
         <div className="flex min-w-0 flex-col justify-center">
           <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300">
             <PenLine className="h-3.5 w-3.5" />
             Estudantes
           </p>
-          <h2 className="rj-display mt-2 text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+          <h2 className="precisoutapronto-display mt-2 text-xl font-extrabold tracking-tight text-white sm:text-2xl">
             Preocupado com a redação?
           </h2>
           <p className="mt-2 text-sm leading-6 text-slate-300">
@@ -118,13 +118,13 @@ export function HeroDualNiche({ className }: { className?: string }) {
         <EnemPreview />
       </article>
 
-      <article className="rj-animate-fade-up-delay-2 grid gap-4 rounded-[28px] border border-white/15 bg-white/5 p-4 backdrop-blur-sm sm:grid-cols-[1fr_1.05fr] sm:p-5">
+      <article className="precisoutapronto-animate-fade-up-delay-2 grid gap-4 rounded-[28px] border border-white/15 bg-white/5 p-4 backdrop-blur-sm sm:grid-cols-[1fr_1.05fr] sm:p-5">
         <div className="flex min-w-0 flex-col justify-center">
           <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-300">
             <Wallet className="h-3.5 w-3.5" />
             MEI e freelancers
           </p>
-          <h2 className="rj-display mt-2 text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+          <h2 className="precisoutapronto-display mt-2 text-xl font-extrabold tracking-tight text-white sm:text-2xl">
             Precisa cobrar agora?
           </h2>
           <p className="mt-2 text-sm leading-6 text-slate-300">

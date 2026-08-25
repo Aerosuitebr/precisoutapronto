@@ -50,7 +50,7 @@ export async function sendPushToOwner(ownerEmail: string, payload: PushPayload):
             title: payload.title,
             body: payload.body,
             url: payload.url || '/ferramentas/orcamentos',
-            tag: payload.tag || 'resolva-jato',
+            tag: payload.tag || 'precisoutapronto',
             playSound: payload.playSound !== false,
             vibrate: [200, 100, 200, 100, 400],
             requireInteraction: true

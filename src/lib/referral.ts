@@ -31,7 +31,7 @@ export async function ensureUserReferralCode(userId: string) {
   if (user.referralCode) return user.referralCode;
 
   for (let attempt = 0; attempt < 8; attempt++) {
-    const code = `RJ${generateSecureToken(4).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6)}`;
+    const code = `PTP${generateSecureToken(4).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6)}`;
     try {
       const updated = await prisma.user.update({
         where: { id: userId },

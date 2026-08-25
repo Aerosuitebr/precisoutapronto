@@ -66,7 +66,7 @@ export function Modal({
       >
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4 sm:px-6 sm:py-5">
           <div className="min-w-0 pr-2">
-            <h2 id="modal-title" className="rj-display text-xl font-bold text-slate-900">
+            <h2 id="modal-title" className="precisoutapronto-display text-xl font-bold text-slate-900">
               {title}
             </h2>
             {description ? (

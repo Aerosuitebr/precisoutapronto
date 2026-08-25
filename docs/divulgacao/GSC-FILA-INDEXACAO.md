@@ -1,8 +1,8 @@
 # Fila GSC · solicitar indexação (todas as landings SEO)
 
-Fonte: `https://resolvajato.com.br/sitemap.xml` (~159 URLs).  
-Índice por segmento (melhor visão no GSC): `https://resolvajato.com.br/sitemaps/index.xml`.  
-Use a propriedade de **domínio** `resolvajato.com.br` (a de prefixo HTTPS é secundária).  
+Fonte: `https://precisoutapronto.com.br/sitemap.xml` (~159 URLs).  
+Índice por segmento (melhor visão no GSC): `https://precisoutapronto.com.br/sitemaps/index.xml`.  
+Use a propriedade de **domínio** `precisoutapronto.com.br` (a de prefixo HTTPS é secundária).  
 “Solicitar indexação” no GSC tem cota diária. Use os lotes abaixo.
 
 ## Já confirmados no Google
@@ -27,7 +27,7 @@ Revisão GSC: formulário aberto; confirmar envio manual se o botão ainda disse
 ## Bing / Clarity
 
 - Clarity no ar: ID `xsknm22mhw` carrega **depois** de Aceitar métricas
-- Bing Webmaster: propriedade `resolvajato.com.br/` já verificada (`IsVerified: true`)
+- Bing Webmaster: propriedade `precisoutapronto.com.br/` já verificada (`IsVerified: true`)
 - Token `msvalidate.01`: `95E6ADBB3604C5BDD917DDC5ABEB308B` (via API GetUserSites → AuthenticationCode)
 - Local: `BING_SITE_VERIFICATION` gravado no `.env`
 - Produção: precisa do mesmo valor no `.env` do host + **rebuild** (build arg do Docker)
@@ -96,40 +96,40 @@ Pedidas até `guias/aviso-previo-proporcional-como-calcular` (e anteriores do lo
 **Faltam 9** → arquivo `gsc-fila-amanha-2026-08-02.txt` (primeiro amanhã, antes do dia 3).
 
 ```
-https://resolvajato.com.br/guias/quanto-cobrar-por-hora-freelancer
-https://resolvajato.com.br/guias/custos-fixos-do-freelancer-como-ratear
-https://resolvajato.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
-https://resolvajato.com.br/para/autonomos
-https://resolvajato.com.br/para/empresas
-https://resolvajato.com.br/para/rh
-https://resolvajato.com.br/para/contadores
-https://resolvajato.com.br/para/advogados
-https://resolvajato.com.br/para/prestadores
+https://precisoutapronto.com.br/guias/quanto-cobrar-por-hora-freelancer
+https://precisoutapronto.com.br/guias/custos-fixos-do-freelancer-como-ratear
+https://precisoutapronto.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
+https://precisoutapronto.com.br/para/autonomos
+https://precisoutapronto.com.br/para/empresas
+https://precisoutapronto.com.br/para/rh
+https://precisoutapronto.com.br/para/contadores
+https://precisoutapronto.com.br/para/advogados
+https://precisoutapronto.com.br/para/prestadores
 ```
 
 Lista completa do lote 2 (referência):
 
 ```
-https://resolvajato.com.br/para/freelancers
-https://resolvajato.com.br/para/estudantes
-https://resolvajato.com.br/guias/modelo-de-recibo-mei
-https://resolvajato.com.br/guias/contrato-de-prestacao-de-servicos-gratis
-https://resolvajato.com.br/guias/como-calcular-rescisao
-https://resolvajato.com.br/guias/curriculo-pronto-para-baixar
-https://resolvajato.com.br/guias/como-fazer-orcamento-com-pix
-https://resolvajato.com.br/guias/proposta-comercial-para-mei
-https://resolvajato.com.br/guias/como-precificar-servico-freelancer
-https://resolvajato.com.br/guias/mei-ou-clt-como-comparar
-https://resolvajato.com.br/guias/aviso-previo-proporcional-como-calcular
-https://resolvajato.com.br/guias/quanto-cobrar-por-hora-freelancer
-https://resolvajato.com.br/guias/custos-fixos-do-freelancer-como-ratear
-https://resolvajato.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
-https://resolvajato.com.br/para/autonomos
-https://resolvajato.com.br/para/empresas
-https://resolvajato.com.br/para/rh
-https://resolvajato.com.br/para/contadores
-https://resolvajato.com.br/para/advogados
-https://resolvajato.com.br/para/prestadores
+https://precisoutapronto.com.br/para/freelancers
+https://precisoutapronto.com.br/para/estudantes
+https://precisoutapronto.com.br/guias/modelo-de-recibo-mei
+https://precisoutapronto.com.br/guias/contrato-de-prestacao-de-servicos-gratis
+https://precisoutapronto.com.br/guias/como-calcular-rescisao
+https://precisoutapronto.com.br/guias/curriculo-pronto-para-baixar
+https://precisoutapronto.com.br/guias/como-fazer-orcamento-com-pix
+https://precisoutapronto.com.br/guias/proposta-comercial-para-mei
+https://precisoutapronto.com.br/guias/como-precificar-servico-freelancer
+https://precisoutapronto.com.br/guias/mei-ou-clt-como-comparar
+https://precisoutapronto.com.br/guias/aviso-previo-proporcional-como-calcular
+https://precisoutapronto.com.br/guias/quanto-cobrar-por-hora-freelancer
+https://precisoutapronto.com.br/guias/custos-fixos-do-freelancer-como-ratear
+https://precisoutapronto.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
+https://precisoutapronto.com.br/para/autonomos
+https://precisoutapronto.com.br/para/empresas
+https://precisoutapronto.com.br/para/rh
+https://precisoutapronto.com.br/para/contadores
+https://precisoutapronto.com.br/para/advogados
+https://precisoutapronto.com.br/para/prestadores
 ```
 
 ## Dia 2 · segmentos e guias · 20 URLs
@@ -146,10 +146,10 @@ Arquivo: `gsc-fila-rest.txt` (inclui EN/ES, games, institucionais)
 
 ## Como pedir no GSC
 
-1. Abrir propriedade de **domínio**: https://search.google.com/search-console?resource_id=sc-domain%3Aresolvajato.com.br
+1. Abrir propriedade de **domínio**: https://search.google.com/search-console?resource_id=sc-domain%3Aprecisoutapronto.com.br
 2. Sitemaps → adicionar:
-   - `https://resolvajato.com.br/sitemap.xml`
-   - `https://resolvajato.com.br/sitemaps/index.xml`
+   - `https://precisoutapronto.com.br/sitemap.xml`
+   - `https://precisoutapronto.com.br/sitemaps/index.xml`
 3. Colar cada URL na barra “Inspecionar qualquer URL”
 4. Se **não** estiver indexada: **Solicitar indexação**
 5. Se já estiver indexada: pular (não gastar cota)

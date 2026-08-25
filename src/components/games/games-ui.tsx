@@ -135,12 +135,12 @@ export function GamesHeroArt({ className }: { className?: string }) {
         <div className="flex flex-col gap-3 rounded-2xl border border-white/80 bg-white/90 p-4 shadow-sm">
           <Gamepad2 className="h-8 w-8 text-teal-600" />
           <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Top jogos</p>
-          <p className="rj-display text-lg font-extrabold text-slate-900">Setup pronto</p>
+          <p className="precisoutapronto-display text-lg font-extrabold text-slate-900">Setup pronto</p>
         </div>
         <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-white/80 bg-white/90 p-4 shadow-sm">
           <Cpu className="h-8 w-8 text-amber-600" />
           <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Hardware</p>
-          <p className="rj-display text-lg font-extrabold text-slate-900">Sem desperdício</p>
+          <p className="precisoutapronto-display text-lg font-extrabold text-slate-900">Sem desperdício</p>
         </div>
         <div className="col-span-2 flex items-center gap-3 rounded-2xl border border-white/80 bg-white/95 px-4 py-3 shadow-sm">
           <Monitor className="h-6 w-6 shrink-0 text-cyan-600" />
@@ -191,7 +191,7 @@ export function GameCard({
       >
         <span
           className={cn(
-            'rj-display font-black leading-none text-teal-600',
+            'precisoutapronto-display font-black leading-none text-teal-600',
             featured ? 'text-5xl sm:text-6xl' : 'text-4xl'
           )}
         >
@@ -209,7 +209,7 @@ export function GameCard({
         ) : null}
         <h3
           className={cn(
-            'rj-display break-words font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800',
+            'precisoutapronto-display break-words font-extrabold tracking-tight text-slate-900 group-hover:text-teal-800',
             featured ? 'mt-1 text-2xl sm:text-3xl' : 'text-xl'
           )}
         >
@@ -235,7 +235,7 @@ export function HardwareCard({ guide }: { guide: HardwareGuide }) {
     >
       <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-500 via-orange-400 to-yellow-300 opacity-90" />
       <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-amber-700">Guia</p>
-      <h3 className="rj-display mt-2 text-xl font-extrabold text-slate-900 group-hover:text-amber-800">
+      <h3 className="precisoutapronto-display mt-2 text-xl font-extrabold text-slate-900 group-hover:text-amber-800">
         {guide.title}
       </h3>
       <p className="mt-3 flex-1 text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
@@ -255,7 +255,7 @@ export function StoreCard({ store }: { store: GameStore }) {
       className="block cursor-pointer rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.45)] ring-1 ring-slate-900/5 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_18px_40px_-18px_rgba(15,23,42,0.5)]"
     >
       <div className="flex items-center justify-between gap-3">
-        <h3 className="rj-display text-base font-extrabold text-slate-900">{store.name}</h3>
+        <h3 className="precisoutapronto-display text-base font-extrabold text-slate-900">{store.name}</h3>
         <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
           {store.kind}
         </span>
@@ -349,7 +349,7 @@ export function GameHero({ game }: { game: GameEntry }) {
             </span>
             <span className="text-teal-100">{game.genres.join(' · ')}</span>
           </p>
-          <h1 className="rj-display mt-4 break-words text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h1 className="precisoutapronto-display mt-4 break-words text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
             {game.title}
           </h1>
           <p className="mt-4 max-w-2xl break-words text-base leading-7 text-white/95 sm:text-lg">
@@ -360,7 +360,7 @@ export function GameHero({ game }: { game: GameEntry }) {
           </p>
         </div>
         <div
-          className="rj-display hidden select-none text-[7rem] font-black leading-none text-white/15 sm:block lg:text-[9rem]"
+          className="precisoutapronto-display hidden select-none text-[7rem] font-black leading-none text-white/15 sm:block lg:text-[9rem]"
           aria-hidden
         >
           #{game.rank}
@@ -390,7 +390,7 @@ export function GameNextSteps({ game }: { game: GameEntry }) {
 
   return (
     <section className="rounded-2xl border border-teal-200 bg-teal-50/60 p-5 shadow-sm ring-1 ring-teal-900/5 sm:p-6">
-      <h2 className="rj-display text-xl font-extrabold text-slate-950">Próximo passo</h2>
+      <h2 className="precisoutapronto-display text-xl font-extrabold text-slate-950">Próximo passo</h2>
       <p className="mt-2 text-sm leading-6 text-slate-700">
         Use o setup acima como base e avance para cotação, lojas confiáveis ou a página oficial do
         jogo.

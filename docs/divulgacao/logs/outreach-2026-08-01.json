@@ -8,7 +8,7 @@
     "at": "2026-08-01T15:42:28.481Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<30ae448d-0dba-1d30-aed5-3e0875ab5980@resolvajato.com.br>"
+    "messageId": "<30ae448d-0dba-1d30-aed5-3e0875ab5980@precisoutapronto.com.br>"
   },
   {
     "id": "melhor-rh-projetos",
@@ -19,7 +19,7 @@
     "at": "2026-08-01T15:42:35.620Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<95d467cb-8f54-180d-b795-1b74e2f06238@resolvajato.com.br>"
+    "messageId": "<95d467cb-8f54-180d-b795-1b74e2f06238@precisoutapronto.com.br>"
   },
   {
     "id": "guia-estudante",
@@ -30,7 +30,7 @@
     "at": "2026-08-01T15:42:42.307Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<4f03d891-e4dd-34d0-9d53-2f39739ee420@resolvajato.com.br>"
+    "messageId": "<4f03d891-e4dd-34d0-9d53-2f39739ee420@precisoutapronto.com.br>"
   },
   {
     "id": "portal-empreendedor",
@@ -41,7 +41,7 @@
     "at": "2026-08-01T15:42:48.987Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<ce591b1e-1924-918a-92d9-a9864703e105@resolvajato.com.br>"
+    "messageId": "<ce591b1e-1924-918a-92d9-a9864703e105@precisoutapronto.com.br>"
   },
   {
     "id": "ja-brasil",
@@ -52,7 +52,7 @@
     "at": "2026-08-01T15:42:55.900Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<60523ff4-df17-5833-04cf-17182d0bf93a@resolvajato.com.br>"
+    "messageId": "<60523ff4-df17-5833-04cf-17182d0bf93a@precisoutapronto.com.br>"
   },
   {
     "id": "sebrae-sp",
@@ -63,7 +63,7 @@
     "at": "2026-08-01T15:43:02.535Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<9b5ff45a-86a5-168c-8460-3ebe5e4413f2@resolvajato.com.br>"
+    "messageId": "<9b5ff45a-86a5-168c-8460-3ebe5e4413f2@precisoutapronto.com.br>"
   },
   {
     "id": "sebrae-ms",
@@ -74,7 +74,7 @@
     "at": "2026-08-01T15:43:09.052Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<9c6febed-3adb-1012-0498-39e504031440@resolvajato.com.br>"
+    "messageId": "<9c6febed-3adb-1012-0498-39e504031440@precisoutapronto.com.br>"
   },
   {
     "id": "sebrae-mt",
@@ -85,7 +85,7 @@
     "at": "2026-08-01T15:43:15.587Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<17979e32-b5a1-47fa-47d8-9e852ac73b1d@resolvajato.com.br>"
+    "messageId": "<17979e32-b5a1-47fa-47d8-9e852ac73b1d@precisoutapronto.com.br>"
   },
   {
     "id": "sebrae-pi",
@@ -96,7 +96,7 @@
     "at": "2026-08-01T15:43:22.307Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<cea30096-8b9e-72ba-51f3-b23e39932208@resolvajato.com.br>"
+    "messageId": "<cea30096-8b9e-72ba-51f3-b23e39932208@precisoutapronto.com.br>"
   },
   {
     "id": "sebrae-sc",
@@ -107,6 +107,6 @@
     "at": "2026-08-01T15:43:28.814Z",
     "status": "sent",
     "provider": "smtp",
-    "messageId": "<24576264-3bef-440a-7315-b8e0796fba9c@resolvajato.com.br>"
+    "messageId": "<24576264-3bef-440a-7315-b8e0796fba9c@precisoutapronto.com.br>"
   }
 ]

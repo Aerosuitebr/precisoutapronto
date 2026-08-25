@@ -1,4 +1,4 @@
-const WHATSAPP_ACK_PREFIX = 'rj_quote_whatsapp_ack_v1:';
+const WHATSAPP_ACK_PREFIX = 'precisoutapronto_quote_whatsapp_ack_v1:';
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export function quoteWhatsAppAckKey(quoteId: string) {

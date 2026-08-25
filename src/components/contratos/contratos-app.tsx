@@ -377,7 +377,7 @@ export function ContratosApp() {
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300">
                     Ferramenta premium
                   </p>
-                  <h2 className="rj-display mt-1 text-2xl font-extrabold tracking-tight">
+                  <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold tracking-tight">
                     Contratos sob medida
                   </h2>
                   <p className="mt-1 max-w-2xl text-sm font-medium leading-6 text-slate-300">
@@ -481,7 +481,7 @@ export function ContratosApp() {
         />
 
         <section className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-          <h2 className="rj-display text-lg font-bold text-slate-950">Tipo de contrato</h2>
+          <h2 className="precisoutapronto-display text-lg font-bold text-slate-950">Tipo de contrato</h2>
           <p className="mt-1 text-sm font-medium text-slate-600">
             Ao escolher o modelo, cláusulas sugeridas são aplicadas automaticamente.
           </p>
@@ -494,7 +494,7 @@ export function ContratosApp() {
                   type="button"
                   onClick={() => handleTemplateChange(template.id)}
                   className={cn(
-                    'rj-press overflow-hidden rounded-2xl border text-left transition',
+                    'precisoutapronto-press overflow-hidden rounded-2xl border text-left transition',
                     active ? 'border-sky-500 ring-2 ring-sky-200' : 'border-slate-200 hover:border-slate-300'
                   )}
                 >
@@ -719,7 +719,7 @@ export function ContratosApp() {
             />
           </section>
 
-          <section className="rounded-[28px] border border-slate-200 bg-slate-100/80 p-4 shadow-sm sm:p-6 xl:sticky xl:top-[var(--rj-doc-preview-top)] xl:self-start">
+          <section className="rounded-[28px] border border-slate-200 bg-slate-100/80 p-4 shadow-sm sm:p-6 xl:sticky xl:top-[var(--precisoutapronto-doc-preview-top)] xl:self-start">
             <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
               Pré-visualização
             </p>

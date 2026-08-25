@@ -26,7 +26,7 @@ export default function OrdensServicoPage() {
   }, [search, status]);
 
   const columns: DataTableColumn<OrdemServico>[] = [
-    { key: 'numero', header: 'Numero', render: (row) => <span className="font-bold text-[var(--rj-link)]">{row.numero}</span> },
+    { key: 'numero', header: 'Numero', render: (row) => <span className="font-bold text-[var(--precisoutapronto-link)]">{row.numero}</span> },
     { key: 'cliente', header: 'Cliente', render: (row) => <span className="font-medium text-slate-800">{row.cliente}</span> },
     { key: 'aeronave', header: 'Aeronave', render: (row) => row.aeronave },
     { key: 'tipo', header: 'Tipo', render: (row) => row.tipo },

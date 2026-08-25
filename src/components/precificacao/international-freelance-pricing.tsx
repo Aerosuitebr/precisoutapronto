@@ -162,7 +162,7 @@ export function InternationalFreelancePricing({ locale }: { locale: Internationa
       <header className="border-b border-slate-200 bg-white"><div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6"><Link href={`/${locale}`}><Logo variant="marketing" className="h-12 sm:h-14" /></Link><LocaleSwitcher locale={locale} label={locale === 'en' ? 'Language' : 'Idioma'} paths={{ 'pt-BR': '/calculadora-de-preco-freelancer', en: '/en/tools/freelance-pricing', es: '/es/tools/freelance-pricing' }} /></div></header>
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link href={`/${locale}/tools`} className="inline-flex items-center gap-2 text-sm font-bold text-sky-700"><ArrowLeft className="h-4 w-4" />{t.back}</Link>
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="rj-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 max-w-2xl text-slate-600">{t.subtitle}</p></div><Button variant="outline" icon={Sparkles} onClick={loadSample}>{t.sample}</Button></div>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="precisoutapronto-display text-3xl font-extrabold sm:text-4xl">{t.title}</h1><p className="mt-2 max-w-2xl text-slate-600">{t.subtitle}</p></div><Button variant="outline" icon={Sparkles} onClick={loadSample}>{t.sample}</Button></div>
         <p className="mt-5 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-950">{t.notice}</p>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.82fr)]">

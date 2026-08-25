@@ -22,9 +22,9 @@ interface ClientProductEventInput {
   properties?: Record<string, EventProperty>;
 }
 
-const ANONYMOUS_ID_KEY = 'rj_product_anonymous_id';
-const SESSION_ID_KEY = 'rj_product_session_id';
-const INGESTION_DISABLED_KEY = 'rj_product_ingestion_disabled';
+const ANONYMOUS_ID_KEY = 'precisoutapronto_product_anonymous_id';
+const SESSION_ID_KEY = 'precisoutapronto_product_session_id';
+const INGESTION_DISABLED_KEY = 'precisoutapronto_product_ingestion_disabled';
 
 function uuid() {
   return crypto.randomUUID();

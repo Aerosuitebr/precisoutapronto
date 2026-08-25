@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: resolva-jato
+    name: precisoutapronto
     runtime: node
     plan: free
     buildCommand: ''

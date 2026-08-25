@@ -1,7 +1,7 @@
 import { createEmptyReceipt } from '@/lib/recibos/defaults';
 import type { ReceiptData } from '@/lib/recibos/types';
 
-export const QUOTE_RECEIPT_TRANSFER_KEY = 'rj_quote_receipt_transfer_v1';
+export const QUOTE_RECEIPT_TRANSFER_KEY = 'precisoutapronto_quote_receipt_transfer_v1';
 
 export interface QuoteReceiptTransfer {
   receiverName: string;

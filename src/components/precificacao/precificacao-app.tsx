@@ -371,7 +371,7 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
               <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-100 text-emerald-800">
                 <PiggyBank className="h-4 w-4" aria-hidden />
               </span>
-              <h2 id="resultado-titulo" className="rj-display text-base font-bold text-slate-900">
+              <h2 id="resultado-titulo" className="precisoutapronto-display text-base font-bold text-slate-900">
                 Seu preço sugerido
               </h2>
             </div>
@@ -387,7 +387,7 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
                   aria-live="polite"
                 >
                   <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-200">Preço de venda</p>
-                  <p className="rj-display mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+                  <p className="precisoutapronto-display mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
                     {formatCurrency(resultado.precoFinal)}
                   </p>
                   <p className="mt-2 text-sm text-slate-300">
@@ -410,13 +410,13 @@ export function PrecificacaoApp({ publicAccess = false }: { publicAccess?: boole
                 <div className="grid gap-2 sm:grid-cols-2">
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-center">
                     <p className="text-xs font-semibold uppercase tracking-wide text-emerald-800">Lucro / venda</p>
-                    <p className="rj-display mt-1 text-lg font-bold text-emerald-900">
+                    <p className="precisoutapronto-display mt-1 text-lg font-bold text-emerald-900">
                       {formatCurrency(resultado.lucroLiquidoPorVenda)}
                     </p>
                   </div>
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center">
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">Markup</p>
-                    <p className="rj-display mt-1 text-lg font-bold text-slate-900">
+                    <p className="precisoutapronto-display mt-1 text-lg font-bold text-slate-900">
                       {resultado.markup > 0 ? `${resultado.markup.toFixed(2)}x` : '-'}
                     </p>
                   </div>
@@ -512,7 +512,7 @@ function StepHeader({
         <Icon className="h-5 w-5" aria-hidden />
       </span>
       <div className="min-w-0">
-        <h2 id={id} className="rj-display text-base font-bold text-slate-900">
+        <h2 id={id} className="precisoutapronto-display text-base font-bold text-slate-900">
           {title}
         </h2>
         <p className="mt-1 text-sm leading-5 text-slate-600">{subtitle}</p>

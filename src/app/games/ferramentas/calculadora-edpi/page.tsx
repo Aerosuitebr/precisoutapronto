@@ -3,11 +3,11 @@ import { EdpiCalculator } from '@/components/games/gamer-tools';
 import { GamerToolLanding } from '@/components/games/gamer-tool-landing';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Calculadora de eDPI para FPS | Jato Games' },
+  title: { absolute: 'Calculadora de eDPI para FPS | Precisou, Tá Pronto Games' },
   description: 'Calcule seu eDPI usando DPI e sensibilidade do jogo. Compare configurações de mira em CS2, Valorant e outros FPS.',
   alternates: { canonical: '/games/ferramentas/calculadora-edpi' },
   openGraph: {
-    title: 'Calculadora de eDPI para FPS | Jato Games',
+    title: 'Calculadora de eDPI para FPS | Precisou, Tá Pronto Games',
     description: 'Descubra seu eDPI em segundos e registre uma referência consistente para ajustar sua mira.',
     url: '/games/ferramentas/calculadora-edpi',
     type: 'website'

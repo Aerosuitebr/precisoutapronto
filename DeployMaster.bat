@@ -1,6 +1,6 @@
 @echo off
 setlocal EnableExtensions
-title DeployMaster - Resolva Jato
+title DeployMaster - Precisou, Tá Pronto
 cd /d "%~dp0"
 
 REM Launcher: staging -> resumo -> producao (GitHub Actions Vultr)

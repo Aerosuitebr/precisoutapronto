@@ -385,7 +385,7 @@ export function AssinaturaEmailApp({
               <span className="grid h-9 w-9 place-items-center rounded-xl bg-sky-100 text-sky-800">
                 <Wand2 className="h-4 w-4" aria-hidden />
               </span>
-              <h2 className="rj-display text-base font-bold text-slate-900">{t.previewTitle}</h2>
+              <h2 className="precisoutapronto-display text-base font-bold text-slate-900">{t.previewTitle}</h2>
             </div>
 
             {!podeGerar ? (

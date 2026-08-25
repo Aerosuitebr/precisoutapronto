@@ -8,7 +8,7 @@ Defense in depth contra múltiplas contas para burlar o plano gratuito.
 2. **E-mails descartáveis** — lista local de domínios bloqueados no register
 3. **Cloudflare Turnstile** — token validado no servidor
 4. **Rate limit por IP** — cadastro 3/24h, login 10/15min, reenvio 5/h (Postgres)
-5. **Cookie `rj_device`** — UUID 1 ano; ligado a contas no cadastro/login
+5. **Cookie `precisoutapronto_device`** — UUID 1 ano; ligado a contas no cadastro/login
 6. **Risk score** — IP/device/UA/idioma/timezone/tela; cooldown ou blacklist
 7. **Auditoria** — `audit_logs`
 8. **Lista negra** — IP, e-mail, domínio, device
@@ -17,7 +17,7 @@ Defense in depth contra múltiplas contas para burlar o plano gratuito.
 
 | Var | Obrigatória | Uso |
 |-----|-------------|-----|
-| `AUTH_SECRET` | sim (prod) | Assina cookie `rj_session` |
+| `AUTH_SECRET` | sim (prod) | Assina cookie `precisoutapronto_session` |
 | `RESEND_API_KEY` / `RESEND_FROM` | sim (prod) | E-mail de verificação |
 | `TURNSTILE_SECRET_KEY` | sim (prod) | Validação captcha |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | sim (prod) | Widget (build-time) |

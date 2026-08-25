@@ -63,8 +63,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       const detail = (event as CustomEvent<{ message?: string }>).detail;
       if (detail?.message) toast(detail.message);
     }
-    window.addEventListener('rj-billable-success', onBillableSuccess);
-    return () => window.removeEventListener('rj-billable-success', onBillableSuccess);
+    window.addEventListener('precisoutapronto-billable-success', onBillableSuccess);
+    return () => window.removeEventListener('precisoutapronto-billable-success', onBillableSuccess);
   }, [toast]);
 
   const value = useMemo(() => ({ toast }), [toast]);
@@ -86,7 +86,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 key={item.id}
                 className={cn(
                   'pointer-events-auto flex items-start gap-3 rounded-2xl border px-4 py-3.5',
-                  'shadow-[0_18px_40px_rgba(15,23,42,0.18)] rj-toast-in',
+                  'shadow-[0_18px_40px_rgba(15,23,42,0.18)] precisoutapronto-toast-in',
                   isError
                     ? 'border-rose-300 bg-rose-50'
                     : 'border-emerald-300 bg-emerald-50'

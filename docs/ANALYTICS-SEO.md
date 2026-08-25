@@ -20,7 +20,7 @@ No GA4, marque `purchase` como evento principal. Para comparar aquisição orgâ
 
 ## Google Workspace e e-mail
 
-Caixa oficial e SMTP: `contato@resolvajato.com.br` via `smtp.gmail.com`.  
+Caixa oficial e SMTP: `contato@precisoutapronto.com.br` via `smtp.gmail.com`.  
 Playbook (DNS SPF/DKIM/DMARC, senha de app, `.env` no VPS, testes):  
 [`docs/divulgacao/GOOGLE-WORKSPACE.md`](./divulgacao/GOOGLE-WORKSPACE.md).
 
@@ -34,7 +34,7 @@ O deploy Vultr executa `npm run seo:indexnow` depois do health check. Falhas do 
 
 ```bash
 npm run seo:indexnow
-node scripts/seo/submit-indexnow.mjs --url https://resolvajato.com.br/guias
+node scripts/seo/submit-indexnow.mjs --url https://precisoutapronto.com.br/guias
 ```
 
 ## Rotina após publicação

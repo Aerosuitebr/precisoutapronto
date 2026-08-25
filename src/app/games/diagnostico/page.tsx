@@ -7,8 +7,8 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Jato Games Diagnostic: diagnóstico local do seu PC' },
-  description: 'Conheça como o Jato Games Diagnostic mede CPU, memória e disco localmente, identifica seu hardware e compara o PC com requisitos versionados de jogos.',
+  title: { absolute: 'Precisou, Tá Pronto Games Diagnostic: diagnóstico local do seu PC' },
+  description: 'Conheça como o Precisou, Tá Pronto Games Diagnostic mede CPU, memória e disco localmente, identifica seu hardware e compara o PC com requisitos versionados de jogos.',
   alternates: { canonical: '/games/diagnostico' }
 };
 
@@ -33,7 +33,7 @@ export default function DiagnosticPage() {
     '@graph': [
       {
         '@type': 'SoftwareApplication',
-        name: 'Jato Games Diagnostic',
+        name: 'Precisou, Tá Pronto Games Diagnostic',
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'Windows 10, Windows 11',
         softwareVersion: '0.9.0',
@@ -44,7 +44,7 @@ export default function DiagnosticPage() {
       },
       {
         '@type': 'WebPage',
-        name: 'Jato Games Diagnostic',
+        name: 'Precisou, Tá Pronto Games Diagnostic',
         url: pageUrl,
         inLanguage: 'pt-BR',
         dateModified: '2026-07-30',
@@ -54,7 +54,7 @@ export default function DiagnosticPage() {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Início', item: base },
-          { '@type': 'ListItem', position: 2, name: 'Jato Games', item: `${base}/games` },
+          { '@type': 'ListItem', position: 2, name: 'Precisou, Tá Pronto Games', item: `${base}/games` },
           { '@type': 'ListItem', position: 3, name: 'Diagnostic', item: pageUrl }
         ]
       },
@@ -76,7 +76,7 @@ export default function DiagnosticPage() {
       <section className="mx-auto grid max-w-6xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
         <div>
           <p className="text-sm font-bold uppercase tracking-[.25em] text-[#39e7f2]">Telemetria local transparente</p>
-          <h1 className="mt-5 text-4xl font-black leading-tight sm:text-6xl">Jato Games Diagnostic</h1>
+          <h1 className="mt-5 text-4xl font-black leading-tight sm:text-6xl">Precisou, Tá Pronto Games Diagnostic</h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
             Um diagnóstico Windows com consentimento explícito, inventário real do hardware e benchmarks
             controlados. Os resultados ficam no computador e não são enviados automaticamente.
@@ -91,7 +91,7 @@ export default function DiagnosticPage() {
             <span className="rounded-full border border-cyan-400/25 px-4 py-2">Processamento local</span>
           </div>
         </div>
-        <Image src="/images/jato-games/diagnostic/key-art.png" alt="Computador analisado pela telemetria do Jato Games Diagnostic" width={1536} height={1024} className="rounded-3xl border border-white/10 shadow-2xl" priority />
+        <Image src="/images/precisoutapronto-games/diagnostic/key-art.png" alt="Computador analisado pela telemetria do Precisou, Tá Pronto Games Diagnostic" width={1536} height={1024} className="rounded-3xl border border-white/10 shadow-2xl" priority />
       </section>
       <section className="border-y border-white/10 bg-[#0b1727]">
         <div className="mx-auto max-w-6xl px-6 py-16">

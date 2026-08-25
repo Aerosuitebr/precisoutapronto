@@ -315,7 +315,7 @@ export async function createCardPayment(input: CreateCardPaymentInput) {
       installments: input.installments || 1,
       payment_method_id: input.paymentMethodId,
       issuer_id: input.issuerId,
-      statement_descriptor: 'RESOLVAJATO',
+      statement_descriptor: 'PRECISOUTAPRONTO',
       external_reference: input.payerEmail.toLowerCase(),
       notification_url: `${appUrl}/api/webhooks/mercadopago`,
       metadata: {

@@ -74,7 +74,7 @@ async function sendEmail({ to, subject, html, text }) {
 }
 
 function makeCode() {
-  return `RJ${randomBytes(4).toString('hex').toUpperCase()}`.slice(0, 10);
+  return `PTP${randomBytes(4).toString('hex').toUpperCase()}`.slice(0, 10);
 }
 
 const DRY_RUN = process.env.DRY_RUN !== '0';

@@ -1,4 +1,4 @@
-# Kit de distribuição viral · Resolva Jato
+# Kit de distribuição viral · Precisou, Tá Pronto
 
 Kit operacional para exposição off-site. Use os textos abaixo como estão (já com UTM).
 Não invente métricas, avaliações ou depoimentos sem fonte.
@@ -9,27 +9,27 @@ Não invente métricas, avaliações ou depoimentos sem fonte.
 
 | Canal | URL |
 |-------|-----|
-| WhatsApp Status / grupos | `https://resolvajato.com.br/calculadora-de-rescisao?utm_source=whatsapp&utm_medium=organic_social&utm_campaign=rescisao_status` |
-| Instagram bio / Stories | `https://resolvajato.com.br/calculadora-de-rescisao?utm_source=instagram&utm_medium=organic_social&utm_campaign=rescisao_stories` |
-| LinkedIn | `https://resolvajato.com.br/calculadora-de-preco-freelancer?utm_source=linkedin&utm_medium=organic_social&utm_campaign=preco_freelancer` |
-| Comunidades MEI | `https://resolvajato.com.br/mei-ou-clt?utm_source=comunidade&utm_medium=referral&utm_campaign=mei_clt` |
-| Product Hunt | `https://resolvajato.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch` |
+| WhatsApp Status / grupos | `https://precisoutapronto.com.br/calculadora-de-rescisao?utm_source=whatsapp&utm_medium=organic_social&utm_campaign=rescisao_status` |
+| Instagram bio / Stories | `https://precisoutapronto.com.br/calculadora-de-rescisao?utm_source=instagram&utm_medium=organic_social&utm_campaign=rescisao_stories` |
+| LinkedIn | `https://precisoutapronto.com.br/calculadora-de-preco-freelancer?utm_source=linkedin&utm_medium=organic_social&utm_campaign=preco_freelancer` |
+| Comunidades MEI | `https://precisoutapronto.com.br/mei-ou-clt?utm_source=comunidade&utm_medium=referral&utm_campaign=mei_clt` |
+| Product Hunt | `https://precisoutapronto.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch` |
 
 ### Guias novos (cauda longa)
 
 | Tema | URL |
 |------|-----|
-| Aviso-prévio | `https://resolvajato.com.br/guias/aviso-previo-proporcional-como-calcular?utm_source=social&utm_medium=organic_social&utm_campaign=guia_aviso` |
-| Hora freelancer | `https://resolvajato.com.br/guias/quanto-cobrar-por-hora-freelancer?utm_source=social&utm_medium=organic_social&utm_campaign=guia_hora` |
-| Rateio de custos | `https://resolvajato.com.br/guias/custos-fixos-do-freelancer-como-ratear?utm_source=social&utm_medium=organic_social&utm_campaign=guia_rateio` |
-| Quando MEI compensa | `https://resolvajato.com.br/guias/quando-o-mei-compensa-mais-que-a-clt?utm_source=social&utm_medium=organic_social&utm_campaign=guia_mei` |
+| Aviso-prévio | `https://precisoutapronto.com.br/guias/aviso-previo-proporcional-como-calcular?utm_source=social&utm_medium=organic_social&utm_campaign=guia_aviso` |
+| Hora freelancer | `https://precisoutapronto.com.br/guias/quanto-cobrar-por-hora-freelancer?utm_source=social&utm_medium=organic_social&utm_campaign=guia_hora` |
+| Rateio de custos | `https://precisoutapronto.com.br/guias/custos-fixos-do-freelancer-como-ratear?utm_source=social&utm_medium=organic_social&utm_campaign=guia_rateio` |
+| Quando MEI compensa | `https://precisoutapronto.com.br/guias/quando-o-mei-compensa-mais-que-a-clt?utm_source=social&utm_medium=organic_social&utm_campaign=guia_mei` |
 
 ### Parceria / creator
 
 Padronize:
 
 ```text
-https://resolvajato.com.br/<pagina>?utm_source=<parceiro>&utm_medium=partner&utm_campaign=<campanha>
+https://precisoutapronto.com.br/<pagina>?utm_source=<parceiro>&utm_medium=partner&utm_campaign=<campanha>
 ```
 
 Exemplos:
@@ -48,7 +48,7 @@ Demissão ou pedido de conta?
 Calcule uma estimativa de saldo, férias, 13º, aviso e FGTS em minutos.
 Grátis, sem cadastro:
 
-https://resolvajato.com.br/calculadora-de-rescisao?utm_source=whatsapp&utm_medium=organic_social&utm_campaign=rescisao_status
+https://precisoutapronto.com.br/calculadora-de-rescisao?utm_source=whatsapp&utm_medium=organic_social&utm_campaign=rescisao_status
 ```
 
 Dica: use o botão “Baixar imagem” na própria calculadora e poste o card no Status.
@@ -61,7 +61,7 @@ Simule os dois cenários em 1 minuto.
 Sem cadastro.
 
 Link na bio / swipe up:
-https://resolvajato.com.br/mei-ou-clt?utm_source=instagram&utm_medium=organic_social&utm_campaign=mei_clt_stories
+https://precisoutapronto.com.br/mei-ou-clt?utm_source=instagram&utm_medium=organic_social&utm_campaign=mei_clt_stories
 ```
 
 ### 3) LinkedIn · Precificação freelancer
@@ -71,9 +71,9 @@ Muitos freelancers cobram “de feeling” e descobrem depois que o preço não 
 
 Monte um preço de referência com custos, horas, taxas e margem:
 
-https://resolvajato.com.br/calculadora-de-preco-freelancer?utm_source=linkedin&utm_medium=organic_social&utm_campaign=preco_freelancer
+https://precisoutapronto.com.br/calculadora-de-preco-freelancer?utm_source=linkedin&utm_medium=organic_social&utm_campaign=preco_freelancer
 
-Ferramenta gratuita do Resolva Jato. Sem cadastro para simular.
+Ferramenta gratuita do Precisou, Tá Pronto. Sem cadastro para simular.
 ```
 
 ### 4) Comunidade / grupo MEI (Facebook, Telegram)
@@ -84,7 +84,7 @@ Ferramenta útil pra quem está em dúvida entre MEI e CLT:
 Comparador gratuito de renda líquida estimada (DAS, descontos e custos mensais).
 É educativo, não substitui contador.
 
-https://resolvajato.com.br/mei-ou-clt?utm_source=comunidade&utm_medium=referral&utm_campaign=mei_clt
+https://precisoutapronto.com.br/mei-ou-clt?utm_source=comunidade&utm_medium=referral&utm_campaign=mei_clt
 ```
 
 ### 5) Thread curta (X / Threads)
@@ -92,25 +92,25 @@ https://resolvajato.com.br/mei-ou-clt?utm_source=comunidade&utm_medium=referral&
 ```text
 1/3 Rescisão sem planilha milagrosa.
 2/3 Saldo, férias, 13º, aviso e FGTS em uma estimativa clara.
-3/3 Grátis: https://resolvajato.com.br/calculadora-de-rescisao?utm_source=x&utm_medium=organic_social&utm_campaign=rescisao_thread
+3/3 Grátis: https://precisoutapronto.com.br/calculadora-de-rescisao?utm_source=x&utm_medium=organic_social&utm_campaign=rescisao_thread
 ```
 
 ---
 
 ## Product Hunt · rascunho de lançamento
 
-**Nome:** Resolva Jato  
+**Nome:** Precisou, Tá Pronto  
 **Tagline:** Ferramentas grátis para MEI, freelancer e pequenos negócios no Brasil  
 **Descrição curta:**
 
 ```text
-Resolva Jato ajuda autônomos e MEIs a resolver tarefas do dia a dia: orçamento com Pix no WhatsApp, currículo, contrato, recibo, proposta e calculadoras de rescisão, preço e MEI vs CLT. Comece grátis, sem cartão.
+Precisou, Tá Pronto ajuda autônomos e MEIs a resolver tarefas do dia a dia: orçamento com Pix no WhatsApp, currículo, contrato, recibo, proposta e calculadoras de rescisão, preço e MEI vs CLT. Comece grátis, sem cartão.
 ```
 
 **Primeiros comentários sugeridos (do founder):**
 
 ```text
-Olá, hunters. Construímos o Resolva Jato para o fluxo real do profissional brasileiro: fechar no WhatsApp, emitir documento e calcular o básico sem planilha.
+Olá, hunters. Construímos o Precisou, Tá Pronto para o fluxo real do profissional brasileiro: fechar no WhatsApp, emitir documento e calcular o básico sem planilha.
 
 Hoje o núcleo gratuito inclui:
 • Orçamento com aprovação e Pix
@@ -122,9 +122,9 @@ Feedback sincero é bem-vindo, sobretudo de MEIs e freelancers.
 
 **Assets:**
 
-- Site: `https://resolvajato.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch`
-- Logo / OG: `https://resolvajato.com.br/icon-512.png` e `https://resolvajato.com.br/opengraph-image`
-- Press kit: `https://resolvajato.com.br/sobre`
+- Site: `https://precisoutapronto.com.br/?utm_source=producthunt&utm_medium=referral&utm_campaign=launch`
+- Logo / OG: `https://precisoutapronto.com.br/icon-512.png` e `https://precisoutapronto.com.br/opengraph-image`
+- Press kit: `https://precisoutapronto.com.br/sobre`
 
 **Horário sugerido de lançamento (PH):** terça a quinta, ~00:01 PST (manhã no Brasil).
 
@@ -149,7 +149,7 @@ Marque ao concluir:
 Descrição padrão para diretórios:
 
 ```text
-Resolva Jato é uma plataforma brasileira de ferramentas online para MEIs, freelancers e estudantes. Oferece orçamento com Pix no WhatsApp, geradores de documentos em PDF e calculadoras práticas (rescisão, precificação e MEI vs CLT), com uso gratuito.
+Precisou, Tá Pronto é uma plataforma brasileira de ferramentas online para MEIs, freelancers e estudantes. Oferece orçamento com Pix no WhatsApp, geradores de documentos em PDF e calculadoras práticas (rescisão, precificação e MEI vs CLT), com uso gratuito.
 ```
 
 ---
@@ -178,13 +178,13 @@ Resolva Jato é uma plataforma brasileira de ferramentas online para MEIs, freel
 ## Parcerias · mensagem pronta
 
 ```text
-Oi, [nome]. Sou da equipe do Resolva Jato.
+Oi, [nome]. Sou da equipe do Precisou, Tá Pronto.
 
 Temos calculadoras gratuitas de rescisão, precificação e MEI vs CLT que sua audiência pode usar sem cadastro.
 Se fizer sentido, posso liberar um link com UTM pra você acompanhar o resultado, sem custo.
 
-Página principal: https://resolvajato.com.br/
-Press kit: https://resolvajato.com.br/sobre
+Página principal: https://precisoutapronto.com.br/
+Press kit: https://precisoutapronto.com.br/sobre
 ```
 
 ---

@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-INSTALL_DIR="${INSTALL_DIR:-/opt/resolva-jato}"
+INSTALL_DIR="${INSTALL_DIR:-/opt/precisoutapronto}"
 ENVF="${INSTALL_DIR}/.env.production"
 EMAIL="${SMTP_USER_VALUE:-contato@precisoutapronto.com.br}"
 FROM_VALUE="${SMTP_FROM_VALUE:-Precisou, Tá Pronto <contato@precisoutapronto.com.br>}"

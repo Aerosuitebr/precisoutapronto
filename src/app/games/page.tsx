@@ -9,20 +9,20 @@ import {
   ProductBridge,
   SectionAccent
 } from '@/components/games/games-ui';
-import { JATO_GAMES } from '@/lib/games/brand';
+import { PRECISOUTAPRONTO_GAMES } from '@/lib/games/brand';
 import { listGamesByRank } from '@/lib/games/games';
 import { hardwareGuides } from '@/lib/games/hardware';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
-  title: { absolute: `${JATO_GAMES.name} | ${JATO_GAMES.tagline}` },
-  description: JATO_GAMES.description,
+  title: { absolute: `${PRECISOUTAPRONTO_GAMES.name} | ${PRECISOUTAPRONTO_GAMES.tagline}` },
+  description: PRECISOUTAPRONTO_GAMES.description,
   alternates: { canonical: '/games' },
   openGraph: {
-    title: JATO_GAMES.name,
-    description: JATO_GAMES.description,
+    title: PRECISOUTAPRONTO_GAMES.name,
+    description: PRECISOUTAPRONTO_GAMES.description,
     url: '/games',
-    siteName: JATO_GAMES.name
+    siteName: PRECISOUTAPRONTO_GAMES.name
   }
 };
 
@@ -65,7 +65,7 @@ const pillars = [
 ] as const;
 
 const gamesFaq = [
-  { question: 'O que encontro no Jato Games?', answer: 'Ferramentas gamer gratuitas, requisitos e setups de jogos, guias de hardware, consoles e uma curadoria de lojas e canais oficiais.' },
+  { question: 'O que encontro no Precisou, Tá Pronto Games?', answer: 'Ferramentas gamer gratuitas, requisitos e setups de jogos, guias de hardware, consoles e uma curadoria de lojas e canais oficiais.' },
   { question: 'As ferramentas gamer são gratuitas?', answer: 'Sim. Calculadora de eDPI, planejamento de armazenamento, custo por hora e comparação de requisitos podem ser usadas sem pagamento.' },
   { question: 'Os setups garantem uma taxa de FPS?', answer: 'Não. São referências editoriais. Desempenho real varia com resolução, qualidade gráfica, drivers, temperatura, memória e atualizações do jogo.' }
 ];
@@ -78,8 +78,8 @@ export default function GamesHubPage() {
     '@graph': [
       {
         '@type': 'CollectionPage',
-        name: 'Jato Games',
-        description: JATO_GAMES.description,
+        name: 'Precisou, Tá Pronto Games',
+        description: PRECISOUTAPRONTO_GAMES.description,
         url: `${base}/games`,
         inLanguage: 'pt-BR',
         hasPart: pillars.map((pillar) => ({ '@type': 'WebPage', name: pillar.title, url: `${base}${pillar.href}` }))
@@ -105,13 +105,13 @@ export default function GamesHubPage() {
             <div className="min-w-0">
               <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-teal-700">
                 <Gamepad2 className="h-3.5 w-3.5" />
-                Jato Games
+                Precisou, Tá Pronto Games
               </p>
-              <h1 className="rj-display mt-4 text-[clamp(2.1rem,4.8vw,3.4rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
-                {JATO_GAMES.tagline}
+              <h1 className="precisoutapronto-display mt-4 text-[clamp(2.1rem,4.8vw,3.4rem)] font-extrabold leading-[1.05] tracking-tight text-slate-950">
+                {PRECISOUTAPRONTO_GAMES.tagline}
               </h1>
               <p className="mt-4 text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                {JATO_GAMES.description}
+                {PRECISOUTAPRONTO_GAMES.description}
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
@@ -149,7 +149,7 @@ export default function GamesHubPage() {
                     {pillar.chip}
                   </span>
                 </div>
-                <h2 className="rj-display mt-3 text-lg font-extrabold text-slate-900">{pillar.title}</h2>
+                <h2 className="precisoutapronto-display mt-3 text-lg font-extrabold text-slate-900">{pillar.title}</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-700 sm:text-base">{pillar.text}</p>
               </Link>
             ))}
@@ -162,8 +162,8 @@ export default function GamesHubPage() {
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-teal-300">Não é só notícia gamer</p>
-              <h2 className="rj-display mt-3 text-3xl font-black leading-tight">Resolva uma decisão antes de abrir o jogo</h2>
-              <p className="mt-4 leading-7 text-slate-300">O Jato Games ajuda a configurar, comprar e organizar seu setup com respostas práticas — sem transformar toda dúvida em uma lista de produtos.</p>
+              <h2 className="precisoutapronto-display mt-3 text-3xl font-black leading-tight">Resolva uma decisão antes de abrir o jogo</h2>
+              <p className="mt-4 leading-7 text-slate-300">O Precisou, Tá Pronto Games ajuda a configurar, comprar e organizar seu setup com respostas práticas — sem transformar toda dúvida em uma lista de produtos.</p>
               <Link href="/games/ferramentas" className="mt-6 inline-flex h-12 items-center gap-2 rounded-xl bg-teal-400 px-5 font-bold text-slate-950 hover:bg-teal-300">
                 Abrir ferramentas grátis <ArrowRight className="h-4 w-4" />
               </Link>
@@ -189,7 +189,7 @@ export default function GamesHubPage() {
         <SectionAccent>
           <div className="mb-6 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Escolha seu objetivo</p>
-            <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">Conteúdo para a dúvida que você tem agora</h2>
+            <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">Conteúdo para a dúvida que você tem agora</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {[
@@ -200,7 +200,7 @@ export default function GamesHubPage() {
             ].map((item) => (
               <Link key={item.title} href={item.href} className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-teal-400 hover:shadow-md">
                 <item.icon className="h-6 w-6 text-teal-600" />
-                <h3 className="rj-display mt-4 text-lg font-extrabold text-slate-950 group-hover:text-teal-800">{item.title}</h3>
+                <h3 className="precisoutapronto-display mt-4 text-lg font-extrabold text-slate-950 group-hover:text-teal-800">{item.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-700">{item.text}</p>
               </Link>
             ))}
@@ -213,7 +213,7 @@ export default function GamesHubPage() {
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Em alta</p>
-              <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
+              <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
                 Top jogos com setup
               </h2>
             </div>
@@ -233,7 +233,7 @@ export default function GamesHubPage() {
         <SectionAccent>
           <div className="mb-6 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600">Hardware</p>
-            <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
+            <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold text-slate-950 sm:text-3xl">
               Guias para não comprar errado
             </h2>
           </div>
@@ -252,7 +252,7 @@ export default function GamesHubPage() {
       <section className="relative mx-auto max-w-7xl px-4 pb-16 sm:px-6">
         <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Dúvidas rápidas</p>
-          <h2 className="rj-display mt-2 text-2xl font-extrabold text-slate-950">Perguntas sobre o Jato Games</h2>
+          <h2 className="precisoutapronto-display mt-2 text-2xl font-extrabold text-slate-950">Perguntas sobre o Precisou, Tá Pronto Games</h2>
           <dl className="mt-6 grid gap-6 md:grid-cols-3">
             {gamesFaq.map((item) => (
               <div key={item.question}>

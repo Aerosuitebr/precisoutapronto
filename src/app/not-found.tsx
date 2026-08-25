@@ -26,7 +26,7 @@ export default function NotFound() {
             <Search className="h-7 w-7" aria-hidden />
           </span>
           <p className="mt-6 text-sm font-bold uppercase tracking-[0.16em] text-sky-700">Erro 404</p>
-          <h1 className="rj-display mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+          <h1 className="precisoutapronto-display mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
             Esta página não foi encontrada
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-slate-600">

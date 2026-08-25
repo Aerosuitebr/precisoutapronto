@@ -11,7 +11,7 @@ import {
   type Locale
 } from '@/lib/i18n-locale';
 
-const DEVICE_COOKIE = 'rj_device';
+const DEVICE_COOKIE = 'precisoutapronto_device';
 const PUBLIC_CACHEABLE_PATHS = new Set([
   '/',
   '/busca',
@@ -148,8 +148,8 @@ export function middleware(request: NextRequest) {
   }
 
   // Home PT é sempre `/`. Nunca redireciona por Accept-Language nem por cookie
-  // legado (ex.: rj_locale=en gravado quando o usuário só visitou /en).
-  // Idioma EN/ES fica em /en e /es; a bandeira PT força cookie via ?rj_locale=.
+  // legado (ex.: precisoutapronto_locale=en gravado quando o usuário só visitou /en).
+  // Idioma EN/ES fica em /en e /es; a bandeira PT força cookie via ?precisoutapronto_locale=.
   if (pathname === '/') {
     const response = NextResponse.next();
     // Apaga cookie EN/ES legado para a home PT não “grudar” idioma errado.

@@ -16,7 +16,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Só para `prisma generate` no build; a URL real vem no runtime.
 ENV DATABASE_URL="postgresql://build:build@127.0.0.1:5432/build?schema=public"
 
-ARG NEXT_PUBLIC_APP_URL=https://resolvajato.com.br
+ARG NEXT_PUBLIC_APP_URL=https://precisoutapronto.com.br
 ARG NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY=
 ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY=
 ARG NEXT_PUBLIC_VAPID_PUBLIC_KEY=

@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   const parsed = parseHelpfulnessFeedback(body);
   if (!parsed.ok) return NextResponse.json({ error: 'Feedback inválido.', code: parsed.error }, { status: 400 });
   const session = await getValidSessionFromCookies();
-  const anonymousKey = request.headers.get('x-rj-device-id') || '';
+  const anonymousKey = request.headers.get('x-precisoutapronto-device-id') || '';
   if (!validFeedbackAnonymousKey(anonymousKey)) return NextResponse.json({ error: 'Identidade inválida.' }, { status: 400 });
   const result = await createHelpfulnessFeedback({
     ...(session ? { userId: session.sub } : {}),

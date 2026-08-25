@@ -1,6 +1,6 @@
 import { getSession } from '@/lib/auth';
 
-export const GUEST_TRIAL_STORAGE_KEY = 'rj_guest_exports';
+export const GUEST_TRIAL_STORAGE_KEY = 'precisoutapronto_guest_exports';
 /** Gerações/exportações livres antes de pedir cadastro (ferramentas fora do loop viral). */
 export const GUEST_TRIAL_LIMIT = 2;
 /** Orçamento e recibo: o PDF/link precisa sair sem conta para circular no WhatsApp. */
@@ -11,8 +11,8 @@ export function isOpenGuestTool(toolId: string | undefined): boolean {
   return (OPEN_GUEST_TOOL_IDS as readonly string[]).includes(toolId);
 }
 
-export const GUEST_TRIAL_CONSUMED_EVENT = 'rj-guest-trial-consumed';
-export const POST_SIGNUP_PREMIUM_OFFER_KEY = 'rj_post_signup_premium_offer';
+export const GUEST_TRIAL_CONSUMED_EVENT = 'precisoutapronto-guest-trial-consumed';
+export const POST_SIGNUP_PREMIUM_OFFER_KEY = 'precisoutapronto_post_signup_premium_offer';
 
 export function markPostSignupPremiumOffer(nextHref: string) {
   if (typeof window === 'undefined') return;

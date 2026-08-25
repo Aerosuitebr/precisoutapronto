@@ -7,7 +7,7 @@ import { viralPdfFooterLabel } from '@/lib/viral-loop';
 export function DocumentBrandWatermark({ className }: { className?: string }) {
   return (
     <div
-      data-rj-brand="watermark"
+      data-precisoutapronto-brand="watermark"
       className={cn('pointer-events-none absolute inset-0 z-[1] overflow-hidden', className)}
       aria-hidden
     >
@@ -31,7 +31,7 @@ export function DocumentBrandWatermark({ className }: { className?: string }) {
  */
 export function DocumentViralFooter({ className }: { className?: string }) {
   return (
-    <div data-rj-brand="footer" className={cn('relative z-[2] mt-auto pb-[18mm] pt-8 text-center', className)}>
+    <div data-precisoutapronto-brand="footer" className={cn('relative z-[2] mt-auto pb-[18mm] pt-8 text-center', className)}>
       <p className="mx-auto max-w-[88%] text-[10px] leading-5 text-slate-400">{viralPdfFooterLabel()}</p>
     </div>
   );

@@ -91,11 +91,11 @@ export function EnablePushButton({ className, variant = 'card' }: EnablePushButt
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
-      if (event.data?.type === 'RJ_PUSH_ALERT') playAlertChime();
+      if (event.data?.type === 'PTP_PUSH_ALERT') playAlertChime();
     }
     let channel: BroadcastChannel | null = null;
     try {
-      channel = new BroadcastChannel('rj-push');
+      channel = new BroadcastChannel('precisoutapronto-push');
       channel.onmessage = onMessage;
     } catch {
       // ignore

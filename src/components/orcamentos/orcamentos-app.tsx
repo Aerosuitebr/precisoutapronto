@@ -950,7 +950,7 @@ export function OrcamentosApp({
               <Receipt className="h-5 w-5" />
             </span>
             <div>
-              <h2 className="rj-display text-xl font-extrabold tracking-tight sm:text-2xl">
+              <h2 className="precisoutapronto-display text-xl font-extrabold tracking-tight sm:text-2xl">
                 Orçamentos com link de aprovação
               </h2>
               <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-300">
@@ -1525,7 +1525,7 @@ export function OrcamentosApp({
 
           {/* Sidebar: sticky só no bloco de ação (resumo + checklist + CTA) */}
           <aside className="space-y-5">
-            <div className="space-y-4 xl:sticky xl:top-[var(--rj-section-scroll-mt)] xl:z-10">
+            <div className="space-y-4 xl:sticky xl:top-[var(--precisoutapronto-section-scroll-mt)] xl:z-10">
               <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                 <p className="text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900">Resumo</p>
                 <dl className="mt-3 space-y-2 text-sm">

@@ -89,7 +89,7 @@ export const viralClusters: ViralCluster[] = [
   {
     path: '/pdf', title: 'Ferramentas PDF Online: Juntar, Dividir, Comprimir e Editar',
     description: 'Junte, divida, comprima e edite PDF online com processamento local no navegador e sem enviar seus documentos ao servidor.',
-    eyebrow: 'Jato PDF', h1: 'Edite e organize seu PDF sem enviar documentos para nenhum servidor.',
+    eyebrow: 'PDF Pronto', h1: 'Edite e organize seu PDF sem enviar documentos para nenhum servidor.',
     answer: 'Escolha a tarefa: juntar arquivos, extrair ou remover páginas, reduzir tamanho, girar ou reorganizar o documento. O processamento acontece localmente no seu navegador.',
     primary: { href: '/editor-de-pdf-online', label: 'Abrir editor de PDF' },
     resources: [

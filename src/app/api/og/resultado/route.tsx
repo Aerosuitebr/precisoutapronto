@@ -8,15 +8,15 @@ function bounded(value: string | null, fallback: string, max: number) {
 }
 
 export function GET(request: NextRequest) {
-  const title = bounded(request.nextUrl.searchParams.get('titulo'), 'Resultado Jato', 100);
+  const title = bounded(request.nextUrl.searchParams.get('titulo'), 'Resultado Pronto', 100);
   const label = bounded(request.nextUrl.searchParams.get('rotulo'), 'Resultado', 80);
   const value = bounded(request.nextUrl.searchParams.get('valor'), 'Confira o resultado', 80);
 
   return new ImageResponse(
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 64, color: 'white', background: 'linear-gradient(145deg,#020617 0%,#082f49 58%,#0c4a6e 100%)', fontFamily: 'sans-serif' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-        <div style={{ display: 'flex', width: 60, height: 60, borderRadius: 16, alignItems: 'center', justifyContent: 'center', background: '#38bdf8', color: '#0f172a', fontSize: 27, fontWeight: 900 }}>RJ</div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}><span style={{ fontSize: 30, fontWeight: 800 }}>Precisou, Tá Pronto</span><span style={{ marginTop: 4, color: '#7dd3fc', fontSize: 18, fontWeight: 700, letterSpacing: 2 }}>RESULTADO JATO</span></div>
+        <div style={{ display: 'flex', width: 60, height: 60, borderRadius: 16, alignItems: 'center', justifyContent: 'center', background: '#38bdf8', color: '#0f172a', fontSize: 24, fontWeight: 900 }}>PTP</div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}><span style={{ fontSize: 30, fontWeight: 800 }}>Precisou, Tá Pronto</span><span style={{ marginTop: 4, color: '#7dd3fc', fontSize: 18, fontWeight: 700, letterSpacing: 2 }}>RESULTADO PRONTO</span></div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div style={{ fontSize: 54, lineHeight: 1.08, fontWeight: 900, letterSpacing: -1.5 }}>{title}</div>

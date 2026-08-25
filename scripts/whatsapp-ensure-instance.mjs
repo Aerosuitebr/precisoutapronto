@@ -14,8 +14,8 @@ const apiKey =
   process.env.WHATSAPP_API_TOKEN ||
   process.env.EVOLUTION_API_KEY ||
   process.env.WHATSAPP_API_KEY ||
-  'resolva-jato-evolution-api-key-2026';
-const instance = process.env.WHATSAPP_INSTANCE || process.env.WHATSAPP_INSTANCE_NAME || 'resolva-jato';
+  'precisoutapronto-evolution-api-key-2026';
+const instance = process.env.WHATSAPP_INSTANCE || process.env.WHATSAPP_INSTANCE_NAME || 'precisoutapronto';
 
 const headers = {
   apikey: apiKey,

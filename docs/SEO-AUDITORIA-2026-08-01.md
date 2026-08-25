@@ -1,8 +1,8 @@
-# Auditoria técnica de SEO e performance — Resolva Jato
+# Auditoria técnica de SEO e performance — Precisou, Tá Pronto
 
 Data: 1 de agosto de 2026  
 Projeto: `D:\Desenvolvimento\hub-recursos-gratis`  
-Domínio canônico: `https://resolvajato.com.br`  
+Domínio canônico: `https://precisoutapronto.com.br`  
 Branch: `feat/growth-nichos-d30`
 
 ## Resumo executivo
@@ -27,7 +27,7 @@ Validação local: `seo:audit` OK, build de produção OK (0 erros), smoke HTTP 
 - Redirect 301/308 `/para/autonomos` → `/para/freelancers`; autonomos removido do sitemap growth.
 - Open Graph/Twitter em `/para/[segmento]` e imagens explícitas em recibo/proposta/contrato/aluguel.
 - `opengraph-image` criado para `/recibo-de-aluguel`.
-- Title template global `%s | Resolva Jato`; jogos/diagnóstico usam `title.absolute` com marca Jato Games.
+- Title template global `%s | Precisou, Tá Pronto`; jogos/diagnóstico usam `title.absolute` com marca Precisou, Tá Pronto Games.
 - JSON-LD: `SoftwareApplication.url` aponta para a ferramenta pública; breadcrumb alinhado a Início → Recursos → página.
 - CTA de contrato de aluguel aponta para `/gerador-de-contrato` (landing pública) em vez de `/ferramentas/contratos`.
 - Hreflang bidirecional nas calculadoras PT com equivalente EN/ES (rescisão, MEI/CLT, preço freelancer).
@@ -48,7 +48,7 @@ Validação local: `seo:audit` OK, build de produção OK (0 erros), smoke HTTP 
 | Canibalização autonomos/freelancers | 2 URLs indexáveis | 1 + redirect |
 | OG em `/para/[segmento]` | ausente | presente |
 | OG image `/recibo-de-aluguel` | ausente | presente |
-| Title template com marca | `%s` | `%s \| Resolva Jato` |
+| Title template com marca | `%s` | `%s \| Precisou, Tá Pronto` |
 | Smoke endpoints | 7 | 10 |
 | URLs sitemap (dedupe) | ~159 | 134 (órfãos i18n removidos) |
 | Build/tipos | — | 0 erros |
@@ -61,7 +61,7 @@ Linha de base externa (Search Console, execução anterior): 0 cliques, 66 impre
 
 1. Deploy Vultr (`npm run deploy:vultr`) a partir desta branch e merge em `master`.
 2. No Google Search Console: inspecionar `/recibo-de-pagamento` e `/proposta-comercial-mei`; solicitar validação/recrawl; confirmar convergência de canônicos.
-3. Reenviar `https://resolvajato.com.br/sitemaps/index.xml` no GSC e Bing Webmaster Tools.
+3. Reenviar `https://precisoutapronto.com.br/sitemaps/index.xml` no GSC e Bing Webmaster Tools.
 4. Inspecionar 2–3 URLs EN afetadas (ex.: `/en/tools/email-signature` sem hreflang; `/en/tools/pix` → PT público).
 
 ### Média

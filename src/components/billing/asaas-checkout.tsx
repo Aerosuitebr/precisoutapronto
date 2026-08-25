@@ -21,7 +21,7 @@ import { formatCpf, isValidCpf, onlyDigits } from '@/lib/cpf';
 import { PLANS } from '@/lib/plans';
 import { cn } from '@/lib/utils';
 
-const PENDING_ASAAS_KEY = 'rj_pending_asaas';
+const PENDING_ASAAS_KEY = 'precisoutapronto_pending_asaas';
 const POLL_INTERVAL_MS = 4000;
 const POLL_MAX_MS = 12 * 60 * 1000;
 

@@ -24,7 +24,7 @@ export interface EncryptedContextValue {
 
 function associatedData(scope: ContextEncryptionScope) {
   return Buffer.from([
-    'resolva-jato-context-v1',
+    'precisoutapronto-context-v1',
     scope.entity,
     scope.recordId,
     scope.ownerUserId,

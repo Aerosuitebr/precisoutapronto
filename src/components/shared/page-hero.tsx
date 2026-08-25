@@ -19,7 +19,7 @@ export function PageHero({
 }: PageHeroProps) {
   const Heading = headingLevel;
   return (
-    <section className="relative -mx-2 overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--rj-hero-from)] via-[var(--rj-hero-via)] to-[var(--rj-hero-to)] p-6 text-white shadow-rj sm:p-7">
+    <section className="relative -mx-2 overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--precisoutapronto-hero-from)] via-[var(--precisoutapronto-hero-via)] to-[var(--precisoutapronto-hero-to)] p-6 text-white shadow-rj sm:p-7">
       <ToolsWatermark />
       <div className="absolute right-8 top-6 h-24 w-24 rounded-full bg-white/10 blur-sm" />
       <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">

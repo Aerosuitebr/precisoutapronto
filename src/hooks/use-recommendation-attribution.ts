@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react';
 
-const QUERY_KEY = 'rj_rec';
+const QUERY_KEY = 'precisoutapronto_rec';
 
 function storageKey(toolKey: string) {
-  return `rj_recommendation:${toolKey}`;
+  return `precisoutapronto_recommendation:${toolKey}`;
 }
 
 export function useRecommendationAttribution(toolKey: string) {

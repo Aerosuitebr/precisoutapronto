@@ -3,11 +3,11 @@ import { GamerToolLanding } from '@/components/games/gamer-tool-landing';
 import { PcGameChecker } from '@/components/games/pc-game-checker';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Meu PC roda este jogo? Comparador grátis | Jato Games' },
+  title: { absolute: 'Meu PC roda este jogo? Comparador grátis | Precisou, Tá Pronto Games' },
   description: 'Meça CPU e gráficos no navegador e receba um relatório visual comparando seu PC com requisitos de jogos populares.',
   alternates: { canonical: '/games/ferramentas/meu-pc-roda' },
   openGraph: {
-    title: 'Meu PC roda este jogo? | Jato Games',
+    title: 'Meu PC roda este jogo? | Precisou, Tá Pronto Games',
     description: 'Execute um diagnóstico local e veja capacidade, gargalos e fidelidade antes de comprar ou instalar.',
     url: '/games/ferramentas/meu-pc-roda',
     type: 'website'

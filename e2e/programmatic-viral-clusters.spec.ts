@@ -29,7 +29,7 @@ test('viral hubs cover the priority engines with unique resources', () => {
   }
 });
 
-test('Jato PDF exposes local processing and all supported page operations', () => {
+test('PDF Pronto exposes local processing and all supported page operations', () => {
   const pdf = viralClusters.find((cluster) => cluster.path === '/pdf');
   expect(pdf?.h1).toContain('sem enviar documentos');
   expect(pdf?.resources.map((item) => item.title)).toEqual(expect.arrayContaining([
@@ -46,10 +46,10 @@ test('Jato PDF exposes local processing and all supported page operations', () =
 
 test('public Result Jato URL carries a bounded snapshot and safe tool destination', () => {
   const url = new URL(viralPublicResultUrl({ title: 'Rescisão estimada', highlightLabel: 'Total', highlightValue: 'R$ 8.742,31', lines: [{ label: 'Saldo', value: 'R$ 1.200,00' }], toolPath: '/calculadora-de-rescisao', campaign: 'test' }));
-  expect(url.pathname).toBe('/resultado-jato');
+  expect(url.pathname).toBe('/resultado-pronto');
   expect(url.searchParams.get('ferramenta')).toBe('/calculadora-de-rescisao');
   expect(url.searchParams.get('valor')).toBe('R$ 8.742,31');
-  expect(url.searchParams.get('utm_medium')).toBe('resultado_jato');
+  expect(url.searchParams.get('utm_medium')).toBe('resultado_pronto');
 });
 
 test('priority long-tail pages cover receipts, contracts and quotes', () => {

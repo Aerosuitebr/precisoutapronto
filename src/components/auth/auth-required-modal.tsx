@@ -207,7 +207,7 @@ export function AuthRequiredModal({
             {trialDone ? <Gift className="h-3.5 w-3.5" /> : <LockKeyhole className="h-3.5 w-3.5" />}
             {trialDone ? t.badgeTrial : t.badgeDefault}
           </span>
-          <h2 id="auth-required-title" className="rj-display relative mt-4 text-2xl font-extrabold tracking-tight">
+          <h2 id="auth-required-title" className="precisoutapronto-display relative mt-4 text-2xl font-extrabold tracking-tight">
             {trialDone ? t.titleTrial : t.titleDefault}
           </h2>
           <p className="relative mt-2 text-sm leading-6 text-slate-300">

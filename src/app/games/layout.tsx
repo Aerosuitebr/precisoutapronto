@@ -1,26 +1,26 @@
 import type { Metadata } from 'next';
 import { GamesShell } from '@/components/games/games-shell';
-import { JATO_GAMES } from '@/lib/games/brand';
+import { PRECISOUTAPRONTO_GAMES } from '@/lib/games/brand';
 
 export const metadata: Metadata = {
   title: {
-    default: `${JATO_GAMES.name} | ${JATO_GAMES.tagline}`,
-    template: `%s | ${JATO_GAMES.name}`
+    default: `${PRECISOUTAPRONTO_GAMES.name} | ${PRECISOUTAPRONTO_GAMES.tagline}`,
+    template: `%s | ${PRECISOUTAPRONTO_GAMES.name}`
   },
-  description: JATO_GAMES.description,
+  description: PRECISOUTAPRONTO_GAMES.description,
   robots: { index: false, follow: false },
   openGraph: {
-    title: JATO_GAMES.name,
-    description: JATO_GAMES.description,
-    siteName: JATO_GAMES.name,
+    title: PRECISOUTAPRONTO_GAMES.name,
+    description: PRECISOUTAPRONTO_GAMES.description,
+    siteName: PRECISOUTAPRONTO_GAMES.name,
     locale: 'pt_BR',
     type: 'website',
-    url: JATO_GAMES.path
+    url: PRECISOUTAPRONTO_GAMES.path
   },
   twitter: {
     card: 'summary_large_image',
-    title: JATO_GAMES.name,
-    description: JATO_GAMES.description
+    title: PRECISOUTAPRONTO_GAMES.name,
+    description: PRECISOUTAPRONTO_GAMES.description
   }
 };
 

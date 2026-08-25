@@ -103,7 +103,7 @@ export function InternationalCheckoutPage({ locale }: { locale: InternationalLoc
         <AuthGate title={t.title} description={t.intro} requireEmailVerified>
           <section className="mt-6 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
             <span className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-50 text-sky-700"><CreditCard className="h-6 w-6" /></span>
-            <h1 className="rj-display mt-5 text-3xl font-extrabold">{t.title}</h1>
+            <h1 className="precisoutapronto-display mt-5 text-3xl font-extrabold">{t.title}</h1>
             <p className="mt-3 leading-7 text-slate-600">{t.intro}</p>
             <div className="mt-6 rounded-2xl bg-slate-950 p-5 text-white"><p className="text-3xl font-extrabold">{t.price}</p><p className="mt-1 text-sm text-slate-300">{t.period}</p></div>
             <ul className="mt-6 space-y-3 text-sm text-slate-700">{t.features.map((feature) => <li key={feature} className="flex gap-2"><CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />{feature}</li>)}</ul>

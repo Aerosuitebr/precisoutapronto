@@ -47,7 +47,7 @@ export function ToolsWatermark({ className, variant = 'field' }: ToolsWatermarkP
           className
         )}
       >
-        <div className="rj-tools-marquee absolute inset-y-0 left-0 flex min-w-max items-center whitespace-nowrap">
+        <div className="precisoutapronto-tools-marquee absolute inset-y-0 left-0 flex min-w-max items-center whitespace-nowrap">
           {renderRow('a')}
           {renderRow('b')}
         </div>

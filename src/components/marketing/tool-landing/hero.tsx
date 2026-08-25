@@ -22,10 +22,10 @@ export function ToolLandingHero({
       </nav>
       <div className="relative mx-auto grid max-w-6xl gap-8 px-4 pb-12 pt-8 sm:px-6 sm:pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:pb-24">
         <div>
-          <p className="rj-display text-xs font-bold uppercase tracking-[0.25em] text-sky-300">
+          <p className="precisoutapronto-display text-xs font-bold uppercase tracking-[0.25em] text-sky-300">
             Precisou, Tá Pronto · {content.toolName}
           </p>
-          <h1 className="rj-display mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+          <h1 className="precisoutapronto-display mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
             {content.h1}
           </h1>
           <p className="mt-4 max-w-xl text-base font-medium leading-7 text-slate-200 sm:text-lg">

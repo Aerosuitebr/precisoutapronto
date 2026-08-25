@@ -132,7 +132,7 @@ export function PcGameChecker() {
         <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-teal-600 text-white"><Cpu className="h-6 w-6" /></span>
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-700">Diagnóstico de desempenho</p>
-          <h2 className="rj-display mt-1 text-2xl font-extrabold text-slate-950">Meça seu PC e compare com o jogo</h2>
+          <h2 className="precisoutapronto-display mt-1 text-2xl font-extrabold text-slate-950">Meça seu PC e compare com o jogo</h2>
           <p className="mt-2 text-sm leading-6 text-slate-600">O processamento ocorre neste dispositivo. O resultado não é enviado nem salvo no servidor.</p>
         </div>
       </div>
@@ -188,7 +188,7 @@ function DiagnosticReport({ result, analysis, gameTitle }: { result: ScanResult;
         <ScoreRing score={analysis.average} />
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-teal-300">Relatório para {gameTitle}</p>
-          <h3 className="rj-display mt-2 text-2xl font-black">{analysis.verdict}</h3>
+          <h3 className="precisoutapronto-display mt-2 text-2xl font-black">{analysis.verdict}</h3>
           <p className="mt-2 text-sm leading-6 text-slate-300">Fidelidade estimada: <strong className="text-white">{result.fidelity}%</strong> · {result.mode === 'active' ? 'benchmark ativo autorizado' : 'leitura passiva do navegador'}.</p>
         </div>
       </header>

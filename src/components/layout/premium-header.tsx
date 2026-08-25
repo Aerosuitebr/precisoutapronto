@@ -25,7 +25,7 @@ export function PremiumHeader() {
     .slice(0, 2)
     .map((part) => part.charAt(0))
     .join('')
-    .toUpperCase() || 'RJ';
+    .toUpperCase() || 'PTP';
 
   const planSubtitle = usage.unlimited
     ? 'Assinante Premium'

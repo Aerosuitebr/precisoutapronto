@@ -1,4 +1,4 @@
-# NuPay for Business (Resolva Jato)
+# NuPay for Business (Precisou, Tá Pronto)
 
 Pagamento Premium via app Nubank (fluxo **NuPay 2FA com Sessões**), em paralelo a Mercado Pago e Stripe.
 
@@ -26,9 +26,9 @@ NUPAY_APP_TOKEN=
 Em produção (`NUPAY_MODE=production`):
 
 - API: `https://api.spinpay.com.br`
-- Webhook público: `https://resolvajato.com.br/api/webhooks/nupay`
+- Webhook público: `https://precisoutapronto.com.br/api/webhooks/nupay`
 
-No Vultr, as vars entram em `/opt/resolva-jato/.env.production` (o compose já repassa `NUPAY_*` ao container).
+No Vultr, as vars entram em `/opt/precisoutapronto/.env.production` (o compose já repassa `NUPAY_*` ao container).
 
 ## Fluxo oficial (2FA com Sessões)
 

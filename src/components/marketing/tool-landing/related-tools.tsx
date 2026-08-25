@@ -7,8 +7,8 @@ export function ToolLandingRelated({ tools }: { tools: SeoPageRelatedTool[] }) {
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
-      <p className="rj-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">Você também pode gostar</p>
-      <h2 className="rj-display mt-3 max-w-xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+      <p className="precisoutapronto-display text-sm font-bold uppercase tracking-[0.2em] text-sky-700">Você também pode gostar</p>
+      <h2 className="precisoutapronto-display mt-3 max-w-xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
         Outras ferramentas que combinam com essa.
       </h2>
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

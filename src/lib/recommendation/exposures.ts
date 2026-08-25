@@ -7,7 +7,7 @@ const SAFE_KEY = /^[a-z0-9][a-z0-9._:-]{1,79}$/;
 const SESSION_KEY = /^[A-Za-z0-9._:-]{16,128}$/;
 
 export function pseudonymizeRecommendationSession(value: string) {
-  return `rec_session_${createHash('sha256').update(`resolva-jato:recommendation:v1:${value}`).digest('hex')}`;
+  return `rec_session_${createHash('sha256').update(`precisoutapronto:recommendation:v1:${value}`).digest('hex')}`;
 }
 
 export function parseRecommendationExposure(value: unknown):

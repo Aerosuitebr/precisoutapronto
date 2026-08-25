@@ -13,10 +13,10 @@ export function useDocumentBranding() {
   useEffect(() => {
     const bump = () => setTick((value) => value + 1);
     window.addEventListener(GUEST_TRIAL_CONSUMED_EVENT, bump);
-    window.addEventListener('resolva-jato-auth-change', bump);
+    window.addEventListener('precisoutapronto-auth-change', bump);
     return () => {
       window.removeEventListener(GUEST_TRIAL_CONSUMED_EVENT, bump);
-      window.removeEventListener('resolva-jato-auth-change', bump);
+      window.removeEventListener('precisoutapronto-auth-change', bump);
     };
   }, []);
 
