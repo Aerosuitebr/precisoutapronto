@@ -17,6 +17,13 @@ fi
 echo "==> Extrair codigo em ${INSTALL_DIR}"
 mkdir -p "${INSTALL_DIR}"
 
+LEGACY_INSTALL_DIR="/opt/resolva-jato-staging"
+if [[ ! -f "${INSTALL_DIR}/.env.staging" && -f "${LEGACY_INSTALL_DIR}/.env.staging" ]]; then
+  echo "==> Migrar .env.staging do diretorio legado"
+  cp -a "${LEGACY_INSTALL_DIR}/.env.staging" "${INSTALL_DIR}/.env.staging"
+  chmod 600 "${INSTALL_DIR}/.env.staging"
+fi
+
 if [[ -f "${INSTALL_DIR}/.env.staging" ]]; then
   cp -a "${INSTALL_DIR}/.env.staging" /tmp/precisoutapronto.env.staging.bak
 fi

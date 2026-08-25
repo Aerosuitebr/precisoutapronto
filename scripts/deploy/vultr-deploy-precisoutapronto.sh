@@ -16,6 +16,13 @@ fi
 echo "==> Extrair codigo em ${INSTALL_DIR}"
 mkdir -p "${INSTALL_DIR}"
 
+LEGACY_INSTALL_DIR="/opt/resolva-jato"
+if [[ ! -f "${INSTALL_DIR}/.env.production" && -f "${LEGACY_INSTALL_DIR}/.env.production" ]]; then
+  echo "==> Migrar .env.production do diretorio legado"
+  cp -a "${LEGACY_INSTALL_DIR}/.env.production" "${INSTALL_DIR}/.env.production"
+  chmod 600 "${INSTALL_DIR}/.env.production"
+fi
+
 # Evita arquivos orfaos de deploys anteriores (quebram o build Docker).
 if [[ -f "${INSTALL_DIR}/.env.production" ]]; then
   cp -a "${INSTALL_DIR}/.env.production" /tmp/precisoutapronto.env.production.bak
