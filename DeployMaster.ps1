@@ -4,7 +4,7 @@
   DeployMaster: staging -> resumo -> producao automatica (GitHub Actions Vultr).
 
 .DESCRIPTION
-  Dispara o workflow "Deploy Resolva Jato Vultr" em staging, aguarda E2E,
+  Dispara o workflow deploy-vultr.yml em staging, aguarda E2E,
   mostra informacoes relevantes e promove automaticamente para producao.
 
 .PARAMETER Branch
@@ -36,9 +36,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$WorkflowName = 'Deploy Resolva Jato Vultr'
+$WorkflowName = 'deploy-vultr.yml'
 $ProdUrl = 'https://precisoutapronto.com.br/'
-$StagingUrl = 'https://staging.resolvajato.com.br/'
+$StagingUrl = 'https://staging.precisoutapronto.com.br/'
 $RepoRoot = $PSScriptRoot
 $script:RepoSlug = $null
 
