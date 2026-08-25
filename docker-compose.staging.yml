@@ -3,34 +3,34 @@
 #
 # Uso:
 #   docker compose --env-file .env.staging \
-#     -f docker-compose.staging.yml -p precisoutapronto-staging up -d --build
+#     -f docker-compose.staging.yml -p resolva-jato-staging up -d --build
 #
 # Tunnel: staging.precisoutapronto.com.br → http://127.0.0.1:3001
 
-name: precisoutapronto-staging
+name: resolva-jato-staging
 
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: precisoutapronto-staging-postgres
+    container_name: resolva-jato-staging-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-precisoutapronto}
+      POSTGRES_USER: ${POSTGRES_USER:-resolvajato}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env.staging}
-      POSTGRES_DB: ${POSTGRES_DB:-precisoutapronto_staging}
+      POSTGRES_DB: ${POSTGRES_DB:-resolvajato_staging}
     volumes:
-      - precisoutapronto_staging_postgres:/var/lib/postgresql/data
+      - rj_staging_postgres:/var/lib/postgresql/data
     healthcheck:
       test:
         [
           'CMD-SHELL',
-          'pg_isready -U ${POSTGRES_USER:-precisoutapronto} -d ${POSTGRES_DB:-precisoutapronto_staging}'
+          'pg_isready -U ${POSTGRES_USER:-resolvajato} -d ${POSTGRES_DB:-resolvajato_staging}'
         ]
       interval: 5s
       timeout: 5s
       retries: 12
     networks:
-      - precisoutapronto_staging_net
+      - rj_staging_net
 
   app:
     build:
@@ -45,7 +45,7 @@ services:
         NEXT_PUBLIC_CLARITY_PROJECT_ID: ''
         GOOGLE_SITE_VERIFICATION: ''
         BING_SITE_VERIFICATION: ''
-    container_name: precisoutapronto-staging-app
+    container_name: resolva-jato-staging-app
     restart: unless-stopped
     depends_on:
       postgres:
@@ -57,7 +57,7 @@ services:
       APP_ENV: staging
       PORT: '3000'
       PRISMA_SCHEMA_MODE: ${PRISMA_SCHEMA_MODE:-migrate}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-precisoutapronto}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-precisoutapronto_staging}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER:-resolvajato}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-resolvajato_staging}?schema=public
       NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://staging.precisoutapronto.com.br}
       DOCUMENT_AI_ENDPOINT: ${DOCUMENT_AI_ENDPOINT:-}
       DOCUMENT_AI_API_KEY: ${DOCUMENT_AI_API_KEY:-}
@@ -107,11 +107,11 @@ services:
       retries: 8
       start_period: 60s
     networks:
-      - precisoutapronto_staging_net
+      - rj_staging_net
 
 volumes:
-  precisoutapronto_staging_postgres:
+  rj_staging_postgres:
 
 networks:
-  precisoutapronto_staging_net:
+  rj_staging_net:
     driver: bridge

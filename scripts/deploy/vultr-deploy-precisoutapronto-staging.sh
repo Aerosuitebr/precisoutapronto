@@ -46,7 +46,7 @@ COMPOSE=(
   docker compose
   --env-file .env.staging
   -f docker-compose.staging.yml
-  -p precisoutapronto-staging
+  -p resolva-jato-staging
 )
 
 echo "==> Validar compose staging"
@@ -80,7 +80,7 @@ done
 if [[ "${ok}" -ne 1 ]]; then
   echo "ERRO: app staging nao respondeu em http://127.0.0.1:${APP_PORT}/"
   "${COMPOSE[@]}" ps
-  docker logs precisoutapronto-staging-app --tail 80 || true
+  docker logs resolva-jato-staging-app --tail 80 || true
   exit 1
 fi
 
