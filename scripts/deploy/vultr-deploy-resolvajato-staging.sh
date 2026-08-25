@@ -51,6 +51,13 @@ echo "==> Build incremental apenas da aplicação staging"
 echo "==> Subir staging sem reconstrução adicional (app em 127.0.0.1:${APP_PORT})"
 "${COMPOSE[@]}" up -d --no-build --remove-orphans
 
+echo "==> Reaplicar rota do túnel Cloudflare para staging"
+if [[ -d /etc/cloudflared-resolvajato ]] && command -v systemctl >/dev/null 2>&1; then
+  bash "${INSTALL_DIR}/scripts/deploy/apply-cloudflared-resolvajato.sh"
+else
+  echo "AVISO: cloudflared local não encontrado; config do túnel não foi reaplicada."
+fi
+
 echo "==> Schema Prisma: migrations versionadas aplicadas pelo entrypoint (PRISMA_SCHEMA_MODE=migrate)"
 
 echo "==> Aguardar health do app staging"
