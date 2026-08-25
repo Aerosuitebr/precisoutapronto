@@ -2,7 +2,7 @@
  * Shared helpers for Playwright E2E (CF Access headers live in playwright.config.ts).
  */
 export function stagingBaseUrl() {
-  return process.env.E2E_BASE_URL?.trim() || 'https://staging.resolvajato.com.br';
+  return process.env.E2E_BASE_URL?.trim() || 'https://staging.precisoutapronto.com.br';
 }
 
 export function cloudflareAccessHeaders(): Record<string, string> {

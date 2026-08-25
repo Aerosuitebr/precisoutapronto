@@ -1,5 +1,5 @@
 /**
- * Garante instância Evolution do Resolva Jato (independente do Aerosuite).
+ * Garante instância Evolution do Precisou, Tá Pronto (independente do Aerosuite).
  *
  * Uso:
  *   node --env-file=.env scripts/whatsapp-ensure-instance.mjs
@@ -111,7 +111,7 @@ async function connectionState() {
 }
 
 async function main() {
-  console.log('=== Resolva Jato · WhatsApp independente ===');
+  console.log('=== Precisou, Tá Pronto · WhatsApp independente ===');
   console.log(`URL: ${baseUrl}`);
   console.log(`Instância: ${instance}`);
 
@@ -152,7 +152,7 @@ async function main() {
   }
 
   console.log('');
-  console.log('Pronto. Com a sessão open, o Resolva Jato envia WhatsApp sozinho.');
+  console.log('Pronto. Com a sessão open, o Precisou, Tá Pronto envia WhatsApp sozinho.');
 }
 
 main().catch((error) => {

@@ -1,5 +1,5 @@
 const DEFAULT_INTERNAL_EMAILS = [
-  'contato@resolvajato.com.br',
+  'contato@precisoutapronto.com.br',
   'contato@precisoutapronto.com.br'
 ];
 

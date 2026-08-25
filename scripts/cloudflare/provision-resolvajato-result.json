@@ -6,10 +6,10 @@
   "tunnelId": "3f99aa58-2811-4cd2-9b0b-a0819ee70242",
   "tunnelCname": "3f99aa58-2811-4cd2-9b0b-a0819ee70242.cfargotunnel.com",
   "zoneId": "30a3329312fe1bad82168d95ea83ef7f",
-  "zoneName": "resolvajato.com.br",
+  "zoneName": "precisoutapronto.com.br",
   "dns": {
-    "apex": "resolvajato.com.br → new tunnel CNAME",
-    "www": "www.resolvajato.com.br → new tunnel CNAME"
+    "apex": "precisoutapronto.com.br → new tunnel CNAME",
+    "www": "www.precisoutapronto.com.br → new tunnel CNAME"
   },
   "localConfig": "%USERPROFILE%\\.cloudflared\\config-resolvajato.yml",
   "credentials": "%USERPROFILE%\\.cloudflared\\3f99aa58-2811-4cd2-9b0b-a0819ee70242.json",

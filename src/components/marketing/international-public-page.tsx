@@ -26,8 +26,8 @@ const content = {
       title: 'Contact', subtitle: 'Support, security and privacy',
       paragraphs: [
         'Precisou, Tá Pronto is a product operated by Aerosuite.',
-        'For product support, security reports, privacy requests or corrections, email contato@resolvajato.com.br.',
-        'Official website: https://resolvajato.com.br'
+        'For product support, security reports, privacy requests or corrections, email contato@precisoutapronto.com.br.',
+        'Official website: https://precisoutapronto.com.br'
       ]
     },
     terms: {
@@ -60,8 +60,8 @@ const content = {
       title: 'Contacto', subtitle: 'Soporte, seguridad y privacidad',
       paragraphs: [
         'Precisou, Tá Pronto es un producto operado por Aerosuite.',
-        'Para soporte, informes de seguridad, solicitudes de privacidad o correcciones, escribe a contato@resolvajato.com.br.',
-        'Sitio oficial: https://resolvajato.com.br'
+        'Para soporte, informes de seguridad, solicitudes de privacidad o correcciones, escribe a contato@precisoutapronto.com.br.',
+        'Sitio oficial: https://precisoutapronto.com.br'
       ]
     },
     terms: {
@@ -106,7 +106,7 @@ export function InternationalPublicPage({ locale, page }: { locale: Internationa
           <p className="text-sm font-bold uppercase tracking-[0.16em] text-sky-700">{t.subtitle}</p>
           <h1 className="rj-display mt-3 text-3xl font-extrabold text-slate-950 sm:text-4xl">{t.title}</h1>
           <div className="mt-7 space-y-5 text-base leading-8 text-slate-700">
-            {t.paragraphs.map((paragraph) => paragraph.includes('contato@') ? <p key={paragraph}><Mail className="mr-2 inline h-4 w-4" /><a className="font-bold text-sky-700" href="mailto:contato@resolvajato.com.br">{paragraph}</a></p> : <p key={paragraph}>{paragraph}</p>)}
+            {t.paragraphs.map((paragraph) => paragraph.includes('contato@') ? <p key={paragraph}><Mail className="mr-2 inline h-4 w-4" /><a className="font-bold text-sky-700" href="mailto:contato@precisoutapronto.com.br">{paragraph}</a></p> : <p key={paragraph}>{paragraph}</p>)}
             {page === 'terms' || page === 'privacy' ? <p className="text-sm text-slate-500">{s.updated}</p> : null}
           </div>
           <p className="mt-8 border-t border-slate-200 pt-5 text-sm text-slate-500">{s.questions} <Link className="font-bold text-sky-700" href={`/${locale}/contact`}>{s.contact}</Link>.</p>

@@ -223,7 +223,7 @@ export const gamesResources = [
     category: 'games',
     categoryLabel: 'Games',
     description: 'Hub evergreen com top jogos, setups, hardware, consoles e lojas curadas.',
-    url: 'https://resolvajato.com.br/games',
+    url: 'https://precisoutapronto.com.br/games',
     tags: ['#Games', '#Setup', '#Hardware', '#Hub']
   },
   {
@@ -231,7 +231,7 @@ export const gamesResources = [
     category: 'games',
     categoryLabel: 'Games',
     description: 'Calcula DPI vezes sensibilidade para comparar configurações de mira no mesmo jogo.',
-    url: 'https://resolvajato.com.br/games/ferramentas/calculadora-edpi',
+    url: 'https://precisoutapronto.com.br/games/ferramentas/calculadora-edpi',
     tags: ['#eDPI', '#Sensibilidade', '#CS2', '#Valorant']
   },
   {
@@ -239,7 +239,7 @@ export const gamesResources = [
     category: 'games',
     categoryLabel: 'Games',
     description: 'Planeja o espaço necessário no SSD para jogos, atualizações e arquivos temporários.',
-    url: 'https://resolvajato.com.br/games/ferramentas/planejador-armazenamento',
+    url: 'https://precisoutapronto.com.br/games/ferramentas/planejador-armazenamento',
     tags: ['#SSD', '#Armazenamento', '#PCGamer', '#Console']
   },
   {
@@ -247,7 +247,7 @@ export const gamesResources = [
     category: 'games',
     categoryLabel: 'Games',
     description: 'Compara preço, DLCs e horas estimadas para avaliar uma compra gamer.',
-    url: 'https://resolvajato.com.br/games/ferramentas/custo-por-hora',
+    url: 'https://precisoutapronto.com.br/games/ferramentas/custo-por-hora',
     tags: ['#Preço', '#Promoção', '#Jogos', '#Calculadora']
   },
   {
@@ -255,7 +255,7 @@ export const gamesResources = [
     category: 'games',
     categoryLabel: 'Games',
     description: 'Compara CPU, GPU, memória e armazenamento com requisitos de jogos populares.',
-    url: 'https://resolvajato.com.br/games/ferramentas/meu-pc-roda',
+    url: 'https://precisoutapronto.com.br/games/ferramentas/meu-pc-roda',
     tags: ['#Requisitos', '#PCGamer', '#GPU', '#MeuPCRoda']
   }
 ] as const;

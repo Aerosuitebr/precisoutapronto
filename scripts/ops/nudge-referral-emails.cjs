@@ -17,7 +17,7 @@ function defaultFrom() {
   return (
     env('SMTP_FROM') ||
     env('RESEND_FROM') ||
-    (env('SMTP_USER') ? `Resolva Jato <${env('SMTP_USER')}>` : 'Resolva Jato <contato@resolvajato.com.br>')
+    (env('SMTP_USER') ? `Precisou, Tá Pronto <${env('SMTP_USER')}>` : 'Precisou, Tá Pronto <contato@precisoutapronto.com.br>')
   );
 }
 
@@ -79,7 +79,7 @@ function makeCode() {
 
 const DRY_RUN = process.env.DRY_RUN !== '0';
 const LIMIT = Math.max(1, Number(process.env.LIMIT || 200));
-const BASE = (process.env.NEXT_PUBLIC_APP_URL || 'https://resolvajato.com.br').replace(/\/$/, '');
+const BASE = (process.env.NEXT_PUBLIC_APP_URL || 'https://precisoutapronto.com.br').replace(/\/$/, '');
 
 async function main() {
   const prisma = new PrismaClient();
@@ -141,19 +141,19 @@ async function main() {
       const inviteUrl = `${BASE}/cadastro?ref=${encodeURIComponent(code)}&utm_source=email&utm_medium=referral&utm_campaign=premium_3friends_nudge`;
       const contaUrl = `${BASE}/conta`;
       const firstName = (user.name || '').split(/\s+/)[0] || 'olá';
-      const subject = '3 amigos ativos = 1 mês Premium no Resolva Jato';
+      const subject = '3 amigos ativos = 1 mês Premium no Precisou, Tá Pronto';
       const text =
         `Oi, ${firstName}!\n\n` +
-        `No Resolva Jato, indicar 3 amigos que confirmam o e-mail e usam uma ferramenta libera 1 mês de Premium pra você.\n\n` +
+        `No Precisou, Tá Pronto, indicar 3 amigos que confirmam o e-mail e usam uma ferramenta libera 1 mês de Premium pra você.\n\n` +
         `Seu link de indicação:\n${inviteUrl}\n\n` +
         `Painel completo (copiar / WhatsApp):\n${contaUrl}\n\n` +
-        `Equipe Resolva Jato`;
+        `Equipe Precisou, Tá Pronto`;
       const html =
         `<p>Oi, ${firstName}!</p>` +
-        `<p>No Resolva Jato, indicar <strong>3 amigos</strong> que confirmam o e-mail e usam uma ferramenta libera <strong>1 mês de Premium</strong> pra você.</p>` +
+        `<p>No Precisou, Tá Pronto, indicar <strong>3 amigos</strong> que confirmam o e-mail e usam uma ferramenta libera <strong>1 mês de Premium</strong> pra você.</p>` +
         `<p><a href="${inviteUrl}">Seu link de indicação</a></p>` +
         `<p>Painel completo (copiar / WhatsApp): <a href="${contaUrl}">${contaUrl}</a></p>` +
-        `<p>Equipe Resolva Jato</p>`;
+        `<p>Equipe Precisou, Tá Pronto</p>`;
 
       if (DRY_RUN) {
         console.log(JSON.stringify({ wouldSend: user.email, code }, null, 2));

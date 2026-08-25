@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Publica o Resolva Jato no Vultr (mesmo VPS do Aerosuite): código, .env, Docker e tunnel Cloudflare.
+  Publica o Precisou, Tá Pronto no Vultr (mesmo VPS do Aerosuite): código, .env, Docker e tunnel Cloudflare.
 #>
 param(
   [string]$HostName = "216.238.102.195",
@@ -56,8 +56,8 @@ if (-not $SkipEnv) {
   }
 
   $lines = @(
-    "DOMAIN=resolvajato.com.br",
-    "NEXT_PUBLIC_APP_URL=https://resolvajato.com.br",
+    "DOMAIN=precisoutapronto.com.br",
+    "NEXT_PUBLIC_APP_URL=https://precisoutapronto.com.br",
     "POSTGRES_USER=resolvajato",
     "POSTGRES_PASSWORD=$pgPass",
     "POSTGRES_DB=resolvajato",
@@ -154,7 +154,7 @@ if (-not $SkipBuild) {
 }
 
 Write-Host ""
-Write-Host "OK - Resolva Jato no Vultr."
+Write-Host "OK - Precisou, Tá Pronto no Vultr."
 Write-Host "  Local:  http://127.0.0.1:3000 (no servidor)"
-Write-Host "  Public: https://resolvajato.com.br"
+Write-Host "  Public: https://precisoutapronto.com.br"
 Write-Host "  Docs:   aerosuite/scripts/deploy/RESOLVA-JATO-VULTR.md"

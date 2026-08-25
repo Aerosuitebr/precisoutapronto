@@ -15,7 +15,7 @@ export default function Page() {
       <p>Para medir o armazenamento, cria um arquivo temporário de até 192 MB e tenta removê-lo ao final, inclusive após cancelamento ou falha. O catálogo de jogos é obtido por HTTPS sem incluir dados do computador.</p>
       <p>O relatório exportável contém dados técnicos, mas não inclui nome do computador, nome do usuário ou identificador de conta. A exportação acontece somente quando você escolhe o destino.</p>
       <p>Logs locais registram tipo de falha e contexto técnico, com nomes de usuário, máquina e pasta pessoal removidos. Eles permanecem por até 14 dias e só são compartilhados se você decidir anexá-los ao suporte.</p>
-      <p>Qualquer integração futura com o site exigirá um segundo consentimento específico antes do envio. Contato de privacidade: <a href="mailto:contato@resolvajato.com.br">contato@resolvajato.com.br</a>.</p>
+      <p>Qualquer integração futura com o site exigirá um segundo consentimento específico antes do envio. Contato de privacidade: <a href="mailto:contato@precisoutapronto.com.br">contato@precisoutapronto.com.br</a>.</p>
       <p>Última atualização: 30 de julho de 2026.</p>
     </LegalPage>
   );

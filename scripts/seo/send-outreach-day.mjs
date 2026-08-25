@@ -32,8 +32,8 @@ function stripDashes(text) {
 
 function pitchFor(contact) {
   const link = contact.primaryUrl;
-  const embed = 'https://resolvajato.com.br/embed?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
-  const press = 'https://resolvajato.com.br/imprensa?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
+  const embed = 'https://precisoutapronto.com.br/embed?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
+  const press = 'https://precisoutapronto.com.br/imprensa?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
 
   if (contact.angle === 'followup') {
     const askLabel = contact.askLabel || 'recurso gratuito';
@@ -58,8 +58,8 @@ function pitchFor(contact) {
         '',
         'Abraço,',
         'Wellem Lyra',
-        'contato@resolvajato.com.br',
-        'https://resolvajato.com.br/?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_fu_2026_08'
+        'contato@precisoutapronto.com.br',
+        'https://precisoutapronto.com.br/?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_fu_2026_08'
       ].join('\n')
     );
     return {
@@ -79,12 +79,12 @@ function pitchFor(contact) {
     embed: {
       subject: `Badges prontos para linkar ferramentas grátis (MEI, RH, educação)`,
       intro:
-        `Monteamos uma página de embeds/HTML para blogs e portais citarem ferramentas grátis do Resolva Jato com UTM de parceria.\n\nPágina: ${link}\nPress kit: ${press}`
+        `Monteamos uma página de embeds/HTML para blogs e portais citarem ferramentas grátis do Precisou, Tá Pronto com UTM de parceria.\n\nPágina: ${link}\nPress kit: ${press}`
     },
     enem: {
       subject: `Recurso gratuito · corretor de redação ENEM (por competência)`,
       intro:
-        `Para o público de vestibular/ENEM, liberamos um corretor gratuito com estimativa por competência (C1 a C5), pensado para treino (não substitui correção oficial).\n\nLink: ${link}\nTambém há gerador de referências ABNT: https://resolvajato.com.br/gerador-de-referencias-abnt`
+        `Para o público de vestibular/ENEM, liberamos um corretor gratuito com estimativa por competência (C1 a C5), pensado para treino (não substitui correção oficial).\n\nLink: ${link}\nTambém há gerador de referências ABNT: https://precisoutapronto.com.br/gerador-de-referencias-abnt`
     },
     checklist: {
       subject: `Checklist citável · cobrança para MEI (orçamento → Pix → recibo)`,
@@ -94,12 +94,12 @@ function pitchFor(contact) {
     estudantes: {
       subject: `Ferramentas grátis para jovens · currículo, ENEM e ABNT`,
       intro:
-        `O Resolva Jato tem ferramentas gratuitas no navegador que podem apoiar conteúdos de educação e primeiro emprego: currículo em PDF, corretor de redação ENEM e referências ABNT.\n\nCurrículo: ${link}\nENEM: https://resolvajato.com.br/corretor-de-redacao-enem\nABNT: https://resolvajato.com.br/gerador-de-referencias-abnt`
+        `O Precisou, Tá Pronto tem ferramentas gratuitas no navegador que podem apoiar conteúdos de educação e primeiro emprego: currículo em PDF, corretor de redação ENEM e referências ABNT.\n\nCurrículo: ${link}\nENEM: https://precisoutapronto.com.br/corretor-de-redacao-enem\nABNT: https://precisoutapronto.com.br/gerador-de-referencias-abnt`
     },
     'mei-pix': {
       subject: `Recurso gratuito para MEI · orçamento com Pix no WhatsApp`,
       intro:
-        `Sugestão de recurso gratuito para o público MEI: orçamento digital com aprovação no celular e Pix na hora, sem instalar app.\n\nLink: ${link}\nChecklist completo: https://resolvajato.com.br/checklist-cobranca-mei`
+        `Sugestão de recurso gratuito para o público MEI: orçamento digital com aprovação no celular e Pix na hora, sem instalar app.\n\nLink: ${link}\nChecklist completo: https://precisoutapronto.com.br/checklist-cobranca-mei`
     },
     'mei-clt': {
       subject: `Simulador gratuito MEI vs CLT (educativo)`,
@@ -128,7 +128,7 @@ function pitchFor(contact) {
     [
       `Olá, equipe ${contact.org},`,
       '',
-      'Sou o Wellem, do Resolva Jato (https://resolvajato.com.br).',
+      'Sou o Wellem, do Precisou, Tá Pronto (https://precisoutapronto.com.br).',
       pack.intro,
       '',
       `Se fizer sentido citar ou recomendar, temos badges HTML prontos em ${embed} e press kit em ${press}.`,
@@ -136,8 +136,8 @@ function pitchFor(contact) {
       '',
       'Abraço,',
       'Wellem Lyra',
-      'contato@resolvajato.com.br',
-      'https://resolvajato.com.br/?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08'
+      'contato@precisoutapronto.com.br',
+      'https://precisoutapronto.com.br/?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08'
     ].join('\n')
   );
 
@@ -198,7 +198,7 @@ async function main() {
   const host = env('SMTP_HOST');
   const user = env('SMTP_USER');
   const pass = env('SMTP_PASS');
-  const from = env('SMTP_FROM') || env('RESEND_FROM') || `Resolva Jato <${user || 'contato@resolvajato.com.br'}>`;
+  const from = env('SMTP_FROM') || env('RESEND_FROM') || `Precisou, Tá Pronto <${user || 'contato@precisoutapronto.com.br'}>`;
   const hasResend = Boolean(env('RESEND_API_KEY'));
   const hasSmtp = Boolean(host && user && pass);
   if (!dryRun && !hasResend && !hasSmtp) {
@@ -225,11 +225,11 @@ async function main() {
     ? [
         {
           id: 'self-test',
-          org: 'Resolva Jato (teste)',
-          email: user || 'contato@resolvajato.com.br',
+          org: 'Precisou, Tá Pronto (teste)',
+          email: user || 'contato@precisoutapronto.com.br',
           audience: 'teste',
           angle: 'embed',
-          primaryUrl: 'https://resolvajato.com.br/embed',
+          primaryUrl: 'https://precisoutapronto.com.br/embed',
           source: 'self-test'
         }
       ]

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Provisiona resolvajato.com.br na conta Cloudflare do Aero Suite
+ * Provisiona precisoutapronto.com.br na conta Cloudflare do Aero Suite
  * e aponta DNS (apex + www) para o tunnel cloudflared existente.
  *
  * Pré-requisitos:
@@ -21,7 +21,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID || '4591ec7b63032dc157df648991469050';
-const ZONE_NAME = process.env.ZONE_NAME || 'resolvajato.com.br';
+const ZONE_NAME = process.env.ZONE_NAME || 'precisoutapronto.com.br';
 const TUNNEL_ID = process.env.TUNNEL_ID || '6d599ea8-2354-4c3c-9968-5ded651c92fc';
 const TUNNEL_CNAME = `${TUNNEL_ID}.cfargotunnel.com`;
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN || '';
@@ -85,7 +85,7 @@ async function upsertCname(zoneId, name, content) {
     content,
     ttl: 1,
     proxied: true,
-    comment: 'Resolva Jato → Cloudflare Tunnel'
+    comment: 'Precisou, Tá Pronto → Cloudflare Tunnel'
   };
 
   if (existing) {
@@ -149,11 +149,11 @@ async function main() {
     dns: { apex: apex?.id, www: www?.id },
     nameservers,
     nextSteps: [
-      'No Registro.br → Domínio resolvajato.com.br → DNS → alterar nameservers para os da Cloudflare abaixo.',
+      'No Registro.br → Domínio precisoutapronto.com.br → DNS → alterar nameservers para os da Cloudflare abaixo.',
       'Aguarde propagação (minutos a algumas horas).',
       'Garanta npm run dev (ou produção) em http://127.0.0.1:3000',
-      'Reinicie o serviço Cloudflared no Windows se ainda não tiver as rotas do Resolva Jato.',
-      'Teste https://resolvajato.com.br e https://www.resolvajato.com.br'
+      'Reinicie o serviço Cloudflared no Windows se ainda não tiver as rotas do Precisou, Tá Pronto.',
+      'Teste https://precisoutapronto.com.br e https://www.precisoutapronto.com.br'
     ]
   };
 

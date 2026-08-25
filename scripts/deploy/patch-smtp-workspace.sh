@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Atualiza SMTP do Resolva Jato no VPS para Google Workspace (contato@).
+# Atualiza SMTP do Precisou, Tá Pronto no VPS para Google Workspace (contato@).
 # Uso (no servidor, com senha de app já gerada):
 #   SMTP_PASS='xxxx xxxx xxxx xxxx' bash /tmp/patch-smtp-workspace.sh
 # Ou local via SSH:
@@ -9,8 +9,8 @@ set -euo pipefail
 
 INSTALL_DIR="${INSTALL_DIR:-/opt/resolva-jato}"
 ENVF="${INSTALL_DIR}/.env.production"
-EMAIL="${SMTP_USER_VALUE:-contato@resolvajato.com.br}"
-FROM_VALUE="${SMTP_FROM_VALUE:-Resolva Jato <contato@resolvajato.com.br>}"
+EMAIL="${SMTP_USER_VALUE:-contato@precisoutapronto.com.br}"
+FROM_VALUE="${SMTP_FROM_VALUE:-Precisou, Tá Pronto <contato@precisoutapronto.com.br>}"
 
 if [[ ! -f "${ENVF}" ]]; then
   echo "ERRO: ${ENVF} ausente"

@@ -101,7 +101,7 @@ async function sendViaSmtp(input: SendEmailInput): Promise<SendEmailResult> {
 
 /**
  * Preferência: Resend (se houver API key). Senão SMTP Google Workspace
- * (`contato@resolvajato.com.br` via smtp.gmail.com).
+ * (`contato@precisoutapronto.com.br` via smtp.gmail.com).
  * Em desenvolvimento, sem nenhum provedor, loga o conteúdo e considera ok.
  */
 export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult> {

@@ -13,7 +13,7 @@ self.addEventListener('push', (event) => {
     title: 'Precisou, Tá Pronto',
     body: 'Você tem um novo aviso.',
     url: '/ferramentas/orcamentos',
-    tag: 'resolva-jato',
+    tag: 'precisou-ta-pronto',
     playSound: true,
     vibrate: [200, 100, 200, 100, 400],
     requireInteraction: true

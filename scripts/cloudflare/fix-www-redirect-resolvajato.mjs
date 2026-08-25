@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /**
- * Corrige o redirect www → apex do Resolva Jato.
+ * Corrige o redirect www → apex do Precisou, Tá Pronto.
  *
- * Problema: www.resolvajato.com.br/* redirecionava para https://resolvajato.com.br/
+ * Problema: www.precisoutapronto.com.br/* redirecionava para https://precisoutapronto.com.br/
  * (home), descartando o path. Sitemap, robots e páginas quebravam no www.
  *
  * Correção: Redirect Rule dinâmica que preserva path + query:
- *   www.resolvajato.com.br/sitemap.xml → https://resolvajato.com.br/sitemap.xml
+ *   www.precisoutapronto.com.br/sitemap.xml → https://precisoutapronto.com.br/sitemap.xml
  *
  * Uso (PowerShell):
  *   $env:CLOUDFLARE_API_TOKEN = "seu-token"
  *   node scripts/cloudflare/fix-www-redirect-resolvajato.mjs
  *
- * Token: Zone → Rules → Edit (ou Redirect Rules Edit) na zone resolvajato.com.br
+ * Token: Zone → Rules → Edit (ou Redirect Rules Edit) na zone precisoutapronto.com.br
  */
 
 import { writeFileSync } from 'node:fs';
@@ -20,9 +20,9 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ZONE_ID = process.env.CLOUDFLARE_ZONE_ID || '30a3329312fe1bad82168d95ea83ef7f';
-const ZONE_NAME = 'resolvajato.com.br';
+const ZONE_NAME = 'precisoutapronto.com.br';
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN || '';
-const RULE_DESC = 'Resolva Jato www → apex (301, preserve path)';
+const RULE_DESC = 'Precisou, Tá Pronto www → apex (301, preserve path)';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outPath = resolve(__dirname, 'fix-www-redirect-result.json');

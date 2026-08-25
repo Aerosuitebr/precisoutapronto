@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy Resolva Jato no Vultr (mesmo host do Aerosuite).
+# Deploy Precisou, Tá Pronto no Vultr (mesmo host do Aerosuite).
 # Preserva segredos e aplica somente as variáveis públicas do corte de domínio.
 # Uso: INSTALL_DIR=/opt/resolva-jato bash vultr-deploy-resolvajato.sh
 

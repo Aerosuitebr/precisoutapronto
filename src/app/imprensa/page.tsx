@@ -143,7 +143,7 @@ export default function ImprensaPage() {
                 </Link>
               </li>
               <li>
-                <Link href="/badges/feito-com-resolva-jato.svg" className="hover:underline">
+                <Link href="/badges/feito-com-precisou-ta-pronto.svg" className="hover:underline">
                   Badge “Feito com Precisou, Tá Pronto”
                 </Link>
               </li>

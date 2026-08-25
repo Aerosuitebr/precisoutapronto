@@ -4,7 +4,6 @@ import { LegalPage } from '@/components/marketing/legal-page';
 import {
   BRAND_DESCRIPTION,
   BRAND_DISPLAY_NAME,
-  BRAND_LEGACY_HOST,
   BRAND_NAME,
   BRAND_SITE,
   BRAND_TAGLINE
@@ -37,8 +36,7 @@ export default function OfficialBrandPage() {
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <LegalPage title={`${BRAND_DISPLAY_NAME} Site oficial`} subtitle={BRAND_TAGLINE}>
-      <p><strong>{BRAND_DISPLAY_NAME}</strong> é uma plataforma brasileira de ferramentas online operada pela Aerosuite. Nosso novo domínio oficial é <strong>precisoutapronto.com.br</strong>.</p>
-      <p>Durante a migração, <strong>{BRAND_LEGACY_HOST}</strong> permanece válido e redireciona os visitantes para o mesmo conteúdo no endereço novo.</p>
+      <p><strong>{BRAND_DISPLAY_NAME}</strong> é uma plataforma brasileira de ferramentas online operada pela Aerosuite. Nosso único domínio oficial é <strong>precisoutapronto.com.br</strong>.</p>
       <p>Reunimos soluções para PDFs, imagens, documentos profissionais, cálculos, estudos e organização. Não somos uma empresa de cobrança de dívidas, construtora, desentupidora, escritório contábil ou marketplace de prestadores.</p>
       <section className="rounded-3xl border border-sky-100 bg-sky-50 p-6">
         <h2 className="text-xl font-bold text-slate-950">O que torna a experiência pronta</h2>

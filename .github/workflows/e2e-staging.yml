@@ -10,7 +10,7 @@ on:
         description: Staging base URL
         type: string
         required: false
-        default: 'https://staging.resolvajato.com.br'
+        default: 'https://staging.precisoutapronto.com.br'
 
 permissions:
   contents: read

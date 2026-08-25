@@ -1,4 +1,4 @@
-# Provisiona zona + DNS Resolva Jato na Cloudflare (conta Aero Suite)
+# Provisiona zona + DNS Precisou, Tá Pronto na Cloudflare (conta Aero Suite)
 # e reinicia o serviço cloudflared local.
 #
 # Uso:
@@ -41,10 +41,10 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $config = "$env:USERPROFILE\.cloudflared\config.yml"
 if (Test-Path $config) {
   $raw = Get-Content $config -Raw
-  if ($raw -notmatch 'resolvajato\.com\.br') {
-    Write-Host "AVISO: config.yml local ainda nao tem resolvajato.com.br" -ForegroundColor Yellow
+  if ($raw -notmatch 'precisoutapronto\.com\.br') {
+    Write-Host "AVISO: config.yml local ainda nao tem precisoutapronto.com.br" -ForegroundColor Yellow
   } else {
-    Write-Host "==> config.yml ja inclui resolvajato.com.br → http://127.0.0.1:3000" -ForegroundColor Green
+    Write-Host "==> config.yml ja inclui precisoutapronto.com.br → http://127.0.0.1:3000" -ForegroundColor Green
   }
 }
 
@@ -60,6 +60,6 @@ try {
 
 $result = Get-Content "$PSScriptRoot\provision-resolvajato-result.json" -Raw | ConvertFrom-Json
 Write-Host "`n=== Proximo passo no Registro.br ===" -ForegroundColor Cyan
-Write-Host "Altere os nameservers de resolvajato.com.br para:"
+Write-Host "Altere os nameservers de precisoutapronto.com.br para:"
 foreach ($ns in $result.nameservers) { Write-Host "  $ns" -ForegroundColor White }
-Write-Host "`nCom o Next.js em :3000, teste https://resolvajato.com.br" -ForegroundColor Green
+Write-Host "`nCom o Next.js em :3000, teste https://precisoutapronto.com.br" -ForegroundColor Green

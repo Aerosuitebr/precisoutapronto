@@ -19,7 +19,7 @@ const EMBEDS = [
   {
     id: 'badge-feito',
     title: 'Badge “feito com”',
-    html: `<a href="${partnerUtm('/', 'embed', 'badge_feito')}" rel="noopener noreferrer"><img src="${BRAND_SITE}/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width="240" height="40" /></a>`
+    html: `<a href="${partnerUtm('/', 'embed', 'badge_feito')}" rel="noopener noreferrer"><img src="${BRAND_SITE}/badges/feito-com-precisou-ta-pronto.svg" alt="Feito com Precisou, Tá Pronto" width="240" height="40" /></a>`
   },
   {
     id: 'rescisao',
@@ -143,7 +143,7 @@ export function EmbedClient() {
             <p className="text-sm font-bold text-emerald-950">Prévia dos badges</p>
             <div className="mt-4 flex flex-wrap gap-4">
               <Image src="/badges/ferramentas-gratis.svg" alt="Ferramentas grátis" width={260} height={40} />
-              <Image src="/badges/feito-com-resolva-jato.svg" alt="Feito com Precisou, Tá Pronto" width={240} height={40} />
+              <Image src="/badges/feito-com-precisou-ta-pronto.svg" alt="Feito com Precisou, Tá Pronto" width={240} height={40} />
             </div>
           </div>
           {EMBEDS.map((item) => (

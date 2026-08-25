@@ -981,11 +981,11 @@ test('me context endpoint derives ownership only from the authenticated session'
 });
 
 test('write origin guard rejects cross-site and missing origins', () => {
-  expect(isTrustedWriteOrigin(new Request('https://resolvajato.com.br/api/v1/me/context', {
-    headers: { origin: 'https://resolvajato.com.br', 'sec-fetch-site': 'same-origin' }
+  expect(isTrustedWriteOrigin(new Request('https://precisoutapronto.com.br/api/v1/me/context', {
+    headers: { origin: 'https://precisoutapronto.com.br', 'sec-fetch-site': 'same-origin' }
   }))).toBe(true);
-  expect(isTrustedWriteOrigin(new Request('https://resolvajato.com.br/api/v1/me/context'))).toBe(false);
-  expect(isTrustedWriteOrigin(new Request('https://resolvajato.com.br/api/v1/me/context', {
+  expect(isTrustedWriteOrigin(new Request('https://precisoutapronto.com.br/api/v1/me/context'))).toBe(false);
+  expect(isTrustedWriteOrigin(new Request('https://precisoutapronto.com.br/api/v1/me/context', {
     headers: { origin: 'https://evil.example', 'sec-fetch-site': 'cross-site' }
   }))).toBe(false);
 });

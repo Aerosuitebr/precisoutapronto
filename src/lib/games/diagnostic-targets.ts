@@ -55,7 +55,7 @@ export function getDiagnosticTarget(game: GameEntry): DiagnosticTarget {
     gpuTarget: 55,
     ramMinimumGb: Number.parseFloat(game.setupMin.ram) || 8,
     storageMinimumGb: Number.parseFloat(game.setupMin.storage.replace(/[^\d.]/g, '')) || 20,
-    requirementsSourceUrl: `https://resolvajato.com.br/games/jogos/${game.slug}`,
+    requirementsSourceUrl: `https://precisoutapronto.com.br/games/jogos/${game.slug}`,
     requirementsVerifiedAt: VERIFIED_AT,
     editorialVersion: VERSION,
     qualityNotes: 'Perfil editorial pendente de fonte oficial específica; não prevê FPS.',

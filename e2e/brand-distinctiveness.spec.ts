@@ -54,7 +54,7 @@ test.describe('brand distinctiveness', () => {
     await expect(page.locator('h1')).toHaveText('Precisou? Tá Pronto! Site oficial');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/precisou-ta-pronto$/);
-    await expect(page.getByText(/resolvajato\.com\.br permanece válido/)).toBeVisible();
+    await expect(page.getByText(/único domínio oficial é precisoutapronto\.com\.br/)).toBeVisible();
     const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
     expect(schemas.join('\n')).toContain('AboutPage');
     expect(schemas.join('\n')).toContain('Precisou? Tá Pronto!');

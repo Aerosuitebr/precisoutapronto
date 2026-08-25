@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Instala conector Cloudflare Tunnel do Resolva Jato SEM mexer no cloudflared do Aerosuite.
+# Instala conector Cloudflare Tunnel do Precisou, Tá Pronto SEM mexer no cloudflared do Aerosuite.
 # Pré-requisito: credentials JSON já em /etc/cloudflared-resolvajato/
 # Uso: bash install-cloudflared-resolvajato.sh
 
@@ -32,7 +32,7 @@ chmod 600 "${CRED}" "${CFG}"
 
 cat > "${UNIT}" <<'EOF'
 [Unit]
-Description=cloudflared Resolva Jato
+Description=cloudflared Precisou, Tá Pronto
 After=network-online.target
 Wants=network-online.target
 
@@ -58,5 +58,5 @@ systemctl is-active cloudflared-resolvajato
 systemctl is-active cloudflared >/dev/null 2>&1 || true
 journalctl -u cloudflared-resolvajato -n 15 --no-pager
 
-echo "OK — tunnel Resolva Jato ativo (Aerosuite cloudflared intacto)."
-echo "Teste: https://resolvajato.com.br"
+echo "OK — tunnel Precisou, Tá Pronto ativo (Aerosuite cloudflared intacto)."
+echo "Teste: https://precisoutapronto.com.br"

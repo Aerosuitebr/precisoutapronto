@@ -12,7 +12,6 @@ import {
 } from '@/lib/i18n-locale';
 
 const DEVICE_COOKIE = 'rj_device';
-const LEGACY_PUBLIC_HOSTS = new Set(['resolvajato.com.br', 'www.resolvajato.com.br']);
 const PUBLIC_CACHEABLE_PATHS = new Set([
   '/',
   '/busca',
@@ -110,26 +109,23 @@ function applyCommonHeaders(request: NextRequest, response: NextResponse) {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const requestHost = (request.headers.get('host') || request.nextUrl.hostname || '')
-    .split(':')[0]
-    .toLowerCase();
   const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL;
 
-  // O redirect de domínio é ativado pelo próprio corte de NEXT_PUBLIC_APP_URL.
-  // APIs continuam respondendo no host antigo para não interromper webhooks.
+  // Normaliza somente o www do domínio oficial. Domínios externos não são tratados aqui.
   if (configuredOrigin && !pathname.startsWith('/api/')) {
+    const requestHost = (request.headers.get('host') || request.nextUrl.hostname || '')
+      .split(':')[0]
+      .toLowerCase();
     const canonical = new URL(configuredOrigin);
     const canonicalHost = canonical.hostname.toLowerCase();
     const shouldNormalizeWww = requestHost === `www.${canonicalHost}`;
-    if ((LEGACY_PUBLIC_HOSTS.has(requestHost) || shouldNormalizeWww) && requestHost !== canonicalHost) {
+    if (shouldNormalizeWww) {
       const destination = request.nextUrl.clone();
       destination.protocol = canonical.protocol;
       destination.host = canonical.host;
       // O NextURL pode carregar a porta interna do origin (por exemplo, :3000)
       // mesmo depois da troca de host. Nunca a exponha no redirect publico.
       destination.port = canonical.port;
-      // O validador de Mudanca de endereco do Google Search Console exige
-      // explicitamente um 301 na origem, embora 308 tambem seja permanente.
       return NextResponse.redirect(destination, 301);
     }
   }

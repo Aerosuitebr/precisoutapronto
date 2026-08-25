@@ -9,13 +9,13 @@ import {
 test('native share payload contains the public URL and no document body', () => {
   const payload = buildDocumentSharePayload(
     'Contrato de exemplo',
-    'https://resolvajato.com.br/documento/public-token'
+    'https://precisoutapronto.com.br/documento/public-token'
   );
 
   expect(payload).toEqual({
     title: 'Contrato de exemplo',
     text: 'Veja este documento criado no Precisou, Tá Pronto.',
-    url: 'https://resolvajato.com.br/documento/public-token'
+    url: 'https://precisoutapronto.com.br/documento/public-token'
   });
   expect(JSON.stringify(payload)).not.toContain('answers');
 });

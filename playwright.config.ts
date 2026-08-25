@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = process.env.E2E_BASE_URL?.trim() || 'https://staging.resolvajato.com.br';
+const baseURL = process.env.E2E_BASE_URL?.trim() || 'https://staging.precisoutapronto.com.br';
 
 const cfAccessHeaders: Record<string, string> = {};
 const cfClientId = process.env.E2E_CF_ACCESS_CLIENT_ID?.trim();

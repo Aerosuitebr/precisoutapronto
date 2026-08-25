@@ -1,4 +1,5 @@
 const base = (process.env.SEO_BASE_URL || 'http://127.0.0.1:3000').replace(/\/$/, '');
+const canonicalBase = (process.env.SEO_CANONICAL_URL || 'https://precisoutapronto.com.br').replace(/\/$/, '');
 
 async function request(path) {
   const response = await fetch(`${base}${path}`, { redirect: 'manual' });
@@ -38,17 +39,17 @@ for (const [path, expectedStatus, expectedType] of checks) {
 }
 
 const home = results.get('/').body;
-if (!home.includes('rel="canonical" href="https://resolvajato.com.br"')) {
+if (!home.includes(`rel="canonical" href="${canonicalBase}"`)) {
   failures.push('/: canonical de produção ausente');
 }
 
 const library = results.get('/biblioteca').body;
-if (!library.includes('rel="canonical" href="https://resolvajato.com.br/biblioteca"')) {
+if (!library.includes(`rel="canonical" href="${canonicalBase}/biblioteca"`)) {
   failures.push('/biblioteca: canonical incorreto ou ausente');
 }
 
 const recibo = results.get('/recibo-de-pagamento').body;
-if (!recibo.includes('rel="canonical" href="https://resolvajato.com.br/recibo-de-pagamento"')) {
+if (!recibo.includes(`rel="canonical" href="${canonicalBase}/recibo-de-pagamento"`)) {
   failures.push('/recibo-de-pagamento: canonical autorreferente ausente');
 }
 if (recibo.includes('hreflang')) {
@@ -56,7 +57,7 @@ if (recibo.includes('hreflang')) {
 }
 
 const proposta = results.get('/proposta-comercial-mei').body;
-if (!proposta.includes('rel="canonical" href="https://resolvajato.com.br/proposta-comercial-mei"')) {
+if (!proposta.includes(`rel="canonical" href="${canonicalBase}/proposta-comercial-mei"`)) {
   failures.push('/proposta-comercial-mei: canonical autorreferente ausente');
 }
 if (proposta.includes('hreflang')) {
@@ -70,7 +71,7 @@ if (![301, 308].includes(autonomos.response.status) || !autonomosLocation.includ
 }
 
 const robots = results.get('/robots.txt').body;
-if (!robots.includes('Sitemap: https://resolvajato.com.br/sitemaps/index.xml')) {
+if (!robots.includes(`Sitemap: ${canonicalBase}/sitemaps/index.xml`)) {
   failures.push('/robots.txt: índice de sitemaps ausente');
 }
 if (/^Disallow:\s*\/conta\s*$/m.test(robots)) {
@@ -85,7 +86,8 @@ if (!robots.includes('Disallow: /conta$') && !robots.includes('Disallow: /conta/
 
 const sitemap = results.get('/sitemap.xml').body;
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-const privatePath = /^https:\/\/resolvajato\.com\.br\/(?:api|conta(?:\/|$)|ferramentas(?:\/|$)|checkout(?:\/|$)|login(?:\/|$)|cadastro(?:\/|$)|documento(?:\/|$)|orcamento\/)/;
+const escapedCanonicalBase = canonicalBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const privatePath = new RegExp(`^${escapedCanonicalBase}/(?:api|conta(?:/|$)|ferramentas(?:/|$)|checkout(?:/|$)|login(?:/|$)|cadastro(?:/|$)|documento(?:/|$)|orcamento/)`);
 const leaked = urls.filter((url) => privatePath.test(url));
 if (urls.length < 100) failures.push(`/sitemap.xml: somente ${urls.length} URLs`);
 if (leaked.length) failures.push(`/sitemap.xml: URLs privadas encontradas: ${leaked.join(', ')}`);

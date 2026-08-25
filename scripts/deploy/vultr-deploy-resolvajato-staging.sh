@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy Resolva Jato STAGING no Vultr (homolog i18n).
+# Deploy Precisou, Tá Pronto STAGING no Vultr (homolog i18n).
 # Não altera .env.staging do servidor se já existir.
 # Uso: INSTALL_DIR=/opt/resolva-jato-staging bash vultr-deploy-resolvajato-staging.sh
 
@@ -73,6 +73,6 @@ fi
 curl -sfI "http://127.0.0.1:${APP_PORT}/" | head -5
 curl -sfI "http://127.0.0.1:${APP_PORT}/robots.txt" | head -5 || true
 "${COMPOSE[@]}" ps
-echo "OK - Resolva Jato STAGING em ${INSTALL_DIR} (localhost:${APP_PORT})"
-echo "URL: https://staging.resolvajato.com.br"
+echo "OK - Precisou, Tá Pronto STAGING em ${INSTALL_DIR} (localhost:${APP_PORT})"
+echo "URL: https://staging.precisoutapronto.com.br"
 echo "Lembrete: configure Cloudflare Access no hostname staging."

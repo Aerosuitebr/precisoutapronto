@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Aplica a config do tunnel Resolva Jato (inclui staging) no VPS.
+# Aplica a config do tunnel Precisou, Tá Pronto (inclui staging) no VPS.
 # Uso (no servidor): bash scripts/deploy/apply-cloudflared-resolvajato.sh
 
 set -euo pipefail
@@ -27,4 +27,4 @@ else
   bash "$(cd "$(dirname "$0")" && pwd)/install-cloudflared-resolvajato.sh"
 fi
 
-echo "OK. Confirme DNS staging.resolvajato.com.br e Cloudflare Access."
+echo "OK. Confirme DNS staging.precisoutapronto.com.br e Cloudflare Access."

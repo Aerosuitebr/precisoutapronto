@@ -261,6 +261,25 @@ if (!seoLandingPage.includes('LandingConversionLink') || !seoLandingPage.include
   failures.push('seo-landing-page: CTAs primárias sem medição de conversão');
 }
 
+// Impede que domínio, e-mail ou nome público anteriores voltem ao produto ou à operação.
+const previousIdentityPattern = /resolvajato(?:\\?\.)com(?:\\?\.)br|Resolva Jato/i;
+for (const scanRoot of ['src', 'public', 'scripts', 'e2e', '.github']) {
+  for (const file of await walk(path.join(root, scanRoot))) {
+    if (!/\.(?:[cm]?[jt]sx?|json|ya?ml|md|txt|html|css|webmanifest|xml|sh|ps1)$/i.test(file)) continue;
+    if (path.resolve(file) === path.resolve(import.meta.filename)) continue;
+    const source = await readFile(file, 'utf8');
+    if (previousIdentityPattern.test(source)) {
+      failures.push(`${path.relative(root, file)}: referência à identidade anterior encontrada`);
+    }
+  }
+}
+for (const rootFile of ['next.config.mjs', 'playwright.config.ts']) {
+  const source = await readFile(path.join(root, rootFile), 'utf8');
+  if (previousIdentityPattern.test(source)) {
+    failures.push(`${rootFile}: referência à identidade anterior encontrada`);
+  }
+}
+
 if (failures.length) {
   console.error(`Auditoria SEO falhou (${failures.length}):`);
   for (const failure of failures) console.error(`- ${failure}`);

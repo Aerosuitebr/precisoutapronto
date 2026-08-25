@@ -1,4 +1,4 @@
-/** Identidade pública e ponte de migração da marca. */
+/** Identidade pública oficial da marca. */
 
 export const BRAND_NAME = 'Precisou, Tá Pronto';
 export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!';
@@ -10,22 +10,15 @@ export const BRAND_OFFICIAL_PATH = '/precisou-ta-pronto';
 export const BRAND_AUTHOR_PATH = '/autores/equipe-editorial';
 
 export const BRAND_HOST = 'precisoutapronto.com.br';
-export const BRAND_LEGACY_HOST = 'resolvajato.com.br';
 
 export const BRAND_PRIMARY_SITE = `https://${BRAND_HOST}`;
-export const BRAND_LEGACY_SITE = `https://${BRAND_LEGACY_HOST}`;
-/** URL operacional; troca automaticamente quando NEXT_PUBLIC_APP_URL mudar no corte. */
+/** URL operacional, sempre com fallback para o domínio oficial. */
 export const BRAND_SITE =
   process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || BRAND_PRIMARY_SITE;
 
-/**
- * Mantém a caixa atual enquanto o Google Workspace não for migrado.
- * Depois da ativação, basta definir NEXT_PUBLIC_CONTACT_EMAIL no ambiente.
- */
 export const BRAND_EMAIL =
-  process.env.NEXT_PUBLIC_CONTACT_EMAIL || `contato@${BRAND_LEGACY_HOST}`;
-/** Endereço público da marca nova. A caixa SMTP pode continuar no domínio legado até o Workspace migrar. */
-export const BRAND_PUBLIC_EMAIL = `contato@${BRAND_HOST}`;
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL || `contato@${BRAND_HOST}`;
+export const BRAND_PUBLIC_EMAIL = BRAND_EMAIL;
 
 /** Remetente SMTP / Resend no formato RFC. */
 export const BRAND_EMAIL_FROM = `${BRAND_NAME} <${BRAND_EMAIL}>`;
