@@ -9,6 +9,13 @@ export interface ProfessionLanding {
   preset: OrcamentoPreset;
   checklist: string[];
   faqs: Array<{ q: string; a: string }>;
+  example?: {
+    client: string;
+    items: Array<{ description: string; detail: string; value: string }>;
+    total: string;
+    terms: string[];
+  };
+  sections?: Array<{ title: string; paragraphs: string[] }>;
 }
 
 export const PROFESSION_LANDINGS: ProfessionLanding[] = [
@@ -49,6 +56,20 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       observacoes: 'Materiais e serviços adicionais serão executados somente após aprovação.\nPagamento via Pix.\nGarantia da mão de obra conforme o serviço descrito.'
     },
     checklist: ['Pontos e circuitos identificados', 'Materiais separados da mão de obra', 'Prazo e garantia registrados'],
+    example: {
+      client: 'Cliente: Padaria Boa Praça — exemplo fictício',
+      items: [
+        { description: 'Visita técnica e diagnóstico', detail: 'Inspeção do quadro e teste de 6 circuitos', value: 'R$ 180,00' },
+        { description: 'Materiais elétricos', detail: '2 disjuntores, cabos e conectores especificados', value: 'R$ 420,00' },
+        { description: 'Mão de obra', detail: 'Troca dos componentes e identificação do quadro', value: 'R$ 650,00' }
+      ],
+      total: 'R$ 1.250,00',
+      terms: ['Validade: 7 dias', 'Execução estimada: 1 dia útil', '50% na aprovação e saldo na conclusão via Pix']
+    },
+    sections: [
+      { title: 'O que muda em um orçamento elétrico', paragraphs: ['Descreva pontos, circuitos e ambientes para que o cliente saiba exatamente o alcance da mão de obra.', 'Separe diagnóstico, materiais e instalação. Adequações descobertas durante o serviço devem receber orçamento complementar antes da execução.'] },
+      { title: 'Segurança e responsabilidade técnica', paragraphs: ['O modelo organiza a proposta comercial; ele não substitui inspeção, projeto, laudo ou responsabilidade técnica quando exigidos.', 'Normas, capacidade do circuito e condições do imóvel devem ser avaliadas por profissional habilitado para o serviço aplicável.'] }
+    ],
     faqs: [
       { q: 'Devo cobrar a visita técnica?', a: 'Você pode criar um item separado para diagnóstico e informar se o valor será abatido após a aprovação do serviço.' },
       { q: 'Como registrar materiais?', a: 'Liste os principais materiais como itens ou use um item consolidado, deixando marcas e quantidades nas observações.' }
@@ -198,6 +219,20 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       observacoes: 'Descreva metragem, etapas e condições atuais do local.\nServiços não visíveis na vistoria serão orçados à parte.\nDefina entrada, pagamentos por etapa e prazo estimado.'
     },
     checklist: ['Metragem e etapas descritas', 'Materiais e mão de obra separados', 'Pagamentos e prazo por etapa'],
+    example: {
+      client: 'Cliente: Marina Alves — exemplo fictício',
+      items: [
+        { description: 'Preparação da área', detail: 'Proteção, retirada de revestimento e descarte — 12 m²', value: 'R$ 780,00' },
+        { description: 'Mão de obra de alvenaria', detail: 'Regularização e assentamento — 12 m²', value: 'R$ 1.680,00' },
+        { description: 'Acabamento', detail: 'Rejunte e limpeza final; materiais descritos à parte', value: 'R$ 540,00' }
+      ],
+      total: 'R$ 3.000,00',
+      terms: ['Validade: 10 dias', 'Prazo estimado: 5 dias úteis', '30% na entrada, 40% após assentamento e 30% na entrega via Pix']
+    },
+    sections: [
+      { title: 'O que muda em um orçamento de obra', paragraphs: ['Informe metragem, preparação, execução e acabamento em etapas separadas. Isso permite conferir o avanço e vincular pagamentos a entregas observáveis.', 'Registre quem compra os materiais, como será feito o descarte e quais condições do local já foram consideradas na vistoria.'] },
+      { title: 'Imprevistos sem autorização em branco', paragraphs: ['Condições ocultas podem alterar o escopo, mas não devem virar cobrança automática. Descreva o achado, estime custo e prazo adicionais e peça aprovação antes de continuar.', 'O orçamento é uma proposta comercial e deve refletir a vistoria real; requisitos técnicos da obra precisam ser avaliados por profissional habilitado quando aplicável.'] }
+    ],
     faqs: [
       { q: 'É melhor cobrar por diária ou empreitada?', a: 'Depende do escopo. Para serviço definido, a empreitada facilita a aprovação; para atividade incerta, registre diária e estimativa.' },
       { q: 'Como prever imprevistos da obra?', a: 'Informe que condições ocultas exigem orçamento complementar e aprovação antes da continuidade.' }

@@ -262,7 +262,15 @@ if (!seoLandingPage.includes('LandingConversionLink') || !seoLandingPage.include
 }
 
 // Impede que domínio, e-mail ou nome público anteriores voltem ao produto ou à operação.
-const previousIdentityPattern = /precisoutapronto(?:\\?\.)com(?:\\?\.)br|Precisou, Tá Pronto/i;
+// A identidade vigente é Precisou, Tá Pronto / precisoutapronto.com.br.
+const previousIdentityPattern = /resolvajato(?:\\?\.)com(?:\\?\.)br|Resolva Jato/i;
+const brandSource = await readFile(path.join(root, 'src/lib/brand.ts'), 'utf8');
+if (
+  !brandSource.includes("export const BRAND_NAME = 'Precisou, Tá Pronto'") ||
+  !brandSource.includes("export const BRAND_HOST = 'precisoutapronto.com.br'")
+) {
+  failures.push('brand.ts: identidade pública vigente ausente ou alterada');
+}
 for (const scanRoot of ['src', 'public', 'scripts', 'e2e', '.github']) {
   for (const file of await walk(path.join(root, scanRoot))) {
     if (!/\.(?:[cm]?[jt]sx?|json|ya?ml|md|txt|html|css|webmanifest|xml|sh|ps1)$/i.test(file)) continue;
