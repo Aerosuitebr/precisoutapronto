@@ -50,6 +50,14 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Defesa na aplicação para requisições HTTP encaminhadas pelo proxy.
+      // A regra equivalente no Cloudflare continua recomendada na borda.
+      {
+        source: '/:path*',
+        has: [{ type: 'header', key: 'x-forwarded-proto', value: 'http' }],
+        destination: 'https://precisoutapronto.com.br/:path*',
+        permanent: true
+      },
       // Consolida a URL privada que acumulou impressões no Google na landing pública.
       {
         source: '/ferramentas/redacao-enem',

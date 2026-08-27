@@ -155,6 +155,9 @@ if (
 ) {
   failures.push('next.config.mjs: redirect da autoria anterior para a equipe editorial ausente');
 }
+if (!nextConfig.includes("key: 'x-forwarded-proto'") || !nextConfig.includes("destination: 'https://precisoutapronto.com.br/:path*'")) {
+  failures.push('next.config.mjs: redirect HTTP → HTTPS da aplicação ausente');
+}
 
 const toolsCatalog = await readFile(path.join(root, 'src/lib/tools-catalog.ts'), 'utf8');
 if (toolsCatalog.includes('href: "/ferramentas/redacao-enem"')) {

@@ -7,7 +7,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
-import { BRAND_AUTHOR_PATH } from '@/lib/brand';
+import { BRAND_AUTHOR_PATH, BRAND_DISPLAY_NAME } from '@/lib/brand';
 import { PROFESSION_LANDINGS, findProfessionLanding } from '@/lib/orcamentos/profession-presets';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ profissao
   if (!page) return {};
   const path = `/orcamento-para/${page.slug}`;
   return {
-    title: { absolute: `${page.title} | Precisou, Tá Pronto` },
+    title: { absolute: `${page.title} | ${BRAND_DISPLAY_NAME}` },
     description: page.description,
     alternates: { canonical: path },
     openGraph: { title: page.title, description: page.description, url: path, type: 'website' }
