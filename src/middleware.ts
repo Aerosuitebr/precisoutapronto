@@ -12,6 +12,8 @@ import {
 } from '@/lib/i18n-locale';
 
 const DEVICE_COOKIE = 'precisoutapronto_device';
+const CANONICAL_ORIGIN = 'https://precisoutapronto.com.br';
+const LEGACY_HOSTS = new Set(['resolvajato.com.br', 'www.resolvajato.com.br']);
 const PUBLIC_CACHEABLE_PATHS = new Set([
   '/',
   '/busca',
@@ -110,12 +112,23 @@ function applyCommonHeaders(request: NextRequest, response: NextResponse) {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL;
+  const requestHost = (request.headers.get('host') || request.nextUrl.hostname || '')
+    .split(':')[0]
+    .toLowerCase();
+
+  // Migração de domínio: nunca sirva uma cópia 200 no host antigo. Preservar caminho e
+  // query transfere os sinais de cada URL para sua equivalente no domínio canônico.
+  if (LEGACY_HOSTS.has(requestHost)) {
+    const destination = request.nextUrl.clone();
+    const canonical = new URL(CANONICAL_ORIGIN);
+    destination.protocol = canonical.protocol;
+    destination.host = canonical.host;
+    destination.port = canonical.port;
+    return NextResponse.redirect(destination, 301);
+  }
 
   // Normaliza somente o www do domínio oficial. Domínios externos não são tratados aqui.
   if (configuredOrigin && !pathname.startsWith('/api/')) {
-    const requestHost = (request.headers.get('host') || request.nextUrl.hostname || '')
-      .split(':')[0]
-      .toLowerCase();
     const canonical = new URL(configuredOrigin);
     const canonicalHost = canonical.hostname.toLowerCase();
     const shouldNormalizeWww = requestHost === `www.${canonicalHost}`;

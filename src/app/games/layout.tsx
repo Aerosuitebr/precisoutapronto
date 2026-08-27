@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: `%s | ${PRECISOUTAPRONTO_GAMES.name}`
   },
   description: PRECISOUTAPRONTO_GAMES.description,
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
   openGraph: {
     title: PRECISOUTAPRONTO_GAMES.name,
     description: PRECISOUTAPRONTO_GAMES.description,
