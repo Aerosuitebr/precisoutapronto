@@ -149,6 +149,12 @@ if (
 ) {
   failures.push('next.config.mjs: redirect permanente da redacao ENEM ausente');
 }
+if (
+  !nextConfig.includes("source: '/autores/equipe-resolva-jato'") ||
+  !nextConfig.includes("destination: '/autores/equipe-editorial'")
+) {
+  failures.push('next.config.mjs: redirect da autoria anterior para a equipe editorial ausente');
+}
 
 const toolsCatalog = await readFile(path.join(root, 'src/lib/tools-catalog.ts'), 'utf8');
 if (toolsCatalog.includes('href: "/ferramentas/redacao-enem"')) {
@@ -259,6 +265,17 @@ for (const target of ['/recibo-de-aluguel', '/ferramentas/redacao-enem', '/corre
 const seoLandingPage = await readFile(path.join(root, 'src/components/marketing/seo-landing-page.tsx'), 'utf8');
 if (!seoLandingPage.includes('LandingConversionLink') || !seoLandingPage.includes('footer_primary')) {
   failures.push('seo-landing-page: CTAs primárias sem medição de conversão');
+}
+
+const analyticsScripts = await readFile(
+  path.join(root, 'src/components/analytics/analytics-scripts.tsx'),
+  'utf8'
+);
+if (
+  !analyticsScripts.includes("DEFAULT_CLARITY_PROJECT_ID = 'xsknm22mhw'") ||
+  !analyticsScripts.includes('consent === \'accepted\'')
+) {
+  failures.push('analytics-scripts: Clarity oficial ou guarda de consentimento ausente');
 }
 
 // Impede que domínio, e-mail ou nome público anteriores voltem ao produto ou à operação.

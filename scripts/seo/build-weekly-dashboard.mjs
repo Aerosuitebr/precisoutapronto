@@ -15,7 +15,22 @@ const TARGET_PATHS = [
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
   '/gerador-de-qr-code-pix',
-  '/orcamento-com-pix'
+  '/orcamento-com-pix',
+  '/orcamento-para/eletricista',
+  '/orcamento-para/pedreiro',
+  '/orcamento-para/encanador',
+  '/orcamento-para/marceneiro',
+  '/orcamento-para/social-media',
+  '/orcamento-para/manicure',
+  '/orcamento-para/diarista',
+  '/orcamento-para/vidraceiro',
+  '/orcamento-para/serralheiro',
+  '/orcamento-para/jardinagem',
+  '/orcamento-para/reforma-apartamento',
+  '/orcamento-para/instalacao-eletrica',
+  '/orcamento-para/manutencao-ar-condicionado',
+  '/orcamento-para/criacao-de-logotipo',
+  '/orcamento-para/fotografia-casamento'
 ];
 
 function argument(name, fallback) {
@@ -103,6 +118,7 @@ lines.push(
   '- `/ferramentas/redacao-enem` é a URL antiga. Suas impressões devem cair enquanto `/corretor-de-redacao-enem` absorve a demanda.',
   '- `/recibo-de-aluguel` mede aquisição orgânica; `/gerador-de-recibo` mede a ferramenta de destino.',
   '- `/rescisao` e os guias medem a autoridade temática que deve sustentar a calculadora.',
+  '- As URLs `/orcamento-para/*` medem o cluster comercial por profissão e necessidade; compare impressões, posição, clique no gerador e orçamento criado.',
   '',
   '## Definição de conversão',
   '',

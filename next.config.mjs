@@ -73,6 +73,12 @@ const nextConfig = {
         destination: '/recibo-de-pagamento',
         permanent: true
       },
+      // Preserva a autoridade acumulada pela URL de autoria anterior à troca de marca.
+      {
+        source: '/autores/equipe-resolva-jato',
+        destination: '/autores/equipe-editorial',
+        permanent: true
+      },
     ];
   },
   async headers() {

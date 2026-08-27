@@ -1,4 +1,5 @@
 import type { OrcamentoPreset } from '@/components/orcamentos/orcamentos-app';
+import { EXPANDED_PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-expansion';
 
 export interface ProfessionLanding {
   slug: string;
@@ -237,7 +238,8 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       { q: 'É melhor cobrar por diária ou empreitada?', a: 'Depende do escopo. Para serviço definido, a empreitada facilita a aprovação; para atividade incerta, registre diária e estimativa.' },
       { q: 'Como prever imprevistos da obra?', a: 'Informe que condições ocultas exigem orçamento complementar e aprovação antes da continuidade.' }
     ]
-  }
+  },
+  ...EXPANDED_PROFESSION_LANDINGS
 ];
 
 export function findProfessionLanding(slug: string) {

@@ -7,10 +7,15 @@ import { ANALYTICS_CONSENT_KEY } from '@/lib/analytics-consent';
 
 type Consent = 'accepted' | 'rejected' | null;
 
+// IDs de analytics são identificadores públicos presentes no JavaScript entregue ao navegador.
+// O fallback evita builds de produção sem Clarity quando a variável pública não for injetada.
+const DEFAULT_CLARITY_PROJECT_ID = 'xsknm22mhw';
+
 export function AnalyticsScripts() {
   const pathname = usePathname();
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
-  const clarityId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID?.trim();
+  const clarityId =
+    process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID?.trim() || DEFAULT_CLARITY_PROJECT_ID;
   const [consent, setConsent] = useState<Consent>(null);
   const [ready, setReady] = useState(false);
 
