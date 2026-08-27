@@ -57,15 +57,15 @@ Este mapa não apresenta volume mensal inventado. Os quatro escores são hipóte
 | 39 | orçamento fotografia de evento | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
 | 40 | orçamento manutenção de jardim | necessidade | 3 | 5 | 5 | 4 | 17 | mesma landing |
 | 41 | orçamento para gesseiro | profissão | 4 | 4 | 5 | 4 | 17 | publicado |
-| 42 | orçamento para azulejista | profissão | 3 | 5 | 5 | 4 | 17 | ciclo 2 |
-| 43 | orçamento para montador de móveis | profissão | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
+| 42 | orçamento para azulejista | profissão | 3 | 5 | 5 | 4 | 17 | publicado |
+| 43 | orçamento para montador de móveis | profissão | 4 | 4 | 5 | 4 | 17 | publicado |
 | 44 | orçamento para técnico de informática | profissão | 4 | 4 | 5 | 4 | 17 | publicado |
-| 45 | orçamento para chaveiro | profissão | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
-| 46 | orçamento para dedetização | necessidade | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
-| 47 | orçamento para mudança residencial | necessidade | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
-| 48 | orçamento energia solar | necessidade | 5 | 2 | 5 | 5 | 17 | ciclo 2, revisão técnica |
-| 49 | orçamento instalação de câmeras | necessidade | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
-| 50 | orçamento instalação de piso | necessidade | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
+| 45 | orçamento para chaveiro | profissão | 4 | 4 | 5 | 4 | 17 | publicado |
+| 46 | orçamento para dedetização | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
+| 47 | orçamento para mudança residencial | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
+| 48 | orçamento energia solar | necessidade | 5 | 2 | 5 | 5 | 17 | publicado com qualificação técnica |
+| 49 | orçamento instalação de câmeras | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
+| 50 | orçamento instalação de piso | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
 | 51 | como fazer orçamento para cliente | aprendizado/uso | 5 | 3 | 4 | 4 | 16 | reforçar guia |
 | 52 | modelo de orçamento simples | modelo | 5 | 2 | 5 | 4 | 16 | reforçar pilar |
 | 53 | orçamento profissional online | ferramenta | 4 | 3 | 5 | 4 | 16 | reforçar pilar |
@@ -83,8 +83,8 @@ Este mapa não apresenta volume mensal inventado. Os quatro escores são hipóte
 
 ## Sequência de execução
 
-1. **Publicação atual:** 31 páginas em `/orcamento-para/`, ligadas pela central `/modelos-de-orcamento`; 21 páginas foram adicionadas nos dois ciclos de expansão.
-2. **Ciclo 2:** oito intenções foram publicadas. As demais só avançam quando houver modelo operacional próprio e ligação coerente ao gerador.
+1. **Publicação atual:** 39 páginas em `/orcamento-para/`, ligadas pela central `/modelos-de-orcamento`; 29 páginas foram adicionadas nos três ciclos de expansão.
+2. **Ciclo comercial concluído:** as intenções específicas 33–50 foram publicadas quando justificavam página própria; variações de canal ou pagamento permanecem consolidadas para evitar canibalização.
 3. **Distribuição:** oferecer calculadora de preço, gerador Pix e modelos incorporáveis a portais MEI, contabilidade, associações e criadores; registrar domínio, página de origem e tráfego de referência.
 4. **Recalibração semanal:** substituir hipóteses pelos dados reais de impressão, posição, CTR, clique no gerador, orçamento criado, aprovado e convertido em recibo.
 

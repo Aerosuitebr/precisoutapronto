@@ -1,6 +1,7 @@
 import type { OrcamentoPreset } from '@/components/orcamentos/orcamentos-app';
 import { EXPANDED_PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-expansion';
 import { CYCLE_TWO_PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-expansion-cycle-two';
+import { CYCLE_THREE_PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-expansion-cycle-three';
 
 export interface ProfessionLanding {
   slug: string;
@@ -241,7 +242,8 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
     ]
   },
   ...EXPANDED_PROFESSION_LANDINGS,
-  ...CYCLE_TWO_PROFESSION_LANDINGS
+  ...CYCLE_TWO_PROFESSION_LANDINGS,
+  ...CYCLE_THREE_PROFESSION_LANDINGS
 ];
 
 export function findProfessionLanding(slug: string) {

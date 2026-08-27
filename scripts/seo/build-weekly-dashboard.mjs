@@ -39,7 +39,15 @@ const TARGET_PATHS = [
   '/orcamento-para/identidade-visual',
   '/orcamento-para/fotografia-de-evento',
   '/orcamento-para/gesseiro',
-  '/orcamento-para/tecnico-de-informatica'
+  '/orcamento-para/tecnico-de-informatica',
+  '/orcamento-para/azulejista',
+  '/orcamento-para/montador-de-moveis',
+  '/orcamento-para/chaveiro',
+  '/orcamento-para/dedetizacao',
+  '/orcamento-para/mudanca-residencial',
+  '/orcamento-para/energia-solar',
+  '/orcamento-para/instalacao-de-cameras',
+  '/orcamento-para/instalacao-de-piso'
 ];
 
 function argument(name, fallback) {
