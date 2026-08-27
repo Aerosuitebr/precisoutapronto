@@ -13,6 +13,7 @@ const NAV_LINKS: { href: string; label: string; authAware?: boolean }[] = [
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
   { href: '/gerador-de-recibo', label: 'Recibo' },
   { href: '/orcamento-para/eletricista', label: 'Orçamento para eletricista' },
+  { href: '/modelos-de-orcamento', label: 'Modelos de orçamento' },
   { href: '/biblioteca', label: 'Biblioteca' },
   { href: '/guias', label: 'Guias' },
   { href: '/sobre', label: 'Sobre e equipe' },
@@ -68,6 +69,7 @@ const SEO_LINKS = [
 const PUBLIC_TOOL_LINKS = [
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
   { href: '/gerador-de-recibo', label: 'Recibo' },
+  { href: '/modelos-de-orcamento', label: 'Modelos de orçamento' },
   { href: '/orcamento-para/eletricista', label: 'Eletricista' },
   { href: '/gerador-de-curriculo', label: 'Currículo' },
   { href: '/calculadora-de-preco-freelancer', label: 'Precificação' },

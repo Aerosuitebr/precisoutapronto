@@ -1,5 +1,6 @@
 import type { OrcamentoPreset } from '@/components/orcamentos/orcamentos-app';
 import { EXPANDED_PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-expansion';
+import { CYCLE_TWO_PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-expansion-cycle-two';
 
 export interface ProfessionLanding {
   slug: string;
@@ -239,7 +240,8 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       { q: 'Como prever imprevistos da obra?', a: 'Informe que condições ocultas exigem orçamento complementar e aprovação antes da continuidade.' }
     ]
   },
-  ...EXPANDED_PROFESSION_LANDINGS
+  ...EXPANDED_PROFESSION_LANDINGS,
+  ...CYCLE_TWO_PROFESSION_LANDINGS
 ];
 
 export function findProfessionLanding(slug: string) {

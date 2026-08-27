@@ -48,18 +48,18 @@ Este mapa não apresenta volume mensal inventado. Os quatro escores são hipóte
 | 30 | modelo orçamento encanador pdf | profissão | 4 | 4 | 5 | 4 | 17 | mesma landing |
 | 31 | orçamento de reforma por etapas | necessidade | 4 | 4 | 5 | 4 | 17 | mesma landing |
 | 32 | orçamento instalação elétrica residencial | necessidade | 4 | 4 | 5 | 4 | 17 | mesma landing |
-| 33 | orçamento limpeza pós obra | necessidade | 4 | 4 | 5 | 4 | 17 | próxima landing |
-| 34 | orçamento móveis planejados | necessidade | 5 | 3 | 5 | 4 | 17 | próxima landing |
-| 35 | orçamento box de banheiro | necessidade | 4 | 4 | 5 | 4 | 17 | próxima landing |
-| 36 | orçamento portão de ferro | necessidade | 4 | 4 | 5 | 4 | 17 | próxima landing |
-| 37 | orçamento identidade visual | necessidade | 4 | 4 | 5 | 4 | 17 | próxima landing |
+| 33 | orçamento limpeza pós obra | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
+| 34 | orçamento móveis planejados | necessidade | 5 | 3 | 5 | 4 | 17 | publicado |
+| 35 | orçamento box de banheiro | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
+| 36 | orçamento portão de ferro | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
+| 37 | orçamento identidade visual | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
 | 38 | orçamento gestão de redes sociais | necessidade | 4 | 4 | 5 | 4 | 17 | mesma landing |
-| 39 | orçamento fotografia de evento | necessidade | 4 | 4 | 5 | 4 | 17 | próxima landing |
+| 39 | orçamento fotografia de evento | necessidade | 4 | 4 | 5 | 4 | 17 | publicado |
 | 40 | orçamento manutenção de jardim | necessidade | 3 | 5 | 5 | 4 | 17 | mesma landing |
-| 41 | orçamento para gesseiro | profissão | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
+| 41 | orçamento para gesseiro | profissão | 4 | 4 | 5 | 4 | 17 | publicado |
 | 42 | orçamento para azulejista | profissão | 3 | 5 | 5 | 4 | 17 | ciclo 2 |
 | 43 | orçamento para montador de móveis | profissão | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
-| 44 | orçamento para técnico de informática | profissão | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
+| 44 | orçamento para técnico de informática | profissão | 4 | 4 | 5 | 4 | 17 | publicado |
 | 45 | orçamento para chaveiro | profissão | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
 | 46 | orçamento para dedetização | necessidade | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
 | 47 | orçamento para mudança residencial | necessidade | 4 | 4 | 5 | 4 | 17 | ciclo 2 |
@@ -83,8 +83,8 @@ Este mapa não apresenta volume mensal inventado. Os quatro escores são hipóte
 
 ## Sequência de execução
 
-1. **Publicação atual:** 23 páginas em `/orcamento-para/`, das quais 13 receberam nesta rodada exemplo, escopo, campos, perguntas e condições próprias.
-2. **Ciclo 2:** criar as intenções 33–50 apenas quando houver modelo operacional próprio e ligação coerente ao gerador.
+1. **Publicação atual:** 31 páginas em `/orcamento-para/`, ligadas pela central `/modelos-de-orcamento`; 21 páginas foram adicionadas nos dois ciclos de expansão.
+2. **Ciclo 2:** oito intenções foram publicadas. As demais só avançam quando houver modelo operacional próprio e ligação coerente ao gerador.
 3. **Distribuição:** oferecer calculadora de preço, gerador Pix e modelos incorporáveis a portais MEI, contabilidade, associações e criadores; registrar domínio, página de origem e tráfego de referência.
 4. **Recalibração semanal:** substituir hipóteses pelos dados reais de impressão, posição, CTR, clique no gerador, orçamento criado, aprovado e convertido em recibo.
 

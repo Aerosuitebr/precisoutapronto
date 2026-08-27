@@ -14,7 +14,7 @@ import { CONTRACT_PROFESSION_CONTEXTS } from '@/lib/contratos/profession-context
 import { RECEIPT_PROFESSION_CONTEXTS } from '@/lib/recibos/profession-contexts';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
-export const CORE_UPDATED_AT = new Date('2026-08-26T12:00:00.000Z');
+export const CORE_UPDATED_AT = new Date('2026-08-27T12:00:00.000Z');
 export const GUIDES_UPDATED_AT = new Date('2026-08-07T15:00:00.000Z');
 export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 
@@ -117,6 +117,7 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/embed`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.65 },
     { url: `${base}/checklist-cobranca-mei`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/conteudos-para-compartilhar`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/modelos-de-orcamento`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.95 },
     { url: `${base}/indique-e-ganhe`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/parcerias/criadores`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/depoimentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.6 },
