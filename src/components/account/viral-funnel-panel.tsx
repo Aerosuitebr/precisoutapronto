@@ -27,6 +27,13 @@ interface FunnelData {
 export function ViralFunnelPanel() {
   const [days, setDays] = useState(7);
   const [data, setData] = useState<FunnelData | null>(null);
+  const totals = data?.rows.reduce((sum, row) => ({
+    completed: sum.completed + row.completed,
+    shared: sum.shared + row.shared,
+    opened: sum.opened + row.opened,
+    activated: sum.activated + row.activated
+  }), { completed: 0, shared: 0, opened: 0, activated: 0 });
+  const duplicated = data?.continuity.reduce((sum, row) => sum + row.duplicated, 0) || 0;
 
   useEffect(() => {
     setData(null);
@@ -53,6 +60,15 @@ export function ViralFunnelPanel() {
           Os números abaixo podem representar apenas parte do tráfego.
         </div>
       ) : null}
+      {totals ? (
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <Kpi label="Resultados" value={totals.completed} />
+          <Kpi label="Compartilhamentos" value={totals.shared} rate={totals.completed ? totals.shared / totals.completed : 0} />
+          <Kpi label="Aberturas" value={totals.opened} rate={totals.shared ? totals.opened / totals.shared : 0} />
+          <Kpi label="Duplicações" value={duplicated} rate={totals.opened ? duplicated / totals.opened : 0} />
+          <Kpi label="Novos ativos" value={totals.activated} rate={totals.opened ? totals.activated / totals.opened : 0} />
+        </div>
+      ) : null}
       {data === null ? <p className="mt-6 inline-flex items-center gap-2 text-sm text-slate-500"><Loader2 className="h-4 w-4 animate-spin" /> Calculando…</p> : data.rows.length ? (
         <div className="mt-6 overflow-x-auto">
           <table className="min-w-[900px] w-full text-left text-sm">
@@ -66,6 +82,10 @@ export function ViralFunnelPanel() {
       {data?.creatorCampaigns.length ? <div className="mt-8"><h3 className="text-base font-extrabold text-slate-950">Campanhas de creators e parceiros</h3><p className="mt-1 text-sm text-slate-600">Coortes agregadas desde a primeira interação atribuída.</p><div className="mt-3 overflow-x-auto"><table className="min-w-[900px] w-full text-left text-sm"><thead><tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500"><th className="px-3 py-3">Creator</th><th className="px-3 py-3">Campanha</th><th className="px-3 py-3">Entrada</th><th className="px-3 py-3">Iniciaram</th><th className="px-3 py-3">Concluíram</th><th className="px-3 py-3">2ª geração</th><th className="px-3 py-3">2ª ferramenta</th><th className="px-3 py-3">Conclusão</th></tr></thead><tbody>{data.creatorCampaigns.map((row) => <tr key={`${row.source}-${row.campaign}-${row.entryTool}`} className="border-b border-slate-100"><td className="px-3 py-3 font-bold text-slate-900">{row.source}</td><td className="px-3 py-3 text-slate-700">{row.campaign}</td><td className="px-3 py-3 text-slate-700">{row.entryTool}</td><Cell value={row.starters} /><Cell value={row.completed} /><Cell value={row.secondGeneration} /><Cell value={row.secondTool} /><Rate value={row.completionRate} /></tr>)}</tbody></table></div></div> : null}
     </section>
   );
+}
+
+function Kpi({ label, value, rate }: { label: string; value: number; rate?: number }) {
+  return <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4"><p className="text-xs font-bold uppercase tracking-wide text-slate-500">{label}</p><p className="mt-2 text-2xl font-black tabular-nums text-slate-950">{value.toLocaleString('pt-BR')}</p>{typeof rate === 'number' ? <p className="mt-1 text-xs font-bold text-emerald-700">{(rate * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% da etapa anterior</p> : null}</div>;
 }
 
 function Cell({ value }: { value: number }) {

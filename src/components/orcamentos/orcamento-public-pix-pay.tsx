@@ -4,6 +4,8 @@ import { useMemo, useState } from 'react';
 import { Check, Copy, QrCode } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/ui/button';
+import { ViralInviteShareRow } from '@/components/marketing/viral-recruit-cta';
+import { emitClientProductEvent } from '@/lib/events/client-emitter';
 import { formatCurrency } from '@/lib/formatters';
 import { orcamentoPixBrCode } from '@/lib/orcamentos/public-map';
 import type { OrcamentoPublic } from '@/lib/orcamentos/types';
@@ -31,6 +33,11 @@ export function OrcamentoPublicPixPay({ orcamento }: { orcamento: OrcamentoPubli
     try {
       await navigator.clipboard.writeText(pixCode);
       setCopied(true);
+      emitClientProductEvent({
+        eventName: 'growth.recipient_action',
+        toolKey: 'orcamentos',
+        properties: { action: 'pix_copied', surface: 'public_quote' }
+      });
       window.setTimeout(() => setCopied(false), 2500);
     } catch {
       setCopied(false);
@@ -54,6 +61,7 @@ export function OrcamentoPublicPixPay({ orcamento }: { orcamento: OrcamentoPubli
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         {copied ? 'Código Pix copiado' : 'Copiar código Pix'}
       </Button>
+      {copied ? <ViralInviteShareRow className="mt-4" toolKey="orcamentos-pix" /> : null}
     </section>
   );
 }

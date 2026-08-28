@@ -34,7 +34,7 @@ interface ResultShareCardProps {
 }
 
 /**
- * Gera uma imagem 1080x1350 (formato feed/Stories) com o resultado da
+ * Gera uma imagem vertical 1080x1920 (Status/Stories) com o resultado da
  * calculadora pronta pra compartilhar. Renderiza um card off-screen e
  * rasteriza com html2canvas.
  */
@@ -215,7 +215,7 @@ export function ResultShareCard({
           ref={cardRef}
           style={{
             width: 1080,
-            height: 1350,
+            height: 1920,
             background: 'linear-gradient(160deg, #0f172a 0%, #082f49 55%, #0c4a6e 100%)',
             fontFamily: 'Inter, system-ui, sans-serif',
             padding: 80,
@@ -265,7 +265,8 @@ export function ResultShareCard({
               background: 'rgba(255,255,255,0.08)',
               borderRadius: 28,
               padding: '40px 44px',
-              flex: 1
+              flex: 1,
+              maxHeight: 1150
             }}
           >
             {lines.slice(0, 5).map((line) => (

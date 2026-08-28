@@ -14,6 +14,7 @@ import {
 import { OrcamentoPublicPixPay } from '@/components/orcamentos/orcamento-public-pix-pay';
 import {
   ApprovedQuoteNextActions,
+  DuplicatePublicQuoteCta,
   ViralRecruitCard,
   ViralRecruitSticky
 } from '@/components/marketing/viral-recruit-cta';
@@ -219,6 +220,12 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
             </div>
           ) : null}
         </section>
+
+        <DuplicatePublicQuoteCta
+          className="mt-4"
+          sourceDocumentId={orcamento.id}
+          sourceOccupation={viralSourceOccupation}
+        />
 
         {!pending ? (
           <section

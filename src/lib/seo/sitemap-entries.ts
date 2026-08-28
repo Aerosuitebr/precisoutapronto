@@ -145,6 +145,7 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/modelos-de-orcamento`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.95 },
     { url: `${base}/indique-e-ganhe`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/parcerias/criadores`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/campanhas/eletricistas-30-dias`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/depoimentos`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.6 },
     ...PROFESSION_LANDINGS.map((page) => ({
       url: `${base}/orcamento-para/${page.slug}`,

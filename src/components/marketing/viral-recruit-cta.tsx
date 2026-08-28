@@ -99,6 +99,42 @@ export function ViralRecruitSticky({ sourceDocumentId, sourceOccupation }: Recru
   );
 }
 
+/** Ação direta no documento recebido. Carrega somente a estrutura pública segura. */
+export function DuplicatePublicQuoteCta({ className, sourceDocumentId, sourceOccupation }: RecruitProps) {
+  if (!sourceDocumentId) return null;
+  const attribution = { sourceDocumentId, sourceOccupation };
+
+  return (
+    <Link
+      href={viralOrcamentoPublicPath(attribution)}
+      onClick={() => {
+        trackRecruitClick('duplicate_public_quote', sourceDocumentId, sourceOccupation);
+        trackApprovedNextAction('duplicate_safe_template', 'orcamentos');
+        emitClientProductEvent({
+          eventName: 'continuity.duplicated',
+          toolKey: 'orcamentos',
+          properties: { mode: 'safe_public_template', surface: 'public_quote' }
+        });
+      }}
+      className={cn(
+        'flex min-h-14 items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-left transition hover:border-amber-500 hover:bg-amber-100',
+        className
+      )}
+    >
+      <span className="flex items-center gap-3">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-amber-400 text-slate-950">
+          <CopyPlus className="h-4 w-4" />
+        </span>
+        <span>
+          <strong className="block text-sm text-slate-950">Duplicar este orçamento</strong>
+          <span className="mt-0.5 block text-xs leading-5 text-slate-600">Serviços e quantidades, sem dados privados nem preços.</span>
+        </span>
+      </span>
+      <ArrowRight className="h-4 w-4 shrink-0 text-amber-800" />
+    </Link>
+  );
+}
+
 function trackApprovedNextAction(action: string, targetTool: string) {
   trackEvent('quote_recipient_next_action', { action, target_tool: targetTool });
   emitClientProductEvent({
