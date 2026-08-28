@@ -18,6 +18,31 @@ export const CORE_UPDATED_AT = new Date('2026-08-27T12:00:00.000Z');
 export const GUIDES_UPDATED_AT = new Date('2026-08-07T15:00:00.000Z');
 export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 
+/**
+ * Datas verificadas de revisão material. URLs sem data própria omitem `lastmod`:
+ * uma data global de deploy não representa mudança relevante de conteúdo.
+ */
+const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
+  ['/calculadora-de-decimo-terceiro', new Date('2026-08-28T12:00:00.000Z')],
+  ['/calculadora-de-ferias', new Date('2026-08-28T12:00:00.000Z')],
+  ['/guias', new Date('2026-08-28T12:00:00.000Z')],
+  ['/recibos', new Date('2026-08-28T12:00:00.000Z')],
+  ['/modelos-de-orcamento', new Date('2026-08-28T12:00:00.000Z')]
+]);
+
+function normalizeLastModified(entries: MetadataRoute.Sitemap, base: string): MetadataRoute.Sitemap {
+  return entries.map((entry) => {
+    const path = entry.url.startsWith(base) ? entry.url.slice(base.length) || '/' : entry.url;
+    const verified = VERIFIED_LASTMOD_BY_PATH.get(path);
+    if (verified) return { ...entry, lastModified: verified };
+    if (entry.lastModified?.valueOf() === CORE_UPDATED_AT.valueOf()) {
+      const { lastModified: _unverified, ...withoutLastModified } = entry;
+      return withoutLastModified;
+    }
+    return entry;
+  });
+}
+
 /** Landings públicas de ferramenta (fora de /ferramentas, que exige login). */
 export const PUBLIC_TOOL_LANDINGS = [
   '/gerador-de-curriculo',
@@ -282,7 +307,7 @@ function buildGrowth(base: string): MetadataRoute.Sitemap {
 function buildGuides(base: string): MetadataRoute.Sitemap {
   return guides.map((guide) => ({
     url: `${base}/guias/${guide.slug}`,
-    lastModified: GUIDES_UPDATED_AT,
+    lastModified: new Date(`${guide.updatedAt ?? guide.publishedAt ?? '2026-07-26'}T12:00:00.000Z`),
     changeFrequency: 'monthly' as const,
     priority: 0.75
   }));
@@ -342,22 +367,30 @@ function buildI18n(base: string): MetadataRoute.Sitemap {
 
 export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): MetadataRoute.Sitemap {
   const base = (baseUrl ?? getViralBaseUrl()).replace(/\/$/, '');
+  let entries: MetadataRoute.Sitemap;
   switch (segment) {
     case 'core':
-      return buildCore(base);
+      entries = buildCore(base);
+      break;
     case 'tools':
-      return buildTools(base);
+      entries = buildTools(base);
+      break;
     case 'growth':
-      return buildGrowth(base);
+      entries = buildGrowth(base);
+      break;
     case 'guides':
-      return buildGuides(base);
+      entries = buildGuides(base);
+      break;
     case 'games':
-      return buildGames(base);
+      entries = buildGames(base);
+      break;
     case 'i18n':
-      return buildI18n(base);
+      entries = buildI18n(base);
+      break;
     default:
-      return [];
+      entries = [];
   }
+  return normalizeLastModified(entries, base);
 }
 
 /** Sitemap público (sem games) para `/sitemap.xml`, IndexNow e testes. */

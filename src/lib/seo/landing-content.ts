@@ -34,13 +34,14 @@ export const SEO_LANDINGS = {
     path: '/orcamento-com-pix',
     toolHref: '/orcamento-com-pix#montar',
     eyebrow: 'Orçamento digital + Pix',
-    title: 'Orçamento com Pix Grátis: Gere e Envie por WhatsApp',
+    title: 'Orçamento pelo WhatsApp com Pix Grátis',
     description:
       'Crie um orçamento profissional grátis, envie pelo WhatsApp e receba a aprovação do cliente. Sem cadastro para o primeiro envio.',
     heroBullets: [
       'Cliente aprova sem instalar app',
       'QR Pix e Copia e Cola prontos',
-      'Link público para mandar no WhatsApp'
+      'Link público para mandar no WhatsApp',
+      'O cliente não instala aplicativo'
     ],
     primaryCta: 'Criar e enviar orçamento grátis',
     secondaryCta: { label: 'Gerador de QR Code Pix', href: '/gerador-de-qr-code-pix' },
@@ -57,6 +58,11 @@ export const SEO_LANDINGS = {
       {
         title: 'Feito para quem fecha no zap',
         body: 'MEIs, freelancers e prestadores que vivem de orçamento rápido, sem ERP e sem mensalidade cara.'
+      },
+      {
+        title: 'Exemplo verificável antes de enviar',
+        body: 'Preencha itens e valores e confira o mesmo documento que o cliente receberá. O link mostra total, validade, aprovação e Pix sem exigir conta ou aplicativo do cliente.',
+        bullets: ['Preview do orçamento antes do envio', 'Aprovação ou pedido de ajuste no celular', 'Dados e valores revisáveis antes de compartilhar']
       }
     ],
     faqs: [
@@ -75,6 +81,10 @@ export const SEO_LANDINGS = {
       {
         q: 'Serve para qualquer serviço?',
         a: 'Sim: elétrica, design, reforma, aulas, consultoria. Basta listar itens e valores.'
+      },
+      {
+        q: 'O cliente precisa instalar aplicativo?',
+        a: 'Não. O orçamento abre pelo navegador do celular; o cliente confere, aprova ou pede ajuste pelo próprio link.'
       }
     ],
     related: [
@@ -82,7 +92,8 @@ export const SEO_LANDINGS = {
       { href: '/para/mei', label: 'Para MEI', blurb: 'Cobrar e organizar o dia a dia' },
       { href: '/para/freelancers', label: 'Para freelancers', blurb: 'Proposta + contrato + Pix' },
       { href: '/gerador-de-qr-code-pix', label: 'Gerador de QR Code Pix', blurb: 'QR e Copia e Cola grátis' },
-      { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'PDF com valor por extenso' }
+      { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'PDF com valor por extenso' },
+      { href: '/modelos-de-orcamento', label: 'Modelos por profissão', blurb: 'Eletricista, pedreiro, pintor e outros' }
     ]
   },
   'gerador-de-qr-code-pix': {
@@ -90,7 +101,7 @@ export const SEO_LANDINGS = {
     path: '/gerador-de-qr-code-pix',
     toolHref: '/gerador-de-qr-code-pix#gerar',
     eyebrow: 'Gerador de QR Code Pix',
-    title: 'Gerador de QR Code Pix Grátis: Copia e Cola',
+    title: 'QR Code Pix Grátis: Gere o Copia e Cola',
     description:
       'Crie QR Code Pix e código Copia e Cola no navegador. Padrão Banco Central, sem cadastro para gerar e copiar.',
     heroBullets: [
@@ -113,6 +124,10 @@ export const SEO_LANDINGS = {
       {
         title: 'Quando usar o gerador e quando usar o orçamento',
         body: 'Use o gerador de QR para cobranças rápidas. Se precisa de itens, validade e aprovação do cliente, use o orçamento com Pix.'
+      },
+      {
+        title: 'Confira antes de compartilhar',
+        body: 'O QR Code e o Pix Copia e Cola aparecem na tela para você revisar chave, recebedor, cidade e valor antes de mandar ao cliente.'
       }
     ],
     faqs: [
@@ -131,6 +146,10 @@ export const SEO_LANDINGS = {
       {
         q: 'Posso deixar o valor em branco?',
         a: 'Sim. Sem valor, o pagador informa o valor no app do banco na hora do pagamento.'
+      },
+      {
+        q: 'Preciso instalar aplicativo?',
+        a: 'Não. A geração acontece no navegador; depois você pode copiar o código ou compartilhar o QR Code.'
       }
     ],
     related: [

@@ -2,7 +2,7 @@ import type { ProfessionLanding } from '@/lib/orcamentos/profession-presets';
 
 export const EXPANDED_PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
-    slug: 'encanador', name: 'Encanador', title: 'Orçamento para encanador com materiais e Pix',
+    slug: 'encanador', name: 'Encanador', title: 'Orçamento grátis para encanador com materiais e Pix',
     description: 'Monte um orçamento de encanador com diagnóstico, peças, mão de obra, prazo, aprovação no WhatsApp e pagamento por Pix.',
     promise: 'Modelo preparado para vazamentos, trocas, desentupimentos e instalações hidráulicas.',
     preset: { occupation: 'encanador', items: [{ nome: 'Visita e diagnóstico hidráulico' }, { nome: 'Peças e materiais' }, { nome: 'Mão de obra do reparo' }], observacoes: 'Identifique ambiente, ponto hidráulico e sinais observados.\nServiços ocultos ou adicionais dependem de novo orçamento e aprovação.\nPagamento via Pix após teste de funcionamento.' },

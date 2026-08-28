@@ -147,9 +147,9 @@ export const recibosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Recibo Online Grátis em PDF',
+    metaTitle: 'Gerador de Recibo Grátis em PDF com Valor por Extenso',
     metaDescription:
-      'Crie recibo com valor por extenso e assinatura. Grátis, no celular, pronto para baixar em PDF.',
+      'Faça um recibo grátis com valor por extenso, assinatura e modelos prontos. Baixe o PDF no celular, sem cadastro para começar.',
     keywords: [
       'gerador de recibo',
       'recibo online',

@@ -19,7 +19,7 @@ for (const path of LANDINGS) {
 
 test('home metadata and primary topic stay aligned', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page).toHaveTitle('Precisou? Tá Pronto! Orçamento no WhatsApp, aprovado, Pix recebido');
+  await expect(page).toHaveTitle('Orçamento pelo WhatsApp com Pix Grátis | Precisou? Tá Pronto!');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
     'Monte o orçamento, envie o link no WhatsApp e receba a aprovação no celular. Recibo em PDF sem cadastro para começar. Cliente não instala aplicativo.'

@@ -11,6 +11,14 @@ import { BRAND_AUTHOR_PATH, BRAND_DISPLAY_NAME } from '@/lib/brand';
 import { PROFESSION_LANDINGS, findProfessionLanding } from '@/lib/orcamentos/profession-presets';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
+const PRIORITY_CLUSTERS: Record<string, { guide: string; guideLabel: string; related: string[] }> = {
+  eletricista: { guide: '/guias/modelo-de-orcamento-para-eletricista', guideLabel: 'Guia de orçamento elétrico', related: ['pedreiro', 'encanador', 'instalacao-ar-condicionado'] },
+  pedreiro: { guide: '/guias/modelo-de-orcamento-para-prestacao-de-servico', guideLabel: 'Guia de orçamento de obra e serviços', related: ['pintor', 'encanador', 'eletricista'] },
+  encanador: { guide: '/guias/modelo-de-orcamento-para-prestacao-de-servico', guideLabel: 'Guia de visita, peças e mão de obra', related: ['eletricista', 'pedreiro', 'manutencao-residencial'] },
+  pintor: { guide: '/guias/modelo-de-orcamento-para-prestacao-de-servico', guideLabel: 'Guia de metragem, materiais e execução', related: ['pintura-residencial', 'pedreiro', 'gesseiro'] },
+  'instalacao-ar-condicionado': { guide: '/guias/modelo-de-orcamento-para-prestacao-de-servico', guideLabel: 'Guia de instalação, materiais e adicionais', related: ['manutencao-ar-condicionado', 'eletricista', 'tecnico-de-informatica'] }
+};
+
 export function generateStaticParams() {
   return PROFESSION_LANDINGS.map((item) => ({ profissao: item.slug }));
 }
@@ -35,7 +43,10 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
   const path = `/orcamento-para/${page.slug}`;
   const site = getViralBaseUrl().replace(/\/$/, '');
   const pageIndex = PROFESSION_LANDINGS.findIndex((item) => item.slug === page.slug);
-  const relatedPages = [1, 2, 3].map((offset) => PROFESSION_LANDINGS[(pageIndex + offset) % PROFESSION_LANDINGS.length]);
+  const priorityCluster = PRIORITY_CLUSTERS[page.slug];
+  const relatedPages = priorityCluster
+    ? priorityCluster.related.map((slug) => findProfessionLanding(slug)).filter((item): item is NonNullable<typeof item> => Boolean(item))
+    : [1, 2, 3].map((offset) => PROFESSION_LANDINGS[(pageIndex + offset) % PROFESSION_LANDINGS.length]);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -86,6 +97,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
               <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Dúvidas de {page.name.toLowerCase()}</h2>
               <dl className="mt-7 grid gap-4 sm:grid-cols-2">{page.faqs.map((item) => <div key={item.q} className="rounded-2xl border border-slate-200 p-5"><dt className="font-bold text-slate-900">{item.q}</dt><dd className="mt-2 text-sm leading-6 text-slate-600">{item.a}</dd></div>)}</dl>
               <p className="mt-8 text-sm text-slate-600">Precisa de outro formato? <Link href="/orcamento-com-pix" className="font-bold text-emerald-700 hover:underline">Abra o gerador geral de orçamento com Pix</Link>.</p>
+              {priorityCluster ? <p className="mt-3 text-sm text-slate-600">Quer conferir escopo e condições antes de preencher? <Link href={priorityCluster.guide} className="font-bold text-emerald-700 hover:underline">Leia o {priorityCluster.guideLabel.toLowerCase()}</Link>.</p> : null}
               <div className="mt-10 border-t border-slate-200 pt-8"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">Continue no cluster</p><h2 className="precisoutapronto-display mt-2 text-2xl font-extrabold text-slate-950">Outros modelos de orçamento</h2></div><Link href="/modelos-de-orcamento" className="text-sm font-bold text-emerald-700 hover:underline">Ver todos os modelos</Link></div><div className="mt-5 grid gap-3 sm:grid-cols-3">{relatedPages.map((related) => <Link key={related.slug} href={`/orcamento-para/${related.slug}`} className="rounded-xl border border-slate-200 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"><strong className="text-slate-950">{related.name}</strong><span className="mt-2 block text-sm text-slate-600">Abrir modelo preenchido →</span></Link>)}</div></div>
               <aside className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Como verificamos esta página.</strong> O modelo foi testado no gerador com os campos exibidos acima. Os indicadores abaixo vêm de registros agregados do produto, são arredondados para preservar privacidade e podem ficar ocultos enquanto não atingem o mínimo de publicação.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-08-27">27 de agosto de 2026</time> · Revisão editorial interna por <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">metodologia editorial</Link>. Esta revisão verifica clareza e funcionamento; não constitui revisão técnica, jurídica ou contábil especializada.</p></aside>
             </div>

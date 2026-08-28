@@ -5,10 +5,11 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
+import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 
 export const metadata: Metadata = {
-  title: 'Modelos de orçamento por profissão e serviço',
-  description: 'Escolha um modelo de orçamento preenchido para sua profissão ou serviço, ajuste os valores e envie para aprovação com Pix.',
+  title: 'Modelos de Orçamento Grátis por Profissão e Serviço',
+  description: 'Escolha um modelo de orçamento preenchido, ajuste itens e valores e envie pelo WhatsApp para o cliente aprovar e pagar por Pix.',
   alternates: { canonical: '/modelos-de-orcamento' }
 };
 
@@ -27,8 +28,10 @@ export default function QuoteModelsPage() {
         <section className="bg-slate-50"><div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Escolha o modelo mais próximo do seu trabalho</h2>
           <p className="mt-3 max-w-3xl leading-7 text-slate-600">Cada página tem exemplo, escopo, perguntas e campos próprios. Use o modelo como ponto de partida e substitua preços e condições pela realidade do serviço.</p>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500">Modelos testados no gerador e atualizados em <time dateTime="2026-08-27">27 de agosto de 2026</time>. O cliente abre o link no navegador e não precisa instalar aplicativo.</p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{PROFESSION_LANDINGS.map((item) => <Link key={item.slug} href={`/orcamento-para/${item.slug}`} className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"><p className="font-extrabold text-slate-950">{item.name}</p><p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{item.description}</p><span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-emerald-700">Abrir modelo <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>)}</div>
         </div></section>
+        <StrategicSeoClusters current="/modelos-de-orcamento" />
       </main>
       <SiteFooter />
     </div>

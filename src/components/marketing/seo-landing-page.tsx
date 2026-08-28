@@ -111,6 +111,7 @@ export function SeoLandingPage({
                 ) : null}
               </div>
               <TrustSeals tone="dark" className="mt-8" />
+              <p className="mt-5 text-xs leading-5 text-slate-300">Ferramenta testada no navegador · conteúdo atualizado em <time dateTime="2026-08-27">27 de agosto de 2026</time> · o cliente não precisa instalar aplicativo</p>
             </div>
           </section>
 
@@ -199,6 +200,7 @@ export function SeoLandingPage({
                 </Link>
                 .
               </p>
+              <p className="mt-3">Revisão editorial interna em <time dateTime="2026-08-27">27 de agosto de 2026</time>. Exemplos exibidos são demonstrativos e usam dados fictícios; resultados e valores devem ser revisados antes do compartilhamento.</p>
             </div>
           </section>
         </main>

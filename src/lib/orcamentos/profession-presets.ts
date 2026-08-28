@@ -46,7 +46,7 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'eletricista',
     name: 'Eletricista',
-    title: 'Orçamento para eletricista com aprovação e Pix',
+    title: 'Gerador de orçamento grátis para eletricista',
     description: 'Separe visita, materiais e mão de obra em um orçamento profissional para o cliente aprovar pelo celular e pagar por Pix.',
     promise: 'Modelo preparado para instalações, reparos e adequações elétricas.',
     preset: {
@@ -81,7 +81,7 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'pintor',
     name: 'Pintor',
-    title: 'Orçamento para pintor por ambiente e metragem',
+    title: 'Orçamento para pintor por ambiente e metragem grátis',
     description: 'Organize preparação, pintura, materiais e prazo em um link profissional com aprovação pelo celular e cobrança Pix.',
     promise: 'Modelo preparado para pintura residencial, comercial e pequenos reparos.',
     preset: {
@@ -116,7 +116,7 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'instalacao-ar-condicionado',
     name: 'Instalador de ar-condicionado',
-    title: 'Orçamento para instalação de ar-condicionado',
+    title: 'Orçamento para instalação de ar-condicionado grátis',
     description: 'Apresente instalação, infraestrutura, materiais e deslocamento em um orçamento que o cliente aprova no WhatsApp.',
     promise: 'Modelo preparado para split, manutenção e infraestrutura frigorígena.',
     preset: {
@@ -213,7 +213,7 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'pedreiro',
     name: 'Pedreiro',
-    title: 'Orçamento para pedreiro por etapa da obra',
+    title: 'Orçamento para pedreiro por etapa da obra grátis',
     description: 'Detalhe preparação, execução, materiais e acabamento em um orçamento profissional com cronograma e Pix.',
     promise: 'Modelo preparado para reformas, alvenaria e pequenos serviços de obra.',
     preset: {

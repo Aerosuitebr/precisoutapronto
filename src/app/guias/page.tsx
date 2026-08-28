@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Clock } from 'lucide-react';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { guides } from '@/lib/guides';
+import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 
 export const metadata: Metadata = {
   title: 'Guias práticos para MEI, freelancers e estudantes',
@@ -64,6 +65,7 @@ export default function GuidesPage() {
             </div>
           </div>
         </section>
+        <StrategicSeoClusters />
         <section className="mx-auto grid max-w-6xl gap-5 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-3">
           {guides.map((guide) => (
             <article key={guide.slug} className="group flex flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">

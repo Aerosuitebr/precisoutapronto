@@ -11,7 +11,7 @@ import {
 const seo = PUBLIC_CALCULATORS.ferias;
 
 export const metadata: Metadata = {
-  title: 'Calculadora de férias CLT grátis',
+  title: 'Calculadora de Férias CLT: 1/3 e Abono Grátis',
   description: seo.description,
   alternates: { canonical: seo.path },
   openGraph: {

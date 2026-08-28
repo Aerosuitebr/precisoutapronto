@@ -17,7 +17,7 @@ export const clusterGuides: Guide[] = [
     title: 'Modelo de orçamento para eletricista: itens, materiais e validade',
     description: 'Monte um orçamento elétrico claro, separando visita, mão de obra, materiais, prazo e condições de pagamento.',
     answer: 'Um orçamento para eletricista deve descrever o serviço por ambiente ou ponto elétrico, indicar se materiais estão incluídos, informar mão de obra, prazo, validade e condições de pagamento. Quando houver diagnóstico ou risco de serviço adicional, isso precisa constar antes do início.',
-    category: 'Cobrança e vendas', readTime: '7 min', toolHref: '/orcamento-com-pix', toolLabel: 'Montar orçamento para eletricista', ...EDITORIAL,
+    category: 'Cobrança e vendas', readTime: '7 min', toolHref: '/orcamento-para/eletricista', toolLabel: 'Montar orçamento para eletricista', ...EDITORIAL,
     sections: [
       { title: 'Separe visita, serviço e material', paragraphs: ['Explique se a visita técnica está incluída ou é cobrada à parte. Liste pontos, circuitos ou ambientes atendidos e separe materiais da mão de obra quando isso ajudar o cliente a entender o total.'], bullets: ['Visita ou diagnóstico', 'Serviços por ambiente ou ponto', 'Materiais incluídos ou estimados', 'Prazo, garantia e condições'] },
       { title: 'Registre o que depende de inspeção', paragraphs: ['Problemas internos na instalação podem aparecer apenas depois da abertura ou do teste. Indique quais valores são estimativos e que serviços adicionais exigem nova aprovação antes de serem executados.'] },

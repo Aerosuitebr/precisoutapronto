@@ -5,6 +5,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 
 export const metadata: Metadata = {
   title: { absolute: 'Modelos de Recibo Online Grátis em PDF | Precisou, Tá Pronto' },
@@ -48,7 +49,8 @@ export default function ReceiptHubPage() {
         <h2 className="precisoutapronto-display mt-14 text-3xl font-extrabold text-slate-950">Tipos, formatos e dúvidas sobre recibo</h2>
         <div className="mt-7 grid gap-4 sm:grid-cols-2">{receiptClusterPages.map((page) => <Link key={page.slug} href={`/recibos/${page.slug}`} className="group rounded-2xl border border-slate-200 p-5 transition hover:border-sky-300 hover:bg-sky-50/40"><h3 className="font-bold leading-6 text-slate-950 group-hover:text-sky-800">{page.title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{page.description}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-sky-700">Ver orientação <ArrowRight className="h-4 w-4" /></span></Link>)}</div>
       </section>
-      <section className="border-y border-slate-200 bg-emerald-50"><div className="mx-auto max-w-5xl px-4 py-12 sm:px-6"><h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Um único motor, vários casos reais</h2><ul className="mt-6 grid gap-3 sm:grid-cols-3">{['Valor por extenso automático','Modelos profissionais em PDF','Assinatura e histórico'].map((item) => <li key={item} className="flex items-center gap-2 rounded-xl bg-white p-4 text-sm font-semibold text-slate-800"><CheckCircle2 className="h-4 w-4 text-emerald-600" />{item}</li>)}</ul></div></section>
+      <section className="border-y border-slate-200 bg-emerald-50"><div className="mx-auto max-w-5xl px-4 py-12 sm:px-6"><h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Um único gerador, vários casos comuns</h2><ul className="mt-6 grid gap-3 sm:grid-cols-3">{['Valor por extenso automático','Modelos profissionais em PDF','Assinatura e histórico'].map((item) => <li key={item} className="flex items-center gap-2 rounded-xl bg-white p-4 text-sm font-semibold text-slate-800"><CheckCircle2 className="h-4 w-4 text-emerald-600" />{item}</li>)}</ul></div></section>
+      <StrategicSeoClusters current="/recibos" />
     </main>
     <SiteFooter />
   </>;

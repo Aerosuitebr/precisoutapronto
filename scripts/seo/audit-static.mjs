@@ -184,7 +184,7 @@ if (/[—–]/.test(rescisaoPage)) {
 }
 
 const recibosContent = await readFile(path.join(root, 'src/lib/seo-pages/recibos.ts'), 'utf8');
-if (!recibosContent.includes("metaTitle: 'Gerador de Recibo Online Grátis em PDF'")) {
+if (!recibosContent.includes("metaTitle: 'Gerador de Recibo Grátis em PDF com Valor por Extenso'")) {
   failures.push('gerador-de-recibo: title de CTR prioritario ausente');
 }
 if (/metaTitle:.*[—–]/.test(recibosContent)) {
@@ -296,6 +296,8 @@ for (const scanRoot of ['src', 'public', 'scripts', 'e2e', '.github']) {
     if (!/\.(?:[cm]?[jt]sx?|json|ya?ml|md|txt|html|css|webmanifest|xml|sh|ps1)$/i.test(file)) continue;
     if (path.resolve(file) === path.resolve(import.meta.filename)) continue;
     const source = await readFile(file, 'utf8');
+    // O middleware mantém somente a lista técnica de hosts legados para o redirect 301.
+    if (path.relative(root, file).replaceAll('\\', '/') === 'src/middleware.ts') continue;
     if (previousIdentityPattern.test(source)) {
       failures.push(`${path.relative(root, file)}: referência à identidade anterior encontrada`);
     }

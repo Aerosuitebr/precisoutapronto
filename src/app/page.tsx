@@ -5,7 +5,7 @@ import { SiteHeader } from '@/components/marketing/site-header';
 import { LandingPage } from '@/components/marketing/landing-page';
 import { BRAND_DESCRIPTION, BRAND_DISPLAY_NAME, BRAND_TAGLINE } from '@/lib/brand';
 
-const homeTitle = `${BRAND_DISPLAY_NAME} ${BRAND_TAGLINE}`;
+const homeTitle = `Orçamento pelo WhatsApp com Pix Grátis | ${BRAND_DISPLAY_NAME}`;
 
 export const revalidate = 3600;
 

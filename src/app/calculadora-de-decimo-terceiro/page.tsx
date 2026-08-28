@@ -11,7 +11,7 @@ import {
 const seo = PUBLIC_CALCULATORS.decimoTerceiro;
 
 export const metadata: Metadata = {
-  title: 'Calculadora de 13º salário grátis',
+  title: 'Calculadora de Décimo Terceiro (13º) Proporcional Grátis',
   description: seo.description,
   alternates: { canonical: seo.path },
   openGraph: {
