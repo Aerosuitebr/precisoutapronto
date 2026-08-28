@@ -159,7 +159,9 @@ test('public quote editor turns pasted WhatsApp text into quote items', async ({
 
 test('profession landing loads an adapted quote instead of generic copy', async ({ page }) => {
   await page.goto('/orcamento-para/eletricista', { waitUntil: 'networkidle' });
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Orçamento para eletricista');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    'Gerador de orçamento grátis para eletricista'
+  );
   await expect(page.locator('input[value="Visita técnica e diagnóstico"]')).toBeVisible();
   await expect(page.locator('input[value="Materiais elétricos"]')).toBeVisible();
   await expect(page.locator('input[value="Mão de obra de instalação"]')).toBeVisible();
