@@ -89,7 +89,7 @@ const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[
 const escapedCanonicalBase = canonicalBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const privatePath = new RegExp(`^${escapedCanonicalBase}/(?:api|conta(?:/|$)|ferramentas(?:/|$)|checkout(?:/|$)|login(?:/|$)|cadastro(?:/|$)|documento(?:/|$)|orcamento/)`);
 const leaked = urls.filter((url) => privatePath.test(url));
-if (urls.length < 100) failures.push(`/sitemap.xml: somente ${urls.length} URLs`);
+if (urls.length !== 30) failures.push(`/sitemap.xml: esperado ciclo concentrado com 30 URLs; recebido ${urls.length}`);
 if (leaked.length) failures.push(`/sitemap.xml: URLs privadas encontradas: ${leaked.join(', ')}`);
 
 const sitemapIndex = results.get('/sitemaps/index.xml').body;

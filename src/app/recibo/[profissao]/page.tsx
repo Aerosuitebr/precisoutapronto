@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { RECEIPT_PROFESSION_CONTEXTS, findReceiptProfessionContext } from '@/lib/recibos/profession-contexts';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
 
 type Props = { params: Promise<{ profissao: string }> };
 
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: { absolute: `${page.title} · Grátis | Precisou, Tá Pronto` },
     description: `${page.description} Grátis para começar e compatível com celular.`,
     alternates: { canonical: path },
+    robots: temporaryNoindexRobots(false),
     openGraph: { title: page.title, description: page.description, url: path, type: 'website', images: [{ url: '/gerador-de-recibo/opengraph-image' }] },
     twitter: { card: 'summary_large_image', title: page.title, description: page.description, images: ['/gerador-de-recibo/opengraph-image'] }
   };

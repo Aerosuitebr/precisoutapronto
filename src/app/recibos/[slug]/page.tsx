@@ -8,6 +8,7 @@ import { getReceiptClusterPage, receiptClusterPages } from '@/lib/seo/receipt-cl
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { BRAND_AUTHOR_PATH } from '@/lib/brand';
 import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
+import { isSeoFocusPath, temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
 
 type Props = { params: Promise<{ slug: string }> };
 export function generateStaticParams() { return receiptClusterPages.map(({ slug }) => ({ slug })); }
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = getReceiptClusterPage((await params).slug);
   if (!page) return {};
   const url = `/recibos/${page.slug}`;
-  return { title: { absolute: `${page.title} | Precisou, Tá Pronto` }, description: page.description, alternates: { canonical: url }, openGraph: { title: page.title, description: page.description, url, type: 'article', images: [{ url: '/gerador-de-recibo/opengraph-image' }] }, twitter: { card: 'summary_large_image', title: page.title, description: page.description, images: ['/gerador-de-recibo/opengraph-image'] } };
+  return { title: { absolute: `${page.title} | Precisou, Tá Pronto` }, description: page.description, alternates: { canonical: url }, robots: temporaryNoindexRobots(isSeoFocusPath(url)), openGraph: { title: page.title, description: page.description, url, type: 'article', images: [{ url: '/gerador-de-recibo/opengraph-image' }] }, twitter: { card: 'summary_large_image', title: page.title, description: page.description, images: ['/gerador-de-recibo/opengraph-image'] } };
 }
 
 export default async function ReceiptClusterRoute({ params }: Props) {

@@ -35,5 +35,10 @@ Olá, [nome]. A página de vocês orienta [público] sobre [atividade]. Preparam
 - no máximo um follow-up após 7–10 dias;
 - registrar resposta, link conquistado e tráfego de referência.
 
-Nenhuma mensagem foi enviada por esta implementação. O envio representa a marca e precisa de confirmação final do responsável.
+## Estado verificável em 29/08/2026
 
+- 10 contatos iniciais enviados em 01/08, com log e `messageId` em `docs/divulgacao/logs/outreach-2026-08-01.json`;
+- 10 follow-ups enviados, com log em `docs/divulgacao/logs/outreach-2026-08-01-followup.json`;
+- três bibliotecas contatadas em 11/08 e três organizações qualificadas em 13/08, registradas em `docs/seo/backlinks-iniciais.md`.
+
+A meta mensal de envios foi atingida. Não repetir os destinatários. A próxima atualização deve registrar somente evidências: resposta positiva, URL publicada, indexação da URL de origem, novo domínio de referência e sessões com `utm_medium=partner`. Campo vazio significa “ainda sem evidência”, não zero.

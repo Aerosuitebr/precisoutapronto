@@ -7,6 +7,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { IntentToolCta } from '@/components/growth/intent-tool-cta';
 import { getIntentPage, getRelatedIntentPages, intentPages } from '@/lib/growth/intents';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
 
 type Props = { params: Promise<{ slug: string }> };
 export function generateStaticParams() { return intentPages.map((page) => ({ slug: page.slug })); }
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: page.title,
     description,
     alternates: { canonical: url },
+    robots: temporaryNoindexRobots(false),
     openGraph: {
       title: page.title,
       description,

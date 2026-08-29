@@ -45,7 +45,9 @@ const PRIVATE_DISALLOWS = [
   '/en/verify-email$',
   '/es/verify-email$',
   '/en/quote/',
-  '/es/quote/'
+  '/es/quote/',
+  '/amostra-cinematica$',
+  '/amostra-cinematica/'
 ] as const;
 
 /** Explicitamente público — defesa contra prefix match residual. */

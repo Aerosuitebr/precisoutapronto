@@ -50,3 +50,15 @@ Variações apenas de canal, formato ou pagamento — “WhatsApp”, “PDF” 
 ## Métricas
 
 Por URL: impressões, cliques, CTR, posição, clique no CTA, início do gerador, documento criado, link compartilhado e aprovação. Backlinks: domínio, URL de origem, destino, data, relevância e status.
+
+## Implementação do ciclo de foco — 29/08/2026
+
+- o sitemap canônico promove exatamente 30 URLs até a revisão de 28/09;
+- `/orcamento-pix-copia-e-cola` foi consolidada por redirecionamento permanente em `/orcamento-com-pix`;
+- variações programáticas de contratos, recibos por profissão, modelos genéricos e segmentos sem sinal receberam `noindex,follow` temporário;
+- as páginas profissionais mantidas são eletricista, pedreiro, encanador, pintor, instalação de ar-condicionado, fotógrafo e manutenção residencial;
+- a home, o gerador principal e as páginas profissionais passaram a exibir a jornada pedido → orçamento → aprovação → Pix → recibo;
+- títulos de orçamento com Pix e proposta comercial entraram em teste de CTR;
+- a meta de outreach de agosto já foi cumprida; o KPI seguinte é menção publicada e indexada, não novo volume de e-mails.
+
+Fonte operacional: `outputs/seo-focus-2026-08-29/seo-action-plan-2026-08-29.xlsx`.

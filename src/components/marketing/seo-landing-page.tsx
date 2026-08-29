@@ -10,6 +10,7 @@ import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { TrustSeals } from '@/components/marketing/trust-seals';
 import { Button } from '@/components/ui/button';
 import type { SeoLandingContent } from '@/lib/seo/landing-content';
+import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 hover:bg-amber-300';
@@ -117,6 +118,8 @@ export function SeoLandingPage({
 
           {demo}
 
+          {content.path === '/orcamento-com-pix' ? <StrategicSeoClusters current="/orcamento-com-pix" /> : null}
+
           {content.sections.map((section) => (
             <section key={section.title} className="border-b border-slate-200 bg-white">
               <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
@@ -191,8 +194,16 @@ export function SeoLandingPage({
                 Conteúdo educativo do Precisou, Tá Pronto. Materiais com impacto jurídico, contábil ou trabalhista
                 devem ser validados por profissional habilitado quando a decisão envolver riscos ou
                 particularidades do caso. Conheça a{' '}
-                <Link href="/sobre" className="font-semibold text-emerald-700 hover:underline">
-                  equipe e a política editorial
+                <Link href="/autores/equipe-editorial" className="font-semibold text-emerald-700 hover:underline">
+                  equipe editorial
+                </Link>{' '}
+                consulte os{' '}
+                <Link href="/criterios-editoriais" className="font-semibold text-emerald-700 hover:underline">
+                  critérios de revisão
+                </Link>{' '}
+                e a{' '}
+                <Link href="/politica-de-correcoes" className="font-semibold text-emerald-700 hover:underline">
+                  política de correções
                 </Link>{' '}
                 ou{' '}
                 <Link href="/contato" className="font-semibold text-emerald-700 hover:underline">

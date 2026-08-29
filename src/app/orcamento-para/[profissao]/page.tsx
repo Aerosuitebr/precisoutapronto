@@ -10,6 +10,8 @@ import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
 import { BRAND_AUTHOR_PATH, BRAND_DISPLAY_NAME } from '@/lib/brand';
 import { PROFESSION_LANDINGS, findProfessionLanding } from '@/lib/orcamentos/profession-presets';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { FOCUSED_PROFESSION_SLUGS, temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
+import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 
 const PRIORITY_CLUSTERS: Record<string, { guide: string; guideLabel: string; related: string[] }> = {
   eletricista: { guide: '/guias/modelo-de-orcamento-para-eletricista', guideLabel: 'Guia de orçamento elétrico', related: ['pedreiro', 'encanador', 'instalacao-ar-condicionado'] },
@@ -32,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ profissao
     title: { absolute: `${page.title} | ${BRAND_DISPLAY_NAME}` },
     description: page.description,
     alternates: { canonical: path },
+    robots: temporaryNoindexRobots(FOCUSED_PROFESSION_SLUGS.has(page.slug)),
     openGraph: { title: page.title, description: page.description, url: path, type: 'website' }
   };
 }
@@ -102,6 +105,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
               <aside className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Como verificamos esta página.</strong> O modelo foi testado no gerador com os campos exibidos acima. Os indicadores abaixo vêm de registros agregados do produto, são arredondados para preservar privacidade e podem ficar ocultos enquanto não atingem o mínimo de publicação.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-08-27">27 de agosto de 2026</time> · Revisão editorial interna por <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">metodologia editorial</Link>. Esta revisão verifica clareza e funcionamento; não constitui revisão técnica, jurídica ou contábil especializada.</p></aside>
             </div>
           </section>
+          <StrategicSeoClusters current="/modelos-de-orcamento" />
         </main>
         <SiteFooter />
       </div>

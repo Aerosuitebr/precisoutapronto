@@ -12,6 +12,7 @@ import { viralClusters } from '@/lib/seo/viral-clusters';
 import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
 import { CONTRACT_PROFESSION_CONTEXTS } from '@/lib/contratos/profession-contexts';
 import { RECEIPT_PROFESSION_CONTEXTS } from '@/lib/recibos/profession-contexts';
+import { isSeoFocusPath } from '@/lib/seo/focus-cycle';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-08-27T12:00:00.000Z');
@@ -391,10 +392,13 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): 
     default:
       entries = [];
   }
-  return normalizeLastModified(entries, base);
+  return normalizeLastModified(entries, base).filter((entry) => {
+    const path = entry.url.startsWith(base) ? entry.url.slice(base.length) || '/' : entry.url;
+    return isSeoFocusPath(path);
+  });
 }
 
-/** Sitemap público (sem games) para `/sitemap.xml`, IndexNow e testes. */
+/** Sitemap canônico concentrado nas 30 URLs do ciclo vigente. */
 export function buildFullSitemap(baseUrl?: string): MetadataRoute.Sitemap {
   return dedupe(INDEXABLE_SITEMAP_SEGMENTS.flatMap((segment) => buildSitemapSegment(segment, baseUrl)));
 }

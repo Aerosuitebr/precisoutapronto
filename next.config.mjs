@@ -70,6 +70,12 @@ const nextConfig = {
         destination: '/para/freelancers',
         permanent: true
       },
+      // Consolida a variação de pagamento na landing que cobre orçamento, aprovação e Pix.
+      {
+        source: '/orcamento-pix-copia-e-cola',
+        destination: '/orcamento-com-pix',
+        permanent: true
+      },
       // Consolida intenções antigas de recibo nas páginas editoriais canônicas.
       {
         source: '/modelos/recibo-para-mei',

@@ -5,6 +5,7 @@ import { ArrowRight, Check } from 'lucide-react';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { CONTRACT_PROFESSION_CONTEXTS, findContractProfessionContext } from '@/lib/contratos/profession-contexts';
+import { temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
 
 export function generateStaticParams() {
   return CONTRACT_PROFESSION_CONTEXTS.map((item) => ({ profissao: item.slug }));
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ profissao
   const page = findContractProfessionContext((await params).profissao);
   if (!page) return {};
   const path = `/contrato/${page.slug}`;
-  return { title: { absolute: `${page.title} | Precisou, Tá Pronto` }, description: page.description, alternates: { canonical: path }, openGraph: { title: page.title, description: page.description, url: path } };
+  return { title: { absolute: `${page.title} | Precisou, Tá Pronto` }, description: page.description, alternates: { canonical: path }, robots: temporaryNoindexRobots(false), openGraph: { title: page.title, description: page.description, url: path } };
 }
 
 export default async function ContractProfessionPage({ params }: { params: Promise<{ profissao: string }> }) {

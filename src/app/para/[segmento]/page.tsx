@@ -7,6 +7,7 @@ import { getGrowthSegment, growthSegments } from '@/lib/growth/segments';
 import { intentPages } from '@/lib/growth/intents';
 import { SegmentJourneyLink } from '@/components/growth/segment-journey-link';
 import { getViralBaseUrl } from '@/lib/viral-loop';
+import { temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
 
 type Props = { params: Promise<{ segmento: string }> };
 
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${segment.name}: ferramentas e documentos gratuitos`,
     description,
     alternates: { canonical: `/para/${segment.slug}` },
+    robots: temporaryNoindexRobots(['mei', 'freelancers'].includes(segment.slug)),
     openGraph: {
       title: `${segment.name}: ferramentas e documentos gratuitos`,
       description,

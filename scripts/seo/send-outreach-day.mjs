@@ -79,7 +79,7 @@ function pitchFor(contact) {
     embed: {
       subject: `Badges prontos para linkar ferramentas grátis (MEI, RH, educação)`,
       intro:
-        `Monteamos uma página de embeds/HTML para blogs e portais citarem ferramentas grátis do Precisou, Tá Pronto com UTM de parceria.\n\nPágina: ${link}\nPress kit: ${press}`
+        `Montamos uma página de embeds/HTML para blogs e portais citarem ferramentas grátis do Precisou, Tá Pronto com UTM de parceria.\n\nPágina: ${link}\nPress kit: ${press}`
     },
     enem: {
       subject: `Recurso gratuito · corretor de redação ENEM (por competência)`,

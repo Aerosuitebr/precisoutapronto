@@ -4,6 +4,7 @@ import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 import { CategoryExplorer } from '@/components/marketing/category-explorer';
 import { HomeToolGallery } from '@/components/marketing/home-tool-gallery';
 import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
+import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 import type { PublicStats } from '@/lib/public-stats';
 
 const steps = [
@@ -86,6 +87,8 @@ export function LandingPage({ initialStats }: { initialStats?: PublicStats | nul
           </div>
         </div>
       </section>
+
+      <StrategicSeoClusters />
 
       <section id="categorias" className="scroll-mt-24 bg-[#f8faf7] py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">

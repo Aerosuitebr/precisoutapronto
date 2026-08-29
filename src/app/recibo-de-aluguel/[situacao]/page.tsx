@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Check } from 'lucide-react';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
+import { temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
 
 const situations = {
   residencial: {
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ situacao:
   const page = situations[situacao as SituationKey];
   if (!page) return {};
   const path = `/recibo-de-aluguel/${situacao}`;
-  return { title: `${page.title} | Precisou, Tá Pronto`, description: page.description, alternates: { canonical: path }, openGraph: { title: page.title, description: page.description, url: path } };
+  return { title: `${page.title} | Precisou, Tá Pronto`, description: page.description, alternates: { canonical: path }, robots: temporaryNoindexRobots(false), openGraph: { title: page.title, description: page.description, url: path } };
 }
 
 export default async function RentalReceiptSituationPage({ params }: { params: Promise<{ situacao: string }> }) {
