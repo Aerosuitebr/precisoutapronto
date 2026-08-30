@@ -46,8 +46,6 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
           <TrustSeals />
         </section>
 
-        <ToolLandingBenefits toolName={content.toolName} benefits={content.benefits} />
-        <ToolLandingHowItWorks steps={content.steps} />
         <ToolLandingEmbed
           toolName={content.toolName}
           tool={toolPreview}
@@ -55,6 +53,9 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
           ctaLabel={content.ctaPrimary}
           openWithoutAccount={content.openWithoutAccount}
         />
+
+        <ToolLandingBenefits toolName={content.toolName} benefits={content.benefits} />
+        <ToolLandingHowItWorks steps={content.steps} />
         <ToolLandingExamples examples={examples} />
         <TestimonialsSection />
         <ToolLandingFaq faq={content.faq} />

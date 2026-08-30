@@ -93,22 +93,22 @@ export function AnalyticsScripts() {
       {ready && consent === null && (gaId || clarityId) ? (
         <aside
           aria-label={consentCopy.label}
-          className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl sm:flex sm:items-center sm:gap-5"
+          className="fixed bottom-3 left-3 right-3 z-[100] rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl sm:left-auto sm:w-[min(28rem,calc(100vw-1.5rem))]"
         >
-          <p className="flex-1 text-sm leading-6 text-slate-600">
+          <p className="text-xs leading-5 text-slate-600">
             {consentCopy.text}
           </p>
-          <div className="mt-3 flex gap-2 sm:mt-0">
+          <div className="mt-2 flex justify-end gap-2">
             <button
               type="button"
-              className="min-h-11 rounded-xl border border-slate-200 px-4 text-sm font-semibold text-slate-700"
+              className="min-h-9 rounded-lg border border-slate-200 px-3 text-xs font-semibold text-slate-700"
               onClick={() => choose('rejected')}
             >
               {consentCopy.essentials}
             </button>
             <button
               type="button"
-              className="min-h-11 rounded-xl bg-slate-950 px-4 text-sm font-semibold text-white"
+              className="min-h-9 rounded-lg bg-slate-950 px-3 text-xs font-semibold text-white"
               onClick={() => choose('accepted')}
             >
               {consentCopy.accept}

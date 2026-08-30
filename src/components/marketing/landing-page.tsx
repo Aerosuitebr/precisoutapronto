@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { ArrowRight, Check, CheckCircle2, ChevronRight, FileCheck2, MessageCircle, QrCode, ShieldCheck, Sparkles, Zap } from 'lucide-react';
+import { ArrowRight, Check, CheckCircle2, ChevronRight, FileCheck2, MessageCircle, QrCode, ShieldCheck, Sparkles } from 'lucide-react';
+import { Logo } from '@/components/brand/logo';
 
 const steps = [
   { number: '01', title: 'Monte', text: 'Transforme o pedido do WhatsApp em itens, valores, prazo e condições.', icon: FileCheck2 },
@@ -9,11 +10,14 @@ const steps = [
 
 export function LandingPage() {
   return <div className="bg-white text-[#101828]">
-    <header className="sticky top-8 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5 font-black tracking-[-0.035em]" aria-label="Precisou, Tá Pronto"><span className="grid h-9 w-9 place-items-center rounded-xl bg-[#155eef] text-white shadow-lg shadow-blue-600/20"><Zap className="h-5 w-5 fill-current" /></span><span className="text-lg sm:text-xl">Precisou, Tá Pronto</span></Link>
+    <header className="sticky top-8 z-50 border-b border-blue-100 bg-white/95 shadow-[0_14px_38px_-28px_rgba(3,31,75,.55)] backdrop-blur-xl">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:h-24 sm:px-6 lg:h-28 lg:px-8">
+        <Link href="/" className="min-w-0 flex-1" aria-label="Precisou, Tá Pronto — página inicial">
+          <Logo variant="marketing" className="h-16 max-w-[210px] sm:h-20 sm:max-w-[270px] lg:h-24 lg:max-w-[330px]" />
+        </Link>
         <div className="flex items-center gap-2"><Link href="/login" className="hidden px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-950 sm:block">Entrar</Link><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#155eef] px-4 text-sm font-black text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-[#004eeb]">Criar orçamento <ArrowRight className="h-4 w-4" /></Link></div>
       </div>
+      <div className="h-1 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff]" aria-hidden />
     </header>
 
     <main>
