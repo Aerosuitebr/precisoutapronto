@@ -17,6 +17,7 @@ import { ToolLandingJsonLd } from './json-ld';
 import { ToolLandingRelated } from './related-tools';
 import { ToolLandingShare } from './share-buttons';
 import { ToolLandingEmbed } from './tool-embed';
+import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
 
 interface ToolLandingPageProps {
   content: SeoPageContent;
@@ -53,6 +54,8 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
           ctaLabel={content.ctaPrimary}
           openWithoutAccount={content.openWithoutAccount}
         />
+
+        <UsefulToolsStrip currentPath={`/${content.slug}`} title="Você também pode precisar destas ferramentas" />
 
         <ToolLandingBenefits toolName={content.toolName} benefits={content.benefits} />
         <ToolLandingHowItWorks steps={content.steps} />

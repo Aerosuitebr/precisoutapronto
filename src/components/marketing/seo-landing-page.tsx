@@ -11,6 +11,7 @@ import { TrustSeals } from '@/components/marketing/trust-seals';
 import { Button } from '@/components/ui/button';
 import type { SeoLandingContent } from '@/lib/seo/landing-content';
 import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
+import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
 
 const primaryCtaClass =
   'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 hover:bg-amber-300';
@@ -117,6 +118,8 @@ export function SeoLandingPage({
           </section>
 
           {demo}
+
+          <UsefulToolsStrip currentPath={content.path} title="Ferramentas úteis para o próximo passo" />
 
           {content.path === '/orcamento-com-pix' ? <StrategicSeoClusters current="/orcamento-com-pix" /> : null}
 
