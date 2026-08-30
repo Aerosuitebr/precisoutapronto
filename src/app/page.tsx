@@ -42,9 +42,7 @@ export default function HomePage() {
     <>
       <TopEnvBanner />
       <div>
-        <main>
-          <LandingPage />
-        </main>
+        <LandingPage />
         <SiteFooter />
       </div>
     </>
