@@ -14,7 +14,7 @@ import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clust
 import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
 
 const primaryCtaClass =
-  'h-12 bg-amber-400 px-6 text-base font-bold text-slate-950 hover:bg-amber-300';
+  'h-12 bg-[#155eef] px-6 text-base font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-[#004eeb]';
 
 function isAuthGatedHref(href: string) {
   const path = href.split('#')[0]?.split('?')[0] || '';
@@ -73,21 +73,23 @@ export function SeoLandingPage({
               <span aria-current="page" className="font-semibold text-slate-700">{content.eyebrow}</span>
             </div>
           </nav>
-          <section className="relative overflow-hidden bg-[linear-gradient(145deg,#020617_0%,#0f172a_45%,#064e3b_100%)] text-white">
-            <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-amber-300">
+          <section className="relative overflow-hidden border-b border-blue-100 bg-[#f8faff] text-slate-950">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(21,94,239,.13),transparent_28%),radial-gradient(circle_at_12%_90%,rgba(131,214,0,.12),transparent_25%)]" />
+            <div className="pointer-events-none absolute inset-0 opacity-50 [background-image:linear-gradient(rgba(21,94,239,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(21,94,239,.045)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+            <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#155eef]">
                 {content.eyebrow}
               </p>
               <h1 className="precisoutapronto-display mt-3 max-w-3xl text-[clamp(1.85rem,4vw,3.1rem)] font-extrabold leading-[1.1] tracking-tight">
                 {content.title}
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
                 {content.description}
               </p>
-              <ul className="mt-6 space-y-2 text-sm text-slate-200">
+              <ul className="mt-6 space-y-2 text-sm text-slate-600">
                 {content.heroBullets.map((item) => (
                   <li key={item} className="flex items-center gap-2.5">
-                    <Check className="h-4 w-4 shrink-0 text-amber-300" />
+                    <Check className="h-4 w-4 shrink-0 text-emerald-600" />
                     {item}
                   </li>
                 ))}
@@ -104,7 +106,7 @@ export function SeoLandingPage({
                     asChild
                     size="lg"
                     variant="outline"
-                    className="h-12 w-full border-white/25 bg-white/5 px-6 text-white hover:bg-white/10 sm:w-auto"
+                    className="h-12 w-full border-slate-300 bg-white px-6 text-slate-800 shadow-sm hover:border-blue-300 hover:bg-white sm:w-auto"
                   >
                     <CtaLink href={content.secondaryCta.href} landingPath={content.path} placement="hero_secondary">
                       {content.secondaryCta.label}
@@ -112,8 +114,8 @@ export function SeoLandingPage({
                   </Button>
                 ) : null}
               </div>
-              <TrustSeals tone="dark" className="mt-8" />
-              <p className="mt-5 text-xs leading-5 text-slate-300">Ferramenta testada no navegador · conteúdo atualizado em <time dateTime="2026-08-27">27 de agosto de 2026</time> · o cliente não precisa instalar aplicativo</p>
+              <TrustSeals className="mt-8" />
+              <p className="mt-5 text-xs leading-5 text-slate-500">Ferramenta testada no navegador · conteúdo atualizado em <time dateTime="2026-08-27">27 de agosto de 2026</time> · o cliente não precisa instalar aplicativo</p>
             </div>
           </section>
 

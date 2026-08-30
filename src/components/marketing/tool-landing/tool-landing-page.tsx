@@ -64,19 +64,19 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
         <ToolLandingFaq faq={content.faq} />
         <ToolLandingArticle title={content.article.title} html={content.article.html} />
 
-        <section className="border-y border-slate-200 bg-slate-950 text-white">
+        <section className="border-y border-blue-100 bg-[#f2f7ff] text-slate-950">
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-14 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-16">
             <div className="max-w-xl">
               <h2 className="precisoutapronto-display text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Experimente na própria página
               </h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300 sm:text-base">
+              <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
                 {content.openWithoutAccount
                   ? 'Use a demo acima. Orçamento e recibo saem sem cadastro.'
                   : 'Use a demo acima. Orçamento e recibo saem sem cadastro. Nas outras ferramentas, duas gerações livres.'}
               </p>
             </div>
-            <Button asChild size="lg" className="h-12 shrink-0 bg-sky-500 px-6 font-bold hover:bg-sky-400">
+            <Button asChild size="lg" className="h-12 shrink-0 bg-[#155eef] px-6 font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-[#004eeb]">
               <a href="#ferramenta">
                 {content.ctaPrimary}
                 <ArrowRight className="h-4 w-4" aria-hidden />
