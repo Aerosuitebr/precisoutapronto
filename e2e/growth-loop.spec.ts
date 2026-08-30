@@ -114,25 +114,15 @@ test('approved quote becomes an editable receipt with only necessary fields', ()
   expect(JSON.stringify(receipt)).not.toContain('secret');
 });
 
-test('home leads with a task-first promise and popular outcomes', async ({ page }) => {
+test('home leads with one quote-to-payment promise', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(
-    'Orçamento no WhatsApp. Aprovado. Pix recebido.'
-  );
-  await expect(page.getByRole('link', { name: 'Criar meu orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
-  await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Buscar' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Um link claro para decidir sem trocar dez mensagens.' })).toBeVisible();
-  await expect(page.getByLabel('Exemplo do orçamento recebido pelo cliente')).toContainText('R$ 490');
-  await expect(page.getByRole('link', { name: 'Abrir uma demonstração completa' })).toHaveAttribute('href', '/orcamento-para/eletricista');
-  await expect(page.getByText('Descubra e resolva')).toBeVisible();
-  const main = page.locator('main');
-  for (const label of ['Orçamentos', 'Recibos', 'Contratos', 'Currículos']) {
-    await expect(main.getByText(label, { exact: true }).first()).toBeVisible();
-  }
-  await expect(page.getByRole('heading', { name: 'Encontre a ferramenta certa para o que você precisa.' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Do problema ao resultado em três movimentos.' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Guias curtos. Aplicação imediata.' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('Orçamento enviado. Serviço fechado.');
+  await expect(page.getByRole('link', { name: 'Criar orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
+  await expect(page.getByRole('heading', { name: 'Da conversa ao pagamento.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Seu cliente decide mais rápido.' })).toBeVisible();
+  await expect(page.getByText('R$ 490', { exact: true })).toBeVisible();
+  await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toHaveCount(0);
+  await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText('Precisou, Tá Pronto Games');
 });
 
