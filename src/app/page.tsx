@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { SiteFooter } from '@/components/marketing/site-footer';
-import { SiteHeader } from '@/components/marketing/site-header';
 import { LandingPage } from '@/components/marketing/landing-page';
 import { BRAND_DESCRIPTION, BRAND_DISPLAY_NAME, BRAND_TAGLINE } from '@/lib/brand';
 
@@ -42,8 +41,7 @@ export default function HomePage() {
   return (
     <>
       <TopEnvBanner />
-      <div className="pt-8">
-        <SiteHeader />
+      <div>
         <main>
           <LandingPage />
         </main>

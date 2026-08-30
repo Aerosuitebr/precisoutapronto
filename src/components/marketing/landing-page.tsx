@@ -1,129 +1,54 @@
 import Link from 'next/link';
-import { ArrowRight, BookOpen, CheckCircle2, Search, SlidersHorizontal, Sparkles, WandSparkles } from 'lucide-react';
-import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
-import { CategoryExplorer } from '@/components/marketing/category-explorer';
-import { HomeToolGallery } from '@/components/marketing/home-tool-gallery';
-import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
-import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
-import type { PublicStats } from '@/lib/public-stats';
+import { ArrowRight, Check, CheckCircle2, ChevronRight, FileCheck2, MessageCircle, QrCode, ShieldCheck, Sparkles, Zap } from 'lucide-react';
 
 const steps = [
-  { icon: Search, number: '01', title: 'Encontre', text: 'Descreva o que precisa resolver ou navegue por uma categoria.' },
-  { icon: SlidersHorizontal, number: '02', title: 'Personalize', text: 'Informe somente os dados necessários, com orientação em cada etapa.' },
-  { icon: CheckCircle2, number: '03', title: 'Saia com tudo pronto', text: 'Baixe, compartilhe ou continue o fluxo sem retrabalho.' }
+  { number: '01', title: 'Monte', text: 'Transforme o pedido do WhatsApp em itens, valores, prazo e condições.', icon: FileCheck2 },
+  { number: '02', title: 'Envie', text: 'Compartilhe um link profissional. Seu cliente abre direto no celular.', icon: MessageCircle },
+  { number: '03', title: 'Feche', text: 'O cliente aprova, recebe o Pix e você acompanha tudo sem planilha.', icon: CheckCircle2 }
 ] as const;
 
-const guides = [
-  { href: '/guias/como-cobrar-cliente-pelo-whatsapp', eyebrow: 'Cobrança', title: 'Como cobrar um cliente pelo WhatsApp sem desgastar a relação', time: '6 min' },
-  { href: '/guias/recibo-simples-tem-validade', eyebrow: 'Documentos', title: 'Recibo simples tem validade? O que não pode faltar', time: '6 min' },
-  { href: '/guias/como-fazer-orcamento-com-pix', eyebrow: 'Orçamento', title: 'Como fazer um orçamento com Pix e enviar pelo WhatsApp', time: '6 min' }
-] as const;
+export function LandingPage() {
+  return <div className="bg-white text-[#101828]">
+    <header className="sticky top-8 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2.5 font-black tracking-[-0.035em]" aria-label="Precisou, Tá Pronto"><span className="grid h-9 w-9 place-items-center rounded-xl bg-[#155eef] text-white shadow-lg shadow-blue-600/20"><Zap className="h-5 w-5 fill-current" /></span><span className="text-lg sm:text-xl">Precisou, Tá Pronto</span></Link>
+        <div className="flex items-center gap-2"><Link href="/login" className="hidden px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-950 sm:block">Entrar</Link><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#155eef] px-4 text-sm font-black text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-[#004eeb]">Criar orçamento <ArrowRight className="h-4 w-4" /></Link></div>
+      </div>
+    </header>
 
-export function LandingPage({ initialStats }: { initialStats?: PublicStats | null }) {
-  return (
-    <div className="bg-[#f8faf7] text-[#031f4b]">
-      <section className="relative isolate overflow-hidden bg-[#031f4b] text-white">
-        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_80%_10%,rgba(131,214,0,0.22),transparent_28%),radial-gradient(circle_at_18%_80%,rgba(11,92,255,0.55),transparent_36%),linear-gradient(135deg,#031f4b_0%,#063b82_58%,#0b5cff_100%)]" />
-        <div className="absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
-        <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-24 lg:px-10 lg:py-28 2xl:px-12">
-          <div className="mx-auto max-w-4xl text-center">
-            <p className="inline-flex items-center gap-2 rounded-full border border-[#83d600]/40 bg-[#83d600]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[#c8ff73]"><Sparkles className="h-4 w-4" />Sua necessidade. Nossa solução.</p>
-            <h1 className="precisoutapronto-display mt-7 text-[clamp(3rem,7vw,6.6rem)] font-black leading-[0.9] tracking-[-0.055em]">
-              <span className="block">Orçamento no WhatsApp.</span>
-              <span className="mt-1 block text-[#a9ed42]">Aprovado. Pix recebido.</span>
-            </h1>
-            <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-blue-100 sm:text-xl">Monte em poucos passos, envie o link e deixe o cliente aprovar no celular. Sem instalar aplicativo e sem cadastro para começar.</p>
-            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link href="/orcamento-com-pix#montar" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] shadow-xl shadow-blue-950/30 transition hover:-translate-y-0.5 hover:bg-[#a9ed42]">
-                Criar meu orçamento grátis <ArrowRight className="h-5 w-5" aria-hidden />
-              </Link>
-              <Link href="/orcamento-para/eletricista" className="inline-flex min-h-14 items-center justify-center rounded-2xl border border-white/30 bg-white/10 px-7 font-black text-white transition hover:bg-white/15">
-                Ver um modelo pronto
-              </Link>
-            </div>
-            <p className="mt-3 text-xs font-bold text-blue-100">Sem cadastro para enviar o primeiro orçamento · cliente não cria conta · Pix opcional</p>
-            <div className="mx-auto mt-6 max-w-2xl">
-              <LiveStatsBar
-                initial={initialStats}
-                className="[&_li]:border-white/15 [&_li]:bg-white/10 [&_p:first-child]:text-white [&_p:last-child]:text-blue-100"
-              />
-            </div>
-            <div className="mx-auto mt-9 max-w-2xl rounded-[1.4rem] bg-white/10 p-2 shadow-2xl shadow-blue-950/30 ring-1 ring-white/20 backdrop-blur"><HomeQuickSearch /></div>
-            <Link href="/recursos" className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/35 bg-white px-5 py-3 text-sm font-black text-[#031f4b] shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c8ff73] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c8ff73] focus-visible:ring-offset-2 focus-visible:ring-offset-[#031f4b]">
-              Ver todas as ferramentas <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-            <div className="mt-6 flex flex-wrap justify-center gap-2 text-xs font-bold">
-              {['#Orçamento', '#Pix', '#Recibo', '#Ofícios', '#MEI'].map((tag) => <a key={tag} href="#categorias" className="rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-blue-50 transition hover:border-[#83d600]/60 hover:text-[#c8ff73]">{tag}</a>)}
-            </div>
-          </div>
-        </div>
-        <div className="h-1 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff]" />
-      </section>
-
-      <section className="border-b border-[#0b5cff]/10 bg-white py-12 sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+    <main>
+      <section className="relative isolate overflow-hidden border-b border-slate-200 bg-[#f8faff]">
+        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_72%_30%,rgba(21,94,239,.13),transparent_30%),radial-gradient(circle_at_10%_85%,rgba(18,183,106,.10),transparent_24%)]" />
+        <div className="absolute inset-0 -z-10 opacity-60 [background-image:linear-gradient(rgba(16,24,40,.045)_1px,transparent_1px),linear-gradient(90deg,rgba(16,24,40,.045)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:linear-gradient(to_bottom,black,transparent_95%)]" />
+        <div className="mx-auto grid max-w-7xl gap-14 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.02fr_.98fr] lg:items-center lg:px-8 lg:py-28">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Veja o que o cliente recebe</p>
-            <h2 className="precisoutapronto-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">
-              Um link claro para decidir sem trocar dez mensagens.
-            </h2>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
-              O cliente confere itens e valor, aprova ou pede um ajuste e avisa você pelo próprio WhatsApp. Sem baixar aplicativo.
-            </p>
-            <Link href="/orcamento-para/eletricista" className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl border border-[#0b5cff]/20 bg-[#eef5ff] px-5 font-black text-[#0b5cff] transition hover:border-[#0b5cff]/40 hover:bg-white">
-              Abrir uma demonstração completa <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
+            <p className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3.5 py-2 text-xs font-black uppercase tracking-[0.12em] text-[#155eef] shadow-sm"><Sparkles className="h-4 w-4" /> Feito para quem vende pelo WhatsApp</p>
+            <h1 className="precisoutapronto-display mt-7 max-w-3xl text-[clamp(3.4rem,7vw,6.8rem)] font-black leading-[.88] tracking-[-.07em]">Orçamento enviado.<br /><span className="text-[#155eef]">Serviço fechado.</span></h1>
+            <p className="mt-7 max-w-xl text-lg font-medium leading-8 text-slate-600 sm:text-xl">Crie um orçamento profissional, mande o link no WhatsApp e deixe seu cliente aprovar e pagar pelo celular.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#155eef] px-7 font-black text-white shadow-xl shadow-blue-600/25 transition hover:-translate-y-1 hover:bg-[#004eeb]">Criar orçamento grátis <ArrowRight className="h-5 w-5" /></Link><Link href="/orcamento-para/eletricista" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-7 font-black text-slate-800 shadow-sm transition hover:-translate-y-1 hover:shadow-md">Ver exemplo pronto <ChevronRight className="h-5 w-5" /></Link></div>
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold text-slate-600">{['Sem cadastro para começar', 'Cliente não instala app', 'Pix opcional'].map(item => <li key={item} className="flex items-center gap-1.5"><Check className="h-4 w-4 stroke-[3] text-emerald-600" />{item}</li>)}</ul>
           </div>
-          <div className="rounded-[2rem] bg-[#031f4b] p-3 shadow-2xl shadow-blue-950/20 sm:p-5" aria-label="Exemplo do orçamento recebido pelo cliente">
-            <div className="rounded-[1.45rem] bg-white p-5 sm:p-7">
-              <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-5">
-                <div><p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Orçamento digital</p><p className="mt-2 text-xl font-black text-[#031f4b]">Elétrica Silva</p><p className="mt-1 text-xs text-slate-500">Preparado para seu cliente</p></div>
-                <span className="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-black uppercase text-amber-900">Aguardando</span>
-              </div>
-              <div className="space-y-3 py-5 text-sm"><div className="flex justify-between gap-4"><span className="font-semibold text-slate-700">Instalação de tomadas</span><strong>R$ 350</strong></div><div className="flex justify-between gap-4"><span className="font-semibold text-slate-700">Material elétrico</span><strong>R$ 140</strong></div></div>
-              <div className="flex items-end justify-between gap-4 border-t border-slate-100 pt-4"><div><p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Total</p><p className="text-3xl font-black text-emerald-700">R$ 490</p></div><p className="text-right text-xs font-semibold text-slate-500">Confere no celular<br />e responde no link</p></div>
-              <div className="mt-5 grid grid-cols-2 gap-2"><span className="rounded-xl bg-emerald-600 px-3 py-3 text-center text-sm font-black text-white">Aprovar</span><span className="rounded-xl border border-slate-200 px-3 py-3 text-center text-sm font-black text-slate-700">Pedir ajuste</span></div>
-            </div>
+
+          <div className="relative mx-auto w-full max-w-xl lg:mx-0">
+            <div className="absolute -inset-5 -z-10 rounded-[3rem] bg-gradient-to-br from-blue-200/70 to-emerald-100/60 blur-2xl" />
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-3 shadow-[0_32px_80px_-24px_rgba(16,24,40,.28)] sm:p-5"><div className="rounded-[1.5rem] border border-slate-100 bg-white p-5 sm:p-7">
+              <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-5"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-[#155eef]">Orçamento digital</p><h2 className="mt-2 text-xl font-black">Elétrica Silva</h2><p className="mt-1 text-xs text-slate-500">ORC-2026-018</p></div><span className="rounded-full bg-amber-50 px-3 py-1.5 text-[10px] font-black uppercase text-amber-700 ring-1 ring-amber-200">Aguardando</span></div>
+              <div className="space-y-4 py-6 text-sm"><div className="flex justify-between gap-5"><span className="font-semibold text-slate-600">Instalação de tomadas</span><strong>R$ 350</strong></div><div className="flex justify-between gap-5"><span className="font-semibold text-slate-600">Material elétrico</span><strong>R$ 140</strong></div></div>
+              <div className="flex items-end justify-between gap-4 border-t border-slate-100 pt-5"><div><p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Total</p><p className="mt-1 text-4xl font-black tracking-[-.05em]">R$ 490</p></div><div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700"><QrCode className="h-5 w-5" /> Pix pronto</div></div>
+              <div className="mt-6 grid grid-cols-2 gap-3"><span className="rounded-xl bg-emerald-600 px-3 py-3.5 text-center text-sm font-black text-white">Aprovar orçamento</span><span className="rounded-xl border border-slate-200 px-3 py-3.5 text-center text-sm font-black text-slate-700">Pedir ajuste</span></div>
+            </div></div>
+            <div className="absolute -bottom-5 -left-3 flex items-center gap-3 rounded-2xl border border-emerald-200 bg-white px-4 py-3 shadow-xl sm:-left-8"><span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-100 text-emerald-700"><CheckCircle2 className="h-5 w-5" /></span><div><p className="text-xs font-black">Cliente aprovou</p><p className="text-[11px] text-slate-500">Resposta recebida pelo WhatsApp</p></div></div>
           </div>
         </div>
       </section>
 
-      <StrategicSeoClusters />
+      <section className="border-b border-slate-200 py-8"><div className="mx-auto flex max-w-7xl flex-col items-center gap-5 px-4 sm:px-6 lg:flex-row lg:justify-between lg:px-8"><p className="text-xs font-black uppercase tracking-[.16em] text-slate-400">Para quem presta serviço</p><ul className="flex flex-wrap justify-center gap-x-7 gap-y-3 text-sm font-black text-slate-700">{['Eletricistas', 'Pintores', 'Instaladores', 'Freelancers', 'Manutenção'].map(item => <li key={item}>{item}</li>)}</ul></div></section>
 
-      <section id="categorias" className="scroll-mt-24 bg-[#f8faf7] py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="min-w-0">
-            <div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Escolha por objetivo</p><h2 className="precisoutapronto-display mt-3 text-3xl font-black leading-tight tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Encontre a ferramenta certa para o que você precisa.</h2><p className="mt-4 text-base leading-7 text-slate-600">Selecione uma área e veja soluções prontas para criar documentos, fazer cálculos e organizar sua rotina.</p></div>
-            <div className="mt-8 min-w-0"><CategoryExplorer /></div>
-          </div>
-        </div>
-      </section>
+      <section className="py-20 sm:py-28"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.18em] text-[#155eef]">Um fluxo. Sem enrolação.</p><h2 className="precisoutapronto-display mt-4 text-4xl font-black tracking-[-.05em] sm:text-6xl">Da conversa ao pagamento.</h2><p className="mt-5 text-lg leading-8 text-slate-600">Pare de procurar mensagem, somar valor na calculadora e mandar o Pix separado.</p></div><ol className="mt-12 grid gap-5 lg:grid-cols-3">{steps.map(step => <li key={step.number} className="group rounded-[1.75rem] border border-slate-200 bg-[#f8faff] p-7 transition hover:-translate-y-1 hover:border-blue-200 hover:bg-white hover:shadow-xl"><div className="flex items-center justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#155eef] text-white"><step.icon className="h-6 w-6" /></span><span className="text-4xl font-black text-slate-200">{step.number}</span></div><h3 className="mt-8 text-2xl font-black">{step.title}</h3><p className="mt-3 text-base leading-7 text-slate-600">{step.text}</p></li>)}</ol></div></section>
 
-      <HomeToolGallery />
+      <section className="bg-[#101828] py-20 text-white sm:py-24"><div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_.9fr] lg:items-center lg:px-8"><div><p className="text-xs font-black uppercase tracking-[.18em] text-blue-300">Profissional por fora. Simples por dentro.</p><h2 className="precisoutapronto-display mt-4 text-4xl font-black tracking-[-.05em] sm:text-6xl">Seu cliente decide mais rápido.</h2><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">Tudo para conferir, aprovar e pagar em uma única página feita para o celular.</p></div><ul className="grid gap-3">{['Itens e valores sem mensagem perdida', 'Aprovação ou ajuste em um toque', 'QR Code e Pix depois do aceite', 'Registro claro do combinado'].map(item => <li key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 font-bold"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald-400 text-[#101828]"><Check className="h-4 w-4 stroke-[3]" /></span>{item}</li>)}</ul></div></section>
 
-      <section className="relative overflow-hidden bg-[#eef5ff] py-16 sm:py-24">
-        <div className="absolute -right-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-[#83d600]/20 blur-3xl" />
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="text-center"><p className="text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]">Como funciona</p><h2 className="precisoutapronto-display mt-3 text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Do problema ao resultado em três movimentos.</h2></div>
-          <ol className="relative mt-12 grid gap-5 lg:grid-cols-3">
-            <span className="absolute left-[16%] right-[16%] top-12 hidden h-0.5 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff] lg:block" aria-hidden />
-            {steps.map((step) => <li key={step.number} className="relative rounded-[1.75rem] border border-[#0b5cff]/15 bg-white p-7 shadow-sm"><div className="flex items-center justify-between"><span className="grid h-14 w-14 place-items-center rounded-2xl bg-[#031f4b] text-white"><step.icon className="h-7 w-7" /></span><span className="text-4xl font-black text-[#0b5cff]/15">{step.number}</span></div><h3 className="mt-7 text-2xl font-black text-[#031f4b]">{step.title}</h3><p className="mt-2 text-sm leading-7 text-slate-600">{step.text}</p></li>)}
-          </ol>
-        </div>
-      </section>
-
-      <section className="bg-white py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#0b5cff]"><BookOpen className="h-4 w-4" />Aprenda enquanto resolve</p><h2 className="precisoutapronto-display mt-3 text-4xl font-black tracking-[-0.04em] text-[#031f4b] sm:text-5xl">Guias curtos. Aplicação imediata.</h2></div><Link href="/guias" className="inline-flex items-center gap-2 text-sm font-extrabold text-[#0b5cff]">Ver todos os guias <ArrowRight className="h-4 w-4" /></Link></div>
-          <ul className="mt-10 grid gap-5 lg:grid-cols-3">
-            {guides.map((guide, index) => <li key={guide.href}><Link href={guide.href} className="group flex h-full min-h-[235px] flex-col rounded-[1.75rem] border border-[#0b5cff]/15 bg-[#f8faf7] p-6 transition hover:-translate-y-1 hover:border-[#0b5cff]/40 hover:bg-white hover:shadow-lg"><div className="flex items-center justify-between"><span className="rounded-full bg-[#eef5ff] px-3 py-1 text-xs font-black uppercase tracking-wide text-[#0b5cff]">{guide.eyebrow}</span><span className="text-xs font-bold text-slate-400">{guide.time}</span></div><h3 className="mt-7 flex-1 text-2xl font-black leading-tight text-[#031f4b]">{guide.title}</h3><span className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#0b5cff]">Ler e aplicar <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span><span className={`mt-5 h-1 rounded-full ${index === 1 ? 'bg-[#83d600]' : 'bg-[#0b5cff]'}`} /></Link></li>)}
-          </ul>
-        </div>
-      </section>
-
-      <section className="bg-[#031f4b] py-16 text-white sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center"><div><p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#a9ed42]"><WandSparkles className="h-4 w-4" />Uma coleção que cresce com você</p><h2 className="precisoutapronto-display mt-3 max-w-3xl text-4xl font-black tracking-[-0.04em] sm:text-5xl">Explore, favorite e compartilhe o que resolveu seu problema.</h2></div><Link href="/recursos" className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-[#83d600] px-7 font-black text-[#031f4b] transition hover:bg-[#a9ed42]">Explorar todas as ferramentas <ArrowRight className="h-5 w-5" /></Link></div>
-      </section>
-    </div>
-  );
+      <section className="relative overflow-hidden bg-[#f8faff] py-20 sm:py-28"><div className="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full bg-blue-200/50 blur-3xl" /><div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6"><span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-white text-[#155eef] shadow-lg"><ShieldCheck className="h-7 w-7" /></span><h2 className="precisoutapronto-display mt-6 text-4xl font-black tracking-[-.055em] sm:text-6xl">Seu próximo orçamento pode sair agora.</h2><p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">Comece sem cadastro. Monte, revise e envie quando estiver pronto.</p><Link href="/orcamento-com-pix#montar" className="mt-8 inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#155eef] px-8 font-black text-white shadow-xl shadow-blue-600/25 transition hover:-translate-y-1 hover:bg-[#004eeb]">Criar meu orçamento grátis <ArrowRight className="h-5 w-5" /></Link><p className="mt-4 text-xs font-bold text-slate-500">Sem cartão · sem instalação · primeiro envio sem cadastro</p></div></section>
+    </main>
+  </div>;
 }
