@@ -313,6 +313,30 @@ export const toolsCatalog: ToolDefinition[] = [
     status: "beta",
   },
   {
+    id: "ferias",
+    name: "Calculadora de Férias",
+    description: "Calcule férias integrais ou proporcionais, adicional de 1/3 e abono pecuniário.",
+    tip: "Estimativa educativa para conferência de férias CLT.",
+    href: "/calculadora-de-ferias",
+    icon: CalendarRange,
+    categoryId: "contabeis",
+    actionLabel: "Calcular férias",
+    keywords: ["férias", "ferias", "salário", "clt", "abono", "um terço", "proporcional", "vender férias"],
+    status: "beta",
+  },
+  {
+    id: "decimo-terceiro",
+    name: "Calculadora de 13º Salário",
+    description: "Calcule primeira e segunda parcela do décimo terceiro, inclusive proporcional.",
+    tip: "Estimativa educativa do 13º salário bruto e suas parcelas.",
+    href: "/calculadora-de-decimo-terceiro",
+    icon: Wallet,
+    categoryId: "contabeis",
+    actionLabel: "Calcular 13º salário",
+    keywords: ["13º", "13 salario", "décimo terceiro", "decimo terceiro", "parcelas", "proporcional", "clt"],
+    status: "beta",
+  },
+  {
     id: "mei-vs-clt",
     name: "MEI vs CLT",
     description:
@@ -569,34 +593,85 @@ export function getToolById(toolId: string) {
   return toolsCatalog.find((tool) => tool.id === toolId) ?? null;
 }
 
-export function searchTools(query: string): ToolDefinition[] {
-  const normalized = query
+function normalizeSearchText(value: string) {
+  return value
     .trim()
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-  if (!normalized) return toolsCatalog;
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
 
-  return toolsCatalog.filter((tool) => {
-    const category = getToolCategory(tool.categoryId);
-    const haystack = [
-      tool.name,
-      tool.description,
-      tool.actionLabel,
-      category.label,
-      category.shortLabel,
-      ...tool.keywords,
-    ]
-      .join(" ")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+const SEARCH_STOP_WORDS = new Set([
+  "a", "ao", "as", "com", "como", "de", "do", "e", "em", "essa", "esse",
+  "eu", "fazer", "meu", "minha", "no", "o", "os", "para", "preciso", "quero",
+  "uma", "um"
+]);
 
-    return (
-      haystack.includes(normalized) ||
-      normalized.split(/\s+/).every((token) => haystack.includes(token))
-    );
-  });
+function searchStem(token: string) {
+  if (token.length > 4 && token.endsWith("ns")) return `${token.slice(0, -2)}m`;
+  if (token.length > 3 && token.endsWith("s")) return token.slice(0, -1);
+  return token;
+}
+
+function searchTokens(value: string) {
+  return normalizeSearchText(value)
+    .split(/\s+/)
+    .filter((token) => token.length > 1 && !SEARCH_STOP_WORDS.has(token))
+    .map(searchStem);
+}
+
+function editDistance(left: string, right: string) {
+  const row = Array.from({ length: right.length + 1 }, (_, index) => index);
+  for (let i = 1; i <= left.length; i += 1) {
+    let previous = row[0];
+    row[0] = i;
+    for (let j = 1; j <= right.length; j += 1) {
+      const current = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + (left[i - 1] === right[j - 1] ? 0 : 1));
+      previous = current;
+    }
+  }
+  return row[right.length];
+}
+
+function tokenScore(queryToken: string, candidate: string) {
+  if (candidate === queryToken) return 12;
+  if (candidate.startsWith(queryToken) || queryToken.startsWith(candidate)) return 8;
+  if (candidate.includes(queryToken) || queryToken.includes(candidate)) return 5;
+  if (queryToken.length >= 5 && candidate.length >= 5 && editDistance(queryToken, candidate) <= 1) return 3;
+  return 0;
+}
+
+export function rankTools(query: string): ToolDefinition[] {
+  const normalized = normalizeSearchText(query);
+  if (!normalized) return toolsCatalog.filter((tool) => tool.status !== "soon");
+  const queryWords = searchTokens(query);
+  if (!queryWords.length) return [];
+
+  return toolsCatalog
+    .filter((tool) => tool.status !== "soon")
+    .map((tool) => {
+      const category = getToolCategory(tool.categoryId);
+      const titleWords = searchTokens(`${tool.name} ${tool.actionLabel}`);
+      const detailWords = searchTokens(`${tool.description} ${tool.tip || ""} ${category.label} ${category.shortLabel} ${tool.keywords.join(" ")}`);
+      const matchedScores = queryWords.map((word) => Math.max(
+        ...titleWords.map((candidate) => tokenScore(word, candidate) * 3),
+        ...detailWords.map((candidate) => tokenScore(word, candidate))
+      ));
+      const matchedWords = matchedScores.filter(Boolean).length;
+      const phraseBonus = normalizeSearchText(`${tool.name} ${tool.actionLabel} ${tool.keywords.join(" ")}`).includes(normalized) ? 40 : 0;
+      const coverageBonus = matchedWords === queryWords.length ? 20 : 0;
+      return { tool, score: matchedScores.reduce((sum, score) => sum + score, 0) + phraseBonus + coverageBonus, matchedWords };
+    })
+    .filter(({ score, matchedWords }) => score > 0 && matchedWords >= Math.ceil(queryWords.length / 2))
+    .sort((left, right) => right.score - left.score || left.tool.name.localeCompare(right.tool.name, "pt-BR"))
+    .map(({ tool }) => tool);
+}
+
+export function searchTools(query: string): ToolDefinition[] {
+  return rankTools(query);
 }
 
 export const valueHighlights = [

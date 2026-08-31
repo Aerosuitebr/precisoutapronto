@@ -7,6 +7,16 @@ import { buildApprovedQuoteShareWhatsAppUrl } from '../src/lib/viral-loop';
 import { sanitizePublicStats } from '../src/lib/public-stats';
 import { normalizeQuoteReceiptTransfer, receiptFromApprovedQuote } from '../src/lib/orcamentos/quote-to-receipt';
 import { quoteWhatsAppAckKey } from '../src/lib/orcamentos/recipient-session';
+import { rankTools } from '../src/lib/tools-catalog';
+
+test('tool search ranks the live catalog from natural-language queries', () => {
+  expect(rankTools('removedor de fundos')[0]).toMatchObject({
+    id: 'remover-fundo',
+    name: 'Removedor de Fundo de Imagem'
+  });
+  expect(rankTools('quero tirar o fundo de uma foto')[0]).toMatchObject({ id: 'remover-fundo' });
+  expect(rankTools('calcular minhas férias')[0]).toMatchObject({ id: 'ferias' });
+});
 
 test('quick quote parser converts bounded WhatsApp notes into editable items', () => {
   expect(parseQuickQuoteText('Instalação de tomadas 240\n2x Material elétrico R$ 140,50\nsem preço')).toEqual([

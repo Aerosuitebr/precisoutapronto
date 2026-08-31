@@ -4,59 +4,28 @@ import { FormEvent, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, Search } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
-
-const INTENTS = [
-  { label: 'Criar orçamento com Pix', href: '/orcamento-com-pix#montar', terms: 'orcamento proposta cobrar pix whatsapp cliente' },
-  { label: 'Criar recibo', href: '/gerador-de-recibo#ferramenta', terms: 'recibo pagamento mei autonomo aluguel pdf' },
-  { label: 'Orçamento para eletricista', href: '/orcamento-para/eletricista', terms: 'eletricista instalacao eletrica orcamento whatsapp pix' },
-  { label: 'Modelos de orçamento', href: '/modelos-de-orcamento', terms: 'modelos orcamento profissao servico prestador' },
-  { label: 'Orçamento para limpeza pós-obra', href: '/orcamento-para/limpeza-pos-obra', terms: 'limpeza pos obra apartamento casa orçamento' },
-  { label: 'Orçamento para móveis planejados', href: '/orcamento-para/moveis-planejados', terms: 'marcenaria cozinha armario moveis planejados orçamento' },
-  { label: 'Orçamento para técnico de informática', href: '/orcamento-para/tecnico-de-informatica', terms: 'computador notebook manutencao formatacao tecnico orçamento' },
-  { label: 'Criar contrato de serviço', href: '/gerador-de-contrato#ferramenta', terms: 'contrato prestacao servico freelancer mei' },
-  { label: 'Fazer currículo', href: '/gerador-de-curriculo#ferramenta', terms: 'curriculo emprego vaga pdf resume cv' },
-  { label: 'Calcular rescisão', href: '/calculadora-de-rescisao', terms: 'rescisao clt demissao fgts ferias aviso previo' },
-  { label: 'Gerar referências ABNT', href: '/gerador-de-referencias-abnt#ferramenta', terms: 'abnt referencias bibliografia faculdade trabalho academico' },
-  { label: 'Orçamento Pix Copia e Cola', href: '/orcamento-com-pix#montar', terms: 'orcamento pix copiar e colar copia cola codigo pagamento' },
-  { label: 'Orçamento para personal trainer', href: '/orcamento-para/personal-trainer', terms: 'personal trainer academia treino consultoria esportiva orçamento' },
-  { label: 'Declaração de residência', href: '/declaracao-de-residencia', terms: 'declaracao residência comprovante endereço juridico documento' },
-  { label: 'Corrigir redação ENEM', href: '/corretor-de-redacao-enem', terms: 'redacao enem nota texto estudante' },
-  { label: 'Editar PDF', href: '/editor-de-pdf-online', terms: 'pdf editar juntar dividir comprimir arquivo' },
-  { label: 'Calcular férias', href: '/calculadora-de-ferias', terms: 'ferias clt salario abono' },
-  { label: 'Calcular 13º salário', href: '/calculadora-de-decimo-terceiro', terms: 'decimo terceiro 13 salario proporcional parcelas clt' },
-  { label: 'Gerar QR Code Pix', href: '/gerador-de-qr-code-pix#gerar', terms: 'pix qr code copia cola cobrar' }
-] as const;
-
-const STOP_WORDS = new Set(['a', 'ao', 'as', 'com', 'como', 'de', 'do', 'e', 'em', 'essa', 'esse', 'eu', 'fazer', 'meu', 'minha', 'no', 'o', 'os', 'para', 'preciso', 'quero', 'uma', 'um']);
+import { rankTools, toolsCatalog } from '@/lib/tools-catalog';
+import { publicLandingForToolId, toPublicToolHref } from '@/lib/seo/public-tool-landings';
 
 function normalize(value: string) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 }
 
-function queryTokens(value: string) {
-  return normalize(value)
-    .split(/[^a-z0-9]+/)
-    .filter((token) => token.length > 1 && !STOP_WORDS.has(token));
+function destination(toolId: string, href: string) {
+  return publicLandingForToolId(toolId) || toPublicToolHref(href);
 }
 
 export function HomeQuickSearch() {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const normalized = normalize(query);
+  const suggestions = useMemo(() => toolsCatalog
+    .filter((tool) => tool.status !== 'soon')
+    .slice(0, 4)
+    .map((tool) => ({ label: tool.name, href: destination(tool.id, tool.href) })), []);
   const results = useMemo(() => {
-    if (!normalized) return INTENTS.slice(0, 4);
-    const tokens = queryTokens(normalized);
-    return INTENTS
-      .map((item) => {
-        const label = normalize(item.label);
-        const haystack = normalize(`${item.label} ${item.terms}`);
-        const score = tokens.reduce((total, token) => total + (label.includes(token) ? 3 : haystack.includes(token) ? 1 : 0), 0);
-        return { item, score };
-      })
-      .filter(({ score }) => score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 5)
-      .map(({ item }) => item);
+    const tools = normalized ? rankTools(normalized) : toolsCatalog.filter((tool) => tool.status !== 'soon');
+    return tools.slice(0, 5).map((tool) => ({ label: tool.name, href: destination(tool.id, tool.href) }));
   }, [normalized]);
 
   function go(href: string, label: string, source: 'submit' | 'suggestion') {
@@ -95,9 +64,9 @@ export function HomeQuickSearch() {
       </form>
       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-600">
         <span className="mr-1 font-semibold">Experimente:</span>
-        {INTENTS.slice(0, 4).map((item) => (
+        {suggestions.map((item) => (
           <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="min-h-11 rounded-full border border-[#0b5cff]/20 bg-white px-4 py-2 font-bold text-[#031f4b] transition hover:border-[#0b5cff]/50 hover:bg-[#eef5ff] hover:text-[#0b5cff] sm:min-h-0 sm:px-3 sm:py-1.5">
-            {item.label.replace(/^(Criar|Calcular|Gerar) /, '')}
+            {item.label}
           </button>
         ))}
       </div>
