@@ -64,7 +64,13 @@ export function StrategicHubs({ compact = false }: { compact?: boolean }) {
             })}
           </div>
           <p className="mt-6 text-center text-sm text-slate-600">
-            Precisa de outra coisa? <Link href="/recursos" className="font-bold text-sky-700 hover:underline">Veja todas as ferramentas</Link>.
+            Cálculos trabalhistas:{' '}
+            <Link href="/calculadora-de-ferias" className="font-bold text-sky-700 hover:underline">calculadora de férias CLT</Link>
+            {' · '}
+            <Link href="/calculadora-de-decimo-terceiro" className="font-bold text-sky-700 hover:underline">calculadora de 13º salário</Link>
+            {' · '}
+            <Link href="/rescisao" className="font-bold text-sky-700 hover:underline">central de rescisão e FGTS</Link>
+            . Precisa de outra coisa? <Link href="/recursos" className="font-bold text-sky-700 hover:underline">Veja todas as ferramentas</Link>.
           </p>
         </div>
       </section>

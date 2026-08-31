@@ -127,25 +127,25 @@ export default function RecursosPage() {
             );
           })}
 
-          <section aria-labelledby="calculadoras-clt" className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 id="calculadoras-clt" className="text-xl font-bold text-slate-950">
-              Calculadoras CLT
+          <section id="calculadoras-clt" aria-labelledby="calculadoras-clt-title" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 id="calculadoras-clt-title" className="text-xl font-bold text-slate-950">
+              Cálculos trabalhistas: férias, 13º e rescisão
             </h2>
             <p className="mt-2 text-sm text-slate-500">
               Estimativas educativas de férias, 13º e rescisão, sem cadastro nas páginas públicas.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <Link href="/calculadora-de-rescisao" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-sky-700 hover:bg-slate-50">
-                Rescisão CLT com FGTS
+                Calculadora de rescisão CLT com FGTS
               </Link>
               <Link href="/calculadora-de-ferias" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-sky-700 hover:bg-slate-50">
-                Férias CLT
+                Calculadora de férias CLT
               </Link>
               <Link href="/calculadora-de-decimo-terceiro" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-sky-700 hover:bg-slate-50">
-                13º salário
+                Calculadora de 13º salário proporcional
               </Link>
               <Link href="/mei-ou-clt" className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-sky-700 hover:bg-slate-50">
-                Comparar MEI ou CLT
+                Calculadora MEI ou CLT
               </Link>
             </div>
           </section>

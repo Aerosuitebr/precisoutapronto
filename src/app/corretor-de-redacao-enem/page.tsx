@@ -9,7 +9,7 @@ const PATH = '/corretor-de-redacao-enem';
 const SITE_URL = getViralBaseUrl().replace(/\/$/, '');
 
 export const metadata: Metadata = {
-  title: 'Corretor de Redação ENEM Grátis: Nota por Competência',
+  title: 'Analisar Redação ENEM Grátis: Nota por Competência',
   description:
     'Cole sua redação e receba estimativa de nota por competência (C1 a C5), pontos fortes e alertas. Duas análises livres sem cadastro.',
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: PATH },
   openGraph: {
-    title: 'Corretor de redação ENEM grátis | Precisou, Tá Pronto',
+    title: 'Analisar redação ENEM grátis | Precisou, Tá Pronto',
     description: 'Estimativa de nota por competência, com pontos fortes e alertas de revisão.',
     url: `${SITE_URL}${PATH}`,
     type: 'website',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Corretor de redação ENEM grátis | Precisou, Tá Pronto',
+    title: 'Analisar redação ENEM grátis | Precisou, Tá Pronto',
     description: 'Estimativa de nota por competência, com pontos fortes e alertas de revisão.',
     images: [`${PATH}/opengraph-image`]
   }

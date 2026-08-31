@@ -24,8 +24,11 @@ export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
  * uma data global de deploy não representa mudança relevante de conteúdo.
  */
 const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
-  ['/calculadora-de-decimo-terceiro', new Date('2026-08-28T12:00:00.000Z')],
-  ['/calculadora-de-ferias', new Date('2026-08-28T12:00:00.000Z')],
+  ['/calculadora-de-decimo-terceiro', new Date('2026-08-30T12:00:00.000Z')],
+  ['/calculadora-de-ferias', new Date('2026-08-30T12:00:00.000Z')],
+  ['/calculadora-de-rescisao', new Date('2026-08-30T12:00:00.000Z')],
+  ['/rescisao', new Date('2026-08-30T12:00:00.000Z')],
+  ['/guias/calculo-rescisao-com-fgts', new Date('2026-08-30T12:00:00.000Z')],
   ['/guias', new Date('2026-08-28T12:00:00.000Z')],
   ['/recibos', new Date('2026-08-28T12:00:00.000Z')],
   ['/modelos-de-orcamento', new Date('2026-08-28T12:00:00.000Z')]

@@ -31,6 +31,9 @@ export type PublicCalculatorSeo = {
   guideLabel: string;
   related: Array<{ href: string; label: string; description: string }>;
   faq: Array<{ question: string; answer: string }>;
+  formula?: string;
+  reviewedAt?: string;
+  sources?: Array<{ label: string; href: string }>;
   scenarioTable?: CalculatorScenarioTable;
   numericExample?: CalculatorNumericExample;
   leadWithFaq?: boolean;
@@ -59,6 +62,12 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
       'Conteúdo educativo. Não constitui parecer jurídico, trabalhista ou contábil. Regras e percentuais podem variar por acordo coletivo, categoria e legislação vigente.',
     guideHref: '/guias/como-calcular-rescisao',
     guideLabel: 'guia de cálculo de rescisão',
+    formula: 'Total estimado = saldo de salário + aviso aplicável + 13º proporcional + férias e 1/3 + multa do FGTS, conforme a modalidade.',
+    reviewedAt: '30 de agosto de 2026',
+    sources: [
+      { label: 'Ministério do Trabalho e Emprego — perguntas frequentes', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' },
+      { label: 'FGTS — procedimentos de rescisão', href: 'https://www.fgts.gov.br/Paginas/subpaginas/rescisao-empregado.aspx' }
+    ],
     related: [
       {
         href: '/rescisao',
@@ -330,8 +339,25 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     ],
     disclaimer:
       'Conteúdo educativo. Não constitui parecer jurídico, trabalhista ou contábil. Regras e percentuais podem variar por acordo coletivo, categoria e legislação vigente.',
-    guideHref: '/guias/como-calcular-rescisao',
-    guideLabel: 'guia de cálculos trabalhistas',
+    guideHref: '/recursos#calculadoras-clt',
+    guideLabel: 'central de cálculos trabalhistas',
+    formula: 'Estimativa bruta = remuneração dos dias de férias + 1/3 constitucional + abono pecuniário e seu 1/3, quando informado.',
+    reviewedAt: '30 de agosto de 2026',
+    sources: [
+      { label: 'Ministério do Trabalho e Emprego — férias e abono', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' },
+      { label: 'Receita Federal — incidências sobre férias', href: 'https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/pagamentos-e-parcelamentos/emissao-e-pagamento-de-darf-das-gps-e-dae/calculo-de-contribuicoes-previdenciarias-e-emissao-de-gps/tabela-de-incidencia-de-contribuicao' }
+    ],
+    numericExample: {
+      title: 'Exemplo de cálculo de férias 2026',
+      setup: 'Salário bruto de R$ 3.000,00, 30 dias de férias, sem média variável e sem venda de dias. O exemplo mostra valores brutos antes de INSS e IRRF.',
+      lines: [
+        { label: 'Remuneração das férias', value: 'R$ 3.000,00', note: '30 dias' },
+        { label: 'Adicional constitucional de 1/3', value: 'R$ 1.000,00' },
+        { label: 'Abono pecuniário', value: 'R$ 0,00', note: 'Nenhum dia vendido' }
+      ],
+      total: 'R$ 4.000,00',
+      note: 'É um exemplo simplificado. Médias de horas extras, adicionais, descontos, férias proporcionais e convenções coletivas podem alterar o resultado.'
+    },
     related: [
       {
         href: '/calculadora-de-decimo-terceiro',
@@ -379,6 +405,11 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
         question: 'Médias de horas extras entram no cálculo?',
         answer:
           'Você pode informar uma média de variáveis. A calculadora soma esse valor à base. O critério exato pode variar por categoria.'
+      },
+      {
+        question: 'Como fazer o cálculo exato de férias?',
+        answer:
+          'Use salário, médias habituais, quantidade real de dias e eventual abono. A calculadora mostra uma estimativa bruta; descontos e regras coletivas devem ser conferidos no holerite.'
       }
     ]
   },
@@ -402,8 +433,25 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     ],
     disclaimer:
       'Conteúdo educativo. Não constitui parecer jurídico, trabalhista ou contábil. Confirme prazos e descontos com o empregador ou um contador.',
-    guideHref: '/guias/como-calcular-rescisao',
-    guideLabel: 'guia de cálculos trabalhistas',
+    guideHref: '/recursos#calculadoras-clt',
+    guideLabel: 'central de cálculos trabalhistas',
+    formula: '13º bruto proporcional = (salário + média de variáveis) ÷ 12 × número de avos trabalhados no ano.',
+    reviewedAt: '30 de agosto de 2026',
+    sources: [
+      { label: 'Ministério do Trabalho e Emprego — direitos trabalhistas e 13º', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' }
+    ],
+    numericExample: {
+      title: 'Exemplo de 13º salário proporcional em 2026',
+      setup: 'Salário bruto de R$ 3.000,00 e 12 avos trabalhados, sem média variável. A segunda parcela real pode ter descontos de INSS e IRRF.',
+      lines: [
+        { label: 'Base mensal', value: 'R$ 3.000,00' },
+        { label: '13º proporcional', value: 'R$ 3.000,00', note: 'R$ 3.000 ÷ 12 × 12 avos' },
+        { label: '1ª parcela estimada', value: 'R$ 1.500,00' },
+        { label: '2ª parcela bruta estimada', value: 'R$ 1.500,00', note: 'Antes dos descontos' }
+      ],
+      total: 'R$ 3.000,00',
+      note: 'Com menos de 12 avos, use a mesma fórmula proporcional. O valor líquido da segunda parcela depende dos descontos aplicáveis.'
+    },
     related: [
       {
         href: '/calculadora-de-ferias',
@@ -451,6 +499,11 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
         question: 'Variáveis entram no 13º?',
         answer:
           'Adicionais habituais podem integrar a base. Informe uma média se fizer sentido no seu caso e valide com o RH ou contador.'
+      },
+      {
+        question: 'Como calcular o 13º proporcional?',
+        answer:
+          'Divida a remuneração-base por 12 e multiplique pelos avos. Em regra, um mês com pelo menos 15 dias trabalhados conta como um avo.'
       }
     ]
   }
@@ -473,6 +526,7 @@ export function CalculatorJsonLd({ calculator }: { calculator: PublicCalculatorS
         operatingSystem: 'Web',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' },
         inLanguage: 'pt-BR',
+        dateModified: calculator.reviewedAt ? '2026-08-30' : undefined,
         isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: siteUrl }
       },
       {
@@ -596,6 +650,11 @@ export function CalculatorContentSections({ calculator }: { calculator: PublicCa
 
       <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-slate-950">{calculator.interpretTitle}</h2>
+        {calculator.formula ? (
+          <p className="mt-4 rounded-2xl bg-sky-50 px-4 py-3 font-semibold leading-7 text-sky-950">
+            Fórmula simplificada: {calculator.formula}
+          </p>
+        ) : null}
         {calculator.interpretBody.map((paragraph) => (
           <p key={paragraph} className="mt-4 leading-7 text-slate-600">
             {paragraph}
@@ -609,6 +668,24 @@ export function CalculatorContentSections({ calculator }: { calculator: PublicCa
           .
         </p>
       </section>
+
+      {calculator.sources?.length ? (
+        <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-slate-950">Revisão e fontes oficiais</h2>
+          {calculator.reviewedAt ? (
+            <p className="mt-2 text-sm text-slate-600">Conteúdo revisado em {calculator.reviewedAt}.</p>
+          ) : null}
+          <ul className="mt-4 space-y-2 text-sm">
+            {calculator.sources.map((source) => (
+              <li key={source.href}>
+                <a href={source.href} target="_blank" rel="noreferrer" className="font-semibold text-sky-700 hover:underline">
+                  {source.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8">
         <h2 className="text-2xl font-bold text-slate-950">{calculator.howToTitle}</h2>
