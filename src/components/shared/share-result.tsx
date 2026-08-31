@@ -32,7 +32,7 @@ export function ShareResult({ tool, title, subtitle, lines, whatsappText }: { to
       const url = await createLink();
       trackEvent('share_whatsapp', { tool_name: tool, result_id: url.split('/').pop(), share_surface: 'result', user_type: 'anonymous' });
       emitClientProductEvent({ eventName: 'outcome.shared', toolKey: tool, properties: { channel: 'whatsapp', surface: 'result' } });
-      window.location.href = `https://wa.me/?text=${encodeURIComponent(`${whatsappText || title}\n\nVeja o resultado completo:\n${url}\n\nCriado grátis no Precisou? Tá Pronto.`)}`;
+      window.location.href = `https://wa.me/?text=${encodeURIComponent(`${whatsappText || title}\n\nVeja o resultado completo:\n${url}\n\nCriado grátis no Precisou, Tá Pronto.`)}`;
     } catch (error) { toast(error instanceof Error ? error.message : 'Falha ao compartilhar.'); }
     finally { setCreating(false); }
   }

@@ -1,11 +1,12 @@
 /** Identidade pública oficial da marca. */
 
 export const BRAND_NAME = 'Precisou, Tá Pronto';
-export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!';
-export const BRAND_SHORT_NAME = 'Precisou Tá Pronto';
+export const BRAND_DISPLAY_NAME = BRAND_NAME;
+export const BRAND_SHORT_NAME = BRAND_NAME;
+export const BRAND_CATEGORY = 'Orçamento no WhatsApp, documentos e ferramentas online';
 export const BRAND_TAGLINE = 'Orçamento no WhatsApp, aprovado, Pix recebido';
 export const BRAND_DESCRIPTION =
-  'Monte o orçamento, envie o link no WhatsApp e receba a aprovação no celular. Recibo em PDF sem cadastro para começar. Cliente não instala aplicativo.';
+  'Precisou, Tá Pronto é uma plataforma de orçamento no WhatsApp, documentos e ferramentas online. Crie orçamentos com Pix, recibos em PDF e soluções para MEIs e freelancers.';
 export const BRAND_OFFICIAL_PATH = '/precisou-ta-pronto';
 export const BRAND_AUTHOR_PATH = '/autores/equipe-editorial';
 

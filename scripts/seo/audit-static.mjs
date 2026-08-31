@@ -149,6 +149,23 @@ if (
 ) {
   failures.push('next.config.mjs: redirect permanente da redacao ENEM ausente');
 }
+
+const brandIdentitySource = await readFile(path.join(root, 'src/lib/brand.ts'), 'utf8');
+const manifestIdentitySource = await readFile(path.join(root, 'public/manifest.webmanifest'), 'utf8');
+const canonicalBrand = 'Precisou, Tá Pronto';
+if (!brandIdentitySource.includes(`export const BRAND_NAME = '${canonicalBrand}'`)) {
+  failures.push(`marca: BRAND_NAME deve usar a grafia canônica "${canonicalBrand}"`);
+}
+if (!brandIdentitySource.includes('export const BRAND_DISPLAY_NAME = BRAND_NAME')) {
+  failures.push('marca: BRAND_DISPLAY_NAME deve herdar BRAND_NAME');
+}
+if (!brandIdentitySource.includes('Orçamento no WhatsApp, documentos e ferramentas online')) {
+  failures.push('marca: categoria principal ausente em src/lib/brand.ts');
+}
+const manifest = JSON.parse(manifestIdentitySource);
+if (manifest.name !== canonicalBrand || manifest.short_name !== canonicalBrand) {
+  failures.push(`manifest: name e short_name devem usar "${canonicalBrand}"`);
+}
 if (
   !nextConfig.includes("source: '/autores/equipe-resolva-jato'") ||
   !nextConfig.includes("destination: '/autores/equipe-editorial'")

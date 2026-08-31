@@ -37,7 +37,7 @@ function BrandComparison() {
         <div className="mt-3 rounded-xl border border-dashed border-white/15 bg-slate-950/40 px-3 py-2.5">
           <p className="truncate text-[10px] font-semibold text-slate-400">Seu documento · cliente</p>
           <p className="mt-1.5 text-[10px] leading-4 text-slate-500">
-            Gerado com Precisou? Tá Pronto! · precisoutapronto.com.br
+            Gerado com Precisou, Tá Pronto · precisoutapronto.com.br
           </p>
         </div>
       </div>

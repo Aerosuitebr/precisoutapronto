@@ -1,5 +1,6 @@
 import {
   BRAND_PUBLIC_EMAIL,
+  BRAND_CATEGORY,
   BRAND_DESCRIPTION,
   BRAND_DISPLAY_NAME,
   BRAND_NAME,
@@ -18,7 +19,7 @@ export function SiteJsonLd() {
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,
     name: BRAND_NAME,
-    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto'],
+    alternateName: ['Precisou Tá Pronto'],
     url: siteUrl,
     email: BRAND_PUBLIC_EMAIL,
     logo: {
@@ -29,6 +30,7 @@ export function SiteJsonLd() {
     },
     image: `${siteUrl}/opengraph-image`,
     description: BRAND_DESCRIPTION,
+    disambiguatingDescription: BRAND_CATEGORY,
     slogan: BRAND_TAGLINE,
     foundingDate: '2025',
     areaServed: {
@@ -76,12 +78,15 @@ export function SiteJsonLd() {
     '@type': 'WebSite',
     '@id': `${siteUrl}/#website`,
     name: BRAND_NAME,
-    alternateName: [BRAND_DISPLAY_NAME, 'Precisou Tá Pronto'],
+    alternateName: ['Precisou Tá Pronto'],
     url: siteUrl,
     inLanguage: 'pt-BR',
     description: BRAND_DESCRIPTION,
+    about: {
+      '@id': `${siteUrl}/#organization`,
+      name: BRAND_CATEGORY
+    },
     publisher: { '@id': `${siteUrl}/#organization` },
-    about: { '@id': `${siteUrl}/#organization` }
   };
 
   const itemList = {

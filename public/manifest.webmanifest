@@ -1,7 +1,7 @@
 {
-  "name": "Precisou? Tá Pronto!",
-  "short_name": "Tá Pronto",
-  "description": "Ferramentas profissionais e busca gratuita",
+  "name": "Precisou, Tá Pronto",
+  "short_name": "Precisou, Tá Pronto",
+  "description": "Orçamento no WhatsApp, documentos e ferramentas online",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#031f4b",

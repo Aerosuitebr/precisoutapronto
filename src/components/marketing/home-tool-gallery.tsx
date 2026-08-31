@@ -49,7 +49,7 @@ export function HomeToolGallery() {
     const url = new URL(href, window.location.origin).toString();
     const hasNativeShare = typeof navigator.share === 'function';
     try {
-      if (hasNativeShare) await navigator.share({ title: name, text: `Encontrei esta ferramenta no Precisou? Tá Pronto!`, url });
+      if (hasNativeShare) await navigator.share({ title: name, text: `Encontrei esta ferramenta no Precisou, Tá Pronto`, url });
       else await navigator.clipboard.writeText(url);
       trackEvent('home_tool_shared', { tool_id: id, method: hasNativeShare ? 'native' : 'copy' });
       if (!hasNativeShare) toast('Link da ferramenta copiado.');

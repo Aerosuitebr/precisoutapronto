@@ -4,11 +4,11 @@ import { LegalPage } from '@/components/marketing/legal-page';
 
 export const metadata: Metadata = {
   title: 'Sobre',
-  description: 'Conheça o Precisou, Tá Pronto, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
+  description: 'Conheça o Precisou, Tá Pronto, plataforma de orçamento no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.',
   alternates: { canonical: '/sobre' },
   openGraph: {
     title: 'Sobre | Precisou, Tá Pronto',
-    description: 'Conheça o Precisou, Tá Pronto, nossa proposta, a equipe responsável e como criamos ferramentas práticas para documentos e negócios.',
+    description: 'Conheça o Precisou, Tá Pronto, plataforma de orçamento no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.',
     url: '/sobre'
   }
 };
@@ -17,9 +17,9 @@ export default function SobrePage() {
   return (
     <LegalPage title="Sobre o Precisou, Tá Pronto" subtitle="Ferramentas práticas, sem burocracia">
       <p>
-        O <strong>Precisou, Tá Pronto</strong> (precisoutapronto.com.br) reúne ferramentas para autônomos,
-        estudantes e pequenos negócios: currículos, recibos, contratos, propostas e mais, com uso
-        gratuito e confirmação de e-mail.
+        O <strong>Precisou, Tá Pronto</strong> (precisoutapronto.com.br) é uma plataforma de
+        <strong> orçamento no WhatsApp, documentos e ferramentas online</strong> para MEIs,
+        freelancers, autônomos, estudantes e pequenos negócios.
       </p>
       <p>
         A plataforma é desenvolvida e operada pela <strong>Aerosuite</strong>. Não pedimos cartão
@@ -41,9 +41,8 @@ export default function SobrePage() {
       <section className="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-6">
         <h2 className="text-xl font-bold text-slate-950">Press kit</h2>
         <p className="mt-3">
-          <strong>Descrição curta:</strong> Precisou, Tá Pronto é uma plataforma brasileira de ferramentas
-          online para criar documentos, organizar cobranças e resolver tarefas práticas de trabalho
-          e estudos.
+          <strong>Descrição curta:</strong> Precisou, Tá Pronto é uma plataforma brasileira de orçamento
+          no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.
         </p>
         <p className="mt-3">
           <strong>Descrição editorial:</strong> O Precisou, Tá Pronto ajuda MEIs, freelancers, estudantes e
