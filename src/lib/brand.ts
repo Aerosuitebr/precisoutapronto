@@ -1,7 +1,7 @@
 /** Identidade pública oficial da marca. */
 
 export const BRAND_NAME = 'Precisou, Tá Pronto';
-export const BRAND_DISPLAY_NAME = BRAND_NAME;
+export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!';
 export const BRAND_SHORT_NAME = BRAND_NAME;
 export const BRAND_CATEGORY = 'Orçamento no WhatsApp, documentos e ferramentas online';
 export const BRAND_TAGLINE = 'Orçamento no WhatsApp, aprovado, Pix recebido';
