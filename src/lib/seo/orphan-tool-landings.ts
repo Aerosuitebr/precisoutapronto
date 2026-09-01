@@ -180,9 +180,9 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
     toolId: 'referencias-abnt',
     path: '/gerador-de-referencias-abnt',
     toolName: 'Referências ABNT',
-    metaTitle: 'Gerador de referências ABNT grátis (NBR 6023)',
+    metaTitle: 'Gerador de referências ABNT grátis (NBR 6023 vigente)',
     metaDescription:
-      'Monte referências bibliográficas no padrão ABNT para sites, livros e artigos. Ordenação automática para TCC e trabalhos acadêmicos.',
+      'Gerador de referências ABNT grátis para TCC: sites, livros e artigos no padrão NBR 6023 vigente, com ordenação automática.',
     keywords: [
       'gerador de referências abnt',
       'referência abnt online',
@@ -190,7 +190,7 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
       'nbr 6023',
       'referência bibliográfica grátis'
     ],
-    h1: 'Gerador de referências ABNT grátis',
+    h1: 'Gerador de referências ABNT grátis para TCC',
     subtitle:
       'Preencha os dados da obra e gere a referência no padrão usual da NBR 6023, pronta para colar no trabalho.',
     howToTitle: 'Como gerar uma referência ABNT',
@@ -210,9 +210,9 @@ export const ORPHAN_PUBLIC_LANDINGS: OrphanPublicLanding[] = [
         a: 'Sim. É pensado para trabalhos acadêmicos, fichamentos e listas de referências.'
       },
       {
-        q: 'Preciso de conta?',
-        a: 'Não para começar. Duas gerações são livres; a conta grátis guarda o histórico depois.'
-      }
+        q: 'Este gerador de referências ABNT é grátis?',
+        a: 'Sim. Você gera referências no navegador sem cartão. Duas gerações são livres; a conta grátis guarda o histórico depois.'
+      },
     ],
     related: [
       { href: '/corretor-de-redacao-enem', label: 'Corretor de redação ENEM' },

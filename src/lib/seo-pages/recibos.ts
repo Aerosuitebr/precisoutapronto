@@ -4,7 +4,7 @@ import type { SeoPageContent } from './types';
 export const recibosSeoContent: SeoPageContent = {
   slug: 'gerador-de-recibo',
   toolName: 'Recibo',
-  h1: 'Gerador de Recibo Online em PDF com Extenso e Assinatura',
+  h1: 'Gerador de recibo online grátis em PDF',
   subtitle:
     'Crie um recibo de pagamento profissional em minutos, sem cadastro. Preencha valor, quem pagou e quem recebeu, escolha um modelo e baixe em PDF pronto para enviar.',
   ctaPrimary: 'Emitir recibo grátis',
@@ -74,6 +74,10 @@ export const recibosSeoContent: SeoPageContent = {
     }
   ],
   faq: [
+    {
+      question: 'Como usar um gerador de recibo online?',
+      answer: 'Preencha pagador, recebedor, valor e a finalidade, escolha o modelo e baixe o PDF. O valor por extenso entra sozinho. Sem cadastro para a primeira emissão.'
+    },
     {
       question: 'O gerador de recibo é gratuito?',
       answer: 'Sim. Você pode criar, editar e baixar seu recibo em PDF gratuitamente pelo Precisou, Tá Pronto.'
@@ -147,12 +151,13 @@ export const recibosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Recibo Grátis em PDF com Valor por Extenso',
+    metaTitle: 'Gerador de recibo online grátis em PDF',
     metaDescription:
-      'Faça um recibo grátis com valor por extenso, assinatura e modelos prontos. Baixe o PDF no celular, sem cadastro para começar.',
+      'Gerador de recibo online grátis: valor por extenso, assinatura e modelos prontos. Baixe o PDF no celular, sem cadastro para começar.',
     keywords: [
       'gerador de recibo',
-      'recibo online',
+      'gerador de recibo online',
+      'recibo online grátis',
       'modelo de recibo',
       'recibo de pagamento',
       'fazer recibo online'

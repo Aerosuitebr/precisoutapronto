@@ -72,6 +72,11 @@ const EMBEDS = [
     html: `<p><strong>Ferramentas grátis para PDF:</strong> junte, divida, comprima e edite arquivos diretamente no navegador. <a href="${partnerUtm('/pdf', 'embed', 'pdf')}" rel="noopener noreferrer">Abrir ferramentas para PDF</a>.</p>`
   },
   {
+    id: 'curriculo',
+    title: 'Bloco · gerador de currículo',
+    html: `<p><strong>Gerador de currículo grátis em PDF:</strong> modelos prontos no navegador, sem cadastro para começar. <a href="${partnerUtm('/gerador-de-curriculo', 'embed', 'curriculo')}" rel="noopener noreferrer">Criar currículo no Precisou, Tá Pronto</a>.</p>`
+  },
+  {
     id: 'abnt',
     title: 'Bloco · referências ABNT',
     html: `<p><strong>Gerador de referências ABNT:</strong> formate bibliografia para TCC e trabalhos. <a href="${partnerUtm('/gerador-de-referencias-abnt', 'embed', 'abnt')}" rel="noopener noreferrer">Gerar referência</a>.</p>`

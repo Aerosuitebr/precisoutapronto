@@ -7,7 +7,7 @@ import { ReferralCapture } from '@/components/referral/referral-capture';
 import { SiteJsonLd } from '@/components/marketing/site-json-ld';
 import { isStagingEnv, stagingRobots } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
-import { BRAND_DESCRIPTION, BRAND_DISPLAY_NAME, BRAND_TAGLINE } from '@/lib/brand';
+import { BRAND_DESCRIPTION, BRAND_DISPLAY_NAME, BRAND_NAME, BRAND_TAGLINE } from '@/lib/brand';
 import './globals.css';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -50,8 +50,8 @@ const bingVerification = process.env.BING_SITE_VERIFICATION;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${BRAND_TAGLINE} | ${BRAND_DISPLAY_NAME}`,
-    template: `%s | ${BRAND_DISPLAY_NAME}`
+    default: `${BRAND_TAGLINE} | ${BRAND_NAME}`,
+    template: `%s | ${BRAND_NAME}`
   },
   description: BRAND_DESCRIPTION,
   manifest: '/manifest.webmanifest',
@@ -65,16 +65,16 @@ export const metadata: Metadata = {
   },
   ...(staging ? { robots: stagingRobots() } : {}),
   openGraph: {
-    title: `${BRAND_TAGLINE} | ${BRAND_DISPLAY_NAME}`,
+    title: `${BRAND_TAGLINE} | ${BRAND_NAME}`,
     description: BRAND_DESCRIPTION,
     locale: 'pt_BR',
     type: 'website',
     url: siteUrl,
-    siteName: BRAND_DISPLAY_NAME
+    siteName: BRAND_NAME
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${BRAND_TAGLINE} | ${BRAND_DISPLAY_NAME}`,
+    title: `${BRAND_TAGLINE} | ${BRAND_NAME}`,
     description: BRAND_DESCRIPTION
   },
   keywords: [

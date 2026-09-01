@@ -19,6 +19,12 @@ export interface ProfessionLanding {
     terms: string[];
   };
   sections?: Array<{ title: string; paragraphs: string[] }>;
+  priceGuide?: {
+    title: string;
+    intro: string;
+    rows: Array<{ service: string; range: string }>;
+    footnote: string;
+  };
 }
 
 export const PROFESSION_LANDINGS: ProfessionLanding[] = [
@@ -46,8 +52,8 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'eletricista',
     name: 'Eletricista',
-    title: 'Gerador de orçamento grátis para eletricista',
-    description: 'Separe visita, materiais e mão de obra em um orçamento profissional para o cliente aprovar pelo celular e pagar por Pix.',
+    title: 'Orçamento para eletricista: modelo, faixa de preço e Pix',
+    description: 'Veja quanto custa um eletricista em 2026 e monte o orçamento com visita, materiais e mão de obra. O cliente aprova no celular e paga por Pix.',
     promise: 'Modelo preparado para instalações, reparos e adequações elétricas.',
     preset: {
       occupation: 'eletricista',
@@ -60,7 +66,7 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
     },
     checklist: ['Pontos e circuitos identificados', 'Materiais separados da mão de obra', 'Prazo e garantia registrados'],
     example: {
-      client: 'Cliente: Padaria Boa Praça — exemplo fictício',
+      client: 'Cliente: Padaria Boa Praça, exemplo fictício',
       items: [
         { description: 'Visita técnica e diagnóstico', detail: 'Inspeção do quadro e teste de 6 circuitos', value: 'R$ 180,00' },
         { description: 'Materiais elétricos', detail: '2 disjuntores, cabos e conectores especificados', value: 'R$ 420,00' },
@@ -74,9 +80,22 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       { title: 'Segurança e responsabilidade técnica', paragraphs: ['O modelo organiza a proposta comercial; ele não substitui inspeção, projeto, laudo ou responsabilidade técnica quando exigidos.', 'Normas, capacidade do circuito e condições do imóvel devem ser avaliadas por profissional habilitado para o serviço aplicável.'] }
     ],
     faqs: [
+      { q: 'Quanto custa um eletricista em 2026?', a: 'A visita costuma ficar entre R$ 100 e R$ 250, e serviços pontuais como tomada ou disjuntor variam conforme cidade, urgência e material. Use a tabela abaixo como referência e feche o valor no seu orçamento depois da vistoria.' },
       { q: 'Devo cobrar a visita técnica?', a: 'Você pode criar um item separado para diagnóstico e informar se o valor será abatido após a aprovação do serviço.' },
       { q: 'Como registrar materiais?', a: 'Liste os principais materiais como itens ou use um item consolidado, deixando marcas e quantidades nas observações.' }
-    ]
+    ],
+    priceGuide: {
+      title: 'Quanto custa um eletricista em 2026',
+      intro: 'Faixas de referência para orientar o cliente. Não são tabela oficial nem preço do Precisou, Tá Pronto. O valor certo sai da vistoria no seu orçamento.',
+      rows: [
+        { service: 'Visita técnica e diagnóstico', range: 'R$ 100 a R$ 250' },
+        { service: 'Instalação ou troca de tomada', range: 'R$ 80 a R$ 180' },
+        { service: 'Troca de disjuntor', range: 'R$ 80 a R$ 250' },
+        { service: 'Instalação de chuveiro elétrico', range: 'R$ 120 a R$ 380' },
+        { service: 'Troca ou adequação de quadro', range: 'R$ 500 a R$ 3.500' }
+      ],
+      footnote: 'Urgência, horário noturno, altura e material incluso mudam a faixa. Separe visita, materiais e mão de obra no modelo abaixo para o cliente aprovar sem discussão.'
+    }
   },
   {
     slug: 'pintor',
@@ -158,8 +177,8 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'manutencao-residencial',
     name: 'Manutenção residencial',
-    title: 'Orçamento para manutenção residencial',
-    description: 'Reúna visita, reparos, peças e mão de obra em um orçamento simples para o morador aprovar pelo celular.',
+    title: 'Orçamento para manutenção residencial: faixa de preço e Pix',
+    description: 'Veja quanto custa manutenção residencial em 2026 e reúna visita, reparos e peças em um orçamento para o morador aprovar pelo celular.',
     promise: 'Modelo preparado para marido de aluguel, pequenos reparos e manutenção preventiva.',
     preset: {
       occupation: 'manutenção residencial',
@@ -172,15 +191,27 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
     },
     checklist: ['Cada reparo identificado', 'Peças e mão de obra separadas', 'Condições para serviços adicionais'],
     faqs: [
+      { q: 'Quanto custa manutenção residencial em 2026?', a: 'A visita costuma ficar entre R$ 80 e R$ 200, e um reparo simples entre R$ 120 e R$ 400, conforme cidade e peças. Liste cada reparo no orçamento para o morador aprovar o escopo sem surpresa.' },
       { q: 'Como evitar discussão sobre serviços extras?', a: 'Liste o que está incluído e informe que problemas ocultos ou novos pedidos exigem aprovação adicional.' },
       { q: 'Posso juntar vários reparos?', a: 'Sim. Use um item para cada reparo para o cliente aprovar o escopo com clareza.' }
-    ]
+    ],
+    priceGuide: {
+      title: 'Quanto custa manutenção residencial em 2026',
+      intro: 'Faixas de referência para pequenos reparos. O total depende da vistoria, das peças e de quantos serviços entram no mesmo atendimento.',
+      rows: [
+        { service: 'Visita e avaliação', range: 'R$ 80 a R$ 200' },
+        { service: 'Reparo simples (torneira, fechadura, tomada)', range: 'R$ 120 a R$ 400' },
+        { service: 'Pacote de vários reparos no mesmo dia', range: 'combinar no orçamento' },
+        { service: 'Peças e materiais', range: 'à parte, com comprovante' }
+      ],
+      footnote: 'Não é tabela oficial. Separe visita, mão de obra e peças no modelo abaixo para o morador aprovar no celular.'
+    }
   },
   {
     slug: 'fotografo',
     name: 'Fotógrafo',
-    title: 'Orçamento para fotógrafo com pacote e prazo de entrega',
-    description: 'Organize cobertura, quantidade de fotos, tratamento e entrega em um orçamento profissional com aprovação e entrada por Pix.',
+    title: 'Orçamento para fotógrafo: pacote, faixa de preço e prazo',
+    description: 'Veja quanto custa um fotógrafo em 2026 e organize cobertura, tratamento e entrega em um orçamento com aprovação e entrada por Pix.',
     promise: 'Modelo preparado para eventos, ensaios e fotografia comercial.',
     preset: {
       occupation: 'fotógrafo',
@@ -189,9 +220,21 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
     },
     checklist: ['Duração e local definidos', 'Quantidade e formato das fotos', 'Prazo, entrada e uso de imagem claros'],
     faqs: [
+      { q: 'Quanto custa um fotógrafo em 2026?', a: 'Ensaio simples costuma ficar entre R$ 400 e R$ 1.500. Evento ou casamento parte de faixas mais altas conforme duração e equipe. Informe cobertura, quantidade de fotos e prazo no orçamento para o cliente comparar pacotes.' },
       { q: 'Como cobrar horas adicionais?', a: 'Inclua o valor por hora nas observações e registre que a extensão da cobertura depende de disponibilidade.' },
       { q: 'Preciso informar a quantidade de fotos?', a: 'Sim. Use uma faixa estimada e deixe claro o formato e o canal de entrega.' }
-    ]
+    ],
+    priceGuide: {
+      title: 'Quanto custa um fotógrafo em 2026',
+      intro: 'Faixas de referência para o cliente entender o pacote. Não substituem o orçamento do ensaio ou do evento.',
+      rows: [
+        { service: 'Ensaio (1 a 2 horas)', range: 'R$ 400 a R$ 1.500' },
+        { service: 'Evento ou cobertura parcial', range: 'R$ 1.200 a R$ 4.000' },
+        { service: 'Hora adicional', range: 'combinar no orçamento' },
+        { service: 'Tratamento e galeria digital', range: 'incluso ou à parte' }
+      ],
+      footnote: 'Duração, deslocamento e prazo de entrega mudam o preço. Monte o pacote no modelo abaixo para o cliente aprovar e pagar a reserva por Pix.'
+    }
   },
   {
     slug: 'mecanico',
@@ -213,8 +256,8 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'pedreiro',
     name: 'Pedreiro',
-    title: 'Orçamento para pedreiro por etapa da obra grátis',
-    description: 'Detalhe preparação, execução, materiais e acabamento em um orçamento profissional com cronograma e Pix.',
+    title: 'Orçamento para pedreiro: etapas, faixa de preço e Pix',
+    description: 'Veja quanto custa um pedreiro em 2026 e detalhe preparação, execução, materiais e acabamento em um orçamento com cronograma e Pix.',
     promise: 'Modelo preparado para reformas, alvenaria e pequenos serviços de obra.',
     preset: {
       occupation: 'pedreiro',
@@ -237,9 +280,21 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       { title: 'Imprevistos sem autorização em branco', paragraphs: ['Condições ocultas podem alterar o escopo, mas não devem virar cobrança automática. Descreva o achado, estime custo e prazo adicionais e peça aprovação antes de continuar.', 'O orçamento é uma proposta comercial e deve refletir a vistoria real; requisitos técnicos da obra precisam ser avaliados por profissional habilitado quando aplicável.'] }
     ],
     faqs: [
+      { q: 'Quanto custa um pedreiro em 2026?', a: 'A diária costuma ficar entre R$ 250 e R$ 500, e um cômodo pequeno frequentemente parte de R$ 3.000. Material, descarte e acesso ao local mudam o total. Use a tabela como referência e feche o valor por etapa no orçamento.' },
       { q: 'É melhor cobrar por diária ou empreitada?', a: 'Depende do escopo. Para serviço definido, a empreitada facilita a aprovação; para atividade incerta, registre diária e estimativa.' },
       { q: 'Como prever imprevistos da obra?', a: 'Informe que condições ocultas exigem orçamento complementar e aprovação antes da continuidade.' }
-    ]
+    ],
+    priceGuide: {
+      title: 'Quanto custa um pedreiro em 2026',
+      intro: 'Faixas de referência para conversa com o cliente. O valor final depende da vistoria, da metragem e de quem compra o material.',
+      rows: [
+        { service: 'Diária de mão de obra', range: 'R$ 250 a R$ 500' },
+        { service: 'Reforma de cômodo pequeno', range: 'a partir de R$ 3.000' },
+        { service: 'Preparação e proteção da área', range: 'R$ 400 a R$ 1.200' },
+        { service: 'Acabamento e limpeza', range: 'R$ 300 a R$ 900' }
+      ],
+      footnote: 'Não é tabela oficial. Separe preparação, mão de obra e materiais no modelo abaixo para o cliente aprovar cada etapa.'
+    }
   },
   ...EXPANDED_PROFESSION_LANDINGS,
   ...CYCLE_TWO_PROFESSION_LANDINGS,

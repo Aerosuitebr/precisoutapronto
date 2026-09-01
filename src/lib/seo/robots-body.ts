@@ -50,7 +50,7 @@ const PRIVATE_DISALLOWS = [
   '/amostra-cinematica/'
 ] as const;
 
-/** Explicitamente público — defesa contra prefix match residual. */
+/** Explicitamente público: defesa contra prefix match residual. */
 const PUBLIC_ALLOWS = [
   '/contato',
   '/contato/',
@@ -75,9 +75,8 @@ export function buildRobotsBody(): string {
     ...PRIVATE_DISALLOWS.map((path) => `Disallow: ${path}`),
     '',
     `Sitemap: ${base}/sitemaps/index`,
-    `Sitemap: ${base}/sitemaps/core`,
-    `Sitemap: ${base}/sitemap.xml`,
     `Sitemap: ${base}/sitemaps/index.xml`,
+    `Sitemap: ${base}/sitemap.xml`,
     ''
   ];
 

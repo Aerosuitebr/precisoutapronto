@@ -31,9 +31,9 @@ const copy = {
     authTitle: "Corretor de Redação ENEM",
     authDescription:
       "Cadastre-se gratuitamente para receber a estimativa da sua redação.",
-    heroTitle: "Corretor de Redação ENEM",
+    heroTitle: "Analisar redação ENEM grátis",
     heroSubtitle:
-      "Cole sua redação e receba uma estimativa de nota por competência, com pontos fortes e alertas para revisar antes da prova.",
+      "Analisar redação do ENEM no navegador: cole o texto e receba nota estimada por competência, com pontos fortes e alertas para revisar antes da prova.",
     insightCompetenciasLabel: "C1-C5",
     insightCompetenciasText: "Nota estimada por competência, não só total.",
     insightRaioXLabel: "Raio-x",

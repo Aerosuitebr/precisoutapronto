@@ -10,9 +10,10 @@ const SITE_URL = getViralBaseUrl().replace(/\/$/, '');
 export const metadata: Metadata = {
   title: content.title,
   description: content.description,
-  keywords: [
-    'orçamento com pix',
+    keywords: [
+    'gerador de orçamento grátis',
     'gerador de orçamento',
+    'orçamento com pix',
     'orçamento online grátis',
     'orçamento whatsapp',
     'orçamento mei',

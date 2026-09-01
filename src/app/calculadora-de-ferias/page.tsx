@@ -11,18 +11,18 @@ import {
 const seo = PUBLIC_CALCULATORS.ferias;
 
 export const metadata: Metadata = {
-  title: 'Calculadora de Férias CLT: 1/3 e Abono Grátis',
+  title: 'Calculadora de férias 2026: 1/3 e abono grátis',
   description: seo.description,
   alternates: { canonical: seo.path },
   openGraph: {
-    title: 'Calculadora de férias grátis | Precisou, Tá Pronto',
+    title: 'Calculadora de férias 2026 | Precisou, Tá Pronto',
     description: 'Estime férias, 1/3 constitucional e abono pecuniário sem cadastro.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculadora de férias grátis | Precisou, Tá Pronto',
+    title: 'Calculadora de férias 2026 | Precisou, Tá Pronto',
     description: 'Estime férias, 1/3 constitucional e abono pecuniário sem cadastro.',
     images: [`${seo.path}/opengraph-image`]
   }

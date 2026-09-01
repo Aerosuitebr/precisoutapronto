@@ -1,14 +1,17 @@
 import { isStagingEnv } from '@/lib/app-env';
 import {
+  INDEXABLE_SITEMAP_SEGMENTS,
   SITEMAP_SEGMENTS,
-  buildSitemapIndexXml as buildSitemapIndexXml,
+  buildFullSitemap,
+  buildSitemapIndexXml,
   buildSitemapSegment,
-  sitemapEntriesToXml as sitemapEntriesToXml,
+  sitemapEntriesToXml,
   type SitemapSegment
 } from '@/lib/seo/sitemap-entries';
 
 export const revalidate = 3600;
 export const runtime = 'nodejs';
+export const dynamicParams = true;
 
 const XML_HEADERS = {
   'Content-Type': 'application/xml; charset=utf-8',
@@ -26,16 +29,27 @@ function isSegment(value: string): value is SitemapSegment {
   return (SITEMAP_SEGMENTS as readonly string[]).includes(value);
 }
 
-function isIndex(value: string) {
-  return value === 'index.xml' || value === 'index';
+function normalizeSegment(value: string) {
+  return value.replace(/\.xml$/i, '');
 }
 
-export async function GET(
-  _request: Request,
-  context: { params: Promise<{ segment: string }> }
-) {
+function isIndex(value: string) {
+  return value === 'index';
+}
+
+function isFull(value: string) {
+  return value === 'full';
+}
+
+/** Gera /sitemaps/index, /sitemaps/full e os segmentos, com e sem sufixo .xml. */
+export function generateStaticParams() {
+  const names = ['index', 'full', ...INDEXABLE_SITEMAP_SEGMENTS];
+  return names.flatMap((segment) => [{ segment }, { segment: `${segment}.xml` }]);
+}
+
+export async function GET(_request: Request, context: { params: Promise<{ segment: string }> }) {
   const { segment: rawSegment } = await context.params;
-  const segment = rawSegment.replace(/\.xml$/i, '');
+  const segment = normalizeSegment(rawSegment);
 
   if (isStagingEnv()) {
     return new Response(isIndex(segment) ? EMPTY_INDEX : EMPTY_URLSET, { headers: XML_HEADERS });
@@ -44,6 +58,10 @@ export async function GET(
   try {
     if (isIndex(segment)) {
       return new Response(buildSitemapIndexXml(), { headers: XML_HEADERS });
+    }
+
+    if (isFull(segment)) {
+      return new Response(sitemapEntriesToXml(buildFullSitemap()), { headers: XML_HEADERS });
     }
 
     if (!isSegment(segment)) {

@@ -6,7 +6,6 @@ const required = [
   'src/app/layout.tsx',
   'src/app/not-found.tsx',
   'src/app/robots.txt/route.ts',
-  'src/app/sitemap.ts',
   'src/app/sitemaps/[segment]/route.ts',
   'public/llms.txt',
   'public/manifest.webmanifest',
@@ -117,8 +116,8 @@ if (!i18nSeo.includes('includeHreflang') || !i18nSeo.includes('index: false')) {
 }
 
 const layout = await readFile(path.join(root, 'src/app/layout.tsx'), 'utf8');
-if (!layout.includes('template: `%s | ${BRAND_DISPLAY_NAME}`')) {
-  failures.push('layout.tsx: title template não usa BRAND_DISPLAY_NAME');
+if (!layout.includes('template: `%s | ${BRAND_NAME}`')) {
+  failures.push('layout.tsx: title template não usa BRAND_NAME no snippet');
 }
 if (!layout.includes('lang="pt-BR"')) {
   failures.push('layout.tsx: lang pt-BR estático ausente');
@@ -136,6 +135,16 @@ if (!robotsBody.includes('/conta$') || !robotsBody.includes("'/contato'")) {
 }
 if (!robotsBody.includes("'/ferramentas/redacao-enem'")) {
   failures.push('robots-body.ts: Googlebot nao consegue processar o redirect antigo da redacao');
+}
+if (
+  !robotsBody.includes('`Sitemap: ${base}/sitemaps/index`') ||
+  !robotsBody.includes('`Sitemap: ${base}/sitemaps/index.xml`') ||
+  !robotsBody.includes('`Sitemap: ${base}/sitemap.xml`')
+) {
+  failures.push('robots-body.ts: robots deve apontar /sitemaps/index, /sitemaps/index.xml e /sitemap.xml');
+}
+if (robotsBody.includes('/sitemaps/core')) {
+  failures.push('robots-body.ts: /sitemaps/core não deve ir no robots');
 }
 
 const nextConfig = await readFile(path.join(root, 'next.config.mjs'), 'utf8');
@@ -175,6 +184,19 @@ if (
 if (!nextConfig.includes("key: 'x-forwarded-proto'") || !nextConfig.includes("destination: 'https://precisoutapronto.com.br/:path*'")) {
   failures.push('next.config.mjs: redirect HTTP → HTTPS da aplicação ausente');
 }
+if (!nextConfig.includes("destination: '/sitemaps/full'") || !nextConfig.includes("source: '/sitemap.xml'")) {
+  failures.push('next.config.mjs: rewrite /sitemap.xml para /sitemaps/full ausente');
+}
+if (!nextConfig.includes("source: '/sitemaps/:segment.xml'")) {
+  failures.push('next.config.mjs: rewrite /sitemaps/:segment.xml ausente');
+}
+
+try {
+  await stat(path.join(root, 'src/app/sitemap.ts'));
+  failures.push('src/app/sitemap.ts: a convenção metadata compete com o route handler e 500 em produção');
+} catch {
+  // ausente é o comportamento correto
+}
 
 const toolsCatalog = await readFile(path.join(root, 'src/lib/tools-catalog.ts'), 'utf8');
 if (toolsCatalog.includes('href: "/ferramentas/redacao-enem"')) {
@@ -193,7 +215,7 @@ const rescisaoPage = await readFile(
   path.join(root, 'src/app/calculadora-de-rescisao/page.tsx'),
   'utf8'
 );
-if (!rescisaoPage.includes('Calculadora de Rescisão CLT Grátis: Cálculo 2026')) {
+if (!rescisaoPage.includes('Calculadora de rescisão online grátis 2026')) {
   failures.push('calculadora-de-rescisao: title de CTR prioritario ausente');
 }
 if (/[—–]/.test(rescisaoPage)) {
@@ -201,7 +223,7 @@ if (/[—–]/.test(rescisaoPage)) {
 }
 
 const recibosContent = await readFile(path.join(root, 'src/lib/seo-pages/recibos.ts'), 'utf8');
-if (!recibosContent.includes("metaTitle: 'Gerador de Recibo Grátis em PDF com Valor por Extenso'")) {
+if (!recibosContent.includes("metaTitle: 'Gerador de recibo online grátis em PDF'")) {
   failures.push('gerador-de-recibo: title de CTR prioritario ausente');
 }
 if (/metaTitle:.*[—–]/.test(recibosContent)) {
@@ -220,6 +242,53 @@ if (!calculatorsSeo.includes('Exemplo numérico 2026: dispensa sem justa causa')
 }
 if (!calculatorsSeo.includes('leadWithFaq: true')) {
   failures.push('public-calculators: FAQ da rescisao precisa aparecer antes da dobra editorial');
+}
+if (!calculatorsSeo.includes('O que entra no cálculo de férias 2026')) {
+  failures.push('public-calculators: falta tabela de ferias 2026');
+}
+if (!calculatorsSeo.includes('/metodologia-calculadoras')) {
+  failures.push('public-calculators: falta link para a metodologia');
+}
+
+const homePage = await readFile(path.join(root, 'src/app/page.tsx'), 'utf8');
+if (!homePage.includes('Precisou, Tá Pronto é o site oficial em precisoutapronto.com.br')) {
+  failures.push('home: description de marca estável ausente');
+}
+if (!homePage.includes('${BRAND_NAME}: orçamento no WhatsApp, recibo e Pix grátis')) {
+  failures.push('home: title de marca estável ausente');
+}
+
+const focusCycle = await readFile(path.join(root, 'src/lib/seo/focus-cycle.ts'), 'utf8');
+const focusPaths = [...focusCycle.matchAll(/^\s+'(\/[^']*)',?$/gm)];
+if (focusPaths.length !== 30) {
+  failures.push(`focus-cycle: esperado 30 URLs, encontrado ${focusPaths.length}`);
+}
+
+if (!sitemapSource.includes('export function buildFullSitemap')) {
+  failures.push('sitemap-entries: buildFullSitemap ausente');
+}
+
+const landingContent = await readFile(path.join(root, 'src/lib/seo/landing-content.ts'), 'utf8');
+if (!landingContent.includes("title: 'Gerador de orçamento grátis: WhatsApp, aprovação e Pix'")) {
+  failures.push('orcamento-com-pix: title de CTR ausente');
+}
+
+const receiptCluster = await readFile(path.join(root, 'src/lib/seo/receipt-cluster.ts'), 'utf8');
+if (!receiptCluster.includes("question: 'O comprovante do Pix serve como recibo?'")) {
+  failures.push('recibo-pagamento-pix: FAQ do comprovante Pix ausente');
+}
+
+const professionPresets = await readFile(path.join(root, 'src/lib/orcamentos/profession-presets.ts'), 'utf8');
+if (!professionPresets.includes("title: 'Orçamento para eletricista: modelo, faixa de preço e Pix'")) {
+  failures.push('orcamento-para/eletricista: title de preço ausente');
+}
+if (!professionPresets.includes("title: 'Quanto custa um eletricista em 2026'")) {
+  failures.push('orcamento-para/eletricista: tabela quanto custa ausente');
+}
+
+const enemPage = await readFile(path.join(root, 'src/app/corretor-de-redacao-enem/page.tsx'), 'utf8');
+if (!enemPage.includes("title: 'Analisar redação ENEM grátis: nota por competência'")) {
+  failures.push('corretor-de-redacao-enem: title de analisar redação ausente');
 }
 
 const imprensaPage = await readFile(path.join(root, 'src/app/imprensa/page.tsx'), 'utf8');

@@ -15,7 +15,7 @@ import type { SeoPageContent } from './types';
 export const curriculoSeoContent: SeoPageContent = {
   slug: 'gerador-de-curriculo',
   toolName: 'Currículo',
-  h1: 'Gerador de Currículo Online Gratuito',
+  h1: 'Gerador de currículo grátis em PDF',
   subtitle:
     'Crie um currículo profissional em poucos minutos, direto do navegador. Escolha um modelo, preencha seus dados e baixe em PDF pronto para enviar às vagas.',
   ctaPrimary: 'Montar currículo grátis',
@@ -97,7 +97,7 @@ export const curriculoSeoContent: SeoPageContent = {
     {
       question: 'O gerador de currículo é realmente gratuito?',
       answer:
-        'Sim. Você pode criar, editar e baixar seu currículo em PDF gratuitamente, com layouts profissionais.'
+        'Sim. Você pode criar, editar e baixar seu currículo em PDF gratuitamente, com layouts profissionais, sem cadastro para começar.'
     },
     {
       question: 'Preciso instalar algum programa?',
@@ -170,11 +170,12 @@ export const curriculoSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Currículo Grátis em PDF',
+    metaTitle: 'Gerador de currículo grátis em PDF, sem cadastro',
     metaDescription:
-      'Crie seu currículo profissional grátis e sem cadastro. Escolha um modelo, preencha seus dados e baixe o PDF pronto em minutos.',
+      'Gerador de currículo grátis: escolha um modelo, preencha seus dados e baixe o PDF pronto em minutos. Sem cadastro para começar.',
     keywords: [
       'gerador de currículo',
+      'gerador de currículo grátis',
       'currículo online',
       'criar currículo grátis',
       'modelo de currículo',

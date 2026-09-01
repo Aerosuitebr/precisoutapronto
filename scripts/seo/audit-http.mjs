@@ -12,6 +12,7 @@ const checks = [
   ['/robots.txt', 200, 'text/plain'],
   ['/sitemap.xml', 200, 'application/xml'],
   ['/sitemaps/index.xml', 200, 'application/xml'],
+  ['/sitemaps/index', 200, 'application/xml'],
   ['/biblioteca', 200, 'text/html'],
   ['/modelos/contrato-de-prestacao-de-servicos', 200, 'text/html'],
   ['/recibo-de-pagamento', 200, 'text/html'],
@@ -42,6 +43,9 @@ const home = results.get('/').body;
 if (!home.includes(`rel="canonical" href="${canonicalBase}"`)) {
   failures.push('/: canonical de produção ausente');
 }
+if (!home.includes('<title>Precisou, Tá Pronto: orçamento no WhatsApp, recibo e Pix grátis</title>')) {
+  failures.push('/: title de marca estável ausente');
+}
 
 const library = results.get('/biblioteca').body;
 if (!library.includes(`rel="canonical" href="${canonicalBase}/biblioteca"`)) {
@@ -71,6 +75,9 @@ if (![301, 308].includes(autonomos.response.status) || !autonomosLocation.includ
 }
 
 const robots = results.get('/robots.txt').body;
+if (!robots.includes(`Sitemap: ${canonicalBase}/sitemaps/index\n`)) {
+  failures.push('/robots.txt: Sitemap /sitemaps/index ausente');
+}
 if (!robots.includes(`Sitemap: ${canonicalBase}/sitemaps/index.xml`)) {
   failures.push('/robots.txt: índice de sitemaps ausente');
 }

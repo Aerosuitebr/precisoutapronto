@@ -9,10 +9,12 @@ const PATH = '/corretor-de-redacao-enem';
 const SITE_URL = getViralBaseUrl().replace(/\/$/, '');
 
 export const metadata: Metadata = {
-  title: 'Analisar Redação ENEM Grátis: Nota por Competência',
+  title: 'Analisar redação ENEM grátis: nota por competência',
   description:
-    'Cole sua redação e receba estimativa de nota por competência (C1 a C5), pontos fortes e alertas. Duas análises livres sem cadastro.',
+    'Analisar redação do ENEM grátis: cole o texto e receba estimativa de nota por competência (C1 a C5), pontos fortes e alertas. Duas análises livres sem cadastro.',
   keywords: [
+    'analisar redação',
+    'analisar redação enem',
     'corretor de redação enem',
     'corrigir redação enem grátis',
     'nota redação enem',
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
   alternates: { canonical: PATH },
   openGraph: {
     title: 'Analisar redação ENEM grátis | Precisou, Tá Pronto',
-    description: 'Estimativa de nota por competência, com pontos fortes e alertas de revisão.',
+    description: 'Analisar redação do ENEM: estimativa de nota por competência, com pontos fortes e alertas de revisão.',
     url: `${SITE_URL}${PATH}`,
     type: 'website',
     locale: 'pt_BR',
@@ -31,12 +33,16 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Analisar redação ENEM grátis | Precisou, Tá Pronto',
-    description: 'Estimativa de nota por competência, com pontos fortes e alertas de revisão.',
+    description: 'Analisar redação do ENEM: estimativa de nota por competência, com pontos fortes e alertas de revisão.',
     images: [`${PATH}/opengraph-image`]
   }
 };
 
 const faqs = [
+  {
+    q: 'Como analisar uma redação do ENEM grátis?',
+    a: 'Cole o texto nesta página, clique em Analisar redação e veja a nota estimada de C1 a C5, com pontos fortes e alertas. As duas primeiras análises são livres, sem cadastro e sem cartão.'
+  },
   {
     q: 'O corretor de redação ENEM é gratuito?',
     a: 'Sim. Você pode analisar duas redações sem cadastro. Depois, a conta grátis libera continuidade e histórico.'

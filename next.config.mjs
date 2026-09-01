@@ -48,6 +48,14 @@ const nextConfig = {
     };
     return config;
   },
+  async rewrites() {
+    return [
+      // A convenção app/sitemap.ts e o sufixo .xml no [segment] chegavam a 500 em produção.
+      // O XML canônico sai do route handler em /sitemaps/*.
+      { source: '/sitemap.xml', destination: '/sitemaps/full' },
+      { source: '/sitemaps/:segment.xml', destination: '/sitemaps/:segment' }
+    ];
+  },
   async redirects() {
     return [
       // Defesa na aplicação para requisições HTTP encaminhadas pelo proxy.

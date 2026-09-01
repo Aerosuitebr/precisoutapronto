@@ -11,18 +11,18 @@ import {
 const seo = PUBLIC_CALCULATORS.decimoTerceiro;
 
 export const metadata: Metadata = {
-  title: 'Calculadora de Décimo Terceiro (13º) Proporcional Grátis',
+  title: 'Calculadora de décimo terceiro 2026 grátis',
   description: seo.description,
   alternates: { canonical: seo.path },
   openGraph: {
-    title: 'Calculadora de 13º salário grátis | Precisou, Tá Pronto',
+    title: 'Calculadora de décimo terceiro 2026 | Precisou, Tá Pronto',
     description: 'Estime o 13º proporcional por avos e as duas parcelas sem cadastro.',
     url: seo.path,
     images: [{ url: `${seo.path}/opengraph-image` }]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculadora de 13º salário grátis | Precisou, Tá Pronto',
+    title: 'Calculadora de décimo terceiro 2026 | Precisou, Tá Pronto',
     description: 'Estime o 13º proporcional por avos e as duas parcelas sem cadastro.',
     images: [`${seo.path}/opengraph-image`]
   }

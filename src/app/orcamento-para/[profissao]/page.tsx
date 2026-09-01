@@ -7,7 +7,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { TopEnvBanner } from '@/components/layout/top-env-banner';
 import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
-import { BRAND_AUTHOR_PATH, BRAND_DISPLAY_NAME } from '@/lib/brand';
+import { BRAND_AUTHOR_PATH, BRAND_NAME } from '@/lib/brand';
 import { PROFESSION_LANDINGS, findProfessionLanding } from '@/lib/orcamentos/profession-presets';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { FOCUSED_PROFESSION_SLUGS, temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ profissao
   if (!page) return {};
   const path = `/orcamento-para/${page.slug}`;
   return {
-    title: { absolute: `${page.title} | ${BRAND_DISPLAY_NAME}` },
+    title: { absolute: `${page.title} | ${BRAND_NAME}` },
     description: page.description,
     alternates: { canonical: path },
     robots: temporaryNoindexRobots(FOCUSED_PROFESSION_SLUGS.has(page.slug)),
@@ -53,7 +53,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebApplication', name: page.title, description: page.description, url: `${site}${path}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web', dateModified: '2026-08-27' },
+      { '@type': 'WebApplication', name: page.title, description: page.description, url: `${site}${path}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web', dateModified: '2026-08-31' },
       { '@type': 'FAQPage', mainEntity: page.faqs.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) }
     ]
   };
@@ -83,6 +83,31 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
               <OrcamentosApp publicAccess preset={page.preset} />
             </div>
           </section>
+          {page.priceGuide ? (
+            <section className="bg-white">
+              <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Referência de preço</p>
+                <h2 className="precisoutapronto-display mt-2 text-3xl font-extrabold text-slate-950">{page.priceGuide.title}</h2>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">{page.priceGuide.intro}</p>
+                <div className="mt-7 overflow-hidden rounded-2xl border border-slate-200">
+                  <div className="hidden grid-cols-[1fr_auto] gap-4 bg-slate-950 px-5 py-3 text-xs font-bold uppercase tracking-wide text-white sm:grid">
+                    <span>Serviço</span>
+                    <span>Faixa 2026</span>
+                  </div>
+                  {page.priceGuide.rows.map((row) => (
+                    <div key={row.service} className="grid gap-1 border-t border-slate-200 px-5 py-4 first:border-t-0 sm:grid-cols-[1fr_auto] sm:gap-4">
+                      <strong className="text-slate-950">{row.service}</strong>
+                      <span className="font-semibold text-slate-800">{row.range}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-4 text-sm leading-6 text-slate-600">{page.priceGuide.footnote}</p>
+                <a href="#montar" className="mt-6 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">
+                  Montar meu orçamento com esses itens <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </section>
+          ) : null}
           {page.example ? <section className="bg-white"><div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Modelo final preenchido</p>
             <h2 className="precisoutapronto-display mt-2 text-3xl font-extrabold text-slate-950">Exemplo de orçamento para {page.name.toLowerCase()}</h2>
@@ -102,7 +127,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
               <p className="mt-8 text-sm text-slate-600">Precisa de outro formato? <Link href="/orcamento-com-pix" className="font-bold text-emerald-700 hover:underline">Abra o gerador geral de orçamento com Pix</Link>.</p>
               {priorityCluster ? <p className="mt-3 text-sm text-slate-600">Quer conferir escopo e condições antes de preencher? <Link href={priorityCluster.guide} className="font-bold text-emerald-700 hover:underline">Leia o {priorityCluster.guideLabel.toLowerCase()}</Link>.</p> : null}
               <div className="mt-10 border-t border-slate-200 pt-8"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">Continue no cluster</p><h2 className="precisoutapronto-display mt-2 text-2xl font-extrabold text-slate-950">Outros modelos de orçamento</h2></div><Link href="/modelos-de-orcamento" className="text-sm font-bold text-emerald-700 hover:underline">Ver todos os modelos</Link></div><div className="mt-5 grid gap-3 sm:grid-cols-3">{relatedPages.map((related) => <Link key={related.slug} href={`/orcamento-para/${related.slug}`} className="rounded-xl border border-slate-200 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"><strong className="text-slate-950">{related.name}</strong><span className="mt-2 block text-sm text-slate-600">Abrir modelo preenchido →</span></Link>)}</div></div>
-              <aside className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Como verificamos esta página.</strong> O modelo foi testado no gerador com os campos exibidos acima. Os indicadores abaixo vêm de registros agregados do produto, são arredondados para preservar privacidade e podem ficar ocultos enquanto não atingem o mínimo de publicação.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-08-27">27 de agosto de 2026</time> · Revisão editorial interna por <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">metodologia editorial</Link>. Esta revisão verifica clareza e funcionamento; não constitui revisão técnica, jurídica ou contábil especializada.</p></aside>
+              <aside className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Como verificamos esta página.</strong> O modelo foi testado no gerador com os campos exibidos acima. Os indicadores abaixo vêm de registros agregados do produto, são arredondados para preservar privacidade e podem ficar ocultos enquanto não atingem o mínimo de publicação.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-08-31">31 de agosto de 2026</time> · Revisão editorial interna por <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">metodologia editorial</Link>. Esta revisão verifica clareza e funcionamento; não constitui revisão técnica, jurídica ou contábil especializada.</p></aside>
             </div>
           </section>
           <StrategicSeoClusters current="/modelos-de-orcamento" />

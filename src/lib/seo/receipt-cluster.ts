@@ -55,8 +55,8 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'recibo-pagamento-pix',
-    title: 'Recibo Pix grátis: crie e baixe em PDF',
-    description: 'Crie um recibo de pagamento Pix online grátis, informe valor, finalidade, data e partes, e baixe o PDF para imprimir ou enviar.',
+    title: 'Recibo de Pix: o comprovante serve? Gere o PDF',
+    description: 'O comprovante do Pix mostra a transferência. O recibo explica o que foi quitado. Crie o PDF grátis, sem cadastro, e envie para o pagador.',
     eyebrow: 'Pagamento via Pix',
     answer: 'O comprovante bancário mostra a transferência; o recibo explica qual obrigação aquele Pix quitou. Os dois documentos se complementam quando o motivo do pagamento precisa ficar claro.',
     fields: ['Pagador e recebedor', 'Valor transferido', 'Serviço, produto ou parcela quitada', 'Data do recebimento', 'Indicação “pago via Pix”'],
@@ -64,11 +64,13 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
     example: ['Recebi de Ana Souza', 'R$ 1.200,00 (mil e duzentos reais)', 'Referente à primeira parcela do projeto de identidade visual', 'Pago via Pix em 10/08/2026'],
     sections: [
       { title: 'Comprovante Pix e recibo são diferentes', paragraphs: ['O comprovante do banco confirma a movimentação entre contas, mas pode não explicar contrato, parcela ou serviço.', 'O recibo conecta o valor à obrigação quitada e pode declarar se o pagamento foi total ou parcial.'] },
+      { title: 'Gere o recibo depois do Pix', paragraphs: ['Abra o gerador, informe pagador, recebedor, valor, data e o que aquele Pix quitou, e baixe o PDF para enviar no WhatsApp.', 'Não precisa cadastro para começar. A conta grátis só entra se você quiser histórico ou PDF sem a marca.'] },
       { title: 'Não exponha dados bancários', paragraphs: ['Não é necessário inserir chave Pix, conta completa ou identificadores sensíveis no recibo.', 'Informe apenas a forma de pagamento e os dados necessários para identificar as partes e a operação.'] }
     ],
     faqs: [
-      { question: 'O comprovante Pix já vale como recibo?', answer: 'Ele comprova a transferência, mas o recibo descreve a finalidade e a extensão da quitação.' },
-      { question: 'Preciso colocar a chave Pix?', answer: 'Não. Evite expor dados bancários desnecessários.' },
+      { question: 'O comprovante do Pix serve como recibo?', answer: 'Não por si só. Ele prova que o dinheiro saiu de uma conta para outra. O recibo registra quem pagou, quem recebeu, o valor, a data e o que aquele Pix quitou (serviço, aluguel, parcela). Use os dois juntos.' },
+      { question: 'Como gerar um recibo de Pix online?', answer: 'Abra o gerador, informe pagador, recebedor, valor, finalidade e a data do Pix. Marque “pago via Pix”, revise e baixe o PDF para enviar no WhatsApp.' },
+      { question: 'Preciso colocar a chave Pix?', answer: 'Não. Evite expor dados bancários desnecessários. Basta indicar a forma de pagamento e identificar as partes.' },
       { question: 'Posso emitir depois do pagamento?', answer: 'Sim. Use a data real do recebimento e confira o valor transferido.' }
     ],
     related: ['recibo-prestacao-de-servico', 'recibo-com-assinatura', 'recibo-tem-validade-juridica']
@@ -101,7 +103,7 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
     answer: 'Para preencher um recibo, identifique pagador e recebedor, escreva o valor, descreva a finalidade, declare o alcance da quitação e finalize com data, local e assinatura.',
     fields: ['Dados completos das partes', 'Valor sem divergência', 'Finalidade específica', 'Quitação total ou parcial', 'Data, local e assinatura'],
     steps: ['Confirme quem paga e quem recebe', 'Digite o valor e confira o extenso', 'Descreva a operação e a quitação', 'Revise data e assinatura'],
-    example: ['Recebi de [pagador] a quantia de [valor]', 'Referente a [serviço, produto ou parcela]', 'Pagamento [integral/parcial] realizado por [forma]', '[cidade], [data] — [assinatura]'],
+    example: ['Recebi de [pagador] a quantia de [valor]', 'Referente a [serviço, produto ou parcela]', 'Pagamento [integral/parcial] realizado por [forma]', '[cidade], [data]. [assinatura]'],
     sections: [
       { title: 'Evite campos contraditórios', paragraphs: ['Confira se o número corresponde ao valor por extenso e se a data coincide com o recebimento.', 'Nomes, documentos e descrição devem se referir à mesma operação.'] },
       { title: 'Declare a extensão da quitação', paragraphs: ['Se o recibo cobre apenas um sinal ou parcela, escreva isso explicitamente.', 'Não use “plena quitação” quando ainda houver saldo, entrega ou obrigação pendente.'] }

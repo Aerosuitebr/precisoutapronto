@@ -44,7 +44,7 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     path: '/calculadora-de-rescisao',
     name: 'Calculadora de rescisão trabalhista',
     description:
-      'Calcule uma estimativa de saldo de salário, férias, 13º, aviso-prévio e FGTS sem cadastro.',
+      'Calculadora de rescisão online 2026: estime saldo de salário, férias, 13º, aviso-prévio e FGTS sem cadastro.',
     breadcrumbLabel: 'Rescisão',
     interpretTitle: 'Como interpretar a estimativa',
     interpretBody: [
@@ -63,10 +63,10 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     guideHref: '/guias/como-calcular-rescisao',
     guideLabel: 'guia de cálculo de rescisão',
     formula: 'Total estimado = saldo de salário + aviso aplicável + 13º proporcional + férias e 1/3 + multa do FGTS, conforme a modalidade.',
-    reviewedAt: '30 de agosto de 2026',
+    reviewedAt: '31 de agosto de 2026',
     sources: [
-      { label: 'Ministério do Trabalho e Emprego — perguntas frequentes', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' },
-      { label: 'FGTS — procedimentos de rescisão', href: 'https://www.fgts.gov.br/Paginas/subpaginas/rescisao-empregado.aspx' }
+      { label: 'Ministério do Trabalho e Emprego: perguntas frequentes', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' },
+      { label: 'FGTS: procedimentos de rescisão', href: 'https://www.fgts.gov.br/Paginas/subpaginas/rescisao-empregado.aspx' }
     ],
     related: [
       {
@@ -151,7 +151,7 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
       {
         question: 'A calculadora já usa as regras de 2026?',
         answer:
-          'Sim. Aviso proporcional, avos de 13º e férias, multa de 40% ou 20% e as demais verbas seguem a CLT vigente. Descontos de INSS e IRRF não entram no total bruto. Confirme tabelas e convenção com um profissional.'
+          'Sim. Aviso proporcional, avos de 13º e férias, multa de 40% ou 20% e as demais verbas seguem a CLT vigente. Descontos de INSS e IRRF não entram no total bruto. Confirme tabelas e convenção com um profissional. A metodologia das calculadoras descreve as fórmulas usadas.'
       },
       {
         question: 'Preciso me cadastrar para usar?',
@@ -323,7 +323,7 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     path: '/calculadora-de-ferias',
     name: 'Calculadora de férias CLT',
     description:
-      'Calcule uma estimativa de férias, 1/3 constitucional e abono pecuniário sem cadastro.',
+      'Calculadora de férias 2026: estime férias, 1/3 constitucional e abono pecuniário sem cadastro.',
     breadcrumbLabel: 'Férias',
     interpretTitle: 'Como interpretar a estimativa de férias',
     interpretBody: [
@@ -342,11 +342,23 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     guideHref: '/recursos#calculadoras-clt',
     guideLabel: 'central de cálculos trabalhistas',
     formula: 'Estimativa bruta = remuneração dos dias de férias + 1/3 constitucional + abono pecuniário e seu 1/3, quando informado.',
-    reviewedAt: '30 de agosto de 2026',
+    reviewedAt: '31 de agosto de 2026',
     sources: [
-      { label: 'Ministério do Trabalho e Emprego — férias e abono', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' },
-      { label: 'Receita Federal — incidências sobre férias', href: 'https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/pagamentos-e-parcelamentos/emissao-e-pagamento-de-darf-das-gps-e-dae/calculo-de-contribuicoes-previdenciarias-e-emissao-de-gps/tabela-de-incidencia-de-contribuicao' }
+      { label: 'Ministério do Trabalho e Emprego: férias e abono', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' },
+      { label: 'Receita Federal: incidências sobre férias', href: 'https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/pagamentos-e-parcelamentos/emissao-e-pagamento-de-darf-das-gps-e-dae/calculo-de-contribuicoes-previdenciarias-e-emissao-de-gps/tabela-de-incidencia-de-contribuicao' }
     ],
+    scenarioTable: {
+      title: 'O que entra no cálculo de férias 2026',
+      caption: 'Resumo educativo da CLT. Convenção coletiva e médias salariais podem alterar o valor.',
+      headers: ['Item', 'Como entra na estimativa'],
+      rows: [
+        ['Dias de gozo', 'Remuneração proporcional aos dias de férias informados'],
+        ['1/3 constitucional', 'Um terço sobre a remuneração das férias'],
+        ['Abono pecuniário', 'Até 10 dias vendidos, também com 1/3'],
+        ['Médias habituais', 'Somadas à base quando você informa'],
+        ['INSS e IRRF', 'Não entram no total bruto desta calculadora']
+      ]
+    },
     numericExample: {
       title: 'Exemplo de cálculo de férias 2026',
       setup: 'Salário bruto de R$ 3.000,00, 30 dias de férias, sem média variável e sem venda de dias. O exemplo mostra valores brutos antes de INSS e IRRF.',
@@ -407,6 +419,11 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
           'Você pode informar uma média de variáveis. A calculadora soma esse valor à base. O critério exato pode variar por categoria.'
       },
       {
+        question: 'Como usar a calculadora de férias 2026?',
+        answer:
+          'Informe o salário, os dias de gozo e, se for o caso, o abono. A calculadora mostra a estimativa bruta com 1/3. Confira o holerite e a convenção coletiva antes de planejar as férias.'
+      },
+      {
         question: 'Como fazer o cálculo exato de férias?',
         answer:
           'Use salário, médias habituais, quantidade real de dias e eventual abono. A calculadora mostra uma estimativa bruta; descontos e regras coletivas devem ser conferidos no holerite.'
@@ -417,7 +434,7 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     path: '/calculadora-de-decimo-terceiro',
     name: 'Calculadora de 13º salário',
     description:
-      'Calcule uma estimativa do 13º salário proporcional por avos e das duas parcelas sem cadastro.',
+      'Calculadora de décimo terceiro 2026: estime o 13º proporcional por avos e as duas parcelas sem cadastro.',
     breadcrumbLabel: '13º salário',
     interpretTitle: 'Como interpretar o 13º estimado',
     interpretBody: [
@@ -436,9 +453,9 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
     guideHref: '/recursos#calculadoras-clt',
     guideLabel: 'central de cálculos trabalhistas',
     formula: '13º bruto proporcional = (salário + média de variáveis) ÷ 12 × número de avos trabalhados no ano.',
-    reviewedAt: '30 de agosto de 2026',
+    reviewedAt: '31 de agosto de 2026',
     sources: [
-      { label: 'Ministério do Trabalho e Emprego — direitos trabalhistas e 13º', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' }
+      { label: 'Ministério do Trabalho e Emprego: direitos trabalhistas e 13º', href: 'https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/perguntas-frequentes' }
     ],
     numericExample: {
       title: 'Exemplo de 13º salário proporcional em 2026',
@@ -501,6 +518,11 @@ export const PUBLIC_CALCULATORS: Record<string, PublicCalculatorSeo> = {
           'Adicionais habituais podem integrar a base. Informe uma média se fizer sentido no seu caso e valide com o RH ou contador.'
       },
       {
+        question: 'Como usar a calculadora de décimo terceiro 2026?',
+        answer:
+          'Informe o salário bruto e os avos do ano. A calculadora estima o total e as duas parcelas. A segunda parcela real pode ter descontos de INSS e IRRF.'
+      },
+      {
         question: 'Como calcular o 13º proporcional?',
         answer:
           'Divida a remuneração-base por 12 e multiplique pelos avos. Em regra, um mês com pelo menos 15 dias trabalhados conta como um avo.'
@@ -526,7 +548,7 @@ export function CalculatorJsonLd({ calculator }: { calculator: PublicCalculatorS
         operatingSystem: 'Web',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'BRL' },
         inLanguage: 'pt-BR',
-        dateModified: calculator.reviewedAt ? '2026-08-30' : undefined,
+        dateModified: calculator.reviewedAt ? '2026-08-31' : undefined,
         isPartOf: { '@type': 'WebSite', name: 'Precisou, Tá Pronto', url: siteUrl }
       },
       {
@@ -664,6 +686,10 @@ export function CalculatorContentSections({ calculator }: { calculator: PublicCa
           Consulte também o nosso{' '}
           <Link href={calculator.guideHref} className="font-semibold text-sky-700 hover:underline">
             {calculator.guideLabel}
+          </Link>
+          {' e a '}
+          <Link href="/metodologia-calculadoras" className="font-semibold text-sky-700 hover:underline">
+            metodologia das calculadoras
           </Link>
           .
         </p>

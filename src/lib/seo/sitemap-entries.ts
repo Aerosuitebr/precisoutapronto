@@ -24,9 +24,20 @@ export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
  * uma data global de deploy não representa mudança relevante de conteúdo.
  */
 const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
-  ['/calculadora-de-decimo-terceiro', new Date('2026-08-30T12:00:00.000Z')],
-  ['/calculadora-de-ferias', new Date('2026-08-30T12:00:00.000Z')],
-  ['/calculadora-de-rescisao', new Date('2026-08-30T12:00:00.000Z')],
+  ['/', new Date('2026-08-31T12:00:00.000Z')],
+  ['/orcamento-com-pix', new Date('2026-08-31T12:00:00.000Z')],
+  ['/orcamento-para/eletricista', new Date('2026-08-31T12:00:00.000Z')],
+  ['/orcamento-para/pedreiro', new Date('2026-08-31T12:00:00.000Z')],
+  ['/orcamento-para/fotografo', new Date('2026-08-31T12:00:00.000Z')],
+  ['/orcamento-para/manutencao-residencial', new Date('2026-08-31T12:00:00.000Z')],
+  ['/recibos/recibo-pagamento-pix', new Date('2026-08-31T12:00:00.000Z')],
+  ['/corretor-de-redacao-enem', new Date('2026-08-31T12:00:00.000Z')],
+  ['/gerador-de-recibo', new Date('2026-08-31T12:00:00.000Z')],
+  ['/gerador-de-curriculo', new Date('2026-08-31T12:00:00.000Z')],
+  ['/gerador-de-referencias-abnt', new Date('2026-08-31T12:00:00.000Z')],
+  ['/calculadora-de-decimo-terceiro', new Date('2026-08-31T12:00:00.000Z')],
+  ['/calculadora-de-ferias', new Date('2026-08-31T12:00:00.000Z')],
+  ['/calculadora-de-rescisao', new Date('2026-08-31T12:00:00.000Z')],
   ['/rescisao', new Date('2026-08-30T12:00:00.000Z')],
   ['/guias/calculo-rescisao-com-fgts', new Date('2026-08-30T12:00:00.000Z')],
   ['/guias', new Date('2026-08-28T12:00:00.000Z')],
@@ -434,7 +445,7 @@ export function sitemapEntriesToXml(entries: MetadataRoute.Sitemap): string {
   );
 }
 
-/** Índice apontando para `/sitemaps/{segment}`. Evita o 500 do sitemap.ts monolítico do Next. */
+/** Índice apontando para `/sitemaps/{segment}`. O XML completo fica em `/sitemaps/full`. */
 export function buildSitemapIndexXml(baseUrl?: string): string {
   const base = (baseUrl ?? getViralBaseUrl()).replace(/\/$/, '');
   const lastmod = CORE_UPDATED_AT.toISOString();

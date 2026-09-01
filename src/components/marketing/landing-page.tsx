@@ -13,7 +13,7 @@ export function LandingPage() {
   return <div className="bg-white text-[#101828]">
     <header className="sticky top-8 z-50 border-b border-blue-100 bg-white/95 shadow-[0_14px_38px_-28px_rgba(3,31,75,.55)] backdrop-blur-xl">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:h-24 sm:px-6 lg:h-28 lg:px-8">
-        <Link href="/" className="min-w-0 flex-1" aria-label="Precisou, Tá Pronto — página inicial">
+        <Link href="/" className="min-w-0 flex-1" aria-label="Precisou, Tá Pronto, página inicial">
           <Logo variant="marketing" className="h-16 max-w-[210px] sm:h-20 sm:max-w-[270px] lg:h-24 lg:max-w-[330px]" />
         </Link>
         <div className="flex items-center gap-2"><Link href="/login" className="hidden px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-950 sm:block">Entrar</Link><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#155eef] px-4 text-sm font-black text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-[#004eeb]">Criar orçamento <ArrowRight className="h-4 w-4" /></Link></div>

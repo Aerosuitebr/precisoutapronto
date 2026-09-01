@@ -10,11 +10,11 @@ import {
 } from '@/lib/brand';
 
 export const metadata: Metadata = {
-  title: `${BRAND_DISPLAY_NAME} Site oficial de ferramentas online`,
-  description: `${BRAND_NAME} é o site oficial de ferramentas para PDFs, imagens, documentos e cálculos. Conheça a marca, o domínio e nossos compromissos.`,
+  title: `${BRAND_NAME}: site oficial em precisoutapronto.com.br`,
+  description: `${BRAND_NAME} é o site oficial de ferramentas para orçamento, recibo, PDF e cálculos. Conheça a marca, o domínio precisoutapronto.com.br e nossos compromissos.`,
   alternates: { canonical: '/precisou-ta-pronto' },
   openGraph: {
-    title: `${BRAND_DISPLAY_NAME} Site oficial`,
+    title: `${BRAND_NAME}: site oficial`,
     description: BRAND_DESCRIPTION,
     url: '/precisou-ta-pronto',
     type: 'website'
