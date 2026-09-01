@@ -137,6 +137,8 @@ fi
 
 sort -u -o "${INDEXNOW_URL_FILE}" "${INDEXNOW_URL_FILE}"
 if [[ -s "${INDEXNOW_URL_FILE}" ]]; then
+  # mktemp cria o arquivo como 0600; o usuário não-root da imagem precisa lê-lo no bind mount.
+  chmod 0644 "${INDEXNOW_URL_FILE}"
   if docker run --rm \
     -v "${INSTALL_DIR}/scripts/seo/submit-indexnow.mjs:/tmp/submit-indexnow.mjs:ro" \
     -v "${INDEXNOW_URL_FILE}:/tmp/indexnow-urls.txt:ro" \
