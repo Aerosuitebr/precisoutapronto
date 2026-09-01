@@ -156,8 +156,8 @@ const canonicalBrand = 'Precisou, Tá Pronto';
 if (!brandIdentitySource.includes(`export const BRAND_NAME = '${canonicalBrand}'`)) {
   failures.push(`marca: BRAND_NAME deve usar a grafia canônica "${canonicalBrand}"`);
 }
-if (!brandIdentitySource.includes('export const BRAND_DISPLAY_NAME = BRAND_NAME')) {
-  failures.push('marca: BRAND_DISPLAY_NAME deve herdar BRAND_NAME');
+if (!brandIdentitySource.includes("export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!'")) {
+  failures.push('marca: BRAND_DISPLAY_NAME deve usar a assinatura pública oficial');
 }
 if (!brandIdentitySource.includes('Orçamento no WhatsApp, documentos e ferramentas online')) {
   failures.push('marca: categoria principal ausente em src/lib/brand.ts');
@@ -278,7 +278,7 @@ if (!orphanLandings.includes("path: '/remover-fundo-de-imagem'")) {
 }
 
 const weeklyDashboard = await readFile(path.join(root, 'scripts/seo/build-weekly-dashboard.mjs'), 'utf8');
-for (const target of ['/recibo-de-aluguel', '/ferramentas/redacao-enem', '/corretor-de-redacao-enem', '/rescisao']) {
+for (const target of ['/recibo-de-aluguel', '/corretor-de-redacao-enem', '/rescisao', '/gerador-de-contrato']) {
   if (!weeklyDashboard.includes(`'${target}'`)) failures.push(`painel semanal: falta URL prioritária ${target}`);
 }
 
@@ -291,11 +291,11 @@ const analyticsScripts = await readFile(
   path.join(root, 'src/components/analytics/analytics-scripts.tsx'),
   'utf8'
 );
-if (
-  !analyticsScripts.includes("DEFAULT_CLARITY_PROJECT_ID = 'xsknm22mhw'") ||
-  !analyticsScripts.includes('consent === \'accepted\'')
-) {
-  failures.push('analytics-scripts: Clarity oficial ou guarda de consentimento ausente');
+if (!analyticsScripts.includes("consent === 'accepted'") || !analyticsScripts.includes('gaId')) {
+  failures.push('analytics-scripts: GA4 ou guarda de consentimento ausente');
+}
+if (/clarity\.ms|microsoft-clarity|DEFAULT_CLARITY_PROJECT_ID/.test(analyticsScripts)) {
+  failures.push('analytics-scripts: Clarity voltou a ser carregado no navegador');
 }
 
 // Impede que domínio, e-mail ou nome público anteriores voltem ao produto ou à operação.

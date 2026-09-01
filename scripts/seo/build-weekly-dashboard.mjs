@@ -3,7 +3,6 @@ import path from 'node:path';
 
 const TARGET_PATHS = [
   '/recibo-de-aluguel',
-  '/ferramentas/redacao-enem',
   '/corretor-de-redacao-enem',
   '/rescisao',
   '/calculadora-de-rescisao',
@@ -13,6 +12,7 @@ const TARGET_PATHS = [
   '/guias/calculo-rescisao-comum-acordo',
   '/guias/calculo-rescisao-com-fgts',
   '/gerador-de-proposta-comercial',
+  '/gerador-de-contrato',
   '/gerador-de-recibo',
   '/gerador-de-qr-code-pix',
   '/orcamento-com-pix',
@@ -99,8 +99,9 @@ function pagePath(value) {
   }
 }
 
-const endDate = argument('end', '2026-08-09');
+const endDate = argument('end', new Date().toISOString().slice(0, 10));
 const gscFile = argument('gsc');
+const queriesFile = argument('queries');
 const bingFile = argument('bing');
 const conversionFile = argument('conversions');
 const outputFile = argument('output', `docs/seo/painel-semanal-${endDate}.md`);
@@ -108,6 +109,7 @@ const outputFile = argument('output', `docs/seo/painel-semanal-${endDate}.md`);
 if (!gscFile) throw new Error('Informe --gsc com o CSV de Páginas exportado do Search Console.');
 
 const gsc = new Map(loadCsv(gscFile).map((row) => [pagePath(row['Páginas principais'] || row.Page || row.URL), row]));
+const queries = loadCsv(queriesFile);
 const bing = new Map(loadCsv(bingFile).map((row) => [pagePath(row.Page || row.URL), row]));
 const conversions = new Map(loadCsv(conversionFile).map((row) => [pagePath(row.page || row.Page || row.URL), row.conversions || row.Conversions]));
 
@@ -130,9 +132,39 @@ for (const target of TARGET_PATHS) {
 
 lines.push(
   '',
+  '## Oportunidades de consultas entre as posições 5 e 20',
+  '',
+  '| Consulta | Impressões | Posição | CTR | Cliques |',
+  '|---|---:|---:|---:|---:|'
+);
+
+const opportunities = queries
+  .map((row) => ({
+    query: row['Consultas mais frequentes'] || row['Top consultas'] || row.Query || row.Consulta || '',
+    impressions: Number(String(row['Impressões'] || row.Impressions || 0).replace(/\./g, '').replace(',', '.')) || 0,
+    position: Number(String(row['Posição'] || row.Position || '').replace(',', '.')),
+    ctr: row.CTR || '0%',
+    clicks: Number(String(row['Cliques'] || row.Clicks || 0).replace(/\./g, '').replace(',', '.')) || 0
+  }))
+  .filter((row) => row.query && row.position >= 5 && row.position <= 20)
+  .sort((a, b) => b.impressions - a.impressions)
+  .slice(0, 30);
+
+if (opportunities.length) {
+  for (const row of opportunities) {
+    lines.push(`| ${row.query.replace(/\|/g, '\\|')} | ${row.impressions} | ${row.position.toFixed(1)} | ${row.ctr} | ${row.clicks} |`);
+  }
+} else {
+  lines.push('| n/d | n/d | n/d | n/d | n/d |');
+}
+
+lines.push(
+  '',
+  '> Para preencher esta seção, exporte o relatório de Consultas do Search Console e informe `--queries arquivo.csv`.',
+  '',
   '## Leitura das URLs prioritárias',
   '',
-  '- `/ferramentas/redacao-enem` é a URL antiga. Suas impressões devem cair enquanto `/corretor-de-redacao-enem` absorve a demanda.',
+  '- `/corretor-de-redacao-enem` concentra a demanda pública; a URL privada antiga não integra mais o painel.',
   '- `/recibo-de-aluguel` mede aquisição orgânica; `/gerador-de-recibo` mede a ferramenta de destino.',
   '- `/rescisao` e os guias medem a autoridade temática que deve sustentar a calculadora.',
   '- As URLs `/orcamento-para/*` medem o cluster comercial por profissão e necessidade; compare impressões, posição, clique no gerador e orçamento criado.',
@@ -141,7 +173,8 @@ lines.push(
   '',
   '- Landings: evento `landing_cta_click`, segmentado por `landing_path` e `placement`.',
   '- Guias: evento `guide_tool_click`.',
-  '- Ferramentas comerciais: `begin_checkout` e `purchase` devem ser exportados separadamente no GA4 por landing page.',
+  '- Funil de orçamento: `quote_started`, `quote_preview_ready`, `quote_link_created`, `quote_whatsapp_send_completed`, `quote_recipient_view` e `quote_approved`.',
+  '- Receita: `begin_checkout` e `purchase` devem ser exportados separadamente no GA4 por landing page.',
   ''
 );
 fs.mkdirSync(path.dirname(outputFile), { recursive: true });

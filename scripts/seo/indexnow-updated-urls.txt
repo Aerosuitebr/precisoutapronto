@@ -3,6 +3,11 @@
 /
 /orcamento-com-pix
 /gerador-de-recibo
+/gerador-de-proposta-comercial
+/gerador-de-contrato
+/modelos-de-orcamento
+/calculadora-de-rescisao
+/rescisao
 /orcamento-para/eletricista
 /orcamento-para/pintor
 /orcamento-para/instalacao-ar-condicionado
@@ -20,3 +25,4 @@
 /guias/como-fazer-orcamento-com-pix
 /guias/como-cobrar-cliente-pelo-whatsapp
 /autores/equipe-editorial
+/guias

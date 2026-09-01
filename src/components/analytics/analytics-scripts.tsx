@@ -7,15 +7,9 @@ import { ANALYTICS_CONSENT_KEY } from '@/lib/analytics-consent';
 
 type Consent = 'accepted' | 'rejected' | null;
 
-// IDs de analytics são identificadores públicos presentes no JavaScript entregue ao navegador.
-// O fallback evita builds de produção sem Clarity quando a variável pública não for injetada.
-const DEFAULT_CLARITY_PROJECT_ID = 'xsknm22mhw';
-
 export function AnalyticsScripts() {
   const pathname = usePathname();
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
-  const clarityId =
-    process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID?.trim() || DEFAULT_CLARITY_PROJECT_ID;
   const [consent, setConsent] = useState<Consent>(null);
   const [ready, setReady] = useState(false);
 
@@ -79,18 +73,7 @@ export function AnalyticsScripts() {
           </Script>
         </>
       ) : null}
-      {enabled && clarityId ? (
-        <Script id="microsoft-clarity" strategy="afterInteractive">
-          {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", ${JSON.stringify(clarityId)});
-          `}
-        </Script>
-      ) : null}
-      {ready && consent === null && (gaId || clarityId) ? (
+      {ready && consent === null && gaId ? (
         <aside
           aria-label={consentCopy.label}
           className="fixed bottom-3 left-3 right-3 z-[100] rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl sm:left-auto sm:w-[min(28rem,calc(100vw-1.5rem))]"

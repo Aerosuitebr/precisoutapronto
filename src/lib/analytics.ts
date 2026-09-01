@@ -13,7 +13,6 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
-    clarity?: (...args: unknown[]) => void;
   }
 }
 
@@ -36,7 +35,6 @@ export function trackEvent(name: string, params: EventParams = {}) {
     )
   );
   window.gtag?.('event', name, safeParams);
-  window.clarity?.('event', name);
 }
 
 export function setContentAttribution(attribution: ContentAttribution) {
