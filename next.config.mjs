@@ -16,10 +16,10 @@ const securityHeaders = [
       "default-src 'self'",
       // wasm-unsafe-eval: ONNX Runtime do removedor de fundo (WebAssembly).
       // www.mercadopago.com: security.js (Device ID antifraude do Checkout Pro).
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://challenges.cloudflare.com https://www.mercadopago.com https://sdk.mercadopago.com https://http2.mlstatic.com https://cdn.jsdelivr.net https://esm.sh https://www.googletagmanager.com https://www.clarity.ms",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://http2.mlstatic.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://challenges.cloudflare.com https://www.mercadopago.com https://sdk.mercadopago.com https://http2.mlstatic.com https://cdn.jsdelivr.net https://esm.sh https://www.googletagmanager.com https://www.clarity.ms https://static.cloudflareinsights.com",
+      "style-src 'self' 'unsafe-inline' https://http2.mlstatic.com",
       "img-src 'self' data: blob: https:",
-      "font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://http2.mlstatic.com",
+      "font-src 'self' data: https://http2.mlstatic.com",
       // jsdelivr/esm.sh: lib do removedor; staticimgly.com: modelos ONNX/WASM.
       "connect-src 'self' blob: data: https://challenges.cloudflare.com https://www.mercadopago.com https://api.mercadopago.com https://sdk.mercadopago.com https://events.mercadopago.com https://http2.mlstatic.com https://api-static.mercadopago.com https://secure-fields.mercadopago.com https://cdn.jsdelivr.net https://esm.sh https://staticimgly.com https://*.staticimgly.com https://api.zoop.ws https://www.google-analytics.com https://region1.google-analytics.com https://*.clarity.ms",
       "worker-src 'self' blob:",

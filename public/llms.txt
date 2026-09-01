@@ -6,85 +6,85 @@ Canonical site: https://precisoutapronto.com.br
 Language: pt-BR
 
 ## Main public pages
-- https://precisoutapronto.com.br/
-- https://precisoutapronto.com.br/orcamento-com-pix
-- https://precisoutapronto.com.br/gerador-de-recibo
-- https://precisoutapronto.com.br/orcamento-para/eletricista
-- https://precisoutapronto.com.br/para/mei
-- https://precisoutapronto.com.br/para/prestadores
-- https://precisoutapronto.com.br/gerador-de-qr-code-pix
-- https://precisoutapronto.com.br/recursos
-- https://precisoutapronto.com.br/gerador-de-curriculo
-- https://precisoutapronto.com.br/corretor-de-redacao-enem
-- https://precisoutapronto.com.br/editor-de-pdf-online
-- https://precisoutapronto.com.br/gerador-de-referencias-abnt
-- https://precisoutapronto.com.br/agenda-online
-- https://precisoutapronto.com.br/divisor-de-conta
-- https://precisoutapronto.com.br/imprensa
-- https://precisoutapronto.com.br/embed
-- https://precisoutapronto.com.br/checklist-cobranca-mei
-- https://precisoutapronto.com.br/gerador-de-contrato
-- https://precisoutapronto.com.br/gerador-de-proposta-comercial
-- https://precisoutapronto.com.br/documentos-juridicos-online
-- https://precisoutapronto.com.br/documentos-contabeis-online
-- https://precisoutapronto.com.br/calculadora-de-rescisao
-- https://precisoutapronto.com.br/calculadora-de-preco-freelancer
-- https://precisoutapronto.com.br/mei-ou-clt
-- https://precisoutapronto.com.br/en
-- https://precisoutapronto.com.br/en/tools
-- https://precisoutapronto.com.br/es
-- https://precisoutapronto.com.br/es/tools
+- [Página inicial](https://precisoutapronto.com.br/)
+- [Orçamento com Pix](https://precisoutapronto.com.br/orcamento-com-pix)
+- [Gerador de recibo](https://precisoutapronto.com.br/gerador-de-recibo)
+- [Orçamento para eletricista](https://precisoutapronto.com.br/orcamento-para/eletricista)
+- [Ferramentas para MEI](https://precisoutapronto.com.br/para/mei)
+- [Ferramentas para prestadores](https://precisoutapronto.com.br/para/prestadores)
+- [Gerador de QR Code Pix](https://precisoutapronto.com.br/gerador-de-qr-code-pix)
+- [Catálogo de ferramentas](https://precisoutapronto.com.br/recursos)
+- [Gerador de currículo](https://precisoutapronto.com.br/gerador-de-curriculo)
+- [Corretor de redação ENEM](https://precisoutapronto.com.br/corretor-de-redacao-enem)
+- [Editor de PDF](https://precisoutapronto.com.br/editor-de-pdf-online)
+- [Gerador de referências ABNT](https://precisoutapronto.com.br/gerador-de-referencias-abnt)
+- [Agenda online](https://precisoutapronto.com.br/agenda-online)
+- [Divisor de conta](https://precisoutapronto.com.br/divisor-de-conta)
+- [Imprensa](https://precisoutapronto.com.br/imprensa)
+- [Badges e incorporações](https://precisoutapronto.com.br/embed)
+- [Checklist de cobrança MEI](https://precisoutapronto.com.br/checklist-cobranca-mei)
+- [Gerador de contrato](https://precisoutapronto.com.br/gerador-de-contrato)
+- [Gerador de proposta comercial](https://precisoutapronto.com.br/gerador-de-proposta-comercial)
+- [Documentos jurídicos](https://precisoutapronto.com.br/documentos-juridicos-online)
+- [Documentos contábeis](https://precisoutapronto.com.br/documentos-contabeis-online)
+- [Calculadora de rescisão](https://precisoutapronto.com.br/calculadora-de-rescisao)
+- [Calculadora de preço freelancer](https://precisoutapronto.com.br/calculadora-de-preco-freelancer)
+- [Comparador MEI ou CLT](https://precisoutapronto.com.br/mei-ou-clt)
+- [English home](https://precisoutapronto.com.br/en)
+- [English tools](https://precisoutapronto.com.br/en/tools)
+- [Inicio en español](https://precisoutapronto.com.br/es)
+- [Herramientas en español](https://precisoutapronto.com.br/es/tools)
 
 ## Audience pages
-- https://precisoutapronto.com.br/para/mei
-- https://precisoutapronto.com.br/para/freelancers
-- https://precisoutapronto.com.br/para/empresas
-- https://precisoutapronto.com.br/para/rh
-- https://precisoutapronto.com.br/para/contadores
-- https://precisoutapronto.com.br/para/advogados
-- https://precisoutapronto.com.br/para/estudantes
-- https://precisoutapronto.com.br/para/prestadores
-- https://precisoutapronto.com.br/para/saude
-- https://precisoutapronto.com.br/para/gestores
+- [Para MEI](https://precisoutapronto.com.br/para/mei)
+- [Para freelancers](https://precisoutapronto.com.br/para/freelancers)
+- [Para empresas](https://precisoutapronto.com.br/para/empresas)
+- [Para RH](https://precisoutapronto.com.br/para/rh)
+- [Para contadores](https://precisoutapronto.com.br/para/contadores)
+- [Para advogados](https://precisoutapronto.com.br/para/advogados)
+- [Para estudantes](https://precisoutapronto.com.br/para/estudantes)
+- [Para prestadores](https://precisoutapronto.com.br/para/prestadores)
+- [Para profissionais de saúde](https://precisoutapronto.com.br/para/saude)
+- [Para gestores](https://precisoutapronto.com.br/para/gestores)
 
 ## Long-tail landings
-- https://precisoutapronto.com.br/contrato-de-aluguel
-- https://precisoutapronto.com.br/recibo-de-pagamento
-- https://precisoutapronto.com.br/proposta-comercial-mei
+- [Contrato de aluguel](https://precisoutapronto.com.br/contrato-de-aluguel)
+- [Recibo de pagamento](https://precisoutapronto.com.br/recibo-de-pagamento)
+- [Proposta comercial para MEI](https://precisoutapronto.com.br/proposta-comercial-mei)
 
 ## Guides
-- https://precisoutapronto.com.br/guias/modelo-de-recibo-mei
-- https://precisoutapronto.com.br/guias/contrato-de-prestacao-de-servicos-gratis
-- https://precisoutapronto.com.br/guias/como-calcular-rescisao
-- https://precisoutapronto.com.br/guias/curriculo-pronto-para-baixar
-- https://precisoutapronto.com.br/guias/como-fazer-orcamento-com-pix
-- https://precisoutapronto.com.br/guias/proposta-comercial-para-mei
-- https://precisoutapronto.com.br/guias/como-precificar-servico-freelancer
-- https://precisoutapronto.com.br/guias/mei-ou-clt-como-comparar
-- https://precisoutapronto.com.br/guias/aviso-previo-proporcional-como-calcular
-- https://precisoutapronto.com.br/guias/quanto-cobrar-por-hora-freelancer
-- https://precisoutapronto.com.br/guias/custos-fixos-do-freelancer-como-ratear
-- https://precisoutapronto.com.br/guias/quando-o-mei-compensa-mais-que-a-clt
+- [Modelo de recibo MEI](https://precisoutapronto.com.br/guias/modelo-de-recibo-mei)
+- [Contrato de prestação de serviços grátis](https://precisoutapronto.com.br/guias/contrato-de-prestacao-de-servicos-gratis)
+- [Como calcular rescisão](https://precisoutapronto.com.br/guias/como-calcular-rescisao)
+- [Currículo pronto para baixar](https://precisoutapronto.com.br/guias/curriculo-pronto-para-baixar)
+- [Como fazer orçamento com Pix](https://precisoutapronto.com.br/guias/como-fazer-orcamento-com-pix)
+- [Proposta comercial para MEI](https://precisoutapronto.com.br/guias/proposta-comercial-para-mei)
+- [Como precificar serviço freelancer](https://precisoutapronto.com.br/guias/como-precificar-servico-freelancer)
+- [Como comparar MEI e CLT](https://precisoutapronto.com.br/guias/mei-ou-clt-como-comparar)
+- [Como calcular aviso-prévio proporcional](https://precisoutapronto.com.br/guias/aviso-previo-proporcional-como-calcular)
+- [Quanto cobrar por hora freelancer](https://precisoutapronto.com.br/guias/quanto-cobrar-por-hora-freelancer)
+- [Como ratear custos fixos](https://precisoutapronto.com.br/guias/custos-fixos-do-freelancer-como-ratear)
+- [Quando o MEI compensa mais que a CLT](https://precisoutapronto.com.br/guias/quando-o-mei-compensa-mais-que-a-clt)
 
 ## Precisou, Tá Pronto Games (gaming vertical)
 Evergreen hub for games, suggested PC setups, hardware guides, consoles and curated stores.
-- https://precisoutapronto.com.br/games
-- https://precisoutapronto.com.br/games/top-jogos
-- https://precisoutapronto.com.br/games/ferramentas
-- https://precisoutapronto.com.br/games/ferramentas/calculadora-edpi: free eDPI calculator for FPS sensitivity
-- https://precisoutapronto.com.br/games/ferramentas/planejador-armazenamento: game storage and SSD space planner
-- https://precisoutapronto.com.br/games/ferramentas/custo-por-hora: game cost-per-hour calculator
-- https://precisoutapronto.com.br/games/ferramentas/meu-pc-roda: PC game requirements comparison tool
-- https://precisoutapronto.com.br/games/diagnostico: native Windows hardware inventory and controlled local benchmark
-- https://precisoutapronto.com.br/games/diagnostico/privacidade
-- https://precisoutapronto.com.br/games/diagnostico/termos
-- https://precisoutapronto.com.br/games/diagnostico/suporte
-- https://precisoutapronto.com.br/games/diagnostico/changelog
-- https://precisoutapronto.com.br/games/hardware
-- https://precisoutapronto.com.br/games/consoles
-- https://precisoutapronto.com.br/games/lojas
-- https://precisoutapronto.com.br/games/jogos/counter-strike-2
-- https://precisoutapronto.com.br/games/hardware/escolher-placa-de-video
+- [Precisou, Tá Pronto Games](https://precisoutapronto.com.br/games)
+- [Top jogos](https://precisoutapronto.com.br/games/top-jogos)
+- [Ferramentas para jogos](https://precisoutapronto.com.br/games/ferramentas)
+- [Calculadora eDPI](https://precisoutapronto.com.br/games/ferramentas/calculadora-edpi): free eDPI calculator for FPS sensitivity
+- [Planejador de armazenamento](https://precisoutapronto.com.br/games/ferramentas/planejador-armazenamento): game storage and SSD space planner
+- [Custo por hora](https://precisoutapronto.com.br/games/ferramentas/custo-por-hora): game cost-per-hour calculator
+- [Meu PC roda?](https://precisoutapronto.com.br/games/ferramentas/meu-pc-roda): PC game requirements comparison tool
+- [Diagnóstico de hardware](https://precisoutapronto.com.br/games/diagnostico): native Windows hardware inventory and controlled local benchmark
+- [Privacidade do diagnóstico](https://precisoutapronto.com.br/games/diagnostico/privacidade)
+- [Termos do diagnóstico](https://precisoutapronto.com.br/games/diagnostico/termos)
+- [Suporte do diagnóstico](https://precisoutapronto.com.br/games/diagnostico/suporte)
+- [Changelog do diagnóstico](https://precisoutapronto.com.br/games/diagnostico/changelog)
+- [Guias de hardware](https://precisoutapronto.com.br/games/hardware)
+- [Consoles](https://precisoutapronto.com.br/games/consoles)
+- [Lojas](https://precisoutapronto.com.br/games/lojas)
+- [Counter-Strike 2](https://precisoutapronto.com.br/games/jogos/counter-strike-2)
+- [Como escolher placa de vídeo](https://precisoutapronto.com.br/games/hardware/escolher-placa-de-video)
 
 ## Product notes
 - The primary positioning is: free online tools for work, study and everyday practical tasks.
@@ -104,9 +104,9 @@ Evergreen hub for games, suggested PC setups, hardware guides, consoles and cura
 - Organization, WebSite, CollectionPage, ItemList, BreadcrumbList, FAQPage and SoftwareApplication structured data are used where semantically appropriate.
 
 ## Policies and contact
-- https://precisoutapronto.com.br/sobre
-- https://precisoutapronto.com.br/privacidade
-- https://precisoutapronto.com.br/termos
-- https://precisoutapronto.com.br/contato
+- [Sobre](https://precisoutapronto.com.br/sobre)
+- [Política de privacidade](https://precisoutapronto.com.br/privacidade)
+- [Termos de uso](https://precisoutapronto.com.br/termos)
+- [Contato](https://precisoutapronto.com.br/contato)
 - Contact email: contato@precisoutapronto.com.br
-- Security: https://precisoutapronto.com.br/.well-known/security.txt
+- [Security.txt](https://precisoutapronto.com.br/.well-known/security.txt)

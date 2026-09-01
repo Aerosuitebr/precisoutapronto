@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Dancing_Script, Great_Vibes, IBM_Plex_Sans, Playfair_Display } from 'next/font/google';
 import { Suspense } from 'react';
 import { AnalyticsScripts } from '@/components/analytics/analytics-scripts';
 import { AppProviders } from '@/components/providers/app-providers';
@@ -8,6 +9,36 @@ import { isStagingEnv, stagingRobots } from '@/lib/app-env';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { BRAND_DESCRIPTION, BRAND_DISPLAY_NAME, BRAND_TAGLINE } from '@/lib/brand';
 import './globals.css';
+
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-ibm-plex-sans'
+});
+
+const dancingScript = Dancing_Script({
+  subsets: ['latin'],
+  weight: ['600'],
+  display: 'swap',
+  variable: '--font-dancing-script'
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['600'],
+  style: ['italic'],
+  display: 'swap',
+  variable: '--font-playfair-display'
+});
+
+const greatVibes = Great_Vibes({
+  subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap',
+  variable: '--font-great-vibes'
+});
 
 const siteUrl = getViralBaseUrl();
 const staging = isStagingEnv();
@@ -84,7 +115,11 @@ export const viewport: Viewport = {
  */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`${ibmPlexSans.variable} ${dancingScript.variable} ${playfairDisplay.variable} ${greatVibes.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <SiteJsonLd />
         <AppProviders>
