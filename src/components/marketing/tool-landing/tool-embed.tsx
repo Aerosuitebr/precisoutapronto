@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 import type { ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,12 +9,14 @@ export function ToolLandingEmbed({
   tool,
   ctaHref,
   ctaLabel,
+  landingPath,
   openWithoutAccount = false
 }: {
   toolName: string;
   tool: ReactNode;
   ctaHref: string;
   ctaLabel: string;
+  landingPath: string;
   openWithoutAccount?: boolean;
 }) {
   return (
@@ -33,10 +35,10 @@ export function ToolLandingEmbed({
         <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName}>{tool}</ToolStartBoundary></div>
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
           <Button asChild size="lg" className="h-12 w-full bg-sky-600 px-6 font-bold hover:bg-sky-500 sm:w-auto">
-            <Link href={ctaHref}>
+            <LandingConversionLink href={ctaHref} landingPath={landingPath} placement="tool_embed">
               {ctaLabel}
               <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
+            </LandingConversionLink>
           </Button>
           <p className="text-sm font-medium text-slate-500">
             {openWithoutAccount ? 'Sem cadastro. Sem cartão.' : '2 gerações grátis. Sem cartão.'}

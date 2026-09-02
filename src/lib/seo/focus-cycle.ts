@@ -15,6 +15,7 @@ export const SEO_FOCUS_PATHS = [
   '/recibos/recibo-pagamento-pix',
   '/recibos/modelo-de-recibo-simples',
   '/gerador-de-recibo',
+  '/gerador-de-contrato',
   '/recibo-de-pagamento',
   '/gerador-de-qr-code-pix',
   '/gerador-de-proposta-comercial',
@@ -32,7 +33,6 @@ export const SEO_FOCUS_PATHS = [
   '/guias/como-cobrar-cliente-pelo-whatsapp',
   '/guias/calculo-rescisao-com-fgts',
   '/guias/recibo-simples-tem-validade',
-  '/gerador-de-referencias-abnt',
   '/corretor-de-redacao-enem'
 ] as const;
 

@@ -18,6 +18,18 @@ Eventos iniciais:
 
 No GA4, marque `purchase` como evento principal. Para comparar aquisição orgânica e resultado, use origem/mídia, landing page e o evento de compra. O Search Console pode ser vinculado à propriedade GA4.
 
+## Atribuição do funil por landing
+
+Ao clicar em um CTA público, o site grava somente o caminho da landing na sessão do navegador. Os eventos seguintes recebem `landing_path` automaticamente, sem nome, e-mail, telefone ou conteúdo do documento. Isso permite relacionar aquisição a `quote_started`, `quote_link_created`, envio, aprovação, checkout e compra.
+
+Exporte do GA4 um CSV com `landing_path`, `event_name` e `event_count` e gere o painel com:
+
+```bash
+npm run seo:dashboard -- --gsc paginas.csv --queries consultas.csv --funnel funil.csv --output docs/seo/painel-semanal-AAAA-MM-DD.md
+```
+
+O painel calcula `CTA→link` e `envio→aprovação` para as sete páginas prioritárias. Ausência de exportação permanece como `n/d`.
+
 ## Google Workspace e e-mail
 
 Caixa oficial e SMTP: `contato@precisoutapronto.com.br` via `smtp.gmail.com`.  

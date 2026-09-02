@@ -1,3 +1,4 @@
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -39,10 +40,10 @@ export function ToolLandingHero({
               size="lg"
               className="h-13 bg-[#155eef] px-6 text-base font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-[#004eeb]"
             >
-              <Link href={content.ctaHref}>
+              <LandingConversionLink href={content.ctaHref} landingPath={`/${content.slug}`} placement="hero_primary">
                 {content.ctaPrimary}
                 <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
+              </LandingConversionLink>
             </Button>
             <Button
               asChild

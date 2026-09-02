@@ -12,6 +12,7 @@ import { PROFESSION_LANDINGS, findProfessionLanding } from '@/lib/orcamentos/pro
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { FOCUSED_PROFESSION_SLUGS, temporaryNoindexRobots } from '@/lib/seo/focus-cycle';
 import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 
 const PRIORITY_CLUSTERS: Record<string, { guide: string; guideLabel: string; related: string[] }> = {
   eletricista: { guide: '/guias/modelo-de-orcamento-para-eletricista', guideLabel: 'Guia de orçamento elétrico', related: ['pedreiro', 'encanador', 'instalacao-ar-condicionado'] },
@@ -73,7 +74,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
               <ul className="mt-6 grid max-w-3xl gap-2 text-sm sm:grid-cols-3">
                 {page.checklist.map((item) => <li key={item} className="flex gap-2"><Check className="h-4 w-4 shrink-0 text-amber-300" />{item}</li>)}
               </ul>
-              <a href="#montar" className="mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">Usar este modelo grátis <ArrowRight className="h-4 w-4" /></a>
+              <LandingConversionLink href="#montar" landingPath={path} placement="hero_primary" className="mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">Usar este modelo grátis <ArrowRight className="h-4 w-4" /></LandingConversionLink>
               <p className="mt-3 text-sm text-emerald-100">Sem cadastro para começar · aprovação pelo cliente · Pix no mesmo fluxo</p>
             </div>
           </section>
@@ -102,9 +103,9 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
                   ))}
                 </div>
                 <p className="mt-4 text-sm leading-6 text-slate-600">{page.priceGuide.footnote}</p>
-                <a href="#montar" className="mt-6 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">
+                <LandingConversionLink href="#montar" landingPath={path} placement="inline_primary" className="mt-6 inline-flex h-12 items-center gap-2 rounded-xl bg-amber-400 px-6 font-bold text-slate-950 hover:bg-amber-300">
                   Montar meu orçamento com esses itens <ArrowRight className="h-4 w-4" />
-                </a>
+                </LandingConversionLink>
               </div>
             </section>
           ) : null}

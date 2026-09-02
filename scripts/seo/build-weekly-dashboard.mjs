@@ -50,6 +50,28 @@ const TARGET_PATHS = [
   '/orcamento-para/instalacao-de-piso'
 ];
 
+const PRIORITY_PATHS = [
+  '/orcamento-com-pix',
+  '/recibos/recibo-pagamento-pix',
+  '/gerador-de-proposta-comercial',
+  '/gerador-de-contrato',
+  '/gerador-de-recibo',
+  '/orcamento-para/eletricista',
+  '/orcamento-para/pedreiro'
+];
+
+const FUNNEL_EVENTS = [
+  'landing_cta_click',
+  'quote_started',
+  'quote_preview_ready',
+  'quote_link_created',
+  'quote_whatsapp_send_completed',
+  'quote_recipient_view',
+  'quote_approved',
+  'begin_checkout',
+  'purchase'
+];
+
 function argument(name, fallback) {
   const index = process.argv.indexOf(`--${name}`);
   return index >= 0 ? process.argv[index + 1] : fallback;
@@ -104,6 +126,7 @@ const gscFile = argument('gsc');
 const queriesFile = argument('queries');
 const bingFile = argument('bing');
 const conversionFile = argument('conversions');
+const funnelFile = argument('funnel');
 const outputFile = argument('output', `docs/seo/painel-semanal-${endDate}.md`);
 
 if (!gscFile) throw new Error('Informe --gsc com o CSV de Páginas exportado do Search Console.');
@@ -112,6 +135,21 @@ const gsc = new Map(loadCsv(gscFile).map((row) => [pagePath(row['Páginas princi
 const queries = loadCsv(queriesFile);
 const bing = new Map(loadCsv(bingFile).map((row) => [pagePath(row.Page || row.URL), row]));
 const conversions = new Map(loadCsv(conversionFile).map((row) => [pagePath(row.page || row.Page || row.URL), row.conversions || row.Conversions]));
+const funnel = new Map();
+for (const row of loadCsv(funnelFile)) {
+  const landing = pagePath(row.landing_path || row['Landing path'] || row.page || row.Page || row.URL || '');
+  const event = row.event_name || row['Event name'] || row.Event || row.event;
+  const count = Number(String(row.event_count || row['Event count'] || row.Count || row.count || 0).replace(/\./g, '').replace(',', '.')) || 0;
+  if (!landing || !FUNNEL_EVENTS.includes(event)) continue;
+  const current = funnel.get(landing) || {};
+  current[event] = (current[event] || 0) + count;
+  funnel.set(landing, current);
+}
+
+function rate(numerator, denominator) {
+  if (!denominator) return 'n/d';
+  return `${((numerator / denominator) * 100).toFixed(1).replace('.', ',')}%`;
+}
 
 const lines = [
   `# Painel semanal de SEO por página · até ${endDate}`,
@@ -128,6 +166,26 @@ for (const target of TARGET_PATHS) {
   lines.push(
     `| \`${target}\` | ${google['Impressões'] || 0} | ${google['Posição'] || '—'} | ${google.CTR || '0%'} | ${google['Cliques'] || 0} | ${microsoft.Impressions || 0} | ${microsoft['Avg. Position'] || '—'} | ${microsoft.CTR || '0%'} | ${microsoft.Clicks || 0} | ${conversions.get(target) ?? 'n/d'} |`
   );
+}
+
+lines.push(
+  '',
+  '## Funil orgânico das sete páginas prioritárias',
+  '',
+  '> Fonte: export do GA4 por dimensão `landing_path` e `event_name`. Use `--funnel arquivo.csv`; `n/d` indica ausência do export, não zero.',
+  '',
+  '| Landing | CTA | Início | Prévia | Link | WhatsApp | Visualização | Aprovação | Checkout | Compra | CTA→link | Envio→aprovação |',
+  '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|'
+);
+
+for (const target of PRIORITY_PATHS) {
+  const events = funnel.get(target);
+  if (!events) {
+    lines.push(`| \`${target}\` | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d |`);
+    continue;
+  }
+  const value = (event) => events[event] || 0;
+  lines.push(`| \`${target}\` | ${value('landing_cta_click')} | ${value('quote_started')} | ${value('quote_preview_ready')} | ${value('quote_link_created')} | ${value('quote_whatsapp_send_completed')} | ${value('quote_recipient_view')} | ${value('quote_approved')} | ${value('begin_checkout')} | ${value('purchase')} | ${rate(value('quote_link_created'), value('landing_cta_click'))} | ${rate(value('quote_approved'), value('quote_whatsapp_send_completed'))} |`);
 }
 
 lines.push(

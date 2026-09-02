@@ -4,9 +4,9 @@ import type { SeoPageContent } from './types';
 export const contratosSeoContent: SeoPageContent = {
   slug: 'gerador-de-contrato',
   toolName: 'Contrato',
-  h1: 'Gerador de Contrato Online Gratuito',
+  h1: 'Gerador de contrato online grátis em PDF',
   subtitle:
-    'Monte um contrato profissional de aluguel, serviços, trabalho, compra e venda ou comodato em poucos minutos. Preencha os dados das partes e baixe em PDF pronto para assinar.',
+    'Monte e teste sem cadastro um contrato de serviços, aluguel, compra e venda ou comodato. Revise as cláusulas e baixe o PDF pronto para assinar.',
   ctaPrimary: 'Montar contrato grátis',
   ctaSecondary: 'Ver modelos de contrato',
   ctaHref: '/gerador-de-contrato#ferramenta',
@@ -138,9 +138,9 @@ export const contratosSeoContent: SeoPageContent = {
     }
   ],
   seo: {
-    metaTitle: 'Gerador de Contrato Online Gratuito',
+    metaTitle: 'Gerador de contrato online grátis em PDF',
     metaDescription:
-      'Crie contratos de aluguel, prestação de serviços, trabalho, compra e venda ou comodato grátis, online. Preencha os dados e baixe em PDF em minutos.',
+      'Teste sem cadastro: crie contrato de prestação de serviços, aluguel ou compra e venda, revise as cláusulas e baixe o PDF pronto para assinar.',
     keywords: [
       'gerador de contrato',
       'contrato online',

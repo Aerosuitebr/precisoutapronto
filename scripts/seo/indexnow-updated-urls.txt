@@ -9,6 +9,8 @@
 /recibos/recibo-pagamento-pix
 /corretor-de-redacao-enem
 /gerador-de-recibo
+/gerador-de-proposta-comercial
+/gerador-de-contrato
 /gerador-de-curriculo
 /gerador-de-referencias-abnt
 /calculadora-de-rescisao

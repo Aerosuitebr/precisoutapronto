@@ -18,6 +18,10 @@ import { ToolLandingRelated } from './related-tools';
 import { ToolLandingShare } from './share-buttons';
 import { ToolLandingEmbed } from './tool-embed';
 import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
+import Link from 'next/link';
+import { BRAND_AUTHOR_PATH } from '@/lib/brand';
+import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
 
 interface ToolLandingPageProps {
   content: SeoPageContent;
@@ -52,6 +56,7 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
           tool={toolPreview}
           ctaHref={content.ctaHref}
           ctaLabel={content.ctaPrimary}
+          landingPath={`/${content.slug}`}
           openWithoutAccount={content.openWithoutAccount}
         />
 
@@ -63,6 +68,14 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
         <TestimonialsSection />
         <ToolLandingFaq faq={content.faq} />
         <ToolLandingArticle title={content.article.title} html={content.article.html} />
+
+        <aside className="mx-auto my-12 max-w-6xl px-4 sm:px-6">
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
+            <strong className="text-slate-900">Como verificamos esta ferramenta.</strong> Os modelos e a prévia desta página foram preenchidos e conferidos no gerador publicado. Os exemplos são demonstrativos e devem ser revisados com os dados reais antes do envio.
+            <LiveStatsBar className="mt-5" />
+            <p className="mt-3">Atualizado em <time dateTime="2026-09-02">2 de setembro de 2026</time> · Responsável: <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">critérios de pesquisa e revisão</Link>.</p>
+          </div>
+        </aside>
 
         <section className="border-y border-blue-100 bg-[#f2f7ff] text-slate-950">
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-14 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-16">
@@ -77,10 +90,10 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
               </p>
             </div>
             <Button asChild size="lg" className="h-12 shrink-0 bg-[#155eef] px-6 font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-[#004eeb]">
-              <a href="#ferramenta">
+              <LandingConversionLink href="#ferramenta" landingPath={`/${content.slug}`} placement="footer_primary">
                 {content.ctaPrimary}
                 <ArrowRight className="h-4 w-4" aria-hidden />
-              </a>
+              </LandingConversionLink>
             </Button>
           </div>
         </section>
@@ -93,7 +106,7 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
       </main>
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 shadow-[0_-10px_30px_-18px_rgba(15,23,42,.45)] backdrop-blur lg:hidden">
         <Button asChild size="lg" className="w-full bg-[#0b5cff] font-bold hover:bg-[#0648c9]">
-          <a href="#ferramenta">{content.ctaPrimary}<ArrowRight className="h-4 w-4" aria-hidden /></a>
+          <LandingConversionLink href="#ferramenta" landingPath={`/${content.slug}`} placement="mobile_sticky">{content.ctaPrimary}<ArrowRight className="h-4 w-4" aria-hidden /></LandingConversionLink>
         </Button>
       </div>
       <SiteFooter />

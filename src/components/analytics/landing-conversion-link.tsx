@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import type { ComponentProps } from 'react';
-import { trackEvent } from '@/lib/analytics';
+import { setLandingAttribution, trackEvent } from '@/lib/analytics';
 
 type Props = ComponentProps<typeof Link> & {
   landingPath: string;
-  placement: 'hero_primary' | 'hero_secondary' | 'footer_primary';
+  placement: 'hero_primary' | 'hero_secondary' | 'footer_primary' | 'inline_primary' | 'tool_embed' | 'mobile_sticky';
 };
 
 export function LandingConversionLink({ landingPath, placement, onClick, ...props }: Props) {
@@ -14,6 +14,7 @@ export function LandingConversionLink({ landingPath, placement, onClick, ...prop
     <Link
       {...props}
       onClick={(event) => {
+        setLandingAttribution(landingPath);
         trackEvent('landing_cta_click', {
           landing_path: landingPath,
           destination_path: typeof props.href === 'string' ? props.href : '',
