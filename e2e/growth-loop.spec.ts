@@ -151,8 +151,11 @@ test('public quote editor keeps optional details out of the critical path', asyn
 });
 
 test('public quote editor turns pasted WhatsApp text into quote items', async ({ page }) => {
-  await page.goto('/orcamento-com-pix#montar', { waitUntil: 'domcontentloaded' });
+  // Aguarda a hidratação antes de preencher o textarea controlado. Sob carga do gate,
+  // preencher em domcontentloaded podia ser sobrescrito pelo primeiro render do React.
+  await page.goto('/orcamento-com-pix#montar', { waitUntil: 'networkidle' });
   await page.getByLabel('Pedido copiado do WhatsApp').fill('Instalação 350\nMaterial 140');
+  await expect(page.getByRole('button', { name: 'Montar itens automaticamente' })).toBeEnabled();
   await page.getByRole('button', { name: 'Montar itens automaticamente' }).click();
   await expect(page.getByRole('status')).toContainText('2 itens montados');
   await expect(page.locator('input[value="Instalação"]')).toBeVisible();
