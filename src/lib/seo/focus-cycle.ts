@@ -7,6 +7,7 @@ export const SEO_FOCUS_PATHS = [
   '/',
   '/orcamento-com-pix',
   '/modelos-de-orcamento',
+  '/pesquisa/orcamentos-prestadores',
   '/orcamento-para/eletricista',
   '/orcamento-para/pedreiro',
   '/orcamento-para/fotografo',
@@ -32,8 +33,7 @@ export const SEO_FOCUS_PATHS = [
   '/guias/modelo-de-orcamento-para-prestacao-de-servico',
   '/guias/como-cobrar-cliente-pelo-whatsapp',
   '/guias/calculo-rescisao-com-fgts',
-  '/guias/recibo-simples-tem-validade',
-  '/corretor-de-redacao-enem'
+  '/guias/recibo-simples-tem-validade'
 ] as const;
 
 const focusPaths = new Set<string>(SEO_FOCUS_PATHS);

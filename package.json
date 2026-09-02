@@ -25,6 +25,7 @@
     "seo:audit": "node scripts/seo/audit-static.mjs",
     "seo:smoke": "node scripts/seo/audit-http.mjs",
     "seo:dashboard": "node scripts/seo/build-weekly-dashboard.mjs",
+    "seo:backlinks": "node scripts/seo/audit-backlinks.mjs",
     "whatsapp:up": "docker compose -f docker-compose.whatsapp.yml up -d",
     "whatsapp:down": "docker compose -f docker-compose.whatsapp.yml down",
     "whatsapp:logs": "docker compose -f docker-compose.whatsapp.yml logs -f precisoutapronto-evolution-api",

@@ -87,6 +87,11 @@ const EMBEDS = [
     html: `<p><strong>Checklist de cobrança para MEI:</strong> do orçamento ao recibo, sem planilha solta. <a href="${partnerUtm('/checklist-cobranca-mei', 'embed', 'checklist_mei')}" rel="noopener noreferrer">Ver checklist</a>.</p>`
   },
   {
+    id: 'pesquisa-orcamentos',
+    title: 'Bloco · pesquisa sobre orçamentos',
+    html: `<p><strong>O que não pode faltar em um orçamento de serviço:</strong> análise aberta dos modelos para prestadores, com metodologia e dados citáveis. <a href="${partnerUtm('/pesquisa/orcamentos-prestadores', 'embed', 'pesquisa_orcamentos')}" rel="noopener noreferrer">Consultar a pesquisa</a>.</p>`
+  },
+  {
     id: 'markdown',
     title: 'Markdown (README / fóruns)',
     html: `[![Ferramentas grátis · Precisou, Tá Pronto](${BRAND_SITE}/badges/ferramentas-gratis.svg)](${partnerUtm('/', 'embed', 'markdown')})`

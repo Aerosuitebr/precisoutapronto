@@ -42,7 +42,8 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/guias/calculo-rescisao-com-fgts', new Date('2026-08-30T12:00:00.000Z')],
   ['/guias', new Date('2026-08-28T12:00:00.000Z')],
   ['/recibos', new Date('2026-08-28T12:00:00.000Z')],
-  ['/modelos-de-orcamento', new Date('2026-08-28T12:00:00.000Z')]
+  ['/modelos-de-orcamento', new Date('2026-08-28T12:00:00.000Z')],
+  ['/pesquisa/orcamentos-prestadores', new Date('2026-09-02T12:00:00.000Z')]
 ]);
 
 function normalizeLastModified(entries: MetadataRoute.Sitemap, base: string): MetadataRoute.Sitemap {
@@ -158,6 +159,7 @@ function buildCore(base: string): MetadataRoute.Sitemap {
     { url: `${base}/checklist-cobranca-mei`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/conteudos-para-compartilhar`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/modelos-de-orcamento`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.95 },
+    { url: `${base}/pesquisa/orcamentos-prestadores`, lastModified: new Date('2026-09-02T12:00:00.000Z'), changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/indique-e-ganhe`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${base}/parcerias/criadores`, lastModified: CORE_UPDATED_AT, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/campanhas/eletricistas-30-dias`, lastModified: CORE_UPDATED_AT, changeFrequency: 'weekly', priority: 0.8 },

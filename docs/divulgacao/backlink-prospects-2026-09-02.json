@@ -1,0 +1,58 @@
+[
+  {
+    "id": "meutudo-orcamento-servico",
+    "org": "meutudo",
+    "stage": "prospecção editorial",
+    "sourceUrl": "https://meutudo.com.br/blog/modelo-de-orcamento-de-servico/",
+    "targetUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+    "angle": "pesquisa-orcamentos"
+  },
+  {
+    "id": "contabilizei-orcamento-servicos",
+    "org": "Contabilizei",
+    "stage": "prospecção editorial",
+    "sourceUrl": "https://www.contabilizei.com.br/contabilidade-online/modelo-de-orcamento-de-prestacao-de-servicos-veja-como-fazer/",
+    "targetUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+    "angle": "pesquisa-orcamentos"
+  },
+  {
+    "id": "engeman-modelos-orcamento",
+    "org": "Engeman",
+    "stage": "prospecção editorial",
+    "sourceUrl": "https://blog.engeman.com.br/modelos-de-orcamento-de-servico/",
+    "targetUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+    "angle": "pesquisa-orcamentos"
+  },
+  {
+    "id": "sigecloud-orcamento-servicos",
+    "org": "SIGE Cloud",
+    "stage": "prospecção editorial",
+    "sourceUrl": "https://blog.sigecloud.com.br/como-fazer-um-orcamento-de-servicos/",
+    "targetUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+    "angle": "pesquisa-orcamentos"
+  },
+  {
+    "id": "jacalculei-orcamento-servicos",
+    "org": "Já Calculei",
+    "stage": "prospecção editorial",
+    "sourceUrl": "https://www.jacalculei.com.br/contabilidade-online/modelo-de-orcamento-de-prestacao-de-servicos-saiba-como-fazer/",
+    "targetUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+    "angle": "pesquisa-orcamentos"
+  },
+  {
+    "id": "calcme-modelo-orcamento",
+    "org": "Calcme",
+    "stage": "prospecção editorial",
+    "sourceUrl": "https://www.calcme.com.br/blog/modelo-de-orcamento-de-servico/",
+    "targetUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+    "angle": "pesquisa-orcamentos"
+  },
+  {
+    "id": "servicospro-orcamentos-propostas",
+    "org": "ServiçosPro",
+    "stage": "prospecção editorial",
+    "sourceUrl": "https://servicospro.com.br/blog/gestao-de-servicos/como-o-erp-para-prestadores-de-servico-facilita-orcamentos-e-propostas-comerciais",
+    "targetUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+    "angle": "pesquisa-orcamentos"
+  }
+]

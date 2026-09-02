@@ -19,5 +19,6 @@
 /precisou-ta-pronto
 /embed
 /modelos-de-orcamento
+/pesquisa/orcamentos-prestadores
 /rescisao
 /guias

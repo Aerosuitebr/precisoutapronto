@@ -120,6 +120,11 @@ function pitchFor(contact) {
       subject: `Gerador de proposta comercial grátis (PDF)`,
       intro:
         `Ferramenta gratuita para MEI/freelancer montar proposta comercial em PDF, com layouts prontos.\n\nLink: ${link}`
+    },
+    'pesquisa-orcamentos': {
+      subject: `Fonte aberta · elementos recorrentes em orçamentos de serviço`,
+      intro:
+        `Publicamos uma análise aberta do nosso inventário de modelos para prestadores. Ela traz contagens recalculadas a partir do catálogo, seis decisões recorrentes e limites metodológicos explícitos. Pode servir como fonte complementar em conteúdos sobre orçamento, MEI e prestação de serviços.\n\nPesquisa e metodologia: ${link}`
     }
   };
 

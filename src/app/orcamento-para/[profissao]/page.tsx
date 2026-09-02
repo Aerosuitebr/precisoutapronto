@@ -22,6 +22,21 @@ const PRIORITY_CLUSTERS: Record<string, { guide: string; guideLabel: string; rel
   'instalacao-ar-condicionado': { guide: '/guias/modelo-de-orcamento-para-prestacao-de-servico', guideLabel: 'Guia de instalação, materiais e adicionais', related: ['manutencao-ar-condicionado', 'eletricista', 'tecnico-de-informatica'] }
 };
 
+const LONG_TAIL_SCENARIOS: Record<string, Array<{ id: string; title: string; description: string; items: string[] }>> = {
+  eletricista: [
+    { id: 'residencial', title: 'Orçamento elétrico residencial', description: 'Organize o trabalho por ambiente e circuito, deixando visita, diagnóstico e execução separados.', items: ['ambientes e pontos atendidos', 'estado do quadro e dos circuitos', 'mão de obra e materiais'] },
+    { id: 'troca-quadro', title: 'Troca ou adequação de quadro elétrico', description: 'Registre quantidade e capacidade dos disjuntores, identificação dos circuitos e adequações observadas na vistoria.', items: ['diagnóstico e dimensionamento', 'componentes especificados', 'instalação, testes e identificação'] },
+    { id: 'instalacao-tomadas', title: 'Instalação de tomadas e novos pontos', description: 'Informe quantidade, ambiente, distância aproximada e se haverá passagem de cabo, canaleta ou intervenção na parede.', items: ['quantidade de pontos', 'trajeto e acabamento', 'teste e entrega'] },
+    { id: 'instalacao-eletrica', title: 'Instalação elétrica por etapa', description: 'Em obras maiores, divida infraestrutura, cabeamento, montagem, acabamento e testes para vincular prazo e pagamento às entregas.', items: ['infraestrutura', 'cabos e componentes', 'montagem, acabamento e testes'] }
+  ],
+  pedreiro: [
+    { id: 'reforma-residencial', title: 'Orçamento para reforma residencial', description: 'Separe demolição, preparação, execução, acabamento e limpeza para o cliente entender cada fase.', items: ['proteção e retirada', 'execução por ambiente', 'acabamento e descarte'] },
+    { id: 'alvenaria', title: 'Orçamento de alvenaria', description: 'Informe metragem, tipo de bloco, preparação da base, vergas, revestimento e quem fornecerá os materiais.', items: ['metragem e espessura', 'material e transporte', 'execução e acabamento'] },
+    { id: 'piso-revestimento', title: 'Assentamento de piso e revestimento', description: 'Registre área, paginação, condição da base, recortes, rejunte e perdas previstas.', items: ['área e tipo de peça', 'regularização da base', 'assentamento, rejunte e limpeza'] },
+    { id: 'pagamento-etapas', title: 'Obra com pagamento por etapas', description: 'Associe entrada e parcelas a marcos observáveis, evitando percentuais sem uma entrega correspondente.', items: ['entrada e mobilização', 'marco intermediário verificável', 'saldo após vistoria final'] }
+  ]
+};
+
 export function generateStaticParams() {
   return PROFESSION_LANDINGS.map((item) => ({ profissao: item.slug }));
 }
@@ -48,6 +63,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
   const site = getViralBaseUrl().replace(/\/$/, '');
   const pageIndex = PROFESSION_LANDINGS.findIndex((item) => item.slug === page.slug);
   const priorityCluster = PRIORITY_CLUSTERS[page.slug];
+  const longTailScenarios = LONG_TAIL_SCENARIOS[page.slug] || [];
   const relatedPages = priorityCluster
     ? priorityCluster.related.map((slug) => findProfessionLanding(slug)).filter((item): item is NonNullable<typeof item> => Boolean(item))
     : [1, 2, 3].map((offset) => PROFESSION_LANDINGS[(pageIndex + offset) % PROFESSION_LANDINGS.length]);
@@ -55,7 +71,8 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebApplication', name: page.title, description: page.description, url: `${site}${path}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web', dateModified: '2026-08-31' },
-      { '@type': 'FAQPage', mainEntity: page.faqs.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) }
+      { '@type': 'FAQPage', mainEntity: page.faqs.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) },
+      ...(longTailScenarios.length ? [{ '@type': 'ItemList', name: `Tipos de orçamento para ${page.name.toLowerCase()}`, itemListElement: longTailScenarios.map((scenario, index) => ({ '@type': 'ListItem', position: index + 1, name: scenario.title, url: `${site}${path}#${scenario.id}` })) }] : [])
     ]
   };
 
@@ -120,6 +137,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
             </div>
             <ul className="mt-5 grid gap-3 sm:grid-cols-3">{page.example.terms.map((term) => <li key={term} className="rounded-xl bg-slate-50 p-4 text-sm font-semibold text-slate-700">{term}</li>)}</ul>
           </div></section> : null}
+          {longTailScenarios.length ? <section className="border-y border-slate-200 bg-slate-50"><div className="mx-auto max-w-5xl px-4 py-14 sm:px-6"><p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Modelos por tipo de serviço</p><h2 className="precisoutapronto-display mt-2 text-3xl font-extrabold text-slate-950">Orçamentos específicos de {page.name.toLowerCase()}</h2><p className="mt-3 max-w-3xl leading-7 text-slate-600">Use estes recortes para detalhar o escopo na mesma proposta, sem criar documentos genéricos ou duplicados.</p><div className="mt-7 grid gap-4 sm:grid-cols-2">{longTailScenarios.map((scenario) => <article id={scenario.id} key={scenario.id} className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-5"><h3 className="text-lg font-extrabold text-slate-950">{scenario.title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{scenario.description}</p><ul className="mt-4 space-y-2">{scenario.items.map((item) => <li key={item} className="flex gap-2 text-sm text-slate-700"><Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />{item}</li>)}</ul><LandingConversionLink href="#montar" landingPath={path} placement="inline_primary" className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-emerald-700 hover:underline">Gerar este orçamento <ArrowRight className="h-4 w-4" /></LandingConversionLink></article>)}</div></div></section> : null}
           {page.sections?.length ? <section className="border-y border-slate-200 bg-slate-50"><div className="mx-auto grid max-w-5xl gap-8 px-4 py-14 sm:grid-cols-2 sm:px-6">{page.sections.map((section) => <div key={section.title}><h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">{section.title}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 leading-7 text-slate-700">{paragraph}</p>)}</div>)}</div></section> : null}
           <section className="bg-white">
             <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
