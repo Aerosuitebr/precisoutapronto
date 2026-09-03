@@ -258,14 +258,11 @@ if (!homePage.includes('${BRAND_NAME}: orçamento no WhatsApp, recibo e Pix grá
   failures.push('home: title de marca estável ausente');
 }
 
-const focusCycle = await readFile(path.join(root, 'src/lib/seo/focus-cycle.ts'), 'utf8');
-const focusPaths = [...focusCycle.matchAll(/^\s+'(\/[^']*)',?$/gm)];
-if (focusPaths.length !== 30) {
-  failures.push(`focus-cycle: esperado 30 URLs, encontrado ${focusPaths.length}`);
-}
-
 if (!sitemapSource.includes('export function buildFullSitemap')) {
   failures.push('sitemap-entries: buildFullSitemap ausente');
+}
+if (sitemapSource.includes('isSeoFocusPath(path)')) {
+  failures.push('sitemap-entries: sitemap ainda limitado pelo ciclo de foco');
 }
 
 const landingContent = await readFile(path.join(root, 'src/lib/seo/landing-content.ts'), 'utf8');

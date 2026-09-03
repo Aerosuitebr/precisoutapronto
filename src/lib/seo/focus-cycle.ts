@@ -69,8 +69,11 @@ export const FOCUSED_PROFESSION_SLUGS = new Set(
   )
 );
 
-export function temporaryNoindexRobots(index: boolean) {
-  return index
-    ? { index: true, follow: true }
-    : { index: false, follow: true, nocache: true };
+/**
+ * As páginas que usam este helper são landings públicas e canônicas.
+ * O argumento é preservado temporariamente para não quebrar os chamadores do
+ * antigo ciclo de concentração, mas não limita mais a indexação.
+ */
+export function temporaryNoindexRobots(_index: boolean) {
+  return { index: true, follow: true };
 }

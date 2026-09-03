@@ -54,6 +54,8 @@ const PRIVATE_DISALLOWS = [
 const PUBLIC_ALLOWS = [
   '/contato',
   '/contato/',
+  // O catálogo público exato não é coberto pelo bloqueio dos descendentes privados.
+  '/ferramentas$',
   // Permite que buscadores processem o redirect 308 e consolidem a URL antiga.
   '/ferramentas/redacao-enem'
 ] as const;

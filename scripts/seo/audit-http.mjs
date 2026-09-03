@@ -87,6 +87,9 @@ if (/^Disallow:\s*\/conta\s*$/m.test(robots)) {
 if (!robots.includes('Allow: /contato')) {
   failures.push('/robots.txt: Allow /contato ausente');
 }
+if (!robots.includes('Allow: /ferramentas$')) {
+  failures.push('/robots.txt: Allow explícito do catálogo /ferramentas ausente');
+}
 if (!robots.includes('Disallow: /conta$') && !robots.includes('Disallow: /conta/')) {
   failures.push('/robots.txt: Disallow /conta$ ou /conta/ ausente');
 }
@@ -96,7 +99,7 @@ const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[
 const escapedCanonicalBase = canonicalBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const privatePath = new RegExp(`^${escapedCanonicalBase}/(?:api|conta(?:/|$)|ferramentas(?:/|$)|checkout(?:/|$)|login(?:/|$)|cadastro(?:/|$)|documento(?:/|$)|orcamento/)`);
 const leaked = urls.filter((url) => privatePath.test(url));
-if (urls.length !== 30) failures.push(`/sitemap.xml: esperado ciclo concentrado com 30 URLs; recebido ${urls.length}`);
+if (urls.length < 100) failures.push(`/sitemap.xml: cobertura pública insuficiente; esperado ao menos 100 URLs, recebido ${urls.length}`);
 if (leaked.length) failures.push(`/sitemap.xml: URLs privadas encontradas: ${leaked.join(', ')}`);
 
 const sitemapIndex = results.get('/sitemaps/index.xml').body;
