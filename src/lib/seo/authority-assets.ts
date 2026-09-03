@@ -38,24 +38,6 @@ export const AUTHORITY_ASSETS: AuthorityAsset[] = [
     audiences: ['rh', 'imprensa']
   },
   {
-    path: '/mei-ou-clt',
-    title: 'MEI ou CLT',
-    pitch: 'Comparador útil para matérias de carreira e negócios.',
-    audiences: ['mei', 'rh', 'imprensa']
-  },
-  {
-    path: '/corretor-de-redacao-enem',
-    title: 'Corretor de redação ENEM',
-    pitch: 'Recurso educacional para portais de educação e vestibulares.',
-    audiences: ['educacao', 'imprensa']
-  },
-  {
-    path: '/gerador-de-referencias-abnt',
-    title: 'Referências ABNT',
-    pitch: 'Utilitário acadêmico fácil de recomendar em guias de TCC.',
-    audiences: ['educacao']
-  },
-  {
     path: '/orcamento-com-pix',
     title: 'Orçamento com Pix',
     pitch: 'Fluxo prático para comunidades MEI e freelancers.',
@@ -85,14 +67,9 @@ export const PRESS_STORY_ANGLES = [
     link: '/calculadora-de-rescisao'
   },
   {
-    title: 'ENEM: treino de redação no celular',
-    hook: 'Estimativa por competência para o estudante revisar antes da prova.',
-    link: '/corretor-de-redacao-enem'
-  },
-  {
-    title: 'Documentos sem Canva Pro',
-    hook: 'Currículo, recibo, proposta e contrato em PDF no navegador.',
-    link: '/recursos'
+    title: 'Pix não substitui recibo',
+    hook: 'Quando o comprovante da transferência não documenta sozinho a finalidade do pagamento.',
+    link: '/recibos/recibo-pagamento-pix'
   }
 ] as const;
 

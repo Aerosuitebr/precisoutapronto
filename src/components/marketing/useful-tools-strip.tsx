@@ -1,15 +1,15 @@
 import Link from 'next/link';
-import { ArrowRight, BriefcaseBusiness, Calculator, FileSignature, QrCode, Receipt, ScrollText } from 'lucide-react';
+import { ArrowRight, Calculator, FileText, QrCode, Receipt } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 
 const usefulTools = [
   { href: '/gerador-de-recibo', name: 'Recibo em PDF', description: 'Valor por extenso, assinatura e modelos prontos.', icon: Receipt, tone: 'bg-emerald-50 text-emerald-700' },
   { href: '/gerador-de-qr-code-pix', name: 'QR Code Pix', description: 'QR e Copia e Cola sem taxa e sem cadastro.', icon: QrCode, tone: 'bg-sky-50 text-sky-700' },
-  { href: '/gerador-de-proposta-comercial', name: 'Proposta comercial', description: 'Escopo, investimento e PDF profissional.', icon: BriefcaseBusiness, tone: 'bg-violet-50 text-violet-700' },
-  { href: '/gerador-de-contrato', name: 'Contratos', description: 'Organize o combinado antes de começar.', icon: FileSignature, tone: 'bg-amber-50 text-amber-700' },
-  { href: '/calculadora-de-preco-freelancer', name: 'Preço do serviço', description: 'Calcule custos, margem e valor por hora.', icon: Calculator, tone: 'bg-rose-50 text-rose-700' },
-  { href: '/gerador-de-curriculo', name: 'Currículo', description: 'Monte e baixe um currículo profissional.', icon: ScrollText, tone: 'bg-blue-50 text-blue-700' }
+  { href: '/orcamento-com-pix', name: 'Orçamento com Pix', description: 'Envie, aprove e cobre pelo WhatsApp.', icon: FileText, tone: 'bg-violet-50 text-violet-700' },
+  { href: '/calculadora-de-rescisao', name: 'Rescisão', description: 'Estime verbas, aviso e FGTS.', icon: Calculator, tone: 'bg-amber-50 text-amber-700' },
+  { href: '/calculadora-de-ferias', name: 'Férias', description: 'Calcule férias e adicional de um terço.', icon: Calculator, tone: 'bg-rose-50 text-rose-700' },
+  { href: '/calculadora-de-decimo-terceiro', name: '13º salário', description: 'Veja parcelas e valor proporcional.', icon: Calculator, tone: 'bg-blue-50 text-blue-700' }
 ] as const;
 
 export function UsefulToolsStrip({ currentPath, className, title = 'Mais ferramentas para resolver de verdade' }: { currentPath?: string; className?: string; title?: string }) {
@@ -19,7 +19,7 @@ export function UsefulToolsStrip({ currentPath, className, title = 'Mais ferrame
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div><p className="text-xs font-black uppercase tracking-[.16em] text-[#155eef]">Continue resolvendo</p><h2 id="ferramentas-uteis-title" className="precisoutapronto-display mt-3 text-3xl font-black tracking-[-.04em] text-slate-950 sm:text-4xl">{title}</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">Ferramentas gratuitas para organizar, cobrar, documentar e apresentar melhor o seu trabalho.</p></div>
-          <Link href="/recursos" className="inline-flex items-center gap-2 text-sm font-black text-[#155eef]">Ver todas as ferramentas <ArrowRight className="h-4 w-4" /></Link>
+          <Link href="/guias" className="inline-flex items-center gap-2 text-sm font-black text-[#155eef]">Ver guias dos temas <ArrowRight className="h-4 w-4" /></Link>
         </div>
         <div className="mt-8 rounded-[1.75rem] border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-5 shadow-sm sm:p-7">
           <p className="text-xs font-black uppercase tracking-[.16em] text-[#155eef]">Encontre pelo que você precisa fazer</p>

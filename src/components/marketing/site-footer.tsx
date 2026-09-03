@@ -12,20 +12,21 @@ const NAV_LINKS: { href: string; label: string }[] = [
   { href: '/orcamento-com-pix', label: 'Orçamento + Pix' },
   { href: '/gerador-de-recibo', label: 'Recibo' },
   { href: '/modelos-de-orcamento', label: 'Modelos de orçamento' },
+  { href: '/rescisao', label: 'Cálculos trabalhistas' },
   { href: '/guias', label: 'Guias' },
   { href: '/sobre', label: 'Sobre e equipe' },
-  { href: '/recursos', label: 'Catálogo público' }
+  { href: '/recursos', label: 'Outras ferramentas' }
 ];
 
 const SEO_LINKS = [
   { href: '/recibos', label: 'Central de recibos' },
   { href: '/pix', label: 'Central Pix' },
+  { href: '/rescisao', label: 'Central de rescisão' },
   { href: '/qualidade-e-seguranca', label: 'Qualidade e segurança' },
   { href: '/criterios-editoriais', label: 'Critérios editoriais' },
   { href: '/metodologia-calculadoras', label: 'Metodologia' },
   { href: '/imprensa', label: 'Imprensa' },
   { href: '/para/mei', label: 'Para MEI' },
-  { href: '/para/freelancers', label: 'Para freelancers' },
   { href: '/contato', label: 'Contato' }
 ] as const;
 
@@ -35,10 +36,9 @@ const PUBLIC_TOOL_LINKS = [
   { href: '/gerador-de-recibo', label: 'Recibo' },
   { href: '/modelos-de-orcamento', label: 'Modelos de orçamento' },
   { href: '/orcamento-para/eletricista', label: 'Eletricista' },
-  { href: '/gerador-de-curriculo', label: 'Currículo' },
-  { href: '/calculadora-de-preco-freelancer', label: 'Precificação' },
-  { href: '/mei-ou-clt', label: 'MEI ou CLT' },
   { href: '/calculadora-de-rescisao', label: 'Rescisão' },
+  { href: '/calculadora-de-ferias', label: 'Férias' },
+  { href: '/calculadora-de-decimo-terceiro', label: '13º salário' },
   { href: '/recursos', label: 'Ver catálogo completo' }
 ] as const;
 
