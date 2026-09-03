@@ -139,7 +139,9 @@ test('home leads with one quote-to-payment promise', async ({ page }) => {
 });
 
 test('public quote editor keeps optional details out of the critical path', async ({ page }) => {
-  await page.goto('/orcamento-com-pix#montar', { waitUntil: 'domcontentloaded' });
+  // O botão depende de hidratação para registrar o clique. Sob carga do gate,
+  // domcontentloaded pode ocorrer antes de o handler do React estar pronto.
+  await page.goto('/orcamento-com-pix#montar', { waitUntil: 'networkidle' });
   await expect(page.getByText('O essencial já está acima.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Validade da proposta' })).toBeHidden();
   const optionalDetailsButton = page.getByRole('button', { name: 'Adicionar validade, condições ou Pix' });

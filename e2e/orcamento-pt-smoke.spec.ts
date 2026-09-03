@@ -2,7 +2,9 @@ import { expect, test } from '@playwright/test';
 
 test.describe('PT quote smoke', () => {
   test('orcamento-com-pix loads without crash', async ({ page }) => {
-    const response = await page.goto('/orcamento-com-pix', { waitUntil: 'domcontentloaded' });
+    // Aguarda a hidratação: o botão de campos opcionais é interativo e um clique
+    // em HTML ainda não hidratado é descartado pelo navegador.
+    const response = await page.goto('/orcamento-com-pix', { waitUntil: 'networkidle' });
     expect(response, 'SEO page should respond').toBeTruthy();
     expect(response!.status()).toBeLessThan(500);
 
