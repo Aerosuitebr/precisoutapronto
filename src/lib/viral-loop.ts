@@ -91,7 +91,7 @@ export function viralMessageBrandBlock(utmCampaign = 'whatsapp_message') {
 }
 
 const VIRAL_MESSAGE_BRAND_RE =
-  /\n\n(?:[—–-]{1,3}\n)?Enviado (?:pelo Precisou, Tá Pronto|com Precisou\? Tá Pronto!)[^\n]*\nhttps?:\/\/[^\n]+$/i;
+  /\n\n(?:[—–-]{1,3}\n)?Enviado (?:pelo Precisou, Tá Pronto|com Precisou, Tá Pronto|com Precisou\? Tá Pronto!)[^\n]*\nhttps?:\/\/[^\n]+$/i;
 
 export function stripViralMessageBrand(text: string) {
   return text.replace(VIRAL_MESSAGE_BRAND_RE, '').trimEnd();

@@ -53,7 +53,16 @@ const PUBLIC_CACHEABLE_PATHS = new Set([
 ]);
 const PUBLIC_CACHEABLE_PREFIXES = ['/guias/', '/para/', '/modelos/', '/biblioteca'];
 
+function isDiscoveryPath(pathname: string) {
+  return (
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname.startsWith('/sitemaps/')
+  );
+}
+
 function needsDeviceCookie(pathname: string) {
+  if (isDiscoveryPath(pathname)) return false;
   const withoutOg = pathname.replace(/\/opengraph-image$/, '') || '/';
   if (PUBLIC_CACHEABLE_PATHS.has(pathname) || PUBLIC_CACHEABLE_PATHS.has(withoutOg)) return false;
   return !PUBLIC_CACHEABLE_PREFIXES.some(
@@ -179,8 +188,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Sitemap, robots, verificação Google e chave IndexNow não precisam de cookie de device.
+  // Sitemap e robots entram no matcher para o host legado também receber 301.
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|robots\\.txt|sitemap\\.xml|sitemaps/|google[^/]*\\.html|[a-f0-9]{32}\\.txt|videos/|images/).*)'
+    '/((?!_next/static|_next/image|favicon.ico|google[^/]*\\.html|[a-f0-9]{32}\\.txt|videos/|images/).*)'
   ]
 };

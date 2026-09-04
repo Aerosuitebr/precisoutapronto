@@ -48,6 +48,7 @@ export const AUTHORITY_ASSETS: AuthorityAsset[] = [
 export const PRESS_FACTS = [
   `Nome: ${BRAND_NAME}`,
   `Domínio canônico: ${BRAND_SITE}`,
+  'Único domínio oficial da plataforma. Endereços anteriores redirecionam para o mesmo caminho.',
   'Operação: Aerosuite',
   `Contato de imprensa: ${BRAND_PUBLIC_EMAIL}`,
   'Proposta: ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador',

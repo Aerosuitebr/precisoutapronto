@@ -7,6 +7,7 @@ const required = [
   'src/app/not-found.tsx',
   'src/app/robots.txt/route.ts',
   'src/app/sitemaps/[segment]/route.ts',
+  'src/app/sitemap.xml/route.ts',
   'public/llms.txt',
   'public/manifest.webmanifest',
   'public/.well-known/security.txt'
@@ -136,6 +137,9 @@ if (!robotsBody.includes('/conta$') || !robotsBody.includes("'/contato'")) {
 if (!robotsBody.includes("'/ferramentas/redacao-enem'")) {
   failures.push('robots-body.ts: Googlebot nao consegue processar o redirect antigo da redacao');
 }
+if (!robotsBody.includes("'Google-Extended'") || !robotsBody.includes("'GPTBot'")) {
+  failures.push('robots-body.ts: Allow de Google-Extended e GPTBot ausente');
+}
 if (
   !robotsBody.includes('`Sitemap: ${base}/sitemaps/index`') ||
   !robotsBody.includes('`Sitemap: ${base}/sitemaps/index.xml`') ||
@@ -148,6 +152,10 @@ if (robotsBody.includes('/sitemaps/core')) {
 }
 
 const nextConfig = await readFile(path.join(root, 'next.config.mjs'), 'utf8');
+const middlewareSource = await readFile(path.join(root, 'src/middleware.ts'), 'utf8');
+if (middlewareSource.includes('robots\\.txt|sitemap\\.xml|sitemaps/')) {
+  failures.push('middleware: sitemap e robots precisam entrar no matcher para o host legado receber 301');
+}
 if (!nextConfig.includes("source: '/para/autonomos'")) {
   failures.push('next.config.mjs: redirect /para/autonomos ausente');
 }
@@ -165,11 +173,11 @@ const canonicalBrand = 'Precisou, Tá Pronto';
 if (!brandIdentitySource.includes(`export const BRAND_NAME = '${canonicalBrand}'`)) {
   failures.push(`marca: BRAND_NAME deve usar a grafia canônica "${canonicalBrand}"`);
 }
-if (!brandIdentitySource.includes("export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!'")) {
-  failures.push('marca: BRAND_DISPLAY_NAME deve usar a assinatura pública oficial');
+if (!brandIdentitySource.includes("export const BRAND_DISPLAY_NAME = 'Precisou, Tá Pronto'")) {
+  failures.push('marca: BRAND_DISPLAY_NAME deve usar a grafia canônica Precisou, Tá Pronto');
 }
-if (!brandIdentitySource.includes('Orçamento, cobrança Pix e recibo para prestadores')) {
-  failures.push('marca: categoria principal ausente em src/lib/brand.ts');
+if (!brandIdentitySource.includes('BRAND_SAME_AS') || !brandIdentitySource.includes('/imprensa')) {
+  failures.push('marca: BRAND_SAME_AS precisa apontar páginas oficiais confirmadas');
 }
 const manifest = JSON.parse(manifestIdentitySource);
 if (manifest.name !== canonicalBrand || manifest.short_name !== canonicalBrand) {
@@ -184,13 +192,14 @@ if (
 if (!nextConfig.includes("key: 'x-forwarded-proto'") || !nextConfig.includes("destination: 'https://precisoutapronto.com.br/:path*'")) {
   failures.push('next.config.mjs: redirect HTTP → HTTPS da aplicação ausente');
 }
-if (!nextConfig.includes("destination: '/sitemaps/full'") || !nextConfig.includes("source: '/sitemap.xml'")) {
-  failures.push('next.config.mjs: rewrite /sitemap.xml para /sitemaps/full ausente');
-}
 if (!nextConfig.includes("source: '/sitemaps/:segment.xml'")) {
   failures.push('next.config.mjs: rewrite /sitemaps/:segment.xml ausente');
 }
-
+try {
+  await stat(path.join(root, 'src/app/sitemap.xml/route.ts'));
+} catch {
+  failures.push('src/app/sitemap.xml/route.ts: route handler do sitemap canônico ausente');
+}
 try {
   await stat(path.join(root, 'src/app/sitemap.ts'));
   failures.push('src/app/sitemap.ts: a convenção metadata compete com o route handler e 500 em produção');

@@ -1,8 +1,8 @@
 import {
   BRAND_PUBLIC_EMAIL,
+  BRAND_ALTERNATE_NAMES,
   BRAND_CATEGORY,
   BRAND_DESCRIPTION,
-  BRAND_DISPLAY_NAME,
   BRAND_NAME,
   BRAND_TAGLINE,
   BRAND_SAME_AS,
@@ -19,7 +19,7 @@ export function SiteJsonLd() {
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,
     name: BRAND_NAME,
-    alternateName: ['Precisou Tá Pronto'],
+    alternateName: [...BRAND_ALTERNATE_NAMES],
     url: siteUrl,
     email: BRAND_PUBLIC_EMAIL,
     logo: {
@@ -78,7 +78,7 @@ export function SiteJsonLd() {
     '@type': 'WebSite',
     '@id': `${siteUrl}/#website`,
     name: BRAND_NAME,
-    alternateName: ['Precisou Tá Pronto'],
+    alternateName: [...BRAND_ALTERNATE_NAMES],
     url: siteUrl,
     inLanguage: 'pt-BR',
     description: BRAND_DESCRIPTION,

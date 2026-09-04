@@ -75,6 +75,9 @@ if (![301, 308].includes(autonomos.response.status) || !autonomosLocation.includ
 }
 
 const robots = results.get('/robots.txt').body;
+if (!robots.includes('User-agent: Google-Extended') || !robots.includes('User-agent: GPTBot')) {
+  failures.push('/robots.txt: Allow de crawlers de resposta de IA ausente');
+}
 if (!robots.includes(`Sitemap: ${canonicalBase}/sitemaps/index\n`)) {
   failures.push('/robots.txt: Sitemap /sitemaps/index ausente');
 }

@@ -54,6 +54,7 @@ export const SEO_FOCUS_PATHS = [
 export const SEO_TRUST_PATHS = [
   '/sobre',
   '/precisou-ta-pronto',
+  '/imprensa',
   '/autores/equipe-editorial',
   '/criterios-editoriais',
   '/politica-de-correcoes',

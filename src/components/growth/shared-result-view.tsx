@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
+import { BRAND_DISPLAY_NAME } from '@/lib/brand';
 import type { SharedResultLine } from '@/lib/shared-results';
 
 export function SharedResultView({
@@ -55,7 +56,7 @@ export function SharedResultView({
           {ctaLabel}<ArrowRight className="h-5 w-5" />
         </Link>
       </Button>
-      <p className="mt-5 text-center text-xs font-semibold text-slate-500">Criado grátis com <span className="font-black text-slate-800">Precisou? Tá Pronto.</span></p>
+      <p className="mt-5 text-center text-xs font-semibold text-slate-500">Criado grátis com <span className="font-black text-slate-800">{BRAND_DISPLAY_NAME}.</span></p>
     </div>
   );
 }

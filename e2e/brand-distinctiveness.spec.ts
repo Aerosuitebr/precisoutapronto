@@ -35,13 +35,13 @@ test.describe('brand distinctiveness', () => {
 
   test('official brand page has unique entity signals', async ({ page }) => {
     await page.goto('/precisou-ta-pronto');
-    await expect(page.locator('h1')).toHaveText('Precisou? Tá Pronto! Site oficial');
+    await expect(page.locator('h1')).toHaveText('Precisou, Tá Pronto Site oficial');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/precisou-ta-pronto$/);
     await expect(page.getByText(/único domínio oficial é precisoutapronto\.com\.br/)).toBeVisible();
     const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
     expect(schemas.join('\n')).toContain('AboutPage');
-    expect(schemas.join('\n')).toContain('Precisou? Tá Pronto!');
+    expect(schemas.join('\n')).toContain('Precisou, Tá Pronto');
   });
 
   test('quality page documents test and privacy commitments', async ({ page }) => {

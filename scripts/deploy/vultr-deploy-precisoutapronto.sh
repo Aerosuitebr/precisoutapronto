@@ -157,4 +157,4 @@ fi
 
 [[ -s "${CURRENT_SITEMAP_FILE}" ]] && cp "${CURRENT_SITEMAP_FILE}" "${PREVIOUS_SITEMAP_FILE}"
 rm -f "${CURRENT_SITEMAP_FILE}" "${CURRENT_SITEMAP_FILE}.urls" "${INDEXNOW_URL_FILE}" "${PREVIOUS_SITEMAP_FILE}.urls"
-echo "OK - Precisou? Ta Pronto! em ${INSTALL_DIR} (localhost:3000; publico: ${PUBLIC_APP_URL})"
+echo "OK - Precisou, Tá Pronto em ${INSTALL_DIR} (localhost:3000; publico: ${PUBLIC_APP_URL})"

@@ -1,8 +1,9 @@
 /** Identidade pública oficial da marca. */
 
 export const BRAND_NAME = 'Precisou, Tá Pronto';
-export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!';
+export const BRAND_DISPLAY_NAME = 'Precisou, Tá Pronto';
 export const BRAND_SHORT_NAME = BRAND_NAME;
+export const BRAND_ALTERNATE_NAMES = ['Precisou Tá Pronto'] as const;
 export const BRAND_CATEGORY = 'Orçamento, cobrança Pix e recibo para prestadores';
 export const BRAND_TAGLINE = 'Orçamento no WhatsApp, cobrança Pix e recibo para prestadores';
 export const BRAND_DESCRIPTION =
@@ -24,8 +25,15 @@ export const BRAND_PUBLIC_EMAIL = BRAND_EMAIL;
 /** Remetente SMTP / Resend no formato RFC. */
 export const BRAND_EMAIL_FROM = `${BRAND_NAME} <${BRAND_EMAIL}>`;
 
-/** Perfis públicos confirmados para Organization.sameAs. Vazio até existir perfil da marca nova. */
-export const BRAND_SAME_AS = [] as const;
+/**
+ * Identidade oficial em páginas próprias até existirem perfis sociais publicados.
+ * Acrescente LinkedIn, Google Business ou YouTube somente com URL real conferida.
+ */
+export const BRAND_SAME_AS = [
+  `${BRAND_PRIMARY_SITE}${BRAND_OFFICIAL_PATH}`,
+  `${BRAND_PRIMARY_SITE}/imprensa`,
+  `${BRAND_PRIMARY_SITE}/sobre`
+] as const;
 
 export const BRAND_LOGO_LIGHT = '/brand/precisou-ta-pronto-logo-light-v1.png';
 export const BRAND_LOGO_DARK = '/brand/precisou-ta-pronto-logo-dark-v2.png';

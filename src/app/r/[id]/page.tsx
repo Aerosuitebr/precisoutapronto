@@ -4,6 +4,7 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SharedResultView } from '@/components/growth/shared-result-view';
 import { getPrisma } from '@/lib/db';
+import { BRAND_DISPLAY_NAME } from '@/lib/brand';
 import { loadSharedResult, sanitizeSharedResultLines } from '@/lib/shared-results';
 
 type Props = { params: Promise<{ id: string }> };
@@ -13,11 +14,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!result) return { title: 'Resultado indisponível', robots: { index: false, follow: false } };
   return {
     title: result.title,
-    description: result.subtitle || 'Veja este resultado criado no Precisou? Tá Pronto.',
+    description: result.subtitle || `Veja este resultado criado no ${BRAND_DISPLAY_NAME}.`,
     robots: { index: false, follow: true },
     openGraph: {
       title: result.title,
-      description: result.subtitle || 'Resultado criado no Precisou? Tá Pronto.',
+      description: result.subtitle || `Resultado criado no ${BRAND_DISPLAY_NAME}.`,
       images: [{ url: `/r/${result.token}/opengraph-image` }]
     },
     twitter: { card: 'summary_large_image', images: [`/r/${result.token}/opengraph-image`] }

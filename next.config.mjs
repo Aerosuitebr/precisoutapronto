@@ -50,9 +50,8 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      // A convenção app/sitemap.ts e o sufixo .xml no [segment] chegavam a 500 em produção.
-      // O XML canônico sai do route handler em /sitemaps/*.
-      { source: '/sitemap.xml', destination: '/sitemaps/full' },
+      // /sitemap.xml sai de src/app/sitemap.xml/route.ts. O sufixo .xml dos
+      // segmentos continua reescrito para o route handler em /sitemaps/*.
       { source: '/sitemaps/:segment.xml', destination: '/sitemaps/:segment' }
     ];
   },

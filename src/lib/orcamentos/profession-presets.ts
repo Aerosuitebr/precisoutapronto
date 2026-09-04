@@ -80,7 +80,8 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       { title: 'Segurança e responsabilidade técnica', paragraphs: ['O modelo organiza a proposta comercial; ele não substitui inspeção, projeto, laudo ou responsabilidade técnica quando exigidos.', 'Normas, capacidade do circuito e condições do imóvel devem ser avaliadas por profissional habilitado para o serviço aplicável.'] }
     ],
     faqs: [
-      { q: 'Quanto custa um eletricista em 2026?', a: 'A visita costuma ficar entre R$ 100 e R$ 250, e serviços pontuais como tomada ou disjuntor variam conforme cidade, urgência e material. Use a tabela abaixo como referência e feche o valor no seu orçamento depois da vistoria.' },
+      { q: 'Quanto custa um eletricista em 2026?', a: 'A visita costuma ficar entre R$ 100 e R$ 250, e serviços pontuais como tomada ou disjuntor variam conforme cidade, urgência e material. Use a tabela desta página como referência e feche o valor no seu orçamento depois da vistoria.' },
+      { q: 'O que entra em um orçamento para eletricista?', a: 'Descreva visita ou diagnóstico, materiais, mão de obra, ambientes ou pontos, prazo, validade e forma de pagamento. A tabela de faixa de preço é só referência; o valor do serviço sai da vistoria no modelo.' },
       { q: 'Devo cobrar a visita técnica?', a: 'Você pode criar um item separado para diagnóstico e informar se o valor será abatido após a aprovação do serviço.' },
       { q: 'Como registrar materiais?', a: 'Liste os principais materiais como itens ou use um item consolidado, deixando marcas e quantidades nas observações.' }
     ],
@@ -281,6 +282,7 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
     ],
     faqs: [
       { q: 'Quanto custa um pedreiro em 2026?', a: 'A diária costuma ficar entre R$ 250 e R$ 500, e um cômodo pequeno frequentemente parte de R$ 3.000. Material, descarte e acesso ao local mudam o total. Use a tabela como referência e feche o valor por etapa no orçamento.' },
+      { q: 'O que entra em um orçamento para pedreiro?', a: 'Separe preparação, mão de obra, materiais, metragem, prazo por etapa e pagamento. A faixa de preço ajuda o cliente a comparar; o total do cômodo sai da vistoria no modelo.' },
       { q: 'É melhor cobrar por diária ou empreitada?', a: 'Depende do escopo. Para serviço definido, a empreitada facilita a aprovação; para atividade incerta, registre diária e estimativa.' },
       { q: 'Como prever imprevistos da obra?', a: 'Informe que condições ocultas exigem orçamento complementar e aprovação antes da continuidade.' }
     ],

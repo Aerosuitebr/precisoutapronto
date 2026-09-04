@@ -14,7 +14,7 @@ const PATH = '/imprensa';
 const SITE = getViralBaseUrl().replace(/\/$/, '') || BRAND_SITE;
 
 export const metadata: Metadata = {
-  title: 'Imprensa e press kit',
+  title: { absolute: 'Imprensa e press kit | Precisou, Tá Pronto' },
   description:
     'Informações oficiais sobre o Precisou, Tá Pronto, fatos citáveis, materiais da marca e contato para imprensa e parceiros.',
   alternates: { canonical: PATH },
