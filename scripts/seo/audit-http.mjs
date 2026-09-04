@@ -99,11 +99,11 @@ const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[
 const escapedCanonicalBase = canonicalBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const privatePath = new RegExp(`^${escapedCanonicalBase}/(?:api|conta(?:/|$)|ferramentas(?:/|$)|checkout(?:/|$)|login(?:/|$)|cadastro(?:/|$)|documento(?:/|$)|orcamento/)`);
 const leaked = urls.filter((url) => privatePath.test(url));
-if (urls.length < 100) failures.push(`/sitemap.xml: cobertura pública insuficiente; esperado ao menos 100 URLs, recebido ${urls.length}`);
+if (urls.length < 15 || urls.length > 40) failures.push(`/sitemap.xml: foco editorial inválido; esperado entre 15 e 40 URLs, recebido ${urls.length}`);
 if (leaked.length) failures.push(`/sitemap.xml: URLs privadas encontradas: ${leaked.join(', ')}`);
 
 const sitemapIndex = results.get('/sitemaps/index.xml').body;
-if ((sitemapIndex.match(/<sitemap>/g) || []).length !== 5) {
+if ((sitemapIndex.match(/<sitemap>/g) || []).length !== 4) {
   failures.push('/sitemaps/index.xml: quantidade inesperada de segmentos');
 }
 if (sitemapIndex.includes('/sitemaps/games')) {
@@ -121,4 +121,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Smoke test SEO aprovado em ${base}: ${checks.length} endpoints, ${urls.length} URLs e 5 sitemaps no índice canônico.`);
+console.log(`Smoke test SEO aprovado em ${base}: ${checks.length} endpoints, ${urls.length} URLs e 4 sitemaps no índice canônico.`);

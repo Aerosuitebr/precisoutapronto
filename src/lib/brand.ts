@@ -3,10 +3,10 @@
 export const BRAND_NAME = 'Precisou, Tá Pronto';
 export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!';
 export const BRAND_SHORT_NAME = BRAND_NAME;
-export const BRAND_CATEGORY = 'Orçamento no WhatsApp, documentos e ferramentas online';
-export const BRAND_TAGLINE = 'Orçamento no WhatsApp, aprovado, Pix recebido';
+export const BRAND_CATEGORY = 'Orçamento, cobrança Pix e recibo para prestadores';
+export const BRAND_TAGLINE = 'Orçamento no WhatsApp, cobrança Pix e recibo para prestadores';
 export const BRAND_DESCRIPTION =
-  'Precisou, Tá Pronto é uma plataforma de orçamento no WhatsApp, documentos e ferramentas online. Crie orçamentos com Pix, recibos em PDF e soluções para MEIs e freelancers.';
+  'Precisou, Tá Pronto ajuda prestadores a criar orçamento, enviar pelo WhatsApp, receber aprovação, cobrar com Pix e emitir recibo em PDF.';
 export const BRAND_OFFICIAL_PATH = '/precisou-ta-pronto';
 export const BRAND_AUTHOR_PATH = '/autores/equipe-editorial';
 

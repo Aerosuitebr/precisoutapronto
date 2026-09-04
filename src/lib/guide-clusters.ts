@@ -109,8 +109,8 @@ export const clusterGuides: Guide[] = [
   },
   {
     slug: 'como-cobrar-cliente-pelo-whatsapp',
-    title: 'Como cobrar cliente pelo WhatsApp sem perder o profissionalismo',
-    description: 'Use mensagens objetivas, registre vencimento e facilite o pagamento sem constranger o cliente.',
+    title: 'Como cobrar cliente pelo WhatsApp: 7 mensagens prontas',
+    description: 'Copie mensagens para antes e depois do vencimento, registre o prazo e facilite o pagamento sem constranger o cliente.',
     answer: 'Uma boa cobrança pelo WhatsApp identifica o serviço, informa valor e vencimento, pergunta se houve algum problema e oferece um próximo passo simples. Comece cordialmente e aumente a firmeza apenas quando o atraso continuar.',
     category: 'Cobrança e vendas', readTime: '6 min', toolHref: '/gerador-de-qr-code-pix', toolLabel: 'Gerar cobrança Pix', ...EDITORIAL,
     sections: [
@@ -118,7 +118,7 @@ export const clusterGuides: Guide[] = [
       { title: 'Use uma sequência curta', paragraphs: ['No vencimento, envie um lembrete. Após o atraso, confirme se houve dificuldade. Persistindo, registre novo prazo e as consequências previstas no contrato.'], bullets: ['Lembrete no vencimento', 'Contato após 2 ou 3 dias', 'Novo prazo por escrito', 'Escalonamento coerente com o contrato'] },
       { title: 'Preserve o relacionamento e o histórico', paragraphs: ['Evite ameaças, exposição pública ou mensagens fora de horário. Guarde orçamento, aceite, nota ou recibo e conversas relevantes.'] }
     ],
-    example: { title: 'Mensagem de lembrete', lines: ['Olá, Ana! Tudo bem?', 'O pagamento de R$ 480,00 referente à identidade visual vence hoje.', 'Segue novamente o link com o Pix: [link]. Se já pagou, pode desconsiderar. Obrigado!'] },
+    example: { title: '7 mensagens prontas para adaptar', lines: ['1. Antes: Olá, Ana! O pagamento de R$ 480,00 vence amanhã. Segue o link: [link].', '2. No dia: O pagamento da identidade visual vence hoje. Se já pagou, desconsidere.', '3. Confirmação: Você conseguiu abrir o link e conferir os dados?', '4. Primeiro atraso: O pagamento venceu há 2 dias. Houve algum problema?', '5. Novo prazo: Podemos registrar o novo vencimento para [data]?', '6. Cobrança firme: O valor continua pendente. Preciso de uma previsão objetiva.', '7. Acordo: Combinamos R$ [valor] para [data]. Ao receber, envio o recibo.'] },
     faq: [
       { question: 'Posso cobrar todos os dias?', answer: 'Mensagens excessivas podem desgastar a relação. Use uma cadência razoável e documentada.' },
       { question: 'Devo mandar áudio?', answer: 'Texto facilita a conferência de valor, vencimento e link; áudio pode complementar, mas não substituir os dados.' },
@@ -166,8 +166,8 @@ export const clusterGuides: Guide[] = [
   },
   {
     slug: 'orcamento-aprovado-tem-validade',
-    title: 'Orçamento aprovado tem validade? Entenda prazo e aceite',
-    description: 'Saiba para que serve a validade do orçamento e como registrar alterações depois do aceite.',
+    title: 'Orçamento aprovado tem validade? Prazo, cancelamento e exemplo',
+    description: 'Entenda validade, prazo de execução, cancelamento e como registrar alterações depois do aceite, com exemplo prático.',
     answer: 'A validade indica até quando preço e condições permanecem disponíveis. Depois do aceite, o documento e as mensagens trocadas podem integrar o acordo; mudanças relevantes devem ser registradas em nova versão ou aditivo.',
     category: 'Cobrança e vendas', readTime: '6 min', toolHref: '/orcamento-com-pix', toolLabel: 'Criar orçamento com validade', ...EDITORIAL,
     sections: [

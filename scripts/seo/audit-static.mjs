@@ -168,7 +168,7 @@ if (!brandIdentitySource.includes(`export const BRAND_NAME = '${canonicalBrand}'
 if (!brandIdentitySource.includes("export const BRAND_DISPLAY_NAME = 'Precisou? Tá Pronto!'")) {
   failures.push('marca: BRAND_DISPLAY_NAME deve usar a assinatura pública oficial');
 }
-if (!brandIdentitySource.includes('Orçamento no WhatsApp, documentos e ferramentas online')) {
+if (!brandIdentitySource.includes('Orçamento, cobrança Pix e recibo para prestadores')) {
   failures.push('marca: categoria principal ausente em src/lib/brand.ts');
 }
 const manifest = JSON.parse(manifestIdentitySource);
@@ -261,12 +261,12 @@ if (!homePage.includes('${BRAND_NAME}: orçamento no WhatsApp, recibo e Pix grá
 if (!sitemapSource.includes('export function buildFullSitemap')) {
   failures.push('sitemap-entries: buildFullSitemap ausente');
 }
-if (sitemapSource.includes('isSeoFocusPath(path)')) {
-  failures.push('sitemap-entries: sitemap ainda limitado pelo ciclo de foco');
+if (!sitemapSource.includes('keepPromoted(entries, base)')) {
+  failures.push('sitemap-entries: filtro editorial do ciclo de foco ausente');
 }
 
 const landingContent = await readFile(path.join(root, 'src/lib/seo/landing-content.ts'), 'utf8');
-if (!landingContent.includes("title: 'Gerador de orçamento grátis: WhatsApp, aprovação e Pix'")) {
+if (!landingContent.includes("title: 'Orçamento no WhatsApp: modelo, aprovação e Pix grátis'")) {
   failures.push('orcamento-com-pix: title de CTR ausente');
 }
 

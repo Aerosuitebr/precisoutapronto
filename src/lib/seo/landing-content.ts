@@ -34,7 +34,7 @@ export const SEO_LANDINGS = {
     path: '/orcamento-com-pix',
     toolHref: '/orcamento-com-pix#montar',
     eyebrow: 'Orçamento digital + Pix',
-    title: 'Gerador de orçamento grátis: WhatsApp, aprovação e Pix',
+    title: 'Orçamento no WhatsApp: modelo, aprovação e Pix grátis',
     description:
       'Gerador de orçamento grátis: crie, envie pelo WhatsApp e receba a aprovação no celular. Sem cadastro para começar. O cliente não instala aplicativo e o Pix fica no mesmo fluxo.',
     heroBullets: [

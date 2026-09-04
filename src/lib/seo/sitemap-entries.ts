@@ -12,6 +12,7 @@ import { viralClusters } from '@/lib/seo/viral-clusters';
 import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
 import { CONTRACT_PROFESSION_CONTEXTS } from '@/lib/contratos/profession-contexts';
 import { RECEIPT_PROFESSION_CONTEXTS } from '@/lib/recibos/profession-contexts';
+import { SEO_FOCUS_PATHS, SEO_TRUST_PATHS } from '@/lib/seo/focus-cycle';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-08-27T12:00:00.000Z');
@@ -125,8 +126,7 @@ export const INDEXABLE_SITEMAP_SEGMENTS: readonly SitemapSegment[] = [
   'core',
   'tools',
   'growth',
-  'guides',
-  'i18n'
+  'guides'
 ] as const;
 
 function dedupe(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
@@ -135,6 +135,15 @@ function dedupe(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
     byUrl.set(entry.url, entry);
   }
   return [...byUrl.values()];
+}
+
+const promotedPaths = new Set<string>([...SEO_FOCUS_PATHS, ...SEO_TRUST_PATHS]);
+
+function keepPromoted(entries: MetadataRoute.Sitemap, base: string): MetadataRoute.Sitemap {
+  return entries.filter((entry) => {
+    const path = entry.url.startsWith(base) ? entry.url.slice(base.length) || '/' : '';
+    return promotedPaths.has(path);
+  });
 }
 
 function buildCore(base: string): MetadataRoute.Sitemap {
@@ -407,10 +416,10 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): 
     default:
       entries = [];
   }
-  return normalizeLastModified(entries, base);
+  return normalizeLastModified(keepPromoted(entries, base), base);
 }
 
-/** Sitemap canônico com todas as URLs públicas indexáveis, exceto Games. */
+/** Sitemap canônico editorial: foco comercial + páginas de confiança. */
 export function buildFullSitemap(baseUrl?: string): MetadataRoute.Sitemap {
   return dedupe(INDEXABLE_SITEMAP_SEGMENTS.flatMap((segment) => buildSitemapSegment(segment, baseUrl)));
 }

@@ -8,7 +8,7 @@ import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
 import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 
 export const metadata: Metadata = {
-  title: 'Modelos de Orçamento Grátis por Profissão e Serviço',
+  title: 'Modelos de orçamento preenchidos e PDF grátis',
   description: 'Escolha um modelo de orçamento preenchido, ajuste itens e valores e envie pelo WhatsApp para o cliente aprovar e pagar por Pix.',
   alternates: { canonical: '/modelos-de-orcamento' }
 };
