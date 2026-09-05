@@ -70,7 +70,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebApplication', name: page.title, description: page.description, url: `${site}${path}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web', dateModified: '2026-09-04' },
+      { '@type': 'WebApplication', name: page.title, description: page.description, url: `${site}${path}`, applicationCategory: 'BusinessApplication', operatingSystem: 'Web', dateModified: '2026-09-05' },
       { '@type': 'FAQPage', mainEntity: page.faqs.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) },
       ...(longTailScenarios.length ? [{ '@type': 'ItemList', name: `Tipos de orçamento para ${page.name.toLowerCase()}`, itemListElement: longTailScenarios.map((scenario, index) => ({ '@type': 'ListItem', position: index + 1, name: scenario.title, url: `${site}${path}#${scenario.id}` })) }] : [])
     ]
@@ -120,6 +120,24 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
               </div>
             </section>
           ) : null}
+          {page.scopeGuide ? (
+            <section className="border-t border-slate-200 bg-slate-50">
+              <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Escopo do serviço</p>
+                <h2 className="precisoutapronto-display mt-2 text-3xl font-extrabold text-slate-950">{page.scopeGuide.title}</h2>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">{page.scopeGuide.intro}</p>
+                <ol className="mt-7 grid gap-3 sm:grid-cols-2">
+                  {page.scopeGuide.items.map((item, index) => (
+                    <li key={item.label} className="rounded-2xl border border-slate-200 bg-white p-5">
+                      <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">{String(index + 1).padStart(2, '0')}</p>
+                      <h3 className="mt-2 font-bold text-slate-950">{item.label}</h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-600">{item.detail}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </section>
+          ) : null}
           <section id="montar" className="scroll-mt-20 border-b border-slate-200">
             <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
               <div className="mx-auto mb-5 max-w-6xl rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Modelo carregado:</strong> {page.promise} Revise itens, quantidades e valores antes de enviar.</div>
@@ -146,7 +164,7 @@ export default async function ProfessionQuotePage({ params }: { params: Promise<
               <p className="mt-8 text-sm text-slate-600">Precisa de outro formato? <Link href="/orcamento-com-pix" className="font-bold text-emerald-700 hover:underline">Abra o gerador geral de orçamento com Pix</Link>.</p>
               {priorityCluster ? <p className="mt-3 text-sm text-slate-600">Quer conferir escopo e condições antes de preencher? <Link href={priorityCluster.guide} className="font-bold text-emerald-700 hover:underline">Leia o {priorityCluster.guideLabel.toLowerCase()}</Link>.</p> : null}
               <div className="mt-10 border-t border-slate-200 pt-8"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">Continue no cluster</p><h2 className="precisoutapronto-display mt-2 text-2xl font-extrabold text-slate-950">Outros modelos de orçamento</h2></div><Link href="/modelos-de-orcamento" className="text-sm font-bold text-emerald-700 hover:underline">Ver todos os modelos</Link></div><div className="mt-5 grid gap-3 sm:grid-cols-3">{relatedPages.map((related) => <Link key={related.slug} href={`/orcamento-para/${related.slug}`} className="rounded-xl border border-slate-200 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"><strong className="text-slate-950">{related.name}</strong><span className="mt-2 block text-sm text-slate-600">Abrir modelo preenchido →</span></Link>)}</div></div>
-              <aside className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Como verificamos esta página.</strong> O modelo foi testado no gerador com os campos exibidos acima. Os indicadores abaixo vêm de registros agregados do produto, são arredondados para preservar privacidade e podem ficar ocultos enquanto não atingem o mínimo de publicação.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-09-04">4 de setembro de 2026</time> · Revisão editorial interna por <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">metodologia editorial</Link>. Esta revisão verifica clareza e funcionamento; não constitui revisão técnica, jurídica ou contábil especializada.</p></aside>
+              <aside className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Como verificamos esta página.</strong> O modelo foi testado no gerador com os campos exibidos acima. Os indicadores abaixo vêm de registros agregados do produto, são arredondados para preservar privacidade e podem ficar ocultos enquanto não atingem o mínimo de publicação.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-09-05">5 de setembro de 2026</time> · Revisão editorial interna por <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">metodologia editorial</Link>. Esta revisão verifica clareza e funcionamento; não constitui revisão técnica, jurídica ou contábil especializada.</p></aside>
             </div>
           </section>
           <StrategicSeoClusters current="/modelos-de-orcamento" />

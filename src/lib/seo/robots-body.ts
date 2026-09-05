@@ -71,7 +71,8 @@ const AI_ANSWER_CRAWLERS = [
   'ClaudeBot',
   'Claude-User',
   'PerplexityBot',
-  'Applebot'
+  'Applebot',
+  'Applebot-Extended'
 ] as const;
 
 /** Corpo de `/robots.txt` (texto puro, com descoberta de `llms.txt`). */

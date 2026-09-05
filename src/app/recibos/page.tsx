@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 const established = [
+  { href: '/recibos/recibo-pagamento-pix', title: 'O comprovante do Pix serve como recibo?', text: 'O extrato mostra a transferência. O recibo explica o que foi quitado.' },
   { href: '/gerador-de-recibo', title: 'Gerador de recibo online', text: 'Preencha, assine e baixe o PDF.' },
   { href: '/recibo-de-pagamento', title: 'Recibo de pagamento', text: 'Registre a quitação de um valor.' },
   { href: '/recibo-de-aluguel', title: 'Recibo de aluguel', text: 'Identifique imóvel, competência e locação.' },

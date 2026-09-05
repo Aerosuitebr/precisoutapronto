@@ -26,7 +26,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
   const base = getViralBaseUrl().replace(/\/$/, '');
   const related = page.related.map(getReceiptClusterPage).filter((item): item is NonNullable<typeof item> => Boolean(item));
   const jsonLd = { '@context': 'https://schema.org', '@graph': [
-    { '@type': 'Article', headline: page.title, description: page.description, inLanguage: 'pt-BR', datePublished: '2026-08-10', dateModified: '2026-09-04', mainEntityOfPage: `${base}/recibos/${page.slug}`, author: { '@type': 'Organization', name: 'Equipe editorial Precisou, Tá Pronto', url: `${base}${BRAND_AUTHOR_PATH}` }, publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base } },
+    { '@type': 'Article', headline: page.title, description: page.description, inLanguage: 'pt-BR', datePublished: '2026-08-10', dateModified: '2026-09-05', mainEntityOfPage: `${base}/recibos/${page.slug}`, author: { '@type': 'Organization', name: 'Equipe editorial Precisou, Tá Pronto', url: `${base}${BRAND_AUTHOR_PATH}` }, publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base } },
     { '@type': 'HowTo', name: page.title, step: page.steps.map((text, index) => ({ '@type': 'HowToStep', position: index + 1, name: `Passo ${index + 1}`, text })) },
     { '@type': 'FAQPage', mainEntity: page.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
     { '@type': 'BreadcrumbList', itemListElement: [
@@ -47,6 +47,33 @@ export default async function ReceiptClusterRoute({ params }: Props) {
           <LandingConversionLink href="/gerador-de-recibo#ferramenta" landingPath={`/recibos/${page.slug}`} placement="hero_primary" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3 font-bold text-white">{page.slug === 'recibo-pagamento-pix' ? 'Gerar recibo de Pix grátis' : 'Gerar este recibo grátis'} <ArrowRight className="h-4 w-4" /></LandingConversionLink>
         </div></header>
         <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+          {page.comparison ? (
+            <section className="mb-12">
+              <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">{page.comparison.title}</h2>
+              <p className="mt-4 leading-8 text-slate-700">{page.comparison.intro}</p>
+              <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200">
+                <table className="min-w-full text-left text-sm">
+                  <caption className="sr-only">{page.comparison.title}</caption>
+                  <thead className="bg-slate-950 text-white">
+                    <tr>
+                      {page.comparison.headers.map((header) => (
+                        <th key={header} scope="col" className="px-4 py-3 font-bold">{header}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {page.comparison.rows.map((row) => (
+                      <tr key={row[0]} className="border-t border-slate-200 align-top">
+                        {row.map((cell, index) => (
+                          <td key={`${row[0]}-${index}`} className={index === 0 ? 'px-4 py-4 font-bold text-slate-950' : 'px-4 py-4 text-slate-600'}>{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          ) : null}
           <section><h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">O que não pode faltar</h2><ul className="mt-5 grid gap-3 sm:grid-cols-2">{page.fields.map((field) => <li key={field} className="flex gap-2 rounded-xl bg-slate-50 p-4 text-sm text-slate-700"><CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />{field}</li>)}</ul></section>
           <section className="mt-12"><h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Como fazer</h2><ol className="mt-5 space-y-3">{page.steps.map((step, index) => <li key={step} className="flex gap-3 rounded-xl border border-slate-200 p-4"><strong className="text-emerald-700">{index + 1}.</strong><span>{step}</span></li>)}</ol></section>
           {page.sections.map((section) => <section key={section.title} className="mt-12"><h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">{section.title}</h2>{section.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 leading-8 text-slate-700">{paragraph}</p>)}</section>)}
@@ -60,7 +87,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
             </section>
           ) : null}
           <section className="mt-12 border-t border-slate-200 pt-10"><h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Outros recibos e orientações</h2><div className="mt-5 grid gap-3 sm:grid-cols-3">{related.map((item) => <Link key={item.slug} href={`/recibos/${item.slug}`} className="rounded-2xl border border-slate-200 p-4 text-sm font-bold leading-6 text-slate-800 hover:border-emerald-300">{item.title}</Link>)}</div><p className="mt-6 text-sm text-slate-600">Veja também <Link href="/recibo-de-pagamento" className="font-bold text-sky-700">recibo de pagamento</Link>, <Link href="/recibo-de-aluguel" className="font-bold text-sky-700">recibo de aluguel online para imprimir</Link>, <Link href="/contrato-de-aluguel" className="font-bold text-sky-700">contrato de aluguel</Link> e <Link href="/guias/modelo-de-recibo-mei" className="font-bold text-sky-700">recibo para MEI</Link>.</p></section>
-          <aside className="mt-12 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Proveniência e metodologia.</strong> Este exemplo foi preenchido e conferido no gerador de recibos. Os indicadores abaixo são calculados a partir de registros agregados do produto e arredondados em blocos; métricas abaixo do mínimo de privacidade não são publicadas.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-09-04">4 de setembro de 2026</time> · Responsável: <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">critérios de pesquisa e revisão</Link>. Revisão editorial interna não equivale a parecer jurídico, fiscal ou contábil.</p></aside>
+          <aside className="mt-12 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600"><strong className="text-slate-900">Proveniência e metodologia.</strong> Este exemplo foi preenchido e conferido no gerador de recibos. Os indicadores abaixo são calculados a partir de registros agregados do produto e arredondados em blocos; métricas abaixo do mínimo de privacidade não são publicadas.<LiveStatsBar className="mt-5" /><p className="mt-5">Atualizado em <time dateTime="2026-09-05">5 de setembro de 2026</time> · Responsável: <Link href={BRAND_AUTHOR_PATH} className="font-bold text-emerald-700 hover:underline">Equipe editorial Precisou, Tá Pronto</Link> · <Link href="/criterios-editoriais" className="font-bold text-emerald-700 hover:underline">critérios de pesquisa e revisão</Link>. Revisão editorial interna não equivale a parecer jurídico, fiscal ou contábil.</p></aside>
         </div>
       </article>
     </main>

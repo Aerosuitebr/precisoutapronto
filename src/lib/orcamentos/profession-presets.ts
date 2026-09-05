@@ -25,6 +25,11 @@ export interface ProfessionLanding {
     rows: Array<{ service: string; range: string }>;
     footnote: string;
   };
+  scopeGuide?: {
+    title: string;
+    intro: string;
+    items: Array<{ label: string; detail: string }>;
+  };
 }
 
 export const PROFESSION_LANDINGS: ProfessionLanding[] = [
@@ -96,6 +101,19 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
         { service: 'Troca ou adequação de quadro', range: 'R$ 500 a R$ 3.500' }
       ],
       footnote: 'Urgência, horário noturno, altura e material incluso mudam a faixa. Separe visita, materiais e mão de obra no modelo abaixo para o cliente aprovar sem discussão.'
+    },
+    scopeGuide: {
+      title: 'O que entra em um orçamento para eletricista',
+      intro: 'O cliente quer saber o que está incluso, o que fica de fora e quanto custa cada parte. Preencha estes campos no modelo. A ART e o laudo, quando exigidos, são do profissional habilitado, não desta página.',
+      items: [
+        { label: 'Visita técnica e diagnóstico', detail: 'Cobre inspeção, testes e o que será executado depois da vistoria.' },
+        { label: 'Pontos, circuitos e ambientes', detail: 'Quantidade de tomadas, quadro, cômodos ou trechos de cabeamento.' },
+        { label: 'Materiais', detail: 'Disjuntores, cabos e componentes. Deixe marcas e quantidades nas observações.' },
+        { label: 'Mão de obra', detail: 'Instalação, identificação do quadro, testes e entrega.' },
+        { label: 'Prazo e validade', detail: 'Dias para executar e por quanto tempo o preço vale.' },
+        { label: 'Pagamento e Pix', detail: 'Entrada, saldo e se o cliente paga no mesmo link depois de aprovar.' },
+        { label: 'ART, NR-10 e garantia', detail: 'Quando o serviço exigir responsabilidade técnica, registre no orçamento. Informe também o prazo de garantia da mão de obra.' }
+      ]
     }
   },
   {
@@ -267,10 +285,10 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
     },
     checklist: ['Metragem e etapas descritas', 'Materiais e mão de obra separados', 'Pagamentos e prazo por etapa'],
     example: {
-      client: 'Cliente: Marina Alves — exemplo fictício',
+      client: 'Cliente: Marina Alves, exemplo fictício',
       items: [
-        { description: 'Preparação da área', detail: 'Proteção, retirada de revestimento e descarte — 12 m²', value: 'R$ 780,00' },
-        { description: 'Mão de obra de alvenaria', detail: 'Regularização e assentamento — 12 m²', value: 'R$ 1.680,00' },
+        { description: 'Preparação da área', detail: 'Proteção, retirada de revestimento e descarte, 12 m²', value: 'R$ 780,00' },
+        { description: 'Mão de obra de alvenaria', detail: 'Regularização e assentamento, 12 m²', value: 'R$ 1.680,00' },
         { description: 'Acabamento', detail: 'Rejunte e limpeza final; materiais descritos à parte', value: 'R$ 540,00' }
       ],
       total: 'R$ 3.000,00',
@@ -296,6 +314,19 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
         { service: 'Acabamento e limpeza', range: 'R$ 300 a R$ 900' }
       ],
       footnote: 'Não é tabela oficial. Separe preparação, mão de obra e materiais no modelo abaixo para o cliente aprovar cada etapa.'
+    },
+    scopeGuide: {
+      title: 'O que entra em um orçamento para pedreiro',
+      intro: 'Quem busca orçamento de obra quer etapas, metragem e o que o preço cobre. Separe preparação, execução e acabamento para o cliente aprovar cada marco.',
+      items: [
+        { label: 'Preparação e proteção', detail: 'Isolamento da área, retirada de revestimento e condições do local na vistoria.' },
+        { label: 'Metragem e etapas', detail: 'Área em m², alvenaria, regularização, assentamento e acabamento.' },
+        { label: 'Materiais', detail: 'Quem compra bloco, argamassa e acabamento. O que fica fora do preço da mão de obra.' },
+        { label: 'Descarte e acesso', detail: 'Entulho, restrição de horário e se o local exige andaime ou proteção extra.' },
+        { label: 'Prazo por etapa', detail: 'Dias úteis de cada marco observável, não só a data final.' },
+        { label: 'Pagamento e Pix', detail: 'Entrada, percentual após um marco e saldo na entrega.' },
+        { label: 'Imprevistos', detail: 'Condição oculta não vira cobrança automática. Novo serviço só depois de aprovação.' }
+      ]
     }
   },
   ...EXPANDED_PROFESSION_LANDINGS,

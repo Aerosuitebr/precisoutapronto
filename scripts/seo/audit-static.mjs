@@ -140,6 +140,9 @@ if (!robotsBody.includes("'/ferramentas/redacao-enem'")) {
 if (!robotsBody.includes("'Google-Extended'") || !robotsBody.includes("'GPTBot'")) {
   failures.push('robots-body.ts: Allow de Google-Extended e GPTBot ausente');
 }
+if (!robotsBody.includes("'Applebot-Extended'")) {
+  failures.push('robots-body.ts: Allow de Applebot-Extended ausente');
+}
 if (
   !robotsBody.includes('`Sitemap: ${base}/sitemaps/index`') ||
   !robotsBody.includes('`Sitemap: ${base}/sitemaps/index.xml`') ||
@@ -283,6 +286,9 @@ const receiptCluster = await readFile(path.join(root, 'src/lib/seo/receipt-clust
 if (!receiptCluster.includes("question: 'O comprovante do Pix serve como recibo?'")) {
   failures.push('recibo-pagamento-pix: FAQ do comprovante Pix ausente');
 }
+if (!receiptCluster.includes("title: 'O comprovante do Pix serve como recibo?'")) {
+  failures.push('recibo-pagamento-pix: tabela comprovante versus recibo ausente');
+}
 
 const professionPresets = await readFile(path.join(root, 'src/lib/orcamentos/profession-presets.ts'), 'utf8');
 if (!professionPresets.includes("title: 'Orçamento para eletricista: modelo, faixa de preço e Pix'")) {
@@ -290,6 +296,12 @@ if (!professionPresets.includes("title: 'Orçamento para eletricista: modelo, fa
 }
 if (!professionPresets.includes("title: 'Quanto custa um eletricista em 2026'")) {
   failures.push('orcamento-para/eletricista: tabela quanto custa ausente');
+}
+if (!professionPresets.includes("title: 'O que entra em um orçamento para eletricista'")) {
+  failures.push('orcamento-para/eletricista: escopo do orçamento ausente');
+}
+if (!professionPresets.includes("title: 'O que entra em um orçamento para pedreiro'")) {
+  failures.push('orcamento-para/pedreiro: escopo do orçamento ausente');
 }
 
 const enemPage = await readFile(path.join(root, 'src/app/corretor-de-redacao-enem/page.tsx'), 'utf8');

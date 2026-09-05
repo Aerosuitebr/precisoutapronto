@@ -26,15 +26,15 @@ export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/', new Date('2026-08-31T12:00:00.000Z')],
   ['/orcamento-com-pix', new Date('2026-08-31T12:00:00.000Z')],
-  ['/orcamento-para/eletricista', new Date('2026-09-04T12:00:00.000Z')],
-  ['/orcamento-para/pedreiro', new Date('2026-09-04T12:00:00.000Z')],
+  ['/orcamento-para/eletricista', new Date('2026-09-05T12:00:00.000Z')],
+  ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],
   ['/orcamento-para/fotografo', new Date('2026-08-31T12:00:00.000Z')],
   ['/orcamento-para/manutencao-residencial', new Date('2026-08-31T12:00:00.000Z')],
-  ['/recibos/recibo-pagamento-pix', new Date('2026-09-04T12:00:00.000Z')],
+  ['/recibos/recibo-pagamento-pix', new Date('2026-09-05T12:00:00.000Z')],
   ['/imprensa', new Date('2026-09-04T12:00:00.000Z')],
   ['/precisou-ta-pronto', new Date('2026-09-04T12:00:00.000Z')],
   ['/corretor-de-redacao-enem', new Date('2026-08-31T12:00:00.000Z')],
-  ['/gerador-de-recibo', new Date('2026-08-31T12:00:00.000Z')],
+  ['/gerador-de-recibo', new Date('2026-09-05T12:00:00.000Z')],
   ['/gerador-de-curriculo', new Date('2026-08-31T12:00:00.000Z')],
   ['/gerador-de-referencias-abnt', new Date('2026-08-31T12:00:00.000Z')],
   ['/calculadora-de-decimo-terceiro', new Date('2026-08-31T12:00:00.000Z')],
@@ -43,7 +43,7 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/rescisao', new Date('2026-08-30T12:00:00.000Z')],
   ['/guias/calculo-rescisao-com-fgts', new Date('2026-08-30T12:00:00.000Z')],
   ['/guias', new Date('2026-08-28T12:00:00.000Z')],
-  ['/recibos', new Date('2026-08-28T12:00:00.000Z')],
+  ['/recibos', new Date('2026-09-05T12:00:00.000Z')],
   ['/modelos-de-orcamento', new Date('2026-08-28T12:00:00.000Z')],
   ['/pesquisa/orcamentos-prestadores', new Date('2026-09-02T12:00:00.000Z')]
 ]);

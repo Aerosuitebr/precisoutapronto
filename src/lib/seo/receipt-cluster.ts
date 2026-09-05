@@ -10,6 +10,12 @@ export type ReceiptClusterPage = {
   sections: Array<{ title: string; paragraphs: string[] }>;
   faqs: Array<{ question: string; answer: string }>;
   related: string[];
+  comparison?: {
+    title: string;
+    intro: string;
+    headers: [string, string, string];
+    rows: Array<[string, string, string]>;
+  };
 };
 
 export const receiptClusterPages: ReceiptClusterPage[] = [
@@ -62,6 +68,15 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
     fields: ['Pagador e recebedor', 'Valor transferido', 'Serviço, produto ou parcela quitada', 'Data do recebimento', 'Indicação “pago via Pix”'],
     steps: ['Confirme o Pix recebido', 'Identifique a finalidade', 'Registre partes, valor e data', 'Gere o recibo e envie ao pagador'],
     example: ['Recebi de Ana Souza', 'R$ 1.200,00 (mil e duzentos reais)', 'Referente à primeira parcela do projeto de identidade visual', 'Pago via Pix em 10/08/2026'],
+    comparison: {
+      title: 'O comprovante do Pix serve como recibo?',
+      intro: 'Não por si só. O comprovante mostra que o dinheiro saiu de uma conta para outra. O recibo registra quem pagou, quem recebeu e o que aquele Pix quitou.',
+      headers: ['Documento', 'O que prova', 'O que não prova sozinho'],
+      rows: [
+        ['Comprovante Pix', 'Valor, data e transferência entre contas', 'Qual serviço, aluguel, sinal ou parcela foi quitado'],
+        ['Recibo', 'Pagador, recebedor, finalidade e se a quitação foi total ou parcial', 'A movimentação bancária em si. Guarde o comprovante junto.']
+      ]
+    },
     sections: [
       { title: 'Comprovante Pix e recibo são diferentes', paragraphs: ['O comprovante do banco confirma a movimentação entre contas, mas pode não explicar contrato, parcela ou serviço.', 'O recibo conecta o valor à obrigação quitada e pode declarar se o pagamento foi total ou parcial.'] },
       { title: 'O que o comprovante prova e o que o recibo prova', paragraphs: ['O comprovante do Pix mostra valor, data, instituições e identificador da transferência. Ele não descreve sozinho se aquele valor quitou aluguel, serviço, sinal ou parcela.', 'O recibo registra pagador, recebedor, finalidade e se a quitação foi total ou parcial. Juntos, comprovante e recibo documentam o dinheiro e o combinado.'] },

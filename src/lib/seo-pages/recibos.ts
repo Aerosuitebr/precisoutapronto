@@ -125,6 +125,11 @@ export const recibosSeoContent: SeoPageContent = {
   },
   relatedTools: [
     {
+      name: 'O comprovante do Pix serve como recibo?',
+      description: 'O extrato prova a transferência. O recibo registra o que aquele Pix quitou.',
+      href: '/recibos/recibo-pagamento-pix'
+    },
+    {
       name: 'Modelos e tipos de recibo',
       description: 'Escolha o recibo certo para serviço, autônomo, Pix, aluguel e outros pagamentos.',
       href: '/recibos'
