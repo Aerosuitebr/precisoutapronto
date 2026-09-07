@@ -1,0 +1,468 @@
+{
+  "date": "2026-09-06T15:04:26.162Z",
+  "maps": [
+    {
+      "url": "https://precisoutapronto.com.br/sitemaps/index",
+      "status": 200,
+      "count": 4
+    },
+    {
+      "url": "https://precisoutapronto.com.br/sitemaps/core",
+      "status": 200,
+      "count": 18
+    },
+    {
+      "url": "https://precisoutapronto.com.br/sitemaps/tools",
+      "status": 200,
+      "count": 7
+    },
+    {
+      "url": "https://precisoutapronto.com.br/sitemaps/growth",
+      "status": 200,
+      "count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/sitemaps/guides",
+      "status": 200,
+      "count": 6
+    },
+    {
+      "url": "https://precisoutapronto.com.br/sitemaps/index.xml",
+      "status": 200,
+      "count": 4
+    },
+    {
+      "url": "https://precisoutapronto.com.br/sitemap.xml",
+      "status": 200,
+      "count": 32
+    }
+  ],
+  "total": 32,
+  "issues": [],
+  "extra": [
+    {
+      "url": "http://precisoutapronto.com.br/",
+      "status": 308,
+      "location": "https://precisoutapronto.com.br",
+      "xrobots": null,
+      "ms": 74
+    },
+    {
+      "url": "https://precisoutapronto.com.br/$",
+      "status": 404,
+      "location": null,
+      "xrobots": null,
+      "ms": 62
+    },
+    {
+      "url": "https://precisoutapronto.com.br/&",
+      "status": 404,
+      "location": null,
+      "xrobots": null,
+      "ms": 60
+    },
+    {
+      "url": "https://precisoutapronto.com.br/cdn-cgi/l/email-protection",
+      "status": 404,
+      "location": null,
+      "xrobots": null,
+      "ms": 10
+    }
+  ],
+  "results": [
+    {
+      "url": "https://precisoutapronto.com.br/",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 35,
+      "blocked": false,
+      "title": "Precisou, Tá Pronto: orçamento no WhatsApp, recibo e Pix grátis",
+      "canonical": "https://precisoutapronto.com.br",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/sobre",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 53,
+      "blocked": false,
+      "title": "Sobre | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/sobre",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/precisou-ta-pronto",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 40,
+      "blocked": false,
+      "title": "Precisou, Tá Pronto: site oficial em precisoutapronto.com.br | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/precisou-ta-pronto",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/contato",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 79,
+      "blocked": false,
+      "title": "Contato | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/contato",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/guias",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 79,
+      "blocked": false,
+      "title": "Guias práticos para MEI, freelancers e estudantes | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/guias",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/qualidade-e-seguranca",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 32,
+      "blocked": false,
+      "title": "Qualidade e segurança: testes, privacidade e limites | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/qualidade-e-seguranca",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/criterios-editoriais",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 35,
+      "blocked": false,
+      "title": "Critérios editoriais | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/criterios-editoriais",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/metodologia-calculadoras",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 33,
+      "blocked": false,
+      "title": "Metodologia das calculadoras | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/metodologia-calculadoras",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/politica-de-correcoes",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 42,
+      "blocked": false,
+      "title": "Política de correções | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/politica-de-correcoes",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/autores/equipe-editorial",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 48,
+      "blocked": false,
+      "title": "Equipe editorial Precisou, Tá Pronto | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/autores/equipe-editorial",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/imprensa",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 46,
+      "blocked": false,
+      "title": "Imprensa e press kit | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/imprensa",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/modelos-de-orcamento",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 42,
+      "blocked": false,
+      "title": "Modelos de orçamento preenchidos e PDF grátis | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/modelos-de-orcamento",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/checklist-cobranca-mei",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 50,
+      "blocked": false,
+      "title": "Checklist de cobrança para MEI (do orçamento ao recibo) | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/checklist-cobranca-mei",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 49,
+      "blocked": false,
+      "title": "O que não pode faltar em um orçamento de serviço: análise dos modelos | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/orcamento-para/eletricista",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 42,
+      "blocked": false,
+      "title": "Orçamento para eletricista: modelo, faixa de preço e Pix | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/orcamento-para/eletricista",
+      "robots": [
+        "<meta name=\"robots\" content=\"index, follow\"/>"
+      ],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/orcamento-para/manutencao-residencial",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 43,
+      "blocked": false,
+      "title": "Orçamento para manutenção residencial: faixa de preço e Pix | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/orcamento-para/manutencao-residencial",
+      "robots": [
+        "<meta name=\"robots\" content=\"index, follow\"/>"
+      ],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/orcamento-para/pedreiro",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 39,
+      "blocked": false,
+      "title": "Orçamento para pedreiro: etapas, faixa de preço e Pix | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/orcamento-para/pedreiro",
+      "robots": [
+        "<meta name=\"robots\" content=\"index, follow\"/>"
+      ],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/orcamento-para/fotografo",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 46,
+      "blocked": false,
+      "title": "Orçamento para fotógrafo: pacote, faixa de preço e prazo | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/orcamento-para/fotografo",
+      "robots": [
+        "<meta name=\"robots\" content=\"index, follow\"/>"
+      ],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/gerador-de-qr-code-pix",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 33,
+      "blocked": false,
+      "title": "QR Code Pix Grátis: Gere o Copia e Cola | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/gerador-de-qr-code-pix",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/orcamento-com-pix",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 37,
+      "blocked": false,
+      "title": "Orçamento no WhatsApp: modelo, aprovação e Pix grátis | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/orcamento-com-pix",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/gerador-de-proposta-comercial",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 38,
+      "blocked": false,
+      "title": "Proposta Comercial Grátis: Crie o PDF e Envie ao Cliente | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/gerador-de-proposta-comercial",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/gerador-de-recibo",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 39,
+      "blocked": false,
+      "title": "Gerador de recibo online grátis em PDF | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/gerador-de-recibo",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/calculadora-de-preco-freelancer",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 40,
+      "blocked": false,
+      "title": "Calculadora de preço para freelancer grátis | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/calculadora-de-preco-freelancer",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/recibos",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 42,
+      "blocked": false,
+      "title": "Modelos de Recibo Online Grátis em PDF | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/recibos",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/para/mei",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 31,
+      "blocked": false,
+      "title": "Ferramentas grátis para MEI cobrar e profissionalizar | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/para/mei",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/recibos/recibo-pagamento-pix",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 40,
+      "blocked": false,
+      "title": "Recibo de Pix: o comprovante serve? Gere o PDF | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/recibos/recibo-pagamento-pix",
+      "robots": [
+        "<meta name=\"robots\" content=\"index, follow\"/>"
+      ],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/guias/modelo-de-orcamento-para-prestacao-de-servico",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 33,
+      "blocked": false,
+      "title": "Modelo de orçamento para prestação de serviço: exemplo preenchido | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/guias/modelo-de-orcamento-para-prestacao-de-servico",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/guias/como-cobrar-cliente-pelo-whatsapp",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 32,
+      "blocked": false,
+      "title": "Como cobrar cliente pelo WhatsApp: 7 mensagens prontas | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/guias/como-cobrar-cliente-pelo-whatsapp",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/guias/orcamento-aprovado-tem-validade",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 38,
+      "blocked": false,
+      "title": "Orçamento aprovado tem validade? Prazo, cancelamento e exemplo | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/guias/orcamento-aprovado-tem-validade",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/guias/modelo-de-orcamento-para-eletricista",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 48,
+      "blocked": false,
+      "title": "Modelo de orçamento para eletricista: itens, materiais e validade | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/guias/modelo-de-orcamento-para-eletricista",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/guias/recibo-simples-tem-validade",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 36,
+      "blocked": false,
+      "title": "Recibo simples tem validade? O que ele comprova | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/guias/recibo-simples-tem-validade",
+      "robots": [],
+      "h1Count": 1
+    },
+    {
+      "url": "https://precisoutapronto.com.br/guias/como-fazer-orcamento-com-pix",
+      "status": 200,
+      "location": null,
+      "xrobots": null,
+      "ms": 36,
+      "blocked": false,
+      "title": "Como fazer um orçamento com Pix e enviar pelo WhatsApp | Precisou, Tá Pronto",
+      "canonical": "https://precisoutapronto.com.br/guias/como-fazer-orcamento-com-pix",
+      "robots": [],
+      "h1Count": 1
+    }
+  ]
+}

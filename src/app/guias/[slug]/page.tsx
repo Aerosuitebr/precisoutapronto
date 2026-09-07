@@ -158,6 +158,14 @@ export default async function GuidePage({ params }: Props) {
               <div className="mt-8 rounded-3xl border border-sky-200 bg-sky-50 p-6">
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">Resposta direta</p>
                 <p className="mt-2 text-base font-medium leading-7 text-slate-800">{guide.answer}</p>
+                {guide.slug === 'como-fazer-orcamento-com-pix' ? (
+                  <div className="mt-5 border-t border-sky-200 pt-5">
+                    <p className="text-sm leading-6 text-slate-700">Coloque o passo a passo em prática: organize os itens, defina as condições e prepare seu orçamento para enviar pelo WhatsApp.</p>
+                    <GuideConversionLink guideSlug={guide.slug} cluster={guide.category} placement="intro" href="/orcamento-com-pix" className="mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300">
+                      Criar orçamento com Pix<ArrowRight aria-hidden="true" className="h-4 w-4" />
+                    </GuideConversionLink>
+                  </div>
+                ) : null}
               </div>
             </div>
           </header>

@@ -7,7 +7,7 @@ import { setContentAttribution, trackEvent } from '@/lib/analytics';
 type Props = ComponentProps<typeof Link> & {
   guideSlug: string;
   cluster: string;
-  placement: 'sidebar' | 'related' | 'index';
+  placement: 'sidebar' | 'related' | 'index' | 'intro';
 };
 
 export function GuideConversionLink({ guideSlug, cluster, placement, onClick, ...props }: Props) {
