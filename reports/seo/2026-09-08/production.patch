@@ -1,0 +1,311 @@
+diff --git a/src/app/gerador-de-recibo/recibo-live-preview.tsx b/src/app/gerador-de-recibo/recibo-live-preview.tsx
+index eace4f8..5d39621 100644
+--- a/src/app/gerador-de-recibo/recibo-live-preview.tsx
++++ b/src/app/gerador-de-recibo/recibo-live-preview.tsx
+@@ -12,7 +12,7 @@ import { ReciboPreview } from '@/components/recibos/recibo-preview';
+ import { useToast } from '@/components/ui/toast';
+ import { useDocumentBranding } from '@/hooks/use-document-branding';
+ import { performBillableAction } from '@/lib/billing';
+-import { exportElementToPdf } from '@/lib/curriculo/pdf';
++import { trackEvent } from '@/lib/analytics';
+ import { parseCurrency } from '@/lib/formatters';
+ import { SAMPLE_RECEIPT } from '@/lib/recibos/defaults';
+ import type { ReceiptTemplateId } from '@/lib/recibos/types';
+@@ -59,12 +59,16 @@ export function ReciboLivePreview() {
+     try {
+       const outcome = await performBillableAction(
+         { toolId: 'recibos', artifactId: `landing_${Date.now()}`, action: 'download' },
+-        () => exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments })
++        async () => {
++          const { exportElementToPdf } = await import('@/lib/curriculo/pdf');
++          await exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments });
++        }
+       );
+       if (!outcome.allowed) {
+         toast(outcome.reason || 'Não foi possível gerar o PDF.');
+         return;
+       }
++      trackEvent('receipt_pdf_download_completed', { tool_path: '/gerador-de-recibo', template_id: templateId });
+       toast('PDF baixado. Conta só se quiser histórico ou tirar a marca.');
+     } catch {
+       toast('Não foi possível gerar o PDF. Tente de novo.');
+@@ -163,7 +167,7 @@ export function ReciboLivePreview() {
+                   aria-pressed={templateId === template.id}
+                   className={`rounded-full border px-3 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+                     templateId === template.id
+-                      ? 'border-sky-600 bg-sky-600 text-white'
++                      ? 'border-sky-700 bg-sky-700 text-white'
+                       : 'border-slate-300 bg-white text-slate-700 hover:border-sky-400 hover:text-sky-700'
+                   }`}
+                 >
+@@ -177,7 +181,7 @@ export function ReciboLivePreview() {
+             type="button"
+             onClick={handleDownloadPdf}
+             disabled={exporting}
+-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 disabled:opacity-60"
++            className="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-700 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 disabled:opacity-60"
+           >
+             {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+             {exporting ? 'Gerando PDF...' : 'Baixar PDF agora'}
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index 20712c1..6def92c 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -19,6 +19,7 @@ const ibmPlexSans = IBM_Plex_Sans({
+ });
+ 
+ const dancingScript = Dancing_Script({
++  preload: false,
+   subsets: ['latin'],
+   weight: ['600'],
+   display: 'swap',
+@@ -26,6 +27,7 @@ const dancingScript = Dancing_Script({
+ });
+ 
+ const playfairDisplay = Playfair_Display({
++  preload: false,
+   subsets: ['latin'],
+   weight: ['600'],
+   style: ['italic'],
+@@ -34,6 +36,7 @@ const playfairDisplay = Playfair_Display({
+ });
+ 
+ const greatVibes = Great_Vibes({
++  preload: false,
+   subsets: ['latin'],
+   weight: ['400'],
+   display: 'swap',
+diff --git a/src/app/recibos/[slug]/page.tsx b/src/app/recibos/[slug]/page.tsx
+index 0ab657a..a20f356 100644
+--- a/src/app/recibos/[slug]/page.tsx
++++ b/src/app/recibos/[slug]/page.tsx
+@@ -82,6 +82,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
+           {page.slug === 'recibo-pagamento-pix' ? (
+             <section className="mt-12 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">
+               <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Gere o recibo do Pix agora</h2>
++              <p className="mt-3 text-sm leading-7 text-slate-700">Ainda está combinando o serviço? Prepare uma <LandingConversionLink href="/gerador-de-proposta-comercial" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="font-bold text-emerald-800 underline">proposta comercial com escopo e condições</LandingConversionLink> ou envie um <LandingConversionLink href="/orcamento-com-pix" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="font-bold text-emerald-800 underline">orçamento com aprovação e Pix</LandingConversionLink>. Depois do pagamento, registre aqui a parcela recebida.</p>
+               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-700">O comprovante da transferência não explica o que foi quitado. Preencha o gerador e baixe o PDF grátis, sem cadastro.</p>
+               <LandingConversionLink href="/gerador-de-recibo#ferramenta" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3 font-bold text-white">Gerar recibo de Pix grátis <ArrowRight className="h-4 w-4" /></LandingConversionLink>
+             </section>
+diff --git a/src/components/analytics/tool-start-boundary.tsx b/src/components/analytics/tool-start-boundary.tsx
+index f246569..cde55cc 100644
+--- a/src/components/analytics/tool-start-boundary.tsx
++++ b/src/components/analytics/tool-start-boundary.tsx
+@@ -1,15 +1,21 @@
+ 'use client';
+ 
+ import { useRef, type ReactNode } from 'react';
+-import { trackEvent } from '@/lib/analytics';
++import { setLandingAttribution, trackEvent } from '@/lib/analytics';
+ import { emitClientProductEvent } from '@/lib/events/client-emitter';
+ 
+-export function ToolStartBoundary({ toolName, children }: { toolName: string; children: ReactNode }) {
++export function ToolStartBoundary({ toolName, landingPath, children }: { toolName: string; landingPath?: string; children: ReactNode }) {
+   const started = useRef(false);
+ 
+   function markStarted() {
+     if (started.current) return;
+     started.current = true;
++    // A entrada direta no formulário também precisa de atribuição, sem depender do CTA.
++    if (landingPath) {
++      try {
++        if (!window.sessionStorage.getItem('precisoutapronto_landing_attribution')) setLandingAttribution(landingPath);
++      } catch { /* Métricas opcionais nunca bloqueiam o formulário. */ }
++    }
+     const params = new URLSearchParams(window.location.search);
+     const safeUtm = (key: string) => (params.get(key) || '').trim().replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80);
+     const utmSource = safeUtm('utm_source');
+diff --git a/src/components/marketing/tool-landing/tool-embed.tsx b/src/components/marketing/tool-landing/tool-embed.tsx
+index f6a3db8..85f3438 100644
+--- a/src/components/marketing/tool-landing/tool-embed.tsx
++++ b/src/components/marketing/tool-landing/tool-embed.tsx
+@@ -32,9 +32,9 @@ export function ToolLandingEmbed({
+             ? ` ${toolName} sai sem conta. Cadastro só se quiser histórico ou PDF sem o rodapé da marca.`
+             : ' Duas gerações livres sem conta; depois o cadastro libera PDF sem marca e histórico.'}
+         </p>
+-        <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName}>{tool}</ToolStartBoundary></div>
++        <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName} landingPath={landingPath}>{tool}</ToolStartBoundary></div>
+         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+-          <Button asChild size="lg" className="h-12 w-full bg-sky-600 px-6 font-bold hover:bg-sky-500 sm:w-auto">
++          <Button asChild size="lg" className="h-12 w-full bg-sky-700 px-6 font-bold text-white hover:bg-sky-800 sm:w-auto">
+             <LandingConversionLink href={ctaHref} landingPath={landingPath} placement="tool_embed">
+               {ctaLabel}
+               <ArrowRight className="h-4 w-4" aria-hidden />
+diff --git a/src/components/orcamentos/orcamento-items-editor.tsx b/src/components/orcamentos/orcamento-items-editor.tsx
+index 66f2755..db032fc 100644
+--- a/src/components/orcamentos/orcamento-items-editor.tsx
++++ b/src/components/orcamentos/orcamento-items-editor.tsx
+@@ -100,17 +100,18 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
+                 </Button>
+               </div>
+             </div>
+-            <FormField label="Serviço / produto" htmlFor={index === 0 ? 'orc-item-0-nome' : undefined}>
++            <FormField label="Serviço / produto" htmlFor={`orc-item-${index}-nome`}>
+               <Input
+-                id={index === 0 ? 'orc-item-0-nome' : undefined}
++                id={`orc-item-${index}-nome`}
+                 value={item.nome}
+                 onChange={(event) => updateItem(item.id, { nome: event.target.value })}
+                 placeholder="Ex.: Instalação de ar-condicionado"
+               />
+             </FormField>
+             <div className="mt-3 grid gap-3 sm:grid-cols-3">
+-              <FormField label="Qtd.">
++              <FormField label="Qtd." htmlFor={`orc-item-${index}-quantidade`}>
+                 <Input
++                  id={`orc-item-${index}-quantidade`}
+                   type="number"
+                   min={1}
+                   step={1}
+@@ -122,11 +123,11 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
+               </FormField>
+               <FormField
+                 label="Valor unitário"
+-                htmlFor={index === 0 ? 'orc-item-0-valor' : undefined}
++                htmlFor={`orc-item-${index}-valor`}
+                 error={zeroValue ? 'Valor deve ser maior que zero.' : undefined}
+               >
+                 <MaskedInput
+-                  id={index === 0 ? 'orc-item-0-valor' : undefined}
++                  id={`orc-item-${index}-valor`}
+                   format={formatCurrencyInput}
+                   value={
+                     item.valorUnitario > 0
+@@ -139,8 +140,9 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
+                   valid={item.valorUnitario > 0}
+                 />
+               </FormField>
+-              <FormField label="Subtotal">
++              <FormField label="Subtotal" htmlFor={`orc-item-${index}-subtotal`}>
+                 <Input
++                  id={`orc-item-${index}-subtotal`}
+                   readOnly
+                   className="bg-white font-semibold"
+                   value={formatCurrency(item.quantidade * item.valorUnitario)}
+diff --git a/src/components/recibos/recibo-preview.tsx b/src/components/recibos/recibo-preview.tsx
+index 7f9c7b4..31a5e22 100644
+--- a/src/components/recibos/recibo-preview.tsx
++++ b/src/components/recibos/recibo-preview.tsx
+@@ -97,7 +97,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel,
+             <p
+               className={cn(
+                 'text-xs font-semibold uppercase tracking-[0.24em]',
+-                inkSaver ? 'text-slate-500' : 'text-white/70'
++                inkSaver ? 'text-slate-600' : 'text-white/90'
+               )}
+             >
+               Recibo de pagamento
+@@ -106,7 +106,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel,
+           </div>
+           <div className="text-right text-sm">
+             <p className="font-semibold">Nº {data.number || '-'}</p>
+-            {dateLabel ? <p className={inkSaver ? 'text-slate-500' : 'text-white/80'}>{dateLabel}</p> : null}
++            {dateLabel ? <p className={inkSaver ? 'text-slate-600' : 'text-white/90'}>{dateLabel}</p> : null}
+           </div>
+         </div>
+       </div>
+@@ -130,15 +130,15 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel,
+ 
+       <div className="mt-6 grid grid-cols-2 gap-4 text-sm leading-relaxed">
+         <div className={cn('rounded-xl border p-4', inkSaver ? 'border-slate-900 bg-white' : 'border-slate-200 bg-slate-50')}>
+-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Recebedor</p>
++          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">Recebedor</p>
+           <p className="mt-1 font-semibold text-slate-900">{data.receiver.name || '-'}</p>
+           {data.receiver.document ? <p className="text-slate-600">{data.receiver.document}</p> : null}
+           {data.receiver.phone ? <p className="text-slate-600">{data.receiver.phone}</p> : null}
+           {data.receiver.email ? <p className="text-slate-600">{data.receiver.email}</p> : null}
+-          {addressLine ? <p className="mt-1 text-xs text-slate-500">{addressLine}</p> : null}
++          {addressLine ? <p className="mt-1 text-xs text-slate-600">{addressLine}</p> : null}
+         </div>
+         <div className={cn('rounded-xl border p-4', inkSaver ? 'border-slate-900 bg-white' : 'border-slate-200 bg-slate-50')}>
+-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Pagador</p>
++          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">Pagador</p>
+           <p className="mt-1 font-semibold text-slate-900">{data.payer.name || '-'}</p>
+           {data.payer.document ? <p className="text-slate-600">{data.payer.document}</p> : null}
+           {data.payer.phone ? <p className="text-slate-600">{data.payer.phone}</p> : null}
+@@ -214,7 +214,7 @@ function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDa
+               Valor
+             </p>
+             <p className={cn('text-2xl font-bold', inkSaver ? 'text-slate-900' : 'text-sky-700')}>{amountLabel}</p>
+-            <p className="mt-0.5 text-[0.7rem] text-slate-500">
++            <p className="mt-0.5 text-[0.7rem] text-slate-600">
+               Nº {data.number || '-'}
+               {dateLabel ? ` · ${dateLabel}` : ''}
+             </p>
+@@ -266,7 +266,7 @@ function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDa
+             {data.receiver.document ? <p className="text-slate-600">{data.receiver.document}</p> : null}
+             {data.receiver.phone ? <p className="text-slate-600">{data.receiver.phone}</p> : null}
+             {data.receiver.email ? <p className="text-slate-600">{data.receiver.email}</p> : null}
+-            {addressLine ? <p className="mt-1 text-xs text-slate-500">{addressLine}</p> : null}
++            {addressLine ? <p className="mt-1 text-xs text-slate-600">{addressLine}</p> : null}
+           </div>
+           <div className="pl-6">
+             <p
+@@ -317,7 +317,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
+             >
+               Recibo de pagamento
+             </p>
+-            <p className="mt-1 text-sm text-slate-500">
++            <p className="mt-1 text-sm text-slate-600">
+               Nº {data.number || '-'}
+               {dateLabel ? ` · ${dateLabel}` : ''}
+             </p>
+@@ -364,7 +364,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
+           {data.receiver.document ? <p className="text-slate-600">{data.receiver.document}</p> : null}
+           {data.receiver.phone ? <p className="text-slate-600">{data.receiver.phone}</p> : null}
+           {data.receiver.email ? <p className="text-slate-600">{data.receiver.email}</p> : null}
+-          {addressLine ? <p className="text-slate-500">{addressLine}</p> : null}
++          {addressLine ? <p className="text-slate-600">{addressLine}</p> : null}
+         </div>
+         <div>
+           <p
+@@ -382,7 +382,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
+         </div>
+       </div>
+ 
+-      <p className="mt-4 text-xs text-slate-500">
++      <p className="mt-4 text-xs text-slate-600">
+         Firmo o presente recibo dando plena e total quitação do valor acima, nada mais tendo a reclamar.
+       </p>
+ 
+diff --git a/src/lib/seo-pages/propostas.ts b/src/lib/seo-pages/propostas.ts
+index 0e7150a..fba19aa 100644
+--- a/src/lib/seo-pages/propostas.ts
++++ b/src/lib/seo-pages/propostas.ts
+@@ -97,7 +97,23 @@ export const propostasSeoContent: SeoPageContent = {
+   article: {
+     title: 'Como fazer uma proposta comercial que converte',
+     html: `
+-      <p>Uma boa proposta comercial não é apenas uma lista de preços: é um documento que apresenta a solução, organiza expectativas e facilita a decisão do cliente. Propostas bem estruturadas aumentam a taxa de fechamento de negócios.</p>
++      <p>Uma proposta comercial apresenta o serviço, as entregas, o preço e as condições para o cliente decidir. Use o exemplo preenchido abaixo como ponto de partida e substitua os dados pelo combinado real.</p>
++
++      <h2>Exemplo de proposta comercial pronta para prestação de serviço</h2>
++      <p>Exemplo fictício: uma designer apresenta a uma cafeteria um pacote de seis peças para redes sociais. Os valores são demonstrativos, não uma tabela de preços de mercado.</p>
++      <ul>
++        <li><strong>Objetivo:</strong> divulgar o novo cardápio da cafeteria.</li>
++        <li><strong>Entregas:</strong> seis artes estáticas, com arquivos finais em PNG, por R$ 150,00 cada. Total: R$ 900,00.</li>
++        <li><strong>Revisões:</strong> uma rodada de ajustes consolidada pelo cliente; novas peças e fotografia ficam fora do escopo.</li>
++        <li><strong>Prazo:</strong> cinco dias úteis após receber textos, imagens e confirmação do sinal.</li>
++        <li><strong>Pagamento:</strong> R$ 450,00 de entrada e R$ 450,00 na entrega dos arquivos finais.</li>
++        <li><strong>Validade:</strong> sete dias a partir do envio da proposta.</li>
++      </ul>
++      <p>Para adaptar o preço à sua operação, confira custos e horas disponíveis na <a href="/calculadora-de-preco-freelancer">calculadora de preço freelancer</a>. Revise escopo, exclusões e prazos antes de baixar o PDF.</p>
++
++      <h2>Como enviar a proposta pelo WhatsApp</h2>
++      <p>Mensagem para adaptar: “Olá, [nome]. Segue a proposta para [serviço], com entregas, prazo e pagamento. Pode conferir se o escopo atende ao que conversamos? Se precisar de ajuste, me diga qual item.”</p>
++      <p>Se preferir compartilhar um link com aprovação e cobrança, use o <a href="/orcamento-com-pix">orçamento com Pix para enviar pelo WhatsApp</a>. Depois de confirmar o pagamento, consulte o <a href="/recibos/recibo-pagamento-pix">modelo de recibo de pagamento Pix</a> para registrar a entrada ou o saldo recebido.</p>
+ 
+       <h2>Comece pelo problema do cliente</h2>
+       <p>Antes de listar itens e valores, contextualize brevemente o que o cliente precisa resolver. Isso mostra que a proposta foi pensada especificamente para ele, e não é um modelo genérico reaproveitado.</p>
+diff --git a/src/lib/seo/receipt-cluster.ts b/src/lib/seo/receipt-cluster.ts
+index 01f9c7a..ebbeeae 100644
+--- a/src/lib/seo/receipt-cluster.ts
++++ b/src/lib/seo/receipt-cluster.ts
+@@ -80,6 +80,7 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
+     sections: [
+       { title: 'Comprovante Pix e recibo são diferentes', paragraphs: ['O comprovante do banco confirma a movimentação entre contas, mas pode não explicar contrato, parcela ou serviço.', 'O recibo conecta o valor à obrigação quitada e pode declarar se o pagamento foi total ou parcial.'] },
+       { title: 'O que o comprovante prova e o que o recibo prova', paragraphs: ['O comprovante do Pix mostra valor, data, instituições e identificador da transferência. Ele não descreve sozinho se aquele valor quitou aluguel, serviço, sinal ou parcela.', 'O recibo registra pagador, recebedor, finalidade e se a quitação foi total ou parcial. Juntos, comprovante e recibo documentam o dinheiro e o combinado.'] },
++      { title: 'Como descrever sinal, parcela e saldo', paragraphs: ['Exemplo fictício de sinal: “Recebi R$ 450,00 via Pix como entrada de 50% do pacote de seis artes para redes sociais, conforme proposta de 08/09/2026. Saldo previsto: R$ 450,00.” Substitua os dados pelos valores e condições do seu serviço.', 'No recebimento do saldo, identifique a mesma proposta e a parcela correspondente. Confira o crédito no aplicativo do seu banco antes de emitir o recibo; não registre o valor total do serviço quando recebeu apenas uma parte.'] },
+       { title: 'Gere o recibo depois do Pix', paragraphs: ['Abra o gerador, informe pagador, recebedor, valor, data e o que aquele Pix quitou, e baixe o PDF para enviar no WhatsApp.', 'Não precisa cadastro para começar. A conta grátis só entra se você quiser histórico ou PDF sem a marca.'] },
+       { title: 'Não exponha dados bancários', paragraphs: ['Não é necessário inserir chave Pix, conta completa ou identificadores sensíveis no recibo.', 'Informe apenas a forma de pagamento e os dados necessários para identificar as partes e a operação.'] }
+     ],

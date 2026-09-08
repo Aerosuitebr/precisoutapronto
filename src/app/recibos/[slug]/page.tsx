@@ -82,6 +82,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
           {page.slug === 'recibo-pagamento-pix' ? (
             <section className="mt-12 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">
               <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Gere o recibo do Pix agora</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-700">Ainda está combinando o serviço? Prepare uma <LandingConversionLink href="/gerador-de-proposta-comercial" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="font-bold text-emerald-800 underline">proposta comercial com escopo e condições</LandingConversionLink> ou envie um <LandingConversionLink href="/orcamento-com-pix" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="font-bold text-emerald-800 underline">orçamento com aprovação e Pix</LandingConversionLink>. Depois do pagamento, registre aqui a parcela recebida.</p>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-700">O comprovante da transferência não explica o que foi quitado. Preencha o gerador e baixe o PDF grátis, sem cadastro.</p>
               <LandingConversionLink href="/gerador-de-recibo#ferramenta" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3 font-bold text-white">Gerar recibo de Pix grátis <ArrowRight className="h-4 w-4" /></LandingConversionLink>
             </section>

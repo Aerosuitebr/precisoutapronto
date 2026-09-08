@@ -97,7 +97,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, 
             <p
               className={cn(
                 'text-xs font-semibold uppercase tracking-[0.24em]',
-                inkSaver ? 'text-slate-500' : 'text-white/70'
+                inkSaver ? 'text-slate-600' : 'text-white/90'
               )}
             >
               Recibo de pagamento
@@ -106,7 +106,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, 
           </div>
           <div className="text-right text-sm">
             <p className="font-semibold">Nº {data.number || '-'}</p>
-            {dateLabel ? <p className={inkSaver ? 'text-slate-500' : 'text-white/80'}>{dateLabel}</p> : null}
+            {dateLabel ? <p className={inkSaver ? 'text-slate-600' : 'text-white/90'}>{dateLabel}</p> : null}
           </div>
         </div>
       </div>
@@ -130,15 +130,15 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, 
 
       <div className="mt-6 grid grid-cols-2 gap-4 text-sm leading-relaxed">
         <div className={cn('rounded-xl border p-4', inkSaver ? 'border-slate-900 bg-white' : 'border-slate-200 bg-slate-50')}>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Recebedor</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">Recebedor</p>
           <p className="mt-1 font-semibold text-slate-900">{data.receiver.name || '-'}</p>
           {data.receiver.document ? <p className="text-slate-600">{data.receiver.document}</p> : null}
           {data.receiver.phone ? <p className="text-slate-600">{data.receiver.phone}</p> : null}
           {data.receiver.email ? <p className="text-slate-600">{data.receiver.email}</p> : null}
-          {addressLine ? <p className="mt-1 text-xs text-slate-500">{addressLine}</p> : null}
+          {addressLine ? <p className="mt-1 text-xs text-slate-600">{addressLine}</p> : null}
         </div>
         <div className={cn('rounded-xl border p-4', inkSaver ? 'border-slate-900 bg-white' : 'border-slate-200 bg-slate-50')}>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Pagador</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">Pagador</p>
           <p className="mt-1 font-semibold text-slate-900">{data.payer.name || '-'}</p>
           {data.payer.document ? <p className="text-slate-600">{data.payer.document}</p> : null}
           {data.payer.phone ? <p className="text-slate-600">{data.payer.phone}</p> : null}
@@ -214,7 +214,7 @@ function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDa
               Valor
             </p>
             <p className={cn('text-2xl font-bold', inkSaver ? 'text-slate-900' : 'text-sky-700')}>{amountLabel}</p>
-            <p className="mt-0.5 text-[0.7rem] text-slate-500">
+            <p className="mt-0.5 text-[0.7rem] text-slate-600">
               Nº {data.number || '-'}
               {dateLabel ? ` · ${dateLabel}` : ''}
             </p>
@@ -266,7 +266,7 @@ function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDa
             {data.receiver.document ? <p className="text-slate-600">{data.receiver.document}</p> : null}
             {data.receiver.phone ? <p className="text-slate-600">{data.receiver.phone}</p> : null}
             {data.receiver.email ? <p className="text-slate-600">{data.receiver.email}</p> : null}
-            {addressLine ? <p className="mt-1 text-xs text-slate-500">{addressLine}</p> : null}
+            {addressLine ? <p className="mt-1 text-xs text-slate-600">{addressLine}</p> : null}
           </div>
           <div className="pl-6">
             <p
@@ -317,7 +317,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
             >
               Recibo de pagamento
             </p>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-slate-600">
               Nº {data.number || '-'}
               {dateLabel ? ` · ${dateLabel}` : ''}
             </p>
@@ -364,7 +364,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
           {data.receiver.document ? <p className="text-slate-600">{data.receiver.document}</p> : null}
           {data.receiver.phone ? <p className="text-slate-600">{data.receiver.phone}</p> : null}
           {data.receiver.email ? <p className="text-slate-600">{data.receiver.email}</p> : null}
-          {addressLine ? <p className="text-slate-500">{addressLine}</p> : null}
+          {addressLine ? <p className="text-slate-600">{addressLine}</p> : null}
         </div>
         <div>
           <p
@@ -382,7 +382,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
         </div>
       </div>
 
-      <p className="mt-4 text-xs text-slate-500">
+      <p className="mt-4 text-xs text-slate-600">
         Firmo o presente recibo dando plena e total quitação do valor acima, nada mais tendo a reclamar.
       </p>
 

@@ -93,6 +93,7 @@ export const SEO_LANDINGS = {
       { href: '/para/freelancers', label: 'Para freelancers', blurb: 'Proposta + contrato + Pix' },
       { href: '/gerador-de-qr-code-pix', label: 'Gerador de QR Code Pix', blurb: 'QR e Copia e Cola grátis' },
       { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'PDF com valor por extenso' },
+      { href: '/recibos/recibo-pagamento-pix', label: 'Recibo de Pix', blurb: 'Comprovante não explica o serviço' },
       { href: '/modelos-de-orcamento', label: 'Modelos por profissão', blurb: 'Eletricista, pedreiro, pintor e outros' }
     ]
   },
@@ -156,6 +157,7 @@ export const SEO_LANDINGS = {
       { href: '/pix', label: 'Central Pix', blurb: 'Do QR Code ao recibo' },
       { href: '/orcamento-com-pix', label: 'Orçamento + Pix', blurb: 'Aprovação + cobrança' },
       { href: '/gerador-de-recibo', label: 'Gerador de recibo', blurb: 'Comprovante em PDF' },
+      { href: '/recibos/recibo-pagamento-pix', label: 'Recibo de Pix', blurb: 'O comprovante não substitui o recibo' },
       { href: '/para/mei', label: 'Para MEI', blurb: 'Rotina de cobrança' }
     ]
   },
@@ -397,6 +399,7 @@ export const SEO_LANDINGS = {
       }
     ],
     related: [
+      { href: '/recibos/recibo-pagamento-pix', label: 'Recibo de Pix', blurb: 'O comprovante não explica o que foi quitado' },
       { href: '/para/mei', label: 'Para MEI', blurb: 'Rotina de cobrança' },
       { href: '/orcamento-com-pix', label: 'Orçamento + Pix', blurb: 'Antes do recibo' }
     ]

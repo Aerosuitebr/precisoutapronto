@@ -1,15 +1,21 @@
 'use client';
 
 import { useRef, type ReactNode } from 'react';
-import { trackEvent } from '@/lib/analytics';
+import { setLandingAttribution, trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
 
-export function ToolStartBoundary({ toolName, children }: { toolName: string; children: ReactNode }) {
+export function ToolStartBoundary({ toolName, landingPath, children }: { toolName: string; landingPath?: string; children: ReactNode }) {
   const started = useRef(false);
 
   function markStarted() {
     if (started.current) return;
     started.current = true;
+    // A entrada direta no formulário também precisa de atribuição, sem depender do CTA.
+    if (landingPath) {
+      try {
+        if (!window.sessionStorage.getItem('precisoutapronto_landing_attribution')) setLandingAttribution(landingPath);
+      } catch { /* Métricas opcionais nunca bloqueiam o formulário. */ }
+    }
     const params = new URLSearchParams(window.location.search);
     const safeUtm = (key: string) => (params.get(key) || '').trim().replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80);
     const utmSource = safeUtm('utm_source');

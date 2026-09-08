@@ -100,17 +100,18 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
                 </Button>
               </div>
             </div>
-            <FormField label="Serviço / produto" htmlFor={index === 0 ? 'orc-item-0-nome' : undefined}>
+            <FormField label="Serviço / produto" htmlFor={`orc-item-${index}-nome`}>
               <Input
-                id={index === 0 ? 'orc-item-0-nome' : undefined}
+                id={`orc-item-${index}-nome`}
                 value={item.nome}
                 onChange={(event) => updateItem(item.id, { nome: event.target.value })}
                 placeholder="Ex.: Instalação de ar-condicionado"
               />
             </FormField>
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
-              <FormField label="Qtd.">
+              <FormField label="Qtd." htmlFor={`orc-item-${index}-quantidade`}>
                 <Input
+                  id={`orc-item-${index}-quantidade`}
                   type="number"
                   min={1}
                   step={1}
@@ -122,11 +123,11 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
               </FormField>
               <FormField
                 label="Valor unitário"
-                htmlFor={index === 0 ? 'orc-item-0-valor' : undefined}
+                htmlFor={`orc-item-${index}-valor`}
                 error={zeroValue ? 'Valor deve ser maior que zero.' : undefined}
               >
                 <MaskedInput
-                  id={index === 0 ? 'orc-item-0-valor' : undefined}
+                  id={`orc-item-${index}-valor`}
                   format={formatCurrencyInput}
                   value={
                     item.valorUnitario > 0
@@ -139,8 +140,9 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
                   valid={item.valorUnitario > 0}
                 />
               </FormField>
-              <FormField label="Subtotal">
+              <FormField label="Subtotal" htmlFor={`orc-item-${index}-subtotal`}>
                 <Input
+                  id={`orc-item-${index}-subtotal`}
                   readOnly
                   className="bg-white font-semibold"
                   value={formatCurrency(item.quantidade * item.valorUnitario)}

@@ -97,7 +97,23 @@ export const propostasSeoContent: SeoPageContent = {
   article: {
     title: 'Como fazer uma proposta comercial que converte',
     html: `
-      <p>Uma boa proposta comercial não é apenas uma lista de preços: é um documento que apresenta a solução, organiza expectativas e facilita a decisão do cliente. Propostas bem estruturadas aumentam a taxa de fechamento de negócios.</p>
+      <p>Uma proposta comercial apresenta o serviço, as entregas, o preço e as condições para o cliente decidir. Use o exemplo preenchido abaixo como ponto de partida e substitua os dados pelo combinado real.</p>
+
+      <h2>Exemplo de proposta comercial pronta para prestação de serviço</h2>
+      <p>Exemplo fictício: uma designer apresenta a uma cafeteria um pacote de seis peças para redes sociais. Os valores são demonstrativos, não uma tabela de preços de mercado.</p>
+      <ul>
+        <li><strong>Objetivo:</strong> divulgar o novo cardápio da cafeteria.</li>
+        <li><strong>Entregas:</strong> seis artes estáticas, com arquivos finais em PNG, por R$ 150,00 cada. Total: R$ 900,00.</li>
+        <li><strong>Revisões:</strong> uma rodada de ajustes consolidada pelo cliente; novas peças e fotografia ficam fora do escopo.</li>
+        <li><strong>Prazo:</strong> cinco dias úteis após receber textos, imagens e confirmação do sinal.</li>
+        <li><strong>Pagamento:</strong> R$ 450,00 de entrada e R$ 450,00 na entrega dos arquivos finais.</li>
+        <li><strong>Validade:</strong> sete dias a partir do envio da proposta.</li>
+      </ul>
+      <p>Para adaptar o preço à sua operação, confira custos e horas disponíveis na <a href="/calculadora-de-preco-freelancer">calculadora de preço freelancer</a>. Revise escopo, exclusões e prazos antes de baixar o PDF.</p>
+
+      <h2>Como enviar a proposta pelo WhatsApp</h2>
+      <p>Mensagem para adaptar: “Olá, [nome]. Segue a proposta para [serviço], com entregas, prazo e pagamento. Pode conferir se o escopo atende ao que conversamos? Se precisar de ajuste, me diga qual item.”</p>
+      <p>Se preferir compartilhar um link com aprovação e cobrança, use o <a href="/orcamento-com-pix">orçamento com Pix para enviar pelo WhatsApp</a>. Depois de confirmar o pagamento, consulte o <a href="/recibos/recibo-pagamento-pix">modelo de recibo de pagamento Pix</a> para registrar a entrada ou o saldo recebido.</p>
 
       <h2>Comece pelo problema do cliente</h2>
       <p>Antes de listar itens e valores, contextualize brevemente o que o cliente precisa resolver. Isso mostra que a proposta foi pensada especificamente para ele, e não é um modelo genérico reaproveitado.</p>

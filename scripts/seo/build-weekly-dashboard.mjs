@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const TARGET_PATHS = [
+  '/recibos/recibo-pagamento-pix',
   '/recibo-de-aluguel',
   '/corretor-de-redacao-enem',
   '/rescisao',
@@ -61,6 +62,7 @@ const PRIORITY_PATHS = [
 ];
 
 const FUNNEL_EVENTS = [
+  'receipt_pdf_download_completed',
   'landing_cta_click',
   'quote_started',
   'quote_preview_ready',
@@ -124,6 +126,8 @@ function pagePath(value) {
 const endDate = argument('end', new Date().toISOString().slice(0, 10));
 const gscFile = argument('gsc');
 const queriesFile = argument('queries');
+const previousGscFile = argument('previous-gsc');
+const previousQueriesFile = argument('previous-queries');
 const bingFile = argument('bing');
 const conversionFile = argument('conversions');
 const funnelFile = argument('funnel');
@@ -133,6 +137,9 @@ if (!gscFile) throw new Error('Informe --gsc com o CSV de Páginas exportado do 
 
 const gsc = new Map(loadCsv(gscFile).map((row) => [pagePath(row['Páginas principais'] || row.Page || row.URL), row]));
 const queries = loadCsv(queriesFile);
+const previousPages = new Map(loadCsv(previousGscFile).map((row) => [pagePath(row['Páginas principais'] || row.Page || row.URL), row]));
+const queryKey = (row) => row['Consultas mais frequentes'] || row['Top consultas'] || row.Query || row.Consulta || '';
+const previousQueries = new Map(loadCsv(previousQueriesFile).map((row) => [queryKey(row), row]));
 const bing = new Map(loadCsv(bingFile).map((row) => [pagePath(row.Page || row.URL), row]));
 const conversions = new Map(loadCsv(conversionFile).map((row) => [pagePath(row.page || row.Page || row.URL), row.conversions || row.Conversions]));
 const funnel = new Map();
@@ -164,7 +171,7 @@ for (const target of TARGET_PATHS) {
   const google = gsc.get(target) || {};
   const microsoft = bing.get(target) || {};
   lines.push(
-    `| \`${target}\` | ${google['Impressões'] || 0} | ${google['Posição'] || '—'} | ${google.CTR || '0%'} | ${google['Cliques'] || 0} | ${microsoft.Impressions || 0} | ${microsoft['Avg. Position'] || '—'} | ${microsoft.CTR || '0%'} | ${microsoft.Clicks || 0} | ${conversions.get(target) ?? 'n/d'} |`
+    `| \`${target}\` | ${google['Impressões'] || 0} | ${google['Posição'] || '—'} | ${google.CTR || '0%'} | ${google['Cliques'] || 0} | ${bingFile ? microsoft.Impressions || 0 : 'n/d'} | ${microsoft['Avg. Position'] || '—'} | ${bingFile ? microsoft.CTR || '0%' : 'n/d'} | ${bingFile ? microsoft.Clicks || 0 : 'n/d'} | ${conversions.get(target) ?? 'n/d'} |`
   );
 }
 
@@ -186,6 +193,25 @@ for (const target of PRIORITY_PATHS) {
   }
   const value = (event) => events[event] || 0;
   lines.push(`| \`${target}\` | ${value('landing_cta_click')} | ${value('quote_started')} | ${value('quote_preview_ready')} | ${value('quote_link_created')} | ${value('quote_whatsapp_send_completed')} | ${value('quote_recipient_view')} | ${value('quote_approved')} | ${value('begin_checkout')} | ${value('purchase')} | ${rate(value('quote_link_created'), value('landing_cta_click'))} | ${rate(value('quote_approved'), value('quote_whatsapp_send_completed'))} |`);
+}
+
+lines.push('', '## Downloads de recibo concluídos', '', '| Landing | PDFs concluídos |', '|---|---:|');
+for (const target of PRIORITY_PATHS) {
+  const events = funnel.get(target);
+  lines.push('| ' + target + ' | ' + (events ? events.receipt_pdf_download_completed || 0 : 'n/d') + ' |');
+}
+
+if (previousGscFile || previousQueriesFile) {
+  lines.push('', '## Comparação com o período anterior', '', '> Use períodos completos de mesma duração e os mesmos filtros. Ausência em uma tabela não significa zero. Posição menor é melhor; amostras pequenas não comprovam efeito da mudança.', '', '| Tipo | Página ou consulta | Cliques antes → agora | Impressões antes → agora | Posição antes → agora |', '|---|---|---:|---:|---:|');
+  function comparison(kind, key, before, after) {
+    const pair = (field) => (before?.[field] ?? 'n/d') + ' → ' + (after?.[field] ?? 'n/d');
+    lines.push('| ' + kind + ' | ' + key.replace(/\|/g, '\\|') + ' | ' + pair('Cliques') + ' | ' + pair('Impressões') + ' | ' + pair('Posição') + ' |');
+  }
+  if (previousGscFile) for (const target of PRIORITY_PATHS) comparison('Página', target, previousPages.get(target), gsc.get(target));
+  if (previousQueriesFile) for (const row of queries) {
+    const key = queryKey(row);
+    if (/recibo|pix|proposta|orçamento|orcamento/i.test(key)) comparison('Consulta', key, previousQueries.get(key), row);
+  }
 }
 
 lines.push(

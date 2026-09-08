@@ -19,6 +19,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 });
 
 const dancingScript = Dancing_Script({
+  preload: false,
   subsets: ['latin'],
   weight: ['600'],
   display: 'swap',
@@ -26,6 +27,7 @@ const dancingScript = Dancing_Script({
 });
 
 const playfairDisplay = Playfair_Display({
+  preload: false,
   subsets: ['latin'],
   weight: ['600'],
   style: ['italic'],
@@ -34,6 +36,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 const greatVibes = Great_Vibes({
+  preload: false,
   subsets: ['latin'],
   weight: ['400'],
   display: 'swap',

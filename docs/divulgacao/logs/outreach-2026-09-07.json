@@ -1,0 +1,56 @@
+[
+  {
+    "id": "contabilizei",
+    "org": "Contabilizei",
+    "email": "imprensa@contabilizei.com.br",
+    "subject": "Fonte complementar para o guia de orçamento de serviços",
+    "primaryUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores?utm_source=contabilizei&utm_medium=partner&utm_campaign=pesquisa_orcamentos_2026_09",
+    "dryRun": false,
+    "at": "2026-09-07T18:35:00.000Z",
+    "status": "sent",
+    "provider": "smtp"
+  },
+  {
+    "id": "ja-calculei",
+    "org": "Já Calculei",
+    "email": "contato@jacalculei.com.br",
+    "subject": "Checklist citável para complementar o modelo de orçamento",
+    "primaryUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores?utm_source=jacalculei&utm_medium=partner&utm_campaign=pesquisa_orcamentos_2026_09",
+    "dryRun": false,
+    "at": "2026-09-07T18:35:00.000Z",
+    "status": "sent",
+    "provider": "smtp"
+  },
+  {
+    "id": "maismei",
+    "org": "MaisMei",
+    "email": "contato@maismei.com.br",
+    "subject": "Material complementar para a proposta comercial do MEI",
+    "primaryUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores?utm_source=maismei&utm_medium=partner&utm_campaign=pesquisa_orcamentos_2026_09",
+    "dryRun": false,
+    "at": "2026-09-07T18:35:00.000Z",
+    "status": "sent",
+    "provider": "smtp"
+  },
+  {
+    "id": "conube",
+    "org": "Conube",
+    "email": "comercial@conube.com.br",
+    "subject": "Recurso aberto para organizar o orçamento de freelancers",
+    "primaryUrl": "https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores?utm_source=conube&utm_medium=partner&utm_campaign=pesquisa_orcamentos_2026_09",
+    "dryRun": false,
+    "at": "2026-09-07T18:35:00.000Z",
+    "status": "sent",
+    "provider": "smtp"
+  },
+  {
+    "id": "portal-contabeis",
+    "org": "Portal Contábeis",
+    "channel": "formulario",
+    "source": "https://www.contabeis.com.br/contato/",
+    "subject": "Fonte aberta sobre escopo e condições na proposta de serviços",
+    "at": "2026-09-07T18:40:00.000Z",
+    "status": "sent",
+    "note": "Formulário /contato, assunto Assessoria de Imprensa. Confirmação na tela: E-mail enviado. Seu e-mail foi enviado para nossa equipe."
+  }
+]

@@ -32,9 +32,9 @@ export function ToolLandingEmbed({
             ? ` ${toolName} sai sem conta. Cadastro só se quiser histórico ou PDF sem o rodapé da marca.`
             : ' Duas gerações livres sem conta; depois o cadastro libera PDF sem marca e histórico.'}
         </p>
-        <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName}>{tool}</ToolStartBoundary></div>
+        <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName} landingPath={landingPath}>{tool}</ToolStartBoundary></div>
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-          <Button asChild size="lg" className="h-12 w-full bg-sky-600 px-6 font-bold hover:bg-sky-500 sm:w-auto">
+          <Button asChild size="lg" className="h-12 w-full bg-sky-700 px-6 font-bold text-white hover:bg-sky-800 sm:w-auto">
             <LandingConversionLink href={ctaHref} landingPath={landingPath} placement="tool_embed">
               {ctaLabel}
               <ArrowRight className="h-4 w-4" aria-hidden />

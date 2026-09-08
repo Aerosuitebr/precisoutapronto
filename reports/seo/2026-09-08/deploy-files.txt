@@ -1,0 +1,9 @@
+src/components/orcamentos/orcamento-items-editor.tsx
+src/app/layout.tsx
+src/app/gerador-de-recibo/recibo-live-preview.tsx
+src/components/marketing/tool-landing/tool-embed.tsx
+src/lib/seo-pages/propostas.ts
+src/lib/seo/receipt-cluster.ts
+src/app/recibos/[slug]/page.tsx
+src/components/analytics/tool-start-boundary.tsx
+src/components/recibos/recibo-preview.tsx

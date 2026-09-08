@@ -12,7 +12,7 @@ import { ReciboPreview } from '@/components/recibos/recibo-preview';
 import { useToast } from '@/components/ui/toast';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
-import { exportElementToPdf } from '@/lib/curriculo/pdf';
+import { trackEvent } from '@/lib/analytics';
 import { parseCurrency } from '@/lib/formatters';
 import { SAMPLE_RECEIPT } from '@/lib/recibos/defaults';
 import type { ReceiptTemplateId } from '@/lib/recibos/types';
@@ -59,12 +59,16 @@ export function ReciboLivePreview() {
     try {
       const outcome = await performBillableAction(
         { toolId: 'recibos', artifactId: `landing_${Date.now()}`, action: 'download' },
-        () => exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments })
+        async () => {
+          const { exportElementToPdf } = await import('@/lib/curriculo/pdf');
+          await exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments });
+        }
       );
       if (!outcome.allowed) {
         toast(outcome.reason || 'Não foi possível gerar o PDF.');
         return;
       }
+      trackEvent('receipt_pdf_download_completed', { tool_path: '/gerador-de-recibo', template_id: templateId });
       toast('PDF baixado. Conta só se quiser histórico ou tirar a marca.');
     } catch {
       toast('Não foi possível gerar o PDF. Tente de novo.');
@@ -163,7 +167,7 @@ export function ReciboLivePreview() {
                   aria-pressed={templateId === template.id}
                   className={`rounded-full border px-3 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                     templateId === template.id
-                      ? 'border-sky-600 bg-sky-600 text-white'
+                      ? 'border-sky-700 bg-sky-700 text-white'
                       : 'border-slate-300 bg-white text-slate-700 hover:border-sky-400 hover:text-sky-700'
                   }`}
                 >
@@ -177,7 +181,7 @@ export function ReciboLivePreview() {
             type="button"
             onClick={handleDownloadPdf}
             disabled={exporting}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-700 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 disabled:opacity-60"
           >
             {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             {exporting ? 'Gerando PDF...' : 'Baixar PDF agora'}

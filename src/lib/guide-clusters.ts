@@ -218,7 +218,7 @@ export const clusterGuides: Guide[] = [
       { question: 'Recibo substitui nota fiscal?', answer: 'Não necessariamente. Verifique a obrigação fiscal aplicável à atividade e ao município.' },
       { question: 'Posso emitir por Pix?', answer: 'Sim. Identifique Pix como forma de pagamento e descreva a operação quitada.' }
     ],
-    relatedGuides: ['modelo-de-recibo-mei', 'como-assinar-documentos-digitalmente', 'contrato-de-prestacao-de-servicos-gratis']
+    relatedGuides: ['modelo-de-recibo-mei', 'como-assinar-documentos-digitalmente', 'como-fazer-orcamento-com-pix']
   },
   {
     slug: 'como-assinar-documentos-digitalmente',

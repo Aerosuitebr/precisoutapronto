@@ -31,6 +31,15 @@ function stripDashes(text) {
 }
 
 function pitchFor(contact) {
+  if (contact.subject && contact.text) {
+    return {
+      subject: stripDashes(contact.subject),
+      text: stripDashes(contact.text),
+      inReplyTo: contact.previousMessageId || null,
+      references: contact.previousMessageId || null
+    };
+  }
+
   const link = contact.primaryUrl;
   const embed = 'https://precisoutapronto.com.br/embed?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
   const press = 'https://precisoutapronto.com.br/imprensa?utm_source=outreach&utm_medium=partner&utm_campaign=autoridade_2026_08';
