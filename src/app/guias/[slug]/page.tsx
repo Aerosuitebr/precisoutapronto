@@ -155,17 +155,14 @@ export default async function GuidePage({ params }: Props) {
               </p>
               <h1 className="precisoutapronto-display mt-4 text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">{guide.title}</h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">{guide.description}</p>
+              {guide.slug === 'como-fazer-orcamento-com-pix' ? (
+                <GuideConversionLink guideSlug={guide.slug} cluster={guide.category} placement="intro" href="/orcamento-com-pix#montar" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300 sm:w-auto">
+                  Criar orçamento com Pix<ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </GuideConversionLink>
+              ) : null}
               <div className="mt-8 rounded-3xl border border-sky-200 bg-sky-50 p-6">
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-sky-700">Resposta direta</p>
                 <p className="mt-2 text-base font-medium leading-7 text-slate-800">{guide.answer}</p>
-                {guide.slug === 'como-fazer-orcamento-com-pix' ? (
-                  <div className="mt-5 border-t border-sky-200 pt-5">
-                    <p className="text-sm leading-6 text-slate-700">Coloque o passo a passo em prática: organize os itens, defina as condições e prepare seu orçamento para enviar pelo WhatsApp.</p>
-                    <GuideConversionLink guideSlug={guide.slug} cluster={guide.category} placement="intro" href="/orcamento-com-pix" className="mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300">
-                      Criar orçamento com Pix<ArrowRight aria-hidden="true" className="h-4 w-4" />
-                    </GuideConversionLink>
-                  </div>
-                ) : null}
               </div>
             </div>
           </header>
@@ -178,6 +175,12 @@ export default async function GuidePage({ params }: Props) {
                   {section.bullets ? <ul className="mt-5 space-y-2">{section.bullets.map((item) => <li key={item} className="flex gap-3 text-sm text-slate-700"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />{item}</li>)}</ul> : null}
                 </section>
               ))}
+              {guide.slug === 'como-fazer-orcamento-com-pix' ? (
+                <section className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
+                  <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Recebeu o Pix? Registre o pagamento.</h2>
+                  <p className="mt-3 text-base leading-7 text-slate-700">Depois de confirmar o recebimento na sua conta, prepare um recibo com o serviço, o valor e a indicação de entrada ou quitação. Consulte o <Link href="/recibos/recibo-pagamento-pix" className="font-semibold text-emerald-800 underline underline-offset-4">modelo de recibo de pagamento Pix</Link> para organizar essas informações.</p>
+                </section>
+              ) : null}
               {guide.example ? (
                 <section className="rounded-3xl border border-amber-200 bg-amber-50 p-6">
                   <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Exemplo preenchido</p>

@@ -1,0 +1,36 @@
+Título: Seis decisões que precisam ficar explícitas em um orçamento de prestação de serviços
+Editoria sugerida: Empresarial
+Tipo: artigo (autoria própria)
+
+Quando o prestador manda só o preço no WhatsApp, o contador costuma herdar o problema depois. O cliente entende uma coisa, o prestador executa outra, e o registro do serviço fica incompleto na hora de emitir nota, recibo ou prestar contas.
+
+Uma análise editorial aberta de 39 modelos de orçamento para prestadores, revisada em 2 de setembro de 2026, mostra que a profissão muda e a estrutura útil se repete. O recorte é o inventário de modelos, não uma pesquisa com usuários e não mede aumento de faturamento. A fonte completa está em https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores.
+
+Para o profissional contábil que orienta MEI e pequeno prestador, seis decisões merecem aparecer no documento, não só na conversa.
+
+1. Escopo observável
+Quantidade, ambiente, metragem, etapa ou entrega reduzem interpretações diferentes sobre o que está incluído. “Pintura do apartamento” abre disputa. “Preparação e pintura de duas paredes da sala, com tinta já definida” fecha o combinado.
+
+2. Materiais separados da mão de obra
+Marca, quantidade, quem fornece e o que acontece em caso de substituição precisam ficar distinguíveis do serviço. Quando material e execução vão no mesmo valor, qualquer alteração vira briga de preço.
+
+3. Prazo de execução separado da validade comercial
+O prazo diz quando o serviço acontece. A validade diz até quando aquele preço e aquelas condições valem. Misturar os dois deixa o cliente sem saber se o documento ainda pode ser aceito.
+
+4. Pagamento associado a um marco verificável
+Entrada, parcelas e saldo ficam mais claros quando cada valor se liga a uma entrega conferível. “50% agora e 50% no fim” é frágil se o “fim” não está descrito.
+
+5. Mudança de escopo como complemento aprovado
+Itens descobertos depois da vistoria não devem entrar por uma autorização genérica do tipo “o que for preciso”. O caminho mais limpo é um complemento com novo valor, novo prazo e novo aceite.
+
+6. Aceite rastreável
+Um documento compartilhável e uma resposta explícita preservam melhor o combinado do que um preço solto no chat. Para o escritório, isso também facilita cruzar orçamento, recebimento e recibo.
+
+O que esta análise não afirma
+As contagens vêm do catálogo editorial publicado, recalculadas no build. Não é amostra representativa do mercado, não descreve comportamento de clientes e não substitui orientação contratual caso a caso. Preços eventualmente citados nos modelos são referência, nunca tabela oficial.
+
+Para citar: informe a URL canônica e a data de revisão (2 de setembro de 2026). Metodologia e limites estão na própria página da análise.
+
+Autor: equipe editorial Precisou, Tá Pronto
+Contato: contato@precisoutapronto.com.br
+Ticket: C019861

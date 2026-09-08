@@ -1,10 +1,12 @@
 # Continuidade da divulgação — 08/09 a 08/10/2026
 
-Status: material preparado; nenhum envio novo nesta execução. A rodada de 07/09 registra quatro e-mails e um formulário enviados, LinkedIn publicado e duas telas de WhatsApp publicadas. Nenhuma citação editorial externa está comprovada no registro. Não contar envio como backlink.
+Status em 08/09: o Portal Contábeis respondeu o ticket C019861 e pediu envio em `/publicacoes`. Artigo educativo enviado na mesma thread (não é menção publicada). MaisMei só acusou recebimento no canal de suporte. Conube devolveu `comercial@conube.com.br` (endereço inexistente). Nenhuma citação editorial externa está comprovada. Não contar envio nem resposta como backlink.
 
 ## Retorno editorial — 14 a 17/09
 
-Antes de enviar: conferir respostas e recusas na conversa original. Enviar apenas um retorno a quem não respondeu; interromper em caso de recusa. Usar o mesmo canal e assunto da conversa anterior. Não comprar links nem condicionar colaboração a links.
+Portal Contábeis: não enviar follow-up de 14 a 17/09. Já houve resposta e o artigo foi reenviado na thread. Acompanhar só URL publicada.
+
+Antes de enviar aos demais: conferir respostas e recusas na conversa original. Enviar apenas um retorno a quem não respondeu; interromper em caso de recusa. Usar o mesmo canal e assunto da conversa anterior. Não comprar links nem condicionar colaboração a links.
 
 Texto-base: “Olá, equipe. Retomo a sugestão enviada em 07/09 sobre a análise dos nossos modelos de orçamento. Se o material for útil para seus leitores, a metodologia e os exemplos estão em https://precisoutapronto.com.br/pesquisa/orcamentos-prestadores. Trata-se do catálogo editorial do produto, não de uma pesquisa representativa com MEIs nem de resultados de clientes. Posso esclarecer algum ponto? Se não estiver na pauta, encerro por aqui. Obrigado.”
 
@@ -13,7 +15,7 @@ Personalização por destinatário, a inserir após a primeira frase:
 - Contabilizei: “A conexão sugerida é com o guia de orçamento de prestação de serviços, como referência complementar para escopo, materiais e condições.”
 - Já Calculei: “O material pode complementar orientações a prestadores sobre como organizar preço, prazo e aceite antes da cobrança.”
 - MaisMei: “O exemplo acompanha o caminho do orçamento ao recebimento, com linguagem voltada à rotina do pequeno prestador.”
-- Portal Contábeis: “A metodologia aberta pode servir de ponto de partida para uma pauta educativa sobre clareza nos orçamentos.”
+- Portal Contábeis: já respondeu em 08/09 (ticket C019861). Sem follow-up. Artigo em `docs/divulgacao/colar/artigo-contabeis-orcamento-2026-09-08.txt`.
 - Conube: “O checklist pode complementar conteúdos sobre organização comercial e documentação de pagamentos de prestadores.”
 
 Registrar data, resposta, URL publicada e destino do link. Verificar a menção abrindo a página. O bloco incorporável já existe em /embed; não é necessária nova página de divulgação.
