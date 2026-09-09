@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { buildFullSitemap, sitemapEntriesToXml } from '../src/lib/seo/sitemap-entries';
 
 const supportingPaths = [
   '/biblioteca',
@@ -12,17 +13,28 @@ const supportingPaths = [
   '/guias/orcamento-ou-proposta-comercial'
 ];
 
-test('commercial supporting pages are discoverable and indexable', async ({ request }) => {
+test('production sitemap includes commercial supporting pages', () => {
+  const xml = sitemapEntriesToXml(buildFullSitemap('https://precisoutapronto.com.br'));
+  for (const path of supportingPaths) expect(xml).toContain(`${path}</loc>`);
+  expect(xml).not.toMatch(/<loc>[^<]*\/(?:conta|ferramentas|documento|orcamento)\//);
+});
+
+test('commercial pages respect the target environment indexing policy', async ({ request, baseURL }) => {
+  // Determine the expected policy from the target, never from a potentially broken response.
+  const staging = /^(staging|homolog)\./.test(new URL(baseURL!).hostname);
   const sitemap = await request.get('/sitemap.xml');
   expect(sitemap.status()).toBe(200);
   const xml = await sitemap.text();
+  if (staging) expect(xml).not.toContain('<loc>');
   for (const path of supportingPaths) {
-    expect(xml).toContain(`${path}</loc>`);
+    if (!staging) expect(xml).toContain(`${path}</loc>`);
     const response = await request.get(path);
     expect(response.status(), path).toBe(200);
-    expect(response.headers()['x-robots-tag'] ?? '', path).not.toMatch(/noindex/i);
+    const robotsHeader = response.headers()['x-robots-tag'] ?? '';
+    if (staging) expect(robotsHeader, path).toMatch(/\bnoindex\b/i);
+    else expect(robotsHeader, path).not.toMatch(/noindex/i);
     const html = await response.text();
-    expect(html, path).not.toMatch(/<meta\b[^>]*name="robots"[^>]*content="[^"]*noindex/i);
+    if (!staging) expect(html, path).not.toMatch(/<meta\b[^>]*name="robots"[^>]*content="[^"]*noindex/i);
     expect(html, path).toMatch(new RegExp(`<link[^>]*rel="canonical"[^>]*href="[^"]*${path}"`));
   }
   expect(xml).not.toMatch(/<loc>[^<]*\/(?:conta|ferramentas|documento|orcamento)\//);
