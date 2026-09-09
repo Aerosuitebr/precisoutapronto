@@ -6,15 +6,17 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { guides } from '@/lib/guides';
 import { intentPages } from '@/lib/growth/intents';
 import { IntentLibraryBrowser } from '@/components/growth/intent-library-browser';
+import { isSeoFocusPath } from '@/lib/seo/focus-cycle';
+import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 
 export const metadata: Metadata = {
-  title: 'Biblioteca de documentos, trabalho e negócios',
-  description: 'Respostas práticas, modelos, perguntas frequentes e ferramentas para concluir tarefas.',
+  title: 'Biblioteca de orçamento, cobrança e recibos',
+  description: 'Modelos e guias para prestadores: prepare orçamentos, combine o pagamento, cobre pelo WhatsApp e emita recibos.',
   alternates: { canonical: '/biblioteca' },
   openGraph: {
-    title: 'Biblioteca de documentos, trabalho e negócios | Precisou, Tá Pronto',
-    description: 'Respostas práticas, modelos, perguntas frequentes e ferramentas para concluir tarefas.',
+    title: 'Biblioteca de orçamento, cobrança e recibos | Precisou, Tá Pronto',
+    description: 'Modelos e guias para prestadores: prepare orçamentos, combine o pagamento, cobre pelo WhatsApp e emita recibos.',
     url: '/biblioteca',
     type: 'website'
   },
@@ -33,11 +35,11 @@ export default function LibraryPage() {
       {
         '@type': 'CollectionPage',
         name: 'Biblioteca Precisou, Tá Pronto',
-        headline: 'Respostas práticas para concluir tarefas do dia a dia',
+        headline: 'Orçamento, cobrança e recibos para quem presta serviços',
         description: metadata.description,
         url: `${base}/biblioteca`,
         inLanguage: 'pt-BR',
-        dateModified: '2026-07-30',
+        dateModified: '2026-09-09',
         publisher: { '@type': 'Organization', name: 'Precisou, Tá Pronto', url: base }
       },
       {
@@ -66,25 +68,26 @@ export default function LibraryPage() {
         <section className="border-b border-slate-200 bg-white">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <p className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-sky-700"><BookOpen className="h-4 w-4" /> Central do Conhecimento</p>
-            <h1 className="precisoutapronto-display mt-4 max-w-3xl text-4xl font-extrabold text-slate-950 sm:text-5xl">Da dúvida à tarefa concluída</h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Conteúdo estruturado por intenção, com respostas diretas, FAQs e a ferramenta certa para agir.</p>
+            <h1 className="precisoutapronto-display mt-4 max-w-3xl text-4xl font-extrabold text-slate-950 sm:text-5xl">Do orçamento ao recibo</h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Prepare seu orçamento, combine prazos, cobre pelo WhatsApp e registre o pagamento. Comece pelos guias para MEI, autônomos e prestadores de serviço.</p>
             <p className="mt-4 text-sm font-semibold text-slate-500">
               {intentPages.length} respostas por intenção e {guides.length} guias aprofundados, revisados para conectar explicação e ação.
             </p>
           </div>
         </section>
+        <StrategicSeoClusters />
         <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
           <div className="mb-12 grid gap-4 sm:grid-cols-3">
             {[
               {
-                href: '/calculadora-de-rescisao',
-                label: 'Calculadora de rescisão',
-                text: 'Estime verbas CLT por modalidade, com tabela e exemplo de 2026.'
+                href: '/orcamento-com-pix',
+                label: 'Orçamento pelo WhatsApp',
+                text: 'Monte os itens, envie o link e receba a aprovação do cliente.'
               },
               {
-                href: '/corretor-de-redacao-enem',
-                label: 'Corretor de redação ENEM',
-                text: 'Nota estimada por competência C1 a C5, sem cadastro nas duas primeiras análises.'
+                href: '/gerador-de-qr-code-pix',
+                label: 'Cobrança com Pix',
+                text: 'Prepare o QR Code e o Pix Copia e Cola para compartilhar com o cliente.'
               },
               {
                 href: '/gerador-de-recibo',
@@ -112,7 +115,16 @@ export default function LibraryPage() {
               Abrir Assistente
             </Link>
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-950">Modelos e respostas rápidas</h2>
+          <h2 className="text-2xl font-extrabold text-slate-950">Guias para o próximo serviço</h2>
+          <div className="my-6 grid gap-4 md:grid-cols-3">
+            {guides.filter((guide) => isSeoFocusPath(`/guias/${guide.slug}`)).map((guide) => (
+              <Link key={guide.slug} href={`/guias/${guide.slug}`} className="rounded-2xl border border-emerald-200 bg-white p-5 hover:border-emerald-400">
+                <h3 className="font-bold text-slate-950">{guide.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{guide.description}</p>
+              </Link>
+            ))}
+          </div>
+          <h2 className="mt-12 text-2xl font-extrabold text-slate-950">Todos os modelos e respostas rápidas</h2>
           <IntentLibraryBrowser items={intentPages.map(({ slug, title, description, segmentSlugs }) => ({ slug, title, description, segmentSlugs }))} />
           <h2 className="mt-14 text-2xl font-extrabold text-slate-950">Guias aprofundados</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">

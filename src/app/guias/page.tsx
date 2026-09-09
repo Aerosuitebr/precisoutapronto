@@ -7,20 +7,20 @@ import { guides } from '@/lib/guides';
 import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
 
 export const metadata: Metadata = {
-  title: 'Guias práticos para MEI, freelancers e estudantes',
+  title: 'Guias de orçamento, cobrança e recibo para prestadores',
   description:
-    'Conteúdo direto sobre recibos, contratos, currículos, rescisão, propostas, precificação e ferramentas digitais.',
+    'Aprenda a montar orçamento, definir preços, cobrar pelo WhatsApp e emitir recibo. Exemplos e ferramentas para MEI e prestadores de serviço.',
   alternates: { canonical: '/guias' },
   openGraph: {
     title: 'Guias práticos | Precisou, Tá Pronto',
-    description: 'Respostas claras e ferramentas gratuitas para resolver tarefas do dia a dia.',
+    description: 'Orçamento, precificação, cobrança pelo WhatsApp e recibos para quem presta serviços.',
     url: '/guias',
     images: [{ url: '/guias/opengraph-image' }]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Guias práticos | Precisou, Tá Pronto',
-    description: 'Respostas claras e ferramentas gratuitas para resolver tarefas do dia a dia.',
+    description: 'Orçamento, precificação, cobrança pelo WhatsApp e recibos para quem presta serviços.',
     images: ['/guias/opengraph-image']
   }
 };

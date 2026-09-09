@@ -106,6 +106,10 @@ export const recibosSeoContent: SeoPageContent = {
   article: {
     title: 'Como emitir um recibo de pagamento correto',
     html: `
+      <h2>Exemplo preenchido: pagamento de um serviço</h2>
+      <p>Exemplo demonstrativo com dados fictícios: “Recebi de Cliente Exemplo a importância de R$ 490,00 (quatrocentos e noventa reais), referente à instalação de tomadas e aos materiais descritos no orçamento ORC-018. Pagamento integral recebido por Pix em 09/09/2026. Prestador Exemplo.”</p>
+      <p>Substitua os dados do exemplo pelos do seu atendimento e confira o recebimento antes de emitir. Se o cliente pagou apenas uma entrada de R$ 150,00, registre esse valor como sinal e informe o saldo de R$ 340,00, sem declarar quitação integral.</p>
+      <p>Para adaptar a descrição, consulte o <a href="/recibos/recibo-prestacao-de-servico">modelo de recibo de prestação de serviço</a>. Para organizar a etapa anterior, <a href="/orcamento-com-pix">prepare o orçamento e envie pelo WhatsApp</a>.</p>
       <p>Emitir um recibo é a forma mais simples de comprovar que um pagamento foi realizado, seja para um serviço prestado, aluguel, venda ou qualquer outra transação. Um recibo bem feito protege tanto quem paga quanto quem recebe.</p>
 
       <h2>O que não pode faltar no recibo</h2>
@@ -124,6 +128,11 @@ export const recibosSeoContent: SeoPageContent = {
     `
   },
   relatedTools: [
+    {
+      name: 'Recibo de prestação de serviço',
+      description: 'Veja os campos e um exemplo preenchido para registrar o pagamento do trabalho.',
+      href: '/recibos/recibo-prestacao-de-servico'
+    },
     {
       name: 'O comprovante do Pix serve como recibo?',
       description: 'O extrato prova a transferência. O recibo registra o que aquele Pix quitou.',
