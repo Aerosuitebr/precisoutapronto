@@ -10,13 +10,20 @@ const supportingPaths = [
   '/guias/como-gerar-qr-code-pix-para-cobranca',
   '/guias/cliente-nao-pagou-mensagem-de-cobranca',
   '/guias/como-precificar-servico-freelancer',
-  '/guias/orcamento-ou-proposta-comercial'
+  '/guias/orcamento-ou-proposta-comercial',
+  '/orcamento-para/chaveiro',
+  '/orcamento-para/gesseiro',
+  '/orcamento-para/marceneiro',
+  '/orcamento-para/instalacao-de-piso',
+  '/guias/como-registrar-sinal-e-saldo-pix'
 ];
 
 test('production sitemap includes commercial supporting pages', () => {
   const xml = sitemapEntriesToXml(buildFullSitemap('https://precisoutapronto.com.br'));
   for (const path of supportingPaths) expect(xml).toContain(`${path}</loc>`);
   expect(xml).not.toMatch(/<loc>[^<]*\/(?:conta|ferramentas|documento|orcamento)\//);
+  expect(xml).not.toContain('/orcamento-para/encanador</loc>');
+  expect(xml).not.toContain('/orcamento-para/diarista</loc>');
 });
 
 test('commercial pages respect the target environment indexing policy', async ({ request, baseURL }) => {

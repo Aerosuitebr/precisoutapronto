@@ -175,7 +175,7 @@ export default async function GuidePage({ params }: Props) {
                   {section.bullets ? <ul className="mt-5 space-y-2">{section.bullets.map((item) => <li key={item} className="flex gap-3 text-sm text-slate-700"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />{item}</li>)}</ul> : null}
                 </section>
               ))}
-              {guide.slug === 'como-fazer-orcamento-com-pix' ? (
+              {['como-fazer-orcamento-com-pix', 'como-registrar-sinal-e-saldo-pix'].includes(guide.slug) ? (
                 <section className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6">
                   <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Recebeu o Pix? Registre o pagamento.</h2>
                   <p className="mt-3 text-base leading-7 text-slate-700">Depois de confirmar o recebimento na sua conta, prepare um recibo com o serviço, o valor e a indicação de entrada ou quitação. Consulte o <Link href="/recibos/recibo-pagamento-pix" className="font-semibold text-emerald-800 underline underline-offset-4">modelo de recibo de pagamento Pix</Link> para organizar essas informações.</p>

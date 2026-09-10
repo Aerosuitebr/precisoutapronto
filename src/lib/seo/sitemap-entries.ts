@@ -30,7 +30,7 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],
   ['/orcamento-para/fotografo', new Date('2026-08-31T12:00:00.000Z')],
   ['/orcamento-para/manutencao-residencial', new Date('2026-08-31T12:00:00.000Z')],
-  ['/recibos/recibo-pagamento-pix', new Date('2026-09-05T12:00:00.000Z')],
+  ['/recibos/recibo-pagamento-pix', new Date('2026-09-10T12:00:00.000Z')],
   ['/imprensa', new Date('2026-09-04T12:00:00.000Z')],
   ['/precisou-ta-pronto', new Date('2026-09-04T12:00:00.000Z')],
   ['/corretor-de-redacao-enem', new Date('2026-08-31T12:00:00.000Z')],

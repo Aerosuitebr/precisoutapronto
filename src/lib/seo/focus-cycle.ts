@@ -34,6 +34,11 @@ export const SEO_FOCUS_PATHS = [
   '/orcamento-para/pedreiro',
   '/orcamento-para/fotografo',
   '/orcamento-para/manutencao-residencial',
+  // Reabertura seletiva de 10/09: quatro URLs com posição média < 20 no GSC.
+  '/orcamento-para/chaveiro',
+  '/orcamento-para/gesseiro',
+  '/orcamento-para/marceneiro',
+  '/orcamento-para/instalacao-de-piso',
   '/recibos',
   '/recibos/recibo-pagamento-pix',
   '/recibos/recibo-prestacao-de-servico',
@@ -56,7 +61,8 @@ export const SEO_FOCUS_PATHS = [
   '/guias/como-precificar-servico-freelancer',
   '/guias/orcamento-ou-proposta-comercial',
   '/guias/orcamento-aprovado-tem-validade',
-  '/guias/recibo-simples-tem-validade'
+  '/guias/recibo-simples-tem-validade',
+  '/guias/como-registrar-sinal-e-saldo-pix'
 ] as const;
 
 /** Páginas de confiança que sustentam autoria, transparência e identidade da marca. */

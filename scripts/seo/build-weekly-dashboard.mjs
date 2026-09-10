@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { normalizePath, pageSegment, commercialQuery, eventCount } from './report-segments.mjs';
 
 const TARGET_PATHS = [
   '/recibos/recibo-pagamento-pix',
@@ -111,16 +112,13 @@ function parseCsv(text) {
 }
 
 function loadCsv(file) {
-  if (!file || !fs.existsSync(file)) return [];
-  return parseCsv(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
+  if (!file) return [];
+  if (!fs.existsSync(file)) throw new Error(`Export não encontrado: ${file}`);
+  return parseCsv(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '').split(/\r?\n/).filter((line) => !line.startsWith('#')).join('\n'));
 }
 
 function pagePath(value) {
-  try {
-    return new URL(value).pathname.replace(/\/$/, '') || '/';
-  } catch {
-    return value.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '') || '/';
-  }
+  return normalizePath(value);
 }
 
 const endDate = argument('end', new Date().toISOString().slice(0, 10));
@@ -146,40 +144,44 @@ const funnel = new Map();
 for (const row of loadCsv(funnelFile)) {
   const landing = pagePath(row.landing_path || row['Landing path'] || row.page || row.Page || row.URL || '');
   const event = row.event_name || row['Event name'] || row.Event || row.event;
-  const count = Number(String(row.event_count || row['Event count'] || row.Count || row.count || 0).replace(/\./g, '').replace(',', '.')) || 0;
+  const count = eventCount(row.event_count ?? row['Event count'] ?? row.Count ?? row.count);
   if (!landing || !FUNNEL_EVENTS.includes(event)) continue;
+  if (count === null) throw new Error(`Contagem GA4 inválida: ${landing} / ${event}`);
   const current = funnel.get(landing) || {};
   current[event] = (current[event] || 0) + count;
   funnel.set(landing, current);
 }
 
 function rate(numerator, denominator) {
-  if (!denominator) return 'n/d';
+  if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || !denominator) return 'n/d';
   return `${((numerator / denominator) * 100).toFixed(1).replace('.', ',')}%`;
 }
 
 const lines = [
-  `# Painel semanal de SEO por página · até ${endDate}`,
+  `# Painel comercial de SEO por página · até ${endDate}`,
   '',
-  '> Conversões usam o export do GA4 quando `--conversions` é informado. `n/d` significa dado não exportado; nunca é convertido silenciosamente em zero.',
+  '> Recorte comercial: orçamento, proposta, cobrança e recibo. EN, PDF genérico, Games e outros assuntos ficam em relatório separado; nenhuma regra de indexação é alterada. `n/d` significa dado indisponível.',
+  '',
+  `Fonte GSC: \`${gscFile}\`. Fonte GA4: ${funnelFile ? `\`${funnelFile}\`` : 'não exportada'}.`,
   '',
   '| Página | Google imp. | Google pos. | Google CTR | Google cliques | Bing imp. | Bing pos. | Bing CTR | Bing cliques | Conversões |',
   '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|'
 ];
 
-for (const target of TARGET_PATHS) {
+const commercialPaths = [...new Set([...TARGET_PATHS, ...gsc.keys()])].filter((target) => pageSegment(target) === 'Comercial');
+for (const target of commercialPaths) {
   const google = gsc.get(target) || {};
   const microsoft = bing.get(target) || {};
   lines.push(
-    `| \`${target}\` | ${google['Impressões'] || 0} | ${google['Posição'] || '—'} | ${google.CTR || '0%'} | ${google['Cliques'] || 0} | ${bingFile ? microsoft.Impressions || 0 : 'n/d'} | ${microsoft['Avg. Position'] || '—'} | ${bingFile ? microsoft.CTR || '0%' : 'n/d'} | ${bingFile ? microsoft.Clicks || 0 : 'n/d'} | ${conversions.get(target) ?? 'n/d'} |`
+    `| \`${target}\` | ${google['Impressões'] ?? 'n/d'} | ${google['Posição'] ?? 'n/d'} | ${google.CTR ?? 'n/d'} | ${google['Cliques'] ?? 'n/d'} | ${microsoft.Impressions ?? 'n/d'} | ${microsoft['Avg. Position'] ?? 'n/d'} | ${microsoft.CTR ?? 'n/d'} | ${microsoft.Clicks ?? 'n/d'} | ${conversions.get(target) ?? 'n/d'} |`
   );
 }
 
 lines.push(
   '',
-  '## Funil orgânico das sete páginas prioritárias',
+  '## Eventos das sete páginas prioritárias',
   '',
-  '> Fonte: export do GA4 por dimensão `landing_path` e `event_name`. Use `--funnel arquivo.csv`; `n/d` indica ausência do export, não zero.',
+  '> Fonte: GA4 por `landing_path` × `event_name`. As razões abaixo são contagens de eventos, não uma coorte de usuários nem um funil sequencial. Só classifique como orgânico se o export tiver esse filtro. Eventos ausentes permanecem n/d; ausência não comprova zero.',
   '',
   '| Landing | CTA | Início | Prévia | Link | WhatsApp | Visualização | Aprovação | Checkout | Compra | CTA→link | Envio→aprovação |',
   '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|'
@@ -191,14 +193,14 @@ for (const target of PRIORITY_PATHS) {
     lines.push(`| \`${target}\` | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d | n/d |`);
     continue;
   }
-  const value = (event) => events[event] || 0;
+  const value = (event) => events[event] ?? 'n/d';
   lines.push(`| \`${target}\` | ${value('landing_cta_click')} | ${value('quote_started')} | ${value('quote_preview_ready')} | ${value('quote_link_created')} | ${value('quote_whatsapp_send_completed')} | ${value('quote_recipient_view')} | ${value('quote_approved')} | ${value('begin_checkout')} | ${value('purchase')} | ${rate(value('quote_link_created'), value('landing_cta_click'))} | ${rate(value('quote_approved'), value('quote_whatsapp_send_completed'))} |`);
 }
 
 lines.push('', '## Downloads de recibo concluídos', '', '| Landing | PDFs concluídos |', '|---|---:|');
 for (const target of PRIORITY_PATHS) {
   const events = funnel.get(target);
-  lines.push('| ' + target + ' | ' + (events ? events.receipt_pdf_download_completed || 0 : 'n/d') + ' |');
+  lines.push('| ' + target + ' | ' + (events?.receipt_pdf_download_completed ?? 'n/d') + ' |');
 }
 
 if (previousGscFile || previousQueriesFile) {
@@ -230,7 +232,7 @@ const opportunities = queries
     ctr: row.CTR || '0%',
     clicks: Number(String(row['Cliques'] || row.Clicks || 0).replace(/\./g, '').replace(',', '.')) || 0
   }))
-  .filter((row) => row.query && row.position >= 5 && row.position <= 20)
+  .filter((row) => commercialQuery(row.query) && row.position >= 5 && row.position <= 20)
   .sort((a, b) => b.impressions - a.impressions)
   .slice(0, 30);
 
@@ -248,9 +250,9 @@ lines.push(
   '',
   '## Leitura das URLs prioritárias',
   '',
-  '- `/corretor-de-redacao-enem` concentra a demanda pública; a URL privada antiga não integra mais o painel.',
+  '- Consultas comerciais são classificadas por texto; sem export consulta × página, não se atribui cada consulta a uma landing.',
   '- `/recibo-de-aluguel` mede aquisição orgânica; `/gerador-de-recibo` mede a ferramenta de destino.',
-  '- `/rescisao` e os guias medem a autoridade temática que deve sustentar a calculadora.',
+  '- Utilitários e assuntos trabalhistas não entram no resultado do produto âncora.',
   '- As URLs `/orcamento-para/*` medem o cluster comercial por profissão e necessidade; compare impressões, posição, clique no gerador e orçamento criado.',
   '',
   '## Definição de conversão',
@@ -264,3 +266,12 @@ lines.push(
 fs.mkdirSync(path.dirname(outputFile), { recursive: true });
 fs.writeFileSync(outputFile, `${lines.join('\n')}\n`);
 console.log(`Painel gerado em ${outputFile}`);
+
+const utilityFile = outputFile.replace(/\.md$/, '') + '-utilitarios.md';
+const utilityLines = ['# Utilitários e outros assuntos — fora do relatório comercial', '', `Fonte: \`${gscFile}\`; período até ${endDate}.`, '', 'A separação é analítica e não modifica noindex. Totais por página não substituem os totais agregados da propriedade.', '', '| Segmento | Página | Impressões | Cliques | CTR | Posição |', '|---|---|---:|---:|---:|---:|'];
+for (const [pathname, row] of gsc) {
+  if (pageSegment(pathname) === 'Comercial') continue;
+  utilityLines.push(`| ${pageSegment(pathname)} | ${pathname} | ${row['Impressões'] ?? 'n/d'} | ${row.Cliques ?? 'n/d'} | ${row.CTR ?? 'n/d'} | ${row['Posição'] ?? 'n/d'} |`);
+}
+fs.writeFileSync(utilityFile, utilityLines.join('\n') + '\n');
+console.log(`Relatório separado gerado em ${utilityFile}`);

@@ -13,6 +13,30 @@ const SEBRAE_FINANCAS = { label: 'Sebrae — organização financeira', href: 'h
 
 export const clusterGuides: Guide[] = [
   {
+    slug: 'como-registrar-sinal-e-saldo-pix',
+    title: 'Como registrar sinal e saldo recebidos por Pix',
+    description: 'Veja como preencher recibos separados para entrada e saldo de um serviço, com exemplos e conferência dos valores recebidos.',
+    answer: 'Emita um recibo para cada valor recebido. No primeiro, indique sinal ou entrada, a referência do orçamento e o saldo pendente. Quando receber o restante por Pix, registre o novo pagamento com a mesma referência. Confira cada crédito no banco antes de emitir.',
+    category: 'Cobrança e vendas', readTime: '4 min',
+    toolHref: '/gerador-de-recibo#ferramenta', toolLabel: 'Gerar recibo do valor recebido',
+    publishedAt: '2026-09-10', updatedAt: '2026-09-10',
+    author: EDITORIAL.author, reviewer: EDITORIAL.reviewer,
+    sections: [
+      { title: '1. Identifique o orçamento e os pagamentos combinados', paragraphs: ['Use a referência do orçamento ou uma descrição específica do serviço nos dois recibos. Anote o total combinado, quanto entrou e quanto falta receber.'], bullets: ['Exemplo fictício: serviço de R$ 900,00', 'Entrada recebida por Pix: R$ 450,00', 'Saldo a receber: R$ 450,00'] },
+      { title: '2. Confira o crédito antes de registrar a entrada', paragraphs: ['Abra o aplicativo do seu banco e confira o recebimento. Preencha quem pagou, quem recebeu, data, valor e a finalidade do pagamento. No campo de descrição, escreva que o valor é uma entrada; evite apresentar os R$ 900,00 como recebidos quando só entraram R$ 450,00.'] },
+      { title: '3. Registre o saldo em outro recibo', paragraphs: ['Depois de receber os R$ 450,00 restantes, preencha um segundo recibo com a data desse crédito e a mesma referência do orçamento. Indique que esse pagamento corresponde ao saldo. Se houver um adicional combinado, confira os valores antes de informar que nada resta pagar.'] },
+      { title: '4. Revise, baixe e guarde os dois documentos', paragraphs: ['Revise nomes, valores, datas e descrição na prévia. Baixe cada PDF e envie ao pagador pelo WhatsApp. Guarde os recibos junto dos comprovantes e do orçamento para consultar o histórico sem misturar entrada com pagamento integral.'] }
+    ],
+    example: { title: 'Dois recibos para um serviço — dados fictícios', lines: ['Orçamento EXEMPLO-018: pacote de seis artes, total R$ 900,00.', 'Recibo 1: recebi de Cliente Exemplo R$ 450,00 via Pix em 10/09/2026, como entrada do orçamento EXEMPLO-018. Saldo previsto: R$ 450,00.', 'Recibo 2: recebi de Cliente Exemplo R$ 450,00 via Pix em 14/09/2026, referentes ao saldo do orçamento EXEMPLO-018.', 'Prestador Exemplo — substitua nomes, datas, referência e valores pelos dados reais.'] },
+    faq: [
+      { question: 'Qual valor colocar no recibo da entrada?', answer: 'Somente o valor que recebeu nessa etapa. Informe o total contratado e o saldo na descrição quando isso ajudar a explicar o pagamento.' },
+      { question: 'Posso usar o mesmo recibo para duas parcelas?', answer: 'Para manter o histórico claro, gere um documento para cada recebimento, identificando a parcela e a referência do serviço.' },
+      { question: 'Onde informar que o pagamento foi por Pix?', answer: 'Selecione Pix como forma de pagamento e registre a data do recebimento. A descrição deve explicar a finalidade, sem incluir chave Pix ou dados bancários desnecessários.' }
+    ],
+    sources: [BACEN_PIX],
+    relatedGuides: ['como-cobrar-sinal-antes-de-comecar-servico', 'como-fazer-orcamento-com-pix']
+  },
+  {
     slug: 'modelo-de-orcamento-para-eletricista',
     title: 'Modelo de orçamento para eletricista: itens, materiais e validade',
     description: 'Monte um orçamento elétrico claro, separando visita, mão de obra, materiais, prazo e condições de pagamento.',

@@ -1,0 +1,6 @@
+# Enviar somente depois de confirmar em produção HTTP 200, canonical e index,follow.
+# Não usar o lote antigo de 38 landings. Aceite IndexNow não comprova indexação no Google.
+/orcamento-para/chaveiro
+/orcamento-para/gesseiro
+/orcamento-para/marceneiro
+/orcamento-para/instalacao-de-piso
