@@ -27,10 +27,10 @@ const CLUSTERS = [
     description: 'Depois do aceite, facilite o pagamento com QR Code e Copia e Cola.'
   },
   {
-    href: '/gerador-de-recibo',
+    href: '/recibos/recibo-pagamento-pix',
     number: '05',
     title: 'Recibo',
-    description: 'Registre o pagamento e entregue um documento claro ao cliente.'
+    description: 'O comprovante mostra a transferência. O recibo explica o que foi quitado.'
   }
 ] as const;
 

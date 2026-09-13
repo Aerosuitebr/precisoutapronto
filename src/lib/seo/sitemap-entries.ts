@@ -13,6 +13,7 @@ import { PROFESSION_LANDINGS } from '@/lib/orcamentos/profession-presets';
 import { CONTRACT_PROFESSION_CONTEXTS } from '@/lib/contratos/profession-contexts';
 import { RECEIPT_PROFESSION_CONTEXTS } from '@/lib/recibos/profession-contexts';
 import { SEO_FOCUS_PATHS, SEO_TRUST_PATHS } from '@/lib/seo/focus-cycle';
+import { PROMO_ORCAMENTO_VIDEO } from '@/lib/seo/promo-orcamento-video';
 
 /** Datas editoriais reais. Só devem mudar quando o conteúdo correspondente for revisado. */
 export const CORE_UPDATED_AT = new Date('2026-08-27T12:00:00.000Z');
@@ -25,12 +26,12 @@ export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
  */
 const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/', new Date('2026-08-31T12:00:00.000Z')],
-  ['/orcamento-com-pix', new Date('2026-08-31T12:00:00.000Z')],
+  ['/orcamento-com-pix', new Date('2026-09-13T12:00:00.000Z')],
   ['/orcamento-para/eletricista', new Date('2026-09-05T12:00:00.000Z')],
   ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],
   ['/orcamento-para/fotografo', new Date('2026-08-31T12:00:00.000Z')],
   ['/orcamento-para/manutencao-residencial', new Date('2026-08-31T12:00:00.000Z')],
-  ['/recibos/recibo-pagamento-pix', new Date('2026-09-10T12:00:00.000Z')],
+  ['/recibos/recibo-pagamento-pix', new Date('2026-09-13T12:00:00.000Z')],
   ['/imprensa', new Date('2026-09-04T12:00:00.000Z')],
   ['/precisou-ta-pronto', new Date('2026-09-04T12:00:00.000Z')],
   ['/corretor-de-redacao-enem', new Date('2026-08-31T12:00:00.000Z')],
@@ -44,7 +45,7 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/guias/calculo-rescisao-com-fgts', new Date('2026-08-30T12:00:00.000Z')],
   ['/guias', new Date('2026-09-09T12:00:00.000Z')],
   ['/biblioteca', new Date('2026-09-09T12:00:00.000Z')],
-  ['/recibos', new Date('2026-09-05T12:00:00.000Z')],
+  ['/recibos', new Date('2026-09-13T12:00:00.000Z')],
   ['/modelos-de-orcamento', new Date('2026-08-28T12:00:00.000Z')],
   ['/pesquisa/orcamentos-prestadores', new Date('2026-09-02T12:00:00.000Z')]
 ]);
@@ -225,12 +226,29 @@ function buildTools(base: string): MetadataRoute.Sitemap {
   const inGrowth = growthPaths();
   const seoRoutes = listSeoLandings()
     .filter((page) => !inGrowth.has(page.path))
-    .map((page) => ({
-      url: `${base}${page.path}`,
-      lastModified: CORE_UPDATED_AT,
-      changeFrequency: 'weekly' as const,
-      priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
-    }));
+    .map((page) => {
+      const entry = {
+        url: `${base}${page.path}`,
+        lastModified: CORE_UPDATED_AT,
+        changeFrequency: 'weekly' as const,
+        priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
+      };
+      if (page.id !== 'orcamento-com-pix') return entry;
+      return {
+        ...entry,
+        videos: [
+          {
+            title: PROMO_ORCAMENTO_VIDEO.title,
+            thumbnail_path: `${base}${page.path}/opengraph-image`,
+            description: PROMO_ORCAMENTO_VIDEO.description,
+            content_loc: `${base}${PROMO_ORCAMENTO_VIDEO.path}`,
+            publication_date: PROMO_ORCAMENTO_VIDEO.publishedAt,
+            family_friendly: 'yes' as const,
+            live: 'no' as const
+          }
+        ]
+      };
+    });
 
   const toolLandingRoutes: MetadataRoute.Sitemap = PUBLIC_TOOL_LANDINGS.filter(
     (path) =>
@@ -419,12 +437,37 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): 
     default:
       entries = [];
   }
-  return normalizeLastModified(keepPromoted(entries, base), base);
+  return attachOrcamentoPromoVideo(normalizeLastModified(keepPromoted(entries, base), base), base);
+}
+
+function attachOrcamentoPromoVideo(entries: MetadataRoute.Sitemap, base: string): MetadataRoute.Sitemap {
+  const target = `${base}/orcamento-com-pix`;
+  return entries.map((entry) => {
+    if (entry.url !== target || entry.videos?.length) return entry;
+    return {
+      ...entry,
+      videos: [
+        {
+          title: PROMO_ORCAMENTO_VIDEO.title,
+          thumbnail_path: `${base}/orcamento-com-pix/opengraph-image`,
+          description: PROMO_ORCAMENTO_VIDEO.description,
+          content_loc: `${base}${PROMO_ORCAMENTO_VIDEO.path}`,
+          publication_date: PROMO_ORCAMENTO_VIDEO.publishedAt,
+          family_friendly: 'yes' as const,
+          live: 'no' as const
+        }
+      ]
+    };
+  });
 }
 
 /** Sitemap canônico editorial: foco comercial + páginas de confiança. */
 export function buildFullSitemap(baseUrl?: string): MetadataRoute.Sitemap {
-  return dedupe(INDEXABLE_SITEMAP_SEGMENTS.flatMap((segment) => buildSitemapSegment(segment, baseUrl)));
+  const base = (baseUrl ?? getViralBaseUrl()).replace(/\/$/, '');
+  return attachOrcamentoPromoVideo(
+    dedupe(INDEXABLE_SITEMAP_SEGMENTS.flatMap((segment) => buildSitemapSegment(segment, baseUrl))),
+    base
+  );
 }
 
 function xmlEscape(value: string) {
@@ -435,8 +478,32 @@ function xmlEscape(value: string) {
     .replace(/"/g, '&quot;');
 }
 
+function videoSitemapXml(entry: MetadataRoute.Sitemap[number]): string {
+  const videos = entry.videos;
+  if (!videos?.length) return '';
+  return videos
+    .map((video) => {
+      const thumbnail = xmlEscape(video.thumbnail_path);
+      const title = xmlEscape(video.title);
+      const description = xmlEscape(video.description);
+      const content = video.content_loc ? `<video:content_loc>${xmlEscape(video.content_loc)}</video:content_loc>` : '';
+      const duration =
+        typeof video.duration === 'number' ? `<video:duration>${video.duration}</video:duration>` : '';
+      const published = video.publication_date
+        ? `<video:publication_date>${xmlEscape(String(video.publication_date))}</video:publication_date>`
+        : '';
+      const family = video.family_friendly
+        ? `<video:family_friendly>${video.family_friendly}</video:family_friendly>`
+        : '';
+      const live = video.live ? `<video:live>${video.live}</video:live>` : '';
+      return `<video:video><video:thumbnail_loc>${thumbnail}</video:thumbnail_loc><video:title>${title}</video:title><video:description>${description}</video:description>${content}${duration}${published}${family}${live}</video:video>`;
+    })
+    .join('');
+}
+
 /** urlset XML para um segmento ou para o sitemap único. */
 export function sitemapEntriesToXml(entries: MetadataRoute.Sitemap): string {
+  const hasVideo = entries.some((entry) => Boolean(entry.videos?.length));
   const urls = entries
     .map((entry) => {
       const lastmod = entry.lastModified
@@ -445,14 +512,15 @@ export function sitemapEntriesToXml(entries: MetadataRoute.Sitemap): string {
       const changefreq = entry.changeFrequency ? `<changefreq>${entry.changeFrequency}</changefreq>` : '';
       const priority =
         typeof entry.priority === 'number' ? `<priority>${entry.priority}</priority>` : '';
-      return `<url><loc>${xmlEscape(entry.url)}</loc>${lastmod}${changefreq}${priority}</url>`;
+      return `<url><loc>${xmlEscape(entry.url)}</loc>${lastmod}${changefreq}${priority}${videoSitemapXml(entry)}</url>`;
     })
     .join('');
 
-  return (
-    `<?xml version="1.0" encoding="UTF-8"?>` +
-    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`
-  );
+  const xmlns = hasVideo
+    ? 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"'
+    : 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
+
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset ${xmlns}>${urls}</urlset>`;
 }
 
 /** Índice apontando para `/sitemaps/{segment}`. O XML completo fica em `/sitemaps/full`. */

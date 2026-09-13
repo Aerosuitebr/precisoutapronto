@@ -57,6 +57,8 @@ export function SiteJsonLd() {
       'orçamento no WhatsApp',
       'orçamento com Pix',
       'recibo de pagamento',
+      'recibo de Pix',
+      'gerador de recibo Pix',
       'cobrança para MEI',
       'MEI e freelancers',
       'proposta comercial',
@@ -98,8 +100,8 @@ export function SiteJsonLd() {
     numberOfItems: 6,
     itemListElement: [
       { name: 'Orçamento com Pix', path: '/orcamento-com-pix' },
+      { name: 'Recibo de Pix', path: '/recibos/recibo-pagamento-pix' },
       { name: 'Gerador de recibo', path: '/gerador-de-recibo' },
-      { name: 'Orçamento para eletricista', path: '/orcamento-para/eletricista' },
       { name: 'Para MEI', path: '/para/mei' },
       { name: 'Gerador de QR Code Pix', path: '/gerador-de-qr-code-pix' },
       { name: 'Gerador de currículo', path: '/gerador-de-curriculo' }

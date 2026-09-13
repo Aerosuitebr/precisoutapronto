@@ -1,0 +1,24 @@
+[
+  {
+    "id": "contabilizei-fu",
+    "org": "Contabilizei",
+    "email": "imprensa@contabilizei.com.br",
+    "subject": "Re: Fonte complementar para o guia de orçamento de serviços",
+    "primaryUrl": "https://precisoutapronto.com.br/orcamento-com-pix?utm_source=contabilizei&utm_medium=partner&utm_campaign=pesquisa_orcamentos_fu_2026_09",
+    "at": "2026-09-11T12:50:00.000Z",
+    "status": "draft-open-not-sent",
+    "provider": "gmail-compose",
+    "note": "Compositor aberto em contato@precisoutapronto.com.br, destinatário e assunto preenchidos. Corpo não colado e e-mail não enviado."
+  },
+  {
+    "id": "ja-calculei-fu",
+    "org": "Já Calculei",
+    "email": "contato@jacalculei.com.br",
+    "subject": "Re: Checklist citável para complementar o modelo de orçamento",
+    "primaryUrl": "https://precisoutapronto.com.br/orcamento-com-pix?utm_source=jacalculei&utm_medium=partner&utm_campaign=pesquisa_orcamentos_fu_2026_09",
+    "at": "2026-09-11T12:50:00.000Z",
+    "status": "not-sent",
+    "provider": "gmail",
+    "note": "Não aberto. Aguardar envio da Contabilizei. Texto pronto em outreach-followup-2026-09-11.json."
+  }
+]

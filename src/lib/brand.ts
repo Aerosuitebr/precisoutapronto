@@ -26,13 +26,14 @@ export const BRAND_PUBLIC_EMAIL = BRAND_EMAIL;
 export const BRAND_EMAIL_FROM = `${BRAND_NAME} <${BRAND_EMAIL}>`;
 
 /**
- * Identidade oficial em páginas próprias até existirem perfis sociais publicados.
- * Acrescente LinkedIn, Google Business ou YouTube somente com URL real conferida.
+ * Perfis e páginas oficiais conferidos. Acrescente LinkedIn ou Google Business
+ * somente com URL real publicada.
  */
 export const BRAND_SAME_AS = [
   `${BRAND_PRIMARY_SITE}${BRAND_OFFICIAL_PATH}`,
   `${BRAND_PRIMARY_SITE}/imprensa`,
-  `${BRAND_PRIMARY_SITE}/sobre`
+  `${BRAND_PRIMARY_SITE}/sobre`,
+  'https://www.youtube.com/@precisoutapronto'
 ] as const;
 
 export const BRAND_LOGO_LIGHT = '/brand/precisou-ta-pronto-logo-light-v1.png';

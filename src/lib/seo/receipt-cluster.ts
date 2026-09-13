@@ -62,7 +62,7 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'recibo-pagamento-pix',
-    updatedAt: '2026-09-10',
+    updatedAt: '2026-09-13',
     title: 'Recibo de Pix: o comprovante serve? Gere o PDF',
     description: 'O comprovante do Pix mostra a transferência. O recibo explica o que foi quitado. Crie o PDF grátis, sem cadastro, e envie para o pagador.',
     eyebrow: 'Pagamento via Pix',
@@ -84,7 +84,14 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
       { title: 'O que o comprovante prova e o que o recibo prova', paragraphs: ['O comprovante do Pix mostra valor, data, instituições e identificador da transferência. Ele não descreve sozinho se aquele valor quitou aluguel, serviço, sinal ou parcela.', 'O recibo registra pagador, recebedor, finalidade e se a quitação foi total ou parcial. Juntos, comprovante e recibo documentam o dinheiro e o combinado.'] },
       { title: 'Como descrever sinal, parcela e saldo', paragraphs: ['Exemplo fictício de sinal: “Recebi R$ 450,00 via Pix como entrada de 50% do pacote de seis artes para redes sociais, conforme proposta de 08/09/2026. Saldo previsto: R$ 450,00.” Substitua os dados pelos valores e condições do seu serviço.', 'No recebimento do saldo, identifique a mesma proposta e a parcela correspondente. Confira o crédito no aplicativo do seu banco antes de emitir o recibo; não registre o valor total do serviço quando recebeu apenas uma parte.'] },
       { title: 'Gere o recibo depois do Pix', paragraphs: ['Abra o gerador, informe pagador, recebedor, valor, data e o que aquele Pix quitou, e baixe o PDF para enviar no WhatsApp.', 'Não precisa cadastro para começar. A conta grátis só entra se você quiser histórico ou PDF sem a marca.'] },
-      { title: 'Não exponha dados bancários', paragraphs: ['Não é necessário inserir chave Pix, conta completa ou identificadores sensíveis no recibo.', 'Informe apenas a forma de pagamento e os dados necessários para identificar as partes e a operação.'] }
+      { title: 'Não exponha dados bancários', paragraphs: ['Não é necessário inserir chave Pix, conta completa ou identificadores sensíveis no recibo.', 'Informe apenas a forma de pagamento e os dados necessários para identificar as partes e a operação.'] },
+      {
+        title: 'Gerador de recibo Pix não é gerador de comprovante',
+        paragraphs: [
+          'Quem pesquisa gerador de recibo Pix costuma querer um PDF com pagador, recebedor, valor, data e o que foi quitado. Isso é recibo, não extrato do banco.',
+          'Geradores de comprovante tentam parecer o comprovante da instituição financeira. Não use esse tipo de arquivo para provar um pagamento que ainda não caiu na sua conta. Confira o crédito e, em seguida, emita o recibo.'
+        ]
+      }
     ],
     faqs: [
       { question: 'O comprovante do Pix serve como recibo?', answer: 'Não por si só. Ele prova que o dinheiro saiu de uma conta para outra. O recibo registra quem pagou, quem recebeu, o valor, a data e o que aquele Pix quitou (serviço, aluguel, parcela). Use os dois juntos.' },
@@ -93,7 +100,17 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
       { question: 'Preciso colocar a chave Pix?', answer: 'Não. Evite expor dados bancários desnecessários. Basta indicar a forma de pagamento e identificar as partes.' },
       { question: 'Posso emitir depois do pagamento?', answer: 'Sim. Use a data real do recebimento e confira o valor transferido.' },
       { question: 'Como fazer recibo de um sinal pago por Pix?', answer: 'Informe o valor efetivamente recebido, descreva que se trata de sinal ou entrada e identifique o serviço ou orçamento. Registre o saldo restante, sem apresentar o total contratado como se já tivesse sido pago.' },
-      { question: 'Como enviar o recibo de Pix pelo WhatsApp?', answer: 'Preencha e revise o recibo no gerador, baixe o PDF e anexe o arquivo à conversa com o pagador. Guarde uma cópia com o comprovante e a referência do orçamento.' }
+      { question: 'Como enviar o recibo de Pix pelo WhatsApp?', answer: 'Preencha e revise o recibo no gerador, baixe o PDF e anexe o arquivo à conversa com o pagador. Guarde uma cópia com o comprovante e a referência do orçamento.' },
+      {
+        question: 'Gerador de recibo Pix e gerador de comprovante são a mesma coisa?',
+        answer:
+          'Não. O gerador de recibo Pix deste site cria um PDF que descreve o que o pagamento quitou. Geradores de comprovante tentam parecer um extrato bancário. Use o recibo depois de conferir o crédito no seu banco.'
+      },
+      {
+        question: 'Como gerar um recibo de Pix grátis no celular?',
+        answer:
+          'Abra o gerador, informe quem pagou, quem recebeu, o valor, a data e a finalidade. Marque pago via Pix, baixe o PDF e envie pelo WhatsApp. Não precisa cadastro para começar.'
+      }
     ],
     related: ['recibo-prestacao-de-servico', 'recibo-com-assinatura', 'recibo-tem-validade-juridica']
   },

@@ -24,6 +24,8 @@ test('production sitemap includes commercial supporting pages', () => {
   expect(xml).not.toMatch(/<loc>[^<]*\/(?:conta|ferramentas|documento|orcamento)\//);
   expect(xml).not.toContain('/orcamento-para/encanador</loc>');
   expect(xml).not.toContain('/orcamento-para/diarista</loc>');
+  expect(xml).toContain('xmlns:video=');
+  expect(xml).toContain('/videos/precisou-ta-pronto-promo-16x9.mp4');
 });
 
 test('commercial pages respect the target environment indexing policy', async ({ request, baseURL }) => {
@@ -55,4 +57,25 @@ test('library leads with service tools and keeps the full catalog available', as
   expect(html).toContain('Guias para o próximo serviço');
   expect(html).toContain('Todos os modelos e respostas rápidas');
   expect(html).toContain('href="/gerador-de-qr-code-pix"');
+  expect(html).toContain('href="/recibos/recibo-pagamento-pix"');
+});
+
+test('receipt hub targets pix generator intent without noindex', async ({ request, baseURL }) => {
+  const staging = /^(staging|homolog)\./.test(new URL(baseURL!).hostname);
+  const response = await request.get('/recibos');
+  expect(response.status()).toBe(200);
+  const html = await response.text();
+  expect(html).toContain('Gerador de recibo Pix');
+  expect(html).toContain('href="/recibos/recibo-pagamento-pix"');
+  expect(html).toContain('Gerador de recibo Pix cria comprovante bancário?');
+  if (staging) expect(response.headers()['x-robots-tag'] ?? '').toMatch(/\bnoindex\b/i);
+  else expect(html).not.toMatch(/<meta\b[^>]*name="robots"[^>]*content="[^"]*noindex/i);
+});
+
+test('pix receipt landing keeps frozen title and explains generator intent', async ({ request }) => {
+  const response = await request.get('/recibos/recibo-pagamento-pix');
+  expect(response.status()).toBe(200);
+  const html = await response.text();
+  expect(html).toContain('Recibo de Pix: o comprovante serve? Gere o PDF');
+  expect(html).toContain('Gerador de recibo Pix e gerador de comprovante são a mesma coisa?');
 });

@@ -90,9 +90,9 @@ export default function LibraryPage() {
                 text: 'Prepare o QR Code e o Pix Copia e Cola para compartilhar com o cliente.'
               },
               {
-                href: '/gerador-de-recibo',
-                label: 'Gerador de recibo',
-                text: 'Valor por extenso, assinatura e PDF para enviar agora.'
+                href: '/recibos/recibo-pagamento-pix',
+                label: 'Gerador de recibo Pix',
+                text: 'O comprovante mostra a transferência. O recibo explica o que foi quitado.'
               }
             ].map((tool) => (
               <Link

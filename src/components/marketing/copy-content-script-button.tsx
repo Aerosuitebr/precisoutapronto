@@ -5,7 +5,15 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast';
 import { trackEvent } from '@/lib/analytics';
 
-export function CopyContentScriptButton({ script, campaign }: { script: string; campaign: string }) {
+export function CopyContentScriptButton({
+  script,
+  campaign,
+  label = 'Copiar roteiro'
+}: {
+  script: string;
+  campaign: string;
+  label?: string;
+}) {
   const { toast } = useToast();
 
   async function copy() {
@@ -18,5 +26,5 @@ export function CopyContentScriptButton({ script, campaign }: { script: string; 
     }
   }
 
-  return <Button type="button" size="sm" variant="outline" icon={Copy} onClick={copy}>Copiar roteiro</Button>;
+  return <Button type="button" size="sm" variant="outline" icon={Copy} onClick={copy}>{label}</Button>;
 }

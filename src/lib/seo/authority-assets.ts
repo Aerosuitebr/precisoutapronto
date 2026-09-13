@@ -53,7 +53,8 @@ export const PRESS_FACTS = [
   `Contato de imprensa: ${BRAND_PUBLIC_EMAIL}`,
   'Proposta: ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador',
   'Acesso: orçamento e recibo sem cadastro; conta grátis para histórico e para tirar a marca',
-  'Idiomas da interface pública: português (principal), inglês e espanhol em rotas dedicadas'
+  'Idiomas da interface pública: português (principal), inglês e espanhol em rotas dedicadas',
+  'Canal oficial no YouTube: https://www.youtube.com/@precisoutapronto'
 ] as const;
 
 export const PRESS_STORY_ANGLES = [
@@ -71,6 +72,11 @@ export const PRESS_STORY_ANGLES = [
     title: 'Pix não substitui recibo',
     hook: 'Quando o comprovante da transferência não documenta sozinho a finalidade do pagamento.',
     link: '/recibos/recibo-pagamento-pix'
+  },
+  {
+    title: 'Gerador de recibo Pix sem fingir extrato',
+    hook: 'O prestador precisa de um PDF com finalidade, não de um comprovante bancário gerado.',
+    link: '/recibos'
   }
 ] as const;
 

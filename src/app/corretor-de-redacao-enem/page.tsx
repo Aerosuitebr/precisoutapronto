@@ -154,7 +154,11 @@ export default function CorretorDeRedacaoEnemPage() {
               ))}
             </dl>
             <p className="mt-8 text-sm text-slate-500">
-              Também útil:{' '}
+              Ferramenta do Precisou, Tá Pronto (
+              <Link href="/" className="font-semibold text-sky-700 hover:underline">
+                precisoutapronto.com.br
+              </Link>
+              ). Também útil:{' '}
               <Link href="/redacao-enem" className="font-semibold text-sky-700 hover:underline">
                 central de redação ENEM
               </Link>

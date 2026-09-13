@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 
 const usefulTools = [
-  { href: '/gerador-de-recibo', name: 'Recibo em PDF', description: 'Valor por extenso, assinatura e modelos prontos.', icon: Receipt, tone: 'bg-emerald-50 text-emerald-700' },
+  { href: '/recibos/recibo-pagamento-pix', name: 'Recibo de Pix', description: 'O comprovante mostra a transferência. O recibo explica o que foi quitado.', icon: Receipt, tone: 'bg-emerald-50 text-emerald-700' },
   { href: '/gerador-de-qr-code-pix', name: 'QR Code Pix', description: 'QR e Copia e Cola sem taxa e sem cadastro.', icon: QrCode, tone: 'bg-sky-50 text-sky-700' },
   { href: '/orcamento-com-pix', name: 'Orçamento com Pix', description: 'Envie, aprove e cobre pelo WhatsApp.', icon: FileText, tone: 'bg-violet-50 text-violet-700' },
   { href: '/calculadora-de-rescisao', name: 'Rescisão', description: 'Estime verbas, aviso e FGTS.', icon: Calculator, tone: 'bg-amber-50 text-amber-700' },

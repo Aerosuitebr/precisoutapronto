@@ -148,9 +148,9 @@ export default function ImprensaPage() {
                 </Link>
               </li>
               <li>
-                <Link href="/embed" className="hover:underline">
-                  Página de embeds para parceiros
-                </Link>
+                <a href="https://www.youtube.com/@precisoutapronto" className="hover:underline">
+                  Canal no YouTube
+                </a>
               </li>
             </ul>
             <h3 className="mt-8 text-base font-bold text-slate-950">Páginas boas para linkar</h3>
