@@ -1,0 +1,10 @@
+(() => {
+const checks=[...document.querySelectorAll('.prep-check input')];
+function update(){const n=checks.filter(x=>x.checked).length;document.querySelector('.prep-check progress').value=n;document.querySelector('.check-status').textContent=`${n} de 5 informações separadas`;}
+checks.forEach(x=>x.addEventListener('change',update));
+document.querySelector('#download-check')?.addEventListener('click',()=>{const content='BELLOWS · CHECKLIST PARA O PRIMEIRO CONTATO\n\n'+checks.map(x=>`${x.checked?'[x]':'[ ]'} ${x.parentElement.textContent.trim()}`).join('\n')+'\n\nLista de organização do contato. Não constitui inspeção ou liberação técnica.';const url=URL.createObjectURL(new Blob([content],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='bellows-checklist.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+document.querySelector('#term-search')?.addEventListener('input',e=>{let n=0;document.querySelectorAll('.glossary dl div').forEach(x=>{x.hidden=!norm(x.textContent).includes(norm(e.target.value));if(!x.hidden)n++;});document.querySelector('#term-status').textContent=n?`${n} termo(s) encontrado(s)`:'Nenhum termo encontrado. Tente outra palavra.';});
+const form=document.querySelector('#request-form');form?.addEventListener('input',()=>{document.querySelector('#request-review').hidden=true;});form?.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const text=['Olá, Bellows. Gostaria de consultar um atendimento.','',...['nome','empresa','equipamento','local','demanda','descricao'].map((k,i)=>`${['Nome','Empresa / operação','Aeronave / componente','Local','Demanda','Descrição'][i]}: ${String(d.get(k)||'Não informado').trim()}`)].join('\n');document.querySelector('#request-message').textContent=text;document.querySelector('#request-whatsapp').href='https://wa.me/5521979085948?text='+encodeURIComponent(text);document.querySelector('#request-review').hidden=false;document.querySelector('#request-whatsapp').focus();});
+})();
+
