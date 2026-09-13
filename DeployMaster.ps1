@@ -164,6 +164,7 @@ function Test-IgnoredDeployPath {
   if ($name -eq '-w') { return $true }
   if ($p -eq '.env' -or $p -like '.env.*') { return $true }
   if ($p -like 'tmp/*' -or $p -eq 'tmp') { return $true }
+  if ($p -like 'outputs/*' -or $p -eq 'outputs') { return $true }
   if ($p -like 'node_modules/*' -or $p -eq 'node_modules') { return $true }
   if ($p -like '.next/*' -or $p -eq '.next') { return $true }
   if ($p -like 'test-results/*' -or $p -like 'playwright-report/*') { return $true }
