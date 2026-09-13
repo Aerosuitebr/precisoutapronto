@@ -23,6 +23,8 @@ Caddyfile
 coverage
 .tmp
 tmp
+outputs
+docs/divulgacao
 vertowell-stage
 agent-transcripts
 terminals

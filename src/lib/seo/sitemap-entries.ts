@@ -234,20 +234,7 @@ function buildTools(base: string): MetadataRoute.Sitemap {
         priority: page.id === 'orcamento-com-pix' ? 0.95 : 0.8
       };
       if (page.id !== 'orcamento-com-pix') return entry;
-      return {
-        ...entry,
-        videos: [
-          {
-            title: PROMO_ORCAMENTO_VIDEO.title,
-            thumbnail_path: `${base}${page.path}/opengraph-image`,
-            description: PROMO_ORCAMENTO_VIDEO.description,
-            content_loc: `${base}${PROMO_ORCAMENTO_VIDEO.path}`,
-            publication_date: PROMO_ORCAMENTO_VIDEO.publishedAt,
-            family_friendly: 'yes' as const,
-            live: 'no' as const
-          }
-        ]
-      };
+      return { ...entry, videos: orcamentoPromoVideos(base) };
     });
 
   const toolLandingRoutes: MetadataRoute.Sitemap = PUBLIC_TOOL_LANDINGS.filter(
@@ -440,24 +427,25 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): 
   return attachOrcamentoPromoVideo(normalizeLastModified(keepPromoted(entries, base), base), base);
 }
 
+function orcamentoPromoVideos(base: string): NonNullable<MetadataRoute.Sitemap[number]['videos']> {
+  return [
+    {
+      title: PROMO_ORCAMENTO_VIDEO.title,
+      thumbnail_loc: `${base}/orcamento-com-pix/opengraph-image`,
+      description: PROMO_ORCAMENTO_VIDEO.description,
+      content_loc: `${base}${PROMO_ORCAMENTO_VIDEO.path}`,
+      publication_date: PROMO_ORCAMENTO_VIDEO.publishedAt,
+      family_friendly: 'yes',
+      live: 'no'
+    }
+  ];
+}
+
 function attachOrcamentoPromoVideo(entries: MetadataRoute.Sitemap, base: string): MetadataRoute.Sitemap {
   const target = `${base}/orcamento-com-pix`;
   return entries.map((entry) => {
     if (entry.url !== target || entry.videos?.length) return entry;
-    return {
-      ...entry,
-      videos: [
-        {
-          title: PROMO_ORCAMENTO_VIDEO.title,
-          thumbnail_path: `${base}/orcamento-com-pix/opengraph-image`,
-          description: PROMO_ORCAMENTO_VIDEO.description,
-          content_loc: `${base}${PROMO_ORCAMENTO_VIDEO.path}`,
-          publication_date: PROMO_ORCAMENTO_VIDEO.publishedAt,
-          family_friendly: 'yes' as const,
-          live: 'no' as const
-        }
-      ]
-    };
+    return { ...entry, videos: orcamentoPromoVideos(base) };
   });
 }
 
@@ -483,7 +471,7 @@ function videoSitemapXml(entry: MetadataRoute.Sitemap[number]): string {
   if (!videos?.length) return '';
   return videos
     .map((video) => {
-      const thumbnail = xmlEscape(video.thumbnail_path);
+      const thumbnail = xmlEscape(video.thumbnail_loc);
       const title = xmlEscape(video.title);
       const description = xmlEscape(video.description);
       const content = video.content_loc ? `<video:content_loc>${xmlEscape(video.content_loc)}</video:content_loc>` : '';
