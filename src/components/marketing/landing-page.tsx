@@ -5,7 +5,7 @@ import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
 import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 
 const commercialTools = [
-  { href: '/orcamento-com-pix#montar', title: 'Enviar orçamento', description: 'Combine itens, valores e prazo. Envie um link para seu cliente aprovar pelo WhatsApp.', action: 'Criar orçamento grátis' },
+  { href: '/orcamento-com-pix#montar', title: 'Enviar orçamento', description: 'Combine itens, valores e prazo. Envie um link para seu cliente aprovar pelo WhatsApp.', action: 'Montar meu orçamento' },
   { href: '/recibos/recibo-pagamento-pix', title: 'Emitir recibo de Pix', description: 'Já recebeu? Veja como registrar o serviço e a parcela paga em um recibo em PDF.', action: 'Ver modelo e gerar recibo' },
   { href: '/gerador-de-proposta-comercial#ferramenta', title: 'Montar proposta comercial', description: 'Apresente serviços, preços e condições em um PDF com a identidade do seu negócio.', action: 'Montar proposta grátis' }
 ] as const;
