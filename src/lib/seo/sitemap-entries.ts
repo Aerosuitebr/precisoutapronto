@@ -25,7 +25,7 @@ export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
  * uma data global de deploy não representa mudança relevante de conteúdo.
  */
 const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
-  ['/', new Date('2026-08-31T12:00:00.000Z')],
+  ['/', new Date('2026-09-14T12:00:00.000Z')],
   ['/orcamento-com-pix', new Date('2026-09-13T12:00:00.000Z')],
   ['/orcamento-para/eletricista', new Date('2026-09-05T12:00:00.000Z')],
   ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],

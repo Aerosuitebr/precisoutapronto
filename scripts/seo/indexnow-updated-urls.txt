@@ -1,24 +1,3 @@
-# URLs cujo conteúdo ou snippet mudou nesta versão.
+# Atualização de 14/09/2026: caminhos comerciais e atalhos por profissão na home.
 # O deploy envia este arquivo somente quando seu conteúdo muda.
 /
-/orcamento-com-pix
-/orcamento-para/eletricista
-/orcamento-para/pedreiro
-/orcamento-para/fotografo
-/orcamento-para/manutencao-residencial
-/recibos/recibo-pagamento-pix
-/corretor-de-redacao-enem
-/gerador-de-recibo
-/gerador-de-proposta-comercial
-/gerador-de-contrato
-/gerador-de-curriculo
-/gerador-de-referencias-abnt
-/calculadora-de-rescisao
-/calculadora-de-ferias
-/calculadora-de-decimo-terceiro
-/precisou-ta-pronto
-/embed
-/modelos-de-orcamento
-/pesquisa/orcamentos-prestadores
-/rescisao
-/guias

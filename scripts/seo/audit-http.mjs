@@ -102,7 +102,12 @@ const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[
 const escapedCanonicalBase = canonicalBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const privatePath = new RegExp(`^${escapedCanonicalBase}/(?:api|conta(?:/|$)|ferramentas(?:/|$)|checkout(?:/|$)|login(?:/|$)|cadastro(?:/|$)|documento(?:/|$)|orcamento/)`);
 const leaked = urls.filter((url) => privatePath.test(url));
-if (urls.length < 15 || urls.length > 40) failures.push(`/sitemap.xml: foco editorial inválido; esperado entre 15 e 40 URLs, recebido ${urls.length}`);
+// Seleção editorial vigente em 14/09/2026, incluindo a reabertura comercial de 10/09.
+if (urls.length !== 46) failures.push(`/sitemap.xml: esperado 46 URLs do foco editorial, recebido ${urls.length}`);
+if (new Set(urls).size !== urls.length) failures.push('/sitemap.xml: URLs duplicadas');
+for (const path of ['/orcamento-com-pix', '/gerador-de-proposta-comercial', '/gerador-de-recibo', '/recibos/recibo-pagamento-pix', '/orcamento-para/eletricista', '/orcamento-para/chaveiro', '/orcamento-para/marceneiro', '/orcamento-para/gesseiro', '/orcamento-para/instalacao-de-piso']) {
+  if (!urls.includes(`${canonicalBase}${path}`)) failures.push(`/sitemap.xml: página comercial ausente: ${path}`);
+}
 if (leaked.length) failures.push(`/sitemap.xml: URLs privadas encontradas: ${leaked.join(', ')}`);
 
 const sitemapIndex = results.get('/sitemaps/index.xml').body;
