@@ -14,7 +14,7 @@ export function LandingConversionLink({ landingPath, placement, onClick, ...prop
     <Link
       {...props}
       onClick={(event) => {
-        setLandingAttribution(landingPath);
+        setLandingAttribution(landingPath, typeof props.href === 'string' && props.href.startsWith('#'));
         trackEvent('landing_cta_click', {
           landing_path: landingPath,
           destination_path: typeof props.href === 'string' ? props.href : '',

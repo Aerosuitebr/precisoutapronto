@@ -42,9 +42,10 @@ export function trackEvent(name: string, params: EventParams = {}) {
 }
 
 /** Preserva a landing que iniciou o fluxo para atribuir criação, envio, aprovação e compra. */
-export function setLandingAttribution(landingPath: string) {
+export function setLandingAttribution(landingPath: string, preserveExisting = false) {
   if (typeof window === 'undefined' || !landingPath.startsWith('/')) return;
   try {
+    if (preserveExisting && window.sessionStorage.getItem(LANDING_ATTRIBUTION_KEY)) return;
     window.sessionStorage.setItem(LANDING_ATTRIBUTION_KEY, landingPath);
   } catch {
     // A medição é opcional e nunca deve bloquear a navegação.

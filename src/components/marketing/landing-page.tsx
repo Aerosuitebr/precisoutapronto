@@ -3,6 +3,7 @@ import { ArrowRight, Check, CheckCircle2, ChevronRight, FileCheck2, MessageCircl
 import { Logo } from '@/components/brand/logo';
 import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
 import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
+import { ServiceDifferences } from '@/components/marketing/service-differences';
 
 const commercialTools = [
   { href: '/orcamento-com-pix#montar', title: 'Enviar orçamento', description: 'Combine itens, valores e prazo. Envie um link para seu cliente aprovar pelo WhatsApp.', action: 'Montar meu orçamento' },
@@ -87,6 +88,7 @@ export function LandingPage() {
         </div>
       </section>
 
+      <ServiceDifferences landingPath="/" />
       <UsefulToolsStrip title="Outras ferramentas para o seu dia a dia" />
 
       <section className="bg-[#101828] py-20 text-white sm:py-24"><div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_.9fr] lg:items-center lg:px-8"><div><p className="text-xs font-black uppercase tracking-[.18em] text-blue-300">Profissional por fora. Simples por dentro.</p><h2 className="precisoutapronto-display mt-4 text-4xl font-black tracking-[-.05em] sm:text-6xl">Seu cliente decide mais rápido.</h2><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">Tudo para conferir, aprovar e pagar em uma única página feita para o celular.</p></div><ul className="grid gap-3">{['Itens e valores sem mensagem perdida', 'Aprovação ou ajuste em um toque', 'QR Code e Pix depois do aceite', 'Registro claro do combinado'].map(item => <li key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 font-bold"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald-400 text-[#101828]"><Check className="h-4 w-4 stroke-[3]" /></span>{item}</li>)}</ul></div></section>

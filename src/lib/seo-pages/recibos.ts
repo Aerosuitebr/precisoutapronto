@@ -6,7 +6,7 @@ export const recibosSeoContent: SeoPageContent = {
   toolName: 'Recibo',
   h1: 'Gerador de recibo online grátis em PDF',
   subtitle:
-    'Crie um recibo de pagamento profissional em minutos, sem cadastro. Preencha valor, quem pagou e quem recebeu, escolha um modelo e baixe em PDF pronto para enviar.',
+    'Recebeu um Pix pelo seu serviço? Emita o recibo da entrada, de uma parcela ou do saldo. Confira o que ainda falta receber e baixe o PDF sem cadastro.',
   ctaPrimary: 'Emitir recibo grátis',
   ctaSecondary: 'Ver modelos de recibo',
   ctaHref: '/gerador-de-recibo#ferramenta',
@@ -20,8 +20,8 @@ export const recibosSeoContent: SeoPageContent = {
   benefits: [
     {
       icon: Receipt,
-      title: 'Valor por extenso automático',
-      description: 'Digite o valor em número e o recibo já escreve por extenso, sem erro de digitação.'
+      title: 'Entrada e saldo no mesmo recibo',
+      description: 'Informe o total combinado e os pagamentos recebidos. O PDF mostra o valor deste Pix por extenso e o saldo que ainda falta receber.'
     },
     {
       icon: Palette,
@@ -30,8 +30,8 @@ export const recibosSeoContent: SeoPageContent = {
     },
     {
       icon: FileCheck2,
-      title: 'Assinatura digital incluída',
-      description: 'Adicione uma assinatura digital ao recibo sem precisar imprimir e escanear.'
+      title: 'Serviço e pagamento identificados',
+      description: 'Edite a descrição do serviço, a referência do orçamento e a data. O recibo registra o pagamento que você confirmou no banco.'
     },
     {
       icon: Sparkles,
@@ -167,7 +167,7 @@ export const recibosSeoContent: SeoPageContent = {
   seo: {
     metaTitle: 'Gerador de recibo online grátis em PDF',
     metaDescription:
-      'Gerador de recibo online grátis: valor por extenso, assinatura e modelos prontos. Baixe o PDF no celular, sem cadastro para começar.',
+        'Emita recibo de Pix, entrada, pagamento parcial ou saldo. Cálculo do saldo e valor por extenso no PDF. Para MEIs e prestadores, sem cadastro.',
     keywords: [
       'gerador de recibo',
       'gerador de recibo online',

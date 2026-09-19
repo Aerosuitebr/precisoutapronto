@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react';
+import { QuoteWorkedExample } from '@/components/marketing/quote-worked-example';
+import { ServiceDifferences } from '@/components/marketing/service-differences';
 import Link from 'next/link';
 import { ArrowRight, Check, ChevronRight } from 'lucide-react';
 import { AuthAwareLink } from '@/components/auth/auth-aware-link';
@@ -120,6 +122,8 @@ export function SeoLandingPage({
           </section>
 
           {demo}
+
+          {content.path === '/orcamento-com-pix' ? <><ServiceDifferences landingPath={content.path} comparison /><QuoteWorkedExample /></> : null}
 
           <UsefulToolsStrip currentPath={content.path} title="Ferramentas úteis para o próximo passo" />
 

@@ -41,10 +41,10 @@ export const SEO_LANDINGS = {
       'Cliente aprova sem instalar app',
       'QR Pix e Copia e Cola prontos',
       'Link público para mandar no WhatsApp',
-      'O cliente não instala aplicativo'
+      'Confira a prévia antes de enviar'
     ],
     primaryCta: 'Criar e enviar orçamento grátis',
-    secondaryCta: { label: 'Gerador de QR Code Pix', href: '/gerador-de-qr-code-pix' },
+    secondaryCta: { label: 'Ver exemplo preenchido', href: '#exemplo' },
     sections: [
       {
         title: 'Do preço à cobrança, no mesmo fluxo',

@@ -62,14 +62,14 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'recibo-pagamento-pix',
-    updatedAt: '2026-09-13',
+    updatedAt: '2026-09-19',
     title: 'Recibo de Pix: o comprovante serve? Gere o PDF',
     description: 'O comprovante do Pix mostra a transferência. O recibo explica o que foi quitado. Crie o PDF grátis, sem cadastro, e envie para o pagador.',
     eyebrow: 'Pagamento via Pix',
     answer: 'O comprovante bancário mostra a transferência; o recibo explica qual obrigação aquele Pix quitou. Os dois documentos se complementam quando o motivo do pagamento precisa ficar claro.',
     fields: ['Pagador e recebedor', 'Valor transferido', 'Serviço, produto ou parcela quitada', 'Data do recebimento', 'Indicação “pago via Pix”'],
     steps: ['Confirme o Pix recebido', 'Identifique a finalidade', 'Registre partes, valor e data', 'Gere o recibo e envie ao pagador'],
-    example: ['Recebi de Ana Souza', 'R$ 1.200,00 (mil e duzentos reais)', 'Referente à primeira parcela do projeto de identidade visual', 'Pago via Pix em 10/08/2026'],
+    example: ['Recebedor: Prestador Exemplo. Pagador: Cliente Exemplo.', 'Recebi R$ 150,00 (cento e cinquenta reais) via Pix em 16/09/2026.', 'Referente à entrada da instalação de tomadas e materiais do orçamento ORC-018, no total de R$ 490,00.', 'Saldo pendente: R$ 340,00. Este recibo registra somente a entrada recebida.'],
     comparison: {
       title: 'O comprovante do Pix serve como recibo?',
       intro: 'Para registrar um pagamento por Pix, confira o crédito no banco e identifique no recibo quem pagou, quem recebeu, valor, data e finalidade. Se recebeu apenas um sinal ou uma parcela, registre somente esse valor e informe o saldo pendente. Guarde o PDF junto ao comprovante da transferência.',

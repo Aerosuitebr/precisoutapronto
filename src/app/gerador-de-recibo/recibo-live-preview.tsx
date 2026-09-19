@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Check, Loader2 } from 'lucide-react';
 import { DocumentExportShell } from '@/components/brand/document-export-shell';
@@ -12,9 +12,10 @@ import { ReciboPreview } from '@/components/recibos/recibo-preview';
 import { useToast } from '@/components/ui/toast';
 import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
-import { trackEvent } from '@/lib/analytics';
-import { parseCurrency } from '@/lib/formatters';
-import { SAMPLE_RECEIPT } from '@/lib/recibos/defaults';
+import { setLandingAttribution, trackEvent } from '@/lib/analytics';
+import { formatCurrency } from '@/lib/formatters';
+import { createEmptyReceipt } from '@/lib/recibos/defaults';
+import { RECEIPT_PAYMENT_LABELS, parseReceiptMoney, receiptPaymentBreakdown, type ReceiptPaymentKind } from '@/lib/recibos/payment-breakdown';
 import type { ReceiptTemplateId } from '@/lib/recibos/types';
 
 const TEMPLATES: { id: ReceiptTemplateId; name: string }[] = [
@@ -24,41 +25,70 @@ const TEMPLATES: { id: ReceiptTemplateId; name: string }[] = [
 ];
 
 export function ReciboLivePreview() {
-  const [receiverName, setReceiverName] = useState(SAMPLE_RECEIPT.receiver.name);
-  const [payerName, setPayerName] = useState(SAMPLE_RECEIPT.payer.name);
-  const [amountInput, setAmountInput] = useState(SAMPLE_RECEIPT.amountInput);
-  const [templateId, setTemplateId] = useState<ReceiptTemplateId>(SAMPLE_RECEIPT.templateId);
+  const [baseReceipt, setBaseReceipt] = useState<ReturnType<typeof createEmptyReceipt> | null>(null);
+  const [receiverName, setReceiverName] = useState('');
+  const [payerName, setPayerName] = useState('');
+  const [amountInput, setAmountInput] = useState('');
+  const [reference, setReference] = useState('');
+  const [date, setDate] = useState('');
+  const [kind, setKind] = useState<ReceiptPaymentKind>('integral');
+  const [totalInput, setTotalInput] = useState('');
+  const [previousInput, setPreviousInput] = useState('');
+  const [confirmed, setConfirmed] = useState(false);
+  const [error, setError] = useState('');
+  const [templateId, setTemplateId] = useState<ReceiptTemplateId>('profissional');
   const [exporting, setExporting] = useState(false);
   const exportRef = useRef<HTMLDivElement>(null);
   const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
 
+  useEffect(() => {
+    const empty = createEmptyReceipt();
+    setBaseReceipt(empty);
+    const now = new Date();
+    setDate(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
+    setLandingAttribution('/gerador-de-recibo', true);
+    const requested = new URLSearchParams(window.location.search).get('tipo');
+    if (requested && Object.prototype.hasOwnProperty.call(RECEIPT_PAYMENT_LABELS, requested)) setKind(requested as ReceiptPaymentKind);
+  }, []);
+
+  const amount = parseReceiptMoney(amountInput);
+  const breakdown = receiptPaymentBreakdown(kind, parseReceiptMoney(totalInput), parseReceiptMoney(previousInput), amount);
+
   const previewData = useMemo(() => {
-    const amount = parseCurrency(amountInput) || SAMPLE_RECEIPT.amount;
+    if (!baseReceipt) return null;
     return {
-      ...SAMPLE_RECEIPT,
+      ...baseReceipt,
       templateId,
-      amount,
-      amountInput: amountInput || SAMPLE_RECEIPT.amountInput,
-      receiver: { ...SAMPLE_RECEIPT.receiver, name: receiverName || SAMPLE_RECEIPT.receiver.name },
-      payer: { ...SAMPLE_RECEIPT.payer, name: payerName || SAMPLE_RECEIPT.payer.name }
+      amount: Number.isFinite(amount) ? amount : 0,
+      amountInput,
+      reference: reference.trim(),
+      date,
+      notes: breakdown.error ? '' : breakdown.notes,
+      receiver: { ...baseReceipt.receiver, name: receiverName.trim() },
+      payer: { ...baseReceipt.payer, name: payerName.trim() }
     };
-  }, [receiverName, payerName, amountInput, templateId]);
+  }, [baseReceipt, receiverName, payerName, amount, amountInput, reference, date, breakdown.error, breakdown.notes, templateId]);
 
   const checklist = [
     { label: 'Quem recebe', done: receiverName.trim().length > 2 },
     { label: 'Quem paga', done: payerName.trim().length > 2 },
-    { label: 'Valor', done: amountInput.trim().length > 2 },
-    { label: 'Modelo escolhido', done: true }
+    { label: 'Pagamento', done: !breakdown.error },
+    { label: 'Serviço e data', done: Boolean(reference.trim() && date) }
   ];
   const completedCount = checklist.filter((item) => item.done).length;
 
   async function handleDownloadPdf() {
-    if (!exportRef.current) return;
+    if (exporting || !exportRef.current || !previewData) return;
+    const validation = !receiverName.trim() || !payerName.trim() || !reference.trim() || !date
+      ? 'Preencha quem recebe, quem paga, o serviço e a data do pagamento.'
+      : breakdown.error || (!confirmed ? 'Confirme que recebeu este pagamento antes de emitir o recibo.' : '');
+    setError(validation);
+    if (validation) return;
     setExporting(true);
     try {
       const outcome = await performBillableAction(
-        { toolId: 'recibos', artifactId: `landing_${Date.now()}`, action: 'download' },
+        { toolId: 'recibos', artifactId: previewData.id, action: 'download' },
         async () => {
           const { exportElementToPdf } = await import('@/lib/curriculo/pdf');
           await exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments });
@@ -68,7 +98,8 @@ export function ReciboLivePreview() {
         toast(outcome.reason || 'Não foi possível gerar o PDF.');
         return;
       }
-      trackEvent('receipt_pdf_download_completed', { tool_path: '/gerador-de-recibo', template_id: templateId });
+      trackEvent('receipt_pdf_download_completed', { tool_path: '/gerador-de-recibo', template_id: templateId, payment_kind: kind });
+      trackEvent('document_completed', { tool_name: 'recibos', output: 'pdf', payment_kind: kind });
       toast('PDF baixado. Conta só se quiser histórico ou tirar a marca.');
     } catch {
       toast('Não foi possível gerar o PDF. Tente de novo.');
@@ -82,6 +113,8 @@ export function ReciboLivePreview() {
     <LiveToolPreviewLayout
       form={
         <>
+          <div><h3 className="text-xl font-extrabold text-slate-950">Recebeu um Pix? Registre o que foi pago.</h3><p className="mt-2 text-sm text-slate-600">Entrada, parcela ou saldo: o PDF mostra o recebimento e o que ainda falta pagar. Sem cadastro.</p></div>
+          <div><label htmlFor="rec-kind" className="mb-1 block text-sm font-semibold">O que você recebeu?</label><select id="rec-kind" className={livePreviewFieldClass} value={kind} onChange={event => { setKind(event.target.value as ReceiptPaymentKind); setConfirmed(false); trackEvent('receipt_payment_kind_selected', { payment_kind: event.target.value }); }}>{Object.entries(RECEIPT_PAYMENT_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></div>
           <div aria-live="polite">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wide text-slate-500">Seu progresso</span>
@@ -140,12 +173,12 @@ export function ReciboLivePreview() {
 
           <div>
             <label className="mb-1 block text-sm font-semibold text-slate-800" htmlFor="rec-valor">
-              Valor
+              Valor recebido neste Pix
             </label>
             <input
               id="rec-valor"
               value={amountInput}
-              onChange={(event) => setAmountInput(event.target.value)}
+              onChange={(event) => { setAmountInput(event.target.value); setConfirmed(false); }}
               placeholder="Ex: R$ 1.500,00"
               inputMode="decimal"
               aria-describedby="rec-valor-dica"
@@ -156,6 +189,13 @@ export function ReciboLivePreview() {
             </p>
           </div>
 
+          {kind !== 'integral' ? <div className="space-y-4 rounded-xl bg-emerald-50 p-4">
+            <div><label htmlFor="rec-total" className="mb-1 block text-sm font-semibold">Total combinado pelo serviço</label><input id="rec-total" inputMode="decimal" className={livePreviewFieldClass} value={totalInput} onChange={event => setTotalInput(event.target.value)} placeholder="Ex.: 490,00" /></div>
+            {kind !== 'entrada' ? <div><label htmlFor="rec-previous" className="mb-1 block text-sm font-semibold">Já recebido antes deste Pix</label><input id="rec-previous" inputMode="decimal" className={livePreviewFieldClass} value={previousInput} onChange={event => setPreviousInput(event.target.value)} placeholder="Ex.: 150,00" /><p className="mt-1 text-xs">Some os pagamentos anteriores. Não inclua o Pix deste recibo.</p></div> : null}
+            <p role="status" className="text-sm font-bold">{breakdown.error || `Saldo a receber: ${formatCurrency(breakdown.remaining)}`}</p>
+          </div> : null}
+          <div><label htmlFor="rec-reference" className="mb-1 block text-sm font-semibold">Serviço e referência do orçamento</label><textarea id="rec-reference" maxLength={500} className={livePreviewFieldClass} value={reference} onChange={event => setReference(event.target.value)} placeholder="Ex.: instalação de tomadas, orçamento 018" /></div>
+          <div><label htmlFor="rec-date" className="mb-1 block text-sm font-semibold">Data do pagamento</label><input id="rec-date" type="date" className={livePreviewFieldClass} value={date} onChange={event => setDate(event.target.value)} /></div>
           <div>
             <span className="mb-2 block text-sm font-semibold text-slate-800">Modelo</span>
             <div className="flex flex-wrap gap-2">
@@ -177,10 +217,13 @@ export function ReciboLivePreview() {
             </div>
           </div>
 
+          <label className="flex items-start gap-3 text-sm leading-6"><input type="checkbox" className="mt-1 h-5 w-5 shrink-0" checked={confirmed} onChange={event => setConfirmed(event.target.checked)} />Conferi o recebimento deste Pix na minha conta.</label>
+          <p className="text-xs text-slate-600">Você informa os pagamentos. Não consultamos seu banco nem geramos comprovantes bancários.</p>
+          {error ? <p role="alert" className="text-sm font-semibold text-rose-700">{error}</p> : null}
           <button
             type="button"
             onClick={handleDownloadPdf}
-            disabled={exporting}
+            disabled={exporting || !previewData}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-700 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 disabled:opacity-60"
           >
             {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
@@ -194,15 +237,15 @@ export function ReciboLivePreview() {
           </p>
         </>
       }
-      preview={<ReciboPreview data={previewData} />}
+      preview={previewData ? <ReciboPreview data={previewData} /> : <p className="p-6">Preparando recibo…</p>}
     />
-    <div className="pointer-events-none fixed -left-[10000px] top-0 w-[794px]" aria-hidden>
+    {previewData ? <div className="pointer-events-none fixed -left-[10000px] top-0 w-[794px]" aria-hidden>
       <div ref={exportRef} className="bg-white p-8">
         <DocumentExportShell branded={brandDocuments}>
           <ReciboPreview data={previewData} />
         </DocumentExportShell>
       </div>
-    </div>
+    </div> : null}
     </>
   );
 }

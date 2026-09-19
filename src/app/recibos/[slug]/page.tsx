@@ -48,6 +48,18 @@ export default async function ReceiptClusterRoute({ params }: Props) {
           <LandingConversionLink href="/gerador-de-recibo#ferramenta" landingPath={`/recibos/${page.slug}`} placement="hero_primary" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3 font-bold text-white">{page.slug === 'recibo-pagamento-pix' ? 'Gerar recibo de Pix grátis' : 'Gerar este recibo grátis'} <ArrowRight className="h-4 w-4" /></LandingConversionLink>
         </div></header>
         <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+          {page.slug === 'recibo-pagamento-pix' ? <section className="mb-12 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+            <h2 className="text-2xl font-extrabold text-slate-950">Recebeu entrada, parcela ou saldo?</h2>
+            <p className="mt-3 leading-7 text-slate-700">Escolha o recebimento. Informe o total combinado e o que já recebeu: o gerador calcula o saldo e inclui a explicação no PDF, sem cadastro.</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              {[
+                { kind: 'entrada', title: 'Recibo de entrada', text: 'Primeiro Pix do serviço. Registre o sinal e deixe o saldo pendente claro.' },
+                { kind: 'parcial', title: 'Recibo de pagamento parcial', text: 'Mais uma parcela recebida. Some os pagamentos anteriores e confira o que falta.' },
+                { kind: 'saldo', title: 'Recibo de quitação do saldo', text: 'Último pagamento. Confira se este Pix completa o total combinado.' }
+              ].map(item => <LandingConversionLink key={item.kind} href={`/gerador-de-recibo?tipo=${item.kind}#ferramenta`} landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="rounded-xl border border-emerald-200 bg-white p-4 hover:border-emerald-700"><h3 className="font-bold text-emerald-900">{item.title}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p><span className="mt-3 block text-sm font-bold">Preencher este recibo →</span></LandingConversionLink>)}
+            </div>
+            <p className="mt-4 text-xs leading-6 text-slate-600">Exemplo: serviço de R$ 490, entrada de R$ 150 e saldo de R$ 340. Você informa os valores e confirma o recebimento no banco. O recibo não é um comprovante bancário.</p>
+          </section> : null}
           {page.comparison ? (
             <section className="mb-12">
               <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">{page.comparison.title}</h2>
@@ -81,6 +93,12 @@ export default async function ReceiptClusterRoute({ params }: Props) {
           {page.slug === 'recibo-pagamento-pix' ? (
             <section className="mt-12 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
               <h2 className="text-2xl font-bold text-slate-950">Recebeu só a entrada?</h2>
+              <p className="mt-3 leading-7 text-slate-700">Para um serviço de R$ 490, receber R$ 150 agora deixa R$ 340 em aberto. Cada recibo deve acompanhar o valor efetivamente recebido.</p>
+              <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-xl bg-white p-4"><dt className="font-bold text-slate-950">Primeiro Pix: R$ 150</dt><dd className="mt-2 text-sm leading-6 text-slate-700">Descrição: entrada do orçamento ORC-018. Saldo pendente: R$ 340.</dd></div>
+                <div className="rounded-xl bg-white p-4"><dt className="font-bold text-slate-950">Segundo Pix: R$ 340</dt><dd className="mt-2 text-sm leading-6 text-slate-700">Após receber: saldo do orçamento ORC-018. Entrada de R$ 150 registrada anteriormente. Total recebido: R$ 490.</dd></div>
+              </dl>
+              <LandingConversionLink href="/gerador-de-recibo#ferramenta" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="mt-5 inline-flex rounded-xl bg-slate-950 px-5 py-3 font-bold text-white">Preencher recibo do valor recebido</LandingConversionLink>
               <p className="mt-3 leading-7 text-slate-700">Veja o <Link href="/guias/como-registrar-sinal-e-saldo-pix" className="font-semibold text-emerald-800 underline underline-offset-4">passo a passo para registrar sinal e saldo recebidos por Pix</Link>, com dois recibos demonstrativos ligados ao mesmo orçamento.</p>
             </section>
           ) : null}

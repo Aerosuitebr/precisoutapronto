@@ -661,7 +661,7 @@ test('artifact analytics route never selects payloads, summaries or identifiers'
     process.cwd(), 'src', 'app', 'api', 'analytics', 'artifacts', 'route.ts'
   ), 'utf8');
   expect(route).toContain("isInternalDashboardEmail(session.email)");
-  expect(route).not.toMatch(/select:\s*\{[^}]*?(payloadJson|summaryJson|userId|anonymousSessionId|publicId)/s);
+  expect(route).not.toMatch(/select:\s*\{[^}]*?(payloadJson|summaryJson|userId|anonymousSessionId|publicId)/);
   expect(route).toContain('Aggregates only');
 });
 

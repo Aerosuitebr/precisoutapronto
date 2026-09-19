@@ -121,8 +121,7 @@ function ProfessionalLayout({ data, amountLabel, words, addressLine, dateLabel, 
         ) : null}
 
         <p className="text-sm leading-relaxed text-slate-600">
-          Para maior clareza, firmo o presente recibo dando plena e total quitação do valor acima, nada mais tendo a
-          reclamar.
+          Este recibo registra o recebimento do valor acima, referente ao serviço ou pagamento descrito.
         </p>
 
         {data.notes ? <p className="text-sm leading-relaxed text-slate-600">{data.notes}</p> : null}
@@ -245,8 +244,7 @@ function ModernLayout({ data, amountLabel, words, addressLine, dateLabel, cityDa
           </div>
 
           <p className="text-sm leading-relaxed text-slate-600">
-            Para maior clareza, firmo o presente recibo dando plena e total quitação do valor acima, nada mais tendo a
-            reclamar.
+            Este recibo registra o recebimento do valor acima, referente ao serviço ou pagamento descrito.
           </p>
 
           {data.notes ? <p className="text-sm leading-relaxed text-slate-600">{data.notes}</p> : null}
@@ -383,7 +381,7 @@ function CompactLayout({ data, amountLabel, words, addressLine, dateLabel, cityD
       </div>
 
       <p className="mt-4 text-xs text-slate-600">
-        Firmo o presente recibo dando plena e total quitação do valor acima, nada mais tendo a reclamar.
+        Este recibo registra o recebimento do valor acima, referente ao serviço ou pagamento descrito.
       </p>
 
       <div data-precisoutapronto-keep className="mt-auto pt-10">

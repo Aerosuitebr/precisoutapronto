@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { test as it, expect } from '@playwright/test';
 import { isPublicIndexablePath } from './public-indexable-path';
 
-describe('isPublicIndexablePath', () => {
+it.describe('isPublicIndexablePath', () => {
   it('aceita landings públicas', () => {
     expect(isPublicIndexablePath('/gerador-de-recibo')).toBe(true);
     expect(isPublicIndexablePath('/mei-ou-clt')).toBe(true);
