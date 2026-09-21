@@ -26,6 +26,8 @@ const SEO_LINKS = [
   { href: '/criterios-editoriais', label: 'Critérios editoriais' },
   { href: '/metodologia-calculadoras', label: 'Metodologia' },
   { href: '/imprensa', label: 'Imprensa' },
+  { href: '/conteudos-para-compartilhar', label: 'Conteúdos para compartilhar' },
+  { href: '/parcerias/criadores', label: 'Parcerias para criadores' },
   { href: '/para/mei', label: 'Para MEI' },
   { href: '/contato', label: 'Contato' }
 ] as const;

@@ -81,6 +81,12 @@ export default function ImprensaPage() {
               <Link href="/embed" className="rounded-full border border-slate-300 bg-white px-4 py-2 text-slate-800">
                 Badges e embeds
               </Link>
+              <Link href="/conteudos-para-compartilhar" className="rounded-full border border-slate-300 bg-white px-4 py-2 text-slate-800">
+                Conteúdos para compartilhar
+              </Link>
+              <Link href="/parcerias/criadores" className="rounded-full border border-slate-300 bg-white px-4 py-2 text-slate-800">
+                Parcerias para criadores
+              </Link>
               <Link href="/sobre" className="rounded-full border border-slate-300 bg-white px-4 py-2 text-slate-800">
                 Sobre a marca
               </Link>
