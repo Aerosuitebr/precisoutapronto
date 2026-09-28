@@ -291,11 +291,11 @@ if (!receiptCluster.includes("title: 'O comprovante do Pix serve como recibo?'")
 }
 
 const professionPresets = await readFile(path.join(root, 'src/lib/orcamentos/profession-presets.ts'), 'utf8');
-if (!professionPresets.includes("title: 'Orçamento para eletricista: modelo, faixa de preço e Pix'")) {
-  failures.push('orcamento-para/eletricista: title de preço ausente');
+if (!professionPresets.includes("title: 'Orçamento para eletricista: gerador grátis com Pix'")) {
+  failures.push('orcamento-para/eletricista: title do gerador ausente');
 }
-if (!professionPresets.includes("title: 'Quanto custa um eletricista em 2026'")) {
-  failures.push('orcamento-para/eletricista: tabela quanto custa ausente');
+if (!professionPresets.includes("q: 'Como fazer um orçamento de eletricista para enviar no WhatsApp?'")) {
+  failures.push('orcamento-para/eletricista: orientação de criação e envio ausente');
 }
 if (!professionPresets.includes("title: 'O que entra em um orçamento para eletricista'")) {
   failures.push('orcamento-para/eletricista: escopo do orçamento ausente');

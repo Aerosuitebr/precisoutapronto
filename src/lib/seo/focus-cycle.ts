@@ -31,6 +31,8 @@ export const SEO_FOCUS_PATHS = [
   '/biblioteca',
   '/pesquisa/orcamentos-prestadores',
   '/orcamento-para/eletricista',
+  // Reabertura seletiva de 28/09: modelo com exemplo e guia de preenchimento.
+  '/orcamento-para/pintor',
   '/orcamento-para/pedreiro',
   '/orcamento-para/fotografo',
   '/orcamento-para/manutencao-residencial',
@@ -43,6 +45,7 @@ export const SEO_FOCUS_PATHS = [
   '/recibos/recibo-pagamento-pix',
   '/recibos/recibo-prestacao-de-servico',
   '/recibos/recibo-para-autonomo',
+  '/recibos/como-preencher-recibo',
   '/gerador-de-recibo',
   '/gerador-de-proposta-comercial',
   '/calculadora-de-preco-freelancer',

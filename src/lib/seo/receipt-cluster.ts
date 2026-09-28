@@ -62,7 +62,7 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'recibo-pagamento-pix',
-    updatedAt: '2026-09-19',
+    updatedAt: '2026-09-28',
     title: 'Recibo de Pix: o comprovante serve? Gere o PDF',
     description: 'O comprovante do Pix mostra a transferência. O recibo explica o que foi quitado. Crie o PDF grátis, sem cadastro, e envie para o pagador.',
     eyebrow: 'Pagamento via Pix',
@@ -83,7 +83,7 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
       { title: 'Comprovante Pix e recibo são diferentes', paragraphs: ['O comprovante do banco confirma a movimentação entre contas, mas pode não explicar contrato, parcela ou serviço.', 'O recibo conecta o valor à obrigação quitada e pode declarar se o pagamento foi total ou parcial.'] },
       { title: 'O que o comprovante prova e o que o recibo prova', paragraphs: ['O comprovante do Pix mostra valor, data, instituições e identificador da transferência. Ele não descreve sozinho se aquele valor quitou aluguel, serviço, sinal ou parcela.', 'O recibo registra pagador, recebedor, finalidade e se a quitação foi total ou parcial. Juntos, comprovante e recibo documentam o dinheiro e o combinado.'] },
       { title: 'Como descrever sinal, parcela e saldo', paragraphs: ['Exemplo fictício de sinal: “Recebi R$ 450,00 via Pix como entrada de 50% do pacote de seis artes para redes sociais, conforme proposta de 08/09/2026. Saldo previsto: R$ 450,00.” Substitua os dados pelos valores e condições do seu serviço.', 'No recebimento do saldo, identifique a mesma proposta e a parcela correspondente. Confira o crédito no aplicativo do seu banco antes de emitir o recibo; não registre o valor total do serviço quando recebeu apenas uma parte.'] },
-      { title: 'Gere o recibo depois do Pix', paragraphs: ['Abra o gerador, informe pagador, recebedor, valor, data e o que aquele Pix quitou, e baixe o PDF para enviar no WhatsApp.', 'Não precisa cadastro para começar. A conta grátis só entra se você quiser histórico ou PDF sem a marca.'] },
+      { title: 'Gere o recibo depois do Pix', paragraphs: ['Abra o gerador, informe pagador, recebedor, valor, data e o que aquele Pix quitou, e baixe o PDF para enviar no WhatsApp.', 'Não precisa cadastro para começar. A conta grátis permite guardar o histórico; o plano Premium remove a marca do PDF.'] },
       { title: 'Não exponha dados bancários', paragraphs: ['Não é necessário inserir chave Pix, conta completa ou identificadores sensíveis no recibo.', 'Informe apenas a forma de pagamento e os dados necessários para identificar as partes e a operação.'] },
       {
         title: 'Gerador de recibo Pix não é gerador de comprovante',
@@ -136,13 +136,14 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'como-preencher-recibo',
+    updatedAt: '2026-09-28',
     title: 'Como preencher um recibo corretamente: passo a passo',
     description: 'Aprenda a preencher recibo sem erros: partes, valor por extenso, finalidade, quitação, data e assinatura.',
     eyebrow: 'Passo a passo',
     answer: 'Para preencher um recibo, identifique pagador e recebedor, escreva o valor, descreva a finalidade, declare o alcance da quitação e finalize com data, local e assinatura.',
     fields: ['Dados completos das partes', 'Valor sem divergência', 'Finalidade específica', 'Quitação total ou parcial', 'Data, local e assinatura'],
     steps: ['Confirme quem paga e quem recebe', 'Digite o valor e confira o extenso', 'Descreva a operação e a quitação', 'Revise data e assinatura'],
-    example: ['Recebi de [pagador] a quantia de [valor]', 'Referente a [serviço, produto ou parcela]', 'Pagamento [integral/parcial] realizado por [forma]', '[cidade], [data]. [assinatura]'],
+    example: ['Exemplo fictício: Prestador Exemplo recebeu de Cliente Exemplo.', 'Recebi R$ 150,00 (cento e cinquenta reais) via Pix em 28/09/2026.', 'Referente à entrada da instalação de tomadas do orçamento ORC-018, no total de R$ 490,00.', 'Saldo pendente: R$ 340,00. Este recibo registra somente a entrada recebida.', 'Local e assinatura do recebedor: preencher com os dados reais antes de enviar.'],
     sections: [
       { title: 'Evite campos contraditórios', paragraphs: ['Confira se o número corresponde ao valor por extenso e se a data coincide com o recebimento.', 'Nomes, documentos e descrição devem se referir à mesma operação.'] },
       { title: 'Declare a extensão da quitação', paragraphs: ['Se o recibo cobre apenas um sinal ou parcela, escreva isso explicitamente.', 'Não use “plena quitação” quando ainda houver saldo, entrega ou obrigação pendente.'] }
@@ -152,7 +153,7 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
       { question: 'Posso corrigir depois de assinado?', answer: 'Prefira emitir uma nova versão e preservar o histórico, evitando rasuras.' },
       { question: 'Precisa colocar CPF?', answer: 'Use quando necessário para identificar as partes ou atender à finalidade do documento.' }
     ],
-    related: ['modelo-de-recibo-simples', 'recibo-com-assinatura', 'recibo-tem-validade-juridica']
+    related: ['recibo-pagamento-pix', 'recibo-prestacao-de-servico', 'recibo-para-autonomo']
   },
   {
     slug: 'recibo-tem-validade-juridica',

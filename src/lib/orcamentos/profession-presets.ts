@@ -9,6 +9,7 @@ export interface ProfessionLanding {
   title: string;
   description: string;
   promise: string;
+  updatedAt?: string;
   preset: OrcamentoPreset;
   checklist: string[];
   faqs: Array<{ q: string; a: string }>;
@@ -57,8 +58,9 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   {
     slug: 'eletricista',
     name: 'Eletricista',
-    title: 'Orçamento para eletricista: modelo, faixa de preço e Pix',
-    description: 'Veja quanto custa um eletricista em 2026 e monte o orçamento com visita, materiais e mão de obra. O cliente aprova no celular e paga por Pix.',
+    title: 'Orçamento para eletricista: gerador grátis com Pix',
+    description: 'Crie um orçamento de eletricista com visita, materiais e mão de obra. Envie pelo WhatsApp para aprovação e pagamento via Pix. Sem cadastro para começar.',
+    updatedAt: '2026-09-28',
     promise: 'Modelo preparado para instalações, reparos e adequações elétricas.',
     preset: {
       occupation: 'eletricista',
@@ -85,23 +87,11 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       { title: 'Segurança e responsabilidade técnica', paragraphs: ['O modelo organiza a proposta comercial; ele não substitui inspeção, projeto, laudo ou responsabilidade técnica quando exigidos.', 'Normas, capacidade do circuito e condições do imóvel devem ser avaliadas por profissional habilitado para o serviço aplicável.'] }
     ],
     faqs: [
-      { q: 'Quanto custa um eletricista em 2026?', a: 'A visita costuma ficar entre R$ 100 e R$ 250, e serviços pontuais como tomada ou disjuntor variam conforme cidade, urgência e material. Use a tabela desta página como referência e feche o valor no seu orçamento depois da vistoria.' },
-      { q: 'O que entra em um orçamento para eletricista?', a: 'Descreva visita ou diagnóstico, materiais, mão de obra, ambientes ou pontos, prazo, validade e forma de pagamento. A tabela de faixa de preço é só referência; o valor do serviço sai da vistoria no modelo.' },
+      { q: 'Como fazer um orçamento de eletricista para enviar no WhatsApp?', a: 'Preencha seus dados e os do cliente, separe visita, materiais e mão de obra e informe quantidades e valores. Revise prazo e condições, confira a prévia e gere o link para o cliente aprovar no celular.' },
+      { q: 'O que entra em um orçamento para eletricista?', a: 'Descreva visita ou diagnóstico, materiais, mão de obra, ambientes ou pontos, prazo, validade e forma de pagamento. Defina os valores após a vistoria, considerando seus custos e as condições do serviço.' },
       { q: 'Devo cobrar a visita técnica?', a: 'Você pode criar um item separado para diagnóstico e informar se o valor será abatido após a aprovação do serviço.' },
       { q: 'Como registrar materiais?', a: 'Liste os principais materiais como itens ou use um item consolidado, deixando marcas e quantidades nas observações.' }
     ],
-    priceGuide: {
-      title: 'Quanto custa um eletricista em 2026',
-      intro: 'Faixas de referência para orientar o cliente. Não são tabela oficial nem preço do Precisou, Tá Pronto. O valor certo sai da vistoria no seu orçamento.',
-      rows: [
-        { service: 'Visita técnica e diagnóstico', range: 'R$ 100 a R$ 250' },
-        { service: 'Instalação ou troca de tomada', range: 'R$ 80 a R$ 180' },
-        { service: 'Troca de disjuntor', range: 'R$ 80 a R$ 250' },
-        { service: 'Instalação de chuveiro elétrico', range: 'R$ 120 a R$ 380' },
-        { service: 'Troca ou adequação de quadro', range: 'R$ 500 a R$ 3.500' }
-      ],
-      footnote: 'Urgência, horário noturno, altura e material incluso mudam a faixa. Separe visita, materiais e mão de obra no modelo abaixo para o cliente aprovar sem discussão.'
-    },
     scopeGuide: {
       title: 'O que entra em um orçamento para eletricista',
       intro: 'O cliente quer saber o que está incluso, o que fica de fora e quanto custa cada parte. Preencha estes campos no modelo. A ART e o laudo, quando exigidos, são do profissional habilitado, não desta página.',
@@ -118,6 +108,7 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
   },
   {
     slug: 'pintor',
+    updatedAt: '2026-09-28',
     name: 'Pintor',
     title: 'Orçamento para pintor por ambiente e metragem grátis',
     description: 'Organize preparação, pintura, materiais e prazo em um link profissional com aprovação pelo celular e cobrança Pix.',
@@ -132,6 +123,20 @@ export const PROFESSION_LANDINGS: ProfessionLanding[] = [
       observacoes: 'Informe ambientes, metragem aproximada, número de demãos e estado das superfícies.\nPrazo sujeito às condições de secagem.\nPagamento via Pix.'
     },
     checklist: ['Ambientes e metragem descritos', 'Número de demãos informado', 'Preparação e materiais discriminados'],
+    example: {
+      client: 'Cliente: Apartamento Exemplo, demonstração fictícia',
+      items: [
+        { description: 'Preparação e proteção', detail: 'Proteção de móveis e piso e correções superficiais na sala', value: 'R$ 250,00' },
+        { description: 'Pintura das paredes', detail: '50 m² de paredes × R$ 18,00; duas demãos, sem teto', value: 'R$ 900,00' },
+        { description: 'Materiais de proteção', detail: 'Fita e lona; tinta fornecida pelo cliente', value: 'R$ 100,00' }
+      ],
+      total: 'R$ 1.250,00',
+      terms: ['Valores fictícios, não são tabela de preços', 'Validade: 7 dias; execução: 3 dias úteis, conforme secagem', 'Entrada de R$ 500,00 e saldo de R$ 750,00 após a conclusão']
+    },
+    sections: [
+      { title: 'Como calcular a metragem para o orçamento de pintura', paragraphs: ['Meça largura e altura de cada parede e some as áreas. Registre como serão tratadas portas e janelas. A área do piso do cômodo não é a área das paredes.', 'No modelo, use a quantidade para os metros quadrados e o valor unitário para o seu preço por m². Informe se esse preço já cobre todas as demãos combinadas; não multiplique as demãos novamente.'] },
+      { title: 'O que incluir e o que combinar à parte', paragraphs: ['Descreva preparação, proteção de móveis, número de demãos, acabamento e limpeza. Informe quem fornece tinta e materiais e identifique linha, cor e ambientes.', 'Infiltração, correções profundas, trabalho em altura e superfícies adicionais devem ter escopo e valor combinados antes da execução. Registre entrada, saldo e prazo no orçamento.'] }
+    ],
     faqs: [
       { q: 'Como cobrar por metro quadrado?', a: 'Use a quantidade do item como a metragem e informe o preço unitário estimado por metro quadrado.' },
       { q: 'Tinta deve entrar no orçamento?', a: 'Sim. Deixe claro se a tinta será fornecida pelo pintor ou pelo cliente e registre a linha prevista.' }

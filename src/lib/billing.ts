@@ -16,7 +16,7 @@ const guestCopy = {
       'Crie uma conta gratuita para continuar nesta ferramenta. Orçamento e recibo seguem sem cadastro. A geração continua grátis, com o rodapé Precisou, Tá Pronto.',
     guestSuccess: 'Documento gerado. Você ainda pode gerar de novo sem conta.',
     guestSuccessLast: 'Documento gerado. Para continuar nesta ferramenta, crie uma conta grátis.',
-    guestSuccessOpen: 'Pronto. Cadastro só se quiser histórico ou tirar a marca.',
+    guestSuccessOpen: 'Pronto. Conta grátis para histórico; Premium para remover a marca.',
     saved: 'Documento salvo com sucesso.',
     downloaded: 'Download concluído.',
     analyzed: 'Análise concluída.'
@@ -28,7 +28,7 @@ const guestCopy = {
       'Create a free account to keep using this tool. Quotes and receipts stay open without signup. Generation stays free, with the Precisou, Tá Pronto footer.',
     guestSuccess: 'Document generated. You can generate again without an account.',
     guestSuccessLast: 'Document generated. Create a free account to continue with this tool.',
-    guestSuccessOpen: 'Done. Sign up only if you want history or to remove the brand mark.',
+    guestSuccessOpen: 'Done. A free account saves your history; Premium removes the brand mark.',
     saved: 'Document saved successfully.',
     downloaded: 'Download complete.',
     analyzed: 'Analysis complete.'
@@ -40,7 +40,7 @@ const guestCopy = {
       'Crea una cuenta gratuita para seguir en esta herramienta. Presupuesto y recibo siguen sin registro. La generacion sigue gratis, con el pie Precisou, Tá Pronto.',
     guestSuccess: 'Documento generado. Todavia puedes generar otra vez sin cuenta.',
     guestSuccessLast: 'Documento generado. Para continuar en esta herramienta, crea una cuenta gratis.',
-    guestSuccessOpen: 'Listo. La cuenta solo sirve para historial o para quitar la marca.',
+    guestSuccessOpen: 'Listo. La cuenta gratis guarda el historial; Premium elimina la marca.',
     saved: 'Documento guardado con exito.',
     downloaded: 'Descarga concluida.',
     analyzed: 'Analisis concluido.'

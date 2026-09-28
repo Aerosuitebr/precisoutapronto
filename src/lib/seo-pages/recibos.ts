@@ -84,7 +84,7 @@ export const recibosSeoContent: SeoPageContent = {
     },
     {
       question: 'Preciso criar conta para emitir o recibo?',
-      answer: 'Não. O recibo sai na hora, sem cadastro. A conta grátis só entra se você quiser histórico ou PDF sem o rodapé da marca.'
+      answer: 'Não. O recibo sai na hora, sem cadastro, com o rodapé da marca. A conta grátis permite guardar o histórico; o plano Premium remove a marca.'
     },
     {
       question: 'O recibo tem validade como comprovante de pagamento?',

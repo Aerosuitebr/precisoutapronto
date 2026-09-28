@@ -27,6 +27,7 @@ const established = [
     text: 'O extrato mostra a transferência. O recibo explica o que foi quitado. Gere o PDF grátis.'
   },
   { href: '/gerador-de-recibo', title: 'Abrir o gerador agora', text: 'Preencha, assine e baixe o PDF no celular.' },
+  { href: '/recibos/como-preencher-recibo', title: 'Como preencher um recibo', text: 'Confira um exemplo de entrada, valor por extenso e saldo antes de gerar o PDF.' },
   { href: '/recibo-de-pagamento', title: 'Recibo de pagamento', text: 'Registre a quitação de um valor.' },
   { href: '/recibo-de-aluguel', title: 'Recibo de aluguel', text: 'Identifique imóvel, competência e locação.' },
   { href: '/guias/modelo-de-recibo-mei', title: 'Recibo para MEI', text: 'Dados, limites e diferença para nota fiscal.' }
@@ -50,7 +51,7 @@ const hubFaqs = [
   },
   {
     question: 'Preciso de cadastro para gerar o PDF?',
-    answer: 'Não. Você preenche e baixa o recibo sem cadastro. A conta grátis só entra se quiser histórico ou PDF sem a marca.'
+    answer: 'Não. Você preenche e baixa o recibo sem cadastro, com a marca Precisou, Tá Pronto. A conta grátis permite guardar o histórico; o plano Premium remove a marca.'
   }
 ];
 

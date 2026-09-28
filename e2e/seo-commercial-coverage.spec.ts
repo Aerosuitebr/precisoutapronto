@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test';
 import { buildFullSitemap, sitemapEntriesToXml } from '../src/lib/seo/sitemap-entries';
 
 const supportingPaths = [
+  '/orcamento-para/pintor',
+  '/recibos/como-preencher-recibo',
   '/biblioteca',
   '/para/freelancers',
   '/recibos/recibo-prestacao-de-servico',

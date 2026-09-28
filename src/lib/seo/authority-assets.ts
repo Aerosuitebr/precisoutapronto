@@ -52,7 +52,7 @@ export const PRESS_FACTS = [
   'Operação: Aerosuite',
   `Contato de imprensa: ${BRAND_PUBLIC_EMAIL}`,
   'Proposta: ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador',
-  'Acesso: orçamento e recibo sem cadastro; conta grátis para histórico e para tirar a marca',
+  'Acesso: orçamento e recibo sem cadastro; conta grátis para histórico; plano Premium para remover a marca',
   'Idiomas da interface pública: português (principal), inglês e espanhol em rotas dedicadas',
   'Canal oficial no YouTube: https://www.youtube.com/@precisoutapronto'
 ] as const;

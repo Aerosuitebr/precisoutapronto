@@ -100,7 +100,7 @@ export function ReciboLivePreview() {
       }
       trackEvent('receipt_pdf_download_completed', { tool_path: '/gerador-de-recibo', template_id: templateId, payment_kind: kind });
       trackEvent('document_completed', { tool_name: 'recibos', output: 'pdf', payment_kind: kind });
-      toast('PDF baixado. Conta só se quiser histórico ou tirar a marca.');
+      toast('PDF baixado. Conta grátis para histórico; Premium para remover a marca.');
     } catch {
       toast('Não foi possível gerar o PDF. Tente de novo.');
     } finally {
@@ -233,7 +233,7 @@ export function ReciboLivePreview() {
             Abrir gerador completo
           </Link>
           <p className="text-center text-xs font-medium text-slate-500">
-            Use grátis no navegador. Conta só se quiser histórico ou tirar a marca.
+            Use grátis no navegador. Conta grátis para histórico; Premium para remover a marca.
           </p>
         </>
       }

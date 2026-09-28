@@ -912,7 +912,7 @@ export function OrcamentosApp({
   return (
     <AuthGate
       title="Envie orçamento sem cadastro"
-      description="O cliente recebe o link, aprova e paga no Pix. Conta grátis só para histórico e para tirar a marca."
+      description="O cliente recebe o link, aprova e paga no Pix. Conta grátis para histórico; Premium para remover a marca."
       publicAccess
     >
       <div className="space-y-5 pb-24 lg:pb-0">

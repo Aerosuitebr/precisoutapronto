@@ -72,11 +72,11 @@ export const SEO_LANDINGS = {
       },
       {
         q: 'O gerador de orçamento é grátis?',
-        a: 'Sim. Você monta, envia o link e recebe a aprovação sem cadastro. A conta grátis só entra se quiser histórico ou tirar a marca.'
+        a: 'Sim. Você monta, envia o link e recebe a aprovação sem cadastro. A conta grátis permite guardar o histórico. O plano Premium remove a marca Precisou, Tá Pronto.'
       },
       {
         q: 'Preciso criar conta para testar?',
-        a: 'Não. Preencha, veja o preview e envie o link. A conta só entra se quiser guardar o histórico ou remover a marca.'
+        a: 'Não. Preencha, confira a prévia e envie o link sem cadastro. Crie uma conta grátis para guardar o histórico. A remoção da marca é um recurso do plano Premium.'
       },
       {
         q: 'Serve para qualquer serviço?',

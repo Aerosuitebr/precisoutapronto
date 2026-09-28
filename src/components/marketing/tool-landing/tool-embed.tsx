@@ -29,8 +29,8 @@ export function ToolLandingEmbed({
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
           Preencha alguns dados abaixo. No celular, o preview fica sob demanda pra digitação fluida.
           {openWithoutAccount
-            ? ` ${toolName} sai sem conta. Cadastro só se quiser histórico ou PDF sem o rodapé da marca.`
-            : ' Duas gerações livres sem conta; depois o cadastro libera PDF sem marca e histórico.'}
+            ? ` ${toolName} sai sem conta. Conta grátis para histórico; Premium para PDF sem a marca.`
+            : ' Duas gerações livres sem conta; depois o cadastro grátis libera a continuidade e o histórico. Premium remove a marca.'}
         </p>
         <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName} landingPath={landingPath}>{tool}</ToolStartBoundary></div>
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
