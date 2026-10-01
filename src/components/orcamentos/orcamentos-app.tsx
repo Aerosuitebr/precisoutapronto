@@ -31,6 +31,8 @@ import {
 import { AuthGate } from '@/components/auth/auth-gate';
 import { useAuthRequired } from '@/components/auth/auth-required-provider';
 import { ToolsWatermark } from '@/components/brand/tools-watermark';
+import { QuotePreview } from '@/components/orcamentos/quote-preview';
+import { recordQuoteCreated, recordQuoteReturn } from '@/lib/growth/quote-milestones';
 import { OrcamentoItemsEditor } from '@/components/orcamentos/orcamento-items-editor';
 import { ViralInviteShareRow } from '@/components/marketing/viral-recruit-cta';
 import { NextActionsPanel } from '@/components/recommendation/next-actions-panel';
@@ -170,6 +172,9 @@ export function OrcamentosApp({
   const brandDocuments = useDocumentBranding();
   const { requireAuth } = useAuthRequired();
   const showAccountExtras = Boolean(session);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [deliveryDetails, setDeliveryDetails] = useState(!publicAccess);
+  const firstInteractionAt = useRef<number | null>(null);
   const [profissionalNome, setProfissionalNome] = useState('');
   const [profissionalWhatsapp, setProfissionalWhatsapp] = useState('');
   const [profissionalEmail, setProfissionalEmail] = useState('');
@@ -226,6 +231,8 @@ export function OrcamentosApp({
   } | null>(null);
   const funnelStartedRef = useRef(false);
   const previewTrackedRef = useRef(false);
+
+  useEffect(() => { recordQuoteReturn(); }, []);
 
   const total = useMemo(() => calcOrcamentoTotal(items), [items]);
   const ownerEmail = (profissionalEmail || session?.user.email || '').trim().toLowerCase();
@@ -322,18 +329,19 @@ export function OrcamentosApp({
         clienteNome.trim() ||
         items.some((item) => item.nome.trim() || item.valorUnitario > 0)
     );
-    if (!started) return;
+    if (!started || (publicAccess && !userEditedItemsRef.current && !profissionalNome.trim() && !clienteNome.trim())) return;
+    firstInteractionAt.current = Date.now();
     funnelStartedRef.current = true;
     trackEvent('quote_started', {
       public_access: publicAccess,
-      source_occupation:
-        typeof window !== 'undefined'
+      source_occupation: preset?.occupation ||
+        (typeof window !== 'undefined'
           ? new URLSearchParams(window.location.search).get('profissao') ||
             new URLSearchParams(window.location.search).get('source_occupation') ||
             undefined
-          : undefined
+          : undefined)
     });
-  }, [profissionalNome, clienteNome, items, publicAccess]);
+  }, [profissionalNome, clienteNome, items, publicAccess, preset?.occupation]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -372,12 +380,13 @@ export function OrcamentosApp({
   }, [publicAccess, preset]);
 
   useEffect(() => {
-    if (!readyToGenerate || previewTrackedRef.current) return;
+    if (!previewOpen || previewTrackedRef.current) return;
     previewTrackedRef.current = true;
-    trackEvent('quote_preview_ready', { quote_value: total, item_count: items.length });
-  }, [readyToGenerate, total, items.length]);
+    trackEvent('quote_preview_ready', { item_count: items.length, elapsed_seconds: firstInteractionAt.current ? Math.round((Date.now() - firstInteractionAt.current) / 1000) : 0 });
+  }, [previewOpen, items.length]);
 
   function focusChecklistItem(key: ChecklistKey) {
+    setDeliveryDetails(true);
     if (key === 'profissional') setProfissionalCollapsed(false);
     const target = CHECKLIST_TARGETS[key];
     window.requestAnimationFrame(() => {
@@ -697,6 +706,7 @@ export function OrcamentosApp({
       };
       setGenerated(entry);
       refreshAuth();
+      recordQuoteCreated(result.id, sourceOccupation);
       trackEvent('document_completed', { tool_name: 'orcamentos', output: 'share_link' });
       trackEvent('quote_link_created', {
         source_document: result.id,
@@ -753,7 +763,7 @@ export function OrcamentosApp({
   async function copyText(value: string, successMessage: string) {
     try {
       await navigator.clipboard.writeText(value);
-      trackEvent('document_shared', { tool_name: 'orcamentos', output: 'copied_link' });
+      trackEvent('quote_link_copied', { tool_name: 'orcamentos', output: 'copied_link' });
       toast(successMessage);
     } catch {
       setBannerError('Não foi possível copiar. Selecione o texto manualmente.');
@@ -1027,9 +1037,41 @@ export function OrcamentosApp({
               </div>
             ) : null}
 
+            {/* Itens */}
+            <section
+              id="orc-section-itens"
+              className="scroll-mt-28 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+            >
+              <div className="mb-4 flex items-center gap-2.5">
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-amber-50 text-amber-700">
+                  <Package className="h-4 w-4" aria-hidden />
+                </span>
+                <h2 className="text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900">
+                  Itens do orçamento
+                </h2>
+              </div>
+              <OrcamentoItemsEditor
+                items={items}
+                onChange={(next) => {
+                  userEditedItemsRef.current = true;
+                  setItems(next);
+                  if (fieldErrors.items) {
+                    setFieldErrors((current) => ({ ...current, items: undefined }));
+                  }
+                }}
+                error={fieldErrors.items}
+              />
+              {publicAccess ? <div className="mt-5 space-y-4">
+                <Button type="button" disabled={!hasValidItem || items.some((item) => item.nome.trim() && item.valorUnitario <= 0)} onClick={() => setPreviewOpen(true)}>Ver prévia sem dados pessoais</Button>
+                {!hasValidItem ? <p className="text-sm text-slate-600">Informe um serviço e seu valor para ver a prévia.</p> : null}
+                {previewOpen ? <><QuotePreview items={items} name={profissionalNome} client={clienteNome} /><Button type="button" onClick={() => { setDeliveryDetails(true); trackEvent('quote_delivery_details_opened'); focusChecklistItem('profissional'); }}>Continuar para dados de envio</Button></> : null}
+              </div> : null}
+            </section>
+
             {/* Seus dados */}
             <section
               id="orc-section-profissional"
+              hidden={!deliveryDetails}
               className="scroll-mt-28 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
             >
               <div className="flex items-center justify-between gap-3">
@@ -1148,6 +1190,7 @@ export function OrcamentosApp({
             {/* Cliente */}
             <section
               id="orc-section-cliente"
+              hidden={!deliveryDetails}
               className="scroll-mt-28 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
             >
               <div className="flex items-center gap-2.5">
@@ -1244,37 +1287,6 @@ export function OrcamentosApp({
                   />
                 </FormField>
               </div>
-            </section>
-
-            {/* Itens */}
-            <section
-              id="orc-section-itens"
-              className="scroll-mt-28 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
-            >
-              <div className="mb-4 flex items-center gap-2.5">
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-amber-50 text-amber-700">
-                  <Package className="h-4 w-4" aria-hidden />
-                </span>
-                <h2 className="text-sm font-extrabold uppercase tracking-[0.12em] text-slate-900">
-                  Itens do orçamento
-                </h2>
-              </div>
-              <OrcamentoItemsEditor
-                items={items}
-                onChange={(next) => {
-                  userEditedItemsRef.current = true;
-                  setItems(next);
-                  if (fieldErrors.items) {
-                    setFieldErrors((current) => ({ ...current, items: undefined }));
-                  }
-                }}
-                error={
-                  fieldErrors.items ||
-                  (items.some((item) => item.nome.trim() && item.valorUnitario <= 0)
-                    ? 'Informe um valor maior que zero neste item.'
-                    : undefined)
-                }
-              />
             </section>
 
             {publicAccess && !showOptionalDetails ? (
@@ -1558,7 +1570,7 @@ export function OrcamentosApp({
                       : 'Pronto para gerar o link de aprovação'}
                 </div>
 
-                <ul className="mt-4 space-y-2 border-t border-slate-100 pt-4" aria-label="Checklist do orçamento">
+                <ul hidden={!deliveryDetails} className="mt-4 space-y-2 border-t border-slate-100 pt-4" aria-label="Checklist do orçamento">
                   {checklist.map((item) => (
                     <li key={item.key}>
                       <button
@@ -1594,7 +1606,7 @@ export function OrcamentosApp({
                   ))}
                 </ul>
 
-                {liveHints.length > 0 ? (
+                {deliveryDetails && userEditedItemsRef.current && liveHints.length > 0 ? (
                   <div className="mt-3 space-y-1.5 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5">
                     {liveHints.slice(0, 2).map((hint) => (
                       <p key={hint} className="flex items-start gap-2 text-xs font-semibold text-rose-800">
@@ -1618,7 +1630,7 @@ export function OrcamentosApp({
                   {editingId ? 'Salvar alterações' : 'Gerar orçamento e enviar'}
                 </Button>
                 {!readyToGenerate ? (
-                  <p className="mt-2 text-xs font-medium leading-5 text-amber-800">{blockedHint}</p>
+                  <p className="mt-2 text-xs font-medium leading-5 text-amber-800">{deliveryDetails && userEditedItemsRef.current ? blockedHint : 'Comece pelos serviços e valores. Confira a prévia antes de informar os dados de envio.'}</p>
                 ) : !session && !brandDocuments ? (
                   <p className="mt-2 text-xs font-medium leading-5 text-emerald-800">
                     Tudo certo. Pronto para gerar o link.
@@ -1685,7 +1697,7 @@ export function OrcamentosApp({
                       </a>
                     </Button>
                   </div>
-                  <ViralInviteShareRow className="mt-4" />
+                  <ViralInviteShareRow className="mt-4" occupation={preset?.occupation} />
                   <NextActionsPanel sourceToolKey="orcamentos" active={Boolean(generated)} />
                 </div>
               ) : null}
@@ -1976,7 +1988,7 @@ export function OrcamentosApp({
           </Button>
         </div>
         {!readyToGenerate ? (
-          <p className="mt-1.5 text-[11px] leading-4 text-amber-700">{blockedHint}</p>
+          <p className="mt-1.5 text-[11px] leading-4 text-amber-700">{deliveryDetails && userEditedItemsRef.current ? blockedHint : 'Comece pelos serviços e valores. Confira a prévia antes de informar os dados de envio.'}</p>
         ) : null}
       </div>
 

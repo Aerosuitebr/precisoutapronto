@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#101828"/>
+  <rect x="64" y="64" width="425" height="46" rx="23" fill="#155eef"/>
+  <g font-family="Arial, sans-serif">
+    <text x="86" y="94" font-size="23" font-weight="700" fill="white">ORÇAMENTO NO WHATSAPP</text>
+    <text x="64" y="226" font-size="64" font-weight="700" fill="white">Seu cliente confere.</text>
+    <text x="64" y="310" font-size="64" font-weight="700" fill="#a6f4c5">Aprova pelo celular.</text>
+    <text x="64" y="393" font-size="29" fill="#d0d5dd">Serviços, valores e Pix opcional no mesmo link.</text>
+    <text x="64" y="448" font-size="26" fill="#d0d5dd">Comece grátis, sem cadastro.</text>
+    <rect x="64" y="503" width="1072" height="2" fill="#344054"/>
+    <text x="64" y="557" font-size="32" font-weight="700" fill="white">Precisou, Tá Pronto</text>
+    <text x="705" y="557" font-size="27" fill="#a6f4c5">precisoutapronto.com.br</text>
+  </g>
+</svg>

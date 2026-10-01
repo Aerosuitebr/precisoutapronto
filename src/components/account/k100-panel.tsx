@@ -26,6 +26,8 @@ type K100Data = {
   repeatCreatorRate: number;
   activeCreators: number;
   repeatCreators: number;
+  returningCreators: number;
+  returningCreatorRate: number;
   alerts: string[];
   definition: string;
   occupations: Array<{ name: string; quotes: number }>;
@@ -71,7 +73,8 @@ export function K100Panel() {
             <Metric label="Aprovação das respostas" value={`${data.approvalRate.toLocaleString('pt-BR')}%`} />
             <Metric label="Origem viral" value={`${data.viralQuoteRate.toLocaleString('pt-BR')}%`} />
             <Metric label="Criadores recrutados" value={String(data.newCreators)} />
-            <Metric label="Criadores recorrentes" value={`${data.repeatCreatorRate.toLocaleString('pt-BR')}%`} />
+            <Metric label="Criaram 2+ na janela" value={`${data.repeatCreatorRate.toLocaleString('pt-BR')}%`} />
+            <Metric label="Criaram em dias distintos" value={`${data.returningCreatorRate.toLocaleString('pt-BR')}%`} />
             <Metric label="Respostas" value={`${data.responses} (${data.approved} aprovadas)`} />
           </div>
           {data.alerts.length ? (

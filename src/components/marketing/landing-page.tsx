@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ApprovedServiceStories } from '@/components/marketing/approved-service-stories';
 import { ArrowRight, Check, CheckCircle2, ChevronRight, FileCheck2, MessageCircle, QrCode, ShieldCheck, Sparkles } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
 import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
@@ -46,7 +47,7 @@ export function LandingPage() {
             <p className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3.5 py-2 text-xs font-black uppercase tracking-[0.12em] text-[#155eef] shadow-sm"><Sparkles className="h-4 w-4" /> Feito para quem vende pelo WhatsApp</p>
             <h1 className="precisoutapronto-display mt-7 max-w-3xl text-[clamp(3.4rem,7vw,6.8rem)] font-black leading-[.88] tracking-[-.07em]">Orçamento enviado.<br /><span className="text-[#155eef]">Serviço fechado.</span></h1>
             <p className="mt-7 max-w-xl text-lg font-medium leading-8 text-slate-600 sm:text-xl">Crie um orçamento profissional, mande o link no WhatsApp e deixe seu cliente aprovar e pagar pelo celular.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#155eef] px-7 font-black text-white shadow-xl shadow-blue-600/25 transition hover:-translate-y-1 hover:bg-[#004eeb]">Criar orçamento grátis <ArrowRight className="h-5 w-5" /></Link><Link href="/orcamento-para/eletricista" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-7 font-black text-slate-800 shadow-sm transition hover:-translate-y-1 hover:shadow-md">Ver exemplo pronto <ChevronRight className="h-5 w-5" /></Link></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#155eef] px-7 font-black text-white shadow-xl shadow-blue-600/25 transition hover:-translate-y-1 hover:bg-[#004eeb]">Criar orçamento grátis <ArrowRight className="h-5 w-5" /></Link><Link href="/demonstracao-orcamento" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-7 font-black text-slate-800 shadow-sm transition hover:-translate-y-1 hover:shadow-md">Ver exemplo pronto <ChevronRight className="h-5 w-5" /></Link></div>
             <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold text-slate-600">{['Sem cadastro para começar', 'Cliente não instala app', 'Pix opcional'].map(item => <li key={item} className="flex items-center gap-1.5"><Check className="h-4 w-4 stroke-[3] text-emerald-600" />{item}</li>)}</ul>
           </div>
 
@@ -89,6 +90,7 @@ export function LandingPage() {
       </section>
 
       <ServiceDifferences landingPath="/" />
+      <ApprovedServiceStories />
       <UsefulToolsStrip title="Outras ferramentas para o seu dia a dia" />
 
       <section className="bg-[#101828] py-20 text-white sm:py-24"><div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_.9fr] lg:items-center lg:px-8"><div><p className="text-xs font-black uppercase tracking-[.18em] text-blue-300">Profissional por fora. Simples por dentro.</p><h2 className="precisoutapronto-display mt-4 text-4xl font-black tracking-[-.05em] sm:text-6xl">Seu cliente decide mais rápido.</h2><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">Tudo para conferir, aprovar e pagar em uma única página feita para o celular.</p></div><ul className="grid gap-3">{['Itens e valores sem mensagem perdida', 'Aprovação ou ajuste em um toque', 'QR Code e Pix depois do aceite', 'Registro claro do combinado'].map(item => <li key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 font-bold"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald-400 text-[#101828]"><Check className="h-4 w-4 stroke-[3]" /></span>{item}</li>)}</ul></div></section>

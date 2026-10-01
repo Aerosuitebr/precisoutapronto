@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Copy, Package, Plus, Trash2, Wrench } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FormField } from '@/components/ui/form-field';
@@ -21,6 +22,7 @@ function itemLooksLikeService(name: string) {
 }
 
 export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsEditorProps) {
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   function updateItem(id: string, patch: Partial<OrcamentoItem>) {
     onChange(items.map((item) => (item.id === id ? { ...item, ...patch } : item)));
   }
@@ -47,7 +49,7 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
     <div className="space-y-3">
       {items.map((item, index) => {
         const isOnlyItem = items.length <= 1;
-        const zeroValue = Boolean(item.nome.trim() && item.valorUnitario <= 0);
+        const zeroValue = Boolean((touched[item.id] || error) && item.nome.trim() && item.valorUnitario <= 0);
         const Icon = itemLooksLikeService(item.nome) ? Wrench : Package;
         return (
           <div
@@ -128,6 +130,7 @@ export function OrcamentoItemsEditor({ items, onChange, error }: OrcamentoItemsE
               >
                 <MaskedInput
                   id={`orc-item-${index}-valor`}
+                  onBlur={() => setTouched((current) => ({ ...current, [item.id]: true }))}
                   format={formatCurrencyInput}
                   value={
                     item.valorUnitario > 0

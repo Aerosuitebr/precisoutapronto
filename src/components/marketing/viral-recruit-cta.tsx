@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, CopyPlus, Gift, MessageCircle, QrCode, ReceiptText, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,6 +10,8 @@ import {
   viralOrcamentoToolPath
 } from '@/lib/viral-loop';
 import { cn } from '@/lib/utils';
+import { PEER_PROFESSIONS, peerInviteUrl } from '@/lib/growth/peer-invite';
+import { getViralBaseUrl } from '@/lib/viral-loop';
 import { trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
 
@@ -184,37 +186,35 @@ export function ApprovedQuoteNextActions({ className, sourceDocumentId, sourceOc
 }
 
 /** Pack de indicação após gerar link (profissional → colegas). */
-const claimedPostValueOffers = new Set<string>();
-
-export function ViralInviteShareRow({ className, toolKey = 'orcamento' }: { className?: string; toolKey?: string }) {
+export function ViralInviteShareRow({ className, toolKey = 'orcamento', occupation }: { className?: string; toolKey?: string; occupation?: string }) {
   const [referralWhatsappUrl, setReferralWhatsappUrl] = useState('');
-  const [visible] = useState(() => {
-    if (claimedPostValueOffers.has(toolKey)) return false;
-    claimedPostValueOffers.add(toolKey);
-    return true;
-  });
+  const [inviteUrl, setInviteUrl] = useState('');
+  const [profession, setProfession] = useState(PEER_PROFESSIONS.find((p) => p.slug === occupation || p.label.toLowerCase() === occupation?.toLowerCase())?.slug || '');
+  const viewed = useRef(false);
 
   useEffect(() => {
-    if (!visible) return;
+    if (viewed.current) return;
+    viewed.current = true;
     trackEvent('post_result_referral_viewed', { result_type: toolKey, moment: 'first_value' });
     void fetch('/api/referral/me', { cache: 'no-store' })
       .then((response) => response.ok ? response.json() : null)
-      .then((data) => setReferralWhatsappUrl(data?.whatsappUrl || ''))
+      .then((data) => { setReferralWhatsappUrl(data?.whatsappUrl || ''); setInviteUrl(data?.inviteUrl || ''); })
       .catch(() => undefined);
-  }, [toolKey, visible]);
+  }, [toolKey]);
 
-  if (!visible) return null;
-
-  const whatsappUrl = referralWhatsappUrl || buildViralInviteWhatsAppUrl();
+  const peerLink = peerInviteUrl(getViralBaseUrl(), profession, inviteUrl);
+  const peerText = `Este modelo ajuda a separar serviços e valores e enviar um orçamento pelo WhatsApp. Experimente com seus próprios preços: ${peerLink}`;
+  const whatsappUrl = toolKey === 'orcamento' ? `https://wa.me/?text=${encodeURIComponent(peerText)}` : referralWhatsappUrl || buildViralInviteWhatsAppUrl();
 
   return (
     <div className={cn('rounded-xl border border-amber-200 bg-amber-50 p-3', className)}>
-      <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-amber-800"><Gift className="h-3.5 w-3.5" />Indique e ganhe</p>
+      <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-amber-800"><Gift className="h-3.5 w-3.5" />Compartilhe com um colega</p>
       <p className="mt-1 text-sm leading-5 text-slate-600">
         Mande para um colega que também resolve isso no WhatsApp.{referralWhatsappUrl ? ' Você ganha 7 dias Premium já no primeiro amigo ativo — e ele também ganha 7 dias.' : ''}
       </p>
+      {toolKey === 'orcamento' ? <label className="mt-3 block text-sm font-semibold">Profissão do colega<select className="mt-1 block min-h-11 w-full rounded-lg border bg-white p-2" value={profession} onChange={(event) => setProfession(event.target.value)}>{PEER_PROFESSIONS.map((p) => <option key={p.slug} value={p.slug}>{p.label}</option>)}</select></label> : null}
       <Button asChild variant="outline" className="mt-3 h-10 w-full border-emerald-200 bg-white">
-        <a href={whatsappUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent('referral_invite_shared', { channel: referralWhatsappUrl ? 'post_value_whatsapp' : 'post_value_generic', tool_name: toolKey })}>
+        <a href={whatsappUrl} target="_blank" rel="noreferrer" onClick={() => trackEvent('referral_invite_started', { source_occupation: profession || 'geral', campaign: 'peer_model_v1', channel: referralWhatsappUrl ? 'post_value_whatsapp' : 'post_value_generic', tool_name: toolKey })}>
           <MessageCircle className="h-4 w-4 text-emerald-700" />
           Compartilhar no WhatsApp
         </a>

@@ -26,11 +26,13 @@ export async function GET(request: Request) {
       FROM "orcamentos"
       WHERE "createdAt" >= ${since} AND "firstRecruitClickedAt" IS NOT NULL
     `.then((rows) => Number(rows[0]?.count || 0)),
-    prisma.orcamento.groupBy({
-      by: ['ownerEmail'],
-      where: { ownerEmail: { not: null }, recruitedFromDocument: { not: null } },
-      _min: { createdAt: true }
-    }),
+    prisma.$queryRaw<Array<{ count: bigint }>>`
+      SELECT COUNT(*)::bigint AS count FROM (
+        SELECT DISTINCT ON ("ownerEmail") "createdAt", "recruitedFromDocument"
+        FROM "orcamentos" WHERE "ownerEmail" IS NOT NULL AND "ownerEmail" <> ''
+        ORDER BY "ownerEmail", "createdAt", "id"
+      ) first_quotes WHERE "createdAt" >= ${since} AND "recruitedFromDocument" IS NOT NULL
+    `,
     prisma.orcamento.groupBy({
       by: ['sourceOccupation'],
       where: { createdAt: { gte: since }, sourceOccupation: { not: null }, recruitedFromDocument: { not: null } },
@@ -50,7 +52,16 @@ export async function GET(request: Request) {
     }),
     prisma.orcamento.count({ where: { createdAt: { gte: since }, recruitedFromDocument: { not: null } } })
   ]);
-  const newCreators = creators.filter((row) => row._min.createdAt && row._min.createdAt >= since).length;
+  const newCreators = Number(creators[0]?.count || 0);
+  const returningRows = await prisma.$queryRaw<Array<{ count: bigint }>>`
+    SELECT COUNT(*)::bigint AS count FROM (
+      SELECT "ownerEmail" FROM "orcamentos"
+      WHERE "createdAt" >= ${since} AND "ownerEmail" IS NOT NULL AND "ownerEmail" <> ''
+      GROUP BY "ownerEmail"
+      HAVING COUNT(DISTINCT (("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE 'America/Sao_Paulo')::date) >= 2
+    ) returning_creators
+  `;
+  const returningCreators = Number(returningRows[0]?.count || 0);
   const statusCount = (status: string) => statuses.find((row) => row.status === status)?._count._all || 0;
   const funnel = viralFunnelMetrics({
     quotes,
@@ -66,6 +77,8 @@ export async function GET(request: Request) {
 
   return NextResponse.json({
     days,
+    returningCreators,
+    returningCreatorRate: activeCreatorRows.length ? Math.round(returningCreators / activeCreatorRows.length * 1000) / 10 : 0,
     since: since.toISOString(),
     quotes,
     viewed,
