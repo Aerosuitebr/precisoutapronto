@@ -5,7 +5,7 @@ test.describe('brand distinctiveness', () => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('Orçamento enviado. Serviço fechado.');
     await expect(page.getByRole('link', { name: 'Criar orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
-    await expect(page.getByRole('link', { name: 'Ver exemplo pronto' })).toHaveAttribute('href', '/orcamento-para/eletricista');
+    await expect(page.getByRole('link', { name: 'Ver exemplo pronto' })).toHaveAttribute('href', '/demonstracao-orcamento');
     await expect(page.getByText('R$ 490', { exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Da conversa ao pagamento.' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Seu cliente decide mais rápido.' })).toBeVisible();
