@@ -513,6 +513,71 @@ function Show-StagingReport {
   Write-Host ''
 }
 
+function Get-GhAuthStatusText {
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    $raw = & gh auth status 2>&1
+    $code = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $prev
+  }
+  return [pscustomobject]@{
+    ExitCode = $code
+    Text     = (@($raw | ForEach-Object { "$_" }) -join "`n")
+  }
+}
+
+function Select-GhAccountForRepo {
+  param([Parameter(Mandatory)][string]$RepoSlug)
+
+  # workflow_dispatch exige admin. A conta ativa do gh pode ter so leitura.
+  # Se o dono do repositorio estiver logado, o token dele vale so neste processo.
+  $owner = ($RepoSlug -split '/', 2)[0]
+  if ([string]::IsNullOrWhiteSpace($owner)) { return }
+  if (-not [string]::IsNullOrWhiteSpace($env:GH_TOKEN)) {
+    Write-Host '  gh: GH_TOKEN ja definido. Mantendo a conta do ambiente.' -ForegroundColor DarkGray
+    return
+  }
+
+  $status = Get-GhAuthStatusText
+  if ($status.ExitCode -ne 0) {
+    throw 'gh nao autenticado. Rode: gh auth login'
+  }
+
+  $accounts = @(
+    [regex]::Matches($status.Text, 'Logged in to github\.com account (?<user>\S+)') |
+      ForEach-Object { $_.Groups['user'].Value }
+  )
+  if ($accounts -notcontains $owner) {
+    throw ("A conta {0} nao esta logada no gh. Rode: gh auth login" -f $owner)
+  }
+
+  $active = [regex]::Match(
+    $status.Text,
+    'Logged in to github\.com account (?<user>\S+)[^\r\n]*\r?\n\s*- Active account: true'
+  )
+  if ($active.Success -and $active.Groups['user'].Value -eq $owner) {
+    return
+  }
+
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    $tokenRaw = & gh auth token --hostname github.com --user $owner 2>&1
+    $tokenCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $prev
+  }
+  $token = (@($tokenRaw | ForEach-Object { "$_" }) -join '').Trim()
+  if ($tokenCode -ne 0 -or [string]::IsNullOrWhiteSpace($token) -or $token -match '\s') {
+    throw ("Nao foi possivel usar a conta {0} no gh. Rode: gh auth login" -f $owner)
+  }
+  $env:GH_TOKEN = $token
+  $token = $null
+  Write-Host ("  gh: usando a conta {0} neste deploy." -f $owner) -ForegroundColor DarkGray
+}
+
 # --- main --------------------------------------------------------------------
 
 Write-Banner
@@ -521,8 +586,8 @@ Show-ProgressBar -Percent 0 -Label 'preflight'
 Assert-Command 'git'
 Assert-Command 'gh'
 
-$ghAuth = & gh auth status 2>&1
-if ($LASTEXITCODE -ne 0) {
+$ghAuth = Get-GhAuthStatusText
+if ($ghAuth.ExitCode -ne 0) {
   Complete-ProgressLine
   throw "gh nao autenticado. Rode: gh auth login"
 }
@@ -531,6 +596,13 @@ $script:RepoSlug = Resolve-RepoSlug
 if ([string]::IsNullOrWhiteSpace($script:RepoSlug)) {
   Complete-ProgressLine
   throw 'Nao foi possivel resolver o repositorio. Configure GH_REPO=owner/repo ou o remote origin do GitHub.'
+}
+
+try {
+  Select-GhAccountForRepo -RepoSlug $script:RepoSlug
+} catch {
+  Complete-ProgressLine
+  throw
 }
 
 function Get-PromotedProductionRunId {

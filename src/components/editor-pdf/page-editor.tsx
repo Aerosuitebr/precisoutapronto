@@ -1197,12 +1197,17 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                       />
                     ) : null}
 
-                    {isSelected ? (
+                    {isSelected && !isEditing ? (
                       <button
                         type="button"
                         aria-label="Redimensionar"
                         onPointerDown={(e) => startResize(e, overlay)}
-                        className="absolute -bottom-1.5 -right-1.5 h-4 w-4 cursor-se-resize rounded-sm border border-white bg-sky-600"
+                        className={cn(
+                          'absolute h-4 w-4 cursor-se-resize rounded-sm border border-white bg-sky-600',
+                          overlay.kind === 'text'
+                            ? 'left-full top-full ml-1 mt-1'
+                            : '-bottom-1.5 -right-1.5'
+                        )}
                       />
                     ) : null}
                   </div>

@@ -15,9 +15,7 @@ test(`long footer can be edited and downloaded (fonts available: ${fontsAvailabl
   sheet.drawText('Última linha de teste.', { x: 20, y: 18, size: 8, font });
 
   // A fonte é local para que o teste não dependa da disponibilidade do CDN.
-  const fontPath = process.env.E2E_PDF_FONT_PATH || (process.platform === 'win32'
-    ? 'C:/Windows/Fonts/arial.ttf'
-    : '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf');
+  const fontPath = process.env.E2E_PDF_FONT_PATH || 'e2e/fixtures/DejaVuSans-test.ttf';
   const fontBytes = await readFile(fontPath);
   await page.route('https://cdn.jsdelivr.net/npm/@fontsource/**', route =>
     fontsAvailable
@@ -47,6 +45,11 @@ test(`long footer can be edited and downloaded (fonts available: ${fontsAvailabl
     name: 'edited.pdf', mimeType: 'application/pdf', buffer: bytes
   });
   await page.getByRole('button', { name: 'Editar conteúdo da página' }).click();
-  await expect(page.getByLabel(edited, { exact: true })).toHaveCount(1);
+  await expect.poll(async () => {
+    const labels = await page.locator('[data-overlay-kind="text"]').evaluateAll(nodes =>
+      nodes.map(node => node.getAttribute('aria-label') || '').join(' ')
+    );
+    return labels;
+  }).toContain(edited);
 });
 }

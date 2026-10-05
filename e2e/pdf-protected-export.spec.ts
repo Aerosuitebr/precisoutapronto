@@ -20,8 +20,21 @@ test('protected PDF exports all pages after editing its penultimate footer', asy
   await expect(overlays.first()).toBeAttached();
   const count = await overlays.count();
   expect(count).toBeGreaterThan(2);
-  await overlays.nth(count - 2).click();
+  const textMatch = process.env.E2E_PDF_TEXT_MATCH;
+  const target = textMatch
+    ? page.getByLabel(new RegExp(textMatch))
+    : overlays.nth(count - 2);
   const editor = page.getByRole('textbox', { name: 'Editar texto', exact: true });
+  for (const fraction of [0.05, 0.5, 0.95]) {
+    await target.scrollIntoViewIfNeeded();
+    const box = await target.boundingBox();
+    expect(box).not.toBeNull();
+    await target.click({ position: { x: box!.width * fraction, y: box!.height / 2 } });
+    await expect(editor).toBeVisible();
+    if (textMatch) await expect(editor).toHaveValue(new RegExp(textMatch));
+    await editor.press('Escape');
+  }
+  await target.click();
   await expect(editor).toBeVisible();
   // Marca como editado sem alterar os dados do arquivo privado opcional.
   const original = await editor.inputValue();
