@@ -120,6 +120,9 @@ const COPY: Record<
     toastAddPdfFirst: string;
     toastPdfSuccess: string;
     toastPdfError: string;
+    toastPdfProtected: string;
+    toastPdfRasterized: string;
+    toastPdfFontError: string;
     toastPageSavedWithEdits: (count: number) => string;
     toastPageSaved: string;
   }
@@ -191,6 +194,9 @@ const COPY: Record<
     toastAddPdfFirst: 'Adicione um PDF primeiro.',
     toastPdfSuccess: 'PDF gerado com sucesso!',
     toastPdfError: 'Erro ao gerar o PDF. Tente novamente.',
+    toastPdfProtected: 'Este PDF possui proteção que impede a exportação. Abra uma cópia sem proteção e tente novamente.',
+    toastPdfRasterized: 'PDF baixado. As páginas protegidas foram convertidas em imagem; o texto original não fica selecionável na cópia.',
+    toastPdfFontError: 'A fonte disponível não aceita um dos caracteres digitados. Verifique sua conexão para carregar a fonte ou escolha outra fonte no editor.',
     toastPageSavedWithEdits: (count) => `Página salva com ${count} texto(s) alterado(s).`,
     toastPageSaved: 'Página salva.'
   },
@@ -261,6 +267,9 @@ const COPY: Record<
     toastAddPdfFirst: 'Add a PDF first.',
     toastPdfSuccess: 'PDF generated successfully!',
     toastPdfError: 'Error generating the PDF. Try again.',
+    toastPdfProtected: 'This PDF has protection that prevents export. Open an unprotected copy and try again.',
+    toastPdfRasterized: 'PDF downloaded. Protected pages were converted to images; original text is not selectable in the copy.',
+    toastPdfFontError: 'The available font does not support one of the entered characters. Check your connection to load the font or choose another font in the editor.',
     toastPageSavedWithEdits: (count) => `Page saved with ${count} edited text(s).`,
     toastPageSaved: 'Page saved.'
   },
@@ -331,6 +340,9 @@ const COPY: Record<
     toastAddPdfFirst: 'Agrega un PDF primero.',
     toastPdfSuccess: 'PDF generado con exito!',
     toastPdfError: 'Error al generar el PDF. Intenta de nuevo.',
+    toastPdfProtected: 'Este PDF tiene protección que impide exportarlo. Abre una copia sin protección e inténtalo de nuevo.',
+    toastPdfRasterized: 'PDF descargado. Las páginas protegidas se convirtieron en imágenes; el texto original no se puede seleccionar en la copia.',
+    toastPdfFontError: 'La fuente disponible no admite uno de los caracteres escritos. Comprueba tu conexión para cargar la fuente o elige otra fuente en el editor.',
     toastPageSavedWithEdits: (count) => `Pagina guardada con ${count} texto(s) modificado(s).`,
     toastPageSaved: 'Pagina guardada.'
   }
@@ -523,16 +535,25 @@ export function EditorPdfApp({
     }
     setBuilding(true);
     try {
+      let rasterized = false;
       const bytes = await buildFinalPdf(list, sources, {
         pageNumbers,
         watermarkText,
-        watermarkOpacity
+        watermarkOpacity,
+        onRasterizedPage: () => { rasterized = true; }
       });
       downloadBytes(bytes as Uint8Array, buildPrecisouTaProntoDownloadName('pdf'));
-      toast(t.toastPdfSuccess);
+      toast(rasterized ? t.toastPdfRasterized : t.toastPdfSuccess);
     } catch (err) {
       console.error(err);
-      toast(t.toastPdfError);
+      const detail = err instanceof Error ? err.message : '';
+      if (/encrypted/i.test(detail)) {
+        toast(t.toastPdfProtected);
+      } else if (/cannot encode|WinAnsi/i.test(detail)) {
+        toast(t.toastPdfFontError);
+      } else {
+        toast(detail ? `${t.toastPdfError} (${detail.slice(0, 240)})` : t.toastPdfError);
+      }
     } finally {
       setBuilding(false);
     }

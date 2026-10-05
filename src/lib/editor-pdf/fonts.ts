@@ -239,7 +239,7 @@ export function ensureFontCssLoaded(option: EditorFontOption) {
   document.head.appendChild(link);
 }
 
-/** Busca TTF via Fontsource CDN para embutir no PDF. */
+/** Busca a fonte via Fontsource CDN para embutir no PDF com fontkit. */
 export async function fetchFontTtf(
   option: EditorFontOption,
   weight: 400 | 700 = 400
@@ -249,13 +249,13 @@ export async function fetchFontTtf(
   if (cached) return cached;
 
   const urls = [
-    `https://cdn.jsdelivr.net/fontsource/fonts/${option.fontsourceId}@latest/latin-${weight}-normal.ttf`,
-    `https://cdn.jsdelivr.net/fontsource/fonts/${option.fontsourceId}@5.0.0/latin-${weight}-normal.ttf`
+    `https://cdn.jsdelivr.net/npm/@fontsource/${option.fontsourceId}@5/files/${option.fontsourceId}-latin-${weight}-normal.woff`,
+    `https://unpkg.com/@fontsource/${option.fontsourceId}@5/files/${option.fontsourceId}-latin-${weight}-normal.woff`
   ];
 
   for (const url of urls) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) continue;
       const buf = await res.arrayBuffer();
       if (buf.byteLength > 1000) {

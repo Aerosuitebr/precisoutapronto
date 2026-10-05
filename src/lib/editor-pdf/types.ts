@@ -81,6 +81,7 @@ export interface PageItem {
 }
 
 export interface BuildOptions {
+  onRasterizedPage?: () => void;
   pageNumbers: boolean;
   watermarkText: string;
   watermarkOpacity: number;

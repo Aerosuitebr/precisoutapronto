@@ -1,4 +1,5 @@
-import { PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFPage } from 'pdf-lib';
+import { EncryptedPDFError, PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFPage } from 'pdf-lib';
+import fontkit from '@pdf-lib/fontkit';
 import {
   fetchFontTtf,
   getFontOptionById,
@@ -435,8 +436,8 @@ export async function extractPageTextOverlays(
     w = Math.max(w, 0.7);
 
     if (w <= 0.05 || h <= 0.05) continue;
-    if (w > 55 && visible.trim().length <= 20) continue;
-    if (w > 80) continue;
+    // Linhas longas (inclusive rodapés) continuam editáveis; recorta apenas
+    // a caixa aos limites da página, sem descartar o texto extraído.
 
     const box = normalizeOverlayBox(x, y, w, h);
 
@@ -1083,6 +1084,7 @@ async function drawOverlays(
 }
 
 async function buildFontKit(outDoc: PDFDocument, overlays: PageOverlay[]) {
+  outDoc.registerFontkit(fontkit);
   const fonts = {
     regular: await outDoc.embedFont(StandardFonts.Helvetica),
     bold: await outDoc.embedFont(StandardFonts.HelveticaBold),
@@ -1095,7 +1097,7 @@ async function buildFontKit(outDoc: PDFDocument, overlays: PageOverlay[]) {
 
   const needed = new Map<string, { optionId: string; bold: boolean }>();
   for (const o of overlays) {
-    if (o.kind !== 'text') continue;
+    if (o.kind !== 'text' || isFromPdfPristine(o) || !o.text?.trim()) continue;
     const option = getFontOptionById(o.fontId || 'inter');
     const bold = Boolean(o.bold);
     needed.set(`${option.id}-${bold ? '700' : '400'}`, { optionId: option.id, bold });
@@ -1124,6 +1126,7 @@ export async function buildFinalPdf(
 ): Promise<Uint8Array> {
   const outDoc = await PDFDocument.create();
   const srcDocCache = new Map<string, PDFDocument>();
+  const protectedSources = new Set<string>();
   const allOverlays = pages.flatMap((p) => p.overlays);
   const fonts = await buildFontKit(outDoc, allOverlays);
 
@@ -1137,14 +1140,54 @@ export async function buildFinalPdf(
     }
 
     let srcDoc = srcDocCache.get(p.sourceId);
-    if (!srcDoc) {
+    if (!srcDoc && !protectedSources.has(p.sourceId)) {
       const source = sources.get(p.sourceId);
-      if (!source) continue;
-      srcDoc = await PDFDocument.load(source.bytes.slice(0));
-      srcDocCache.set(p.sourceId, srcDoc);
+      if (!source) throw new Error('PDF source unavailable');
+      try {
+        srcDoc = await PDFDocument.load(source.bytes.slice(0));
+        srcDocCache.set(p.sourceId, srcDoc);
+      } catch (error) {
+        // A distribuição ES5 do pdf-lib perde o prototype dos erros nativos.
+        const encrypted = error instanceof EncryptedPDFError ||
+          (error instanceof Error && error.message === new EncryptedPDFError().message);
+        if (!encrypted) throw error;
+        protectedSources.add(p.sourceId);
+      }
     }
 
-    const sourcePage = srcDoc.getPage(p.sourcePageIndex);
+    if (protectedSources.has(p.sourceId)) {
+      // PDF.js abre PDFs com senha de abertura vazia e restrições de edição.
+      // pdf-lib não os descriptografa: exporta a aparência já renderizável.
+      const source = sources.get(p.sourceId)!;
+      const pdfjs = await getPdfjs();
+      const renderedDoc = await pdfjs.getDocument({ data: source.bytes.slice(0) }).promise;
+      try {
+        const original = await renderedDoc.getPage(p.sourcePageIndex + 1);
+        const rotation = wrapAngle(original.rotate + p.rotation);
+        const base = original.getViewport({ scale: 1, rotation });
+        const scale = Math.min(3, 3000 / Math.max(base.width, base.height));
+        const viewport = original.getViewport({ scale, rotation });
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.ceil(viewport.width);
+        canvas.height = Math.ceil(viewport.height);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('PDF canvas unavailable');
+        await original.render({ canvasContext: ctx, viewport }).promise;
+        const image = await outDoc.embedPng(canvas.toDataURL('image/png'));
+        const page = outDoc.addPage([target.width, target.height]);
+        const box = fitRect(base.width, base.height, target.width, target.height, p.pageSize.fit);
+        page.drawImage(image, box);
+        await drawOverlays(page, p.overlays, fonts);
+        options.onRasterizedPage?.();
+        canvas.width = 0;
+        canvas.height = 0;
+      } finally {
+        await renderedDoc.destroy();
+      }
+      continue;
+    }
+
+    const sourcePage = srcDoc!.getPage(p.sourcePageIndex);
     const srcSize = sourcePage.getSize();
     const baseRotation = wrapAngle(sourcePage.getRotation().angle);
     const totalRotation = wrapAngle(baseRotation + p.rotation);
@@ -1152,15 +1195,16 @@ export async function buildFinalPdf(
     const contentH = totalRotation % 180 === 0 ? srcSize.height : srcSize.width;
 
     const needsRebuild =
-      p.overlays.length > 0 ||
+      (baseRotation !== 0 && p.overlays.some((overlay) => !isFromPdfPristine(overlay))) ||
       p.pageSize.preset !== 'original' ||
       Math.abs(target.width - contentW) > 0.5 ||
       Math.abs(target.height - contentH) > 0.5 ||
       p.rotation !== 0;
 
     if (!needsRebuild) {
-      const [copied] = await outDoc.copyPages(srcDoc, [p.sourcePageIndex]);
+      const [copied] = await outDoc.copyPages(srcDoc!, [p.sourcePageIndex]);
       outDoc.addPage(copied);
+      await drawOverlays(copied, p.overlays, fonts);
       continue;
     }
 

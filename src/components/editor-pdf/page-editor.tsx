@@ -173,7 +173,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             const otherGraphics = graphics.filter((o) => o.kind !== 'line');
             return {
               ...prev,
-              // Texto por cima de imagens para não perder clique; linhas no topo.
+              // A camada de texto recebe prioridade de clique sobre os gráficos.
               overlays: [...otherGraphics, ...textsWithFill, ...lines, ...manual],
               textLayerReady: true
             };
@@ -1040,6 +1040,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                   <div
                     key={overlay.id}
                     data-overlay
+                    data-overlay-kind={overlay.kind}
+                    aria-label={overlay.kind === 'text' ? overlay.text : undefined}
                     onPointerDown={(e) => startMove(e, overlay)}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -1057,9 +1059,15 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                     }}
                     className={cn(
                       'absolute box-border bg-transparent',
-                      overlay.kind === 'image' || overlay.kind === 'line'
+                      overlay.kind === 'text'
+                        ? isEditing
+                          ? 'z-40'
+                          : isSelected
+                            ? 'z-30'
+                            : 'z-20'
+                        : overlay.kind === 'image' || overlay.kind === 'line'
                         ? isSelected
-                          ? 'z-30'
+                          ? 'z-[19]'
                           : 'z-[18]'
                         : isSelected || isEditing
                           ? 'z-20'
