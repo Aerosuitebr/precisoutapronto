@@ -1075,8 +1075,10 @@ async function drawOverlays(
           size: fontSize,
           font: font!,
           color: rgb(color.r, color.g, color.b),
-          opacity,
-          maxWidth: Math.max(fontSize, w)
+          // O editor mantém as linhas explícitas. A fonte embutida pode ser
+          // mais larga que a fonte do navegador; maxWidth criava linhas extras
+          // no export e sobrepunha o próximo campo do documento.
+          opacity
         });
       });
     }

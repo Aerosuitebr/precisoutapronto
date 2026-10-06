@@ -781,7 +781,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     let measured = Math.max((text || ' ').length, 1) * sizePx * 0.52;
     if (ctx) {
       ctx.font = `${overlay.bold ? 700 : 400} ${sizePx}px ${family}`;
-      measured = ctx.measureText(text || ' ').width;
+      measured = Math.max(...(text || ' ').split('\n').map((line) => ctx.measureText(line || ' ').width));
     }
     const boardWidth = boardHeight * aspect;
     if (boardWidth <= 0) return overlay.w;
@@ -1151,6 +1151,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                           }}
                           onPointerDown={(e) => e.stopPropagation()}
                           rows={1}
+                          wrap="off"
                           spellCheck={false}
                           className="block h-full w-full resize-none overflow-hidden border-0 bg-transparent px-0.5 py-0 outline-none"
                           style={{

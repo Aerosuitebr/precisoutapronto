@@ -53,3 +53,42 @@ test(`long footer can be edited and downloaded (fonts available: ${fontsAvailabl
   }).toContain(edited);
 });
 }
+
+test('export keeps an edited line on its baseline even in a narrow box', async ({ page }) => {
+  const doc = await PDFDocument.create();
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const sheet = doc.addPage([595, 842]);
+  const original = '01/01/2025 - Aberto';
+  const edited = '01/01/2025 - 30/09/2026';
+  sheet.drawText(original, { x: 24, y: 520, size: 14, font });
+  sheet.drawText('Empregador de teste', { x: 24, y: 494, size: 10, font });
+  await page.route('https://cdn.jsdelivr.net/npm/@fontsource/**', route => route.abort());
+  await page.route('https://unpkg.com/@fontsource/**', route => route.abort());
+  await page.goto('/ferramentas/editor-pdf');
+  await page.locator('input[type=file]').first().setInputFiles({
+    name: 'line-layout.pdf', mimeType: 'application/pdf', buffer: Buffer.from(await doc.save())
+  });
+  await page.getByRole('button', { name: 'Editar conteúdo da página' }).click();
+  await page.getByLabel(original, { exact: true }).click();
+  const editor = page.getByRole('textbox', { name: 'Editar texto', exact: true });
+  await editor.fill(edited);
+  await expect(editor).toHaveAttribute('wrap', 'off');
+  await editor.press('Escape');
+  const handle = page.getByRole('button', { name: 'Redimensionar', exact: true });
+  const bounds = (await handle.boundingBox())!;
+  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(bounds.x - 80, bounds.y + bounds.height / 2, { steps: 5 });
+  await page.mouse.up();
+  await page.getByRole('button', { name: 'Salvar página' }).click();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Baixar PDF final' }).click();
+  const bytes = await readFile((await (await downloadPromise).path())!);
+  await page.reload();
+  await page.locator('input[type=file]').first().setInputFiles({
+    name: 'edited-line.pdf', mimeType: 'application/pdf', buffer: bytes
+  });
+  await page.getByRole('button', { name: 'Editar conteúdo da página' }).click();
+  await expect(page.getByLabel(edited, { exact: true })).toBeVisible();
+  await expect(page.getByLabel('Empregador de teste', { exact: true })).toBeVisible();
+});
