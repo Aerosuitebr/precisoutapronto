@@ -1,0 +1,278 @@
+diff --git a/src/app/imprensa/page.tsx b/src/app/imprensa/page.tsx
+index e666a31..28eff0e 100644
+--- a/src/app/imprensa/page.tsx
++++ b/src/app/imprensa/page.tsx
+@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
+ import Link from 'next/link';
+ import { SiteFooter } from '@/components/marketing/site-footer';
+ import { SiteHeader } from '@/components/marketing/site-header';
+-import { BRAND_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
++import { BRAND_DESCRIPTION, BRAND_EDITORIAL_DESCRIPTION, BRAND_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
+ import {
+   AUTHORITY_ASSETS,
+   PRESS_FACTS,
+@@ -54,10 +54,8 @@ export default function ImprensaPage() {
+     ]
+   };
+ 
+-  const shortBoiler =
+-    'Precisou, Tá Pronto é uma plataforma brasileira de ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador.';
+-  const longBoiler =
+-    'O Precisou, Tá Pronto (precisoutapronto.com.br), operado pela Aerosuite, oferece ferramentas práticas para MEIs, freelancers, estudantes e pequenos negócios: orçamento com Pix, currículo, recibo, proposta, contrato, calculadoras trabalhistas, corretor de redação ENEM, editor de PDF e referências ABNT. Orçamento e recibo saem sem cadastro. Não pedimos cartão para começar.';
++  const shortBoiler = BRAND_DESCRIPTION;
++  const longBoiler = BRAND_EDITORIAL_DESCRIPTION;
+ 
+   return (
+     <>
+diff --git a/src/app/recibos/[slug]/page.tsx b/src/app/recibos/[slug]/page.tsx
+index f8c73bb..ce07abc 100644
+--- a/src/app/recibos/[slug]/page.tsx
++++ b/src/app/recibos/[slug]/page.tsx
+@@ -46,6 +46,10 @@ export default async function ReceiptClusterRoute({ params }: Props) {
+           <p className="mt-6 text-sm font-bold uppercase tracking-[0.16em] text-emerald-700">{page.eyebrow}</p><h1 className="precisoutapronto-display mt-3 text-4xl font-extrabold leading-tight text-slate-950 sm:text-5xl">{page.title}</h1><p className="mt-5 text-lg leading-8 text-slate-600">{page.description}</p>
+           <div className="mt-8 rounded-2xl border border-emerald-200 bg-emerald-50 p-6"><p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-800">Resposta direta</p><p className="mt-2 leading-7 text-slate-800">{page.answer}</p></div>
+           <LandingConversionLink href="/gerador-de-recibo#ferramenta" landingPath={`/recibos/${page.slug}`} placement="hero_primary" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-slate-950 px-6 py-3 font-bold text-white">{page.slug === 'recibo-pagamento-pix' ? 'Gerar recibo de Pix grátis' : 'Gerar este recibo grátis'} <ArrowRight className="h-4 w-4" /></LandingConversionLink>
++          {page.slug === 'recibo-pagamento-pix' ? <>
++            <LandingConversionLink href="#exemplo-recibo" landingPath={`/recibos/${page.slug}`} placement="hero_secondary" className="mt-3 inline-flex px-6 py-3 font-bold text-emerald-800 underline underline-offset-4">Ver exemplo preenchido</LandingConversionLink>
++            <p className="mt-3 text-sm leading-6 text-slate-600">PDF grátis com a marca da plataforma. Conta grátis para histórico; Premium para remover a marca.</p>
++          </> : null}
+         </div></header>
+         <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+           {page.slug === 'recibo-pagamento-pix' ? <section className="mb-12 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+@@ -102,7 +106,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
+               <p className="mt-3 leading-7 text-slate-700">Veja o <Link href="/guias/como-registrar-sinal-e-saldo-pix" className="font-semibold text-emerald-800 underline underline-offset-4">passo a passo para registrar sinal e saldo recebidos por Pix</Link>, com dois recibos demonstrativos ligados ao mesmo orçamento.</p>
+             </section>
+           ) : null}
+-          <section className="mt-12 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50"><div className="border-b border-amber-200 px-6 py-4"><p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Modelo final preenchido</p><p className="mt-1 text-xs text-amber-900/70">Exemplo fictício para demonstrar os campos; revise o alcance da quitação antes de usar.</p></div><div className="bg-white p-6 sm:p-8"><p className="text-center text-xl font-black uppercase tracking-[0.18em] text-slate-950">Recibo</p>{page.example.map((line) => <p key={line} className="mt-3 border-b border-dashed border-slate-200 pb-3 text-sm leading-6 text-slate-700">{line}</p>)}<div className="mt-8 border-t border-slate-400 pt-2 text-center text-xs text-slate-500">Assinatura de quem recebeu</div></div></section>
++          <section id="exemplo-recibo" className="mt-12 scroll-mt-24 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50"><div className="border-b border-amber-200 px-6 py-4"><h2 className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Modelo final preenchido</h2><p className="mt-1 text-xs text-amber-900/70">Exemplo fictício para demonstrar os campos; revise o alcance da quitação antes de usar.</p></div><div className="bg-white p-6 sm:p-8"><p className="text-center text-xl font-black uppercase tracking-[0.18em] text-slate-950">Recibo</p>{page.example.map((line) => <p key={line} className="mt-3 border-b border-dashed border-slate-200 pb-3 text-sm leading-6 text-slate-700">{line}</p>)}<div className="mt-8 border-t border-slate-400 pt-2 text-center text-xs text-slate-500">Assinatura de quem recebeu</div></div></section>
+           <section className="mt-12"><h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Perguntas frequentes</h2><div className="mt-5 divide-y divide-slate-200 rounded-2xl border border-slate-200">{page.faqs.map((faq) => <div key={faq.question} className="p-5"><h3 className="font-bold text-slate-950">{faq.question}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{faq.answer}</p></div>)}</div></section>
+           {page.slug === 'recibo-pagamento-pix' ? (
+             <section className="mt-12 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">
+diff --git a/src/app/recibos/page.tsx b/src/app/recibos/page.tsx
+index ce98323..4c8f21e 100644
+--- a/src/app/recibos/page.tsx
++++ b/src/app/recibos/page.tsx
+@@ -6,6 +6,7 @@ import { SiteHeader } from '@/components/marketing/site-header';
+ import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
+ import { getViralBaseUrl } from '@/lib/viral-loop';
+ import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
++import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
+ 
+ export const metadata: Metadata = {
+   title: { absolute: 'Gerador de recibo Pix e modelos em PDF grátis | Precisou, Tá Pronto' },
+@@ -100,18 +101,22 @@ export default function ReceiptHubPage() {
+               baixe o PDF grátis, sem cadastro.
+             </p>
+             <div className="mt-8 flex flex-wrap gap-3">
+-              <Link
++              <LandingConversionLink
+                 href="/recibos/recibo-pagamento-pix"
++                landingPath="/recibos"
++                placement="hero_primary"
+                 className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-6 py-3 font-bold text-slate-950"
+               >
+                 Gerar recibo de Pix <ArrowRight className="h-4 w-4" />
+-              </Link>
+-              <Link
++              </LandingConversionLink>
++              <LandingConversionLink
+                 href="/gerador-de-recibo#ferramenta"
++                landingPath="/recibos"
++                placement="hero_secondary"
+                 className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3 font-bold text-white"
+               >
+                 Abrir gerador
+-              </Link>
++              </LandingConversionLink>
+             </div>
+           </div>
+         </section>
+@@ -119,11 +124,11 @@ export default function ReceiptHubPage() {
+           <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Comece pelas páginas principais</h2>
+           <div className="mt-7 grid gap-4 sm:grid-cols-2">
+             {established.map((item) => (
+-              <Link key={item.href} href={item.href} className="rounded-2xl border border-slate-200 p-5 hover:border-emerald-300">
++              <LandingConversionLink key={item.href} href={item.href} landingPath="/recibos" placement="inline_primary" className="rounded-2xl border border-slate-200 p-5 hover:border-emerald-300">
+                 <ReceiptText className="h-5 w-5 text-emerald-700" />
+                 <h3 className="mt-3 font-bold text-slate-950">{item.title}</h3>
+                 <p className="mt-2 text-sm text-slate-600">{item.text}</p>
+-              </Link>
++              </LandingConversionLink>
+             ))}
+           </div>
+           <h2 className="precisoutapronto-display mt-14 text-3xl font-extrabold text-slate-950">
+diff --git a/src/app/sobre/page.tsx b/src/app/sobre/page.tsx
+index 44572d5..b57a111 100644
+--- a/src/app/sobre/page.tsx
++++ b/src/app/sobre/page.tsx
+@@ -1,25 +1,24 @@
+ import type { Metadata } from 'next';
+ import Link from 'next/link';
+ import { LegalPage } from '@/components/marketing/legal-page';
++import { BRAND_DESCRIPTION, BRAND_EDITORIAL_DESCRIPTION } from '@/lib/brand';
+ 
+ export const metadata: Metadata = {
+   title: 'Sobre',
+-  description: 'Conheça o Precisou, Tá Pronto, plataforma de orçamento no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.',
++  description: BRAND_DESCRIPTION,
+   alternates: { canonical: '/sobre' },
+   openGraph: {
+     title: 'Sobre | Precisou, Tá Pronto',
+-    description: 'Conheça o Precisou, Tá Pronto, plataforma de orçamento no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.',
++    description: BRAND_DESCRIPTION,
+     url: '/sobre'
+   }
+ };
+ 
+ export default function SobrePage() {
+   return (
+-    <LegalPage title="Sobre o Precisou, Tá Pronto" subtitle="Ferramentas práticas, sem burocracia">
++    <LegalPage title="Sobre o Precisou, Tá Pronto" subtitle="Do orçamento no WhatsApp ao recibo do serviço">
+       <p>
+-        O <strong>Precisou, Tá Pronto</strong> (precisoutapronto.com.br) é uma plataforma de
+-        <strong> orçamento no WhatsApp, documentos e ferramentas online</strong> para MEIs,
+-        freelancers, autônomos, estudantes e pequenos negócios.
++        {BRAND_DESCRIPTION}
+       </p>
+       <p>
+         A plataforma é desenvolvida e operada pela <strong>Aerosuite</strong>. Não pedimos cartão
+@@ -41,13 +40,10 @@ export default function SobrePage() {
+       <section className="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-6">
+         <h2 className="text-xl font-bold text-slate-950">Press kit</h2>
+         <p className="mt-3">
+-          <strong>Descrição curta:</strong> Precisou, Tá Pronto é uma plataforma brasileira de orçamento
+-          no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.
++          <strong>Descrição curta:</strong> {BRAND_DESCRIPTION}
+         </p>
+         <p className="mt-3">
+-          <strong>Descrição editorial:</strong> O Precisou, Tá Pronto ajuda MEIs, freelancers, estudantes e
+-          pequenos negócios a criar currículos, recibos, contratos, propostas, orçamentos com Pix,
+-          corrigir redação ENEM, editar PDF e montar referências ABNT em fluxos simples no navegador.
++          <strong>Descrição editorial:</strong> {BRAND_EDITORIAL_DESCRIPTION}
+         </p>
+         <p className="mt-3">
+           <strong>Como citar:</strong> Precisou, Tá Pronto. Ferramentas online grátis.
+diff --git a/src/lib/brand.ts b/src/lib/brand.ts
+index 9bb39a9..595cd07 100644
+--- a/src/lib/brand.ts
++++ b/src/lib/brand.ts
+@@ -8,6 +8,8 @@ export const BRAND_CATEGORY = 'Orçamento, cobrança Pix e recibo para prestador
+ export const BRAND_TAGLINE = 'Orçamento no WhatsApp, cobrança Pix e recibo para prestadores';
+ export const BRAND_DESCRIPTION =
+   'Precisou, Tá Pronto ajuda prestadores a criar orçamento, enviar pelo WhatsApp, receber aprovação, cobrar com Pix e emitir recibo em PDF.';
++export const BRAND_EDITORIAL_DESCRIPTION =
++  'Operado pela Aerosuite, o Precisou, Tá Pronto ajuda MEIs, freelancers e prestadores de serviço a organizar o trabalho do orçamento ao recibo. O profissional envia um link pelo WhatsApp para o cliente conferir e aprovar, oferece Pix para pagamento e, depois de confirmar o recebimento, emite o recibo em PDF. Orçamento e recibo podem ser criados sem cadastro, com a marca da plataforma. A conta grátis permite guardar o histórico; o plano Premium remove a marca. O catálogo também reúne propostas comerciais, contratos e outras ferramentas para trabalho e estudos.';
+ export const BRAND_OFFICIAL_PATH = '/precisou-ta-pronto';
+ export const BRAND_AUTHOR_PATH = '/autores/equipe-editorial';
+ 
+diff --git a/src/lib/seo/authority-assets.ts b/src/lib/seo/authority-assets.ts
+index e80cd5c..2add208 100644
+--- a/src/lib/seo/authority-assets.ts
++++ b/src/lib/seo/authority-assets.ts
+@@ -3,7 +3,7 @@
+  * Páginas públicas devem ser indexáveis e úteis o bastante para merecer o link.
+  */
+ 
+-import { BRAND_PUBLIC_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
++import { BRAND_CATEGORY, BRAND_PUBLIC_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
+ 
+ export type AuthorityAsset = {
+   path: string;
+@@ -32,10 +32,10 @@ export const AUTHORITY_ASSETS: AuthorityAsset[] = [
+     audiences: ['mei', 'imprensa', 'parceiros']
+   },
+   {
+-    path: '/calculadora-de-rescisao',
+-    title: 'Calculadora de rescisão',
+-    pitch: 'Ferramenta educativa de alto volume de busca.',
+-    audiences: ['rh', 'imprensa']
++    path: '/modelos-de-orcamento',
++    title: 'Modelos de orçamento por profissão',
++    pitch: 'Exemplos preenchidos com escopo, materiais e condições para prestadores de serviço.',
++    audiences: ['mei', 'imprensa', 'parceiros']
+   },
+   {
+     path: '/orcamento-com-pix',
+@@ -51,7 +51,7 @@ export const PRESS_FACTS = [
+   'Único domínio oficial da plataforma. Endereços anteriores redirecionam para o mesmo caminho.',
+   'Operação: Aerosuite',
+   `Contato de imprensa: ${BRAND_PUBLIC_EMAIL}`,
+-  'Proposta: ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador',
++  `Proposta: ${BRAND_CATEGORY}`,
+   'Acesso: orçamento e recibo sem cadastro; conta grátis para histórico; plano Premium para remover a marca',
+   'Idiomas da interface pública: português (principal), inglês e espanhol em rotas dedicadas',
+   'Canal oficial no YouTube: https://www.youtube.com/@precisoutapronto'
+@@ -60,13 +60,13 @@ export const PRESS_FACTS = [
+ export const PRESS_STORY_ANGLES = [
+   {
+     title: 'MEI que perde venda no WhatsApp',
+-    hook: 'Como um orçamento com Pix reduz o sumiço do cliente depois do “te mando o valor”.',
++    hook: 'Como organizar escopo, preço e aprovação em um link para enviar ao cliente pelo WhatsApp.',
+     link: '/orcamento-com-pix'
+   },
+   {
+-    title: 'Rescisão sem planilha',
+-    hook: 'Ferramenta educativa para estimar saldo, férias, 13º, aviso e FGTS.',
+-    link: '/calculadora-de-rescisao'
++    title: 'Materiais e mão de obra no orçamento',
++    hook: 'Exemplo preenchido para eletricistas separarem visita, materiais, serviço e condições.',
++    link: '/orcamento-para/eletricista'
+   },
+   {
+     title: 'Pix não substitui recibo',
+diff --git a/src/lib/seo/receipt-cluster.ts b/src/lib/seo/receipt-cluster.ts
+index e046fae..8f4911b 100644
+--- a/src/lib/seo/receipt-cluster.ts
++++ b/src/lib/seo/receipt-cluster.ts
+@@ -62,9 +62,9 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
+   },
+   {
+     slug: 'recibo-pagamento-pix',
+-    updatedAt: '2026-09-28',
+-    title: 'Recibo de Pix: o comprovante serve? Gere o PDF',
+-    description: 'O comprovante do Pix mostra a transferência. O recibo explica o que foi quitado. Crie o PDF grátis, sem cadastro, e envie para o pagador.',
++    updatedAt: '2026-10-07',
++    title: 'Recibo de Pix em PDF grátis: modelo sem cadastro',
++    description: 'Preencha o recibo de Pix com valor, data e serviço. Baixe o PDF grátis, sem cadastro, para enviar pelo WhatsApp. Veja a diferença para o comprovante bancário.',
+     eyebrow: 'Pagamento via Pix',
+     answer: 'O comprovante bancário mostra a transferência; o recibo explica qual obrigação aquele Pix quitou. Os dois documentos se complementam quando o motivo do pagamento precisa ficar claro.',
+     fields: ['Pagador e recebedor', 'Valor transferido', 'Serviço, produto ou parcela quitada', 'Data do recebimento', 'Indicação “pago via Pix”'],
+diff --git a/src/lib/seo/sitemap-entries.ts b/src/lib/seo/sitemap-entries.ts
+index e8eae10..b36ffe9 100644
+--- a/src/lib/seo/sitemap-entries.ts
++++ b/src/lib/seo/sitemap-entries.ts
+@@ -33,8 +33,9 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
+   ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],
+   ['/orcamento-para/fotografo', new Date('2026-08-31T12:00:00.000Z')],
+   ['/orcamento-para/manutencao-residencial', new Date('2026-08-31T12:00:00.000Z')],
+-  ['/recibos/recibo-pagamento-pix', new Date('2026-09-28T12:00:00.000Z')],
+-  ['/imprensa', new Date('2026-09-28T12:00:00.000Z')],
++  ['/recibos/recibo-pagamento-pix', new Date('2026-10-07T12:00:00.000Z')],
++  ['/imprensa', new Date('2026-10-07T12:00:00.000Z')],
++  ['/sobre', new Date('2026-10-07T12:00:00.000Z')],
+   ['/precisou-ta-pronto', new Date('2026-09-04T12:00:00.000Z')],
+   ['/corretor-de-redacao-enem', new Date('2026-08-31T12:00:00.000Z')],
+   ['/gerador-de-recibo', new Date('2026-09-28T12:00:00.000Z')],
+@@ -322,13 +323,6 @@ function buildGrowth(base: string): MetadataRoute.Sitemap {
+       changeFrequency: 'weekly' as const,
+       priority: 0.85
+     })),
+-    // Landing SEO dedicada substitui o segmento genérico "autonomos".
+-    {
+-      url: `${base}/para/freelancers`,
+-      lastModified: CORE_UPDATED_AT,
+-      changeFrequency: 'weekly' as const,
+-      priority: 0.85
+-    },
+     ...intentPages
+       .filter((intent) => !['recibo-para-mei', 'recibo-de-pagamento'].includes(intent.slug))
+       .map((intent) => ({
+@@ -426,7 +420,7 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string):
+     default:
+       entries = [];
+   }
+-  return attachOrcamentoPromoVideo(normalizeLastModified(keepPromoted(entries, base), base), base);
++  return attachOrcamentoPromoVideo(normalizeLastModified(dedupe(keepPromoted(entries, base)), base), base);
+ }
+ 
+ function orcamentoPromoVideos(base: string): NonNullable<MetadataRoute.Sitemap[number]['videos']> {

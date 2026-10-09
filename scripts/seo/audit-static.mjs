@@ -278,8 +278,8 @@ if (!sitemapSource.includes('keepPromoted(entries, base)')) {
 }
 
 const landingContent = await readFile(path.join(root, 'src/lib/seo/landing-content.ts'), 'utf8');
-if (!landingContent.includes("title: 'Orçamento no WhatsApp: modelo, aprovação e Pix grátis'")) {
-  failures.push('orcamento-com-pix: title de CTR ausente');
+if (!landingContent.includes("title: 'Orçamento de Serviço pelo WhatsApp com Pix grátis'")) {
+  failures.push('orcamento-com-pix: title voltado a orçamento de serviço no WhatsApp ausente');
 }
 
 const receiptCluster = await readFile(path.join(root, 'src/lib/seo/receipt-cluster.ts'), 'utf8');

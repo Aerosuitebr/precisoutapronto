@@ -8,6 +8,8 @@ export const BRAND_CATEGORY = 'Orçamento, cobrança Pix e recibo para prestador
 export const BRAND_TAGLINE = 'Orçamento no WhatsApp, cobrança Pix e recibo para prestadores';
 export const BRAND_DESCRIPTION =
   'Precisou, Tá Pronto ajuda prestadores a criar orçamento, enviar pelo WhatsApp, receber aprovação, cobrar com Pix e emitir recibo em PDF.';
+export const BRAND_EDITORIAL_DESCRIPTION =
+  'Operado pela Aerosuite, o Precisou, Tá Pronto ajuda MEIs, freelancers e prestadores de serviço a organizar o trabalho do orçamento ao recibo. O profissional envia um link pelo WhatsApp para o cliente conferir e aprovar, oferece Pix para pagamento e, depois de confirmar o recebimento, emite o recibo em PDF. Orçamento e recibo podem ser criados sem cadastro, com a marca da plataforma. A conta grátis permite guardar o histórico; o plano Premium remove a marca. O catálogo também reúne propostas comerciais, contratos e outras ferramentas para trabalho e estudos.';
 export const BRAND_OFFICIAL_PATH = '/precisou-ta-pronto';
 export const BRAND_AUTHOR_PATH = '/autores/equipe-editorial';
 

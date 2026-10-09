@@ -6,6 +6,7 @@ import { SiteHeader } from '@/components/marketing/site-header';
 import { receiptClusterPages } from '@/lib/seo/receipt-cluster';
 import { getViralBaseUrl } from '@/lib/viral-loop';
 import { StrategicSeoClusters } from '@/components/marketing/strategic-seo-clusters';
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 
 export const metadata: Metadata = {
   title: { absolute: 'Gerador de recibo Pix e modelos em PDF grátis | Precisou, Tá Pronto' },
@@ -100,18 +101,22 @@ export default function ReceiptHubPage() {
               baixe o PDF grátis, sem cadastro.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
+              <LandingConversionLink
                 href="/recibos/recibo-pagamento-pix"
+                landingPath="/recibos"
+                placement="hero_primary"
                 className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-6 py-3 font-bold text-slate-950"
               >
                 Gerar recibo de Pix <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
+              </LandingConversionLink>
+              <LandingConversionLink
                 href="/gerador-de-recibo#ferramenta"
+                landingPath="/recibos"
+                placement="hero_secondary"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3 font-bold text-white"
               >
                 Abrir gerador
-              </Link>
+              </LandingConversionLink>
             </div>
           </div>
         </section>
@@ -119,11 +124,11 @@ export default function ReceiptHubPage() {
           <h2 className="precisoutapronto-display text-3xl font-extrabold text-slate-950">Comece pelas páginas principais</h2>
           <div className="mt-7 grid gap-4 sm:grid-cols-2">
             {established.map((item) => (
-              <Link key={item.href} href={item.href} className="rounded-2xl border border-slate-200 p-5 hover:border-emerald-300">
+              <LandingConversionLink key={item.href} href={item.href} landingPath="/recibos" placement="inline_primary" className="rounded-2xl border border-slate-200 p-5 hover:border-emerald-300">
                 <ReceiptText className="h-5 w-5 text-emerald-700" />
                 <h3 className="mt-3 font-bold text-slate-950">{item.title}</h3>
                 <p className="mt-2 text-sm text-slate-600">{item.text}</p>
-              </Link>
+              </LandingConversionLink>
             ))}
           </div>
           <h2 className="precisoutapronto-display mt-14 text-3xl font-extrabold text-slate-950">

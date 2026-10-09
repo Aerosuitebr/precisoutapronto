@@ -1,25 +1,24 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { LegalPage } from '@/components/marketing/legal-page';
+import { BRAND_DESCRIPTION, BRAND_EDITORIAL_DESCRIPTION } from '@/lib/brand';
 
 export const metadata: Metadata = {
   title: 'Sobre',
-  description: 'Conheça o Precisou, Tá Pronto, plataforma de orçamento no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.',
+  description: BRAND_DESCRIPTION,
   alternates: { canonical: '/sobre' },
   openGraph: {
     title: 'Sobre | Precisou, Tá Pronto',
-    description: 'Conheça o Precisou, Tá Pronto, plataforma de orçamento no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.',
+    description: BRAND_DESCRIPTION,
     url: '/sobre'
   }
 };
 
 export default function SobrePage() {
   return (
-    <LegalPage title="Sobre o Precisou, Tá Pronto" subtitle="Ferramentas práticas, sem burocracia">
+    <LegalPage title="Sobre o Precisou, Tá Pronto" subtitle="Do orçamento no WhatsApp ao recibo do serviço">
       <p>
-        O <strong>Precisou, Tá Pronto</strong> (precisoutapronto.com.br) é uma plataforma de
-        <strong> orçamento no WhatsApp, documentos e ferramentas online</strong> para MEIs,
-        freelancers, autônomos, estudantes e pequenos negócios.
+        {BRAND_DESCRIPTION}
       </p>
       <p>
         A plataforma é desenvolvida e operada pela <strong>Aerosuite</strong>. Não pedimos cartão
@@ -41,13 +40,10 @@ export default function SobrePage() {
       <section className="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-6">
         <h2 className="text-xl font-bold text-slate-950">Press kit</h2>
         <p className="mt-3">
-          <strong>Descrição curta:</strong> Precisou, Tá Pronto é uma plataforma brasileira de orçamento
-          no WhatsApp, documentos e ferramentas online para MEIs, freelancers e pequenos negócios.
+          <strong>Descrição curta:</strong> {BRAND_DESCRIPTION}
         </p>
         <p className="mt-3">
-          <strong>Descrição editorial:</strong> O Precisou, Tá Pronto ajuda MEIs, freelancers, estudantes e
-          pequenos negócios a criar currículos, recibos, contratos, propostas, orçamentos com Pix,
-          corrigir redação ENEM, editar PDF e montar referências ABNT em fluxos simples no navegador.
+          <strong>Descrição editorial:</strong> {BRAND_EDITORIAL_DESCRIPTION}
         </p>
         <p className="mt-3">
           <strong>Como citar:</strong> Precisou, Tá Pronto. Ferramentas online grátis.

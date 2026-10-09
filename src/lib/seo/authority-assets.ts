@@ -3,7 +3,7 @@
  * Páginas públicas devem ser indexáveis e úteis o bastante para merecer o link.
  */
 
-import { BRAND_PUBLIC_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
+import { BRAND_CATEGORY, BRAND_PUBLIC_EMAIL, BRAND_NAME, BRAND_SITE } from '@/lib/brand';
 
 export type AuthorityAsset = {
   path: string;
@@ -32,10 +32,10 @@ export const AUTHORITY_ASSETS: AuthorityAsset[] = [
     audiences: ['mei', 'imprensa', 'parceiros']
   },
   {
-    path: '/calculadora-de-rescisao',
-    title: 'Calculadora de rescisão',
-    pitch: 'Ferramenta educativa de alto volume de busca.',
-    audiences: ['rh', 'imprensa']
+    path: '/modelos-de-orcamento',
+    title: 'Modelos de orçamento por profissão',
+    pitch: 'Exemplos preenchidos com escopo, materiais e condições para prestadores de serviço.',
+    audiences: ['mei', 'imprensa', 'parceiros']
   },
   {
     path: '/orcamento-com-pix',
@@ -51,7 +51,7 @@ export const PRESS_FACTS = [
   'Único domínio oficial da plataforma. Endereços anteriores redirecionam para o mesmo caminho.',
   'Operação: Aerosuite',
   `Contato de imprensa: ${BRAND_PUBLIC_EMAIL}`,
-  'Proposta: ferramentas online grátis para documentos, cobranças, estudos e cálculos no navegador',
+  `Proposta: ${BRAND_CATEGORY}`,
   'Acesso: orçamento e recibo sem cadastro; conta grátis para histórico; plano Premium para remover a marca',
   'Idiomas da interface pública: português (principal), inglês e espanhol em rotas dedicadas',
   'Canal oficial no YouTube: https://www.youtube.com/@precisoutapronto'
@@ -60,13 +60,13 @@ export const PRESS_FACTS = [
 export const PRESS_STORY_ANGLES = [
   {
     title: 'MEI que perde venda no WhatsApp',
-    hook: 'Como um orçamento com Pix reduz o sumiço do cliente depois do “te mando o valor”.',
+    hook: 'Como organizar escopo, preço e aprovação em um link para enviar ao cliente pelo WhatsApp.',
     link: '/orcamento-com-pix'
   },
   {
-    title: 'Rescisão sem planilha',
-    hook: 'Ferramenta educativa para estimar saldo, férias, 13º, aviso e FGTS.',
-    link: '/calculadora-de-rescisao'
+    title: 'Materiais e mão de obra no orçamento',
+    hook: 'Exemplo preenchido para eletricistas separarem visita, materiais, serviço e condições.',
+    link: '/orcamento-para/eletricista'
   },
   {
     title: 'Pix não substitui recibo',

@@ -33,8 +33,9 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],
   ['/orcamento-para/fotografo', new Date('2026-08-31T12:00:00.000Z')],
   ['/orcamento-para/manutencao-residencial', new Date('2026-08-31T12:00:00.000Z')],
-  ['/recibos/recibo-pagamento-pix', new Date('2026-09-28T12:00:00.000Z')],
-  ['/imprensa', new Date('2026-09-28T12:00:00.000Z')],
+  ['/recibos/recibo-pagamento-pix', new Date('2026-10-07T12:00:00.000Z')],
+  ['/imprensa', new Date('2026-10-07T12:00:00.000Z')],
+  ['/sobre', new Date('2026-10-07T12:00:00.000Z')],
   ['/precisou-ta-pronto', new Date('2026-09-04T12:00:00.000Z')],
   ['/corretor-de-redacao-enem', new Date('2026-08-31T12:00:00.000Z')],
   ['/gerador-de-recibo', new Date('2026-09-28T12:00:00.000Z')],
@@ -322,13 +323,6 @@ function buildGrowth(base: string): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.85
     })),
-    // Landing SEO dedicada substitui o segmento genérico "autonomos".
-    {
-      url: `${base}/para/freelancers`,
-      lastModified: CORE_UPDATED_AT,
-      changeFrequency: 'weekly' as const,
-      priority: 0.85
-    },
     ...intentPages
       .filter((intent) => !['recibo-para-mei', 'recibo-de-pagamento'].includes(intent.slug))
       .map((intent) => ({
@@ -426,7 +420,7 @@ export function buildSitemapSegment(segment: SitemapSegment, baseUrl?: string): 
     default:
       entries = [];
   }
-  return attachOrcamentoPromoVideo(normalizeLastModified(keepPromoted(entries, base), base), base);
+  return attachOrcamentoPromoVideo(normalizeLastModified(dedupe(keepPromoted(entries, base)), base), base);
 }
 
 function orcamentoPromoVideos(base: string): NonNullable<MetadataRoute.Sitemap[number]['videos']> {

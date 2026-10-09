@@ -62,9 +62,9 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'recibo-pagamento-pix',
-    updatedAt: '2026-09-28',
-    title: 'Recibo de Pix: o comprovante serve? Gere o PDF',
-    description: 'O comprovante do Pix mostra a transferência. O recibo explica o que foi quitado. Crie o PDF grátis, sem cadastro, e envie para o pagador.',
+    updatedAt: '2026-10-07',
+    title: 'Recibo de Pix em PDF grátis: modelo sem cadastro',
+    description: 'Preencha o recibo de Pix com valor, data e serviço. Baixe o PDF grátis, sem cadastro, para enviar pelo WhatsApp. Veja a diferença para o comprovante bancário.',
     eyebrow: 'Pagamento via Pix',
     answer: 'O comprovante bancário mostra a transferência; o recibo explica qual obrigação aquele Pix quitou. Os dois documentos se complementam quando o motivo do pagamento precisa ficar claro.',
     fields: ['Pagador e recebedor', 'Valor transferido', 'Serviço, produto ou parcela quitada', 'Data do recebimento', 'Indicação “pago via Pix”'],

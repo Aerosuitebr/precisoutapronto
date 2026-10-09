@@ -1,5 +1,13 @@
 import { expect, test } from '@playwright/test';
-import { buildFullSitemap, sitemapEntriesToXml } from '../src/lib/seo/sitemap-entries';
+import { buildFullSitemap, buildSitemapSegment, INDEXABLE_SITEMAP_SEGMENTS, sitemapEntriesToXml } from '../src/lib/seo/sitemap-entries';
+
+test('submitted sitemap segments have unique URLs within and across segments', () => {
+  const urls = INDEXABLE_SITEMAP_SEGMENTS.flatMap((segment) =>
+    buildSitemapSegment(segment, 'https://precisoutapronto.com.br').map((entry) => entry.url)
+  );
+  expect(urls.length).toBeGreaterThan(0);
+  expect(urls.length).toBe(new Set(urls).size);
+});
 
 const supportingPaths = [
   '/orcamento-para/pintor',
@@ -74,10 +82,11 @@ test('receipt hub targets pix generator intent without noindex', async ({ reques
   else expect(html).not.toMatch(/<meta\b[^>]*name="robots"[^>]*content="[^"]*noindex/i);
 });
 
-test('pix receipt landing keeps frozen title and explains generator intent', async ({ request }) => {
+test('pix receipt landing offers a free PDF and preserves the bank receipt explanation', async ({ request }) => {
   const response = await request.get('/recibos/recibo-pagamento-pix');
   expect(response.status()).toBe(200);
   const html = await response.text();
-  expect(html).toContain('Recibo de Pix: o comprovante serve? Gere o PDF');
+  expect(html).toContain('Recibo de Pix em PDF grátis: modelo sem cadastro');
+  expect(html).toContain('O comprovante do Pix serve como recibo?');
   expect(html).toContain('Gerador de recibo Pix e gerador de comprovante são a mesma coisa?');
 });
