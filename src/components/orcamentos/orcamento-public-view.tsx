@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   CheckCircle2,
   Loader2,
@@ -60,11 +60,15 @@ export function OrcamentoPublicView({ initial, sourceOccupation }: OrcamentoPubl
   const [notify, setNotify] = useState<NotifyPayload | null>(null);
   const [whatsappOpened, setWhatsappOpened] = useState(false);
 
+  const openedDocument = useRef<string | null>(null);
+
   const pending = orcamento.status === 'pending';
   const needsWhatsAppGate = !pending && !whatsappOpened;
   const viralSourceOccupation = sourceOccupation || orcamento.sourceOccupation || undefined;
 
   useEffect(() => {
+    if (openedDocument.current === orcamento.id) return;
+    openedDocument.current = orcamento.id;
     trackEvent('quote_recipient_view', {
       source_document: orcamento.id,
       quote_status: orcamento.status

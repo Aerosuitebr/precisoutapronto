@@ -1,15 +1,15 @@
 @echo off
-setlocal EnableExtensions
+setlocal EnableExtensions DisableDelayedExpansion
 title DeployMaster - Precisou, Tá Pronto
 cd /d "%~dp0"
 
-REM Launcher: staging -> resumo -> producao (GitHub Actions Vultr)
+REM Launcher: deploy manual direto em producao (GitHub Actions Vultr)
 REM Uso:
 REM   DeployMaster.bat
-REM   DeployMaster.bat -StagingOnly
 REM   DeployMaster.bat -Branch feat/growth-nichos-d30
 REM   DeployMaster.bat -NoPause
 
+set "EXITCODE=1"
 set "NOPAUSE="
 set "PSARGS="
 :parse
@@ -24,7 +24,7 @@ if /I "%~1"=="/NoPause" (
   shift
   goto parse
 )
-set "PSARGS=%PSARGS% %~1"
+set "PSARGS=%PSARGS% %1"
 shift
 goto parse
 :parsed
@@ -32,26 +32,28 @@ goto parse
 where powershell >nul 2>&1
 if errorlevel 1 (
   echo ERRO: PowerShell nao encontrado no PATH.
-  exit /b 1
-)
-
-where gh >nul 2>&1
-if errorlevel 1 (
-  echo ERRO: GitHub CLI ^(gh^) nao encontrado. Instale: https://cli.github.com/
-  exit /b 1
+  goto finish
 )
 
 where git >nul 2>&1
 if errorlevel 1 (
   echo ERRO: git nao encontrado no PATH.
-  exit /b 1
+  goto finish
 )
 
-echo  Opcoes: -StagingOnly  -DryRun  -SkipPush  -SkipCommit  -Branch NOME  -NoPause
+echo  Destino: PRODUCAO - https://precisoutapronto.com.br/
+echo  Opcoes:  -DryRun  -SkipPush  -SkipCommit  -Branch NOME  -NoPause
 echo.
+
+if not exist "%~dp0DeployMaster.ps1" (
+  echo ERRO: DeployMaster.ps1 nao encontrado nesta pasta.
+  goto finish
+)
 
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0DeployMaster.ps1" %PSARGS%
 set "EXITCODE=%ERRORLEVEL%"
+
+:finish
 
 echo.
 if not "%EXITCODE%"=="0" (

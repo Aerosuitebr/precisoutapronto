@@ -48,6 +48,8 @@ test('kit oferece arquivos e link segmentado utilizável', async ({ page, reques
 test('criação confirmada exibe convite por profissão e registra segunda criação', async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('precisoutapronto_analytics_consent', 'accepted');
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (text: string) => { Object.assign(window, { copiedInvite: text }); } } });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: async (data: ShareData) => { Object.assign(window, { nativeInvite: data.url }); } });
     localStorage.setItem('precisoutapronto_quote_milestones_v1', JSON.stringify({ ids: ['previous'], firstAt: Date.now() - 172800000, lastAt: Date.now() - 172800000 }));
     (window as unknown as { auditEvents: unknown[] }).auditEvents = [];
     window.gtag = (...args: unknown[]) => { (window as unknown as { auditEvents: unknown[] }).auditEvents.push(args); };
@@ -67,6 +69,10 @@ test('criação confirmada exibe convite por profissão e registra segunda cria�
   await expect(invite).toBeVisible();
   await expect(invite).toHaveAttribute('href', /eletricista/);
   await expect(invite).toHaveAttribute('href', /ABCD1234/);
+  await page.getByRole('button', { name: 'Copiar convite', exact: true }).click();
+  expect(await page.evaluate(() => (window as unknown as { copiedInvite: string }).copiedInvite)).toMatch(/eletricista.*ABCD1234/);
+  await page.getByRole('button', { name: 'Mais opções de envio', exact: true }).click();
+  expect(await page.evaluate(() => (window as unknown as { nativeInvite: string }).nativeInvite)).toMatch(/eletricista.*ABCD1234/);
   const events = await page.evaluate(() => (window as unknown as { auditEvents: unknown[] }).auditEvents);
   expect(JSON.stringify(events)).toContain('quote_browser_second_created');
 });

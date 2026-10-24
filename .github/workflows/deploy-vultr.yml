@@ -1,8 +1,6 @@
-# Deploy Precisou, Tá Pronto Vultr: producao ou staging (manual)
-# Staging: apos deploy, roda Playwright gate + UX soft.
-# Producao: exige status e2e/staging=success nas ultimas 24h.
-
+# Deploy manual direto em producao, com validacao antes de alterar o servidor.
 name: Deploy Precisou, Tá Pronto Vultr
+run-name: Producao - ${{ github.ref_name }} - ${{ github.sha }}
 
 on:
   workflow_dispatch:
@@ -14,95 +12,54 @@ on:
         type: choice
         options:
           - production
-          - staging
-      skip_e2e_gate:
-        description: 'Emergencia: pular checagem E2E na producao'
-        required: false
-        default: false
-        type: boolean
-      run_ux_report:
-        description: 'Opcional: executar relatório UX com IA após staging'
-        required: false
-        default: false
-        type: boolean
-      auto_promote:
-        description: 'Promover automaticamente para produção após staging/E2E'
-        required: false
-        default: true
-        type: boolean
       expected_sha:
-        description: 'Interno: SHA aprovado no staging para proteger a promoção'
+        description: 'SHA selecionado pelo DeployMaster; impede publicar outro commit'
         required: false
         default: ''
         type: string
 
-# Um único deploy por vez. Evita concorrência no Docker e nos arquivos do VPS.
 concurrency:
   group: deploy-vultr
   cancel-in-progress: false
 
 permissions:
-  actions: write
   contents: read
-  statuses: write
 
 jobs:
-  require-e2e:
-    name: Require E2E for production
+  preflight:
+    name: Validar commit e build de producao
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      EXPECTED_SHA: ${{ inputs.expected_sha }}
+      NEXT_TELEMETRY_DISABLED: '1'
     steps:
-      - name: Skip check on staging
-        if: inputs.target == 'staging'
-        run: echo "staging ok"
-
-      - name: Check e2e status
-        if: inputs.target == 'production' && inputs.skip_e2e_gate == false
-        uses: actions/github-script@v7
+      - name: Confirmar SHA solicitado
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "${EXPECTED_SHA}" && "${GITHUB_SHA}" != "${EXPECTED_SHA}" ]]; then
+            echo "::error::A branch mudou. Rode DeployMaster novamente para publicar o commit correto."
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          script: |
-            const sha = context.sha;
-            const expectedSha = '${{ inputs.expected_sha }}';
-            if (expectedSha && sha !== expectedSha) {
-              core.setFailed(
-                `A master avançou após o staging: esperado ${expectedSha}, recebido ${sha}. Rode staging novamente.`
-              );
-              return;
-            }
-            const maxAgeMs = 24 * 60 * 60 * 1000;
-            const { data: statuses } = await github.rest.repos.listCommitStatusesForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: sha,
-              per_page: 100
-            });
-            const matches = statuses
-              .filter((s) => s.context === 'e2e/staging' && s.state === 'success')
-              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            if (!matches.length) {
-              core.setFailed(
-                'Sem e2e/staging=success neste commit. Rode deploy staging + E2E antes de promover.'
-              );
-              return;
-            }
-            const age = Date.now() - new Date(matches[0].created_at).getTime();
-            if (age > maxAgeMs) {
-              core.setFailed('e2e/staging expirou (limite 24h). Rode staging + E2E de novo.');
-              return;
-            }
-            core.info('OK: e2e/staging success');
-
-      - name: Emergency skip
-        if: inputs.target == 'production' && inputs.skip_e2e_gate == true
-        run: echo "::warning::skip_e2e_gate=true"
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run seo:audit
+      - run: npm run build
+      - name: Validar regras de indicacao e documentos
+        run: npx playwright test e2e/referral-growth.spec.ts e2e/shared-document-growth.spec.ts --workers=1
 
   deploy:
-    needs: require-e2e
+    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
       VULTR_HOST: ${{ secrets.VULTR_HOST }}
       VULTR_SSH_USER: ${{ secrets.VULTR_SSH_USER }}
-      DEPLOY_TARGET: ${{ inputs.target }}
       DEPLOY_ARCHIVE: precisoutapronto-${{ github.run_id }}-${{ github.run_attempt }}.tgz
       DEPLOY_SCRIPT: precisoutapronto-deploy-${{ github.run_id }}-${{ github.run_attempt }}.sh
     steps:
@@ -129,124 +86,27 @@ jobs:
           SSH_OPTS="-i ~/.ssh/vultr_deploy -o StrictHostKeyChecking=accept-new -o BatchMode=yes"
           scp ${SSH_OPTS} "/tmp/${DEPLOY_ARCHIVE}" "${USER}@${HOST}:/tmp/${DEPLOY_ARCHIVE}"
 
-          if [[ "${DEPLOY_TARGET}" == "staging" ]]; then
-            scp ${SSH_OPTS} scripts/deploy/vultr-deploy-precisoutapronto-staging.sh \
-              "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
-            ssh ${SSH_OPTS} "${USER}@${HOST}" \
-              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/precisoutapronto-staging TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
-          else
-            scp ${SSH_OPTS} scripts/deploy/vultr-deploy-precisoutapronto.sh \
-              "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
-            ssh ${SSH_OPTS} "${USER}@${HOST}" \
-              "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/precisoutapronto TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
-          fi
+          scp ${SSH_OPTS} scripts/deploy/vultr-deploy-precisoutapronto.sh \
+            "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
+          ssh ${SSH_OPTS} "${USER}@${HOST}" \
+            "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/precisoutapronto TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
 
-  playwright-gate:
-    name: Playwright gate
+  verify:
+    name: Verificar producao publicada
     needs: deploy
-    if: inputs.target == 'staging'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    container:
-      image: mcr.microsoft.com/playwright:v1.62.0-noble
-    env:
-      E2E_BASE_URL: https://staging.precisoutapronto.com.br
-      E2E_CF_ACCESS_CLIENT_ID: ${{ secrets.E2E_CF_ACCESS_CLIENT_ID }}
-      E2E_CF_ACCESS_CLIENT_SECRET: ${{ secrets.E2E_CF_ACCESS_CLIENT_SECRET }}
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - name: Wait for staging
+      - name: Conferir resposta do site
         shell: bash
         run: |
           set -euo pipefail
-          for i in $(seq 1 30); do
-            code=$(curl -sS -o /dev/null -w '%{http_code}' "$E2E_BASE_URL/" || true)
-            echo "attempt $i -> HTTP $code"
-            if [[ "$code" =~ ^(200|301|302|307|308)$ ]]; then exit 0; fi
+          for i in $(seq 1 12); do
+            if curl --fail --silent --show-error --location --max-time 20 --output /dev/null https://precisoutapronto.com.br/; then
+              echo "Producao respondeu com sucesso."
+              exit 0
+            fi
             sleep 5
           done
+          echo "::error::O deploy terminou, mas o site nao respondeu com sucesso. Confira o servidor."
           exit 1
-      - run: npm run test:e2e:staging
-      - if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: |
-            playwright-report/
-            test-results/
-          if-no-files-found: ignore
-
-  browser-use-ux:
-    name: Browser Use UX report
-    needs: deploy
-    if: inputs.target == 'staging' && inputs.run_ux_report == true
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    continue-on-error: true
-    env:
-      E2E_BASE_URL: https://staging.precisoutapronto.com.br
-      E2E_LLM_API_KEY: ${{ secrets.E2E_LLM_API_KEY }}
-      E2E_UX_SOFT: '1'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: pip
-          cache-dependency-path: e2e-agent/requirements.txt
-      - run: |
-          python -m pip install --upgrade pip
-          pip install -r e2e-agent/requirements.txt
-          playwright install chromium --with-deps
-      - run: python e2e-agent/run_ux_agent.py
-      - if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ux-report
-          path: e2e-agent/artifacts/
-          if-no-files-found: ignore
-
-  mark-e2e-status:
-    name: Mark e2e/staging status
-    needs: playwright-gate
-    if: always() && inputs.target == 'staging' && needs.playwright-gate.result != 'cancelled' && needs.playwright-gate.result != 'skipped'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v7
-        with:
-          script: |
-            const gate = '${{ needs.playwright-gate.result }}';
-            const state = gate === 'success' ? 'success' : 'failure';
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state,
-              context: 'e2e/staging',
-              description: gate === 'success' ? 'Playwright staging gate passed' : 'Playwright staging gate failed',
-              target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-
-  promote-production:
-    name: Promote tested commit to production
-    needs: [playwright-gate, mark-e2e-status]
-    if: inputs.target == 'staging' && inputs.auto_promote == true && needs.playwright-gate.result == 'success' && needs.mark-e2e-status.result == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dispatch protected production deploy
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TESTED_SHA: ${{ github.sha }}
-        run: |
-          gh workflow run deploy-vultr.yml \
-            --repo "${GITHUB_REPOSITORY}" \
-            --ref "${GITHUB_REF_NAME}" \
-            -f target=production \
-            -f skip_e2e_gate=false \
-            -f auto_promote=false \
-            -f expected_sha="${TESTED_SHA}"

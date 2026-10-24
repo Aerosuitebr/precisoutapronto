@@ -1,5 +1,8 @@
 'use client';
 
+import { hasAnalyticsConsent } from '@/lib/analytics-consent';
+import { rememberCampaign } from '@/lib/growth/campaign-attribution';
+
 type EventParams = Record<string, string | number | boolean | undefined>;
 
 const ATTRIBUTION_KEY = 'precisoutapronto_content_attribution';
@@ -20,6 +23,11 @@ declare global {
 /** Envia apenas eventos sem dados pessoais. */
 export function trackEvent(name: string, params: EventParams = {}) {
   if (typeof window === 'undefined') return;
+  let campaign = {};
+  try {
+    if (!hasAnalyticsConsent(window.localStorage)) return;
+    campaign = rememberCampaign(window.sessionStorage, window.location.search);
+  } catch { return; }
   let attribution: ContentAttribution = {};
   let landingPath = '';
   try {
@@ -33,7 +41,8 @@ export function trackEvent(name: string, params: EventParams = {}) {
       ...(attribution.guideSource ? { guide_source: attribution.guideSource } : {}),
       ...(attribution.contentCluster ? { content_cluster: attribution.contentCluster } : {}),
       ...(landingPath ? { landing_path: landingPath } : {}),
-      ...params
+      ...params,
+      ...campaign
     }).filter(([, value]) =>
       ['string', 'number', 'boolean'].includes(typeof value)
     )

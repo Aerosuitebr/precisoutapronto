@@ -27,6 +27,7 @@ const SEO_LINKS = [
   { href: '/metodologia-calculadoras', label: 'Metodologia' },
   { href: '/imprensa', label: 'Imprensa' },
   { href: '/conteudos-para-compartilhar', label: 'Conteúdos para compartilhar' },
+  { href: '/campanhas/eletricistas-30-dias', label: 'Campanha para eletricistas' },
   { href: '/parcerias/criadores', label: 'Parcerias para criadores' },
   { href: '/para/mei', label: 'Para MEI' },
   { href: '/contato', label: 'Contato' }

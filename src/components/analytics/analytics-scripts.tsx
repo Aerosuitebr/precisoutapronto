@@ -3,6 +3,7 @@
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { rememberCampaign } from '@/lib/growth/campaign-attribution';
 import { ANALYTICS_CONSENT_KEY } from '@/lib/analytics-consent';
 
 type Consent = 'accepted' | 'rejected' | null;
@@ -23,6 +24,11 @@ export function AnalyticsScripts() {
     window.localStorage.setItem(ANALYTICS_CONSENT_KEY, next);
     setConsent(next);
   }
+
+  useEffect(() => {
+    if (consent !== 'accepted') return;
+    try { rememberCampaign(window.sessionStorage, window.location.search); } catch { /* Optional metrics. */ }
+  }, [consent, pathname]);
 
   const enabled = consent === 'accepted';
   const locale = pathname === '/en' || pathname.startsWith('/en/')

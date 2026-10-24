@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-  DeployMaster: staging -> resumo -> producao automatica (GitHub Actions Vultr).
+  DeployMaster: deploy manual direto em producao (GitHub Actions Vultr).
 
 .DESCRIPTION
-  Dispara o workflow deploy-vultr.yml em staging, aguarda E2E,
-  mostra informacoes relevantes e promove automaticamente para producao.
+  Sincroniza a branch, dispara deploy-vultr.yml em production,
+  aguarda verificacoes e deploy e confere a resposta HTTP de producao.
 
 .PARAMETER Branch
   Branch remota a publicar. Padrao: branch atual.
@@ -16,11 +16,8 @@
 .PARAMETER SkipCommit
   Nao faz commit automatico da working tree (so avisa e segue com o tip remoto).
 
-.PARAMETER StagingOnly
-  Para apos staging (nao promove producao).
-
 .PARAMETER DryRun
-  So prepara working tree / push e mostra o tip; nao dispara workflows.
+  Mostra branch, commit e alteracoes locais, sem commit, push ou workflow.
 
 .EXAMPLE
   .\DeployMaster.bat
@@ -31,14 +28,12 @@ param(
   [string]$Branch = '',
   [switch]$SkipPush,
   [switch]$SkipCommit,
-  [switch]$StagingOnly,
   [switch]$DryRun
 )
 
 $ErrorActionPreference = 'Stop'
 $WorkflowName = 'deploy-vultr.yml'
 $ProdUrl = 'https://precisoutapronto.com.br/'
-$StagingUrl = 'https://staging.precisoutapronto.com.br/'
 $RepoRoot = $PSScriptRoot
 $script:RepoSlug = $null
 
@@ -61,7 +56,7 @@ try {
 function Write-Banner {
   Write-Host ''
   Write-Host '============================================================' -ForegroundColor Cyan
-  Write-Host '  DeployMaster - Precisou, Tá Pronto (staging -> producao)' -ForegroundColor Cyan
+  Write-Host '  DeployMaster - Precisou, Tá Pronto (direto em producao)' -ForegroundColor Cyan
   Write-Host '============================================================' -ForegroundColor Cyan
   Write-Host ''
 }
@@ -97,6 +92,7 @@ function Complete-ProgressLine {
 
 function Assert-Command([string]$Name) {
   if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
+    if ($Name -eq 'gh') { throw 'GitHub CLI (gh) ausente no PATH. Instale em https://cli.github.com/, reabra o terminal e execute gh auth login.' }
     throw "Comando obrigatorio ausente: $Name"
   }
 }
@@ -164,6 +160,7 @@ function Test-IgnoredDeployPath {
   if ($name -eq '-w') { return $true }
   if ($p -eq '.env' -or $p -like '.env.*') { return $true }
   if ($p -like 'tmp/*' -or $p -eq 'tmp') { return $true }
+  if ($p -like 'output/*' -or $p -eq 'output') { return $true }
   if ($p -like 'outputs/*' -or $p -eq 'outputs') { return $true }
   if ($p -like 'node_modules/*' -or $p -eq 'node_modules') { return $true }
   if ($p -like '.next/*' -or $p -eq '.next') { return $true }
@@ -355,6 +352,7 @@ function Get-LatestRunId {
   while ((Get-Date) -lt $deadline) {
     $runs = Invoke-GhJson @(
       'run', 'list',
+      '--repo', $script:RepoSlug,
       '--workflow', $WorkflowName,
       '--branch', $BranchName,
       '--limit', '8',
@@ -363,6 +361,7 @@ function Get-LatestRunId {
     $match = $runs |
       Where-Object {
         $_.headSha -eq $Sha -and
+        $_.event -eq 'workflow_dispatch' -and
         ([datetime]$_.createdAt).ToUniversalTime() -ge $NotBefore.ToUniversalTime().AddSeconds(-15)
       } |
       Sort-Object { [datetime]$_.createdAt } -Descending |
@@ -376,7 +375,7 @@ function Get-LatestRunId {
 function Get-RunSnapshot {
   param([Parameter(Mandatory)][long]$RunId)
   return Invoke-GhJson @(
-    'run', 'view', "$RunId",
+    'run', 'view', "$RunId", '--repo', $script:RepoSlug,
     '--json', 'status,conclusion,url,headSha,headBranch,displayTitle,createdAt,updatedAt,jobs,event'
   )
 }
@@ -466,53 +465,6 @@ function Get-CanonicalFromUrl {
   return $null
 }
 
-function Show-StagingReport {
-  param(
-    [Parameter(Mandatory)]$Snap,
-    [Parameter(Mandatory)][string]$Sha,
-    [Parameter(Mandatory)][string]$BranchName,
-    [Parameter(Mandatory)][string]$CommitSubject
-  )
-
-  $e2e = $null
-  try {
-    $statuses = Invoke-GhJson @(
-      'api',
-      ("repos/{0}/commits/{1}/statuses" -f $script:RepoSlug, $Sha)
-    )
-    $e2e = @($statuses) |
-      Where-Object { $_.context -eq 'e2e/staging' } |
-      Sort-Object { [datetime]$_.created_at } -Descending |
-      Select-Object -First 1
-  } catch {
-    $e2e = $null
-  }
-
-  $health = Test-HttpOk -Url $StagingUrl
-  $jobs = @($Snap.jobs) | ForEach-Object {
-    '{0}={1}' -f $_.name, $(if ($_.conclusion) { $_.conclusion } else { $_.status })
-  }
-
-  Write-Host ''
-  Write-Host '------------------------------------------------------------' -ForegroundColor Green
-  Write-Host '  STAGING OK - resumo antes da producao' -ForegroundColor Green
-  Write-Host '------------------------------------------------------------' -ForegroundColor Green
-  Write-Host ("  Branch     : {0}" -f $BranchName)
-  Write-Host ("  SHA        : {0}" -f $Sha)
-  Write-Host ("  Commit     : {0}" -f $CommitSubject)
-  Write-Host ("  Run        : {0}" -f $Snap.url)
-  Write-Host ("  Conclusao  : {0}" -f $Snap.conclusion)
-  Write-Host ("  Jobs       : {0}" -f ($jobs -join ' | '))
-  if ($e2e) {
-    Write-Host ("  E2E status : {0} ({1})" -f $e2e.state, $e2e.created_at)
-  } else {
-    Write-Host '  E2E status : (nao lido via API; gate do workflow ja passou)'
-  }
-  Write-Host ("  Staging URL: {0} -> HTTP {1}" -f $StagingUrl, $(if ($health.StatusCode) { $health.StatusCode } else { 'n/d' }))
-  Write-Host '------------------------------------------------------------' -ForegroundColor Green
-  Write-Host ''
-}
-
 function Get-GhAuthStatusText {
   $prev = $ErrorActionPreference
   $ErrorActionPreference = 'Continue'
@@ -578,106 +530,35 @@ function Select-GhAccountForRepo {
   Write-Host ("  gh: usando a conta {0} neste deploy." -f $owner) -ForegroundColor DarkGray
 }
 
+
 # --- main --------------------------------------------------------------------
-
-Write-Banner
-Show-ProgressBar -Percent 0 -Label 'preflight'
-
-Assert-Command 'git'
-Assert-Command 'gh'
-
-$ghAuth = Get-GhAuthStatusText
-if ($ghAuth.ExitCode -ne 0) {
-  Complete-ProgressLine
-  throw "gh nao autenticado. Rode: gh auth login"
-}
-
-$script:RepoSlug = Resolve-RepoSlug
-if ([string]::IsNullOrWhiteSpace($script:RepoSlug)) {
-  Complete-ProgressLine
-  throw 'Nao foi possivel resolver o repositorio. Configure GH_REPO=owner/repo ou o remote origin do GitHub.'
-}
-
 try {
+  Write-Banner
+  Show-ProgressBar -Percent 0 -Label 'preflight'
+  Assert-Command 'git'
+  $currentBranch = (Invoke-Git -GitArgs @('branch', '--show-current')).Output.Trim()
+  if ([string]::IsNullOrWhiteSpace($currentBranch)) { throw 'Checkout sem branch. Selecione uma branch antes do deploy.' }
+  if ($Branch -and $Branch -ne $currentBranch) { throw "A branch solicitada ($Branch) difere da branch atual ($currentBranch). Troque de branch antes de publicar." }
+  $Branch = $currentBranch
+  if ($DryRun) {
+    Complete-ProgressLine
+    Write-Step 'DryRun: nenhuma alteracao, commit, push ou deploy sera executado.' 'Yellow'
+    Write-Host ("  Branch: {0}" -f $Branch)
+    Write-Host ("  Commit: {0}" -f (Invoke-Git -GitArgs @('log', '-1', '--oneline')).Output)
+    Write-Host ("  Destino: production - {0}" -f $ProdUrl)
+    foreach ($entry in @(Get-WorkingTreeEntries)) {
+      $tag = if ($entry.Skip) { 'ignore' } else { 'commit' }
+      Write-Host ("  [{0}] {1}" -f $tag, $entry.Path)
+    }
+    exit 0
+  }
+  Assert-Command 'gh'
+  $ghAuth = Get-GhAuthStatusText
+  if ($ghAuth.ExitCode -ne 0) { throw 'gh nao autenticado. Rode: gh auth login' }
+  $script:RepoSlug = Resolve-RepoSlug
+  if ([string]::IsNullOrWhiteSpace($script:RepoSlug)) { throw 'Configure o remote origin do GitHub ou GH_REPO=owner/repo.' }
   Select-GhAccountForRepo -RepoSlug $script:RepoSlug
-} catch {
-  Complete-ProgressLine
-  throw
-}
-
-function Get-PromotedProductionRunId {
-  param(
-    [Parameter(Mandatory)][string]$BranchName,
-    [Parameter(Mandatory)][string]$Sha,
-    [Parameter(Mandatory)][long]$StagingRunId,
-    [Parameter(Mandatory)][datetime]$NotBefore
-  )
-  $deadline = (Get-Date).AddMinutes(5)
-  while ((Get-Date) -lt $deadline) {
-    $runs = Invoke-GhJson @(
-      'run', 'list',
-      '--workflow', $WorkflowName,
-      '--branch', $BranchName,
-      '--limit', '12',
-      '--json', 'databaseId,status,conclusion,headSha,createdAt,url,event'
-    )
-    $match = @($runs) |
-      Where-Object {
-        [long]$_.databaseId -ne $StagingRunId -and
-        $_.headSha -eq $Sha -and
-        $_.event -eq 'workflow_dispatch' -and
-        ([datetime]$_.createdAt).ToUniversalTime() -ge $NotBefore.ToUniversalTime().AddSeconds(-5)
-      } |
-      Sort-Object { [datetime]$_.createdAt } -Descending |
-      Select-Object -First 1
-    if ($match) { return [long]$match.databaseId }
-    Show-ProgressBar -Percent 66 -Label 'aguardando promocao automatica'
-    Start-Sleep -Seconds 3
-  }
-  Complete-ProgressLine
-  throw "O staging terminou, mas o workflow nao criou a promocao automatica para $Sha."
-}
-
-function Get-ReusableStagingRunId {
-  param(
-    [Parameter(Mandatory)][string]$BranchName,
-    [Parameter(Mandatory)][string]$Sha
-  )
-  $runs = Invoke-GhJson @(
-    'run', 'list',
-    '--workflow', $WorkflowName,
-    '--branch', $BranchName,
-    '--limit', '8',
-    '--json', 'databaseId,status,conclusion,headSha,createdAt,event'
-  )
-  $candidates = @($runs) |
-    Where-Object {
-      $_.headSha -eq $Sha -and
-      $_.event -eq 'workflow_dispatch' -and
-      ($_.status -ne 'completed' -or $_.conclusion -eq 'success') -and
-      ([datetime]$_.createdAt).ToUniversalTime() -ge (Get-Date).ToUniversalTime().AddHours(-6)
-    } |
-    Sort-Object { [datetime]$_.createdAt } -Descending
-
-  foreach ($candidate in $candidates) {
-    $snap = Get-RunSnapshot -RunId ([long]$candidate.databaseId)
-    $stagingMarker = @($snap.jobs) |
-      ForEach-Object { @($_.steps) } |
-      Where-Object { $_.name -eq 'Skip check on staging' -and $_.conclusion -eq 'success' } |
-      Select-Object -First 1
-    if ($stagingMarker) { return [long]$candidate.databaseId }
-  }
-  return $null
-}
-Write-Host ("  Repositorio: {0}" -f $script:RepoSlug) -ForegroundColor DarkGray
-
-if (-not $Branch) {
-  $Branch = (git branch --show-current).Trim()
-}
-if ([string]::IsNullOrWhiteSpace($Branch)) {
-  Complete-ProgressLine
-  throw 'Nao foi possivel detectar a branch atual.'
-}
+  Write-Host ("  Repositorio: {0}" -f $script:RepoSlug) -ForegroundColor DarkGray
 
 Show-ProgressBar -Percent 3 -Label ("branch {0}" -f $Branch)
 
@@ -744,90 +625,24 @@ $short = $sha.Substring(0, 7)
 Show-ProgressBar -Percent 10 -Label ("tip {0}" -f $short)
 Write-Step ("Alvo: {0} @ {1} - {2}" -f $Branch, $short, $subject) 'Cyan'
 
-if ($DryRun) {
-  Show-ProgressBar -Percent 100 -Label 'dry-run concluido'
-  Complete-ProgressLine
-  Write-Step 'DryRun: working tree/push ok. Workflows nao foram disparados.' 'Yellow'
-  exit 0
-}
-
-# --- STAGING -----------------------------------------------------------------
-Write-Step 'Disparando deploy de STAGING...' 'Cyan'
-$stagingRunId = Get-ReusableStagingRunId -BranchName $Branch -Sha $sha
-if ($stagingRunId) {
-  Write-Host ("  Retomando staging existente: {0}" -f $stagingRunId) -ForegroundColor Yellow
-} else {
-  $stagingNotBefore = (Get-Date).ToUniversalTime()
-  try {
-    $autoPromote = if ($StagingOnly) { 'false' } else { 'true' }
-    [void](Invoke-GhJson -GhArgs @(
-      'workflow', 'run', $WorkflowName,
-      '--ref', $Branch,
-      '-f', 'target=staging',
-      '-f', "auto_promote=$autoPromote"
-    ) -NoJson)
-  } catch {
-    Complete-ProgressLine
-    throw ("Falha ao disparar workflow de staging apos retentativas: {0}" -f $_.Exception.Message)
-  }
-
-  Show-ProgressBar -Percent 12 -Label 'localizando run de staging'
-  $stagingRunId = Get-LatestRunId -BranchName $Branch -Sha $sha -NotBefore $stagingNotBefore
-}
-Write-Host ("  Staging run: https://github.com/{0}/actions/runs/{1}" -f $script:RepoSlug, $stagingRunId)
-
-$stagingSnap = Wait-WorkflowRun `
-  -RunId $stagingRunId `
-  -ProgressStart 15 `
-  -ProgressEnd 58 `
-  -PhaseLabel 'STAGING' `
-  -TimeoutMinutes 55
-
-if ($stagingSnap.conclusion -ne 'success') {
-  Show-ProgressBar -Percent 58 -Label 'staging falhou'
-  Complete-ProgressLine
-  Write-Host ''
-  Write-Host ("STAGING FALHOU: {0}" -f $stagingSnap.conclusion) -ForegroundColor Red
-  Write-Host ("URL: {0}" -f $stagingSnap.url) -ForegroundColor Red
-  Write-Host 'Producao NAO sera disparada.' -ForegroundColor Red
-  exit 1
-}
-
-Show-ProgressBar -Percent 60 -Label 'montando resumo de staging'
-Show-StagingReport -Snap $stagingSnap -Sha $sha -BranchName $Branch -CommitSubject $subject
-
-if ($StagingOnly) {
-  Show-ProgressBar -Percent 100 -Label 'staging-only concluido'
-  Complete-ProgressLine
-  Write-Step 'StagingOnly: encerrando sem producao.' 'Yellow'
-  exit 0
-}
 
 # --- PRODUCTION --------------------------------------------------------------
-Write-Step 'Staging OK. Aguardando promocao protegida para PRODUCAO...' 'Cyan'
-Show-ProgressBar -Percent 65 -Label 'localizando promocao automatica'
-$stagingCreatedAt = ([datetime]$stagingSnap.createdAt).ToUniversalTime()
-$prodRunId = Get-PromotedProductionRunId `
-  -BranchName $Branch `
-  -Sha $sha `
-  -StagingRunId $stagingRunId `
-  -NotBefore $stagingCreatedAt
+Write-Step 'Disparando deploy direto em PRODUCAO...' 'Cyan'
+$prodNotBefore = (Get-Date).ToUniversalTime()
+[void](Invoke-GhJson -GhArgs @(
+  'workflow', 'run', $WorkflowName,
+  '--repo', $script:RepoSlug,
+  '--ref', $Branch,
+  '-f', 'target=production',
+  '-f', "expected_sha=$sha"
+) -NoJson)
+Show-ProgressBar -Percent 12 -Label 'localizando run de producao'
+$prodRunId = Get-LatestRunId -BranchName $Branch -Sha $sha -NotBefore $prodNotBefore
 Write-Host ("  Producao run: https://github.com/{0}/actions/runs/{1}" -f $script:RepoSlug, $prodRunId)
-
-$prodSnap = Wait-WorkflowRun `
-  -RunId $prodRunId `
-  -ProgressStart 70 `
-  -ProgressEnd 92 `
-  -PhaseLabel 'PRODUCAO' `
-  -TimeoutMinutes 45
-
+$prodSnap = Wait-WorkflowRun -RunId $prodRunId -ProgressStart 15 -ProgressEnd 92 -PhaseLabel 'PRODUCAO' -TimeoutMinutes 55
 if ($prodSnap.conclusion -ne 'success') {
-  Show-ProgressBar -Percent 92 -Label 'producao falhou'
   Complete-ProgressLine
-  Write-Host ''
-  Write-Host ("PRODUCAO FALHOU: {0}" -f $prodSnap.conclusion) -ForegroundColor Red
-  Write-Host ("URL: {0}" -f $prodSnap.url) -ForegroundColor Red
-  exit 1
+  throw ("Deploy de producao falhou ({0}). Logs: {1}" -f $prodSnap.conclusion, $prodSnap.url)
 }
 
 # --- VERIFY ------------------------------------------------------------------
@@ -845,7 +660,6 @@ Write-Host '============================================================' -Foreg
 Write-Host ("  Branch       : {0}" -f $Branch)
 Write-Host ("  SHA          : {0}" -f $sha)
 Write-Host ("  Commit       : {0}" -f $subject)
-Write-Host ("  Staging run  : {0}" -f $stagingSnap.url)
 Write-Host ("  Producao run : {0}" -f $prodSnap.url)
 Write-Host ("  Producao URL : {0} -> HTTP {1}" -f $ProdUrl, $(if ($prodHealth.StatusCode) { $prodHealth.StatusCode } else { 'n/d' }))
 if ($canon) {
@@ -860,3 +674,9 @@ if (-not $prodHealth.Ok) {
 }
 
 exit 0
+
+} catch {
+  Complete-ProgressLine
+  Write-Host ("ERRO: {0}" -f $_.Exception.Message) -ForegroundColor Red
+  exit 1
+}

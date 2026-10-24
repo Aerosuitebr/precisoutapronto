@@ -189,6 +189,7 @@ export function ApprovedQuoteNextActions({ className, sourceDocumentId, sourceOc
 export function ViralInviteShareRow({ className, toolKey = 'orcamento', occupation }: { className?: string; toolKey?: string; occupation?: string }) {
   const [referralWhatsappUrl, setReferralWhatsappUrl] = useState('');
   const [inviteUrl, setInviteUrl] = useState('');
+  const [shareStatus, setShareStatus] = useState('');
   const [profession, setProfession] = useState(PEER_PROFESSIONS.find((p) => p.slug === occupation || p.label.toLowerCase() === occupation?.toLowerCase())?.slug || '');
   const viewed = useRef(false);
 
@@ -204,6 +205,24 @@ export function ViralInviteShareRow({ className, toolKey = 'orcamento', occupati
 
   const peerLink = peerInviteUrl(getViralBaseUrl(), profession, inviteUrl);
   const peerText = `Este modelo ajuda a separar serviços e valores e enviar um orçamento pelo WhatsApp. Experimente com seus próprios preços: ${peerLink}`;
+  async function shareInvite(native: boolean) {
+    const url = toolKey === 'orcamento' ? peerLink : inviteUrl || getViralBaseUrl() + viralOrcamentoPublicPath();
+    const useNativeShare = native && typeof navigator.share === 'function';
+    try {
+      if (useNativeShare) {
+        await navigator.share({ title: 'Precisou, Tá Pronto', text: 'Crie um orçamento profissional para enviar pelo WhatsApp.', url });
+        setShareStatus('Convite compartilhado.');
+      } else {
+        await navigator.clipboard.writeText(url);
+        setShareStatus('Link do convite copiado.');
+      }
+      trackEvent('referral_invite_started', { source_occupation: profession || 'geral', campaign: 'peer_model_v1', channel: useNativeShare ? 'native_share' : 'copied_link', tool_name: toolKey });
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') return;
+      setShareStatus('Não foi possível compartilhar. Use o botão do WhatsApp.');
+    }
+  }
+
   const whatsappUrl = toolKey === 'orcamento' ? `https://wa.me/?text=${encodeURIComponent(peerText)}` : referralWhatsappUrl || buildViralInviteWhatsAppUrl();
 
   return (
@@ -219,6 +238,8 @@ export function ViralInviteShareRow({ className, toolKey = 'orcamento', occupati
           Compartilhar no WhatsApp
         </a>
       </Button>
+      <div className="mt-2 flex flex-wrap gap-2"><Button type="button" variant="outline" className="min-h-11 flex-1 bg-white" onClick={() => void shareInvite(false)}>Copiar convite</Button><Button type="button" variant="outline" className="min-h-11 flex-1 bg-white" onClick={() => void shareInvite(true)}>Mais opções de envio</Button></div>
+      <p role="status" aria-live="polite" className="mt-2 text-xs text-emerald-800">{shareStatus}</p>
     </div>
   );
 }
