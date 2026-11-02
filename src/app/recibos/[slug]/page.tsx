@@ -36,6 +36,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
       { '@type': 'ListItem', position: 3, name: page.title, item: `${base}/recibos/${page.slug}` }
     ] }
   ] };
+  const receiptExample = <section id="exemplo-recibo" className="mt-12 scroll-mt-24 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50"><div className="border-b border-amber-200 px-6 py-4"><h2 className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Modelo final preenchido</h2><p className="mt-1 text-xs text-amber-900/70">Exemplo fictício para demonstrar os campos; revise o alcance da quitação antes de usar.</p></div><div className="bg-white p-6 sm:p-8"><p className="text-center text-xl font-black uppercase tracking-[0.18em] text-slate-950">Recibo</p>{page.example.map((line) => <p key={line} className="mt-3 border-b border-dashed border-slate-200 pb-3 text-sm leading-6 text-slate-700">{line}</p>)}<div className="mt-8 border-t border-slate-400 pt-2 text-center text-xs text-slate-500">Assinatura de quem recebeu</div></div></section>;
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <SiteHeader />
@@ -64,6 +65,10 @@ export default async function ReceiptClusterRoute({ params }: Props) {
             </div>
             <p className="mt-4 text-xs leading-6 text-slate-600">Exemplo: serviço de R$ 490, entrada de R$ 150 e saldo de R$ 340. Você informa os valores e confirma o recebimento no banco. O recibo não é um comprovante bancário.</p>
           </section> : null}
+          {page.slug === 'recibo-pagamento-pix' ? <>
+            {receiptExample}
+            <LandingConversionLink href="/gerador-de-recibo?tipo=entrada#ferramenta" landingPath={`/recibos/${page.slug}`} placement="inline_primary" className="mb-10 mt-5 inline-flex rounded-xl bg-slate-950 px-6 py-3 font-bold text-white">Criar meu recibo de entrada</LandingConversionLink>
+          </> : null}
           {page.comparison ? (
             <section className="mb-12">
               <h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">{page.comparison.title}</h2>
@@ -106,7 +111,7 @@ export default async function ReceiptClusterRoute({ params }: Props) {
               <p className="mt-3 leading-7 text-slate-700">Veja o <Link href="/guias/como-registrar-sinal-e-saldo-pix" className="font-semibold text-emerald-800 underline underline-offset-4">passo a passo para registrar sinal e saldo recebidos por Pix</Link>, com dois recibos demonstrativos ligados ao mesmo orçamento.</p>
             </section>
           ) : null}
-          <section id="exemplo-recibo" className="mt-12 scroll-mt-24 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50"><div className="border-b border-amber-200 px-6 py-4"><h2 className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Modelo final preenchido</h2><p className="mt-1 text-xs text-amber-900/70">Exemplo fictício para demonstrar os campos; revise o alcance da quitação antes de usar.</p></div><div className="bg-white p-6 sm:p-8"><p className="text-center text-xl font-black uppercase tracking-[0.18em] text-slate-950">Recibo</p>{page.example.map((line) => <p key={line} className="mt-3 border-b border-dashed border-slate-200 pb-3 text-sm leading-6 text-slate-700">{line}</p>)}<div className="mt-8 border-t border-slate-400 pt-2 text-center text-xs text-slate-500">Assinatura de quem recebeu</div></div></section>
+          {page.slug !== 'recibo-pagamento-pix' ? receiptExample : null}
           <section className="mt-12"><h2 className="precisoutapronto-display text-2xl font-bold text-slate-950">Perguntas frequentes</h2><div className="mt-5 divide-y divide-slate-200 rounded-2xl border border-slate-200">{page.faqs.map((faq) => <div key={faq.question} className="p-5"><h3 className="font-bold text-slate-950">{faq.question}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{faq.answer}</p></div>)}</div></section>
           {page.slug === 'recibo-pagamento-pix' ? (
             <section className="mt-12 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">

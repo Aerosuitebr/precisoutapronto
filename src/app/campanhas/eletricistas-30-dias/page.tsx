@@ -1,3 +1,4 @@
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 import { ElectricianCampaignKit } from '@/components/marketing/electrician-campaign-kit';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -28,7 +29,7 @@ export default function ElectricianCampaignPage() {
         <h1 className="precisoutapronto-display mt-5 max-w-4xl text-4xl font-black leading-tight sm:text-6xl">30 dias para parar de mandar preço solto no WhatsApp.</h1>
         <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-200">Transforme serviço, material e prazo em um orçamento que o cliente confere, aprova e paga pelo celular. Grátis para começar.</p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href={campaignHref} className="inline-flex min-h-14 items-center gap-2 rounded-2xl bg-amber-400 px-6 font-black text-slate-950 hover:bg-amber-300">Criar meu primeiro orçamento <ArrowRight className="h-5 w-5" /></Link>
+          <LandingConversionLink landingPath="/campanhas/eletricistas-30-dias" placement="inline_primary" href={campaignHref} className="inline-flex min-h-14 items-center gap-2 rounded-2xl bg-amber-400 px-6 font-black text-slate-950 hover:bg-amber-300">Criar meu primeiro orçamento <ArrowRight className="h-5 w-5" /></LandingConversionLink>
           <Link href="/parcerias/criadores#kit" className="inline-flex min-h-14 items-center gap-2 rounded-2xl border border-white/30 px-6 font-bold hover:bg-white/10"><MessageCircle className="h-5 w-5" /> Sou criador de conteúdo</Link>
         </div>
       </div>
@@ -38,7 +39,7 @@ export default function ElectricianCampaignPage() {
       <h2 className="precisoutapronto-display mt-3 text-3xl font-black">Um resultado útil por semana.</h2>
       <div className="mt-7 grid gap-4 md:grid-cols-2">{weeks.map((week) => <article key={week.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><h3 className="text-lg font-black">{week.title}</h3><ul className="mt-4 space-y-3">{week.tasks.map(task => <li key={task} className="flex gap-2 text-sm leading-6 text-slate-600"><BadgeCheck className="mt-1 h-4 w-4 shrink-0 text-emerald-600" />{task}</li>)}</ul></article>)}</div>
     </section>
-    <section className="border-y border-slate-200 bg-white"><div className="mx-auto max-w-4xl px-4 py-14 text-center sm:px-6"><p className="text-sm font-bold text-emerald-700">Sem cadastro no primeiro teste</p><h2 className="precisoutapronto-display mt-2 text-3xl font-black">O conteúdo é o seu trabalho aprovado.</h2><p className="mx-auto mt-4 max-w-2xl leading-7 text-slate-600">Baixe o card vertical automático, publique no Status ou Stories sem expor o cliente e leve quem assistir direto ao modelo para eletricistas.</p><Link href={campaignHref} className="mt-7 inline-flex items-center gap-2 font-black text-emerald-700">Começar agora <ArrowRight className="h-4 w-4" /></Link></div></section>
+    <section className="border-y border-slate-200 bg-white"><div className="mx-auto max-w-4xl px-4 py-14 text-center sm:px-6"><p className="text-sm font-bold text-emerald-700">Sem cadastro no primeiro teste</p><h2 className="precisoutapronto-display mt-2 text-3xl font-black">O conteúdo é o seu trabalho aprovado.</h2><p className="mx-auto mt-4 max-w-2xl leading-7 text-slate-600">Baixe o card vertical automático, publique no Status ou Stories sem expor o cliente e leve quem assistir direto ao modelo para eletricistas.</p><LandingConversionLink landingPath="/campanhas/eletricistas-30-dias" placement="inline_primary" href={campaignHref} className="mt-7 inline-flex items-center gap-2 font-black text-emerald-700">Começar agora <ArrowRight className="h-4 w-4" /></LandingConversionLink></div></section>
     <ElectricianCampaignKit />
   </main><SiteFooter /></>;
 }

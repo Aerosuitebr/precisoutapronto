@@ -33,7 +33,7 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],
   ['/orcamento-para/fotografo', new Date('2026-08-31T12:00:00.000Z')],
   ['/orcamento-para/manutencao-residencial', new Date('2026-08-31T12:00:00.000Z')],
-  ['/recibos/recibo-pagamento-pix', new Date('2026-10-07T12:00:00.000Z')],
+  ['/recibos/recibo-pagamento-pix', new Date('2026-11-01T12:00:00.000Z')],
   ['/imprensa', new Date('2026-10-07T12:00:00.000Z')],
   ['/sobre', new Date('2026-10-07T12:00:00.000Z')],
   ['/precisou-ta-pronto', new Date('2026-09-04T12:00:00.000Z')],
@@ -49,7 +49,7 @@ const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/guias', new Date('2026-09-09T12:00:00.000Z')],
   ['/biblioteca', new Date('2026-09-09T12:00:00.000Z')],
   ['/recibos', new Date('2026-09-28T12:00:00.000Z')],
-  ['/modelos-de-orcamento', new Date('2026-08-28T12:00:00.000Z')],
+  ['/modelos-de-orcamento', new Date('2026-11-01T12:00:00.000Z')],
   ['/pesquisa/orcamentos-prestadores', new Date('2026-09-02T12:00:00.000Z')]
 ]);
 
