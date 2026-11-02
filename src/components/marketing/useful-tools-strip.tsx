@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Calculator, FileText, QrCode, Receipt } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
 
 const usefulTools = [
@@ -12,8 +13,9 @@ const usefulTools = [
   { href: '/calculadora-de-decimo-terceiro', name: '13º salário', description: 'Veja parcelas e valor proporcional.', icon: Calculator, tone: 'bg-blue-50 text-blue-700' }
 ] as const;
 
-export function UsefulToolsStrip({ currentPath, className, title = 'Mais ferramentas para resolver de verdade' }: { currentPath?: string; className?: string; title?: string }) {
-  const tools = usefulTools.filter((tool) => tool.href !== currentPath).slice(0, 6);
+export function UsefulToolsStrip({ currentPath, className, homeDiscovery = false, title = 'Mais ferramentas para resolver de verdade' }: { currentPath?: string; className?: string; title?: string; homeDiscovery?: boolean }) {
+  const orderedTools = homeDiscovery ? [usefulTools[2], usefulTools[0], usefulTools[4], usefulTools[3], usefulTools[5], usefulTools[1]] : usefulTools;
+  const tools = orderedTools.filter((tool) => tool.href !== currentPath).slice(0, 6);
   return (
     <section className={cn('border-y border-slate-200 bg-slate-50', className)} aria-labelledby="ferramentas-uteis-title">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
@@ -21,15 +23,17 @@ export function UsefulToolsStrip({ currentPath, className, title = 'Mais ferrame
           <div><p className="text-xs font-black uppercase tracking-[.16em] text-[#155eef]">Continue resolvendo</p><h2 id="ferramentas-uteis-title" className="precisoutapronto-display mt-3 text-3xl font-black tracking-[-.04em] text-slate-950 sm:text-4xl">{title}</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">Ferramentas gratuitas para organizar, cobrar, documentar e apresentar melhor o seu trabalho.</p></div>
           <Link href="/guias" className="inline-flex items-center gap-2 text-sm font-black text-[#155eef]">Ver guias dos temas <ArrowRight className="h-4 w-4" /></Link>
         </div>
+        <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {tools.map((tool) => <li key={tool.href}><LandingConversionLink landingPath={currentPath ?? "/"} placement="inline_primary" href={tool.href} className="group flex h-full items-start gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg"><span className={cn('grid h-11 w-11 shrink-0 place-items-center rounded-xl', tool.tone)}><tool.icon className="h-5 w-5" /></span><span className="min-w-0 flex-1"><span className="block font-black text-slate-900">{tool.name}</span><span className="mt-1 block text-sm leading-5 text-slate-600">{tool.description}</span></span><ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-[#155eef]" /></LandingConversionLink></li>)}
+        </ul>
+        {homeDiscovery ? <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5"><summary className="cursor-pointer py-2 font-bold text-blue-700">Ver catálogo completo de utilidades</summary><p className="mt-3 text-sm leading-6 text-slate-600">Explore também documentos, imagens, PDF e ferramentas de estudo.</p><Link href="/recursos" className="mt-4 inline-flex min-h-11 items-center gap-2 font-bold text-blue-700">Abrir catálogo completo <ArrowRight className="h-4 w-4" /></Link><Link href="/gerador-de-link-whatsapp#ferramenta" className="mt-3 block py-2 font-bold text-blue-700">Criar link de WhatsApp</Link></details> : null}
         <div className="mt-8 rounded-[1.75rem] border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-5 shadow-sm sm:p-7">
           <p className="text-xs font-black uppercase tracking-[.16em] text-[#155eef]">Encontre pelo que você precisa fazer</p>
-          <h3 className="precisoutapronto-display mt-2 text-2xl font-black tracking-[-.035em] text-slate-950 sm:text-3xl">Será que encontro essa ferramenta aqui?</h3>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">Escreva sua tarefa com suas palavras. Nós mostramos as ferramentas mais relacionadas e levamos você direto à melhor opção.</p>
+          <h3 className="precisoutapronto-display mt-2 text-2xl font-black tracking-[-.035em] text-slate-950 sm:text-3xl">Digite o que você precisa resolver agora</h3>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">Digite o que você precisa resolver agora e nós encontramos a ferramenta ideal.</p>
           <div className="mt-5"><HomeQuickSearch /></div>
         </div>
-        <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {tools.map((tool) => <li key={tool.href}><Link href={tool.href} className="group flex h-full items-start gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg"><span className={cn('grid h-11 w-11 shrink-0 place-items-center rounded-xl', tool.tone)}><tool.icon className="h-5 w-5" /></span><span className="min-w-0 flex-1"><span className="block font-black text-slate-900">{tool.name}</span><span className="mt-1 block text-sm leading-5 text-slate-600">{tool.description}</span></span><ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-[#155eef]" /></Link></li>)}
-        </ul>
+
       </div>
     </section>
   );

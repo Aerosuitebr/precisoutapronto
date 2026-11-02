@@ -102,6 +102,7 @@ export const toolCategories: ToolCategory[] = [
 ];
 
 export const toolsCatalog: ToolDefinition[] = [
+  { id: 'whatsapp-link', name: 'Gerador de link de WhatsApp', description: 'Crie um link de contato com mensagem personalizada.', href: '/gerador-de-link-whatsapp#ferramenta', icon: Mail, categoryId: 'negocios', actionLabel: 'Criar link', keywords: ['link', 'whatsapp', 'contato', 'mensagem', 'zap'], status: 'available' },
   {
     id: "mira",
     name: "MIRA",

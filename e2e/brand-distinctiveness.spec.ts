@@ -4,15 +4,15 @@ test.describe('brand distinctiveness', () => {
   test('homepage presents one focused quote-to-payment journey', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('Orçamento enviado. Serviço fechado.');
-    await expect(page.getByRole('link', { name: 'Criar orçamento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
-    await expect(page.getByRole('link', { name: 'Ver exemplo pronto' })).toHaveAttribute('href', '/demonstracao-orcamento');
-    await expect(page.getByText('R$ 490', { exact: true })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Criar meu primeiro documento grátis' })).toHaveAttribute('href', '/orcamento-com-pix#montar');
+    await expect(page.getByRole('tab', { name: 'Orçamento com Pix' })).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByRole('tabpanel').getByText('R$ 490', { exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Da conversa ao pagamento.' })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Seu cliente decide mais rápido.' })).toBeVisible();
     await expect(page.locator('main a[href^="/recursos#category-"]')).toHaveCount(0);
-    await expect(page.getByRole('heading', { name: 'Será que encontro essa ferramenta aqui?' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Digite o que você precisa resolver agora' })).toBeVisible();
     await expect(page.getByRole('search', { name: 'Buscar ferramenta' })).toBeVisible();
-    await expect(page.getByRole('textbox', { name: 'Qual ferramenta você procura?' })).toBeVisible();
+    await expect(page.getByRole('combobox', { name: 'Qual ferramenta você procura?' })).toBeVisible();
   });
 
   test('mobile focused homepage stays inside the viewport', async ({ page }) => {
@@ -26,7 +26,7 @@ test.describe('brand distinctiveness', () => {
     expect(viewport.documentWidth).toBeLessThanOrEqual(viewport.viewportWidth);
 
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    const primaryCta = page.getByRole('link', { name: 'Criar orçamento grátis' });
+    const primaryCta = page.getByRole('link', { name: 'Criar meu primeiro documento grátis' });
     await expect(primaryCta).toBeVisible();
     const ctaBox = await primaryCta.boundingBox();
     expect(ctaBox?.x).toBeGreaterThanOrEqual(0);

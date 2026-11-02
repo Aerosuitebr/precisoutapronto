@@ -50,6 +50,7 @@ export const SEO_FOCUS_PATHS = [
   '/gerador-de-proposta-comercial',
   '/calculadora-de-preco-freelancer',
   '/gerador-de-qr-code-pix',
+  '/gerador-de-link-whatsapp',
   '/checklist-cobranca-mei',
   '/para/mei',
   '/para/freelancers',

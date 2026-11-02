@@ -22,7 +22,7 @@ test('home metadata and primary topic stay aligned', async ({ page }) => {
   await expect(page).toHaveTitle('Precisou, Tá Pronto: orçamento no WhatsApp, recibo e Pix grátis');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
-    'Precisou, Tá Pronto é o site oficial em precisoutapronto.com.br. Monte o orçamento, envie o link no WhatsApp e receba a aprovação no celular. Recibo em PDF sem cadastro.'
+    'Crie orçamentos com Pix, emita recibos em PDF, calcule férias, rescisão e 13º e gere seu link de WhatsApp. Encontre a ferramenta para resolver sua tarefa pelo celular.'
   );
   await expect(page.locator('main a[href="/games"]')).toHaveCount(0);
 });

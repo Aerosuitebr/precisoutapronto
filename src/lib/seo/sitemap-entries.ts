@@ -27,7 +27,7 @@ export const GAMES_UPDATED_AT = new Date('2026-07-29T04:00:00.000Z');
 const VERIFIED_LASTMOD_BY_PATH = new Map<string, Date>([
   ['/orcamento-para/pintor', new Date('2026-09-28T12:00:00.000Z')],
   ['/recibos/como-preencher-recibo', new Date('2026-09-28T12:00:00.000Z')],
-  ['/', new Date('2026-09-19T12:00:00.000Z')],
+  ['/', new Date('2026-11-02T12:00:00.000Z')],
   ['/orcamento-com-pix', new Date('2026-09-28T12:00:00.000Z')],
   ['/orcamento-para/eletricista', new Date('2026-09-28T12:00:00.000Z')],
   ['/orcamento-para/pedreiro', new Date('2026-09-05T12:00:00.000Z')],
@@ -77,6 +77,7 @@ export const PUBLIC_TOOL_LANDINGS = [
   '/gerador-de-proposta-comercial',
   '/gerador-de-recibo',
   '/gerador-de-qr-code-pix',
+  '/gerador-de-link-whatsapp',
   '/calculadora-de-rescisao',
   '/calculadora-de-preco-freelancer',
   '/mei-ou-clt',

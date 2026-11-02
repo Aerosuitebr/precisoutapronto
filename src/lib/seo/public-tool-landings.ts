@@ -4,6 +4,7 @@
  * (Disallow + noindex: o Google não segue nem indexa a área autenticada).
  */
 export const PUBLIC_TOOL_LANDINGS: Record<string, string> = {
+  'whatsapp-link': '/gerador-de-link-whatsapp',
   contratos: '/gerador-de-contrato',
   recibos: '/gerador-de-recibo',
   curriculo: '/gerador-de-curriculo',
