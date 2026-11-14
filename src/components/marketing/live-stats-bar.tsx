@@ -14,9 +14,9 @@ const verifiedProductIndicators = [
   { value: '1', label: 'link para conferir e responder' }
 ] as const;
 
-function StatsList({ items, className }: { items: ReadonlyArray<{ value: string; label: string }>; className?: string }) {
+function StatsList({ items, className, label = 'Características de funcionamento' }: { items: ReadonlyArray<{ value: string; label: string }>; className?: string; label?: string }) {
   return (
-    <ul className={cn('grid gap-3 sm:grid-cols-3', className)} aria-label="Indicadores do produto">
+    <ul className={cn('grid gap-3 sm:grid-cols-3', className)} aria-label={label}>
       {items.slice(0, 3).map((stat) => (
         <li key={stat.label} className="rounded-2xl border border-emerald-200 bg-emerald-50/70 px-4 py-4 text-center">
           <p className="text-2xl font-black tabular-nums tracking-tight text-emerald-950">{stat.value}</p>
@@ -50,32 +50,34 @@ export function LiveStatsBar({
   }, []);
 
   if (!stats) {
-    return <StatsList items={verifiedProductIndicators} className={className} />;
+    return <div className={className}><p className="mb-3 text-xs font-bold">Características de funcionamento</p><StatsList items={verifiedProductIndicators} /></div>;
   }
 
   const items = [
     {
       value: formatCount(stats.orcamentosToday),
-      label: 'Orçamentos hoje',
+      label: 'Orçamentos no dia UTC da atualização',
       show: stats.orcamentosToday > 0
     },
     {
       value: formatCount(stats.orcamentosApprovedWeek),
-      label: 'Aprovados na semana',
+      label: 'Aprovados nos últimos 7 dias (UTC)',
       show: stats.orcamentosApprovedWeek > 0
     },
     {
       value: formatCount(stats.docsGeneratedApprox),
-      label: 'Docs gerados',
+      label: 'Gerações registradas, acumuladas',
       show: stats.docsGeneratedApprox > 0
     },
     {
       value: formatCount(stats.usersTotal),
-      label: 'Contas criadas',
+      label: 'Contas criadas, acumuladas',
       show: stats.usersTotal > 0
     }
   ].filter((item) => item.show);
 
-  const visibleItems = [...items, ...verifiedProductIndicators].slice(0, 3);
-  return <StatsList items={visibleItems} className={className} />;
+  return <div className={className}>
+    {items.length ? <section aria-label="Estatísticas de uso"><p className="mb-3 text-xs font-bold">Estatísticas de uso</p><StatsList items={items} label="Contagens agregadas do produto" /><p className="mt-3 text-xs leading-6">Fonte: registros do produto. Contagens arredondadas para baixo; valores abaixo do mínimo de privacidade são omitidos. Gerações registradas não equivalem a arquivos únicos nem usuários únicos.{Number.isFinite(Date.parse(stats.updatedAt)) ? ` Atualização: ${new Date(stats.updatedAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })} (Brasília).` : ''}</p></section> : null}
+    <p className="mb-3 mt-5 text-xs font-bold">Características de funcionamento</p><StatsList items={verifiedProductIndicators} />
+  </div>;
 }

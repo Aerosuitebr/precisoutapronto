@@ -63,6 +63,11 @@ const PRIORITY_PATHS = [
 ];
 
 const FUNNEL_EVENTS = [
+  'document_completed',
+  'receipt_next_started',
+  'quote_browser_first_created',
+  'quote_browser_second_created',
+  'quote_browser_returned',
   'receipt_pdf_download_completed',
   'landing_cta_click',
   'quote_started',
@@ -201,6 +206,13 @@ lines.push('', '## Downloads de recibo concluídos', '', '| Landing | PDFs concl
 for (const target of PRIORITY_PATHS) {
   const events = funnel.get(target);
   lines.push('| ' + target + ' | ' + (events?.receipt_pdf_download_completed ?? 'n/d') + ' |');
+}
+
+lines.push('', '## Conclusão e segundo uso', '', '> Marcos por navegador dependem de consentimento e não representam pessoas únicas. Não divida estas contagens como se fossem uma coorte. Compare retorno D7/D30 em uma exploração de coortes quando houver identificação e cobertura suficientes.', '', '| Landing | Documentos concluídos | Próximo recibo iniciado | Primeiro orçamento no navegador | Segundo orçamento no navegador | Retorno após 24h |', '|---|---:|---:|---:|---:|---:|');
+for (const target of PRIORITY_PATHS) {
+  const events = funnel.get(target);
+  const value = (event) => events?.[event] ?? 'n/d';
+  lines.push(`| ${target} | ${value('document_completed')} | ${value('receipt_next_started')} | ${value('quote_browser_first_created')} | ${value('quote_browser_second_created')} | ${value('quote_browser_returned')} |`);
 }
 
 if (previousGscFile || previousQueriesFile) {

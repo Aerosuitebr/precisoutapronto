@@ -24,7 +24,7 @@ const TEMPLATES: { id: ReceiptTemplateId; name: string }[] = [
   { id: 'compacto', name: 'Compacto' }
 ];
 
-export function ReciboLivePreview() {
+export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { landingPath?: string }) {
   const [baseReceipt, setBaseReceipt] = useState<ReturnType<typeof createEmptyReceipt> | null>(null);
   const [receiverName, setReceiverName] = useState('');
   const [payerName, setPayerName] = useState('');
@@ -38,6 +38,7 @@ export function ReciboLivePreview() {
   const [error, setError] = useState('');
   const [templateId, setTemplateId] = useState<ReceiptTemplateId>('profissional');
   const [exporting, setExporting] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
   const exportRef = useRef<HTMLDivElement>(null);
   const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
@@ -47,10 +48,10 @@ export function ReciboLivePreview() {
     setBaseReceipt(empty);
     const now = new Date();
     setDate(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
-    setLandingAttribution('/gerador-de-recibo', true);
+    setLandingAttribution(landingPath, true);
     const requested = new URLSearchParams(window.location.search).get('tipo');
     if (requested && Object.prototype.hasOwnProperty.call(RECEIPT_PAYMENT_LABELS, requested)) setKind(requested as ReceiptPaymentKind);
-  }, []);
+  }, [landingPath]);
 
   const amount = parseReceiptMoney(amountInput);
   const breakdown = receiptPaymentBreakdown(kind, parseReceiptMoney(totalInput), parseReceiptMoney(previousInput), amount);
@@ -100,6 +101,7 @@ export function ReciboLivePreview() {
       }
       trackEvent('receipt_pdf_download_completed', { tool_path: '/gerador-de-recibo', template_id: templateId, payment_kind: kind });
       trackEvent('document_completed', { tool_name: 'recibos', output: 'pdf', payment_kind: kind });
+      setDownloaded(true);
       toast('PDF baixado. Conta grátis para histórico; Premium para remover a marca.');
     } catch {
       toast('Não foi possível gerar o PDF. Tente de novo.');
@@ -110,6 +112,23 @@ export function ReciboLivePreview() {
 
   return (
     <>
+    {downloaded ? <section aria-label="Próximo recibo" className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-5">
+      <p role="status" className="font-bold text-emerald-950">Seu recibo foi baixado.</p>
+      <p className="mt-2 text-sm leading-6 text-slate-700">Vai atender outro cliente? Mantenha seu nome e o modelo; preencha os dados do próximo pagamento.</p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <button type="button" className="min-h-11 rounded-xl bg-emerald-800 px-4 font-bold text-white" onClick={() => {
+          setBaseReceipt(createEmptyReceipt());
+          setPayerName(''); setAmountInput(''); setReference(''); setTotalInput(''); setPreviousInput('');
+          setConfirmed(false); setError(''); setDownloaded(false);
+          const now = new Date();
+          setDate(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
+          trackEvent('receipt_next_started', { landing_path: landingPath });
+          document.getElementById('rec-payer')?.focus();
+        }}>Criar próximo recibo</button>
+        <Link href="/cadastro" className="inline-flex min-h-11 items-center rounded-xl border border-emerald-300 px-4 font-bold text-emerald-900">Criar conta grátis para histórico</Link>
+      </div>
+      <p className="mt-3 text-xs text-slate-600">Este PDF não é salvo no histórico automaticamente. Guarde o arquivo baixado.</p>
+    </section> : null}
     <LiveToolPreviewLayout
       form={
         <>

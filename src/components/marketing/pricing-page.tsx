@@ -34,7 +34,8 @@ export function PricingPage() {
           <ul className="mt-6 space-y-2.5 text-sm text-slate-700">
             {[
               'Documentos profissionais em PDF',
-              'Salve e baixe sem limite de usos',
+              'Orçamento e recibo sem cadastro',
+              'Conta grátis para guardar o histórico',
               'Rodapé + logo Precisou, Tá Pronto no arquivo',
               'Busca de recursos sempre aberta'
             ].map((item) => (
@@ -84,6 +85,14 @@ export function PricingPage() {
         </article>
       </div>
 
+      <section aria-labelledby="access-title" className="mx-auto mt-10 max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 p-6">
+        <h2 id="access-title" className="text-2xl font-bold text-slate-950">O que muda com a conta e com o Premium?</h2>
+        <dl className="mt-5 grid gap-5 sm:grid-cols-3">
+          <div><dt className="font-bold">Sem cadastro</dt><dd className="mt-2 text-sm leading-6 text-slate-600">Crie orçamento e recibo com a marca da plataforma. Nas outras ferramentas, duas gerações livres antes de criar conta.</dd></div>
+          <div><dt className="font-bold">Conta grátis</dt><dd className="mt-2 text-sm leading-6 text-slate-600">Guarde o histórico pelo fluxo de salvar da ferramenta. Arquivos baixados sem conta não são adicionados automaticamente.</dd></div>
+          <div><dt className="font-bold">Premium opcional</dt><dd className="mt-2 text-sm leading-6 text-slate-600">Remove as referências à plataforma por 30 dias. Pagamento avulso, sem renovação automática. O preço vigente aparece acima.</dd></div>
+        </dl>
+      </section>
       <TrustSeals className="mt-10" />
     </section>
   );

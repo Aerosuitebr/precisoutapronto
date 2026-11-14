@@ -3,13 +3,16 @@ import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { TESTIMONIAL_CONSENT_VERSION } from '@/lib/testimonials/contracts';
 
 export async function ApprovedServiceStories() {
-  if (!isDatabaseConfigured()) return null;
-  const stories = await getPrisma().testimonialSubmission.findMany({
+  const stories = isDatabaseConfigured() ? await getPrisma().testimonialSubmission.findMany({
     where: { status: 'approved', reviewedAt: { not: null }, consentVersion: TESTIMONIAL_CONSENT_VERSION, toolKey: { in: ['orcamento', 'pix', 'recibo'] } },
     orderBy: { reviewedAt: 'desc' }, take: 3,
     select: { id: true, publicName: true, profession: true, quote: true }
-  }).catch(() => []);
-  if (!stories.length) return null;
+  }).catch(() => []) : [];
+  if (!stories.length) return <section className="mx-auto max-w-6xl px-4 py-12" aria-label="Compartilhe sua experiência">
+    <h2 className="text-2xl font-black">Já usou no seu atendimento?</h2>
+    <p className="mt-3 max-w-2xl leading-7 text-slate-600">Conte o que facilitou e o que podemos melhorar. Publicamos relatos somente com autorização e revisão, sem expor os dados dos seus clientes.</p>
+    <Link href="/depoimentos" className="mt-5 inline-flex min-h-11 items-center font-bold text-emerald-800 underline underline-offset-4">Enviar minha experiência</Link>
+  </section>;
   return <section className="mx-auto max-w-6xl px-4 py-12" aria-label="Experiências de prestadores">
     <h2 className="text-3xl font-black">Como prestadores usam no dia a dia</h2>
     <p className="mt-3 text-sm text-slate-600">Relatos enviados pelos usuários, revisados pela equipe e publicados com autorização. Resultados individuais não são garantia de resultado.</p>

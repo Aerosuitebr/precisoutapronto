@@ -76,6 +76,59 @@ function loadImageElement(url: string) {
   });
 }
 
+export function sampleRasterTextStyle(
+  image: HTMLImageElement,
+  region: Pick<PageOverlay, 'x' | 'y' | 'w' | 'h'>,
+  pageHeight: number
+): Pick<PageOverlay, 'coverFill' | 'color' | 'fontSize' | 'y'> {
+  const canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const fallback = { y: region.y, fontSize: Math.max(5, (region.h / 100) * pageHeight * 0.9) };
+  if (!ctx || !canvas.width || !canvas.height) return fallback;
+  ctx.drawImage(image, 0, 0);
+  const { width, height } = canvas;
+  const coverFill = sampleOverlayBackground(ctx, width, height, { ...region, id: '', kind: 'text' }, true);
+  const background = hexToRgb(coverFill);
+  const left = Math.min(width - 1, Math.floor(region.x * width / 100));
+  const top = Math.min(height - 1, Math.floor(region.y * height / 100));
+  const right = Math.ceil((region.x + region.w) * width / 100);
+  const bottom = Math.ceil((region.y + region.h) * height / 100);
+  const cropWidth = Math.min(width, right) - left;
+  const cropHeight = Math.min(height, bottom) - top;
+  const pixels = ctx.getImageData(left, top, cropWidth, cropHeight).data;
+  let firstRow = cropHeight;
+  let lastRow = -1;
+  let strongestContrast = 0;
+  let color: string | undefined;
+  for (let offset = 0; offset < pixels.length; offset += 4) {
+    const r = pixels[offset];
+    const g = pixels[offset + 1];
+    const b = pixels[offset + 2];
+    const contrast = Math.hypot(
+      r - background.r * 255,
+      g - background.g * 255,
+      b - background.b * 255
+    );
+    if (contrast < 55) continue;
+    const row = Math.floor(offset / 4 / cropWidth);
+    firstRow = Math.min(firstRow, row);
+    lastRow = row;
+    if (contrast <= strongestContrast) continue;
+    strongestContrast = contrast;
+    color = '#' + [r, g, b].map((channel) => channel.toString(16).padStart(2, '0')).join('');
+  }
+  if (lastRow < 0) return { ...fallback, coverFill };
+  const fontSize = Math.max(5, ((lastRow - firstRow + 1) / height) * pageHeight / 0.72);
+  return {
+    color,
+    coverFill,
+    fontSize,
+    y: Math.max(0, ((top + firstRow) / height) * 100 - (fontSize / pageHeight) * 20)
+  };
+}
+
 /**
  * Amostra fundo e cor do texto sob cada overlay do PDF
  * (fundo limpo para cobrir o glyph; tinta escura para fidelidade na edição).
@@ -113,7 +166,8 @@ function sampleOverlayBackground(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  overlay: PageOverlay
+  overlay: PageOverlay,
+  includeDark = false
 ) {
   const cx = overlay.coverX ?? overlay.x;
   const cy = overlay.coverY ?? overlay.y;
@@ -127,6 +181,7 @@ function sampleOverlayBackground(
   for (let i = 0; i <= 14; i += 1) {
     const px = cx + (cw * i) / 14;
     pts.push([px, above], [px, justAbove]);
+    if (includeDark) pts.push([px, cy + ch + 0.12], [px, cy + ch + 0.25]);
   }
   // Laterais externas (evita miolo do texto).
   for (let i = 0; i <= 4; i += 1) {
@@ -153,7 +208,7 @@ function sampleOverlayBackground(
   // Descarta tinta do texto (escura) e mistura suja.
   const clean = samples.filter((s) => s.lum >= 55 || s.sat >= 0.28);
   const pool = clean.length >= 4 ? clean : samples.filter((s) => s.lum >= 40);
-  const use = pool.length ? pool : samples;
+  const use = !includeDark && pool.length ? pool : samples;
 
   // Moda por cor quantizada (mais estável que média com anti-alias).
   const buckets = new Map<string, { count: number; r: number; g: number; b: number }>();
@@ -931,6 +986,7 @@ async function drawOverlays(
   for (const overlay of overlays) {
     // Mantém o PDF original intacto até o usuário alterar o overlay.
     if (isFromPdfPristine(overlay)) continue;
+    if (overlay.kind === 'text' && !overlay.fromPdf && !overlay.text?.trim() && overlay.coverX != null) continue;
 
     const x = (overlay.x / 100) * width;
     const w = Math.max(1, (overlay.w / 100) * width);
@@ -940,7 +996,6 @@ async function drawOverlays(
     const opacity = overlay.opacity ?? 1;
 
     if (
-      overlay.fromPdf &&
       overlay.coverX != null &&
       overlay.coverY != null &&
       overlay.coverW != null &&
@@ -951,7 +1006,7 @@ async function drawOverlays(
       const ch = Math.max(1, (overlay.coverH / 100) * height);
       const cyTop = (overlay.coverY / 100) * height;
       const cy = height - cyTop - ch;
-      const pad = 0.4;
+      const pad = overlay.fromPdf ? 0.4 : 0;
       const cover = hexToRgb(overlay.coverFill || '#ffffff');
       page.drawRectangle({
         x: cx - pad,

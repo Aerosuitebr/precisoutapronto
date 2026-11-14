@@ -38,6 +38,7 @@ import {
   renderPagePreview,
   resolvePageSize,
   sampleCoverFillsFromPreview,
+  sampleRasterTextStyle,
   type PageFitMode,
   type PageItem,
   type PageOverlay,
@@ -58,11 +59,13 @@ const LINE_THICKNESS_MAX = 1.2;
 const LINE_HIT_PAD = 0.9;
 const HISTORY_LIMIT = 60;
 
-type Tool = 'select' | 'text' | 'image' | 'rect' | 'line' | 'highlight' | 'erase';
+type Tool = 'select' | 'text' | 'raster-text' | 'image' | 'rect' | 'line' | 'highlight' | 'erase';
+type Region = Pick<PageOverlay, 'x' | 'y' | 'w' | 'h'>;
 
 const TOOLS: Array<{ id: Tool; label: string; icon: typeof Type }> = [
   { id: 'select', label: 'Editar', icon: MousePointer2 },
   { id: 'text', label: 'Novo texto', icon: Type },
+  { id: 'raster-text', label: 'Texto sobre imagem', icon: Type },
   { id: 'image', label: 'Imagem', icon: ImagePlus },
   { id: 'rect', label: 'Retângulo', icon: Square },
   { id: 'line', label: 'Linha', icon: Minus },
@@ -90,13 +93,15 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   const [zoom, setZoom] = useState(100);
   const [fontStatus, setFontStatus] = useState('');
   const [drag, setDrag] = useState<{
-    mode: 'move' | 'resize' | 'create' | 'pending';
+    mode: 'move' | 'resize' | 'create' | 'pending' | 'raster-text';
     id?: string;
     startX: number;
     startY: number;
     orig?: PageOverlay;
   } | null>(null);
+  const [region, setRegion] = useState<Region | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<HTMLImageElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const editRef = useRef<HTMLTextAreaElement | HTMLInputElement | null>(null);
   const movedDuringDrag = useRef(false);
@@ -530,6 +535,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   }
 
   function onBoardPointerDown(e: React.PointerEvent) {
+    if (tool === 'raster-text') return;
     if ((e.target as HTMLElement).closest('[data-overlay]')) return;
     setEditingId(null);
     const pt = relativePoint(e.clientX, e.clientY);
@@ -607,8 +613,34 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   }
 
+  function startRasterSelection(e: React.PointerEvent<HTMLDivElement>) {
+    if (tool !== 'raster-text' || e.button !== 0 || !e.isPrimary) return;
+    const image = previewRef.current;
+    if (loadingPreview || loadingText || !image?.naturalWidth) return;
+    const point = relativePoint(e.clientX, e.clientY);
+    setSelectedId(null);
+    setEditingId(null);
+    setRegion({ ...point, w: 0, h: 0 });
+    setDrag({ mode: 'raster-text', startX: point.x, startY: point.y });
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+
+  function rasterRegion(e: React.PointerEvent, start: { startX: number; startY: number }): Region {
+    const point = relativePoint(e.clientX, e.clientY);
+    return {
+      x: Math.min(start.startX, point.x),
+      y: Math.min(start.startY, point.y),
+      w: Math.abs(point.x - start.startX),
+      h: Math.abs(point.y - start.startY)
+    };
+  }
+
   function onBoardPointerMove(e: React.PointerEvent) {
     if (!drag) return;
+    if (drag.mode === 'raster-text') {
+      setRegion(rasterRegion(e, drag));
+      return;
+    }
     const pt = relativePoint(e.clientX, e.clientY);
 
     if (drag.mode === 'pending' && drag.id && drag.orig) {
@@ -711,7 +743,32 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     }
   }
 
-  function onBoardPointerUp() {
+  function onBoardPointerUp(e: React.PointerEvent) {
+    if (drag?.mode === 'raster-text') {
+      const box = rasterRegion(e, drag);
+      const image = previewRef.current;
+      if (image && box.w * image.naturalWidth >= 200 && box.h * image.naturalHeight >= 200) {
+        const id = nextId('ov');
+        const font = getFontOptionById('inter');
+        const overlay: PageOverlay = {
+          ...box,
+          ...sampleRasterTextStyle(image, box, size.height),
+          id,
+          kind: 'text',
+          text: '',
+          fontId: font.id,
+          fontLabel: font.family,
+          coverX: box.x,
+          coverY: box.y,
+          coverW: box.w,
+          coverH: box.h
+        };
+        ensureFontCssLoaded(font);
+        beginEditText(id);
+        setDraft((prev) => ({ ...prev, overlays: [...prev.overlays, overlay] }));
+      }
+      setRegion(null);
+    }
     if (drag?.mode === 'pending' && drag.id && drag.orig?.kind === 'text' && !movedDuringDrag.current) {
       beginEditText(drag.id);
     }
@@ -719,6 +776,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   }
 
   function startMove(e: React.PointerEvent, overlay: PageOverlay) {
+    if (tool === 'raster-text') return;
     if (editingId === overlay.id) return;
     e.stopPropagation();
     setSelectedId(overlay.id);
@@ -914,7 +972,11 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                   key={item.id}
                   type="button"
                   title={item.label}
-                  onClick={() => setTool(item.id)}
+                  onClick={() => {
+                    setEditingId(null);
+                    setTool(item.id);
+                  }}
+                  aria-pressed={tool === item.id}
                   className={cn(
                     'flex w-full min-w-[5.5rem] shrink-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2.5 text-[0.68rem] font-bold transition lg:min-w-0',
                     tool === item.id ? 'bg-sky-600 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100'
@@ -937,9 +999,14 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             >
             <div
               ref={boardRef}
+              onPointerDownCapture={startRasterSelection}
               onPointerDown={onBoardPointerDown}
               onPointerMove={onBoardPointerMove}
               onPointerUp={onBoardPointerUp}
+              onPointerCancel={() => {
+                setDrag(null);
+                setRegion(null);
+              }}
               className={cn(
                 'relative w-full touch-none overflow-hidden rounded-md bg-white shadow-xl ring-1 ring-slate-300',
                 tool === 'select' ? 'cursor-default' : 'cursor-crosshair'
@@ -952,6 +1019,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
+                ref={previewRef}
                 src={previewUrl}
                 alt=""
                 className="pointer-events-none absolute inset-0 h-full w-full object-fill"
@@ -966,10 +1034,23 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                 </div>
               )}
 
+              {region && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute z-50 border border-sky-500 bg-sky-500/15"
+                  style={{
+                    left: `${region.x}%`,
+                    top: `${region.y}%`,
+                    width: `${region.w}%`,
+                    height: `${region.h}%`
+                  }}
+                />
+              )}
+
               {draft.overlays.map((overlay) => {
                 if (
-                  !overlay.fromPdf ||
                   isFromPdfPristine(overlay) ||
+                  (!overlay.fromPdf && !overlay.text?.trim() && editingId !== overlay.id) ||
                   overlay.coverX == null ||
                   overlay.coverY == null ||
                   overlay.coverW == null ||
@@ -1059,6 +1140,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                     }}
                     className={cn(
                       'absolute box-border bg-transparent',
+                      tool === 'raster-text' && 'pointer-events-none',
                       overlay.kind === 'text'
                         ? isEditing
                           ? 'z-40'
@@ -1164,7 +1246,9 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                             textAlign: overlay.align || 'left',
                             lineHeight: `${Math.ceil(typePx * 1.15)}px`,
                             caretColor: overlay.color || '#0f172a',
-                            backgroundColor: overlay.coverFill || '#ffffff'
+                            backgroundColor: overlay.coverBackground || overlay.fromPdf
+                              ? overlay.coverFill || '#ffffff'
+                              : 'transparent'
                           }}
                           aria-label="Editar texto"
                         />
@@ -1180,7 +1264,9 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                             letterSpacing: 'normal',
                             textAlign: overlay.align || 'left',
                             lineHeight: `${Math.ceil(typePx * 1.1)}px`,
-                            backgroundColor: overlay.coverFill || '#ffffff'
+                            backgroundColor: overlay.coverBackground || overlay.fromPdf
+                              ? overlay.coverFill || '#ffffff'
+                              : 'transparent'
                           }}
                         >
                           {overlay.text}
@@ -1217,7 +1303,9 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             </div>
             </div>
             <p className="mx-auto mt-3 max-w-xl text-center text-xs leading-5 text-slate-600">
-              {textCount > 0 || graphicCount > 0
+              {tool === 'raster-text'
+                ? 'Arraste um retângulo justo ao redor de uma linha. Digite o texto e ajuste a fonte, se necessário.'
+                : textCount > 0 || graphicCount > 0
                 ? `${textCount} texto(s)${graphicCount ? ` · ${graphicCount} imagem/linha` : ''}. Clique para editar; setas (ou Alt+setas) movem a caixa.`
                 : 'Clique em um texto para editar. Setas movem a seleção. Use as ferramentas para adicionar objetos.'}
             </p>

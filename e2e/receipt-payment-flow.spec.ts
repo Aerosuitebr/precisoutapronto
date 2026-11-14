@@ -17,6 +17,7 @@ test('payment amounts use reais, reject malformed input and balance in cents', (
 });
 
 test('Pix landing opens entry receipt, preserves attribution and exports actual data', async ({ page }, testInfo) => {
+  await page.addInitScript(() => localStorage.setItem('precisoutapronto_analytics_consent', 'accepted'));
   await page.goto('/recibos/recibo-pagamento-pix');
   await page.getByRole('link', { name: /Recibo de entrada Primeiro Pix/ }).click();
   await expect(page.locator('#rec-kind')).toHaveValue('entrada');
@@ -51,6 +52,24 @@ test('Pix landing opens entry receipt, preserves attribution and exports actual 
   const events = await page.evaluate(() => window.dataLayer);
   expect(JSON.stringify(events)).not.toContain('Cliente de teste');
   expect(JSON.stringify(events)).not.toContain('Prestador de teste');
+  await page.getByRole('button', { name: 'Criar próximo recibo', exact: true }).click();
+  await expect(page.locator('#rec-receiver')).toHaveValue('Prestador de teste');
+  await expect(page.locator('#rec-payer')).toHaveValue('');
+  await expect(page.locator('#rec-reference')).toHaveValue('');
+  await expect(page.locator('#rec-valor')).toHaveValue('');
+  await expect(page.getByRole('checkbox', { name: /Conferi o recebimento/ })).not.toBeChecked();
+  await expect(page.locator('#rec-payer')).toBeFocused();
+});
+
+test('Pix visitor can fill a receipt without leaving the landing on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/recibos/recibo-pagamento-pix');
+  await page.getByRole('link', { name: 'Gerar recibo de Pix grátis', exact: true }).first().click();
+  await expect(page).toHaveURL(/recibos\/recibo-pagamento-pix#emitir-recibo$/);
+  await page.locator('#rec-receiver').fill('Prestador fictício');
+  await expect(page.locator('#rec-receiver')).toHaveValue('Prestador fictício');
+  await expect(page.locator('#emitir-recibo')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
 test('mobile receipt validates final installment and never restores example fields', async ({ page }) => {

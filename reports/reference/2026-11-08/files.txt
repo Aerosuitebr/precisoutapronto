@@ -1,0 +1,13 @@
+src/app/page.tsx
+src/components/marketing/home-intent-hero.tsx
+src/components/marketing/landing-page.tsx
+src/components/marketing/site-header.tsx
+src/components/marketing/site-footer.tsx
+src/components/marketing/pricing-page.tsx
+src/components/marketing/approved-service-stories.tsx
+src/components/marketing/live-stats-bar.tsx
+src/app/recibos/[slug]/page.tsx
+src/app/orcamento-para/[profissao]/page.tsx
+src/lib/seo/receipt-cluster.ts
+src/lib/seo/sitemap-entries.ts
+src/components/marketing/professional-start-guide.tsx

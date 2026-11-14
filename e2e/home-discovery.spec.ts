@@ -1,21 +1,13 @@
 import { expect, test } from '@playwright/test';
 
-test('intent tabs update the preview and lead to the selected tool using keyboard or pointer', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
-  const quote = page.getByRole('tab', { name: 'Orçamento com Pix' });
-  await expect(quote).toHaveAttribute('aria-selected', 'true');
-  await quote.focus();
-  await page.keyboard.press('ArrowRight');
-  await expect(page.getByRole('tabpanel')).toContainText('Recibo de entrada');
-  await expect(page.getByRole('link', { name: 'Criar meu primeiro documento grátis' })).toHaveAttribute('href', '/gerador-de-recibo#ferramenta');
-  await page.getByRole('tab', { name: 'Cálculos Trabalhistas' }).click();
-  await page.getByLabel('Qual cálculo você precisa?').selectOption('/calculadora-de-rescisao#ferramenta');
-  await expect(page.getByRole('link', { name: 'Calcular gratuitamente' })).toHaveAttribute('href', '/calculadora-de-rescisao#ferramenta');
-  await page.getByRole('tab', { name: 'Gerador de Link' }).click();
-  await expect(page.getByRole('tabpanel')).toContainText('Seu link de WhatsApp');
-  await expect(page.getByRole('link', { name: 'Criar meu link grátis' })).toHaveAttribute('href', '/gerador-de-link-whatsapp#ferramenta');
+test('home focuses on quote creation and demonstrates the customer experience', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Seu orçamento profissional,aprovado pelo WhatsApp.');
+  await expect(page.getByRole('link', { name: 'Criar orçamento grátis', exact: true })).toHaveAttribute('href', '/orcamento-com-pix#montar');
+  await page.getByRole('link', { name: 'Ver como o cliente recebe', exact: true }).click();
+  await expect(page).toHaveURL(/demonstracao-orcamento$/);
+  await expect(page.getByRole('button', { name: 'Aprovar orçamento', exact: true })).toBeVisible();
 });
-
 test('discovery precedes the workflow and search supports keyboard selection and dismissal', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' });
   expect(await page.locator('#ferramentas').evaluate(element => Boolean(element.compareDocumentPosition(document.getElementById('como-funciona')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
@@ -49,11 +41,11 @@ test('WhatsApp link validates the number and encodes the message without sending
   await expect(page.getByLabel('Seu link pronto')).toHaveValue(`https://wa.me/5511999999999?text=${encodeURIComponent('Olá! Valor & prazo?')}`);
 });
 
-test('mobile intent panels remain inside the viewport', async ({ page }) => {
+test('mobile home exposes plans and keeps the focused hero inside the viewport', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
-  await page.goto('/', { waitUntil: 'networkidle' });
-  for (const label of ['Orçamento com Pix', 'Recibo de Pix', 'Cálculos Trabalhistas', 'Gerador de Link']) {
-    await page.getByRole('tab', { name: label }).click();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  }
+  await page.goto('/');
+  await expect(page.getByRole('navigation', { name: 'Navegação rápida no celular' }).getByRole('link', { name: 'Planos', exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.getByRole('navigation', { name: 'Navegação rápida no celular' }).getByRole('link', { name: 'Planos', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'O que muda com a conta e com o Premium?' })).toBeVisible();
 });

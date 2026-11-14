@@ -2,6 +2,62 @@ import { expect, test } from '@playwright/test';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { readFile } from 'node:fs/promises';
 
+test('replaces text in a selected region of a scanned page', async ({ page }) => {
+  const image = await page.evaluate(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 600;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#e2eee2';
+    ctx.fillRect(0, 0, 800, 600);
+    ctx.fillStyle = '#ac2830';
+    ctx.font = '28px Arial';
+    ctx.fillText('AMOSTRA', 180, 150);
+    return canvas.toDataURL('image/png');
+  });
+  const doc = await PDFDocument.create();
+  const sheet = doc.addPage([400, 300]);
+  sheet.drawImage(await doc.embedPng(image), { x: 0, y: 0, width: 400, height: 300 });
+  await page.route('https://cdn.jsdelivr.net/npm/@fontsource/**', (route) => route.abort());
+  await page.route('https://unpkg.com/@fontsource/**', (route) => route.abort());
+  await page.goto('/ferramentas/editor-pdf');
+  const upload = page.locator('input[type=file]').first();
+  await upload.setInputFiles({
+    name: 'amostra.pdf', mimeType: 'application/pdf', buffer: Buffer.from(await doc.save())
+  });
+  await page.getByRole('button', { name: 'Editar conteúdo da página' }).click();
+  const board = page.getByRole('application', { name: 'Área de edição da página' });
+  await expect(board.getByText('Lendo texto, imagens e linhas…')).toBeHidden();
+  await expect(board.getByText('Carregando página…')).toBeHidden();
+  await page.getByRole('button', { name: 'Texto sobre imagem' }).click();
+  const bounds = (await board.boundingBox())!;
+  await page.mouse.move(bounds.x + bounds.width * 0.22, bounds.y + bounds.height * 0.21);
+  await page.mouse.down();
+  await page.mouse.move(bounds.x + bounds.width * 0.42, bounds.y + bounds.height * 0.26, { steps: 5 });
+  await page.mouse.up();
+  const editor = page.getByRole('textbox', { name: 'Editar texto', exact: true });
+  await expect(editor).toBeVisible();
+  const [red, green, blue] = await editor.evaluate((element) =>
+    (getComputedStyle(element).color.match(/\d+/g) || []).map(Number)
+  );
+  expect(red).toBeGreaterThan(130);
+  expect(Math.max(green, blue)).toBeLessThan(80);
+  await editor.fill('REVISADO');
+  await editor.press('Escape');
+  await page.getByRole('button', { name: 'Desfazer' }).click();
+  await expect(board.getByLabel('REVISADO', { exact: true })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Refazer' }).click();
+  await expect(board.getByLabel('REVISADO', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Salvar página' }).click();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Baixar PDF final' }).click();
+  const bytes = await readFile((await (await downloadPromise).path())!);
+  await page.reload();
+  await upload.setInputFiles({ name: 'revisado.pdf', mimeType: 'application/pdf', buffer: bytes });
+  await page.getByRole('button', { name: 'Editar conteúdo da página' }).click();
+  await expect(board.getByLabel('REVISADO', { exact: true })).toBeVisible();
+});
+
 for (const fontsAvailable of [true, false]) {
 test(`long footer can be edited and downloaded (fonts available: ${fontsAvailable})`, async ({ page }) => {
   const doc = await PDFDocument.create();

@@ -14,7 +14,8 @@ import { SEO_FOCUS_CLUSTERS } from '@/lib/seo/focus-cycle';
 
 const links = [
   ...SEO_FOCUS_CLUSTERS.map(({ href, label }) => ({ href, label, auth: false as const })),
-  { href: '/guias', label: 'Guias', auth: false }
+  { href: '/guias', label: 'Guias', auth: false },
+  { href: '/planos', label: 'Planos', auth: false }
 ] as const;
 
 export function SiteHeader() {

@@ -15,6 +15,7 @@ const NAV_LINKS: { href: string; label: string }[] = [
   { href: '/rescisao', label: 'Cálculos trabalhistas' },
   { href: '/guias', label: 'Guias' },
   { href: '/sobre', label: 'Sobre e equipe' },
+  { href: '/planos', label: 'Planos e preços' },
   { href: '/recursos', label: 'Outras ferramentas' }
 ];
 

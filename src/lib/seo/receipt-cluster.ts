@@ -62,7 +62,7 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
   },
   {
     slug: 'recibo-pagamento-pix',
-    updatedAt: '2026-11-01',
+    updatedAt: '2026-11-08',
     title: 'Recibo de Pix em PDF grátis: modelo sem cadastro',
     description: 'Preencha o recibo de Pix com valor, data e serviço. Baixe o PDF grátis, sem cadastro, para enviar pelo WhatsApp. Veja a diferença para o comprovante bancário.',
     eyebrow: 'Pagamento via Pix',
@@ -81,7 +81,6 @@ export const receiptClusterPages: ReceiptClusterPage[] = [
     },
     sections: [
       { title: 'Como descrever sinal, parcela e saldo', paragraphs: ['Exemplo fictício de sinal: “Recebi R$ 450,00 via Pix como entrada de 50% do pacote de seis artes para redes sociais, conforme proposta de 08/09/2026. Saldo previsto: R$ 450,00.” Substitua os dados pelos valores e condições do seu serviço.', 'No recebimento do saldo, identifique a mesma proposta e a parcela correspondente. Confira o crédito no aplicativo do seu banco antes de emitir o recibo; não registre o valor total do serviço quando recebeu apenas uma parte.'] },
-      { title: 'Gere o recibo depois do Pix', paragraphs: ['Abra o gerador, informe pagador, recebedor, valor, data e o que aquele Pix quitou, e baixe o PDF para enviar no WhatsApp.', 'Não precisa cadastro para começar. A conta grátis permite guardar o histórico; o plano Premium remove a marca do PDF.'] },
       { title: 'Não exponha dados bancários', paragraphs: ['Não é necessário inserir chave Pix, conta completa ou identificadores sensíveis no recibo.', 'Informe apenas a forma de pagamento e os dados necessários para identificar as partes e a operação.'] },
       {
         title: 'Gerador de recibo Pix não é gerador de comprovante',

@@ -6,7 +6,7 @@ import { BRAND_NAME } from '@/lib/brand';
 
 const homeTitle = `${BRAND_NAME}: orçamento no WhatsApp, recibo e Pix grátis`;
 const homeDescription =
-  'Precisou, Tá Pronto é o site oficial em precisoutapronto.com.br. Crie orçamentos com Pix, recibos em PDF, cálculos trabalhistas e links de WhatsApp pelo celular.';
+  'Precisou, Tá Pronto é o site oficial em precisoutapronto.com.br. Crie orçamento, envie pelo WhatsApp e organize aprovação, entrada, saldo e recibo. Comece grátis.';
 
 export const revalidate = 3600;
 
