@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Eraser,
@@ -9,6 +9,7 @@ import {
   Loader2,
   Maximize2,
   Minus,
+  Move,
   MousePointer2,
   Plus,
   Redo2,
@@ -48,7 +49,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const ZOOM_MIN = 50;
-const ZOOM_MAX = 400;
+const ZOOM_MAX = 800;
 const ZOOM_STEP = 25;
 const ZOOM_BASE_WIDTH = 720;
 /** Espessura visual padrão de linha (% da página): fina o bastante para contas/tabelas. */
@@ -92,6 +93,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   const [boardHeight, setBoardHeight] = useState(800);
   const [zoom, setZoom] = useState(100);
   const [fontStatus, setFontStatus] = useState('');
+  const [fontSizeInput, setFontSizeInput] = useState<{ id: string; value: string } | null>(null);
   const [drag, setDrag] = useState<{
     mode: 'move' | 'resize' | 'create' | 'pending' | 'raster-text';
     id?: string;
@@ -101,6 +103,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
   } | null>(null);
   const [region, setRegion] = useState<Region | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const zoomAnchor = useRef<{ x: number; y: number } | null>(null);
   const previewRef = useRef<HTMLImageElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const editRef = useRef<HTMLTextAreaElement | HTMLInputElement | null>(null);
@@ -218,6 +222,18 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     return () => ro.disconnect();
   }, [loadingPreview, loadingText, mounted]);
 
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const board = boardRef.current;
+    const anchor = zoomAnchor.current;
+    if (!viewport || !board || !anchor) return;
+    zoomAnchor.current = null;
+    const view = viewport.getBoundingClientRect();
+    const page = board.getBoundingClientRect();
+    viewport.scrollLeft += page.left + page.width * anchor.x - view.left - viewport.clientWidth / 2;
+    viewport.scrollTop += page.top + page.height * anchor.y - view.top - viewport.clientHeight / 2;
+  }, [zoom]);
+
   useEffect(() => {
     if (editingId && editRef.current) {
       editRef.current.focus();
@@ -268,13 +284,17 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
 
       e.preventDefault();
       e.stopPropagation();
-      const step = e.shiftKey ? 0.28 : 0.08;
+      const pixels = e.shiftKey ? 10 : 1;
+      const board = boardRef.current;
+      if (!board?.clientWidth || !board.clientHeight) return;
+      const stepX = (pixels / board.clientWidth) * 100;
+      const stepY = (pixels / board.clientHeight) * 100;
       let dx = 0;
       let dy = 0;
-      if (e.key === 'ArrowLeft') dx = -step;
-      if (e.key === 'ArrowRight') dx = step;
-      if (e.key === 'ArrowUp') dy = -step;
-      if (e.key === 'ArrowDown') dy = step;
+      if (e.key === 'ArrowLeft') dx = -stepX;
+      if (e.key === 'ArrowRight') dx = stepX;
+      if (e.key === 'ArrowUp') dy = -stepY;
+      if (e.key === 'ArrowDown') dy = stepY;
 
       pushHistory();
       setDraft((prev) => {
@@ -644,13 +664,14 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     const pt = relativePoint(e.clientX, e.clientY);
 
     if (drag.mode === 'pending' && drag.id && drag.orig) {
-      const dist = Math.abs(pt.x - drag.startX) + Math.abs(pt.y - drag.startY);
-      if (dist < 0.9) return;
+      const board = boardRef.current;
+      if (!board) return;
+      const dx = pt.x - drag.startX;
+      const dy = pt.y - drag.startY;
+      if (Math.hypot(dx * board.clientWidth, dy * board.clientHeight) < 3 * 100) return;
       movedDuringDrag.current = true;
       pushHistory();
       setDrag({ ...drag, mode: 'move' });
-      const dx = pt.x - drag.startX;
-      const dy = pt.y - drag.startY;
       updateOverlay(drag.id, {
         x: Math.min(100 - drag.orig.w, Math.max(0, drag.orig.x + dx)),
         y: Math.min(100 - drag.orig.h, Math.max(0, drag.orig.y + dy))
@@ -750,9 +771,11 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
       if (image && box.w * image.naturalWidth >= 200 && box.h * image.naturalHeight >= 200) {
         const id = nextId('ov');
         const font = getFontOptionById('inter');
+        const style = sampleRasterTextStyle(image, box, size.height);
         const overlay: PageOverlay = {
           ...box,
-          ...sampleRasterTextStyle(image, box, size.height),
+          ...style,
+          h: ((style.fontSize ?? 14) / size.height) * 112,
           id,
           kind: 'text',
           text: '',
@@ -775,13 +798,18 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     setDrag(null);
   }
 
-  function startMove(e: React.PointerEvent, overlay: PageOverlay) {
-    if (tool === 'raster-text') return;
-    if (editingId === overlay.id) return;
+  function startMove(e: React.PointerEvent, overlay: PageOverlay, fromHandle = false) {
+    if (tool === 'raster-text' || e.button !== 0 || !e.isPrimary) return;
+    if (editingId === overlay.id && !fromHandle) return;
     e.stopPropagation();
     setSelectedId(overlay.id);
     if (tool !== 'select') return;
-    movedDuringDrag.current = false;
+    if (fromHandle) {
+      e.preventDefault();
+      setEditingId(null);
+    }
+    boardRef.current?.focus({ preventScroll: true });
+    movedDuringDrag.current = fromHandle;
     const pt = relativePoint(e.clientX, e.clientY);
     // Só grava histórico quando o arraste começa de verdade (pending → move).
     setDrag({
@@ -805,7 +833,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
 
   function fontPx(overlay: PageOverlay) {
     if (overlay.fontSize && boardHeight > 0 && size.height > 0) {
-      return Math.max(6, (overlay.fontSize / size.height) * boardHeight);
+      return (overlay.fontSize / size.height) * boardHeight;
     }
     return Math.max(6, (overlay.h / 100) * boardHeight * 0.92);
   }
@@ -857,7 +885,24 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     updateOverlay(id, {
       text,
       w: fitOverlayWidthToText(next, text),
-      h: textBoxHeightPct(next, true)
+      h: !ov.fromPdf && ov.coverX != null ? ov.h : textBoxHeightPct(next, true)
+    });
+  }
+
+  function updateFontSize(overlay: PageOverlay, value: string) {
+    setFontSizeInput({ id: overlay.id, value });
+    const fontSize = Number(value);
+    if (!Number.isFinite(fontSize) || fontSize <= 0 || fontSize === overlay.fontSize) return;
+    const next = { ...overlay, fontSize };
+    const rasterText = !overlay.fromPdf && overlay.coverX != null;
+    updateOverlay(overlay.id, {
+      fontSize,
+      ...(rasterText
+        ? {
+            w: fitOverlayWidthToText(next, overlay.text || ' '),
+            h: (fontSize / size.height) * 112
+          }
+        : {})
     });
   }
 
@@ -872,8 +917,25 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
     setFontStatus(`Fonte do bloco: ${opt.family} (carregada para edição)`);
   }
 
-  function bumpZoom(delta: number) {
-    setZoom((z) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z + delta)));
+  function changeZoom(value: number) {
+    const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value));
+    if (next === zoom) return;
+    const viewport = viewportRef.current;
+    const board = boardRef.current;
+    if (selected) {
+      zoomAnchor.current = {
+        x: (selected.x + selected.w / 2) / 100,
+        y: (selected.y + selected.h / 2) / 100
+      };
+    } else if (viewport && board) {
+      const view = viewport.getBoundingClientRect();
+      const page = board.getBoundingClientRect();
+      zoomAnchor.current = {
+        x: Math.min(1, Math.max(0, (view.left + viewport.clientWidth / 2 - page.left) / page.width)),
+        y: Math.min(1, Math.max(0, (view.top + viewport.clientHeight / 2 - page.top) / page.height))
+      };
+    }
+    setZoom(next);
   }
 
   const ui = (
@@ -898,7 +960,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             <button
               type="button"
               className="grid h-8 w-8 place-items-center rounded-lg text-slate-700 hover:bg-white"
-              onClick={() => bumpZoom(-ZOOM_STEP)}
+              onClick={() => changeZoom(zoom - ZOOM_STEP)}
+              disabled={zoom === ZOOM_MIN}
               aria-label="Diminuir zoom"
             >
               <Minus className="h-4 w-4" />
@@ -907,25 +970,23 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             <button
               type="button"
               className="grid h-8 w-8 place-items-center rounded-lg text-slate-700 hover:bg-white"
-              onClick={() => bumpZoom(ZOOM_STEP)}
+              onClick={() => changeZoom(zoom + ZOOM_STEP)}
+              disabled={zoom === ZOOM_MAX}
               aria-label="Aumentar zoom"
             >
               <Plus className="h-4 w-4" />
             </button>
-            <button
-              type="button"
-              className="rounded-lg px-2 py-1 text-[0.65rem] font-bold text-sky-700 hover:bg-white"
-              onClick={() => setZoom(100)}
-            >
-              100%
-            </button>
-            <button
-              type="button"
-              className="rounded-lg px-2 py-1 text-[0.65rem] font-bold text-sky-700 hover:bg-white"
-              onClick={() => setZoom(200)}
-            >
-              200%
-            </button>
+            {[100, 200, 400, 800].map((value) => (
+              <button
+                key={value}
+                type="button"
+                className="rounded-lg px-2 py-1 text-[0.65rem] font-bold text-sky-700 hover:bg-white"
+                aria-pressed={zoom === value}
+                onClick={() => changeZoom(value)}
+              >
+                {value}%
+              </button>
+            ))}
           </div>
           <Button variant="outline" size="sm" onClick={onClose} icon={X}>
             Cancelar
@@ -989,16 +1050,17 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
             })}
           </aside>
 
-          <div className="min-h-0 min-w-0 overflow-auto bg-[linear-gradient(45deg,#e2e8f0_25%,transparent_25%),linear-gradient(-45deg,#e2e8f0_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#e2e8f0_75%),linear-gradient(-45deg,transparent_75%,#e2e8f0_75%)] bg-[length:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0] p-4 sm:p-5">
+          <div ref={viewportRef} className="min-h-0 min-w-0 overflow-auto bg-[linear-gradient(45deg,#e2e8f0_25%,transparent_25%),linear-gradient(-45deg,#e2e8f0_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#e2e8f0_75%),linear-gradient(-45deg,transparent_75%,#e2e8f0_75%)] bg-[length:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0] p-4 sm:p-5">
             <div
               className="mx-auto origin-top"
               style={{
-                width: `min(100%, ${ZOOM_BASE_WIDTH * (zoom / 100)}px)`,
+                width: `min(${zoom}%, ${ZOOM_BASE_WIDTH * (zoom / 100)}px)`,
                 maxWidth: 'none'
               }}
             >
             <div
               ref={boardRef}
+              tabIndex={-1}
               onPointerDownCapture={startRasterSelection}
               onPointerDown={onBoardPointerDown}
               onPointerMove={onBoardPointerMove}
@@ -1229,6 +1291,7 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                             if (e.key === 'Escape') {
                               e.preventDefault();
                               setEditingId(null);
+                              boardRef.current?.focus({ preventScroll: true });
                             }
                           }}
                           onPointerDown={(e) => e.stopPropagation()}
@@ -1296,6 +1359,18 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                             : '-bottom-1.5 -right-1.5'
                         )}
                       />
+                    ) : null}
+                    {isSelected && overlay.kind === 'text' && tool === 'select' ? (
+                      <button
+                        type="button"
+                        aria-label="Mover texto"
+                        title="Arraste ou use as setas para mover"
+                        onPointerDown={(e) => startMove(e, overlay, true)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute right-0 top-0 z-10 grid h-6 w-6 cursor-move place-items-center rounded-bl bg-sky-600 text-white"
+                      >
+                        <Move className="h-4 w-4" aria-hidden />
+                      </button>
                     ) : null}
                   </div>
                 );
@@ -1561,14 +1636,13 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                     <Input
                       id="ov-size"
                       type="number"
-                      min={6}
-                      max={96}
-                      value={Math.round(selected.fontSize || 14)}
-                      onChange={(e) =>
-                        updateOverlay(selected.id, {
-                          fontSize: Math.max(6, Number(e.target.value) || 14)
-                        })
-                      }
+                      min={0}
+                      step="any"
+                      value={fontSizeInput?.id === selected.id
+                        ? fontSizeInput.value
+                        : Number((selected.fontSize || 14).toFixed(2))}
+                      onChange={(e) => updateFontSize(selected, e.target.value)}
+                      onBlur={() => setFontSizeInput(null)}
                     />
                   </FormField>
                   <FormField

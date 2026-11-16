@@ -80,7 +80,7 @@ export function sampleRasterTextStyle(
   image: HTMLImageElement,
   region: Pick<PageOverlay, 'x' | 'y' | 'w' | 'h'>,
   pageHeight: number
-): Pick<PageOverlay, 'coverFill' | 'color' | 'fontSize' | 'y'> {
+): Pick<PageOverlay, 'coverFill' | 'color' | 'fontSize' | 'bold' | 'y'> {
   const canvas = document.createElement('canvas');
   canvas.width = image.naturalWidth;
   canvas.height = image.naturalHeight;
@@ -98,8 +98,8 @@ export function sampleRasterTextStyle(
   const cropWidth = Math.min(width, right) - left;
   const cropHeight = Math.min(height, bottom) - top;
   const pixels = ctx.getImageData(left, top, cropWidth, cropHeight).data;
-  let firstRow = cropHeight;
-  let lastRow = -1;
+  const ink = new Uint8Array(cropWidth * cropHeight);
+  const rowInk = new Uint32Array(cropHeight);
   let strongestContrast = 0;
   let color: string | undefined;
   for (let offset = 0; offset < pixels.length; offset += 4) {
@@ -112,19 +112,54 @@ export function sampleRasterTextStyle(
       b - background.b * 255
     );
     if (contrast < 55) continue;
-    const row = Math.floor(offset / 4 / cropWidth);
-    firstRow = Math.min(firstRow, row);
-    lastRow = row;
+    ink[offset / 4] = 1;
+    rowInk[Math.floor(offset / 4 / cropWidth)] += 1;
     if (contrast <= strongestContrast) continue;
     strongestContrast = contrast;
     color = '#' + [r, g, b].map((channel) => channel.toString(16).padStart(2, '0')).join('');
   }
-  if (lastRow < 0) return { ...fallback, coverFill };
-  const fontSize = Math.max(5, ((lastRow - firstRow + 1) / height) * pageHeight / 0.72);
+  if (!color) return { ...fallback, coverFill };
+
+  // Pontas finas de barras e ruído nas bordas não devem definir a altura da linha.
+  const peak = rowInk.reduce((max, count) => Math.max(max, count), 0);
+  const firstRow = rowInk.findIndex((count) => count >= peak * 0.18);
+  let lastRow = cropHeight - 1;
+  while (rowInk[lastRow] < peak * 0.18) lastRow -= 1;
+  const glyphHeight = lastRow - firstRow + 1;
+  const fontSize = Math.max(5, (glyphHeight / height) * pageHeight / 0.73);
+
+  // Mede a espessura dos traços nos dois eixos, ignorando trechos longos
+  // como a barra inteira de um caractere.
+  function strokeWidth(lineCount: number, lineLength: number, lineStep: number, pixelStep: number) {
+    const maxRun = Math.floor(glyphHeight * 0.45);
+    const runs = new Uint32Array(maxRun + 1);
+    let count = 0;
+    for (let line = 0; line < lineCount; line += 1) {
+      let run = 0;
+      for (let pixel = 0; pixel <= lineLength; pixel += 1) {
+        if (pixel < lineLength && ink[line * lineStep + pixel * pixelStep]) {
+          run += 1;
+        } else if (run > 0) {
+          if (run <= maxRun) {
+            runs[run] += 1;
+            count += 1;
+          }
+          run = 0;
+        }
+      }
+    }
+    if (!count) return 0;
+    let cumulative = 0;
+    return runs.findIndex((frequency) => (cumulative += frequency) >= count * 0.65);
+  }
+
+  const horizontal = strokeWidth(cropHeight, cropWidth, cropWidth, 1);
+  const vertical = strokeWidth(cropWidth, cropHeight, 1, cropWidth);
   return {
     color,
     coverFill,
     fontSize,
+    bold: glyphHeight >= 8 && Math.min(horizontal, vertical) / glyphHeight >= 0.20,
     y: Math.max(0, ((top + firstRow) / height) * 100 - (fontSize / pageHeight) * 20)
   };
 }
@@ -1115,7 +1150,7 @@ async function drawOverlays(
         }
       }
 
-      const fontSize = Math.max(5, overlay.fontSize || h * 0.9);
+      const fontSize = overlay.fontSize || Math.max(5, h * 0.9);
       const color = hexToRgb(overlay.color || '#0f172a');
       const lines = overlay.text.replace(/\r/g, '').split('\n');
       const lineHeight = fontSize * 1.05;

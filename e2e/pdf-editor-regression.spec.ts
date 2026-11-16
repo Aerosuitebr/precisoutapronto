@@ -2,8 +2,9 @@ import { expect, test } from '@playwright/test';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { readFile } from 'node:fs/promises';
 
-test('replaces text in a selected region of a scanned page', async ({ page }) => {
-  const image = await page.evaluate(() => {
+for (const bold of [false, true]) {
+test(`replaces a scanned date and estimates its size and weight (bold: ${bold})`, async ({ page }) => {
+  const image = await page.evaluate((bold) => {
     const canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 600;
@@ -11,10 +12,10 @@ test('replaces text in a selected region of a scanned page', async ({ page }) =>
     ctx.fillStyle = '#e2eee2';
     ctx.fillRect(0, 0, 800, 600);
     ctx.fillStyle = '#ac2830';
-    ctx.font = '28px Arial';
-    ctx.fillText('AMOSTRA', 180, 150);
+    ctx.font = `${bold ? 'bold ' : ''}28px Arial`;
+    ctx.fillText('17/10/2028', 180, 150);
     return canvas.toDataURL('image/png');
-  });
+  }, bold);
   const doc = await PDFDocument.create();
   const sheet = doc.addPage([400, 300]);
   sheet.drawImage(await doc.embedPng(image), { x: 0, y: 0, width: 400, height: 300 });
@@ -27,6 +28,7 @@ test('replaces text in a selected region of a scanned page', async ({ page }) =>
   });
   await page.getByRole('button', { name: 'Editar conteúdo da página' }).click();
   const board = page.getByRole('application', { name: 'Área de edição da página' });
+  await expect.poll(() => board.locator('img').evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(320);
   await expect(board.getByText('Lendo texto, imagens e linhas…')).toBeHidden();
   await expect(board.getByText('Carregando página…')).toBeHidden();
   await page.getByRole('button', { name: 'Texto sobre imagem' }).click();
@@ -37,6 +39,11 @@ test('replaces text in a selected region of a scanned page', async ({ page }) =>
   await page.mouse.up();
   const editor = page.getByRole('textbox', { name: 'Editar texto', exact: true });
   await expect(editor).toBeVisible();
+  const fontSize = page.getByRole('spinbutton', { name: 'Tamanho da fonte' });
+  const detectedSize = Number(await fontSize.inputValue());
+  expect(detectedSize).toBeGreaterThan(12);
+  expect(detectedSize).toBeLessThan(16);
+  expect(await page.getByRole('checkbox', { name: 'Negrito' }).isChecked()).toBe(bold);
   const [red, green, blue] = await editor.evaluate((element) =>
     (getComputedStyle(element).color.match(/\d+/g) || []).map(Number)
   );
@@ -47,7 +54,38 @@ test('replaces text in a selected region of a scanned page', async ({ page }) =>
   await page.getByRole('button', { name: 'Desfazer' }).click();
   await expect(board.getByLabel('REVISADO', { exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Refazer' }).click();
-  await expect(board.getByLabel('REVISADO', { exact: true })).toBeVisible();
+  const replacement = board.getByLabel('REVISADO', { exact: true });
+  await replacement.click();
+  await fontSize.selectText();
+  await fontSize.press('1');
+  await expect(fontSize).toHaveValue('1');
+  await fontSize.press('2');
+  await expect(fontSize).toHaveValue('12');
+  await fontSize.fill('14.5');
+  await fontSize.press('Tab');
+  await expect(fontSize).toHaveValue('14.5');
+
+  const position = () => replacement.evaluate((element) => {
+    const { left, top } = element.getBoundingClientRect();
+    return { left, top };
+  });
+  const initial = await position();
+  const normalWidth = (await board.boundingBox())!.width;
+  await page.getByRole('button', { name: '800%', exact: true }).click();
+  await expect.poll(async () => (await board.boundingBox())!.width).toBeCloseTo(normalWidth * 8, 0);
+  await expect(replacement).toBeInViewport();
+  await expect(page.getByRole('button', { name: 'Aumentar zoom' })).toBeDisabled();
+  await page.getByRole('button', { name: '100%', exact: true }).click();
+  const move = board.getByRole('button', { name: 'Mover texto' });
+  await move.press('ArrowRight');
+  await expect.poll(async () => (await position()).left - initial.left).toBeCloseTo(1);
+  const handle = (await move.boundingBox())!;
+  await page.mouse.move(handle.x + handle.width / 2, handle.y + handle.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(handle.x + handle.width / 2 + 18, handle.y + handle.height / 2 + 12, { steps: 5 });
+  await page.mouse.up();
+  await expect.poll(async () => (await position()).left - initial.left).toBeCloseTo(19, 0);
+  await expect.poll(async () => (await position()).top - initial.top).toBeCloseTo(12, 0);
   await page.getByRole('button', { name: 'Salvar página' }).click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Baixar PDF final' }).click();
@@ -57,6 +95,7 @@ test('replaces text in a selected region of a scanned page', async ({ page }) =>
   await page.getByRole('button', { name: 'Editar conteúdo da página' }).click();
   await expect(board.getByLabel('REVISADO', { exact: true })).toBeVisible();
 });
+}
 
 for (const fontsAvailable of [true, false]) {
 test(`long footer can be edited and downloaded (fonts available: ${fontsAvailable})`, async ({ page }) => {
