@@ -22,9 +22,30 @@ export const EDITOR_FONTS: EditorFontOption[] = [
     id: 'inter',
     family: 'Inter',
     fontsourceId: 'inter',
-    aliases: ['inter', 'helvetica', 'arial', 'sans', 'sansserif', 'segoeui', 'roboto'],
+    aliases: ['inter', 'segoeui'],
     standard: 'Helvetica',
     googleQuery: 'Inter:wght@400;600;700'
+  },
+  {
+    id: 'arial',
+    family: 'Arial',
+    fontsourceId: 'arimo',
+    aliases: ['arial', 'arialmt', 'helvetica', 'helveticaneue', 'sans', 'sansserif'],
+    standard: 'Helvetica'
+  },
+  {
+    id: 'times-new-roman',
+    family: 'Times New Roman',
+    fontsourceId: 'tinos',
+    aliases: ['times', 'timesnewroman', 'timesroman', 'serif'],
+    standard: 'TimesRoman'
+  },
+  {
+    id: 'courier-new',
+    family: 'Courier New',
+    fontsourceId: 'cousine',
+    aliases: ['courier', 'couriernew', 'mono', 'monospace'],
+    standard: 'Courier'
   },
   {
     id: 'roboto',
@@ -38,7 +59,7 @@ export const EDITOR_FONTS: EditorFontOption[] = [
     id: 'open-sans',
     family: 'Open Sans',
     fontsourceId: 'open-sans',
-    aliases: ['opensans', 'open sans', 'source sans', 'sourcesans', 'sourcesanspro', 'sourcesans3'],
+    aliases: ['opensans'],
     standard: 'Helvetica',
     googleQuery: 'Open+Sans:wght@400;700'
   },
@@ -86,7 +107,7 @@ export const EDITOR_FONTS: EditorFontOption[] = [
     id: 'libre-baskerville',
     family: 'Libre Baskerville',
     fontsourceId: 'libre-baskerville',
-    aliases: ['baskerville', 'librebaskerville', 'times', 'timesnewroman', 'georgia', 'serif', 'garamond'],
+    aliases: ['baskerville', 'librebaskerville', 'georgia', 'garamond'],
     standard: 'TimesRoman',
     googleQuery: 'Libre+Baskerville:wght@400;700'
   },
@@ -110,7 +131,7 @@ export const EDITOR_FONTS: EditorFontOption[] = [
     id: 'roboto-mono',
     family: 'Roboto Mono',
     fontsourceId: 'roboto-mono',
-    aliases: ['robotomono', 'courier', 'couriernew', 'consolas', 'monaco', 'mono', 'menlo', 'sourcecodepro'],
+    aliases: ['robotomono', 'consolas', 'monaco', 'menlo', 'sourcecodepro'],
     standard: 'Courier',
     googleQuery: 'Roboto+Mono:wght@400;700'
   },
@@ -168,11 +189,9 @@ function scoreMatch(query: string, option: EditorFontOption): number {
   const familySlug = slug(option.family);
   if (q === familySlug) return 100;
   if (familySlug.includes(q) || q.includes(familySlug)) return 80;
-  for (const alias of option.aliases) {
-    const a = slug(alias);
-    if (q === a) return 95;
-    if (q.includes(a) || a.includes(q)) return 70;
-  }
+  const aliases = option.aliases.map(slug);
+  if (aliases.includes(q)) return 95;
+  if (aliases.some((alias) => alias.length >= 5 && q.includes(alias))) return 70;
   // tokens
   const tokens = query.toLowerCase().split(/\s+/).filter(Boolean);
   let hit = 0;
@@ -229,13 +248,12 @@ export function getFontOptionById(id: string): EditorFontOption {
 
 /** Carrega a folha CSS da fonte no documento (para preview). */
 export function ensureFontCssLoaded(option: EditorFontOption) {
-  if (typeof document === 'undefined') return;
+  if (typeof document === 'undefined' || !option.googleQuery) return;
   if (loadedCss.has(option.id)) return;
   loadedCss.add(option.id);
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  const q = option.googleQuery || `${option.family.replace(/\s+/g, '+')}:wght@400;700`;
-  link.href = `https://fonts.googleapis.com/css2?family=${q}&display=swap`;
+  link.href = `https://fonts.googleapis.com/css2?family=${option.googleQuery}&display=swap`;
   document.head.appendChild(link);
 }
 

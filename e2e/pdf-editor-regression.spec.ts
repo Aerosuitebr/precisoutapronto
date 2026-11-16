@@ -2,20 +2,23 @@ import { expect, test } from '@playwright/test';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { readFile } from 'node:fs/promises';
 
-for (const bold of [false, true]) {
-test(`replaces a scanned date and estimates its size and weight (bold: ${bold})`, async ({ page }) => {
-  const image = await page.evaluate((bold) => {
+for (const sample of [
+  { family: 'Arial', fontId: 'arial', bold: false, foreground: '#ac2830', background: '#e2eee2' },
+  { family: 'Times New Roman', fontId: 'times-new-roman', bold: true, foreground: '#727f98', background: '#394760' }
+]) {
+test(`replaces a scanned date and estimates the style of ${sample.family}`, async ({ page }) => {
+  const image = await page.evaluate(({ family, bold, foreground, background }) => {
     const canvas = document.createElement('canvas');
     canvas.width = 800;
     canvas.height = 600;
     const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = '#e2eee2';
+    ctx.fillStyle = background;
     ctx.fillRect(0, 0, 800, 600);
-    ctx.fillStyle = '#ac2830';
-    ctx.font = `${bold ? 'bold ' : ''}28px Arial`;
+    ctx.fillStyle = foreground;
+    ctx.font = `${bold ? 'bold ' : ''}28px "${family}"`;
     ctx.fillText('17/10/2028', 180, 150);
     return canvas.toDataURL('image/png');
-  }, bold);
+  }, sample);
   const doc = await PDFDocument.create();
   const sheet = doc.addPage([400, 300]);
   sheet.drawImage(await doc.embedPng(image), { x: 0, y: 0, width: 400, height: 300 });
@@ -43,12 +46,19 @@ test(`replaces a scanned date and estimates its size and weight (bold: ${bold})`
   const detectedSize = Number(await fontSize.inputValue());
   expect(detectedSize).toBeGreaterThan(12);
   expect(detectedSize).toBeLessThan(16);
-  expect(await page.getByRole('checkbox', { name: 'Negrito' }).isChecked()).toBe(bold);
-  const [red, green, blue] = await editor.evaluate((element) =>
+  await expect(page.getByRole('combobox', { name: 'Fonte do bloco' })).toHaveValue(sample.fontId);
+  expect(await page.getByRole('checkbox', { name: 'Negrito' }).isChecked()).toBe(sample.bold);
+  const foreground = await editor.evaluate((element) =>
     (getComputedStyle(element).color.match(/\d+/g) || []).map(Number)
   );
-  expect(red).toBeGreaterThan(130);
-  expect(Math.max(green, blue)).toBeLessThan(80);
+  const colorChannels = (hex: string) => hex.slice(1).match(/../g)!.map((channel) => parseInt(channel, 16));
+  const background = await page.getByLabel('Cor do fundo', { exact: true }).inputValue();
+  for (const [actual, expected] of [
+    [foreground, colorChannels(sample.foreground)],
+    [colorChannels(background), colorChannels(sample.background)]
+  ]) {
+    expect(Math.max(...actual.map((channel, index) => Math.abs(channel - expected[index])))).toBeLessThanOrEqual(8);
+  }
   await editor.fill('REVISADO');
   await editor.press('Escape');
   await page.getByRole('button', { name: 'Desfazer' }).click();

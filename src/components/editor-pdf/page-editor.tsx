@@ -770,8 +770,8 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
       const image = previewRef.current;
       if (image && box.w * image.naturalWidth >= 200 && box.h * image.naturalHeight >= 200) {
         const id = nextId('ov');
-        const font = getFontOptionById('inter');
         const style = sampleRasterTextStyle(image, box, size.height);
+        const font = getFontOptionById(style.fontId || 'inter');
         const overlay: PageOverlay = {
           ...box,
           ...style,
@@ -1604,7 +1604,11 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                   <FormField
                     label="Fonte do bloco"
                     htmlFor="ov-font"
-                    hint="Buscamos a fonte do documento e carregamos a mais próxima."
+                    hint={selected.fromPdf
+                      ? 'Usamos o nome da fonte registrado no PDF para escolher uma equivalente.'
+                      : selected.coverX != null
+                        ? 'Em imagens, a fonte é estimada pelo formato das letras e dos números.'
+                        : undefined}
                   >
                     <Select
                       id="ov-font"
@@ -1665,6 +1669,20 @@ export function PageEditor({ page, source, onSave, onClose }: PageEditorProps) {
                       />
                     </div>
                   </FormField>
+                  {selected.coverX != null ? (
+                    <FormField label="Cor do fundo" htmlFor="ov-background">
+                      <div className="flex items-center gap-2">
+                        <Input
+                          id="ov-background"
+                          type="color"
+                          value={selected.coverFill || '#ffffff'}
+                          onChange={(e) => updateOverlay(selected.id, { coverFill: e.target.value })}
+                          className="h-11 w-14 cursor-pointer p-1"
+                        />
+                        <span className="text-sm tabular-nums">{selected.coverFill || '#ffffff'}</span>
+                      </div>
+                    </FormField>
+                  ) : null}
                   <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                     <input
                       type="checkbox"

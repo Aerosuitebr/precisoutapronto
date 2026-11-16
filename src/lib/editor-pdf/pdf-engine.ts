@@ -1,5 +1,6 @@
 import { EncryptedPDFError, PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFPage } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
+import { matchRasterFont } from '@/lib/editor-pdf/raster-font';
 import {
   fetchFontTtf,
   getFontOptionById,
@@ -80,7 +81,7 @@ export function sampleRasterTextStyle(
   image: HTMLImageElement,
   region: Pick<PageOverlay, 'x' | 'y' | 'w' | 'h'>,
   pageHeight: number
-): Pick<PageOverlay, 'coverFill' | 'color' | 'fontSize' | 'bold' | 'y'> {
+): Pick<PageOverlay, 'coverFill' | 'color' | 'fontSize' | 'bold' | 'fontId' | 'y'> {
   const canvas = document.createElement('canvas');
   canvas.width = image.naturalWidth;
   canvas.height = image.naturalHeight;
@@ -89,7 +90,7 @@ export function sampleRasterTextStyle(
   if (!ctx || !canvas.width || !canvas.height) return fallback;
   ctx.drawImage(image, 0, 0);
   const { width, height } = canvas;
-  const coverFill = sampleOverlayBackground(ctx, width, height, { ...region, id: '', kind: 'text' }, true);
+  const coverFill = sampleOverlayBackground(ctx, width, height, region);
   const background = hexToRgb(coverFill);
   const left = Math.min(width - 1, Math.floor(region.x * width / 100));
   const top = Math.min(height - 1, Math.floor(region.y * height / 100));
@@ -98,30 +99,27 @@ export function sampleRasterTextStyle(
   const cropWidth = Math.min(width, right) - left;
   const cropHeight = Math.min(height, bottom) - top;
   const pixels = ctx.getImageData(left, top, cropWidth, cropHeight).data;
+  const foreground = dominantInk(pixels, background);
+  if (!foreground) return { ...fallback, coverFill };
+  const { color, contrast } = foreground;
+  const dr = foreground.r - background.r * 255;
+  const dg = foreground.g - background.g * 255;
+  const db = foreground.b - background.b * 255;
   const ink = new Uint8Array(cropWidth * cropHeight);
   const rowInk = new Uint32Array(cropHeight);
-  let strongestContrast = 0;
-  let color: string | undefined;
   for (let offset = 0; offset < pixels.length; offset += 4) {
-    const r = pixels[offset];
-    const g = pixels[offset + 1];
-    const b = pixels[offset + 2];
-    const contrast = Math.hypot(
-      r - background.r * 255,
-      g - background.g * 255,
-      b - background.b * 255
-    );
-    if (contrast < 55) continue;
+    const r = pixels[offset] - background.r * 255;
+    const g = pixels[offset + 1] - background.g * 255;
+    const b = pixels[offset + 2] - background.b * 255;
+    const opacity = (r * dr + g * dg + b * db) / (contrast * contrast);
+    if (opacity < 0.5 || Math.hypot(r - opacity * dr, g - opacity * dg, b - opacity * db) > 18) continue;
     ink[offset / 4] = 1;
     rowInk[Math.floor(offset / 4 / cropWidth)] += 1;
-    if (contrast <= strongestContrast) continue;
-    strongestContrast = contrast;
-    color = '#' + [r, g, b].map((channel) => channel.toString(16).padStart(2, '0')).join('');
   }
-  if (!color) return { ...fallback, coverFill };
 
   // Pontas finas de barras e ruído nas bordas não devem definir a altura da linha.
   const peak = rowInk.reduce((max, count) => Math.max(max, count), 0);
+  if (!peak) return { ...fallback, coverFill, color };
   const firstRow = rowInk.findIndex((count) => count >= peak * 0.18);
   let lastRow = cropHeight - 1;
   while (rowInk[lastRow] < peak * 0.18) lastRow -= 1;
@@ -155,11 +153,13 @@ export function sampleRasterTextStyle(
 
   const horizontal = strokeWidth(cropHeight, cropWidth, cropWidth, 1);
   const vertical = strokeWidth(cropWidth, cropHeight, 1, cropWidth);
+  const matchedFont = matchRasterFont(ink, cropWidth, cropHeight, glyphHeight);
   return {
     color,
     coverFill,
     fontSize,
-    bold: glyphHeight >= 8 && Math.min(horizontal, vertical) / glyphHeight >= 0.20,
+    fontId: matchedFont?.fontId,
+    bold: matchedFont?.bold ?? (glyphHeight >= 8 && Math.min(horizontal, vertical) / glyphHeight >= 0.20),
     y: Math.max(0, ((top + firstRow) / height) * 100 - (fontSize / pageHeight) * 20)
   };
 }
@@ -197,35 +197,70 @@ export async function sampleCoverFillsFromPreview(
   }
 }
 
+function rgbHex(r: number, g: number, b: number) {
+  return '#' + [r, g, b].map((value) => Math.round(value).toString(16).padStart(2, '0')).join('');
+}
+
+function dominantInk(pixels: Uint8ClampedArray, background: ReturnType<typeof hexToRgb>) {
+  const bins = new Map<number, { r: number; g: number; b: number; count: number }>();
+  const bgR = background.r * 255;
+  const bgG = background.g * 255;
+  const bgB = background.b * 255;
+  for (let offset = 0; offset < pixels.length; offset += 4) {
+    const r = pixels[offset];
+    const g = pixels[offset + 1];
+    const b = pixels[offset + 2];
+    if ((r - bgR) ** 2 + (g - bgG) ** 2 + (b - bgB) ** 2 < 12 ** 2) continue;
+    const key = ((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3);
+    const bin = bins.get(key) || { r: 0, g: 0, b: 0, count: 0 };
+    bin.r += r;
+    bin.g += g;
+    bin.b += b;
+    bin.count += 1;
+    bins.set(key, bin);
+  }
+  let best: { r: number; g: number; b: number; contrast: number; color: string } | undefined;
+  let bestScore = 0;
+  for (const bin of bins.values()) {
+    if (bin.count < 3) continue;
+    const r = bin.r / bin.count;
+    const g = bin.g / bin.count;
+    const b = bin.b / bin.count;
+    const contrast = Math.hypot(r - bgR, g - bgG, b - bgB);
+    const score = bin.count * Math.sqrt(contrast);
+    if (score <= bestScore) continue;
+    bestScore = score;
+    best = { r, g, b, contrast, color: rgbHex(r, g, b) };
+  }
+  return best;
+}
+
 function sampleOverlayBackground(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  overlay: PageOverlay,
-  includeDark = false
+  overlay: Pick<PageOverlay, 'x' | 'y' | 'w' | 'h' | 'coverX' | 'coverY' | 'coverW' | 'coverH'>
 ) {
   const cx = overlay.coverX ?? overlay.x;
   const cy = overlay.coverY ?? overlay.y;
   const cw = Math.max(0.5, overlay.coverW ?? overlay.w);
   const ch = Math.max(0.3, overlay.coverH ?? overlay.h);
 
-  // Prioriza faixa ACIMA da caixa (fundo limpo, sem glyph).
+  // Amostra dos quatro lados, próximo à seleção, incluindo fundos escuros.
   const pts: Array<[number, number]> = [];
-  const above = Math.max(0.05, cy - Math.max(0.25, ch * 0.55));
-  const justAbove = Math.max(0.02, cy - 0.12);
+  const dy = 100 / height;
+  const dx = 100 / width;
   for (let i = 0; i <= 14; i += 1) {
     const px = cx + (cw * i) / 14;
-    pts.push([px, above], [px, justAbove]);
-    if (includeDark) pts.push([px, cy + ch + 0.12], [px, cy + ch + 0.25]);
+    pts.push([px, cy - dy], [px, cy - 3 * dy], [px, cy + ch + dy], [px, cy + ch + 3 * dy]);
   }
   // Laterais externas (evita miolo do texto).
   for (let i = 0; i <= 4; i += 1) {
     const py = cy + (ch * i) / 4;
-    pts.push([cx - 0.2, py], [cx + cw + 0.2, py]);
+    pts.push([cx - dx, py], [cx + cw + dx, py]);
   }
 
-  type Sample = { r: number; g: number; b: number; lum: number; sat: number };
-  const samples: Sample[] = [];
+  const buckets = new Map<string, { count: number; r: number; g: number; b: number }>();
   for (const [px, py] of pts) {
     const x = Math.min(width - 1, Math.max(0, Math.round((px / 100) * width)));
     const y = Math.min(height - 1, Math.max(0, Math.round((py / 100) * height)));
@@ -233,33 +268,15 @@ function sampleOverlayBackground(
     const r = data[0];
     const g = data[1];
     const b = data[2];
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-    const sat = max === 0 ? 0 : (max - min) / max;
-    samples.push({ r, g, b, lum, sat });
-  }
-
-  // Descarta tinta do texto (escura) e mistura suja.
-  const clean = samples.filter((s) => s.lum >= 55 || s.sat >= 0.28);
-  const pool = clean.length >= 4 ? clean : samples.filter((s) => s.lum >= 40);
-  const use = !includeDark && pool.length ? pool : samples;
-
-  // Moda por cor quantizada (mais estável que média com anti-alias).
-  const buckets = new Map<string, { count: number; r: number; g: number; b: number }>();
-  for (const s of use) {
-    const qr = Math.round(s.r / 10) * 10;
-    const qg = Math.round(s.g / 10) * 10;
-    const qb = Math.round(s.b / 10) * 10;
-    const key = `${qr},${qg},${qb}`;
+    const key = `${r >> 3},${g >> 3},${b >> 3}`;
     const prev = buckets.get(key);
     if (prev) {
       prev.count += 1;
-      prev.r += s.r;
-      prev.g += s.g;
-      prev.b += s.b;
+    prev.r += r;
+    prev.g += g;
+    prev.b += b;
     } else {
-      buckets.set(key, { count: 1, r: s.r, g: s.g, b: s.b });
+      buckets.set(key, { count: 1, r, g, b });
     }
   }
 
@@ -269,11 +286,7 @@ function sampleOverlayBackground(
   }
   if (!best) return '#ffffff';
 
-  const toHex = (v: number) =>
-    Math.round(v)
-      .toString(16)
-      .padStart(2, '0');
-  return `#${toHex(best.r / best.count)}${toHex(best.g / best.count)}${toHex(best.b / best.count)}`;
+  return rgbHex(best.r / best.count, best.g / best.count, best.b / best.count);
 }
 
 /** Amostra a tinta do texto no miolo da caixa (pixels contrastantes com o fundo). */
@@ -289,44 +302,13 @@ function sampleOverlayTextInk(
   const cw = Math.max(0.5, overlay.coverW ?? overlay.w);
   const ch = Math.max(0.3, overlay.coverH ?? overlay.h);
 
-  let bgR = 255;
-  let bgG = 255;
-  let bgB = 255;
-  if (coverFill && /^#[0-9a-fA-F]{6}$/.test(coverFill)) {
-    bgR = parseInt(coverFill.slice(1, 3), 16);
-    bgG = parseInt(coverFill.slice(3, 5), 16);
-    bgB = parseInt(coverFill.slice(5, 7), 16);
-  }
-
-  type Ink = { r: number; g: number; b: number; contrast: number };
-  const inks: Ink[] = [];
-  for (let iy = 2; iy <= 8; iy += 1) {
-    for (let ix = 1; ix <= 9; ix += 1) {
-      const px = cx + (cw * ix) / 10;
-      const py = cy + (ch * iy) / 10;
-      const x = Math.min(width - 1, Math.max(0, Math.round((px / 100) * width)));
-      const y = Math.min(height - 1, Math.max(0, Math.round((py / 100) * height)));
-      const data = ctx.getImageData(x, y, 1, 1).data;
-      const r = data[0];
-      const g = data[1];
-      const b = data[2];
-      const contrast =
-        Math.abs(r - bgR) * 0.3 + Math.abs(g - bgG) * 0.59 + Math.abs(b - bgB) * 0.11;
-      if (contrast < 28) continue;
-      inks.push({ r, g, b, contrast });
-    }
-  }
-  if (inks.length < 3) return null;
-  inks.sort((a, b) => b.contrast - a.contrast);
-  const top = inks.slice(0, Math.min(12, inks.length));
-  const r = top.reduce((s, p) => s + p.r, 0) / top.length;
-  const g = top.reduce((s, p) => s + p.g, 0) / top.length;
-  const b = top.reduce((s, p) => s + p.b, 0) / top.length;
-  const toHex = (v: number) =>
-    Math.round(v)
-      .toString(16)
-      .padStart(2, '0');
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  const left = Math.min(width - 1, Math.floor(cx * width / 100));
+  const top = Math.min(height - 1, Math.floor(cy * height / 100));
+  const right = Math.min(width, Math.ceil((cx + cw) * width / 100));
+  const bottom = Math.min(height, Math.ceil((cy + ch) * height / 100));
+  if (right <= left || bottom <= top) return undefined;
+  const pixels = ctx.getImageData(left, top, right - left, bottom - top).data;
+  return dominantInk(pixels, hexToRgb(coverFill || '#ffffff'))?.color;
 }
 
 function measureTextWidthPx(text: string, fontSizePx: number, bold: boolean, fontFamily?: string) {
@@ -409,7 +391,7 @@ export async function renderPagePreview(
   if (ctx) {
     await page.render({ canvasContext: ctx, viewport }).promise;
   }
-  const url = canvas.toDataURL('image/jpeg', 0.92);
+  const url = canvas.toDataURL('image/png');
   await doc.destroy();
   return url;
 }
@@ -495,8 +477,11 @@ export async function extractPageTextOverlays(
     ].filter(Boolean);
     const pdfFontName = pdfNameHints[0] || item.fontName || '';
     const bold = pdfNameHints.some((name) => isBoldPdfFont(name));
-    const resolved = resolveFontFromPdfName(pdfFontName || style?.fontFamily);
-    const measureFamily = `"${resolved.option.family}", Arial, Helvetica, sans-serif`;
+    const reportedFont = resolveFontFromPdfName(pdfFontName);
+    const resolved = reportedFont.matched ? reportedFont : resolveFontFromPdfName(style?.fontFamily);
+    const generic = resolved.option.standard === 'TimesRoman' ? 'serif'
+      : resolved.option.standard === 'Courier' ? 'monospace' : 'sans-serif';
+    const measureFamily = `"${resolved.option.family}", ${generic}`;
 
     const viewportScaleX = Math.hypot(viewport.transform[0], viewport.transform[1]) || 1;
     const reportedWidth = Math.max(0, (item.width || 0) * viewportScaleX);
@@ -508,7 +493,7 @@ export async function extractPageTextOverlays(
       else width = Math.min(reportedWidth, measuredWidth * 1.06);
     }
 
-    const fontSize = Math.max(6, fontHeight);
+    const fontSize = fontHeight;
     // Caixa precisa caber o fontSize CSS (antes era 0.86 e cortava a digitação).
     const height = fontSize * Math.max(1.05, emBox * 0.98);
     const xPdf = tx[4];
@@ -542,7 +527,7 @@ export async function extractPageTextOverlays(
       color: '#0f172a',
       bold,
       pdfFontName,
-      fontLabel: resolved.displayName,
+      fontLabel: reportedFont.displayName,
       fontId: resolved.option.id,
       fromPdf: true,
       coverBackground: true,
