@@ -9,6 +9,18 @@ test('convite abre o modelo correto e preserva benefício sem copiar dados', () 
   expect(url.searchParams.has('source_document')).toBe(false);
 });
 
+test('comparativo fica acessível pela home e mantém a tabela dentro do celular', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Comparar ferramentas de orçamento e recibo' }).click();
+  await expect(page).toHaveURL(/orcamento-com-pix#comparativo$/);
+  const comparison = page.locator('#comparativo');
+  await expect(comparison.getByRole('row')).toHaveCount(6);
+  await expect(comparison.getByRole('link', { name: 'AprovaPro' })).toHaveAttribute('href', 'https://www.aprovapro.com.br/');
+  await expect(comparison.getByRole('row', { name: /Precisou, Tá Pronto/ })).toContainText('Conferência manual do Pix');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('demonstração simula resposta sem criar orçamento', async ({ page }) => {
   let writes = 0;
   page.on('request', r => { if (r.method() === 'POST' && /\/api\/orcamentos/.test(r.url())) writes++; });
@@ -75,4 +87,14 @@ test('criação confirmada exibe convite por profissão e registra segunda cria�
   expect(await page.evaluate(() => (window as unknown as { nativeInvite: string }).nativeInvite)).toMatch(/eletricista.*ABCD1234/);
   const events = await page.evaluate(() => (window as unknown as { auditEvents: unknown[] }).auditEvents);
   expect(JSON.stringify(events)).toContain('quote_browser_second_created');
+  await page.getByRole('button', { name: 'Recebi um Pix: preparar recibo' }).click();
+  await expect(page).toHaveURL(/gerador-de-recibo\?origem=orcamento#ferramenta$/);
+  await expect(page.locator('#rec-receiver')).toHaveValue('Profissional de teste');
+  await expect(page.locator('#rec-payer')).toHaveValue('Cliente de teste');
+  await expect(page.locator('#rec-reference')).not.toHaveValue('');
+  await expect(page.locator('#rec-total')).toHaveValue('300,00');
+  await expect(page.locator('#rec-valor')).toHaveValue('');
+  await expect(page.getByRole('checkbox', { name: /Conferi o recebimento/ })).not.toBeChecked();
+  await page.reload();
+  await expect(page.locator('#rec-payer')).toHaveValue('');
 });

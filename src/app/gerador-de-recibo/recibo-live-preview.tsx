@@ -14,6 +14,7 @@ import { useDocumentBranding } from '@/hooks/use-document-branding';
 import { performBillableAction } from '@/lib/billing';
 import { setLandingAttribution, trackEvent } from '@/lib/analytics';
 import { formatCurrency } from '@/lib/formatters';
+import { consumeQuoteReceiptTransfer } from '@/lib/orcamentos/quote-to-receipt';
 import { createEmptyReceipt } from '@/lib/recibos/defaults';
 import { RECEIPT_PAYMENT_LABELS, parseReceiptMoney, receiptPaymentBreakdown, type ReceiptPaymentKind } from '@/lib/recibos/payment-breakdown';
 import type { ReceiptTemplateId } from '@/lib/recibos/types';
@@ -23,6 +24,15 @@ const TEMPLATES: { id: ReceiptTemplateId; name: string }[] = [
   { id: 'moderno', name: 'Moderno' },
   { id: 'compacto', name: 'Compacto' }
 ];
+
+function todayForReceipt() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+}
+
+function editableMoney(amount: number) {
+  return amount.toFixed(2).replace('.', ',');
+}
 
 export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { landingPath?: string }) {
   const [baseReceipt, setBaseReceipt] = useState<ReturnType<typeof createEmptyReceipt> | null>(null);
@@ -39,6 +49,10 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
   const [templateId, setTemplateId] = useState<ReceiptTemplateId>('profissional');
   const [exporting, setExporting] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [fromQuote, setFromQuote] = useState(false);
+  const [nextPayment, setNextPayment] = useState<{
+    receiver: string; payer: string; reference: string; total: string; received: string;
+  } | null>(null);
   const exportRef = useRef<HTMLDivElement>(null);
   const brandDocuments = useDocumentBranding();
   const { toast } = useToast();
@@ -46,11 +60,21 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
   useEffect(() => {
     const empty = createEmptyReceipt();
     setBaseReceipt(empty);
-    const now = new Date();
-    setDate(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
+    setDate(todayForReceipt());
     setLandingAttribution(landingPath, true);
-    const requested = new URLSearchParams(window.location.search).get('tipo');
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get('tipo');
     if (requested && Object.prototype.hasOwnProperty.call(RECEIPT_PAYMENT_LABELS, requested)) setKind(requested as ReceiptPaymentKind);
+    if (landingPath !== '/gerador-de-recibo' || params.get('origem') !== 'orcamento') return;
+    const draft = consumeQuoteReceiptTransfer();
+    if (!draft) return;
+    setReceiverName(draft.receiverName);
+    setPayerName(draft.payerName);
+    setReference(draft.itemNames.join(', ').slice(0, 500));
+    setTotalInput(editableMoney(draft.amount));
+    setKind('entrada');
+    setFromQuote(true);
+    trackEvent('quote_to_receipt_started', { item_count: draft.itemNames.length });
   }, [landingPath]);
 
   const amount = parseReceiptMoney(amountInput);
@@ -86,6 +110,14 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
       : breakdown.error || (!confirmed ? 'Confirme que recebeu este pagamento antes de emitir o recibo.' : '');
     setError(validation);
     if (validation) return;
+    const serviceTotalCents = Math.round(parseReceiptMoney(totalInput) * 100);
+    const continuation = kind !== 'integral' && breakdown.remaining > 0 ? {
+      receiver: receiverName.trim(),
+      payer: payerName.trim(),
+      reference: reference.trim(),
+      total: editableMoney(serviceTotalCents / 100),
+      received: editableMoney((serviceTotalCents - Math.round(breakdown.remaining * 100)) / 100)
+    } : null;
     setExporting(true);
     try {
       const outcome = await performBillableAction(
@@ -101,6 +133,7 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
       }
       trackEvent('receipt_pdf_download_completed', { tool_path: '/gerador-de-recibo', template_id: templateId, payment_kind: kind });
       trackEvent('document_completed', { tool_name: 'recibos', output: 'pdf', payment_kind: kind });
+      setNextPayment(continuation);
       setDownloaded(true);
       toast('PDF baixado. Conta grátis para histórico; Premium para remover a marca.');
     } catch {
@@ -116,12 +149,19 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
       <p role="status" className="font-bold text-emerald-950">Seu recibo foi baixado.</p>
       <p className="mt-2 text-sm leading-6 text-slate-700">Vai atender outro cliente? Mantenha seu nome e o modelo; preencha os dados do próximo pagamento.</p>
       <div className="mt-4 flex flex-wrap gap-3">
+        {nextPayment ? <button type="button" className="min-h-11 rounded-xl bg-emerald-800 px-4 font-bold text-white" onClick={() => {
+          setBaseReceipt(createEmptyReceipt());
+          setReceiverName(nextPayment.receiver); setPayerName(nextPayment.payer); setReference(nextPayment.reference);
+          setAmountInput(''); setTotalInput(nextPayment.total); setPreviousInput(nextPayment.received);
+          setKind('parcial'); setDate(todayForReceipt());
+          setConfirmed(false); setError(''); setDownloaded(false); setNextPayment(null); setFromQuote(false);
+          document.getElementById('rec-valor')?.focus();
+        }}>Preparar recibo de outro Pix deste serviço</button> : null}
         <button type="button" className="min-h-11 rounded-xl bg-emerald-800 px-4 font-bold text-white" onClick={() => {
           setBaseReceipt(createEmptyReceipt());
           setPayerName(''); setAmountInput(''); setReference(''); setTotalInput(''); setPreviousInput('');
-          setConfirmed(false); setError(''); setDownloaded(false);
-          const now = new Date();
-          setDate(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
+          setConfirmed(false); setError(''); setDownloaded(false); setNextPayment(null); setFromQuote(false);
+          setKind('integral'); setDate(todayForReceipt());
           trackEvent('receipt_next_started', { landing_path: landingPath });
           document.getElementById('rec-payer')?.focus();
         }}>Criar próximo recibo</button>
@@ -133,6 +173,7 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
       form={
         <>
           <div><h3 className="text-xl font-extrabold text-slate-950">Recebeu um Pix? Registre o que foi pago.</h3><p className="mt-2 text-sm text-slate-600">Entrada, parcela ou saldo: o PDF mostra o recebimento e o que ainda falta pagar. Sem cadastro.</p></div>
+          {fromQuote ? <p role="status" className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-950">Dados do orçamento preenchidos. Escolha o tipo de pagamento e informe apenas o valor que realmente recebeu.</p> : null}
           <div><label htmlFor="rec-kind" className="mb-1 block text-sm font-semibold">O que você recebeu?</label><select id="rec-kind" className={livePreviewFieldClass} value={kind} onChange={event => { setKind(event.target.value as ReceiptPaymentKind); setConfirmed(false); trackEvent('receipt_payment_kind_selected', { payment_kind: event.target.value }); }}>{Object.entries(RECEIPT_PAYMENT_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></div>
           <div aria-live="polite">
             <div className="mb-2 flex items-center justify-between">

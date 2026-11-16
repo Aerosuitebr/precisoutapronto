@@ -75,7 +75,7 @@ import { isValidEmail, isValidPhone } from '@/lib/validators';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/analytics';
 import { buildApprovedQuoteShareWhatsAppUrl } from '@/lib/viral-loop';
-import { saveQuoteReceiptTransfer } from '@/lib/orcamentos/quote-to-receipt';
+import { saveQuoteReceiptTransfer, type QuoteReceiptTransfer } from '@/lib/orcamentos/quote-to-receipt';
 
 interface GeneratedLink {
   id: string;
@@ -84,6 +84,7 @@ interface GeneratedLink {
   clienteWhatsapp: string;
   clienteEmail: string;
   total: number;
+  receiptDraft?: QuoteReceiptTransfer;
   whatsappApiSent?: boolean;
   whatsappApiConfigured?: boolean;
   whatsappApiError?: string | null;
@@ -641,6 +642,7 @@ export function OrcamentosApp({
     if (!validateForm()) return;
     setGenerating(true);
     setEditingId(null);
+    const payload = payloadBody();
     try {
       savePrefs();
 
@@ -654,7 +656,7 @@ export function OrcamentosApp({
           const response = await fetch('/api/orcamentos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payloadBody())
+            body: JSON.stringify(payload)
           });
           const data = await response.json();
           if (!response.ok) {
@@ -700,6 +702,12 @@ export function OrcamentosApp({
         clienteWhatsapp,
         clienteEmail,
         total: result.total,
+        receiptDraft: {
+          receiverName: payload.profissionalNome,
+          payerName: payload.clienteNome,
+          amount: result.total,
+          itemNames: payload.itens.map((row) => row.nome)
+        },
         whatsappApiSent: Boolean(result.whatsapp?.sent),
         whatsappApiConfigured: Boolean(result.whatsapp?.configured),
         whatsappApiError: result.whatsapp?.error || null
@@ -734,10 +742,11 @@ export function OrcamentosApp({
     setUpdating(true);
     try {
       savePrefs();
+      const payload = payloadBody();
       const response = await fetch(`/api/orcamentos/${editingId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payloadBody())
+        body: JSON.stringify(payload)
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Não foi possível atualizar.');
@@ -748,7 +757,13 @@ export function OrcamentosApp({
         clienteNome,
         clienteWhatsapp,
         clienteEmail,
-        total: data.total
+        total: data.total,
+        receiptDraft: {
+          receiverName: payload.profissionalNome,
+          payerName: payload.clienteNome,
+          amount: data.total,
+          itemNames: payload.itens.map((row) => row.nome)
+        }
       };
       setGenerated(entry);
       await loadHistory();
@@ -852,19 +867,26 @@ export function OrcamentosApp({
     if (!opened) window.location.href = href;
   }
 
-  function convertApprovedToReceipt(item: OrcamentoHistoryItem) {
-    const saved = saveQuoteReceiptTransfer({
+  function convertApprovedToReceipt(item: OrcamentoHistoryItem, pix = false) {
+    openPaymentReceipt({
       receiverName: item.profissionalNome,
       payerName: item.clienteNome,
       amount: item.total,
       itemNames: item.itens.map((row) => row.nome)
-    });
-    if (!saved) {
-      setBannerError('Não foi possível preparar o recibo neste navegador.');
+    }, item.id, pix ? undefined : '/ferramentas/recibos?origem=orcamento_aprovado');
+  }
+
+  function openPaymentReceipt(
+    draft: QuoteReceiptTransfer,
+    quoteId: string,
+    destination = '/gerador-de-recibo?origem=orcamento#ferramenta'
+  ) {
+    if (!saveQuoteReceiptTransfer(draft)) {
+      toast('Não foi possível reaproveitar o orçamento neste navegador. Abra o gerador de recibo e preencha os dados.');
       return;
     }
-    trackEvent('quote_to_receipt_clicked', { source_document: item.id, item_count: item.itens.length });
-    window.location.href = '/ferramentas/recibos?origem=orcamento_aprovado';
+    trackEvent('quote_to_receipt_clicked', { source_document: quoteId, item_count: draft.itemNames.length });
+    window.location.href = destination;
   }
 
   function fillFromHistory(item: OrcamentoHistoryItem, mode: 'reuse' | 'edit') {
@@ -1656,9 +1678,7 @@ export function OrcamentosApp({
                   </div>
                   {whatsAppApiReady === false ? (
                     <p className="mt-2 text-sm leading-6 text-amber-800">
-                      Servidor WhatsApp (Evolution) ainda não configurado. Rode{' '}
-                      <code className="rounded bg-amber-100 px-1">npm run whatsapp:up</code> ou use o
-                      envio manual.
+                      O envio automático está indisponível. Use “Enviar no WhatsApp” para abrir a conversa com a mensagem pronta.
                     </p>
                   ) : generated.whatsappApiSent ? (
                     <p className="mt-2 text-sm leading-6 text-slate-600">
@@ -1697,6 +1717,14 @@ export function OrcamentosApp({
                       </a>
                     </Button>
                   </div>
+                  {generated.receiptDraft && generated.total > 0 ? (
+                    <div className="mt-4 border-t border-slate-200 pt-4">
+                      <p className="mb-2 text-sm text-slate-600">Quando o Pix cair, reaproveite os dados deste orçamento para emitir o recibo.</p>
+                      <Button variant="outline" onClick={() => openPaymentReceipt(generated.receiptDraft!, generated.id)}>
+                        <Receipt className="h-4 w-4" /> Recebi um Pix: preparar recibo
+                      </Button>
+                    </div>
+                  ) : null}
                   <ViralInviteShareRow className="mt-4" occupation={preset?.occupation} />
                   <NextActionsPanel sourceToolKey="orcamentos" active={Boolean(generated)} />
                 </div>
@@ -1780,6 +1808,7 @@ export function OrcamentosApp({
                         ) : item.status === 'approved' ? (
                           <>
                             <button type="button" className="text-xs font-black text-emerald-800 hover:underline" onClick={() => convertApprovedToReceipt(item)}>Gerar recibo</button>
+                            <button type="button" className="text-xs font-black text-emerald-800 hover:underline" onClick={() => convertApprovedToReceipt(item, true)}>Recibo de entrada ou saldo</button>
                             <button type="button" className="text-xs font-black text-blue-800 hover:underline" onClick={() => openApprovedShare(item)}>Compartilhar conquista</button>
                           </>
                         ) : null}
@@ -1890,6 +1919,9 @@ export function OrcamentosApp({
                         <>
                           <Button size="sm" className="bg-emerald-700 hover:bg-emerald-600" onClick={() => convertApprovedToReceipt(item)}>
                             <Receipt className="h-3.5 w-3.5" />Gerar recibo
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={() => convertApprovedToReceipt(item, true)}>
+                            Recibo de entrada ou saldo
                           </Button>
                           <Button size="sm" variant="outline" className="border-blue-200 text-blue-800" onClick={() => openApprovedShare(item)}>
                             <Share2 className="h-3.5 w-3.5" />Compartilhar conquista

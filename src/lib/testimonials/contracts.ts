@@ -1,5 +1,5 @@
 export const TESTIMONIAL_CONSENT_VERSION = 'testimonial-v1';
-const TOOLS = new Set(['orcamento', 'pix', 'recibo', 'proposta', 'contrato', 'curriculo', 'calculadora', 'outro']);
+const TOOLS = new Set(['orcamento', 'pix', 'recibo', 'proposta', 'contrato', 'curriculo', 'pdf', 'calculadora', 'outro']);
 const clean = (value: unknown, max: number) => typeof value === 'string' ? value.trim().replace(/\s+/g, ' ').slice(0, max) : '';
 
 export function parseTestimonialSubmission(input: unknown) {
