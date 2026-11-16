@@ -61,7 +61,6 @@ jobs:
       VULTR_HOST: ${{ secrets.VULTR_HOST }}
       VULTR_SSH_USER: ${{ secrets.VULTR_SSH_USER }}
       DEPLOY_ARCHIVE: precisoutapronto-${{ github.run_id }}-${{ github.run_attempt }}.tgz
-      DEPLOY_SCRIPT: precisoutapronto-deploy-${{ github.run_id }}-${{ github.run_attempt }}.sh
     steps:
       - uses: actions/checkout@v4
 
@@ -71,7 +70,9 @@ jobs:
             --exclude='*.pack' --exclude='.env' --exclude='.env.local' \
             --exclude='.env.production' --exclude='.env.staging' \
             --exclude='test-results' --exclude='playwright-report' --exclude='e2e-agent/artifacts' \
+            --exclude='./docs/divulgacao' --exclude='./reports' --exclude='./output' \
             -czf "/tmp/${DEPLOY_ARCHIVE}" .
+          du -h "/tmp/${DEPLOY_ARCHIVE}"
 
       - name: Deploy via SSH
         env:
@@ -83,16 +84,32 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "${SSH_PRIVATE_KEY}" > ~/.ssh/vultr_deploy
           chmod 600 ~/.ssh/vultr_deploy
-          SSH_OPTS="-i ~/.ssh/vultr_deploy -o StrictHostKeyChecking=accept-new -o BatchMode=yes -o ConnectTimeout=30 -o ConnectionAttempts=2 -o ServerAliveInterval=15 -o ServerAliveCountMax=3"
-          echo "==> Enviar pacote ao servidor (limite: 5 minutos)"
-          timeout 300 scp ${SSH_OPTS} "/tmp/${DEPLOY_ARCHIVE}" "${USER}@${HOST}:/tmp/${DEPLOY_ARCHIVE}"
+          SSH_OPTS=(-T -i ~/.ssh/vultr_deploy -o StrictHostKeyChecking=accept-new -o BatchMode=yes -o ConnectTimeout=30 -o ConnectionAttempts=2 -o ServerAliveInterval=15 -o ServerAliveCountMax=3)
+          TARGET="${USER}@${HOST}"
+          ARCHIVE="/tmp/${DEPLOY_ARCHIVE}"
+          CHECKSUM=$(sha256sum "${ARCHIVE}")
+          CHECKSUM=${CHECKSUM%% *}
 
-          echo "==> Enviar script de publicacao (limite: 2 minutos)"
-          timeout 120 scp ${SSH_OPTS} scripts/deploy/vultr-deploy-precisoutapronto.sh \
-            "${USER}@${HOST}:/tmp/${DEPLOY_SCRIPT}"
+          # Transfere pelo canal SSH sem depender do subsistema SFTP.
+          for attempt in 1 2; do
+            echo "==> Enviar e conferir pacote (tentativa ${attempt}/2, limite: 5 minutos)"
+            if timeout 300 ssh "${SSH_OPTS[@]}" "${TARGET}" \
+              "umask 077; cat > '${ARCHIVE}.part' && printf '%s  %s\n' '${CHECKSUM}' '${ARCHIVE}.part' | sha256sum -c - && mv -f '${ARCHIVE}.part' '${ARCHIVE}'" \
+              < "${ARCHIVE}"; then
+              break
+            else
+              status=$?
+              timeout 30 ssh "${SSH_OPTS[@]}" "${TARGET}" "rm -f '${ARCHIVE}.part' '${ARCHIVE}'" </dev/null || true
+              if [[ "${attempt}" == 2 ]]; then
+                echo "::error::Nao foi possivel enviar e verificar o pacote no Vultr (codigo ${status})."
+                exit "${status}"
+              fi
+            fi
+          done
+
           echo "==> Executar publicacao no servidor"
-          ssh ${SSH_OPTS} "${USER}@${HOST}" \
-            "chmod +x /tmp/${DEPLOY_SCRIPT} && INSTALL_DIR=/opt/precisoutapronto TARBALL=/tmp/${DEPLOY_ARCHIVE} bash /tmp/${DEPLOY_SCRIPT}; status=\$?; rm -f /tmp/${DEPLOY_ARCHIVE} /tmp/${DEPLOY_SCRIPT}; exit \$status"
+          ssh "${SSH_OPTS[@]}" "${TARGET}" \
+            "umask 077; trap 'rm -f \"${ARCHIVE}\" \"${ARCHIVE}.sh\"' EXIT; tar -xOzf '${ARCHIVE}' ./scripts/deploy/vultr-deploy-precisoutapronto.sh > '${ARCHIVE}.sh' && INSTALL_DIR=/opt/precisoutapronto TARBALL='${ARCHIVE}' bash '${ARCHIVE}.sh'" </dev/null
 
   verify:
     name: Verificar producao publicada
