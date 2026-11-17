@@ -1,10 +1,9 @@
-import { HomeIntentHero } from '@/components/marketing/home-intent-hero';
+import { HomeIntentHero, HomeQuoteSection } from '@/components/marketing/home-intent-hero';
 import { ProfessionalStartGuide } from '@/components/marketing/professional-start-guide';
 import Link from 'next/link';
 import { ApprovedServiceStories } from '@/components/marketing/approved-service-stories';
 import { ArrowRight, Check, CheckCircle2, FileCheck2, MessageCircle, ShieldCheck } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
-import { UsefulToolsStrip } from '@/components/marketing/useful-tools-strip';
 import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 import { ServiceDifferences } from '@/components/marketing/service-differences';
 
@@ -31,12 +30,12 @@ const steps = [
 export function LandingPage() {
   return <div className="bg-white text-[#101828]">
     <header className="sticky top-8 z-50 border-b border-blue-100 bg-white/95 shadow-[0_14px_38px_-28px_rgba(3,31,75,.55)] backdrop-blur-xl">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:h-24 sm:px-6 lg:h-28 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:h-24 sm:px-6 lg:h-28 lg:px-8">
         <Link href="/" className="min-w-0 flex-1" aria-label="Precisou, Tá Pronto, página inicial">
           <Logo variant="marketing" className="h-16 max-w-[210px] sm:h-20 sm:max-w-[270px] lg:h-24 lg:max-w-[330px]" />
         </Link>
         <nav aria-label="Navegação principal" className="hidden items-center gap-5 text-sm font-bold text-slate-600 lg:flex"><a href="#ferramentas" className="hover:text-blue-700">Ferramentas</a><a href="#como-funciona" className="hover:text-blue-700">Como funciona</a><a href="#para-profissionais" className="hover:text-blue-700">Para profissionais</a><a href="#depoimentos" className="hover:text-blue-700">Depoimentos</a><Link href="/planos" className="hover:text-blue-700">Planos</Link></nav>
-        <div className="flex items-center gap-2"><Link href="/login" className="hidden px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-950 sm:block">Entrar</Link><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#155eef] px-4 text-sm font-black text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-[#004eeb]">Criar orçamento <ArrowRight className="h-4 w-4" /></Link></div>
+        <div className="flex items-center gap-2"><Link href="/login" className="hidden px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-950 sm:block">Entrar</Link><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#155eef] px-4 text-sm font-black text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-[#004eeb]">Orçamento no WhatsApp <ArrowRight className="hidden h-4 w-4 sm:block" /></Link></div>
       </div>
       <nav aria-label="Navegação rápida no celular" className="flex flex-wrap justify-center gap-x-3 border-t border-slate-100 px-3 py-2 text-xs font-bold text-slate-600 lg:hidden"><a href="#ferramentas" className="py-2">Ferramentas</a><a href="#como-funciona" className="py-2">Como funciona</a><a href="#para-profissionais" className="py-2">Profissionais</a><a href="#depoimentos" className="py-2">Depoimentos</a><Link href="/planos" className="py-2">Planos</Link></nav>
       <div className="h-1 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff]" aria-hidden />
@@ -44,8 +43,8 @@ export function LandingPage() {
 
     <main>
       <HomeIntentHero />
+      <HomeQuoteSection />
       <ProfessionalStartGuide />
-      <div id="ferramentas" className="scroll-mt-44"><UsefulToolsStrip homeDiscovery title="Ferramentas para o serviço e outras tarefas" /></div>
 
       <section id="como-funciona" className="scroll-mt-44 py-20 sm:py-28"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.18em] text-[#155eef]">Um fluxo. Sem enrolação.</p><h2 className="precisoutapronto-display mt-4 text-4xl font-black tracking-[-.05em] sm:text-6xl">Da conversa ao pagamento.</h2><p className="mt-5 text-lg leading-8 text-slate-600">Pare de procurar mensagem, somar valor na calculadora e mandar o Pix separado.</p></div><ol className="mt-12 grid gap-5 lg:grid-cols-3">{steps.map(step => <li key={step.number} className="group rounded-[1.75rem] border border-slate-200 bg-[#f8faff] p-7 transition hover:-translate-y-1 hover:border-blue-200 hover:bg-white hover:shadow-xl"><div className="flex items-center justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#155eef] text-white"><step.icon className="h-6 w-6" /></span><span className="text-4xl font-black text-slate-500">{step.number}</span></div><h3 className="mt-8 text-2xl font-black">{step.title}</h3><p className="mt-3 text-base leading-7 text-slate-600">{step.text}</p></li>)}</ol></div></section>
 

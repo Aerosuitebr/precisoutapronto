@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ToolStartBoundary } from '@/components/analytics/tool-start-boundary';
 import { OrcamentosApp } from '@/components/orcamentos/orcamentos-app';
 import { SeoLandingPage } from '@/components/marketing/seo-landing-page';
 import { SEO_LANDINGS } from '@/lib/seo/landing-content';
@@ -87,7 +88,9 @@ export default function OrcamentoComPixPage() {
             className="scroll-mt-24 border-b border-slate-200 bg-[image:var(--precisoutapronto-page-bg)]"
           >
             <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
-              <OrcamentosApp publicAccess />
+              <ToolStartBoundary toolName="orcamentos" landingPath={content.path}>
+                <OrcamentosApp publicAccess />
+              </ToolStartBoundary>
             </div>
           </section>
         }

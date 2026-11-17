@@ -52,6 +52,7 @@ import { cn } from '@/lib/utils';
 import { consumeAssistantBriefing, resumeFromBriefing } from '@/lib/assistant-briefing';
 import { applyProfileToResume, type ProfileMemory } from '@/lib/profile-memory';
 import { loadProfileMemory, trackProfileMemoryApplied } from '@/lib/profile-memory-client';
+import { trackEvent } from '@/lib/analytics';
 
 type EditorTab = 'dados' | 'experiencia' | 'formacao' | 'cursos' | 'extras';
 
@@ -97,7 +98,9 @@ export function CurriculoApp() {
   const [touchedWebsite, setTouchedWebsite] = useState(false);
 
   useEffect(() => {
-    Promise.all([loadResumes(), loadProfileMemory()]).then(([stored, profile]) => {
+    let active = true;
+    Promise.all([loadResumes().catch(() => listResumes()), loadProfileMemory()]).then(([stored, profile]) => {
+      if (!active) return;
       profileMemoryRef.current = profile;
       const briefing = consumeAssistantBriefing('curriculo');
       if (briefing) {
@@ -124,11 +127,13 @@ export function CurriculoApp() {
       setActiveId(saved.id);
       setResume(saved);
     }).catch(() => {
+      if (!active) return;
       const saved = saveResume(createEmptyResume());
       setResumes([saved]);
       setActiveId(saved.id);
       setResume(saved);
     });
+    return () => { active = false; };
   }, []);
 
   useEffect(() => {
@@ -279,7 +284,7 @@ export function CurriculoApp() {
       const safeName = (resume.personal.fullName || resume.title || 'curriculo').replace(/[^\w\-]+/g, '_');
       const outcome = await performBillableAction(
         { toolId: 'curriculo', artifactId: resume.id, action: 'download' },
-        () => exportElementToPdf(previewRef.current!, `${safeName}.pdf`, { branded: brandDocuments })
+        () => exportElementToPdf(previewRef.current!, `${safeName}.pdf`, { branded: brandDocuments, toolId: 'curriculo' })
       );
       if (!outcome.allowed) {
         setError(outcome.reason || 'Não foi possível exportar o PDF.');
@@ -287,6 +292,7 @@ export function CurriculoApp() {
         return;
       }
       refreshAuth();
+      trackEvent('document_completed', { tool_name: 'curriculo', output: 'pdf' });
       afterPdfExport('currículo', 'curriculo');
     } catch {
       setError('Não foi possível gerar o PDF. Tente novamente.');
@@ -419,6 +425,7 @@ export function CurriculoApp() {
                   key={template.id}
                   type="button"
                   onClick={() => updateResume({ templateId: template.id })}
+                  aria-pressed={active}
                   className={cn(
                     'rounded-2xl border p-3 text-left transition-all sm:p-4',
                     active

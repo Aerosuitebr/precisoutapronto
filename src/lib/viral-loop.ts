@@ -1,6 +1,7 @@
 /** Loops de viralização: links e textos compartilháveis. */
 
 import { BRAND_DISPLAY_NAME, BRAND_HOST } from '@/lib/brand';
+import { publicToolEntry } from '@/lib/seo/public-tool-entry';
 
 export const VIRAL_SITE_HOST = BRAND_HOST;
 
@@ -12,14 +13,6 @@ export function getViralBaseUrl() {
     return window.location.origin.replace(/\/$/, '');
   }
   return `https://${VIRAL_SITE_HOST}`;
-}
-
-export function getViralSiteHost() {
-  try {
-    return new URL(getViralBaseUrl()).hostname || VIRAL_SITE_HOST;
-  } catch {
-    return VIRAL_SITE_HOST;
-  }
 }
 
 export function viralHomeUrl(utmCampaign: string) {
@@ -74,11 +67,20 @@ export function viralOrcamentoToolUrl() {
 }
 
 export function viralPdfFooterLabel() {
-  return `Documento gerado em segundos por ${getViralSiteHost()}. Crie o seu grátis.`;
+  return `Criado gratuitamente com ${BRAND_DISPLAY_NAME}. Crie o seu também.`;
 }
 
-export function viralPdfFooterUrl() {
-  return viralHomeUrl('pdf_footer');
+export function viralDocumentToolUrl(toolId: string, campaign: string) {
+  const entry = publicToolEntry(toolId, new URLSearchParams({
+    utm_source: 'shared_document',
+    utm_medium: 'referral',
+    utm_campaign: campaign
+  }));
+  return entry ? `${getViralBaseUrl()}${entry}` : viralHomeUrl(campaign);
+}
+
+export function viralPdfFooterUrl(toolId = '') {
+  return viralDocumentToolUrl(toolId, 'pdf_footer');
 }
 
 /** Bloco de marca para WhatsApp / e-mail (plano grátis). */
@@ -125,15 +127,15 @@ export function buildViralInviteWhatsAppUrl() {
 }
 
 /** Texto sugerido após baixar um PDF (currículo, proposta, etc.). */
-export function buildViralPdfShareWhatsAppText(docLabel: string) {
+export function buildViralPdfShareWhatsAppText(docLabel: string, toolId = '') {
   return (
     `Gerei meu ${docLabel} com ${BRAND_DISPLAY_NAME}. Ficou profissional em minutos.\n` +
-    `Faça o seu grátis: ${viralHomeUrl('pdf_whatsapp')}`
+    `Faça o seu grátis: ${viralDocumentToolUrl(toolId, 'pdf_whatsapp')}`
   );
 }
 
-export function buildViralPdfShareWhatsAppUrl(docLabel: string) {
-  return `https://wa.me/?text=${encodeURIComponent(buildViralPdfShareWhatsAppText(docLabel))}`;
+export function buildViralPdfShareWhatsAppUrl(docLabel: string, toolId = '') {
+  return `https://wa.me/?text=${encodeURIComponent(buildViralPdfShareWhatsAppText(docLabel, toolId))}`;
 }
 
 /**

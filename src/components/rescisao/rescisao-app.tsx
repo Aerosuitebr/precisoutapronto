@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Calculator,
   Copy,
@@ -52,6 +52,7 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
   const [feriasVencidas, setFeriasVencidas] = useState(false);
   const [avisoIndenizado, setAvisoIndenizado] = useState(true);
   const [whatsAppOpen, setWhatsAppOpen] = useState(false);
+  const measuredResult = useRef(false);
 
   const salario = parseCurrency(salarioInput);
   const saldoFgts = parseCurrency(fgtsInput);
@@ -83,6 +84,12 @@ export function RescisaoApp({ publicAccess = false }: { publicAccess?: boolean }
     avisoIndenizado,
     saldoFgts,
   ]);
+
+  useEffect(() => {
+    if (!resultado || measuredResult.current) return;
+    measuredResult.current = true;
+    trackEvent('tool_completed', { tool_name: 'rescisao', output: 'estimate' });
+  }, [resultado]);
 
   function resumoTexto() {
     if (!resultado) return "";

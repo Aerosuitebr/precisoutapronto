@@ -18,6 +18,7 @@ import { consumeQuoteReceiptTransfer } from '@/lib/orcamentos/quote-to-receipt';
 import { createEmptyReceipt } from '@/lib/recibos/defaults';
 import { RECEIPT_PAYMENT_LABELS, parseReceiptMoney, receiptPaymentBreakdown, type ReceiptPaymentKind } from '@/lib/recibos/payment-breakdown';
 import type { ReceiptTemplateId } from '@/lib/recibos/types';
+import { buildViralPdfShareWhatsAppUrl } from '@/lib/viral-loop';
 
 const TEMPLATES: { id: ReceiptTemplateId; name: string }[] = [
   { id: 'profissional', name: 'Profissional' },
@@ -124,7 +125,7 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
         { toolId: 'recibos', artifactId: previewData.id, action: 'download' },
         async () => {
           const { exportElementToPdf } = await import('@/lib/curriculo/pdf');
-          await exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments });
+          await exportElementToPdf(exportRef.current!, 'recibo.pdf', { branded: brandDocuments, toolId: 'recibos' });
         }
       );
       if (!outcome.allowed) {
@@ -165,6 +166,7 @@ export function ReciboLivePreview({ landingPath = '/gerador-de-recibo' }: { land
           trackEvent('receipt_next_started', { landing_path: landingPath });
           document.getElementById('rec-payer')?.focus();
         }}>Criar próximo recibo</button>
+        <a href={buildViralPdfShareWhatsAppUrl('recibo', 'recibos')} target="_blank" rel="noreferrer" onClick={() => trackEvent('document_share_invite_clicked', { tool_id: 'recibos', channel: 'whatsapp' })} className="inline-flex min-h-11 items-center rounded-xl border border-emerald-300 px-4 font-bold text-emerald-900">Indicar ferramenta no WhatsApp</a>
         <Link href="/cadastro" className="inline-flex min-h-11 items-center rounded-xl border border-emerald-300 px-4 font-bold text-emerald-900">Criar conta grátis para histórico</Link>
       </div>
       <p className="mt-3 text-xs text-slate-600">Este PDF não é salvo no histórico automaticamente. Guarde o arquivo baixado.</p>

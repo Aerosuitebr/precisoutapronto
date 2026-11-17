@@ -11,10 +11,11 @@ import {
 import { SAMPLE_RESUME } from '@/lib/curriculo/defaults';
 import type { ResumeTemplateId } from '@/lib/curriculo/types';
 import { RESUME_TEMPLATES } from '@/lib/curriculo/templates';
+import { saveAssistantBriefing } from '@/lib/assistant-briefing';
 
 export function CurriculoLivePreview() {
-  const [fullName, setFullName] = useState(SAMPLE_RESUME.personal.fullName);
-  const [headline, setHeadline] = useState(SAMPLE_RESUME.personal.headline);
+  const [fullName, setFullName] = useState('');
+  const [headline, setHeadline] = useState('');
   const [experience, setExperience] = useState('');
   const [templateId, setTemplateId] = useState<ResumeTemplateId>(SAMPLE_RESUME.templateId);
 
@@ -22,13 +23,16 @@ export function CurriculoLivePreview() {
     () => ({
       ...SAMPLE_RESUME,
       templateId,
+      experiences: experience.trim()
+        ? [{ ...SAMPLE_RESUME.experiences[0], description: experience.trim() }, ...SAMPLE_RESUME.experiences.slice(1)]
+        : SAMPLE_RESUME.experiences,
       personal: {
         ...SAMPLE_RESUME.personal,
         fullName: fullName || SAMPLE_RESUME.personal.fullName,
         headline: headline || SAMPLE_RESUME.personal.headline
       }
     }),
-    [fullName, headline, templateId]
+    [fullName, headline, experience, templateId]
   );
 
   const checklist = [
@@ -43,6 +47,34 @@ export function CurriculoLivePreview() {
     <LiveToolPreviewLayout
       form={
         <>
+          <div>
+            <p className="mb-2 text-sm font-semibold text-slate-800">Escolha um modelo</p>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3" role="group" aria-label="Comparar modelos">
+              {RESUME_TEMPLATES.map((template) => (
+                <button
+                  key={template.id}
+                  type="button"
+                  onClick={() => setTemplateId(template.id)}
+                  aria-pressed={templateId === template.id}
+                  className={`overflow-hidden rounded-xl border-2 bg-white p-1 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+                    templateId === template.id ? 'border-sky-600' : 'border-slate-200 hover:border-slate-300'
+                  }`}
+                >
+                  <div aria-hidden className="pointer-events-none aspect-[3/4] w-full overflow-hidden rounded-lg bg-slate-50">
+                    <div className="origin-top-left scale-[0.22] sm:scale-[0.24]">
+                      <div className="w-[420px]">
+                        <ResumePreview data={{ ...SAMPLE_RESUME, templateId: template.id }} />
+                      </div>
+                    </div>
+                  </div>
+                  <span className="mt-1 block truncate text-center text-[11px] font-semibold text-slate-700 sm:text-xs">
+                    {template.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div aria-live="polite">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wide text-slate-500">Seu progresso</span>
@@ -122,65 +154,28 @@ export function CurriculoLivePreview() {
             </p>
           </div>
 
-          <div>
-            <span className="mb-2 block text-sm font-semibold text-slate-800">Modelo</span>
-            <div className="flex flex-wrap gap-2">
-              {RESUME_TEMPLATES.map((template) => (
-                <button
-                  key={template.id}
-                  type="button"
-                  onClick={() => setTemplateId(template.id)}
-                  aria-pressed={templateId === template.id}
-                  className={`rounded-full border px-3 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
-                    templateId === template.id
-                      ? 'border-sky-600 bg-sky-600 text-white'
-                      : 'border-slate-300 bg-white text-slate-700 hover:border-sky-400 hover:text-sky-700'
-                  }`}
-                >
-                  {template.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <Link
             href="/ferramentas/curriculo"
+            onClick={() => {
+              try {
+                saveAssistantBriefing({
+                  type: 'curriculo',
+                  answers: { name: fullName.trim(), case: headline.trim(), achievement: experience.trim(), template: templateId }
+                });
+              } catch {
+                // Permite abrir o editor mesmo com o armazenamento bloqueado.
+              }
+            }}
             className="block w-full rounded-lg bg-sky-600 px-4 py-3.5 text-center text-base font-bold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
           >
             Abrir gerador e baixar PDF
           </Link>
           <p className="text-center text-xs font-medium text-slate-500">
-            Use grátis no navegador. Conta só depois de duas gerações.
+            Continue no editor com o modelo e os dados preenchidos aqui.
           </p>
         </>
       }
       preview={<ResumePreview data={previewData} />}
-      previewAside={
-        <div className="grid grid-cols-3 gap-2 sm:gap-3" role="group" aria-label="Comparar modelos">
-          {RESUME_TEMPLATES.map((template) => (
-            <button
-              key={template.id}
-              type="button"
-              onClick={() => setTemplateId(template.id)}
-              aria-pressed={templateId === template.id}
-              className={`overflow-hidden rounded-xl border-2 bg-white p-1 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
-                templateId === template.id ? 'border-sky-600' : 'border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="pointer-events-none aspect-[3/4] w-full overflow-hidden rounded-lg bg-slate-50">
-                <div className="origin-top-left scale-[0.22] sm:scale-[0.24]">
-                  <div className="w-[420px]">
-                    <ResumePreview data={{ ...SAMPLE_RESUME, templateId: template.id }} />
-                  </div>
-                </div>
-              </div>
-              <span className="mt-1 block truncate text-center text-[11px] font-semibold text-slate-700 sm:text-xs">
-                {template.name}
-              </span>
-            </button>
-          ))}
-        </div>
-      }
     />
   );
 }

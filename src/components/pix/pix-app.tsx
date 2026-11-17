@@ -152,6 +152,7 @@ export function PixApp({ publicAccess = false }: { publicAccess?: boolean } = {}
         return;
       }
       refreshAuth();
+      trackEvent('tool_completed', { tool_name: 'pix', output: 'pix_code' });
     } catch (actionError) {
       setError(actionError instanceof Error ? actionError.message : 'Não foi possível concluir a ação.');
     } finally {

@@ -3,19 +3,26 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowRight, Search } from 'lucide-react';
-import { trackEvent } from '@/lib/analytics';
-import { rankTools, toolsCatalog } from '@/lib/tools-catalog';
-import { publicLandingForToolId, toPublicToolHref } from '@/lib/seo/public-tool-landings';
+import { setLandingAttribution, trackEvent } from '@/lib/analytics';
+import { rankTools } from '@/lib/tools-catalog';
+import { toPublicToolHref } from '@/lib/seo/public-tool-landings';
+import { publicToolEntry } from '@/lib/seo/public-tool-entry';
+
+const pdfTasks = [
+  { pattern: /\b(juntar|unir|mesclar|combinar)\b/, label: 'Juntar PDFs', href: '/juntar-pdf-online#tool' },
+  { pattern: /\b(dividir|separar|extrair)\b/, label: 'Dividir PDF', href: '/dividir-pdf-online#tool' },
+  { pattern: /\b(comprimir|compactar|reduzir)\b/, label: 'Comprimir PDF', href: '/comprimir-pdf-online#tool' }
+];
 
 function normalize(value: string) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 }
 
 function destination(toolId: string, href: string) {
-  return publicLandingForToolId(toolId) || toPublicToolHref(href);
+  return publicToolEntry(toolId) || toPublicToolHref(href);
 }
 
-export function HomeQuickSearch() {
+export function HomeQuickSearch({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
@@ -23,16 +30,19 @@ export function HomeQuickSearch() {
   const normalized = normalize(query);
   const suggestions = [
     { label: 'Recibo', href: '/gerador-de-recibo#ferramenta' },
-    { label: 'Rescisão', href: '/calculadora-de-rescisao#ferramenta' },
+    { label: 'Rescisão', href: '/calculadora-de-rescisao' },
     { label: 'Férias', href: '/calculadora-de-ferias#ferramenta' },
     { label: 'Orçamento de pintura', href: '/orcamento-para/pintor#montar' }
   ];
   const results = useMemo(() => {
-    const tools = normalized ? rankTools(normalized) : toolsCatalog.filter((tool) => tool.status !== 'soon');
-    return tools.slice(0, 5).map((tool) => ({ label: tool.name, href: destination(tool.id, tool.href) }));
+    const tools = normalized ? rankTools(normalized) : [];
+    const matches = /\bpdfs?\b/.test(normalized) ? pdfTasks.filter(({ pattern }) => pattern.test(normalized)) : [];
+    return [...matches, ...tools.map((tool) => ({ label: tool.name, href: destination(tool.id, tool.href) }))].slice(0, 5);
   }, [normalized]);
+  const expanded = open && Boolean(normalized);
 
   function go(href: string, label: string, source: 'submit' | 'suggestion') {
+    if (compact) setLandingAttribution('/');
     trackEvent('home_search_selected', { result: label, destination: href, source });
     setOpen(false);
     router.push(href);
@@ -40,6 +50,10 @@ export function HomeQuickSearch() {
 
   function submit(event: FormEvent) {
     event.preventDefault();
+    if (!normalized) {
+      router.push('/recursos');
+      return;
+    }
     const result = results[active >= 0 ? active : 0];
     if (result) go(result.href, result.label, 'submit');
     else {
@@ -61,17 +75,17 @@ export function HomeQuickSearch() {
             onFocus={() => setOpen(true)}
             role="combobox"
             aria-autocomplete="list"
-            aria-expanded={open && Boolean(query.trim())}
-            aria-controls="home-search-results"
-            aria-activedescendant={open && active >= 0 ? `home-result-${active}` : undefined}
+            aria-expanded={expanded}
+            aria-controls={expanded ? 'home-search-results' : undefined}
+            aria-activedescendant={expanded && active >= 0 ? `home-result-${active}` : undefined}
             onKeyDown={event => {
               if (event.key === "Escape") { setOpen(false); setActive(-1); }
-              if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              if (normalized && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
                 event.preventDefault(); setOpen(true);
                 setActive(current => results.length ? (event.key === "ArrowDown" ? (current + 1) % results.length : (current <= 0 ? results.length - 1 : current - 1)) : -1);
               }
             }}
-            placeholder="Ex.: calcular rescisão de diarista, emitir recibo, orçamento de pintura..."
+            placeholder="Ex.: criar currículo, editar PDF..."
             autoComplete="off"
             className="min-w-0 flex-1 bg-transparent px-2 py-2.5 text-base font-medium text-slate-950 outline-none placeholder:text-slate-600 sm:px-3"
           />
@@ -81,15 +95,15 @@ export function HomeQuickSearch() {
           </button>
         </div>
       </form>
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+      {!compact && <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-600">
         <span className="mr-1 font-semibold">Experimente:</span>
         {suggestions.map((item) => (
           <button key={item.href} type="button" onClick={() => go(item.href, item.label, 'suggestion')} className="min-h-11 rounded-full border border-[#0b5cff]/20 bg-white px-4 py-2 font-bold text-[#031f4b] transition hover:border-[#0b5cff]/50 hover:bg-[#eef5ff] hover:text-[#0b5cff] sm:min-h-0 sm:px-3 sm:py-1.5">
             {item.label}
           </button>
         ))}
-      </div>
-      {open && query.trim() ? (
+      </div>}
+      {expanded ? (
         <div className="absolute z-30 mt-2 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-2 text-slate-950 shadow-2xl" id="home-search-results" role="listbox" aria-label="Ferramentas encontradas">
           {results.length ? results.map((item, index) => (
             <button key={item.href} type="button" id={`home-result-${index}`} role="option" aria-selected={active === index} tabIndex={-1} onMouseDown={event => event.preventDefault()} onClick={() => go(item.href, item.label, 'suggestion')} className={`flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-bold hover:bg-[#eef5ff] hover:text-[#0b5cff] ${active === index ? "bg-blue-50 text-blue-700" : ""}`}>

@@ -34,6 +34,7 @@ import { Select } from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
 import { buildPrecisouTaProntoDownloadName } from '@/lib/download-filename';
+import { trackEvent } from '@/lib/analytics';
 import {
   PAGE_PRESETS,
   blankPageThumbnail,
@@ -543,6 +544,7 @@ export function EditorPdfApp({
         onRasterizedPage: () => { rasterized = true; }
       });
       downloadBytes(bytes as Uint8Array, buildPrecisouTaProntoDownloadName('pdf'));
+      trackEvent('tool_completed', { tool_name: 'editor-pdf', output: 'pdf' });
       toast(rasterized ? t.toastPdfRasterized : t.toastPdfSuccess);
     } catch (err) {
       console.error(err);

@@ -9,7 +9,7 @@ import { trackEvent } from '@/lib/analytics';
 import { emitClientProductEvent } from '@/lib/events/client-emitter';
 import {
   buildViralPdfShareWhatsAppUrl,
-  viralHomeUrl
+  viralDocumentToolUrl
 } from '@/lib/viral-loop';
 
 export function ViralPdfShareModal({
@@ -56,8 +56,8 @@ export function ViralPdfShareModal({
     <Modal
       open={open}
       onClose={onClose}
-      title="PDF pronto. Espalhe o link"
-      description={`Seu ${docLabel} já baixou. Um toque no WhatsApp ajuda o Precisou, Tá Pronto a crescer.`}
+      title="PDF pronto"
+      description={`O download do seu ${docLabel} foi iniciado. Você pode indicar a ferramenta pelo WhatsApp.`}
       size="md"
       footer={
         <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-end">
@@ -70,13 +70,16 @@ export function ViralPdfShareModal({
           </Button>
           <Button asChild className="bg-emerald-600 hover:bg-emerald-500">
             <a
-              href={buildViralPdfShareWhatsAppUrl(docLabel)}
+              href={buildViralPdfShareWhatsAppUrl(docLabel, toolKey)}
               target="_blank"
               rel="noreferrer"
-              onClick={onClose}
+              onClick={() => {
+                trackEvent('document_share_invite_clicked', { tool_id: toolKey, channel: 'whatsapp' });
+                onClose();
+              }}
             >
               <MessageCircle className="h-4 w-4" />
-              Mandar no WhatsApp
+              Indicar no WhatsApp
             </a>
           </Button>
         </div>
@@ -85,17 +88,16 @@ export function ViralPdfShareModal({
       <p className="flex items-start gap-2 rounded-xl bg-slate-50 px-3 py-3 text-sm text-slate-600">
         <Share2 className="mt-0.5 h-4 w-4 shrink-0 text-sky-700" />
         <span>
-          O PDF gratuito leva a identificação Precisou, Tá Pronto no rodapé. Quem receber pode criar o
-          dele em{' '}
+          A indicação envia o{' '}
           <a
             className="font-semibold text-sky-700 underline-offset-2 hover:underline"
-            href={viralHomeUrl('pdf_modal')}
+            href={viralDocumentToolUrl(toolKey, 'pdf_modal')}
             target="_blank"
             rel="noreferrer"
           >
-            precisoutapronto.com.br
+            link da ferramenta
           </a>
-          . Remova a marca por R$ 30,00 por 30 dias na sua conta.
+          . Seus dados ficam no seu documento.
         </span>
       </p>
       {showReferral && referral ? (
@@ -143,7 +145,7 @@ export function useViralPdfShare() {
     setDocLabel(label);
     setToolKey(sourceToolKey);
     setOpen(true);
-    toast('PDF baixado. Compartilhe e divulgue o Precisou, Tá Pronto!');
+    toast('Download do PDF iniciado.');
   }
 
   return {

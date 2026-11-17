@@ -375,7 +375,7 @@ export function RecibosApp() {
       const safeName = (receipt.title || 'recibo').replace(/[^\w\-]+/g, '_');
       const outcome = await performBillableAction(
         { toolId: 'recibos', artifactId: receipt.id, action: 'download' },
-        () => exportElementToPdf(previewRef.current!, `${safeName}.pdf`, { branded: brandDocuments })
+        () => exportElementToPdf(previewRef.current!, `${safeName}.pdf`, { branded: brandDocuments, toolId: 'recibos' })
       );
       if (!outcome.allowed) {
         setError(outcome.reason || 'Não foi possível exportar o PDF.');

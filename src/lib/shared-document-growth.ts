@@ -1,4 +1,5 @@
 import { PUBLIC_TOOL_LANDINGS } from '@/lib/seo/public-tool-landings';
+import { publicToolEntry } from '@/lib/seo/public-tool-entry';
 
 interface SharedDocumentCta {
   href: string;
@@ -53,5 +54,22 @@ export function getSharedDocumentCta(toolId: string) {
     utm_campaign: 'document_sharing',
     utm_content: toolId
   });
-  return { ...cta, href: `${cta.href}?${query.toString()}` };
+  return { ...cta, href: publicToolEntry(toolId, query) || `${cta.href}?${query.toString()}` };
+}
+
+const shareTitles: Record<string, string> = {
+  contratos: 'Você recebeu um contrato',
+  curriculo: 'Você recebeu um currículo',
+  recibos: 'Você recebeu um recibo',
+  propostas: 'Você recebeu uma proposta'
+};
+
+export function getSharedDocumentPreview(toolId?: string) {
+  return {
+    title: (toolId && shareTitles[toolId]) || 'Documento compartilhado',
+    description: 'Abra o link para conferir o documento no Precisou, Tá Pronto.',
+    image: toolId === 'recibos' || toolId === 'curriculo'
+      ? `${PUBLIC_TOOL_LANDINGS[toolId]}/opengraph-image`
+      : '/opengraph-image'
+  };
 }

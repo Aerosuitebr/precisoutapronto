@@ -46,6 +46,11 @@ test('Pix landing opens entry receipt, preserves attribution and exports actual 
   await download.saveAs(file);
   const pdf = await PDFDocument.load(await readFile(file));
   expect(pdf.getPageCount()).toBeGreaterThan(0);
+  const invite = page.getByRole('link', { name: 'Indicar ferramenta no WhatsApp' });
+  const inviteText = new URL((await invite.getAttribute('href'))!).searchParams.get('text');
+  expect(inviteText).toContain('/gerador-de-recibo?utm_source=shared_document');
+  expect(inviteText).not.toContain('Cliente de teste');
+  expect(inviteText).not.toContain('Prestador de teste');
   await expect.poll(() => page.evaluate(() => window.dataLayer)).toEqual(expect.arrayContaining([
     ['event', 'document_completed', expect.objectContaining({ tool_name: 'recibos', payment_kind: 'entrada', landing_path: '/recibos/recibo-pagamento-pix' })]
   ]));

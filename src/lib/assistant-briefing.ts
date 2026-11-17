@@ -1,6 +1,6 @@
 import { createEmptyContrato } from '@/lib/contratos/defaults';
 import type { ContractData } from '@/lib/contratos/types';
-import { createEmptyResume } from '@/lib/curriculo/defaults';
+import { createEmptyResume, createExperience } from '@/lib/curriculo/defaults';
 import type { ResumeData } from '@/lib/curriculo/types';
 import { createEmptyReceipt } from '@/lib/recibos/defaults';
 import type { ReceiptData } from '@/lib/recibos/types';
@@ -50,15 +50,20 @@ export function contractFromBriefing(briefing: AssistantBriefing): ContractData 
 }
 
 export function resumeFromBriefing(briefing: AssistantBriefing): ResumeData {
-  const draft = createEmptyResume();
+  const template = briefing.answers.template;
+  const draft = createEmptyResume(template === 'modern' || template === 'academic' ? template : 'professional');
   return {
     ...draft,
     title: briefing.answers.case ? `Currículo · ${briefing.answers.case.slice(0, 70)}` : draft.title,
     personal: {
       ...draft.personal,
+      fullName: briefing.answers.name || '',
       headline: briefing.answers.case || '',
       summary: briefing.answers.payment || ''
     },
+    experiences: briefing.answers.achievement
+      ? [createExperience({ description: briefing.answers.achievement })]
+      : draft.experiences,
     skills: (briefing.answers.risk || '').split(/[,;\n]/).map((item) => item.trim()).filter(Boolean)
   };
 }

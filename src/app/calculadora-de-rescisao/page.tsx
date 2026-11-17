@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { RescisaoApp } from '@/components/rescisao/rescisao-app';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { SiteHeader } from '@/components/marketing/site-header';
+import { ToolStartBoundary } from '@/components/analytics/tool-start-boundary';
 import {
   CalculatorContentSections,
   CalculatorJsonLd,
@@ -51,7 +52,9 @@ export default function CalculadoraDeRescisaoPage() {
       <SiteHeader />
       <main className="bg-[image:var(--precisoutapronto-page-bg)]">
         <div className="mx-auto max-w-[1600px] p-3 sm:p-5 lg:px-8 lg:py-7">
-          <RescisaoApp publicAccess />
+          <ToolStartBoundary toolName="rescisao" landingPath={seo.path}>
+            <RescisaoApp publicAccess />
+          </ToolStartBoundary>
           <CalculatorContentSections calculator={seo} />
         </div>
       </main>

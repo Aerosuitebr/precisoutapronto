@@ -2,6 +2,7 @@ import { buildPrecisouTaProntoDownloadName } from '@/lib/download-filename';
 import { viralPdfFooterLabel, viralPdfFooterUrl } from '@/lib/viral-loop';
 
 export type ExportPdfOptions = {
+  toolId?: string;
   /** Quando true (plano grátis), carimba rodapé viral em cada página. */
   branded?: boolean;
 };
@@ -51,9 +52,9 @@ const MAX_SQUEEZE = 0.85;
 /** Progresso mínimo na página antes de antecipar quebra por bloco keep. */
 const MIN_PAGE_FILL = 0.3;
 
-function stampViralFooter(pdf: JsPdf, pageWidth: number, pageHeight: number) {
+function stampViralFooter(pdf: JsPdf, pageWidth: number, pageHeight: number, toolId?: string) {
   const label = viralPdfFooterLabel();
-  const url = viralPdfFooterUrl();
+  const url = viralPdfFooterUrl(toolId);
   const footerY = pageHeight - PRINT_FOOTER_MARGIN_MM;
 
   pdf.setFont('helvetica', 'normal');
@@ -67,10 +68,6 @@ function stampViralFooter(pdf: JsPdf, pageWidth: number, pageHeight: number) {
   const widest = Math.max(...lines.map((line: string) => pdf.getTextWidth(line)), 0);
   const x = (pageWidth - widest) / 2;
   pdf.link(x, footerY - blockH, widest, blockH + 2, { url });
-}
-
-async function stampPageBrand(pdf: JsPdf, pageWidth: number, pageHeight: number) {
-  stampViralFooter(pdf, pageWidth, pageHeight);
 }
 
 function setBrandNodesVisibility(element: HTMLElement, visible: boolean) {
@@ -310,7 +307,7 @@ export async function exportElementToPdf(
       const start = pageStarts[i];
       const next = pageStarts[i + 1] ?? finalHeight;
       paintPageSlice(pdf, pageImage, pageWidth, pageHeight, finalWidth, finalHeight, start, next);
-      if (branded) await stampPageBrand(pdf, pageWidth, pageHeight);
+      if (branded) stampViralFooter(pdf, pageWidth, pageHeight, options.toolId);
     }
 
     pdf.save(buildPrecisouTaProntoDownloadName('pdf'));

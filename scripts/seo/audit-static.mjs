@@ -266,7 +266,7 @@ const homePage = await readFile(path.join(root, 'src/app/page.tsx'), 'utf8');
 if (!homePage.includes('Precisou, Tá Pronto é o site oficial em precisoutapronto.com.br')) {
   failures.push('home: description de marca estável ausente');
 }
-if (!homePage.includes('${BRAND_NAME}: orçamento no WhatsApp, recibo e Pix grátis')) {
+if (!homePage.includes('const homeTitle = `${BRAND_NAME}: ')) {
   failures.push('home: title de marca estável ausente');
 }
 

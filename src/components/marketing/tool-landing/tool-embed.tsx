@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ToolStartBoundary } from '@/components/analytics/tool-start-boundary';
+import { PUBLIC_TOOL_LANDINGS } from '@/lib/seo/public-tool-landings';
 
 export function ToolLandingEmbed({
   toolName,
@@ -19,6 +20,7 @@ export function ToolLandingEmbed({
   landingPath: string;
   openWithoutAccount?: boolean;
 }) {
+  const toolKey = Object.keys(PUBLIC_TOOL_LANDINGS).find((id) => PUBLIC_TOOL_LANDINGS[id] === landingPath) || toolName;
   return (
     <section id="ferramenta" className="scroll-mt-20 border-y border-slate-200 bg-white">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-20">
@@ -32,7 +34,7 @@ export function ToolLandingEmbed({
             ? ` ${toolName} sai sem conta. Conta grátis para histórico; Premium para PDF sem a marca.`
             : ' Duas gerações livres sem conta; depois o cadastro grátis libera a continuidade e o histórico. Premium remove a marca.'}
         </p>
-        <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolName} landingPath={landingPath}>{tool}</ToolStartBoundary></div>
+        <div className="mt-8 sm:mt-10"><ToolStartBoundary toolName={toolKey} landingPath={landingPath}>{tool}</ToolStartBoundary></div>
         <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
           <Button asChild size="lg" className="h-12 w-full bg-sky-700 px-6 font-bold text-white hover:bg-sky-800 sm:w-auto">
             <LandingConversionLink href={ctaHref} landingPath={landingPath} placement="tool_embed">
