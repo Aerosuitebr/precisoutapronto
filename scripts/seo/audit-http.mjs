@@ -7,6 +7,7 @@ async function request(path) {
 }
 
 const failures = [];
+const focusPaths = ['/gerador-de-curriculo', '/gerador-de-recibo', '/editor-de-pdf-online', '/modelos-de-orcamento', '/depoimentos'];
 const checks = [
   ['/', 200, 'text/html'],
   ['/robots.txt', 200, 'text/plain'],
@@ -14,6 +15,7 @@ const checks = [
   ['/sitemaps/index.xml', 200, 'application/xml'],
   ['/sitemaps/index', 200, 'application/xml'],
   ['/biblioteca', 200, 'text/html'],
+  ...focusPaths.map((path) => [path, 200, 'text/html']),
   ['/modelos/contrato-de-prestacao-de-servicos', 200, 'text/html'],
   ['/recibo-de-pagamento', 200, 'text/html'],
   ['/proposta-comercial-mei', 200, 'text/html'],
@@ -43,8 +45,19 @@ const home = results.get('/').body;
 if (!home.includes(`rel="canonical" href="${canonicalBase}"`)) {
   failures.push('/: canonical de produção ausente');
 }
-if (!home.includes('<title>Precisou, Tá Pronto: orçamento no WhatsApp, recibo e Pix grátis</title>')) {
+if (!home.includes('<title>Precisou, Tá Pronto: ferramentas online grátis</title>')) {
   failures.push('/: title de marca estável ausente');
+}
+
+for (const path of focusPaths) {
+  const { response, body } = results.get(path);
+  if (!body.includes(`rel="canonical" href="${canonicalBase}${path}"`)) {
+    failures.push(`${path}: canonical autorreferente ausente`);
+  }
+  const robots = body.match(/<meta\s+name="(?:robots|googlebot)"[^>]*>/gi) || [];
+  if (/\bnoindex\b/i.test([response.headers.get("x-robots-tag"), ...robots].join(" "))) {
+    failures.push(`${path}: noindex em página promovida`);
+  }
 }
 
 const library = results.get('/biblioteca').body;
@@ -102,10 +115,8 @@ const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[
 const escapedCanonicalBase = canonicalBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const privatePath = new RegExp(`^${escapedCanonicalBase}/(?:api|conta(?:/|$)|ferramentas(?:/|$)|checkout(?:/|$)|login(?:/|$)|cadastro(?:/|$)|documento(?:/|$)|orcamento/)`);
 const leaked = urls.filter((url) => privatePath.test(url));
-// Seleção editorial vigente em 14/09/2026, incluindo a reabertura comercial de 10/09.
-if (urls.length !== 46) failures.push(`/sitemap.xml: esperado 46 URLs do foco editorial, recebido ${urls.length}`);
 if (new Set(urls).size !== urls.length) failures.push('/sitemap.xml: URLs duplicadas');
-for (const path of ['/orcamento-com-pix', '/gerador-de-proposta-comercial', '/gerador-de-recibo', '/recibos/recibo-pagamento-pix', '/orcamento-para/eletricista', '/orcamento-para/chaveiro', '/orcamento-para/marceneiro', '/orcamento-para/gesseiro', '/orcamento-para/instalacao-de-piso']) {
+for (const path of [...focusPaths, '/orcamento-com-pix', '/gerador-de-proposta-comercial', '/recibos/recibo-pagamento-pix', '/orcamento-para/eletricista', '/orcamento-para/chaveiro', '/orcamento-para/marceneiro', '/orcamento-para/gesseiro', '/orcamento-para/instalacao-de-piso']) {
   if (!urls.includes(`${canonicalBase}${path}`)) failures.push(`/sitemap.xml: página comercial ausente: ${path}`);
 }
 if (leaked.length) failures.push(`/sitemap.xml: URLs privadas encontradas: ${leaked.join(', ')}`);

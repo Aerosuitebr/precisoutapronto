@@ -1,4 +1,4 @@
-import { ArrowRight, Calculator, Check, FilePenLine, FileText, GraduationCap, QrCode, Receipt } from 'lucide-react';
+import { ArrowRight, Calculator, Check, FilePenLine, FileText, GraduationCap, QrCode, Receipt, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
 import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
@@ -30,8 +30,13 @@ export function HomeIntentHero() {
             </li>
           ))}
         </ul>
+        <LandingConversionLink href="/editor-de-pdf-online#ferramenta" landingPath="/" placement="hero_secondary" className="mt-4 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-950 hover:border-emerald-400 hover:underline sm:text-base">
+          <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-700" aria-hidden />
+          <span><strong>Edite seus PDFs gratuitamente.</strong> Seus documentos não saem do seu dispositivo.</span>
+        </LandingConversionLink>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4">
           <p className="text-xs leading-5 text-slate-600">Comece grátis · Funciona no celular · Sem instalar aplicativo</p>
+          <Link href="/modelos-de-orcamento" className="inline-flex min-h-11 items-center text-sm font-bold text-blue-800 hover:underline">Modelos de orçamento</Link>
           <Link href="/recursos" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-blue-800 hover:underline">Ver todas as ferramentas <ArrowRight className="h-4 w-4" aria-hidden /></Link>
         </div>
       </div>

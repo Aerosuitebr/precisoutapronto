@@ -9,7 +9,7 @@ export function ToolLandingHero({
   preview
 }: {
   content: SeoPageContent;
-  preview: React.ReactNode;
+  preview?: React.ReactNode;
 }) {
   return (
     <section className="relative overflow-hidden border-b border-blue-100 bg-[#f8faff] text-slate-950">
@@ -22,7 +22,7 @@ export function ToolLandingHero({
         <ChevronRight className="h-3.5 w-3.5" aria-hidden />
         <span aria-current="page" className="truncate font-semibold text-slate-800">{content.seo.breadcrumbLabel}</span>
       </nav>
-      <div className="relative mx-auto grid max-w-6xl gap-8 px-4 pb-12 pt-8 sm:px-6 sm:pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:pb-24">
+      <div className={`relative mx-auto grid max-w-6xl gap-8 px-4 pb-12 pt-8 sm:px-6 sm:pb-20 lg:items-center lg:gap-10 lg:pb-24 ${preview ? "lg:grid-cols-[1.05fr_0.95fr]" : ""}`}>
         <div>
           <p className="precisoutapronto-display text-xs font-bold uppercase tracking-[0.25em] text-[#155eef]">
             Precisou, Tá Pronto · {content.toolName}
@@ -66,12 +66,12 @@ export function ToolLandingHero({
         </div>
 
         {/* Mockup pesado só no desktop: no celular o foco é CTA + formulário estável. */}
-        <div className="relative hidden lg:block">
+        {preview ? <div className="relative hidden lg:block">
           <div className="absolute -inset-4 rounded-[32px] bg-blue-200/40 blur-2xl" aria-hidden />
           <div className="relative rounded-[28px] border border-blue-100 bg-white/80 p-3 shadow-2xl shadow-blue-950/10 backdrop-blur-sm sm:p-4">
             {preview}
           </div>
-        </div>
+        </div> : null}
       </div>
 
       <div className="relative border-t border-blue-100 bg-white/70">

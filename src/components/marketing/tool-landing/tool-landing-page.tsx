@@ -26,11 +26,11 @@ import { LiveStatsBar } from '@/components/marketing/live-stats-bar';
 interface ToolLandingPageProps {
   content: SeoPageContent;
   /** Mockup estático/leve exibido no hero. */
-  heroMockup: ReactNode;
+  heroMockup?: ReactNode;
   /** Área "Ferramenta": preview interativo real, específico de cada ferramenta. */
   toolPreview: ReactNode;
   /** Miniaturas reais dos modelos (ex: ResumePreview em escala). */
-  examples: ToolLandingExampleItem[];
+  examples?: ToolLandingExampleItem[];
 }
 
 export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: ToolLandingPageProps) {
@@ -64,7 +64,7 @@ export function ToolLandingPage({ content, heroMockup, toolPreview, examples }: 
 
         <ToolLandingBenefits toolName={content.toolName} benefits={content.benefits} />
         <ToolLandingHowItWorks steps={content.steps} />
-        <ToolLandingExamples examples={examples} />
+        {examples?.length ? <ToolLandingExamples examples={examples} /> : null}
         <TestimonialsSection />
         <ToolLandingFaq faq={content.faq} />
         <ToolLandingArticle title={content.article.title} html={content.article.html} />

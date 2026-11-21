@@ -47,6 +47,8 @@ export const SEO_FOCUS_PATHS = [
   '/recibos/recibo-para-autonomo',
   '/recibos/como-preencher-recibo',
   '/gerador-de-recibo',
+  '/gerador-de-curriculo',
+  '/editor-de-pdf-online',
   '/gerador-de-proposta-comercial',
   '/calculadora-de-preco-freelancer',
   '/gerador-de-qr-code-pix',
@@ -79,7 +81,8 @@ export const SEO_TRUST_PATHS = [
   '/politica-de-correcoes',
   '/qualidade-e-seguranca',
   '/metodologia-calculadoras',
-  '/contato'
+  '/contato',
+  '/depoimentos'
 ] as const;
 
 const focusPaths = new Set<string>(SEO_FOCUS_PATHS);

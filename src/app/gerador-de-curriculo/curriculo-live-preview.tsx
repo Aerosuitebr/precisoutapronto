@@ -49,26 +49,21 @@ export function CurriculoLivePreview() {
         <>
           <div>
             <p className="mb-2 text-sm font-semibold text-slate-800">Escolha um modelo</p>
-            <div className="grid grid-cols-3 gap-2 sm:gap-3" role="group" aria-label="Comparar modelos">
+            <div className="grid gap-2" role="group" aria-label="Comparar modelos">
               {RESUME_TEMPLATES.map((template) => (
                 <button
                   key={template.id}
                   type="button"
                   onClick={() => setTemplateId(template.id)}
                   aria-pressed={templateId === template.id}
-                  className={`overflow-hidden rounded-xl border-2 bg-white p-1 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+                  className={`flex min-h-12 items-center gap-3 rounded-xl border-2 bg-white p-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                     templateId === template.id ? 'border-sky-600' : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
-                  <div aria-hidden className="pointer-events-none aspect-[3/4] w-full overflow-hidden rounded-lg bg-slate-50">
-                    <div className="origin-top-left scale-[0.22] sm:scale-[0.24]">
-                      <div className="w-[420px]">
-                        <ResumePreview data={{ ...SAMPLE_RESUME, templateId: template.id }} />
-                      </div>
-                    </div>
-                  </div>
-                  <span className="mt-1 block truncate text-center text-[11px] font-semibold text-slate-700 sm:text-xs">
-                    {template.name}
+                  <span aria-hidden className={`h-8 w-1 shrink-0 rounded-full bg-gradient-to-b ${template.previewClass}`} />
+                  <span>
+                    <span className="block text-sm font-bold text-slate-900">{template.name}</span>
+                    <span className="block text-sm text-slate-600">{template.description}</span>
                   </span>
                 </button>
               ))}

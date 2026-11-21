@@ -44,6 +44,7 @@ test('WhatsApp link validates the number and encodes the message without sending
 
 test('resume preview transfers the selected model and entered name to the editor', async ({ page }) => {
   await page.goto('/gerador-de-curriculo#ferramenta');
+  await expect(page.getByText('Agência Horizonte · São Paulo, SP', { exact: true })).toHaveCount(1);
   const models = page.getByRole('group', { name: 'Comparar modelos' });
   await models.getByRole('button', { name: 'Moderno' }).click();
   await page.getByLabel('Seu nome', { exact: true }).fill('Pessoa de teste');
@@ -71,5 +72,20 @@ test('mobile home exposes plans and keeps the focused hero inside the viewport',
   }
   await expect(page.getByRole('navigation', { name: 'Navegação rápida no celular' }).getByRole('link', { name: 'Planos', exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await expect(page.getByRole('link', { name: /Seus documentos não saem do seu dispositivo/ })).toHaveAttribute('href', '/editor-de-pdf-online#ferramenta');
   await expect(page.getByRole('navigation', { name: 'Navegação rápida no celular' }).getByRole('link', { name: 'Planos', exact: true })).toHaveAttribute('href', '/planos');
+});
+
+test('home shows three testimonials per category and links to the full list', async ({ page }) => {
+  await page.goto('/');
+  const groups = page.locator('#depoimentos').getByRole('article');
+  await expect(groups).toHaveCount(4);
+  for (const group of await groups.all()) {
+    await expect(group.locator('blockquote')).toHaveCount(3);
+  }
+  await groups.filter({ has: page.getByRole('heading', { name: 'Editor de PDF' }) })
+    .getByRole('link', { name: 'Mais avaliações' }).click();
+  await expect(page).toHaveURL(/\/depoimentos#avaliacoes-pdf$/);
+  expect(await page.locator('#avaliacoes-pdf blockquote').count()).toBeGreaterThan(3);
+  await expect(page.getByRole('heading', { name: 'Conte sua experiência', exact: true })).toBeVisible();
 });

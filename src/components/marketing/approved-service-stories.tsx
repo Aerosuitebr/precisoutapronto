@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, ChevronDown, CreditCard, FilePenLine, FileText, Quote, ReceiptText } from 'lucide-react';
+import { ArrowRight, CreditCard, FilePenLine, FileText, ReceiptText } from 'lucide-react';
 import { getPrisma, isDatabaseConfigured } from '@/lib/db';
 import { TESTIMONIAL_CONSENT_VERSION } from '@/lib/testimonials/contracts';
 import { HOME_STORIES, type HomeStory } from '@/lib/testimonials/home-stories';
@@ -23,9 +23,9 @@ function StoryQuote({ story }: { story: HomeStory }) {
   );
 }
 
-export async function ApprovedServiceStories() {
+export async function ApprovedServiceStories({ full = false }: { full?: boolean }) {
   const groups = await Promise.all(tools.map(async tool => {
-    const approved = isDatabaseConfigured() ? await getPrisma().testimonialSubmission.findMany({
+    const approved = full && isDatabaseConfigured() ? await getPrisma().testimonialSubmission.findMany({
       where: {
         status: 'approved',
         reviewedAt: { not: null },
@@ -33,54 +33,46 @@ export async function ApprovedServiceStories() {
         toolKey: { in: tool.key === 'pix' ? ['pix', 'orcamento'] : [tool.key] }
       },
       orderBy: { reviewedAt: 'desc' },
-      take: 3,
       select: { id: true, publicName: true, profession: true, quote: true }
     }).catch(() => []) : [];
-    const [featured, ...more] = HOME_STORIES[tool.key];
+    const stories = full ? HOME_STORIES[tool.key] : HOME_STORIES[tool.key].slice(0, 3);
     return {
       ...tool,
-      featured,
-      remaining: [...more, ...approved.map(({ profession, ...story }) => ({ ...story, location: profession }))]
+      stories: [...stories, ...approved.map(({ profession, ...story }) => ({ ...story, location: profession }))]
     };
   }));
 
   return (
-    <section id="depoimentos" aria-labelledby="home-stories-title" className="scroll-mt-44 bg-slate-50 py-14 sm:py-20">
+    <section id="depoimentos" aria-labelledby="home-stories-title" className="scroll-mt-44 bg-slate-50 py-8 sm:py-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div>
             <h2 id="home-stories-title" className="precisoutapronto-display text-3xl font-black tracking-[-.04em] sm:text-4xl">O que dizem sobre nossas ferramentas</h2>
             <p className="mt-3 text-slate-600">Leia as experiências de quem já usou o Precisou, Tá Pronto.</p>
           </div>
-          <Link href="/depoimentos" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-blue-700 hover:underline">
-            Enviar meu depoimento <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          <Link href={full ? "#enviar-depoimento" : "/depoimentos#depoimentos"} className="inline-flex min-h-11 items-center text-sm font-bold text-blue-700 hover:underline">
+            {full ? "Enviar meu depoimento" : "Ver todas as avaliações"}
           </Link>
         </div>
 
         <div className="mt-8 grid items-start gap-5 md:grid-cols-2">
-          {groups.map(({ key, title, href, action, icon: Icon, featured, remaining }) => (
-              <article key={key} aria-labelledby={`home-stories-${key}`} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+          {groups.map(({ key, title, href, action, icon: Icon, stories }) => (
+              <article key={key} aria-labelledby={`home-stories-${key}`} className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6" id={`avaliacoes-${key}`}>
                 <div className="flex items-center gap-3">
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-700">
                     <Icon aria-hidden="true" className="h-5 w-5" />
                   </span>
                   <h3 id={`home-stories-${key}`} className="text-lg font-extrabold text-slate-950">{title}</h3>
                 </div>
-                <div className="my-5 rounded-xl bg-slate-50 px-4 py-4">
-                  <Quote aria-hidden="true" className="mb-2 h-5 w-5 text-blue-700" />
-                  <StoryQuote story={featured} />
-                </div>
-                <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t border-slate-100 pt-2">
-                  <details className="group w-full">
-                    <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-sm font-bold text-blue-700 hover:underline [&::-webkit-details-marker]:hidden">
-                      <span className="group-open:hidden">Ver mais {remaining.length} depoimentos</span>
-                      <span className="hidden group-open:inline">Recolher depoimentos</span>
-                      <ChevronDown aria-hidden="true" className="h-4 w-4 group-open:rotate-180" />
-                    </summary>
-                    <ul className="mb-2 divide-y divide-slate-100 border-t border-slate-100">
-                      {remaining.map(story => <li key={story.id} className="py-4"><StoryQuote story={story} /></li>)}
-                    </ul>
-                  </details>
+                <ul className="mt-3 divide-y divide-slate-100">
+                  {stories.map(story => <li key={story.id} className="py-3"><StoryQuote story={story} /></li>)}
+                </ul>
+                <div className="flex flex-wrap items-center justify-between gap-x-4 border-t border-slate-100">
+                  {!full && (
+                    <Link href={`/depoimentos#avaliacoes-${key}`} className="inline-flex min-h-11 items-center text-sm font-bold text-blue-700 hover:underline">
+                      Mais avaliações
+                    </Link>
+                  )}
                   <Link href={href} className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-blue-700 hover:underline">
                     {action} <ArrowRight aria-hidden="true" className="h-4 w-4" />
                   </Link>
