@@ -87,9 +87,15 @@ if (![301, 308].includes(autonomos.response.status) || !autonomosLocation.includ
   failures.push('/para/autonomos: redirect permanente para /para/freelancers ausente');
 }
 
-const robots = results.get('/robots.txt').body;
-if (!robots.includes('User-agent: Google-Extended') || !robots.includes('User-agent: GPTBot')) {
-  failures.push('/robots.txt: Allow de crawlers de resposta de IA ausente');
+const robots = results.get('/robots.txt').body.replace(/\r\n/g, '\n');
+const crawlerGroups = robots.split(/\n[ \t]*\n/);
+for (const agent of ['OAI-SearchBot', 'Google-Extended', 'GPTBot']) {
+  const group = crawlerGroups.find((section) =>
+    section.split(/\r?\n/).some((line) => line.toLowerCase() === `user-agent: ${agent.toLowerCase()}`)
+  );
+  if (!group?.includes('Allow: /\n') || !group.includes('Disallow: /documento/')) {
+    failures.push(`/robots.txt: regras de rastreamento público incompletas para ${agent}`);
+  }
 }
 if (!robots.includes(`Sitemap: ${canonicalBase}/sitemaps/index\n`)) {
   failures.push('/robots.txt: Sitemap /sitemaps/index ausente');

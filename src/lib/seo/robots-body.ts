@@ -60,11 +60,9 @@ const PUBLIC_ALLOWS = [
   '/ferramentas/redacao-enem'
 ] as const;
 
-/**
- * Crawlers de resposta e resumo. O Cloudflare pode prefixar Disallow no mesmo
- * user-agent; o Google combina grupos e fica com a regra menos restritiva.
- */
-const AI_ANSWER_CRAWLERS = [
+/** Agentes declarados explicitamente para busca, leitura e treinamento. */
+const EXPLICIT_CRAWLERS = [
+  'OAI-SearchBot',
   'Google-Extended',
   'GPTBot',
   'ChatGPT-User',
@@ -83,16 +81,11 @@ export function buildRobotsBody(): string {
     return ['User-Agent: *', 'Disallow: /', ''].join('\n');
   }
 
-  const aiAllows = AI_ANSWER_CRAWLERS.flatMap((agent) => [
-    `User-agent: ${agent}`,
-    'Allow: /',
-    ''
-  ]);
-
+  // Grupos específicos não herdam as regras de User-agent: *.
   const lines = [
     '# Precisou, Tá Pronto · crawlers de busca e IA',
     `# LLM context: ${base}/llms.txt`,
-    ...aiAllows,
+    ...EXPLICIT_CRAWLERS.map((agent) => `User-agent: ${agent}`),
     'User-Agent: *',
     'Allow: /',
     ...PUBLIC_ALLOWS.map((path) => `Allow: ${path}`),

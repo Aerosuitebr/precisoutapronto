@@ -23,6 +23,9 @@ export function GET() {
     return new Response(sitemapEntriesToXml(buildFullSitemap()), { headers: XML_HEADERS });
   } catch (error) {
     console.error('[sitemap.xml]', error);
-    return new Response(EMPTY_URLSET, { status: 200, headers: XML_HEADERS });
+    return new Response('Sitemap temporariamente indisponível', {
+      status: 503,
+      headers: { 'Cache-Control': 'no-store' }
+    });
   }
 }

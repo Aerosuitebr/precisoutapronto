@@ -71,9 +71,9 @@ export async function GET(_request: Request, context: { params: Promise<{ segmen
     return new Response(sitemapEntriesToXml(buildSitemapSegment(segment)), { headers: XML_HEADERS });
   } catch (error) {
     console.error('[sitemaps]', segment, error);
-    return new Response(isIndex(segment) ? EMPTY_INDEX : EMPTY_URLSET, {
-      status: 200,
-      headers: XML_HEADERS
+    return new Response('Sitemap temporariamente indisponível', {
+      status: 503,
+      headers: { 'Cache-Control': 'no-store' }
     });
   }
 }
