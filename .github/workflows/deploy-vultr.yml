@@ -89,12 +89,21 @@ jobs:
           ARCHIVE="/tmp/${DEPLOY_ARCHIVE}"
           CHECKSUM=$(sha256sum "${ARCHIVE}")
           CHECKSUM=${CHECKSUM%% *}
+          ARCHIVE_BYTES=$(wc -c < "${ARCHIVE}")
+
+          echo "==> Validar sessao SSH e espaco em /tmp"
+          if ! timeout 60 ssh "${SSH_OPTS[@]}" "${TARGET}" \
+            "set -eu; test -w /tmp; available=\$(df -Pk /tmp | awk 'END { print \$4 }'); test \"\$available\" -gt '$(( (ARCHIVE_BYTES + 1023) / 1024 ))'; echo 'Sessao SSH e espaco em /tmp confirmados'" \
+            </dev/null; then
+            echo "::error::Falha na verificacao SSH ou espaco insuficiente em /tmp no Vultr."
+            exit 1
+          fi
 
           # Transfere pelo canal SSH sem depender do subsistema SFTP.
           for attempt in 1 2; do
-            echo "==> Enviar e conferir pacote (tentativa ${attempt}/2, limite: 5 minutos)"
-            if timeout 300 ssh "${SSH_OPTS[@]}" "${TARGET}" \
-              "umask 077; cat > '${ARCHIVE}.part' && printf '%s  %s\n' '${CHECKSUM}' '${ARCHIVE}.part' | sha256sum -c - && mv -f '${ARCHIVE}.part' '${ARCHIVE}'" \
+            echo "==> Enviar ${ARCHIVE_BYTES} bytes (tentativa ${attempt}/2, limite: 8 minutos)"
+            if timeout 480 ssh "${SSH_OPTS[@]}" "${TARGET}" \
+              "set -eu; umask 077; echo 'Recebendo pacote no Vultr'; dd of='${ARCHIVE}.part' bs=128K status=progress; echo 'Validando SHA-256'; printf '%s  %s\n' '${CHECKSUM}' '${ARCHIVE}.part' | sha256sum -c -; mv -f '${ARCHIVE}.part' '${ARCHIVE}'" \
               < "${ARCHIVE}"; then
               break
             else
