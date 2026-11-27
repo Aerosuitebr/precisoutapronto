@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'Precisou, Tá Pronto | Orçamento grátis pelo WhatsApp';
+export const alt = 'Precisou, Tá Pronto: orçamento grátis pelo WhatsApp';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

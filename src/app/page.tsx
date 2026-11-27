@@ -4,9 +4,9 @@ import { SiteFooter } from '@/components/marketing/site-footer';
 import { LandingPage } from '@/components/marketing/landing-page';
 import { BRAND_NAME } from '@/lib/brand';
 
-const homeTitle = `${BRAND_NAME} | Orçamento grátis pelo WhatsApp`;
+const homeTitle = `${BRAND_NAME}: orçamento grátis pelo WhatsApp`;
 const homeDescription =
-  'Crie um orçamento profissional grátis no Precisou, Tá Pronto. Envie pelo WhatsApp para aprovação e inclua Pix. Gere recibos e acesse outras ferramentas online.';
+  'Precisou, Tá Pronto é o site oficial em precisoutapronto.com.br. Crie um orçamento grátis e envie pelo WhatsApp para aprovação. Inclua Pix e gere recibos online.';
 
 export const revalidate = 3600;
 
