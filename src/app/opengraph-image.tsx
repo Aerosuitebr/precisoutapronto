@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'Precisou, Tá Pronto: ferramentas online grátis';
+export const alt = 'Precisou, Tá Pronto | Orçamento grátis pelo WhatsApp';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -35,10 +35,10 @@ export default function OpenGraphImage() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.05, maxWidth: 980 }}>
-            O que você precisa resolver hoje?
+            Crie orçamentos profissionais e envie pelo WhatsApp.
           </div>
           <div style={{ fontSize: 28, color: '#cbd5e1', maxWidth: 900 }}>
-            Currículo, recibo, PDF, cálculos, Pix e orçamento pelo WhatsApp.
+            Crie grátis, envie um link para aprovação e inclua Pix.
           </div>
         </div>
         <div style={{ display: 'flex', fontSize: 24, color: '#86efac' }}>precisoutapronto.com.br</div>

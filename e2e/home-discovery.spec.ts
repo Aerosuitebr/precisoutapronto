@@ -2,32 +2,27 @@ import { expect, test } from '@playwright/test';
 
 test('home retains quote creation and demonstrates the customer experience', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('O que você precisa resolver hoje?');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Crie orçamentos profissionais e envie pelo WhatsApp.');
   await expect(page.getByRole('link', { name: 'Criar orçamento grátis', exact: true })).toHaveAttribute('href', '/orcamento-com-pix#montar');
-  await page.getByRole('link', { name: 'Ver como o cliente recebe', exact: true }).click();
-  await expect(page).toHaveURL(/demonstracao-orcamento$/);
-  await expect(page.getByRole('button', { name: 'Aprovar orçamento', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Ver exemplos', exact: true }).click();
+  await expect(page).toHaveURL(/#exemplos$/);
+  const demo = page.locator('#exemplos');
+  await demo.getByRole('button', { name: 'Aprovar orçamento', exact: true }).click();
+  await expect(demo.getByRole('status')).toContainText('Aprovação simulada');
+  await demo.getByRole('button', { name: 'Pedir ajuste', exact: true }).click();
+  await expect(demo.getByRole('status')).toContainText('Pedido de ajuste simulado');
 });
-test('discovery precedes the workflow and search supports keyboard selection and dismissal', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
-  expect(await page.locator('#ferramentas').evaluate(element => Boolean(element.compareDocumentPosition(document.getElementById('como-funciona')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
-  const search = page.getByRole('combobox', { name: 'Qual ferramenta você procura?' });
-  await search.fill('quero juntar dois PDFs');
-  await expect(page.getByRole('option').first()).toHaveText('Juntar PDFs');
-  await search.fill('rescisão');
-  await expect(page.getByRole('listbox')).toBeVisible();
-  await search.press('Escape');
-  await expect(page.getByRole('listbox')).not.toBeVisible();
-  await search.press('ArrowDown');
-  await expect(page.getByRole('option').first()).toHaveAttribute('aria-selected', 'true');
-  await search.press('Enter');
-  await expect(page).toHaveURL(/\/calculadora-de-rescisao/);
+test('workflow follows the hero and utilities are grouped farther down', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('main > section').nth(1)).toHaveAttribute('id', 'como-funciona');
+  await expect(page.locator('#como-funciona')).toContainText('Recibo final emitido');
+  await expect(page.locator('#ferramentas').getByRole('link', { name: 'Calcular rescisão' })).toHaveAttribute('href', '/calculadora-de-rescisao');
 });
 
 test('profession shortcuts open the prefilled editor and the catalog is linked', async ({ page }) => {
   await page.goto('/', { waitUntil: 'networkidle' });
   await expect(page.getByRole('link', { name: 'Ver todas as ferramentas', exact: true }).first()).toHaveAttribute('href', '/recursos');
-  await page.getByRole('link', { name: 'Ver modelos prontos para Eletricistas' }).click();
+  await page.getByRole('link', { name: 'Criar orçamento para eletricista' }).click();
   await expect(page).toHaveURL(/\/orcamento-para\/eletricista#montar$/);
   await expect(page.getByText('Modelo carregado:', { exact: true })).toBeVisible();
   await expect(page.locator('#montar input[value="Visita técnica e diagnóstico"]')).toBeVisible();
@@ -56,36 +51,27 @@ test('resume preview transfers the selected model and entered name to the editor
 test('mobile home exposes plans and keeps the focused hero inside the viewport', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('/');
-  const shortcuts = page.getByRole('list', { name: 'Atalhos para ferramentas' }).getByRole('link');
+  const shortcuts = page.locator('#ferramentas').getByRole('list', { name: 'Atalhos para ferramentas' }).getByRole('link');
   const targets = [
     '/gerador-de-curriculo#ferramenta',
     '/gerador-de-recibo#ferramenta',
     '/editor-de-pdf-online#ferramenta',
     '/gerador-de-qr-code-pix#gerar',
     '/calculadora-de-rescisao',
-    '/orcamento-com-pix#montar'
+    '/gerador-de-proposta-comercial#ferramenta'
   ];
   await expect(shortcuts).toHaveCount(targets.length);
   for (const [index, target] of targets.entries()) {
     await expect(shortcuts.nth(index)).toHaveAttribute('href', target);
-    await expect(shortcuts.nth(index)).toBeInViewport();
   }
-  await expect(page.getByRole('navigation', { name: 'Navegação rápida no celular' }).getByRole('link', { name: 'Planos', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Criar orçamento grátis', exact: true })).toBeInViewport();
+  await expect(page.getByRole('link', { name: 'Testar aprovação' })).toBeInViewport();
+  await expect(page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'Planos', exact: true })).toHaveAttribute('href', '#planos');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  await expect(page.getByRole('link', { name: /Seus documentos não saem do seu dispositivo/ })).toHaveAttribute('href', '/editor-de-pdf-online#ferramenta');
-  await expect(page.getByRole('navigation', { name: 'Navegação rápida no celular' }).getByRole('link', { name: 'Planos', exact: true })).toHaveAttribute('href', '/planos');
 });
 
-test('home shows three testimonials per category and links to the full list', async ({ page }) => {
-  await page.goto('/');
-  const groups = page.locator('#depoimentos').getByRole('article');
-  await expect(groups).toHaveCount(4);
-  for (const group of await groups.all()) {
-    await expect(group.locator('blockquote')).toHaveCount(3);
-  }
-  await groups.filter({ has: page.getByRole('heading', { name: 'Editor de PDF' }) })
-    .getByRole('link', { name: 'Mais avaliações' }).click();
-  await expect(page).toHaveURL(/\/depoimentos#avaliacoes-pdf$/);
+test('full reviews remain available on the testimonial page', async ({ page }) => {
+  await page.goto('/depoimentos#avaliacoes-pdf');
   expect(await page.locator('#avaliacoes-pdf blockquote').count()).toBeGreaterThan(3);
   await expect(page.getByRole('heading', { name: 'Conte sua experiência', exact: true })).toBeVisible();
 });

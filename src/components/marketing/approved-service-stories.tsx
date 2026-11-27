@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, CreditCard, FilePenLine, FileText, ReceiptText } from 'lucide-react';
-import { getPrisma, isDatabaseConfigured } from '@/lib/db';
-import { TESTIMONIAL_CONSENT_VERSION } from '@/lib/testimonials/contracts';
+import { getApprovedStories } from '@/lib/testimonials/approved-stories';
 import { HOME_STORIES, type HomeStory } from '@/lib/testimonials/home-stories';
 
 const tools = [
@@ -25,16 +24,7 @@ function StoryQuote({ story }: { story: HomeStory }) {
 
 export async function ApprovedServiceStories({ full = false }: { full?: boolean }) {
   const groups = await Promise.all(tools.map(async tool => {
-    const approved = full && isDatabaseConfigured() ? await getPrisma().testimonialSubmission.findMany({
-      where: {
-        status: 'approved',
-        reviewedAt: { not: null },
-        consentVersion: TESTIMONIAL_CONSENT_VERSION,
-        toolKey: { in: tool.key === 'pix' ? ['pix', 'orcamento'] : [tool.key] }
-      },
-      orderBy: { reviewedAt: 'desc' },
-      select: { id: true, publicName: true, profession: true, quote: true }
-    }).catch(() => []) : [];
+    const approved = full ? await getApprovedStories(tool.key === 'pix' ? ['pix', 'orcamento'] : [tool.key]) : [];
     const stories = full ? HOME_STORIES[tool.key] : HOME_STORIES[tool.key].slice(0, 3);
     return {
       ...tool,

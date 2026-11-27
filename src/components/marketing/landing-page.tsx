@@ -1,80 +1,174 @@
-import { HomeIntentHero, HomeQuoteSection } from '@/components/marketing/home-intent-hero';
-import { ProfessionalStartGuide } from '@/components/marketing/professional-start-guide';
 import Link from 'next/link';
-import { ApprovedServiceStories } from '@/components/marketing/approved-service-stories';
-import { ArrowRight, Check, CheckCircle2, FileCheck2, MessageCircle, ShieldCheck } from 'lucide-react';
+import { Check, CheckCircle2, FileCheck2, MessageCircle } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
 import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
-import { ServiceDifferences } from '@/components/marketing/service-differences';
-
-const commercialTools = [
-  { href: '/orcamento-com-pix#montar', title: 'Enviar orçamento', description: 'Combine itens, valores e prazo. Envie um link para seu cliente aprovar pelo WhatsApp.', action: 'Montar meu orçamento' },
-  { href: '/recibos/recibo-pagamento-pix', title: 'Emitir recibo de Pix', description: 'Já recebeu? Veja como registrar o serviço e a parcela paga em um recibo em PDF.', action: 'Ver modelo e gerar recibo' },
-  { href: '/gerador-de-proposta-comercial#ferramenta', title: 'Montar proposta comercial', description: 'Apresente serviços, preços e condições em um PDF com a identidade do seu negócio.', action: 'Montar proposta grátis' }
-] as const;
-
-const professionLinks = [
-  { href: '/orcamento-para/eletricista#montar', label: 'Eletricistas' },
-  { href: '/orcamento-para/pintor#montar', label: 'Pintores' },
-  { href: '/orcamento-para/marceneiro#montar', label: 'Marceneiro' },
-  { href: '/orcamento-para/gesseiro#montar', label: 'Gesseiro' },
-  { href: '/orcamento-para/instalacao-de-piso#montar', label: 'Instalação de piso' }
-] as const;
+import { HomeIntentHero, HomeOtherTools } from '@/components/marketing/home-intent-hero';
+import { ProfessionalStartGuide } from '@/components/marketing/professional-start-guide';
+import { HomeQuoteStories } from '@/components/marketing/home-quote-stories';
+import { QuoteDemo } from '@/components/orcamentos/quote-demo';
+import { PLANS } from '@/lib/plans';
+import { getApprovedStories } from '@/lib/testimonials/approved-stories';
+import { getPublicStats } from '@/lib/public-stats';
 
 const steps = [
-  { number: '01', title: 'Monte', text: 'Transforme o pedido do WhatsApp em itens, valores, prazo e condições.', icon: FileCheck2 },
-  { number: '02', title: 'Envie', text: 'Compartilhe um link profissional. Seu cliente abre direto no celular.', icon: MessageCircle },
-  { number: '03', title: 'Feche', text: 'O cliente aprova, recebe o Pix e você acompanha tudo sem planilha.', icon: CheckCircle2 }
-] as const;
+  { title: 'Monte', text: 'Reúna itens, valores e prazo em um orçamento.', icon: FileCheck2 },
+  { title: 'Envie', text: 'Compartilhe o link na conversa com o cliente.', icon: MessageCircle },
+  { title: 'Receba', text: 'O cliente aprova pelo link e paga por Pix, se você incluir a cobrança.', icon: CheckCircle2 }
+];
 
-export function LandingPage() {
-  return <div className="bg-white text-[#101828]">
-    <header className="sticky top-8 z-50 border-b border-blue-100 bg-white/95 shadow-[0_14px_38px_-28px_rgba(3,31,75,.55)] backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:h-24 sm:px-6 lg:h-28 lg:px-8">
-        <Link href="/" className="min-w-0 flex-1" aria-label="Precisou, Tá Pronto, página inicial">
-          <Logo variant="marketing" className="h-16 max-w-[210px] sm:h-20 sm:max-w-[270px] lg:h-24 lg:max-w-[330px]" />
-        </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-5 text-sm font-bold text-slate-600 lg:flex"><a href="#ferramentas" className="hover:text-blue-700">Ferramentas</a><a href="#como-funciona" className="hover:text-blue-700">Como funciona</a><a href="#para-profissionais" className="hover:text-blue-700">Para profissionais</a><a href="#depoimentos" className="hover:text-blue-700">Depoimentos</a><Link href="/planos" className="hover:text-blue-700">Planos</Link></nav>
-        <div className="flex items-center gap-2"><Link href="/login" className="hidden px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-950 sm:block">Entrar</Link><Link href="/orcamento-com-pix#montar" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#155eef] px-4 text-sm font-black text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-[#004eeb]">Orçamento no WhatsApp <ArrowRight className="hidden h-4 w-4 sm:block" /></Link></div>
-      </div>
-      <nav aria-label="Navegação rápida no celular" className="flex flex-wrap justify-center gap-x-3 border-t border-slate-100 px-3 py-2 text-xs font-bold text-slate-600 lg:hidden"><a href="#ferramentas" className="inline-flex min-h-11 items-center">Ferramentas</a><a href="#como-funciona" className="inline-flex min-h-11 items-center">Como funciona</a><a href="#para-profissionais" className="inline-flex min-h-11 items-center">Profissionais</a><a href="#depoimentos" className="inline-flex min-h-11 items-center">Depoimentos</a><Link href="/planos" className="inline-flex min-h-11 items-center">Planos</Link></nav>
-      <div className="h-1 bg-gradient-to-r from-[#0b5cff] via-[#83d600] to-[#0b5cff]" aria-hidden />
-    </header>
+const paymentTimeline = [
+  'Cliente aprovou',
+  'Entrada de R$ 150 recebida',
+  'Recibo parcial emitido',
+  'Saldo de R$ 340 recebido',
+  'Recibo final emitido'
+];
 
-    <main>
-      <HomeIntentHero />
-      <HomeQuoteSection />
-      <ProfessionalStartGuide />
+const comparison = [
+  { title: 'Pelo chat, manualmente', items: ['Detalhes espalhados em várias mensagens', 'Soma dos itens na calculadora', 'Aprovação e chave Pix em mensagens separadas'] },
+  { title: 'Com Precisou, Tá Pronto', items: ['Itens, valores e prazo em um orçamento', 'Total calculado ao preencher os itens', 'Aprovação e Pix opcional pelo mesmo link'] }
+];
 
-      <section id="como-funciona" className="scroll-mt-44 py-10 sm:py-24"><div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[.18em] text-[#155eef]">Um fluxo. Sem enrolação.</p><h2 className="precisoutapronto-display mt-4 text-4xl font-black tracking-[-.05em] sm:text-6xl">Da conversa ao pagamento.</h2><p className="mt-5 text-lg leading-8 text-slate-600">Pare de procurar mensagem, somar valor na calculadora e mandar o Pix separado.</p></div><ol className="mt-12 grid gap-5 lg:grid-cols-3">{steps.map(step => <li key={step.number} className="group rounded-[1.75rem] border border-slate-200 bg-[#f8faff] p-7 transition hover:-translate-y-1 hover:border-blue-200 hover:bg-white hover:shadow-xl"><div className="flex items-center justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#155eef] text-white"><step.icon className="h-6 w-6" /></span><span className="text-4xl font-black text-slate-500">{step.number}</span></div><h3 className="mt-8 text-2xl font-black">{step.title}</h3><p className="mt-3 text-base leading-7 text-slate-600">{step.text}</p></li>)}</ol></div></section>
+const plans = [
+  { ...PLANS.gratis, details: 'Crie orçamentos e recibos com a marca da plataforma. Com uma conta grátis, você pode salvar o histórico.' },
+  { ...PLANS.premium, details: 'Remova a marca da plataforma dos documentos e das mensagens. Pagamento avulso, sem renovação automática.' }
+];
 
-      <section id="para-profissionais" aria-labelledby="documentos-servico-title" className="scroll-mt-44 border-y border-slate-200 bg-slate-50 py-10 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 id="documentos-servico-title" className="precisoutapronto-display text-3xl font-black tracking-[-.04em] sm:text-4xl">O documento certo para cada etapa do serviço</h2>
-          <p className="mt-4 max-w-2xl leading-7 text-slate-600">Prepare a proposta, combine o orçamento e registre o pagamento. Escolha o que você precisa agora.</p>
-          <ul className="mt-8 grid gap-4 lg:grid-cols-3">
-            {commercialTools.map(tool => <li key={tool.href}>
-              <LandingConversionLink href={tool.href} landingPath="/" placement="inline_primary" className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-blue-300 hover:shadow-lg">
-                <h3 className="text-xl font-black">{tool.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">{tool.description}</p>
-                <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#155eef]">{tool.action}<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
-              </LandingConversionLink>
-            </li>)}
-          </ul>
-          <h3 className="mt-10 text-lg font-bold">Orçamento para a sua profissão</h3>
-          <ul className="mt-4 flex flex-wrap gap-3">
-            {professionLinks.map(item => <li key={item.href}><LandingConversionLink href={item.href} landingPath="/" placement="inline_primary" className="inline-flex min-h-11 items-center rounded-xl border border-blue-200 bg-white px-4 py-2 text-sm font-bold text-[#155eef] hover:bg-blue-50">Ver modelos prontos para {item.label}</LandingConversionLink></li>)}
-          </ul>
-          <Link href="/modelos-de-orcamento" className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#155eef]">Ver todos os modelos de orçamento <ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+const faq = [
+  { question: 'Preciso criar uma conta para fazer um orçamento?', answer: 'Você pode montar e enviar seu primeiro orçamento sem cadastro. Crie uma conta grátis se quiser salvar o histórico.' },
+  { question: 'Como o cliente aprova pelo WhatsApp?', answer: 'Você envia um link na conversa. O cliente abre a página do orçamento no navegador e pode aprovar ou pedir ajustes pelo celular.' },
+  { question: 'É obrigatório incluir Pix?', answer: 'O Pix é opcional. Se você configurar a cobrança, o cliente verá os dados de pagamento após aprovar. Confira o recebimento no seu banco antes de emitir o recibo.' },
+  { question: 'O PDF grátis tem a marca da plataforma?', answer: 'O PDF grátis inclui a marca Precisou, Tá Pronto. O Premium remove a marca durante a vigência do plano.' }
+];
+
+export async function LandingPage() {
+  const [stories, stats] = await Promise.all([
+    getApprovedStories(['orcamento'], 3),
+    getPublicStats()
+  ]);
+
+  return (
+    <div className="bg-white text-[#101828]">
+      <header className="sticky top-8 z-50 border-b border-blue-100 bg-white/95 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-20 sm:px-6 lg:px-8">
+          <Link href="/" className="min-w-0" aria-label="Precisou, Tá Pronto, página inicial">
+            <Logo variant="marketing" className="h-14 max-w-[165px] sm:h-16 sm:max-w-[230px]" />
+          </Link>
+          <nav aria-label="Navegação principal" className="flex items-center gap-3 text-sm font-bold text-slate-700 sm:gap-6">
+            <a href="#como-funciona" className="hidden hover:text-blue-700 md:inline">Como funciona</a>
+            <a href="#para-profissionais" className="hidden hover:text-blue-700 md:inline">Modelos</a>
+            <a href="#ferramentas" className="hidden hover:text-blue-700 lg:inline">Outras ferramentas</a>
+            <a href="#planos" className="inline-flex min-h-11 items-center hover:text-blue-700">Planos</a>
+            <Link href="/login" className="inline-flex min-h-11 items-center hover:text-blue-700">Entrar</Link>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      <ServiceDifferences landingPath="/" />
-      <ApprovedServiceStories />
+      <main>
+        <HomeIntentHero hasStories={stories.length > 0} stats={stats} />
+        <section id="como-funciona" aria-labelledby="workflow-title" className="scroll-mt-32 py-10 sm:py-12">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 id="workflow-title" className="precisoutapronto-display text-3xl font-black tracking-tight sm:text-4xl">Da conversa ao pagamento</h2>
+            <p className="mt-2 text-sm text-slate-600">Exemplo de uma instalação de tomadas com pagamento em duas etapas.</p>
+            <div className="mt-5 flex items-start gap-3 rounded-2xl bg-emerald-50 p-4">
+              <MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" aria-hidden />
+              <div>
+                <p className="text-sm font-bold text-emerald-900">Pedido pelo WhatsApp</p>
+                <p className="mt-1 text-slate-800">“Oi! Quanto fica para instalar as tomadas, incluindo o material?”</p>
+              </div>
+            </div>
+            <ol className="mt-3 grid gap-3 md:grid-cols-3">
+              {steps.map(({ title, text, icon: Icon }, index) => (
+                <li key={title} className="flex flex-col rounded-2xl border border-blue-100 bg-[#f8faff] p-4">
+                  <h3 className="flex items-center gap-2 text-lg font-bold">
+                    <Icon className="h-5 w-5 text-blue-700" aria-hidden /> {index + 1}. {title}
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{text}</p>
+                  <div className="mt-3 rounded-xl border border-blue-100 bg-white p-3 text-sm">
+                    {index === 0 && <p className="flex flex-wrap justify-between gap-2"><span>Serviço + materiais</span><strong>R$ 490,00</strong></p>}
+                    {index === 1 && <p>“Segue o <a href="#exemplos" className="font-bold text-blue-800 underline">link do orçamento</a> para você conferir.”</p>}
+                    {index === 2 && <p className="flex items-center gap-2 font-bold text-emerald-800"><Check className="h-4 w-4 shrink-0" aria-hidden /> Orçamento aprovado</p>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-4 rounded-2xl bg-emerald-950 p-5 text-white">
+              <h3 className="text-lg font-bold">Recebeu entrada?</h3>
+              <ol className="mt-3 grid border-l border-emerald-400/50 md:grid-cols-5 md:border-l-0 md:border-t">
+                {paymentTimeline.map(item => (
+                  <li key={item} className="relative py-1.5 pl-4 text-sm text-emerald-50 before:absolute before:-left-1 before:top-3 before:h-2 before:w-2 before:rounded-full before:bg-emerald-300 md:py-0 md:pl-0 md:pr-3 md:pt-4 md:before:left-0 md:before:top-[-4px]">
+                    {item}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
 
-      <section className="bg-[#101828] py-10 text-white sm:py-24"><div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_.9fr] lg:items-center lg:px-8"><div><p className="text-xs font-black uppercase tracking-[.18em] text-blue-300">Profissional por fora. Simples por dentro.</p><h2 className="precisoutapronto-display mt-4 text-4xl font-black tracking-[-.05em] sm:text-6xl">Do orçamento ao recibo, sem perder o combinado.</h2><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">Tudo para conferir, aprovar e pagar em uma única página feita para o celular.</p></div><ul className="grid gap-3">{['Itens e valores sem mensagem perdida', 'Aprovação ou ajuste em um toque', 'QR Code e Pix depois do aceite', 'Registro claro do combinado'].map(item => <li key={item} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 font-bold"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald-400 text-[#101828]"><Check className="h-4 w-4 stroke-[3]" /></span>{item}</li>)}</ul></div></section>
+        <ProfessionalStartGuide />
 
-      <section className="relative overflow-hidden bg-[#f8faff] py-12 sm:py-24"><div className="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full bg-blue-200/50 blur-3xl" /><div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6"><span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-white text-[#155eef] shadow-lg"><ShieldCheck className="h-7 w-7" /></span><h2 className="precisoutapronto-display mt-6 text-4xl font-black tracking-[-.055em] sm:text-6xl">Seu próximo orçamento pode sair agora.</h2><p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">Comece sem cadastro. Monte, revise e envie quando estiver pronto.</p><Link href="/orcamento-com-pix#montar" className="mt-8 inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#155eef] px-8 font-black text-white shadow-xl shadow-blue-600/25 transition hover:-translate-y-1 hover:bg-[#004eeb]">Criar meu orçamento grátis <ArrowRight className="h-5 w-5" /></Link><p className="mt-4 text-xs font-bold text-slate-500">Sem cartão · sem instalação · primeiro envio sem cadastro</p></div></section>
-    </main>
-  </div>;
+        <section id="exemplos" aria-labelledby="examples-title" className="scroll-mt-32 py-10 sm:py-16">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:items-start lg:px-8">
+            <div>
+              <h2 id="examples-title" className="precisoutapronto-display text-3xl font-black tracking-tight sm:text-4xl">Veja o que seu cliente recebe</h2>
+              <p className="mt-3 max-w-lg leading-7 text-slate-600">O cliente abre o link que você envia pelo WhatsApp. Experimente aprovar ou pedir um ajuste na demonstração.</p>
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {comparison.map(({ title, items }) => (
+                  <div key={title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <h3 className="font-bold">{title}</h3>
+                    <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-6 text-slate-700">
+                      {items.map(item => <li key={item}>{item}</li>)}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <QuoteDemo embedded />
+          </div>
+        </section>
+
+        <HomeQuoteStories stories={stories} />
+
+        <section id="planos" aria-labelledby="plans-title" className="scroll-mt-32 border-y border-blue-100 bg-[#f8faff] py-10 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 id="plans-title" className="precisoutapronto-display text-3xl font-black tracking-tight sm:text-4xl">Compare os planos</h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              {plans.map(plan => (
+                <article key={plan.id} className="rounded-2xl border border-blue-100 bg-white p-5">
+                  <h3 className="text-xl font-bold">{plan.name}</h3>
+                  <p className="mt-3 font-semibold"><strong className="text-2xl">{plan.priceLabel}</strong> {plan.period.trim()}</p>
+                  <p className="mt-3 leading-7 text-slate-600">{plan.details}</p>
+                </article>
+              ))}
+            </div>
+            <Link href="/planos" className="mt-4 inline-flex min-h-11 items-center font-semibold text-blue-800 hover:underline">Ver detalhes dos planos</Link>
+          </div>
+        </section>
+
+        <HomeOtherTools />
+
+        <section id="faq" aria-labelledby="faq-title" className="scroll-mt-32 py-10 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 id="faq-title" className="precisoutapronto-display text-3xl font-black tracking-tight sm:text-4xl">Perguntas frequentes</h2>
+            <div className="mt-5 max-w-4xl divide-y divide-slate-200 border-y border-slate-200">
+              {faq.map(({ question, answer }) => (
+                <details key={question} className="py-2">
+                  <summary className="min-h-11 cursor-pointer py-2.5 font-bold">{question}</summary>
+                  <p className="pb-2 leading-7 text-slate-600">{answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="start-title" className="border-t border-blue-100 bg-[#f8faff] px-4 py-10 text-center sm:py-12">
+          <h2 id="start-title" className="precisoutapronto-display text-3xl font-black tracking-tight">Seu próximo orçamento pode sair agora</h2>
+          <p className="mt-2 text-slate-600">Monte o orçamento, envie pelo WhatsApp e receba a aprovação pelo link.</p>
+          <LandingConversionLink href="/orcamento-com-pix#montar" landingPath="/" placement="footer_primary" className="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl bg-[#155eef] px-5 py-3 font-bold text-white hover:bg-blue-800">
+            Montar meu orçamento
+          </LandingConversionLink>
+        </section>
+      </main>
+    </div>
+  );
 }

@@ -1,72 +1,91 @@
-import { ArrowRight, Calculator, Check, FilePenLine, FileText, GraduationCap, QrCode, Receipt, ShieldCheck } from 'lucide-react';
+import { Calculator, Check, FilePenLine, FileText, GraduationCap, MessageCircle, QrCode, Receipt } from 'lucide-react';
 import Link from 'next/link';
 import { LandingConversionLink } from '@/components/analytics/landing-conversion-link';
-import { HomeQuickSearch } from '@/components/marketing/home-quick-search';
+import { QuotePreview } from '@/components/orcamentos/quote-preview';
+import { QUOTE_DEMO_EXAMPLE } from '@/lib/orcamentos/quote-demo-example';
 import { publicToolEntry } from '@/lib/seo/public-tool-entry';
+import type { PublicStats } from '@/lib/public-stats';
 
 const shortcuts = [
-  { id: 'curriculo', label: 'Criar currículo', icon: GraduationCap, tone: 'bg-indigo-50 text-indigo-700' },
-  { id: 'recibos', label: 'Gerar recibo', icon: Receipt, tone: 'bg-emerald-50 text-emerald-700' },
-  { id: 'editor-pdf', label: 'Editar PDF', icon: FilePenLine, tone: 'bg-rose-50 text-rose-700' },
-  { id: 'pix', label: 'Cobrar com Pix', icon: QrCode, tone: 'bg-teal-50 text-teal-700' },
-  { id: 'rescisao', label: 'Calcular rescisão', icon: Calculator, tone: 'bg-amber-50 text-amber-800' },
-  { id: 'orcamentos', label: 'Criar orçamento', icon: FileText, tone: 'bg-blue-50 text-blue-700' }
-] as const;
+  { href: publicToolEntry('curriculo')!, label: 'Criar currículo', icon: GraduationCap },
+  { href: publicToolEntry('recibos')!, label: 'Gerar recibo', icon: Receipt },
+  { href: publicToolEntry('editor-pdf')!, label: 'Editar PDF', icon: FilePenLine },
+  { href: publicToolEntry('pix')!, label: 'Cobrar com Pix', icon: QrCode },
+  { href: publicToolEntry('rescisao')!, label: 'Calcular rescisão', icon: Calculator },
+  { href: '/gerador-de-proposta-comercial#ferramenta', label: 'Montar proposta comercial', icon: FileText }
+];
 
-export function HomeIntentHero() {
+export function HomeIntentHero({ hasStories, stats }: { hasStories: boolean; stats: PublicStats }) {
   return (
-    <section id="ferramentas" aria-labelledby="home-title" className="scroll-mt-40 border-b border-blue-100 bg-[radial-gradient(ellipse_at_top_right,_#dbeafe,_#f8faff_70%)]">
-      <div className="mx-auto max-w-5xl px-4 py-7 sm:px-6 sm:py-16">
-        <h1 id="home-title" className="precisoutapronto-display max-w-3xl text-[clamp(2.1rem,6vw,4.5rem)] font-black leading-[1.05] tracking-[-.05em] text-[#031f4b]">O que você precisa resolver hoje?</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-lg">Crie documentos, edite PDFs, faça cálculos e organize cobranças. Tudo online.</p>
-        <div className="mt-5"><HomeQuickSearch compact /></div>
-        <ul aria-label="Atalhos para ferramentas" className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
-          {shortcuts.map(({ id, label, icon: Icon, tone }) => (
-            <li key={id}>
-              <LandingConversionLink href={publicToolEntry(id)!} landingPath="/" placement="hero_primary" className="flex h-full min-h-12 items-center gap-2 rounded-xl border border-blue-100 bg-white p-2 text-sm font-bold leading-tight text-slate-900 shadow-sm hover:border-blue-400 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-700 sm:gap-3 sm:p-3">
-                <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${tone}`}><Icon className="h-4 w-4" aria-hidden /></span>
-                {label}
-              </LandingConversionLink>
-            </li>
-          ))}
-        </ul>
-        <LandingConversionLink href="/editor-de-pdf-online#ferramenta" landingPath="/" placement="hero_secondary" className="mt-4 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-950 hover:border-emerald-400 hover:underline sm:text-base">
-          <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-700" aria-hidden />
-          <span><strong>Edite seus PDFs gratuitamente.</strong> Seus documentos não saem do seu dispositivo.</span>
-        </LandingConversionLink>
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4">
-          <p className="text-xs leading-5 text-slate-600">Comece grátis · Funciona no celular · Sem instalar aplicativo</p>
-          <Link href="/modelos-de-orcamento" className="inline-flex min-h-11 items-center text-sm font-bold text-blue-800 hover:underline">Modelos de orçamento</Link>
-          <Link href="/recursos" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-blue-800 hover:underline">Ver todas as ferramentas <ArrowRight className="h-4 w-4" aria-hidden /></Link>
+    <section aria-labelledby="home-title" className="border-b border-blue-100 bg-[radial-gradient(ellipse_at_top_right,_#123773,_#071a37_75%)] text-white">
+      <div className="mx-auto grid max-w-7xl items-center gap-5 px-4 py-6 sm:px-6 sm:py-10 lg:grid-cols-[1.15fr_.85fr] lg:gap-12 lg:px-8 lg:py-12">
+        <div>
+          <h1 id="home-title" className="precisoutapronto-display text-[clamp(1.9rem,5vw,4.1rem)] font-black leading-[1.05] tracking-[-.045em]">
+            Crie orçamentos profissionais e <span className="text-blue-300">envie pelo WhatsApp.</span>
+          </h1>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-blue-100 sm:text-lg">
+            Seu cliente aprova e paga por Pix pelo link. Você pode emitir o recibo após receber.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2.5 sm:mt-6">
+            <LandingConversionLink href="/orcamento-com-pix#montar" landingPath="/" placement="hero_primary" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#155eef] px-4 py-3 font-black text-white shadow-lg shadow-blue-950/50 hover:bg-blue-700">
+              Criar orçamento grátis
+            </LandingConversionLink>
+            <LandingConversionLink href="#exemplos" landingPath="/" placement="hero_secondary" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-blue-300/60 px-3 py-3 font-bold text-white hover:bg-blue-900 sm:px-5">
+              Ver exemplos
+            </LandingConversionLink>
+          </div>
+          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-blue-100">
+            {['Sem cadastro', 'Primeiro envio grátis'].map(text => (
+              <li key={text} className="flex items-center gap-1.5">
+                <Check className="h-4 w-4 text-emerald-300" aria-hidden />
+                {text}
+              </li>
+            ))}
+          </ul>
+          {stats.orcamentosWeek > 0 && (
+            <p className="mt-3 text-sm text-blue-100">
+              <strong className="text-white">{stats.orcamentosWeek.toLocaleString('pt-BR')}+</strong> orçamentos criados na última semana
+            </p>
+          )}
+          {hasStories && <a href="#depoimentos" className="mt-1 inline-flex min-h-11 items-center text-sm font-semibold text-blue-100 hover:underline">Leia depoimentos de prestadores</a>}
         </div>
+
+        <figure className="min-w-0 rounded-2xl border border-blue-300/30 bg-white/10 p-2.5 shadow-xl shadow-blue-950/20 sm:p-4">
+          <figcaption className="flex flex-wrap items-center gap-x-2 gap-y-1 px-1 pb-2 text-sm font-semibold text-blue-100 sm:pb-3">
+            <MessageCircle className="h-4 w-4 text-emerald-300" aria-hidden />
+            Orçamento de exemplo · dados fictícios
+          </figcaption>
+          <div className="rounded-2xl bg-white text-slate-950">
+            <QuotePreview {...QUOTE_DEMO_EXAMPLE} compact />
+            <div className="px-4 pb-3">
+              <a href="#exemplos" className="inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-50 px-3 text-sm font-bold text-emerald-900 hover:bg-emerald-100">Testar aprovação</a>
+            </div>
+          </div>
+        </figure>
       </div>
     </section>
   );
 }
 
-export function HomeQuoteSection() {
-  return <section aria-labelledby="home-quote-title" className="border-b border-slate-200 bg-slate-50">
-    <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:px-8">
-      <div>
-        <p className="text-xs font-black uppercase tracking-widest text-blue-700">Para quem presta serviço e atende pelo WhatsApp</p>
-        <h2 id="home-quote-title" className="precisoutapronto-display mt-5 text-[clamp(2.25rem,4vw,4rem)] font-black leading-[1.05] tracking-[-.05em]">Seu orçamento profissional, <span className="text-[#155eef]">aprovado pelo WhatsApp.</span></h2>
-        <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">Monte os itens, envie ao cliente e organize entrada, saldo e recibo em um só fluxo.</p>
-        <div className="mt-7 flex flex-wrap gap-3">
-          <LandingConversionLink href="/orcamento-com-pix#montar" landingPath="/" placement="hero_primary" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-[#155eef] px-5 py-3 text-center font-black text-white shadow-lg shadow-blue-600/20 hover:bg-blue-800 sm:w-auto">Criar orçamento grátis<ArrowRight className="h-5 w-5 shrink-0" aria-hidden /></LandingConversionLink>
-          <LandingConversionLink href="/demonstracao-orcamento" landingPath="/" placement="hero_secondary" className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl border border-blue-200 bg-white px-5 py-3 text-center font-bold text-blue-800 hover:bg-blue-50 sm:w-auto">Ver como o cliente recebe</LandingConversionLink>
-        </div>
-        <p className="mt-4 text-xs leading-6 text-slate-600">Sem cadastro para começar · Pix opcional · PDF grátis com a marca da plataforma</p>
-        <p className="mt-2 text-sm leading-6 text-slate-600">Conta grátis para histórico. <Link href="/planos" className="font-semibold text-blue-800 underline underline-offset-4">Conheça o gratuito e o Premium</Link>.</p>
+export function HomeOtherTools() {
+  return (
+    <section id="ferramentas" aria-labelledby="other-tools-title" className="scroll-mt-32 border-t border-slate-200 bg-slate-50 py-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 id="other-tools-title" className="precisoutapronto-display text-3xl font-black tracking-tight">Outras ferramentas</h2>
+        <ul aria-label="Atalhos para ferramentas" className="mt-5 grid gap-3 min-[360px]:grid-cols-2 md:grid-cols-3">
+          {shortcuts.map(({ href, label, icon: Icon }) => (
+            <li key={href}>
+              <LandingConversionLink href={href} landingPath="/" placement="inline_primary" className="flex h-full min-h-12 items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold hover:border-blue-400 hover:text-blue-800">
+                <Icon className="h-5 w-5 shrink-0 text-blue-700" aria-hidden />
+                {label}
+              </LandingConversionLink>
+            </li>
+          ))}
+        </ul>
+        <Link href="/recursos" className="mt-3 inline-flex min-h-11 items-center font-semibold text-blue-800 hover:underline">
+          Ver todas as ferramentas
+        </Link>
       </div>
-      <div className="min-w-0 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_24px_70px_-25px_rgba(16,24,40,.25)] sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-widest text-blue-700">Prévia ilustrativa · dados fictícios</p>
-        <FileText className="mt-6 h-9 w-9 text-blue-600" aria-hidden />
-        <h3 className="mt-4 text-2xl font-black text-slate-950">O combinado fica claro.</h3>
-        <p className="mt-2 text-sm text-slate-500">Elétrica Silva · ORC-018</p>
-        <dl className="my-7 space-y-4">{[['Instalação de tomadas', 'R$ 350'], ['Material elétrico', 'R$ 140'], ['Total do serviço', 'R$ 490']].map(([label, value]) => <div key={label} className="flex flex-wrap justify-between gap-2 text-sm"><dt className="text-slate-600">{label}</dt><dd className="font-bold">{value}</dd></div>)}</dl>
-        <ol className="space-y-3 border-t border-slate-200 pt-5">{['Cliente confere e aprova pelo link', 'Você registra a entrada de R$ 150', 'Recibo explica os R$ 340 de saldo'].map(text => <li key={text} className="flex items-start gap-2 text-sm leading-6 text-slate-700"><Check className="mt-1 h-4 w-4 shrink-0 text-emerald-700" aria-hidden />{text}</li>)}</ol>
-        <p className="mt-5 text-xs leading-6 text-slate-500">Exemplo de uso. Confira o recebimento no banco antes de emitir o recibo; não fazemos conciliação bancária automática.</p>
-      </div>
-    </div>
-  </section>;
+    </section>
+  );
 }
