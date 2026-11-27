@@ -87,16 +87,16 @@ export async function LandingPage() {
                   <div className="mt-3 rounded-xl border border-blue-100 bg-white p-3 text-sm">
                     {index === 0 && <p className="flex flex-wrap justify-between gap-2"><span>Serviço + materiais</span><strong>R$ 490,00</strong></p>}
                     {index === 1 && <p>“Segue o <a href="#exemplos" className="font-bold text-blue-800 underline">link do orçamento</a> para você conferir.”</p>}
-                    {index === 2 && <p className="flex items-center gap-2 font-bold text-emerald-800"><Check className="h-4 w-4 shrink-0" aria-hidden /> Orçamento aprovado</p>}
+                    {index === 2 && <p className="flex items-center gap-2 font-bold text-blue-800"><Check className="h-4 w-4 shrink-0" aria-hidden /> Orçamento aprovado</p>}
                   </div>
                 </li>
               ))}
             </ol>
-            <div className="mt-4 rounded-2xl bg-emerald-950 p-5 text-white">
+            <div className="mt-4 rounded-2xl bg-gradient-to-br from-blue-950 via-blue-900 to-blue-700 p-5 text-white">
               <h3 className="text-lg font-bold">Recebeu entrada?</h3>
-              <ol className="mt-3 grid border-l border-emerald-400/50 md:grid-cols-5 md:border-l-0 md:border-t">
+              <ol className="mt-3 grid border-l border-blue-300/50 md:grid-cols-5 md:border-l-0 md:border-t">
                 {paymentTimeline.map(item => (
-                  <li key={item} className="relative py-1.5 pl-4 text-sm text-emerald-50 before:absolute before:-left-1 before:top-3 before:h-2 before:w-2 before:rounded-full before:bg-emerald-300 md:py-0 md:pl-0 md:pr-3 md:pt-4 md:before:left-0 md:before:top-[-4px]">
+                  <li key={item} className="relative py-1.5 pl-4 text-sm text-blue-50 before:absolute before:-left-1 before:top-3 before:h-2 before:w-2 before:rounded-full before:bg-blue-300 md:py-0 md:pl-0 md:pr-3 md:pt-4 md:before:left-0 md:before:top-[-4px]">
                     {item}
                   </li>
                 ))}
@@ -137,6 +137,7 @@ export async function LandingPage() {
                 <article key={plan.id} className="rounded-2xl border border-blue-100 bg-white p-5">
                   <h3 className="text-xl font-bold">{plan.name}</h3>
                   <p className="mt-3 font-semibold"><strong className="text-2xl">{plan.priceLabel}</strong> {plan.period.trim()}</p>
+                  <p className="mt-2 font-bold text-blue-800">Uso ilimitado das ferramentas</p>
                   <p className="mt-3 leading-7 text-slate-600">{plan.details}</p>
                 </article>
               ))}

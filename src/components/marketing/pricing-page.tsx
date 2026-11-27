@@ -31,6 +31,7 @@ export function PricingPage() {
           <h2 className="text-2xl font-bold text-slate-900">Grátis</h2>
           <p className="mt-1 text-sm text-slate-600">Teste a eficácia do serviço</p>
           <p className="precisoutapronto-display mt-6 text-4xl font-extrabold text-slate-900">R$ 0</p>
+          <p className="mt-3 font-bold text-blue-800">Uso ilimitado das ferramentas</p>
           <ul className="mt-6 space-y-2.5 text-sm text-slate-700">
             {[
               'Documentos profissionais em PDF',
@@ -50,17 +51,18 @@ export function PricingPage() {
           </Button>
         </article>
 
-        <article className="overflow-hidden rounded-[28px] border border-slate-800 bg-[linear-gradient(135deg,#0f172a_0%,#064e3b_55%,#047857_100%)] text-white shadow-sm">
+        <article className="overflow-hidden rounded-[28px] border border-blue-950 bg-gradient-to-br from-blue-950 via-blue-900 to-blue-700 text-white shadow-sm">
           <div className="border-b border-white/10 bg-slate-950/40 p-4 sm:p-5">
-            <PremiumHireArt priority />
+            <PremiumHireArt priority className="[filter:grayscale(1)_sepia(.65)_saturate(2)_hue-rotate(175deg)]" />
           </div>
           <div className="p-8">
             <h2 className="text-2xl font-bold">Premium</h2>
-            <p className="mt-1 text-sm text-emerald-100">Documentos sem referências ao Precisou, Tá Pronto</p>
+            <p className="mt-1 text-sm text-blue-100">Documentos sem referências ao Precisou, Tá Pronto</p>
             <div className="mt-6 flex items-end gap-2">
               <span className="precisoutapronto-display text-4xl font-extrabold">{premium.priceLabel}</span>
               <span className="pb-1 text-sm text-slate-300">{premium.period}</span>
             </div>
+            <p className="mt-3 font-bold text-blue-100">Uso ilimitado das ferramentas</p>
             <ul className="mt-6 space-y-2.5 text-sm text-slate-100">
               {[
                 'PDF sem rodapé e sem logo',
@@ -75,7 +77,7 @@ export function PricingPage() {
                 </li>
               ))}
             </ul>
-            <Button asChild className="mt-8 w-full bg-white font-bold text-slate-950 hover:bg-emerald-50">
+            <Button asChild className="mt-8 w-full bg-white font-bold text-slate-950 hover:bg-blue-50">
               <AuthAwareLink href={ASAAS_CHECKOUT}>
                 Assinar Premium por {premium.priceLabel}
                 <ArrowRight className="h-4 w-4" />
@@ -89,7 +91,7 @@ export function PricingPage() {
         <h2 id="access-title" className="text-2xl font-bold text-slate-950">O que muda com a conta e com o Premium?</h2>
         <dl className="mt-5 grid gap-5 sm:grid-cols-3">
           <div><dt className="font-bold">Sem cadastro</dt><dd className="mt-2 text-sm leading-6 text-slate-600">Crie orçamento e recibo com a marca da plataforma. Nas outras ferramentas, duas gerações livres antes de criar conta.</dd></div>
-          <div><dt className="font-bold">Conta grátis</dt><dd className="mt-2 text-sm leading-6 text-slate-600">Guarde o histórico pelo fluxo de salvar da ferramenta. Arquivos baixados sem conta não são adicionados automaticamente.</dd></div>
+          <div><dt className="font-bold">Conta grátis</dt><dd className="mt-2 text-sm leading-6 text-slate-600">Use as ferramentas sem limite e salve seu histórico. Arquivos baixados sem conta não são adicionados automaticamente.</dd></div>
           <div><dt className="font-bold">Premium opcional</dt><dd className="mt-2 text-sm leading-6 text-slate-600">Remove as referências à plataforma por 30 dias. Pagamento avulso, sem renovação automática. O preço vigente aparece acima.</dd></div>
         </dl>
       </section>
